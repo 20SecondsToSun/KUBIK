@@ -1,0 +1,16 @@
+{
+   "userID" : "dfsgdf",
+   "netConnection": true,
+   "algo": 1,
+   "minError": 24,
+   "maxError": 42,
+   "drawPoints": false,
+   "fullskelet": true,
+   "etalonHeight": 240, 
+    "maxUserDistance": 3.5,
+    "minUserDistance": 2.6, 
+	"maxUserHeight": 310.0,
+    "minUserHeight": 235.0, 
+     
+   "percents" : [0.03, 0.02, 0.05, 0.04, 0.22, 0.04, 0.05, 0.20, 0.02, 0.15, 0.03, 0.15]
+}
