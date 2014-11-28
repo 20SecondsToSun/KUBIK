@@ -7,7 +7,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class EngineApp : public AppNative {
+class EngineApp : public AppNative 
+{
   public:
 	void setup();
 	void mouseDown( MouseEvent event );	
@@ -20,10 +21,10 @@ class EngineApp : public AppNative {
 	
 private:
 	ApplicationModel model;
-	void prepareSettings( ci::app::AppBasic::Settings *settings );
+	void prepareSettings(ci::app::AppBasic::Settings *settings);
 };
 
-void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings )
+void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
 {
 	settings->setWindowSize(1200, 600);	
 	settings->setBorderless(true);
@@ -31,21 +32,30 @@ void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings )
 
 void EngineApp::setup()
 {	
-	config().addCompleteListener(bind(&EngineApp::configLoadingComplete, this ));
-	config().addErrorListener(bind(&EngineApp::errorHandler, this ));
+	config().addCompleteListener(bind(&EngineApp::configLoadingComplete, this));
+	config().addErrorListener(bind(&EngineApp::errorHandler, this));
 	config().load(&model);
 }
 
 void EngineApp::configLoadingComplete()
 {
-	graphics().addCompleteListener(bind(&EngineApp::graphicsLoadingComplete, this ));
-	graphics().addErrorListener(bind(&EngineApp::errorHandler, this ));
-	graphics().loadTextures(Graphics::gamesTexturesID::PERMANENT_IN_MEMORY_TEXTURES);
+	graphics().addCompleteListener(bind(&EngineApp::graphicsLoadingComplete, this));
+	graphics().addErrorListener(bind(&EngineApp::errorHandler, this));	
+
+	graphics().loadTextures(Graphics::gamesTexturesID::SKIN_1);	
+	graphics().loadTextures(Graphics::gamesTexturesID::GAME_1);	
 }
 
 void EngineApp::graphicsLoadingComplete()
 {
+	console()<<"Graphics all Loaded:: "<<graphics().checkAllLoading()<<endl;
 
+	// controller.addUnloadGameListener()
+	// controller.addLoadGameListener()
+
+
+	//application.start();
+	//start 
 }
 
 void EngineApp::errorHandler()
@@ -60,6 +70,7 @@ void EngineApp::mouseDown( MouseEvent event )
 
 void EngineApp::update()
 {
+	
 }
 
 void EngineApp::draw()

@@ -67,6 +67,9 @@
     <Filter Include="Source Files\devices\printer">
       <UniqueIdentifier>{176d0808-ec4d-438f-8457-f2e10893585b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\texmanager">
+      <UniqueIdentifier>{e1253bc8-bd10-4aaf-ad3b-060422603aaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="..\src\locations\engine\LocationEngine.cpp">
       <Filter>Source Files\locations\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp">
+      <Filter>Source Files\graphics\texmanager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="..\src\graphics\Graphics.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\texmanager\TextureManager.h">
+      <Filter>Source Files\graphics\texmanager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
