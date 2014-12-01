@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -107,6 +107,7 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\app\Application.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp" />
     <ClCompile Include="..\src\locations\appstates\ChooseGameScreen.cpp" />
@@ -114,17 +115,24 @@
     <ClCompile Include="..\src\locations\appstates\PlayingGameScreen.cpp" />
     <ClCompile Include="..\src\locations\engine\Location.cpp" />
     <ClCompile Include="..\src\locations\engine\LocationEngine.cpp" />
+    <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
+    <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\app\Application.h" />
     <ClInclude Include="..\src\config\Config.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h" />
     <ClInclude Include="..\src\locations\appstates\ChooseGameScreen.h" />
     <ClInclude Include="..\src\locations\appstates\ConfigurationGameScreen.h" />
     <ClInclude Include="..\src\locations\appstates\PlayingGameScreen.h" />
+    <ClInclude Include="..\src\locations\engine\Drawable.h" />
     <ClInclude Include="..\src\locations\engine\Location.h" />
     <ClInclude Include="..\src\locations\engine\LocationEngine.h" />
+    <ClInclude Include="..\src\locations\game\GameScreen.h" />
+    <ClInclude Include="..\src\locations\menu\MenuButton.h" />
+    <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

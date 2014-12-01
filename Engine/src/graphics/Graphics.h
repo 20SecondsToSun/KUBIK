@@ -18,20 +18,22 @@ public:
 
 	enum gamesTexturesID
 	{
-		SKIN_1,
-		SKIN_2,
-		GAME_1,
-		GAME_2,
+		MENU = 5,
+		SETTINGS = 4,
+		FUNCES = 1,
+		PHOTOBOOTH = 2,
+		KOTOPOZA = 3
 	};
 
 	typedef struct __tex
 	{
-		string path;
-		Texture tex;
+		std::string path;
+		ci::gl::Texture tex;
 		bool isLoading;
-	} Tex;
+	} TexObject;
 
-	typedef map<string, Tex> TexDictionary;
+	typedef map<string, TexObject> OneBlockTexDictionary;
+	typedef map<gamesTexturesID, OneBlockTexDictionary*> AllTexDictionary;
 
 	static Graphics& getInstance() { static Graphics graph; return graph; };
 
@@ -39,11 +41,26 @@ public:
 	{
 		console()<<" graphics init..."<<endl;
 
-		addToDictionary(SKIN_1, "background" , "mainSkinDesign\\bg.jpg");
-		addToDictionary(SKIN_1, "background1" , "mainSkinDesign\\bg1.png");
-		addToDictionary(SKIN_1, "background2" , "mainSkinDesign\\title.jpg");
-	
-		mainDesignLoadinsCounter = mainDesign.size();	
+		addToDictionary(MENU, "background" , "mainSkinDesign\\bg.jpg");
+		addToDictionary(MENU, "background1", "mainSkinDesign\\bg1.png");
+		addToDictionary(MENU, "background2", "mainSkinDesign\\title.jpg");		
+
+		allTexDic[MENU] = &menuDesign;
+
+		mainDesignLoadinsCounter = menuDesign.size();
+
+
+
+
+		addToDictionary(SETTINGS, "background" , "mainSkinDesign\\bg.jpg");
+		addToDictionary(SETTINGS, "background1", "mainSkinDesign\\bg1.png");
+		addToDictionary(SETTINGS, "background2", "mainSkinDesign\\title.jpg");	
+
+		allTexDic[SETTINGS] = &settingsDesign;
+
+		settingsDesignLoadinsCounter = settingsDesign.size();
+
+
 		loadingStack = 0;
 	}
 
@@ -53,12 +70,17 @@ public:
 
 		switch (id)
 		{
-			case SKIN_1:
-				skinLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadSkinTextures, this ));
+			case MENU:
+				menuLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadSkinTextures, this ));
 			break;
 
-			case GAME_1:
+			case FUNCES:
 				gameTexLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadGameTextures, this ));
+			break;
+
+			case SETTINGS:
+				loadingStack--;
+				//gameTexLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadGameTextures, this ));
 			break;
 		}
 	}
@@ -83,17 +105,28 @@ public:
 		return loadingStack == 0;
 	}
 
+	AllTexDictionary getTextures()
+	{
+		return allTexDic;
+	}
+
 private:
 
 	void addToDictionary(int id, string key, string path)
 	{	
-		Tex value = {path, Texture(), false};
-		mainDesign[key]  = value;
+		TexObject value = {path, Texture(), false};
+
+		switch (id)
+		{
+			case MENU:
+				menuDesign[key]  = value;
+			break;
+		}
 	}
 
 	void loadSkinTextures()
 	{
-		for ( auto it = mainDesign.begin(); it != mainDesign.end(); it++)
+		for ( auto it = menuDesign.begin(); it != menuDesign.end(); it++)
 		{
 			if ((*it).second.isLoading == false)
 			{
@@ -105,12 +138,14 @@ private:
 				}
 				else if (mainDesignLoadinsCounter > 0)
 				{
+					(*it).second.tex = ph::fetchTexture(url);
 					(*it).second.isLoading = true;
+
 					if (--mainDesignLoadinsCounter == 0)
 					{
 						--loadingStack;
 						completeHandler();
-						skinLoadingSignal.disconnect();
+						menuLoadingSignal.disconnect();
 					}
 				}
 			}
@@ -127,19 +162,19 @@ private:
 	string getFullTexturePath(string url)
 	{
 		return getAssetPath(url).string();
-	}
+	}	
 
 	std::function<void()> completeHandler;
 	std::function<void()> errorHandler;
 
-	TexDictionary	mainDesign;
+	AllTexDictionary allTexDic;
+	OneBlockTexDictionary	menuDesign, settingsDesign, gameDesign;
 
 	int mainDesignLoadinsCounter;
+	int settingsDesignLoadinsCounter;
 	int loadingStack;
 
-	ci::signals::connection skinLoadingSignal, gameTexLoadingSignal;
-
-
+	ci::signals::connection menuLoadingSignal, gameTexLoadingSignal;
 };
 
 inline Graphics&	graphics() { return Graphics::getInstance(); };

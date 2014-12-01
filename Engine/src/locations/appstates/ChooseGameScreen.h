@@ -17,7 +17,7 @@ class ChooseGameScreen : public Location
 	public:
 
 		void setup();
-		void init( LocationEngine* game);
+		void init(LocationEngine* game);
 		void update();
 		void draw();
 		void cleanup(){};

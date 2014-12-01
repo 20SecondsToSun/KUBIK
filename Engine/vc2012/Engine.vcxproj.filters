@@ -70,6 +70,15 @@
     <Filter Include="Source Files\graphics\texmanager">
       <UniqueIdentifier>{e1253bc8-bd10-4aaf-ad3b-060422603aaa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{17ec98ba-54e8-441e-a31f-fda40d4e7c79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\menu">
+      <UniqueIdentifier>{334396e2-8676-41cf-a2c9-478e16d6e237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\game">
+      <UniqueIdentifier>{cb7248f9-e1e6-4c1c-863c-cf7d5920dd9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -98,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp">
       <Filter>Source Files\graphics\texmanager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\Application.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\menu\MenuScreen.cpp">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\game\GameScreen.cpp">
+      <Filter>Source Files\locations\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +148,21 @@
     </ClInclude>
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h">
       <Filter>Source Files\graphics\texmanager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\Application.h">
+      <Filter>Source Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\menu\MenuButton.h">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\menu\MenuScreen.h">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\engine\Drawable.h">
+      <Filter>Source Files\locations\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\game\GameScreen.h">
+      <Filter>Source Files\locations\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
