@@ -5,6 +5,7 @@
 #include "cinder/gl/gl.h"
 #include <boost/algorithm/string.hpp>
 #include "TextureManager.h"
+#include "IDrawable.h"
 
 using namespace std;
 using namespace ci;
@@ -16,73 +17,26 @@ class Graphics
 
 public:
 
-	enum gamesTexturesID
-	{
-		MENU = 5,
-		SETTINGS = 4,
-		FUNCES = 1,
-		PHOTOBOOTH = 2,
-		KOTOPOZA = 3
-	};
-
-	typedef struct __tex
-	{
-		std::string path;
-		ci::gl::Texture tex;
-		bool isLoading;
-	} TexObject;
-
-	typedef map<string, TexObject> OneBlockTexDictionary;
-	typedef map<gamesTexturesID, OneBlockTexDictionary*> AllTexDictionary;
-
 	static Graphics& getInstance() { static Graphics graph; return graph; };
 
 	Graphics()
 	{
-		console()<<" graphics init..."<<endl;
-
-		addToDictionary(MENU, "background" , "mainSkinDesign\\bg.jpg");
-		addToDictionary(MENU, "background1", "mainSkinDesign\\bg1.png");
-		addToDictionary(MENU, "background2", "mainSkinDesign\\title.jpg");		
-
-		allTexDic[MENU] = &menuDesign;
-
-		mainDesignLoadinsCounter = menuDesign.size();
-
-
-
-
-		addToDictionary(SETTINGS, "background" , "mainSkinDesign\\bg.jpg");
-		addToDictionary(SETTINGS, "background1", "mainSkinDesign\\bg1.png");
-		addToDictionary(SETTINGS, "background2", "mainSkinDesign\\title.jpg");	
-
-		allTexDic[SETTINGS] = &settingsDesign;
-
-		settingsDesignLoadinsCounter = settingsDesign.size();
-
-
-		loadingStack = 0;
+		loadingCounter = 0 ;
 	}
 
-	void loadTextures(int id)
+	void setLoadingTextures(OneBlockTexDictionary _textures)
 	{	
-		loadingStack++;
-
-		switch (id)
+		for ( auto it = _textures.begin(); it != _textures.end(); it++)
 		{
-			case MENU:
-				menuLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadSkinTextures, this ));
-			break;
-
-			case FUNCES:
-				gameTexLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadGameTextures, this ));
-			break;
-
-			case SETTINGS:
-				loadingStack--;
-				//gameTexLoadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadGameTextures, this ));
-			break;
+			textures.push_back((*it).second);
 		}
+		
+		loadingCounter = textures.size();
+	}
+
+	void load()
+	{
+		loadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadTextures, this ));
 	}
 	
 	void addCompleteListener(const std::function<void(void)>& handler)
@@ -95,68 +49,58 @@ public:
 		errorHandler = handler;
 	}
 
+	void removeCompleteListener()
+	{
+		//completeHandler = NULL;
+	}
+
+	void removeErrorListener()
+	{
+		//errorHandler = NULL;
+	}
+
 	void uloadLastGame()
 	{
 
 	}
 
-	bool checkAllLoading()
-	{
-		return loadingStack == 0;
-	}
-
-	AllTexDictionary getTextures()
-	{
-		return allTexDic;
-	}
-
 private:
 
-	void addToDictionary(int id, string key, string path)
-	{	
-		TexObject value = {path, Texture(), false};
-
-		switch (id)
-		{
-			case MENU:
-				menuDesign[key]  = value;
-			break;
-		}
-	}
-
-	void loadSkinTextures()
+	void loadTextures()
 	{
-		for ( auto it = menuDesign.begin(); it != menuDesign.end(); it++)
+		if (textures.size() == 0)
 		{
-			if ((*it).second.isLoading == false)
-			{
-				string url = getFullTexturePath((*it).second.path);
+			completeHandler();						
+			loadingSignal.disconnect();
+			return;
+		}
 
+		for ( auto it = textures.begin(); it != textures.end(); it++)
+		{
+			if ((*it)->isLoading == false)
+			{
+				string url = getFullTexturePath((*it)->path);
+			
 				if(!ph::isTextureLoaded(url))
 				{
-					(*it).second.tex = ph::fetchTexture(url);
+					(*it)->tex = ph::fetchTexture(url);
 				}
-				else if (mainDesignLoadinsCounter > 0)
+				else if (loadingCounter > 0)
 				{
-					(*it).second.tex = ph::fetchTexture(url);
-					(*it).second.isLoading = true;
-
-					if (--mainDesignLoadinsCounter == 0)
+					(*it)->tex = ph::fetchTexture(url);
+					(*it)->isLoading = true;
+					
+					if (--loadingCounter == 0)
 					{
-						--loadingStack;
-						completeHandler();
-						menuLoadingSignal.disconnect();
+						completeHandler();						
+						loadingSignal.disconnect();
+						textures.clear();
+						ph::clearTexture();
+						break;
 					}
 				}
 			}
 		}
-	}
-
-	void loadGameTextures()
-	{		
-		loadingStack--;
-		completeHandler();
-		gameTexLoadingSignal.disconnect();
 	}
 
 	string getFullTexturePath(string url)
@@ -167,14 +111,11 @@ private:
 	std::function<void()> completeHandler;
 	std::function<void()> errorHandler;
 
-	AllTexDictionary allTexDic;
-	OneBlockTexDictionary	menuDesign, settingsDesign, gameDesign;
+	int loadingCounter;
 
-	int mainDesignLoadinsCounter;
-	int settingsDesignLoadinsCounter;
-	int loadingStack;
+	ci::signals::connection loadingSignal;
 
-	ci::signals::connection menuLoadingSignal, gameTexLoadingSignal;
+	vector<TexObject*> textures;
 };
 
 inline Graphics&	graphics() { return Graphics::getInstance(); };

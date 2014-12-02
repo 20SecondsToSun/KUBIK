@@ -64,16 +64,29 @@ public:
 		return gameIDsPurchased;
 	}	
 
-	bool isGameLoaded(int id)
+	bool isGameCurrent(int id)
 	{
-		return true;
+		return currentGame == id;
 	}
+
+	int getCurrentGame()
+	{
+		return currentGame;
+	}
+
+	void setCurrentGame(int id)
+	{
+		currentGame =  id;
+	}	
 
 private:
 	string userID;
 	int standID;
 	int defaultGameID;
 	bool netConnection;
+
+	int currentGame;
+
 	vector<int> gameIDsAvailable;
 	vector<int> gameIDsPurchased;
 	vector<int> gameIDsTurnOn;

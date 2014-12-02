@@ -3,26 +3,33 @@
 #include "ApplicationModel.h"
 #include "MenuButton.h"
 #include "Graphics.h"
-#include "Drawable.h"
-
+#include "IDrawable.h"
+#include "Funces.h"
+#include "Photobooth.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class GameScreen: public Drawable
+class GameScreen: public IGame
 {
 public:
-	//typedef boost::signals2::signal<void(MenuButton&)> ButtonSignal;	
 	
-	//ButtonSignal mouseUpSignal;
-
-	GameScreen(int gameId, Graphics::OneBlockTexDictionary* dic);	
+	GameScreen(int gameId);	
+	~GameScreen();	
 
 	void draw();
 
-private:
+	OneBlockTexDictionary getTextures();
+	void init();
+	void closeGameHandler();
+	void addMouseUpListener();
+	void removeMouseUpListener();
 
+private:
+	IGame* currentGame;
+
+	int gameID;
 	
 };

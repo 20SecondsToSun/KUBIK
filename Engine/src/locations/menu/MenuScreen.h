@@ -3,7 +3,7 @@
 #include "ApplicationModel.h"
 #include "MenuButton.h"
 #include "Graphics.h"
-#include "Drawable.h"
+#include "IDrawable.h"
 
 
 using namespace std;
@@ -11,15 +11,23 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 
-class MenuScreen:public Drawable
+class MenuScreen:public IDrawable
 {
 public:
 	signal<void(int)> startGameSignal;
 	
-	MenuScreen(vector<int> gameIDs, Graphics::OneBlockTexDictionary* dic);
+	MenuScreen(vector<int> gameIDs);
 	void draw();	
 
-	void removeMouseListener();	
+	void removeMouseUpListener();
+	void addMouseUpListener();
+
+	void init();
+
+	void trace()
+	{
+		console()<<designTexures["background"]->isLoading<<"  "<<designTexures["background"]->path<<"  "<<designTexures["background"]->tex<<endl;
+	}
 
 private:
 	vector<MenuButton *> menuBtns;
@@ -32,4 +40,5 @@ private:
 	void clearButtonVector();
 	void mouseUp( MouseEvent &event);
 	void update();
+	void setTextures();
 };

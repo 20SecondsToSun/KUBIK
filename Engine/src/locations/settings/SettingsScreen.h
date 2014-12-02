@@ -1,0 +1,29 @@
+#pragma once
+#include "cinder/app/AppNative.h"
+#include "ApplicationModel.h"
+#include "MenuButton.h"
+#include "Graphics.h"
+#include "IDrawable.h"
+
+using namespace std;
+using namespace ci;
+using namespace ci::app;
+using namespace ci::signals;
+
+class SettingsScreen:public IDrawable
+{
+public:
+	signal<void(int)> startGameSignal;
+	
+	SettingsScreen();
+	void draw();	
+	void init();
+	void trace()
+	{
+		console()<<designTexures["background"]->isLoading<<"  "<<designTexures["background"]->path<<"  "<<designTexures["background"]->tex<<endl;
+	}
+
+private:
+	void update();
+	void setTextures();
+};

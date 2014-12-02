@@ -204,6 +204,7 @@ bool TextureManager::isLoaded(const string &url)
 
 void TextureManager::garbageCollect()
 {
+	//return;
 	for(std::map<std::size_t, ph::Texture>::iterator itr=mTextures.begin();itr!=mTextures.end();)
 	{
 		// Cinder hack added to 'gl::Texture':

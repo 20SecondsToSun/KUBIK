@@ -23,7 +23,10 @@ public:
 			model->setUserID(configJSON.getChild("userID").getValue<string>());
 			model->setStandID(configJSON.getChild("standID").getValue<int>());
 			model->setNetConnection(configJSON.getChild("netConnection").getValue<bool>());
-			model->setDefaultGameID(configJSON.getChild("defaultGameID").getValue<int>());
+
+			int gameID = configJSON.getChild("defaultGameID").getValue<int>();
+			model->setDefaultGameID(gameID);
+			model->setCurrentGame(gameID);
 
 			vector<int> temp;
 			

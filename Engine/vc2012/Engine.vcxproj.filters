@@ -19,9 +19,6 @@
     <Filter Include="Source Files\locations">
       <UniqueIdentifier>{74f60d72-28ce-4600-9354-53dd8482a79e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\locations\appstates">
-      <UniqueIdentifier>{06faf994-c853-4457-8840-1cdf2c38bc3b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\locations\engine">
       <UniqueIdentifier>{29e48972-76c6-4b45-804b-6600dfb060a0}</UniqueIdentifier>
     </Filter>
@@ -79,6 +76,12 @@
     <Filter Include="Source Files\locations\game">
       <UniqueIdentifier>{cb7248f9-e1e6-4c1c-863c-cf7d5920dd9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\settings">
+      <UniqueIdentifier>{28a76c3c-24c8-4fe1-b75d-d293b3346020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\buttons">
+      <UniqueIdentifier>{bc8848ac-328e-4e56-841c-d46d9ff8fb72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -90,15 +93,6 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\locations\appstates\ChooseGameScreen.cpp">
-      <Filter>Source Files\locations\appstates</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\locations\appstates\ConfigurationGameScreen.cpp">
-      <Filter>Source Files\locations\appstates</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\locations\appstates\PlayingGameScreen.cpp">
-      <Filter>Source Files\locations\appstates</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\locations\engine\Location.cpp">
       <Filter>Source Files\locations\engine</Filter>
     </ClCompile>
@@ -108,28 +102,28 @@
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp">
       <Filter>Source Files\graphics\texmanager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\app\Application.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp">
       <Filter>Source Files\locations\menu</Filter>
     </ClCompile>
     <ClCompile Include="..\src\locations\game\GameScreen.cpp">
       <Filter>Source Files\locations\game</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\app\ApplicationView.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\SettingsScreen.cpp">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\funces\Funces.cpp">
+      <Filter>Source Files\games\funces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\Photobooth.cpp">
+      <Filter>Source Files\games\photobooth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\appstates\ChooseGameScreen.h">
-      <Filter>Source Files\locations\appstates</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\appstates\ConfigurationGameScreen.h">
-      <Filter>Source Files\locations\appstates</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\appstates\PlayingGameScreen.h">
-      <Filter>Source Files\locations\appstates</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\engine\Location.h">
       <Filter>Source Files\locations\engine</Filter>
@@ -149,25 +143,63 @@
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h">
       <Filter>Source Files\graphics\texmanager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\app\Application.h">
-      <Filter>Source Files\app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\menu\MenuButton.h">
-      <Filter>Source Files\locations\menu</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\menu\MenuScreen.h">
       <Filter>Source Files\locations\menu</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\engine\Drawable.h">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\game\GameScreen.h">
       <Filter>Source Files\locations\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\controller\Controller.h">
+      <Filter>Source Files\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\ApplicationView.h">
+      <Filter>Source Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\SettingsScreen.h">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\engine\IDrawable.h">
+      <Filter>Source Files\locations\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\IGame.h">
+      <Filter>Source Files\games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\funces\Funces.h">
+      <Filter>Source Files\games\funces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\kotopoza\Kotopoza.h">
+      <Filter>Source Files\games\kotopoza</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\Photobooth.h">
+      <Filter>Source Files\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\buttons\IButton.h">
+      <Filter>Source Files\buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\buttons\Button.h">
+      <Filter>Source Files\buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\buttons\MenuButton.h">
+      <Filter>Source Files\buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\Preloader.h">
+      <Filter>Source Files\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\preloader.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\resources\cinder_app_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

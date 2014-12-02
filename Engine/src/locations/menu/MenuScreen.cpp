@@ -1,10 +1,20 @@
 #include "MenuScreen.h"
 
-MenuScreen::MenuScreen(vector<int> gameIDs, Graphics::OneBlockTexDictionary* dic)
+MenuScreen::MenuScreen(vector<int> gameIDs)
 {	
-	console()<<"background width::  "<< dic->find("background")->second.tex.getWidth()<<endl;
-	createMenuBtns(gameIDs);
-	mouseListener = getWindow()->getSignalMouseUp().connect( std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1) );
+	setTextures();
+	createMenuBtns(gameIDs);	
+}
+
+void MenuScreen::setTextures()
+{
+	addToDictionary("background" , "menuDesign\\bg.jpg");
+	addToDictionary("background1" , "menuDesign\\title.jpg");
+}
+
+void MenuScreen::init()
+{
+
 }
 
 void MenuScreen::createMenuBtns(vector<int> gameIDs)
@@ -51,7 +61,12 @@ void MenuScreen::draw()
 		(*it)->draw();
 }
 
-void MenuScreen::removeMouseListener()
+void MenuScreen::removeMouseUpListener()
 {
 	mouseListener.disconnect();
+}
+
+void MenuScreen::addMouseUpListener()
+{
+	mouseListener = getWindow()->getSignalMouseUp().connect( std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1) );
 }

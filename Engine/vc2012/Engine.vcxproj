@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -59,6 +59,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
@@ -107,33 +108,44 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\app\Application.cpp" />
+    <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
+    <ClCompile Include="..\src\games\funces\Funces.cpp" />
+    <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp" />
-    <ClCompile Include="..\src\locations\appstates\ChooseGameScreen.cpp" />
-    <ClCompile Include="..\src\locations\appstates\ConfigurationGameScreen.cpp" />
-    <ClCompile Include="..\src\locations\appstates\PlayingGameScreen.cpp" />
     <ClCompile Include="..\src\locations\engine\Location.cpp" />
     <ClCompile Include="..\src\locations\engine\LocationEngine.cpp" />
     <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
+    <ClCompile Include="..\src\locations\settings\SettingsScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\app\Application.h" />
+    <ClInclude Include="..\src\app\ApplicationView.h" />
+    <ClInclude Include="..\src\buttons\Button.h" />
+    <ClInclude Include="..\src\buttons\IButton.h" />
+    <ClInclude Include="..\src\buttons\MenuButton.h" />
     <ClInclude Include="..\src\config\Config.h" />
+    <ClInclude Include="..\src\controller\Controller.h" />
+    <ClInclude Include="..\src\games\funces\Funces.h" />
+    <ClInclude Include="..\src\games\IGame.h" />
+    <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
+    <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h" />
-    <ClInclude Include="..\src\locations\appstates\ChooseGameScreen.h" />
-    <ClInclude Include="..\src\locations\appstates\ConfigurationGameScreen.h" />
-    <ClInclude Include="..\src\locations\appstates\PlayingGameScreen.h" />
-    <ClInclude Include="..\src\locations\engine\Drawable.h" />
+    <ClInclude Include="..\src\locations\engine\IDrawable.h" />
     <ClInclude Include="..\src\locations\engine\Location.h" />
     <ClInclude Include="..\src\locations\engine\LocationEngine.h" />
     <ClInclude Include="..\src\locations\game\GameScreen.h" />
-    <ClInclude Include="..\src\locations\menu\MenuButton.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
+    <ClInclude Include="..\src\locations\Preloader.h" />
+    <ClInclude Include="..\src\locations\settings\SettingsScreen.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\cinder_app_icon.ico" />
+    <Image Include="..\resources\preloader.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
