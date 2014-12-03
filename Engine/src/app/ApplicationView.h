@@ -1,13 +1,12 @@
 #pragma once
 #include "cinder/app/AppNative.h"
 #include "ApplicationModel.h"
-#include "MenuButton.h"
 #include "MenuScreen.h"
 #include "GameScreen.h"
 #include "SettingsScreen.h"
-#include "Graphics.h"
 #include "IDrawable.h"
 #include "Preloader.h"
+#include "ScreenSaver.h"
 
 using namespace std;
 using namespace ci;
@@ -17,42 +16,23 @@ using namespace ci::signals;
 class ApplicationView
 {
 public:
-	enum states
-	{
-		MENU,
-		SETTINGS,
-		GAME
-	};	
 	ApplicationView();
 
-	void init(MenuScreen* menu, SettingsScreen* settings);
+	void init(ScreenSaver* screenSaver, MenuScreen* menu, SettingsScreen* settings);
 	void draw();
-	void startGame(GameScreen * game);
-	void startMenu();
-	void startSettings();
-	void setPreloading(bool value);
+	void startLocation(IDrawable* screen);
 
-private:
-	connection appUpdateSignal;	
+private:	
 	ApplicationModel *model;
-
-	void setCurrentState(int value);
-	void setNextState(int value);
-
-	void update();
-	void (ApplicationView::* drawApp)();	
-
-	void clearButtonVector();
-
-	
-	void startSettingsHandler();
-
-	bool preloading;
 
 	IDrawable *location;
 	MenuScreen* menu;
 	SettingsScreen* settings;
 	GameScreen* game;
-
+	ScreenSaver* screenSaver;
 	Preloader* preloader;
+
+	connection appUpdateSignal;	
+
+	void update();
 };

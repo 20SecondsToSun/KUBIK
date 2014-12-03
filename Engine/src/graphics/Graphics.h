@@ -6,6 +6,7 @@
 #include <boost/algorithm/string.hpp>
 #include "TextureManager.h"
 #include "IDrawable.h"
+#include "ServiceMessage.h"
 
 using namespace std;
 using namespace ci;
@@ -44,7 +45,7 @@ public:
 		completeHandler = handler;
 	}
 
-	void addErrorListener(const std::function<void(void)>& handler)
+	void addErrorListener(const std::function<void(ServiceMessage)>& handler)
 	{
 		errorHandler = handler;
 	}
@@ -80,6 +81,17 @@ private:
 			if ((*it)->isLoading == false)
 			{
 				string url = getFullTexturePath((*it)->path);
+
+				if(url == "")
+				{
+					ServiceMessage msg(101);
+					errorHandler(msg);
+
+					loadingSignal.disconnect();
+					textures.clear();
+					//ph::clearTexture();
+					break;
+				}
 			
 				if(!ph::isTextureLoaded(url))
 				{
@@ -87,12 +99,13 @@ private:
 				}
 				else if (loadingCounter > 0)
 				{
+
 					(*it)->tex = ph::fetchTexture(url);
 					(*it)->isLoading = true;
 					
 					if (--loadingCounter == 0)
 					{
-						completeHandler();						
+						completeHandler();
 						loadingSignal.disconnect();
 						textures.clear();
 						ph::clearTexture();
@@ -104,12 +117,12 @@ private:
 	}
 
 	string getFullTexturePath(string url)
-	{
+	{	
 		return getAssetPath(url).string();
 	}	
 
 	std::function<void()> completeHandler;
-	std::function<void()> errorHandler;
+	std::function<void(ServiceMessage)> errorHandler;
 
 	int loadingCounter;
 

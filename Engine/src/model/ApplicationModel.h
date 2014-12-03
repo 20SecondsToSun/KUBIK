@@ -77,13 +77,40 @@ public:
 	void setCurrentGame(int id)
 	{
 		currentGame =  id;
-	}	
+	}
 
+	bool checkIfGameIdPurchased(int id)
+	{
+		for(auto it = gameIDsPurchased.begin(); it != gameIDsPurchased.end(); ++it)
+		{
+			if (*it == id)
+				return true;
+		}
+
+		return false;
+	}
+
+	bool onlyOneGameOn()
+	{
+		return gameIDsTurnOn.size() == 1;
+	}
+
+	void setScreenSaverExist(bool value)
+	{
+		screenSaverExist =  value;
+	}
+
+	bool getScreenSaverExist()
+	{
+		return screenSaverExist;
+	}
+	
 private:
 	string userID;
 	int standID;
 	int defaultGameID;
 	bool netConnection;
+	bool screenSaverExist;
 
 	int currentGame;
 

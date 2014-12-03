@@ -10,7 +10,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
 
-class Preloader
+class Preloader:public IDrawable
 {
 public:
 	Preloader(Vec2f position)
@@ -28,6 +28,16 @@ public:
 		gl::translate( -0.5f * Vec2f(151.0f, 151.0f ) );
 		gl::draw(tex);
 		gl::popMatrices();
+	}
+
+	void setPosition(Vec2f position)
+	{
+		this->position = position;
+	}
+
+	void init()
+	{
+
 	}
 
 private:

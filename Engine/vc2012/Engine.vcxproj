@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\video;..\src\locations\service;..\src\tools</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -65,7 +65,7 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -113,11 +113,11 @@
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp" />
-    <ClCompile Include="..\src\locations\engine\Location.cpp" />
-    <ClCompile Include="..\src\locations\engine\LocationEngine.cpp" />
     <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\SettingsScreen.cpp" />
+    <ClCompile Include="..\src\locations\video\ScreenSaver.cpp" />
+    <ClCompile Include="..\src\tools\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
@@ -134,13 +134,15 @@
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h" />
     <ClInclude Include="..\src\locations\engine\IDrawable.h" />
-    <ClInclude Include="..\src\locations\engine\Location.h" />
-    <ClInclude Include="..\src\locations\engine\LocationEngine.h" />
     <ClInclude Include="..\src\locations\game\GameScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
+    <ClInclude Include="..\src\locations\service\ServicePopup.h" />
     <ClInclude Include="..\src\locations\settings\SettingsScreen.h" />
+    <ClInclude Include="..\src\locations\video\ScreenSaver.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
+    <ClInclude Include="..\src\model\ServiceMessage.h" />
+    <ClInclude Include="..\src\tools\Utils.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

@@ -115,7 +115,7 @@ void TextureManager::store(const string &url, gl::Texture texture)
 gl::Texture TextureManager::fetch(const string &url, gl::Texture::Format fmt)
 {
 	std::size_t hashedUrl = hash(url);
-
+	
 	// check if surface has loaded and convert it into texture
 	mSurfaceMutex.lock();
 	if(mSurfaces.find(url) != mSurfaces.end()) {

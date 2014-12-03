@@ -1,10 +1,8 @@
 #pragma once
 #include "cinder/app/AppNative.h"
-#include "ApplicationModel.h"
 #include "MenuButton.h"
-#include "Graphics.h"
+#include "Button.h"
 #include "IDrawable.h"
-
 
 using namespace std;
 using namespace ci;
@@ -14,20 +12,17 @@ using namespace ci::signals;
 class MenuScreen:public IDrawable
 {
 public:
-	signal<void(int)> startGameSignal;
-	
 	MenuScreen(vector<int> gameIDs);
+
+	signal<void(int)> startGameSignal;
+	signal<void(void)> startSettingsSignal;
+	signal<void(void)> startVideoSignal;
+	
 	void draw();	
-
-	void removeMouseUpListener();
-	void addMouseUpListener();
-
 	void init();
 
-	void trace()
-	{
-		console()<<designTexures["background"]->isLoading<<"  "<<designTexures["background"]->path<<"  "<<designTexures["background"]->tex<<endl;
-	}
+	void removeMouseUpListener();
+	void addMouseUpListener();	
 
 private:
 	vector<MenuButton *> menuBtns;
@@ -36,9 +31,14 @@ private:
 	connection mouseListener;	
 
 	void mouseUpListener(MenuButton& button);
+	void settingsMouseUpListener(Button& button);
+	void videoMouseUpListener(Button& button);
+
 	void createMenuBtns(vector<int> gameIDs);
 	void clearButtonVector();
 	void mouseUp( MouseEvent &event);
 	void update();
 	void setTextures();
+
+	Button *settingsButton, *videoButton;
 };

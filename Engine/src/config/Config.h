@@ -4,6 +4,7 @@
 #include "cinder/Json.h"
 
 #include "ApplicationModel.h"
+#include "ServiceMessage.h"
 
 using namespace std;
 using namespace ci;
@@ -53,7 +54,8 @@ public:
 		}
 		catch(...)
 		{
-			errorHandler();
+			ServiceMessage msg(100);
+			errorHandler(msg);
 			return;
 		}
 
@@ -66,14 +68,14 @@ public:
 		completeHandler = handler;
 	}
 
-	void addErrorListener(const std::function<void(void)>& handler)
+	void addErrorListener(const std::function<void(ServiceMessage)>& handler)
 	{
 		errorHandler = handler;
 	}
 
 private:
 	std::function<void(void)> completeHandler;
-	std::function<void(void)> errorHandler;
+	std::function<void(ServiceMessage)> errorHandler;
 
 	fs::path getConfigPath()
 	{

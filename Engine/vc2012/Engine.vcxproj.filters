@@ -82,6 +82,15 @@
     <Filter Include="Source Files\buttons">
       <UniqueIdentifier>{bc8848ac-328e-4e56-841c-d46d9ff8fb72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\video">
+      <UniqueIdentifier>{b791b344-b1d4-42f4-9ab6-4ff16c26567b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\service">
+      <UniqueIdentifier>{1d08bf38-0793-4149-8935-080445b43aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tools">
+      <UniqueIdentifier>{07cb0813-4ff6-43c4-99af-e144b8d20eb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -93,12 +102,6 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\locations\engine\Location.cpp">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\locations\engine\LocationEngine.cpp">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp">
       <Filter>Source Files\graphics\texmanager</Filter>
     </ClCompile>
@@ -120,16 +123,16 @@
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp">
       <Filter>Source Files\games\photobooth</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\locations\video\ScreenSaver.cpp">
+      <Filter>Source Files\locations\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\Utils.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\engine\Location.h">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\engine\LocationEngine.h">
-      <Filter>Source Files\locations\engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\Config.h">
       <Filter>Source Files\config</Filter>
@@ -187,6 +190,18 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\video\ScreenSaver.h">
+      <Filter>Source Files\locations\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\service\ServicePopup.h">
+      <Filter>Source Files\locations\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\model\ServiceMessage.h">
+      <Filter>Source Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\Utils.h">
+      <Filter>Source Files\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

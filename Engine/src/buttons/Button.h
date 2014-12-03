@@ -17,12 +17,12 @@ public:
 	ButtonSignal mouseUpSignal;
 
 	Button(Rectf rectf):IButton(rectf)
-	{		
+	{
 	
 	}
 
 	Button(ci::gl::Texture tex, ci::Vec2f pos):IButton(tex, pos)
-	{		
+	{
 	
 	}
 
@@ -31,5 +31,4 @@ public:
 		if(buttonArea.contains(vec))
 			mouseUpSignal(*this);
 	}
-
 };

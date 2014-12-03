@@ -2,6 +2,7 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
 
 using namespace std;
 using namespace ci;
@@ -17,7 +18,7 @@ public:
 		isTexture = false;
 	}
 
-	IButton(ci::gl::Texture tex, ci::Vec2f shift)
+	IButton(Texture tex, Vec2f shift)
 	{
 		this->tex = tex;
 		this->shift = shift;
@@ -46,5 +47,4 @@ protected:
 	{
 		buttonArea =  rectf;
 	}
-
 };

@@ -35,6 +35,13 @@ void MenuScreen::createMenuBtns(vector<int> gameIDs)
 		button->mouseUpSignal.connect(bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
 		menuBtns.push_back(button);
 	}
+
+	settingsButton = new Button(Rectf(50.0f, 50.0f, 150.0f, 150.0f));	
+	settingsButton->mouseUpSignal.connect(bind(&MenuScreen::settingsMouseUpListener, this, std::placeholders::_1));
+
+	videoButton = new Button(Rectf(200.0f, 50.0f, 300.0f, 150.0f));	
+	videoButton->mouseUpSignal.connect(bind(&MenuScreen::videoMouseUpListener, this, std::placeholders::_1));
+
 }
 
 void MenuScreen::clearButtonVector()
@@ -49,16 +56,32 @@ void MenuScreen::mouseUpListener(MenuButton& button )
 	startGameSignal(button.getGameId());
 }
 
+void MenuScreen::settingsMouseUpListener(Button& button )
+{
+	startSettingsSignal();
+}
+
+void MenuScreen::videoMouseUpListener(Button& button )
+{
+	startVideoSignal();
+}
+
 void MenuScreen::mouseUp( MouseEvent &event)
 {	
 	for(auto it = menuBtns.begin(); it != menuBtns.end(); ++it)
 		(*it)->mouseUpHandler(event.getPos());
+
+	settingsButton->mouseUpHandler(event.getPos());
+	videoButton->mouseUpHandler(event.getPos());
 }
 
 void MenuScreen::draw()
 {
 	for(auto it = menuBtns.begin(); it != menuBtns.end(); ++it)
 		(*it)->draw();
+
+	settingsButton->draw();
+	videoButton->draw();
 }
 
 void MenuScreen::removeMouseUpListener()

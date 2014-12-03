@@ -39,4 +39,9 @@ public:
 	{	
 		return designTexures;
 	}
+
+	void trace()
+	{
+
+	}
 };

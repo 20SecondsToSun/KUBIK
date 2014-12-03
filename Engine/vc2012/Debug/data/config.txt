@@ -3,7 +3,7 @@
    "defaultGameID" : 1,   
    "netConnection": true,
    "userID": "1fggh",     
-   "gamesAvailable" : [1, 2, 3, 4],
-   "gamesPurchased" : [1, 3, 4],
-   "gamesTurnOn"    : [1,3,2]
+   "gamesAvailable" : [1, 2, 3],
+   "gamesPurchased" : [1, 2],
+   "gamesTurnOn"    : [1, 2]
 }

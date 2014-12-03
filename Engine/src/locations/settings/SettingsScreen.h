@@ -18,12 +18,16 @@ public:
 	SettingsScreen();
 	void draw();	
 	void init();
-	void trace()
-	{
-		console()<<designTexures["background"]->isLoading<<"  "<<designTexures["background"]->path<<"  "<<designTexures["background"]->tex<<endl;
-	}
+
+	signal<void(void)> closeSettingsSignal;
+
+	void addMouseUpListener();
+	void removeMouseUpListener();
+
+	connection mouseUpListener;
 
 private:
 	void update();
 	void setTextures();
+	void mouseUp(MouseEvent &event);
 };
