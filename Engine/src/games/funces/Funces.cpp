@@ -31,12 +31,17 @@ void Funces::setTextures()
 	addToDictionary("img3", "gamesDesign\\funces\\3.jpg");
 }
 
-void Funces::init()
+void Funces::create()
 {
 	closeImg = designTexures["closeImg"]->tex;
 	console()<<"::funces createTextures::  "<<closeImg<<endl;
-	closeBtn = new Button(closeImg, Vec2f(100,100));		
+	closeBtn = new Button(closeImg, Vec2f(getWindowWidth() - 100, 100));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
+}
+
+void Funces::init()
+{
+
 }
 
 void Funces::mouseUp( MouseEvent &event)

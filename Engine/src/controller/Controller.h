@@ -23,7 +23,7 @@ public:
 
 	void initLoad()
 	{
-		preloader   = new Preloader(Vec2f(600.0f, 300.0f));
+		preloader   = new Preloader();
 		servicePopup= new ServicePopup();
 		view->startLocation(preloader);
 
@@ -33,8 +33,9 @@ public:
 	}
 
 	template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 
-	{
-		if (!sig.num_slots()) sig.connect(std::forward<F>(f));
+	{		
+		if (!sig.num_slots()) 
+			sig.connect(std::forward<F>(f));
 	}
 
 private:
@@ -42,16 +43,16 @@ private:
 	ApplicationModel *model;
 	ApplicationView	 *view;
 
-	MenuScreen *menu;
-	SettingsScreen *settings;
-	GameScreen *game;
-	ScreenSaver *screenSaver;
-	Preloader *preloader;
-	ServicePopup *servicePopup;
+	MenuScreen		*menu;
+	SettingsScreen  *settings;
+	GameScreen		*game;
+	ScreenSaver		*screenSaver;
+	Preloader		*preloader;
+	ServicePopup	*servicePopup;
 
 	void configLoadingCompleteHandler()
 	{
-		console()<<"config complete handler"<<endl;
+		console()<<"Config Complete Handler"<<endl;
 
 		menu        = new MenuScreen(model->getGameIDsTurnOn());
 		settings    = new SettingsScreen();	
@@ -67,33 +68,43 @@ private:
 			graphics().addErrorListener(bind(&Controller::allAppGraphicsLoadingErrorHandler, this, std::placeholders::_1));		
 			graphics().load();
 		}
-	}		
+	}
 
 	void allAppGraphicsLoadingCompleteHandler()
 	{
 		console()<<"Graphics all Loaded::"<<endl;
 
 		graphics().removeCompleteListener();
-		graphics().removeErrorListener();
+		graphics().removeErrorListener();	
 
-		view->init(screenSaver, menu, settings);
-		game->init();
-
-		screenSaver->addCompleteListener(bind(&Controller::completeScreenSaverHandler, this));
-		screenSaver->addErrorListener(bind(&Controller::errorScreenSaverHandler, this));
+		screenSaver->addCompleteListener(bind(&Controller::completeScreenSaverLoadHandler, this));
+		screenSaver->addErrorListener(bind(&Controller::errorScreenSaverLoadHandler, this));
 		screenSaver->load();		
 	}	
+	
 
-	void completeScreenSaverHandler()
+	////////////////////////////////////////////////////////////////////////////
+	//
+	//				SCREEN SAVER
+	//
+	////////////////////////////////////////////////////////////////////////////
+
+	void completeScreenSaverLoadHandler()
 	{
 		model->setScreenSaverExist(true);
 		screenSaver->removeCompleteListener();
-		screenSaver->removeErrorListener();		
+		screenSaver->removeErrorListener();	
+
+		view->init(screenSaver, menu, settings);
+		createGame();
+
 		startScreenSaver();	
-	}
+	}	
 
 	void startScreenSaver()
 	{	
+		console()<<"startScreenSaver::  "<<endl;		
+
 		screenSaver->play();
 		screenSaver->addMouseUpListener();
 		connect_once(screenSaver->closeVideoSignal, bind(&Controller::closeScreenSaverHandler, this));
@@ -107,21 +118,40 @@ private:
 		startMenuScreen();
 	}
 
-	void errorScreenSaverHandler()
+	void errorScreenSaverLoadHandler()
 	{		
 		model->setScreenSaverExist(false);
 		screenSaver->removeCompleteListener();
 		screenSaver->removeErrorListener();
 		screenSaver->removeMouseUpListener();
 
+		view->init(screenSaver, menu, settings);
+		createGame();
+
 		startMenuScreen();
 	}
+
+	void startScreenSaverHandler()
+	{
+		if(model->getScreenSaverExist())
+		{
+			menu->removeMouseUpListener();	
+			startScreenSaver();
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+	//
+	//					MENU SCREEN
+	//
+	////////////////////////////////////////////////////////////////////////////
 
 	void startMenuScreen()
 	{
 		if(model->onlyOneGameOn())
 		{
-			startOneGameMode();
+			createGame();
+			startGame();
 		}
 		else
 		{
@@ -129,22 +159,21 @@ private:
 		}
 	}
 
-	void startOneGameMode()
-	{		
-		view->startLocation(game);
-		game->addMouseUpListener();
-	}
-
 	void startMultiplyGameMode()
 	{
 		connect_once(menu->startGameSignal,		bind(&Controller::startGameHandler, this, std::placeholders::_1));
 		connect_once(menu->startSettingsSignal, bind(&Controller::startSettingsHandler, this));
-		connect_once(menu->startVideoSignal,	bind(&Controller::startVideoHandler, this));	
-		connect_once(game->closeGameSignal,		bind(&Controller::closeGameHandler, this));
+		connect_once(menu->startVideoSignal,	bind(&Controller::startScreenSaverHandler, this));		
 
 		menu->addMouseUpListener();	
 		view->startLocation(menu);
 	}
+
+	////////////////////////////////////////////////////////////////////////////
+	//
+	//					SETTINGS SCREEN
+	//
+	////////////////////////////////////////////////////////////////////////////
 
 	void startSettingsHandler()
 	{		
@@ -154,70 +183,58 @@ private:
 
 	void startSettingsScreen()
 	{
-		console()<<"startSettingsScreen::  "<<endl;
-		settings->addMouseUpListener();
-		connect_once(settings->closeSettingsSignal, bind(&Controller::closeSettingsHandler, this));
+		console()<<"Start Settings Screen :::::"<<endl;
+		connect_once(settings->closeSettingsSignal, bind(&Controller::closeSettingsHandler, this));			
+		settings->addMouseUpListener();		
 		view->startLocation(settings);
 	}
 
 	void closeSettingsHandler()
 	{
-		console()<<"closeSettingsScreen::  "<<endl;
+		console()<<"Close Settings Screen :::::"<<endl;
+		settings->closeSettingsSignal.disconnect_all_slots();
 		settings->removeMouseUpListener();
 		startMenuScreen();
 	}
 
-	void startVideoHandler()
-	{
-		if(model->getScreenSaverExist())
-		{
-			console()<<"startVideo::  "<<endl;
-			menu->removeMouseUpListener();	
-			startScreenSaver();
-		}
-	}
-
-	void allAppGraphicsLoadingErrorHandler(ServiceMessage msg)
-	{	
-		servicePopup->setMessage(msg);
-		view->startLocation(servicePopup);
-	}
+	////////////////////////////////////////////////////////////////////////////
+	//
+	//					GAME SCREEN
+	//
+	////////////////////////////////////////////////////////////////////////////	
 
 	void Controller::startGameHandler(int gameId)
 	{
-		console()<<"game id::  "<<gameId<<endl;
+		console()<<"game id:: "<<gameId<<endl;
 		menu->removeMouseUpListener();	
 
 		if(model->isGameCurrent(gameId))
 		{
-			console()<<"::load game::  "<<endl;
-			view->startLocation(game);
-			game->addMouseUpListener();
+			console()<<"::load game::"<<endl;
+			initGame();
+			startGame();
+		}
+		else if(createGame(gameId))
+		{
+			console()<<"start!!! "<<endl;
+			view->startLocation(preloader);	
+			model->setCurrentGame(gameId);
+
+			graphics().setLoadingTextures(game->getTextures());
+			graphics().addCompleteListener(bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
+			graphics().addErrorListener(bind(&Controller::gameGraphicsLoadingErrorHandler, this, std::placeholders::_1));
+			graphics().load();
 		}
 		else
 		{
-			console()<<"::create new game::  "<<endl;	
-
-			if(createGame(gameId))
-			{
-				console()<<"start!!! "<<endl;
-				view->startLocation(preloader);	
-				model->setCurrentGame(gameId);
-
-				graphics().setLoadingTextures(game->getTextures());
-				graphics().addCompleteListener(bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
-				graphics().addErrorListener(bind(&Controller::gameGraphicsLoadingErrorHandler, this, std::placeholders::_1));
-				graphics().load();
-			}
-			else
-			{
-				menu->addMouseUpListener();	
-			}
-		}
-	}
+			menu->addMouseUpListener();	
+		}		
+	}		
 
 	bool createGame(int gameId)
 	{
+		console()<<"::create new game::"<<endl;	
+
 		if(model->checkIfGameIdPurchased(gameId))
 		{
 			clearPreviousGame(model->getCurrentGame());
@@ -225,14 +242,12 @@ private:
 			return true;
 		}
 		else
-			showServicePopup();
+		{
+			ServiceMessage msg(102);
+			noSuchGameExist(msg);
+		}
 
 		return false;
-	}	
-
-	void showServicePopup()
-	{
-		console()<<" no such a game "<<endl;
 	}
 
 	void closeGameHandler()
@@ -256,22 +271,60 @@ private:
 	{
 		graphics().removeCompleteListener();
 		graphics().removeErrorListener();
+		
+		createGame();
+		startGame();	
+	}
 
-		game->closeGameSignal.connect(bind(&Controller::closeGameHandler, this));
+	void createGame()
+	{
+		game->create();
+		game->init();
+	}
+
+	void initGame()
+	{
+		game->init();
+	}
+
+	void startGame()
+	{		
 		game->addMouseUpListener();
-		game->init();		
-		view->startLocation(game);		
+		view->startLocation(game);
+		connect_once(game->closeGameSignal,	bind(&Controller::closeGameHandler, this));
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+	//
+	//					SERVICE POPUP SCREEN
+	//
+	////////////////////////////////////////////////////////////////////////////
+
+	void noSuchGameExist(ServiceMessage msg)
+	{
+		servecePopupShow(msg);
+	}	
+
+	void allAppGraphicsLoadingErrorHandler(ServiceMessage msg)
+	{	
+		servecePopupShow(msg);
 	}
 
 	void gameGraphicsLoadingErrorHandler(ServiceMessage msg)
 	{	
-		servicePopup->setMessage(msg);
-		view->startLocation(servicePopup);
+		servecePopupShow(msg);
 	}
 
 	void configLoadingErrorHandler(ServiceMessage msg)
 	{	
+		servecePopupShow(msg);
+	}
+
+	void servecePopupShow(ServiceMessage msg)
+	{
 		servicePopup->setMessage(msg);
 		view->startLocation(servicePopup);
 	}
+
+	boost::signals2::connection closeSettingsCon;//, startGameCon, startSettingsCon, startVideoCon;
 };

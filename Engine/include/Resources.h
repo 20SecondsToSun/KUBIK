@@ -5,3 +5,5 @@
 
 
 
+//#define RES_CUSTOM_FONT		CINDER_RESOURCE( ../resources/, Helvetica Neue.ttf, 3, TTF )
+

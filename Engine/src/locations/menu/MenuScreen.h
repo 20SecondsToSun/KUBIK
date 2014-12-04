@@ -31,8 +31,8 @@ private:
 	connection mouseListener;	
 
 	void mouseUpListener(MenuButton& button);
-	void settingsMouseUpListener(Button& button);
-	void videoMouseUpListener(Button& button);
+	void settingsMouseUpListener(ButtonText& button);
+	void videoMouseUpListener(ButtonText& button);
 
 	void createMenuBtns(vector<int> gameIDs);
 	void clearButtonVector();
@@ -40,5 +40,7 @@ private:
 	void update();
 	void setTextures();
 
-	Button *settingsButton, *videoButton;
+	ButtonText *settingsButton, *videoButton;
+
+	ci::Font font;
 };

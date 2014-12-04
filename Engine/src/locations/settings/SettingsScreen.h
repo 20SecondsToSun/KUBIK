@@ -30,4 +30,6 @@ private:
 	void update();
 	void setTextures();
 	void mouseUp(MouseEvent &event);
+
+	Font font;
 };

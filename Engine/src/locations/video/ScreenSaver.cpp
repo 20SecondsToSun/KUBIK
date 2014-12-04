@@ -2,56 +2,76 @@
 
 void ScreenSaver::play()
 {
-	movie.setLoop( true, false );
-	movie.play();
+	if(mode == VIDEO_SS)
+	{
+		movie.setLoop( true, false );
+		movie.play();
+	}
 }
 
 void ScreenSaver::stop()
 {
-	movie.stop();	
+	if(mode == VIDEO_SS)
+		movie.stop();	
 }
 
 void ScreenSaver::load()
 {
-	vector<fs::path> videos;
-	fs::path basePath = getAppPath()/"data"/"video";
+	vector<ssFile> videos;
+	fs::path basePath = getAppPath()/"data"/"screensaver";
 
 	for (fs::directory_iterator it(basePath); it != fs::directory_iterator(); ++it)
 	{
 		if (fs::is_regular_file(*it))
 		{
-			if (it->path().extension() == ".mov") 	
+			if (it->path().extension() == ".mov" ||
+				it->path().extension() == ".jpg" || 
+				it->path().extension() == ".jpeg"||
+				it->path().extension() == ".png") 	
 			{
 				fs::path filePath = basePath / it->path().filename().string();
+				string ext = it->path().extension().string();
 
 				if(fileSizeNotTooBig(filePath))
-					videos.push_back(filePath);
+				{
+					ssFile ss;
+					ss.ext = ext;
+					ss.path = filePath;
+					videos.push_back(ss);
+				}
 			}
 		}
 	}
 
 	if(!videos.empty())
 	{
-		loadingStatus = VIDEO_LOADING;
-		loadindUpdateConnection = App::get()->getSignalUpdate().connect( bind( &ScreenSaver::update, this ));	
-		loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&ScreenSaver::loadMovieFile, this,  videos[0] ));
+		loadingStatus = SCREEN_SAVER_LOADING;
+		loadindUpdateConnection = App::get()->getSignalUpdate().connect(bind(&ScreenSaver::update, this));
+
+		if (videos[0].ext == ".mov")
+		{
+			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&ScreenSaver::loadMovieFile, this,  videos[0].path));
+		}
+		else
+		{
+			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&ScreenSaver::loadImageFile, this,  videos[0].path));
+		}
 	}
 	else
 	{
-		// no screensaver
 		errorHandler();
 	}
 }
 
 void ScreenSaver::update()
 {
-	if(loadingStatus == VIDEO_LOADED)
+	if(loadingStatus == SCREEN_SAVER_LOADED)
 	{
 		loadingThread->join();
 		loadindUpdateConnection.disconnect();
 		completeHandler();
 	}
-	else if(loadingStatus == VIDEO_LOADING_ERROR)
+	else if(loadingStatus == SCREEN_SAVER_LOADING_ERROR)
 	{
 		loadingThread->join();
 		loadindUpdateConnection.disconnect();
@@ -59,19 +79,31 @@ void ScreenSaver::update()
 	}
 }
 
-void ScreenSaver::loadMovieFileThread()
+void ScreenSaver::loadImageFile( const fs::path &imagePath )
 {
-
+	try 
+	{
+		console()<<"try image loaded  "<<imagePath<<endl;
+		image = ci::Surface(loadImage( ci::loadFile( imagePath ) )); 
+		loadingStatus = SCREEN_SAVER_LOADED;
+		mode = IMAGE_SS;
+		console()<<"screen saver image loaded"<<endl;
+	}
+	catch( ... ) 
+	{
+		console() << "Unable to load the image." << std::endl;
+		loadingStatus = SCREEN_SAVER_LOADING_ERROR;
+	}
 }
-
 
 void ScreenSaver::loadMovieFile( const fs::path &moviePath )
 {	
 	try 
 	{
-		movie = qtime::MovieGl( moviePath );
-		loadingStatus = VIDEO_LOADED;
-		console()<<"loaded"<<endl;
+		movie = qtime::MovieGl( moviePath);
+		loadingStatus = SCREEN_SAVER_LOADED;
+		mode = VIDEO_SS;
+		console()<<"screen saver video loaded"<<endl;
 		//completeHandler();
 
 		//console() << "Dimensions:" << movie.getWidth() << " x " << movie.getHeight() << std::endl;
@@ -82,28 +114,22 @@ void ScreenSaver::loadMovieFile( const fs::path &moviePath )
 	catch( ... ) 
 	{
 		console() << "Unable to load the movie." << std::endl;
-		loadingStatus = VIDEO_LOADING_ERROR;
-		//errorHandler();
-		return;
+		loadingStatus = SCREEN_SAVER_LOADING_ERROR;
 	}
-
-	/*try 
-	{
-	movie.setupMonoFft( 8 );
-	}
-	catch( qtime::QuickTimeExcFft & ) {
-	console() << "Unable to setup FFT" << std::endl;
-	}*/		
 }
 
 void ScreenSaver::draw()
 {
 	Texture texture;
-	if(movie)
+	if(mode == VIDEO_SS && movie)
 	{
 		texture = movie.getTexture();
 		if(texture)
 			gl::draw(texture, getWindowBounds());
+	}
+	else if(mode == IMAGE_SS)
+	{
+		gl::draw(image);
 	}
 }
 

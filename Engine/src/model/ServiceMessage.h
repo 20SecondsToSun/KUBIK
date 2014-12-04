@@ -35,6 +35,10 @@ class ServiceMessage
 				text = "Файла не существует";
 			break;
 
+			case 102:
+				text = "Игры с данным id не существует";
+			break;
+
 			default:
 			break;
 		}

@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\video;..\src\locations\service;..\src\tools</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\video;..\src\locations\service;..\src\tools;..\src\games\photobooth\states</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -123,14 +123,23 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\buttons\Button.h" />
+    <ClInclude Include="..\src\buttons\ButtonText.h" />
     <ClInclude Include="..\src\buttons\IButton.h" />
     <ClInclude Include="..\src\buttons\MenuButton.h" />
     <ClInclude Include="..\src\config\Config.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\IGame.h" />
+    <ClInclude Include="..\src\games\ILocation.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoInstruction.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
+    <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h" />
     <ClInclude Include="..\src\locations\engine\IDrawable.h" />
@@ -142,12 +151,19 @@
     <ClInclude Include="..\src\locations\video\ScreenSaver.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
     <ClInclude Include="..\src\model\ServiceMessage.h" />
+    <ClInclude Include="..\src\tools\FileTools.h" />
+    <ClInclude Include="..\src\tools\MathTools.h" />
+    <ClInclude Include="..\src\tools\StringTools.h" />
+    <ClInclude Include="..\src\tools\TextTools.h" />
     <ClInclude Include="..\src\tools\Utils.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\cinder_app_icon.ico" />
     <Image Include="..\resources\preloader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resources\Helvetica Neue.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

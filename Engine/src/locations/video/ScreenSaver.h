@@ -4,6 +4,8 @@
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/qtime/QuickTime.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/ImageIo.h"
 #include "IDrawable.h"
 #include <boost/thread.hpp>
 
@@ -16,6 +18,18 @@ using namespace ci::signals;
 class ScreenSaver: public IDrawable
 {
 public:
+
+	struct ssFile 
+	{
+		fs::path path;
+		string	 ext;
+	};
+
+	enum
+	{
+		IMAGE_SS,
+		VIDEO_SS
+	};
 
 	void init()
 	{
@@ -41,18 +55,23 @@ public:
 
 private:
 
+	static const int MAX_VIDEO_FILE_SIZE = 20000000;
+
 	enum
 	{
-		VIDEO_LOADING,
-		VIDEO_LOADED,
-		VIDEO_LOADING_ERROR
-	}loadingStates;
-
+		SCREEN_SAVER_LOADING,
+		SCREEN_SAVER_LOADED,
+		SCREEN_SAVER_LOADING_ERROR
+	}
+	loadingStates;
+	
 	void loadMovieFile(const fs::path &moviePath);
+	void loadImageFile(const fs::path &imagePath);
 	void mouseUp(MouseEvent &event);
 
 	connection mouseUpListener, loadindUpdateConnection;
 	qtime::MovieGl movie;
+	Surface	image;
 
 	bool fileSizeNotTooBig(fs::path filePath);
 	std::ifstream::pos_type filesize(const char* filename);
@@ -65,6 +84,5 @@ private:
 
 	void update();
 	int loadingStatus;
-
-	static const int MAX_VIDEO_FILE_SIZE = 20000000;
+	int mode;
 };

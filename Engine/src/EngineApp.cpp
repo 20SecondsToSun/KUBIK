@@ -51,11 +51,11 @@ void EngineApp::keyDown( KeyEvent event )
 {
 	switch (event.getCode())
 	{
-	case app::KeyEvent::KEY_ESCAPE:
-		quit();
+		case app::KeyEvent::KEY_ESCAPE:
+			quit();
 		break;
 
-	default:
+		default:
 		break;
 	}
 }
@@ -67,7 +67,7 @@ void EngineApp::update()
 
 void EngineApp::draw()
 {
-	gl::clear( Color::black()); 
+	gl::clear(Color::black()); 
 	view->draw();
 }
 

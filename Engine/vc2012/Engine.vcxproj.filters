@@ -91,6 +91,12 @@
     <Filter Include="Source Files\tools">
       <UniqueIdentifier>{07cb0813-4ff6-43c4-99af-e144b8d20eb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\funces\states">
+      <UniqueIdentifier>{974430f4-a331-451d-94c6-ce0de124a101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states">
+      <UniqueIdentifier>{f13971d4-578f-4646-b025-c16ac4b1bd0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -203,6 +209,45 @@
     <ClInclude Include="..\src\tools\Utils.h">
       <Filter>Source Files\tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\buttons\ButtonText.h">
+      <Filter>Source Files\buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\TextTools.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\MathTools.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\FileTools.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\StringTools.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoInstruction.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\ILocation.h">
+      <Filter>Source Files\games</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -216,5 +261,10 @@
     <Image Include="..\resources\cinder_app_icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resources\Helvetica Neue.ttf">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

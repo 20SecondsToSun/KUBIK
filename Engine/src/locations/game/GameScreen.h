@@ -19,17 +19,17 @@ public:
 	GameScreen(int gameId);	
 	~GameScreen();	
 
-	void draw();
-
 	OneBlockTexDictionary getTextures();
+
+	void draw();
 	void init();
+	void create();
+
 	void closeGameHandler();
 	void addMouseUpListener();
 	void removeMouseUpListener();
 
 private:
-	IGame* currentGame;
-
-	int gameID;
-	
+	shared_ptr<IGame> currentGame;
+	int gameID;	
 };

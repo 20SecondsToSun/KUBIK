@@ -288,16 +288,17 @@ void Utils::writeCrashLog(std::string path)
 
 }
 
-void Utils::textFieldDraw(std::string text,ci::Font* font, Vec2f coords, ColorA color)
+void Utils::textFieldDraw(std::string text,ci::Font *font, Vec2f coords, ColorA color)
 {
 	gl::pushMatrices();
 	gl::translate(coords);
 	ci::TextLayout simple;
-	simple.clear(ColorA(1,1,1,0));
+	//simple.clear(ColorA(1,1,1,0));
 	simple.setFont( *font );
 	simple.setColor(color );
 	simple.addLine(cp1251_to_utf8(text.c_str()));	
-	gl::draw(gl::Texture( simple.render( true, false ) ));
+	gl::Texture render = gl::Texture( simple.render( true, false ) );
+	gl::draw(render);
 	gl::popMatrices();
 	gl::color(ColorA(1, 1, 1, 1));
 

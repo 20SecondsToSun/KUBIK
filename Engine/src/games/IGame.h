@@ -14,6 +14,7 @@ public:
 	~IGame(){};
 	virtual void draw() = 0;
 	virtual void init() = 0;
+	virtual void create() = 0;
 	virtual void addMouseUpListener() = 0;
 	virtual void removeMouseUpListener() = 0;
 	signal<void(void)> closeGameSignal;

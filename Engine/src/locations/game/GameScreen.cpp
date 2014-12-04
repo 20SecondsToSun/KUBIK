@@ -7,10 +7,10 @@ GameScreen::GameScreen(int gameID)
 	switch (gameID)
 	{
 		case 1:
-			currentGame = new Funces();		
+			currentGame = shared_ptr<IGame>(new Funces());		
 		break;
 		case 2:
-			currentGame = new Photobooth();
+			currentGame = shared_ptr<IGame>(new Photobooth());
 		break;
 
 		case 3:
@@ -26,23 +26,6 @@ GameScreen::GameScreen(int gameID)
 GameScreen::~GameScreen()
 {
 	console()<<"game screen destrpy------------------->"<<endl;
-	
-	switch (gameID)
-	{
-		case 1:
-			dynamic_cast<Funces*>(currentGame)->~Funces();
-		break;
-		case 2:
-			dynamic_cast<Photobooth*>(currentGame)->~Photobooth();
-		break;
-
-		case 3:
-			
-		break;
-
-		default:
-		break;
-	}	
 }
 
 void GameScreen::closeGameHandler()
@@ -58,6 +41,11 @@ void GameScreen::draw()
 void GameScreen::init()
 {
 	currentGame->init();
+}
+
+void GameScreen::create()
+{
+	currentGame->create();
 }
 
 OneBlockTexDictionary GameScreen::getTextures()

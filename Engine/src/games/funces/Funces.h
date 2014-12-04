@@ -19,6 +19,7 @@ public:
 
 	void draw();	
 	void init();
+	void create();
 
 	void addMouseUpListener();
 	void removeMouseUpListener();

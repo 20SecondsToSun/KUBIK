@@ -19,6 +19,12 @@ public:
 		tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
 	}
 
+	Preloader()
+	{
+		this->position = Vec2f(getWindowWidth() * 0.5, getWindowHeight() * 0.5);
+		tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
+	}
+
 	void draw()
 	{
 		gl::pushMatrices();

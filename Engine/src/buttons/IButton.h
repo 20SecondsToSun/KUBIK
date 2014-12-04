@@ -14,6 +14,7 @@ class IButton
 public:
 	IButton(Rectf rectf)
 	{
+		this->shift = Vec2f(rectf.x1, rectf.y1);
 		setButtonArea(rectf);	
 		isTexture = false;
 	}

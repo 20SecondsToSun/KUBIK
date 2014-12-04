@@ -1,5 +1,19 @@
-#include "../include/Resources.h"
+#include "resource.h"
 
-1	ICON	"..\\resources\\cinder_app_icon.ico"
-2	IMAGE	"..\\resources\\preloader.png"
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+1                       ICON                    "..\\resources\\cinder_app_icon.ico"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// IMAGE
+//
+
+2                       IMAGE                   "..\\resources\\preloader.png"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Font
+//
+
+3                       FONT                    "..\\resources\\Helvetica Neue.ttf"

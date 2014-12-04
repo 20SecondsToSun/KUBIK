@@ -89,7 +89,7 @@ private:
 
 					loadingSignal.disconnect();
 					textures.clear();
-					//ph::clearTexture();
+					ph::clearTexture();
 					break;
 				}
 			
