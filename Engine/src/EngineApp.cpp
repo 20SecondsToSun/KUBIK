@@ -1,6 +1,5 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
-#include "Config.h"
 #include "Graphics.h"
 #include "ApplicationView.h"
 #include "Controller.h"

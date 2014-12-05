@@ -19,6 +19,11 @@ public:
 
 	}
 
+	void reset()
+	{
+
+	}
+
 	void draw()
 	{
 		gl::color(Color(0, 0.5, 0));

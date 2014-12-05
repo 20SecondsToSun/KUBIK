@@ -2,10 +2,16 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "IModel.h"
+#include "ISettings.h"
+#include "FuncesSettings.h"
+#include "PhotoboothSettings.h"
+#include "Types.h"
 
 using namespace std;
+using namespace kubik;
 
-class ApplicationModel
+class ApplicationModel: public IModel
 {
 public:
 
@@ -104,7 +110,38 @@ public:
 	{
 		return screenSaverExist;
 	}
-	
+
+	ISettings* getGameSettingsById()
+	{
+		ISettings *config;
+
+		switch (currentGame)
+		{
+		case gameId::PHOTOBOOTH:
+			config = photoBoothSettings;
+			break;
+
+		case gameId::FUNCES:
+			config = funcesSettings;
+			break;
+
+		default:
+			break;
+		}
+
+		return config;
+	}
+
+	void setFuncesSettings(FuncesSettings* fs)
+	{
+		funcesSettings =  fs;
+	}
+
+	void setPhotoboothSettings(PhotoboothSettings* phs)
+	{
+		photoBoothSettings =  phs;
+	}
+
 private:
 	string userID;
 	int standID;
@@ -117,4 +154,7 @@ private:
 	vector<int> gameIDsAvailable;
 	vector<int> gameIDsPurchased;
 	vector<int> gameIDsTurnOn;
+
+	FuncesSettings *funcesSettings;
+	PhotoboothSettings *photoBoothSettings;
 };

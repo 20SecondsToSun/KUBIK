@@ -8,6 +8,8 @@
 #include "PhotoInstruction.h"
 #include "PhotoFilter.h"
 #include "PhotoTimer.h"
+#include "PhotoboothSettings.h"
+#include "ISettings.h"
 
 using namespace std;
 using namespace ci;
@@ -17,11 +19,11 @@ class Photobooth:public IGame
 {
 public:	
 	
-	Photobooth();
+	Photobooth(ISettings* config);
 	~Photobooth();
 	void draw();	
 	void init();
-	void create();
+	void reset();
 
 	void addMouseUpListener();
 	void removeMouseUpListener();
@@ -42,9 +44,9 @@ private:
 	shared_ptr<PhotoTimer>	photoTimer;
 
 	list<shared_ptr<ILocation>>  locations;
-//	ILocation* currentLocation;
-
 	list<shared_ptr<ILocation>>::iterator currentLocation;
 
 	void nextLocationHandler();
+
+	PhotoboothSettings* settings;
 };

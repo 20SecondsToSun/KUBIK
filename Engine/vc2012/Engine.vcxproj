@@ -126,7 +126,12 @@
     <ClInclude Include="..\src\buttons\ButtonText.h" />
     <ClInclude Include="..\src\buttons\IButton.h" />
     <ClInclude Include="..\src\buttons\MenuButton.h" />
-    <ClInclude Include="..\src\config\Config.h" />
+    <ClInclude Include="..\src\config\AppConfig.h" />
+    <ClInclude Include="..\src\config\FuncesSettings.h" />
+    <ClInclude Include="..\src\config\GameConfigs.h" />
+    <ClInclude Include="..\src\config\IConfig.h" />
+    <ClInclude Include="..\src\config\ISettings.h" />
+    <ClInclude Include="..\src\config\PhotoboothSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\IGame.h" />
@@ -150,7 +155,10 @@
     <ClInclude Include="..\src\locations\settings\SettingsScreen.h" />
     <ClInclude Include="..\src\locations\video\ScreenSaver.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
+    <ClInclude Include="..\src\model\IModel.h" />
+    <ClInclude Include="..\src\model\PhotoboothModel.h" />
     <ClInclude Include="..\src\model\ServiceMessage.h" />
+    <ClInclude Include="..\src\model\Types.h" />
     <ClInclude Include="..\src\tools\FileTools.h" />
     <ClInclude Include="..\src\tools\MathTools.h" />
     <ClInclude Include="..\src\tools\StringTools.h" />

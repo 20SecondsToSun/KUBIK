@@ -39,6 +39,10 @@ class ServiceMessage
 				text = "Игры с данным id не существует";
 			break;
 
+			case 103:
+				text = "Большой размер файла у заставки (video <= 50мб | image <= 10мб)";
+			break;
+
 			default:
 			break;
 		}

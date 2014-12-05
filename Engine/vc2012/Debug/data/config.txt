@@ -1,9 +1,0 @@
-{
-   "standID" : 1,
-   "defaultGameID" : 1,   
-   "netConnection": true,
-   "userID": "1fggh",     
-   "gamesAvailable" : [1, 2, 3],
-   "gamesPurchased" : [1, 2],
-   "gamesTurnOn"    : [1, 2]
-}

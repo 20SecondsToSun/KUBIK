@@ -1,7 +1,13 @@
 #include "Photobooth.h"
 
-Photobooth::Photobooth()
+Photobooth::Photobooth(ISettings* config)
 {	
+	console()<<"ISettings config::: "<<config<<endl;
+
+	settings = static_cast<PhotoboothSettings*>(config);
+
+	console()<<"PHOTOBOOTH SETTINGS::: "<<settings->getSeconds()<<endl;
+
 	setTextures();	
 }
 
@@ -25,13 +31,15 @@ void Photobooth::removeMouseUpListener()
 
 void Photobooth::setTextures()
 {
-	addToDictionary("img1", "gamesDesign\\photobooth\\1.jpg");
-	addToDictionary("closeImg", "gamesDesign\\photobooth\\close.png");
-	addToDictionary("img3", "gamesDesign\\photobooth\\3.jpg");
+	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
+	string menuPath   = "gamesDesign\\funces\\";	
+	string path = mainFolder + menuPath;
+
+	addToDictionary("closeImg",	path + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
 }
 
-void Photobooth::create()
-{
+void Photobooth::init()
+{	
 	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction());
 	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter());
 	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer());
@@ -40,10 +48,8 @@ void Photobooth::create()
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
 
-	for ( auto it = locations.begin(); it != locations.end(); it++)
-	{
-		(*it)->nextLocationSignal.connect(bind(&Photobooth::nextLocationHandler, this));
-	}
+	for (auto it: locations)	
+		it->nextLocationSignal.connect(bind(&Photobooth::nextLocationHandler, this));
 
 	currentLocation = locations.begin();
 
@@ -52,10 +58,10 @@ void Photobooth::create()
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
 }
 
-void Photobooth::init()
+void Photobooth::reset()
 {
-	for ( auto it = locations.begin(); it != locations.end(); it++)
-		(*it)->init();
+	for (auto it: locations)	
+		it->reset();
 
 	currentLocation = locations.begin();
 }

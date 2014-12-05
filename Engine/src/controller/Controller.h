@@ -7,8 +7,13 @@
 #include "ScreenSaver.h"
 #include "ServicePopup.h"
 #include "ServiceMessage.h"
+#include "Types.h"
+#include "AppConfig.h"
+#include "PhotoboothModel.h"
+#include "GameConfigs.h"
 
 using namespace std;
+using namespace kubik;
 
 class Controller
 {
@@ -25,22 +30,20 @@ public:
 	{
 		preloader   = new Preloader();
 		servicePopup= new ServicePopup();
-		view->startLocation(preloader);
+		view->startLocation(preloader);		
 
-		config().addCompleteListener(bind(&Controller::configLoadingCompleteHandler, this));
-		config().addErrorListener(bind(&Controller::configLoadingErrorHandler, this, std::placeholders::_1));
-		config().load(model);
-	}
-
-	template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 
-	{		
-		if (!sig.num_slots()) 
-			sig.connect(std::forward<F>(f));
+		config.addCompleteListener(bind(&Controller::configLoadingCompleteHandler, this));
+		config.addErrorListener(bind(&Controller::configLoadingErrorHandler, this, std::placeholders::_1));
+		config.load(model);
 	}
 
 private:
 
+	AppConfig	config;
+	GameConfigs gamesConfigs;	
+
 	ApplicationModel *model;
+
 	ApplicationView	 *view;
 
 	MenuScreen		*menu;
@@ -54,7 +57,14 @@ private:
 	{
 		console()<<"Config Complete Handler"<<endl;
 
-		menu        = new MenuScreen(model->getGameIDsTurnOn());
+		gamesConfigs.addCompleteListener(bind(&Controller::allConfigsLoadingCompleteHandler, this));
+		gamesConfigs.addErrorListener(bind(&Controller::allConfigsLoadingErrorHandler, this, std::placeholders::_1));
+		gamesConfigs.load(model);	
+	}
+
+	void allConfigsLoadingCompleteHandler()
+	{
+		menu        = new MenuScreen();
 		settings    = new SettingsScreen();	
 		screenSaver = new ScreenSaver();	
 	
@@ -63,11 +73,17 @@ private:
 			graphics().setLoadingTextures(menu->getTextures());
 			graphics().setLoadingTextures(settings->getTextures());
 			graphics().setLoadingTextures(game->getTextures());
+			graphics().setLoadingTextures(screenSaver->getTextures());
 
 			graphics().addCompleteListener(bind(&Controller::allAppGraphicsLoadingCompleteHandler, this));
 			graphics().addErrorListener(bind(&Controller::allAppGraphicsLoadingErrorHandler, this, std::placeholders::_1));		
-			graphics().load();
+			graphics().load();		
 		}
+	}
+
+	void allConfigsLoadingErrorHandler(ServiceMessage msg)
+	{	
+		servecePopupShow(msg);
 	}
 
 	void allAppGraphicsLoadingCompleteHandler()
@@ -75,31 +91,36 @@ private:
 		console()<<"Graphics all Loaded::"<<endl;
 
 		graphics().removeCompleteListener();
-		graphics().removeErrorListener();	
+		graphics().removeErrorListener();
 
-		screenSaver->addCompleteListener(bind(&Controller::completeScreenSaverLoadHandler, this));
-		screenSaver->addErrorListener(bind(&Controller::errorScreenSaverLoadHandler, this));
-		screenSaver->load();		
-	}	
-	
+		view->init(screenSaver, menu, settings);
+		menu->init(model->getGameIDsTurnOn());
+		settings->init();		
+		game->init();
+
+		bool screenSaverExist  = !screenSaver->isEmpty();
+		model->setScreenSaverExist(screenSaverExist);
+
+		if(screenSaverExist)
+		{
+			screenSaver->init();
+			startScreenSaver();	
+		}
+		else if(screenSaver->isError())
+		{			
+			servecePopupShow(screenSaver->getMessage());
+		}
+		else
+		{
+			startMenuScreen();
+		}	
+	}		
 
 	////////////////////////////////////////////////////////////////////////////
 	//
 	//				SCREEN SAVER
 	//
 	////////////////////////////////////////////////////////////////////////////
-
-	void completeScreenSaverLoadHandler()
-	{
-		model->setScreenSaverExist(true);
-		screenSaver->removeCompleteListener();
-		screenSaver->removeErrorListener();	
-
-		view->init(screenSaver, menu, settings);
-		createGame();
-
-		startScreenSaver();	
-	}	
 
 	void startScreenSaver()
 	{	
@@ -115,19 +136,6 @@ private:
 	{
 		screenSaver->stop();
 		screenSaver->removeMouseUpListener();
-		startMenuScreen();
-	}
-
-	void errorScreenSaverLoadHandler()
-	{		
-		model->setScreenSaverExist(false);
-		screenSaver->removeCompleteListener();
-		screenSaver->removeErrorListener();
-		screenSaver->removeMouseUpListener();
-
-		view->init(screenSaver, menu, settings);
-		createGame();
-
 		startMenuScreen();
 	}
 
@@ -150,7 +158,7 @@ private:
 	{
 		if(model->onlyOneGameOn())
 		{
-			createGame();
+			resetGame();
 			startGame();
 		}
 		else
@@ -211,7 +219,7 @@ private:
 		if(model->isGameCurrent(gameId))
 		{
 			console()<<"::load game::"<<endl;
-			initGame();
+			resetGame();
 			startGame();
 		}
 		else if(createGame(gameId))
@@ -238,7 +246,7 @@ private:
 		if(model->checkIfGameIdPurchased(gameId))
 		{
 			clearPreviousGame(model->getCurrentGame());
-			game = new GameScreen(gameId);
+			game = new GameScreen(gameId, model->getGameSettingsById());
 			return true;
 		}
 		else
@@ -272,19 +280,13 @@ private:
 		graphics().removeCompleteListener();
 		graphics().removeErrorListener();
 		
-		createGame();
+		game->init();
 		startGame();	
-	}
+	}	
 
-	void createGame()
+	void resetGame()
 	{
-		game->create();
-		game->init();
-	}
-
-	void initGame()
-	{
-		game->init();
+		game->reset();
 	}
 
 	void startGame()

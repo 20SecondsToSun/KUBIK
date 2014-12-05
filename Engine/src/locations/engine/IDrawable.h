@@ -2,30 +2,28 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "Types.h"
 
 using namespace std;
+using namespace kubik;
 
-typedef struct __tex
-{
-	std::string path;
-	ci::gl::Texture tex;
-	bool isLoading;
-}TexObject;
-
-typedef map<string, TexObject *> OneBlockTexDictionary;
 
 class IDrawable
 {	
 	
 protected:
-	OneBlockTexDictionary designTexures;
+	Types::OneBlockTexDictionary designTexures;
 
-	void addToDictionary(string key, string path)
+	void addToDictionary(string key, string path, resourceType resType = resourceType::IMAGE, loadingType loadType = loadingType::FULL_PATH, float fontSize = 30)
 	{
-		TexObject *value	= new TexObject();
-		value->path			= path;
-		value->isLoading	= false;
-		value->tex			= ci::gl::Texture();
+		Types::TexObject *value	= new Types::TexObject();
+		value->path				= path;
+		value->isLoading		= false;
+		value->tex				= ci::Surface();
+
+		value->resourceType				= resType;
+		value->loadingType				= loadType;
+		value->fontSize					= fontSize;
 
 		designTexures[key] = value;
 	}
@@ -35,7 +33,7 @@ public:
 	virtual void draw() = 0;
 	virtual void init() = 0;
 
-	OneBlockTexDictionary getTextures()
+	Types::OneBlockTexDictionary getTextures()
 	{	
 		return designTexures;
 	}

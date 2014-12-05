@@ -15,14 +15,21 @@ class ServicePopup:public IDrawable
 public:
 	ServicePopup()
 	{
-		
+		font =  Font(loadFile(getAssetPath("fonts/Helvetica Neue.ttf")), 30);	
 	}
 
 	void draw()
 	{	
 		gl::color(Color::white());
 		gl::drawSolidRect(getWindowBounds());
-		console()<<msg.getMessage()<<endl;
+
+		Texture textTex = textTools().getTextField(msg.getMessage(), &font, ColorA(1,0,0,1));
+		gl::pushMatrices();			
+			float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5;
+			float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5;		
+			gl::translate(shiftX, shiftY);
+			gl::draw(textTex);
+		gl::popMatrices();
 	}	
 
 	void init()
@@ -38,4 +45,5 @@ public:
 
 private:	
 	ServiceMessage msg;
+	Font font;
 };

@@ -6,6 +6,8 @@
 #include "IDrawable.h"
 #include "Funces.h"
 #include "Photobooth.h"
+#include "Types.h"
+#include "ISettings.h"
 
 using namespace std;
 using namespace ci;
@@ -16,14 +18,14 @@ class GameScreen: public IGame
 {
 public:
 	
-	GameScreen(int gameId);	
+	GameScreen(int gameId, ISettings* config);	
 	~GameScreen();	
 
-	OneBlockTexDictionary getTextures();
+	Types::OneBlockTexDictionary getTextures();
 
 	void draw();
 	void init();
-	void create();
+	void reset();
 
 	void closeGameHandler();
 	void addMouseUpListener();

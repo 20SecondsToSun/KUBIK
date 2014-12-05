@@ -9,7 +9,7 @@ SettingsScreen::SettingsScreen()
 
 void SettingsScreen::setTextures()
 {
-	addToDictionary("background" , "settingsDesign\\bg1.png");
+	//addToDictionary("background" , "settingsDesign\\bg1.png");
 }
 
 void SettingsScreen::addMouseUpListener()

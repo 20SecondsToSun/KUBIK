@@ -5,6 +5,7 @@
 #include "Graphics.h"
 #include "IGame.h"
 #include "Button.h"
+#include "ISettings.h"
 
 using namespace std;
 using namespace ci;
@@ -14,12 +15,12 @@ class Funces:public IGame
 {
 public:	
 	
-	Funces();
+	Funces(ISettings* config);
 	~Funces();
 
 	void draw();	
 	void init();
-	void create();
+	void reset();
 
 	void addMouseUpListener();
 	void removeMouseUpListener();

@@ -1,21 +1,24 @@
 #include "GameScreen.h"
 
-GameScreen::GameScreen(int gameID)
+using namespace kubik;
+
+GameScreen::GameScreen(int gameID, ISettings* config)
 {	
 	this->gameID = gameID;
 
 	switch (gameID)
 	{
-		case 1:
-			currentGame = shared_ptr<IGame>(new Funces());		
-		break;
-		case 2:
-			currentGame = shared_ptr<IGame>(new Photobooth());
+		case gameId::FUNCES:
+			currentGame = shared_ptr<IGame>(new Funces(config));		
 		break;
 
-		case 3:
-			//currentGame = new Kotopoza();
+		case gameId::PHOTOBOOTH:
+			currentGame = shared_ptr<IGame>(new Photobooth(config));
 		break;
+
+		//case 3:
+			//currentGame = new Kotopoza();
+		//break;
 
 		default:
 		break;
@@ -43,12 +46,12 @@ void GameScreen::init()
 	currentGame->init();
 }
 
-void GameScreen::create()
+void GameScreen::reset()
 {
-	currentGame->create();
+	currentGame->reset();
 }
 
-OneBlockTexDictionary GameScreen::getTextures()
+Types::OneBlockTexDictionary GameScreen::getTextures()
 {
 	return currentGame->getTextures();
 }

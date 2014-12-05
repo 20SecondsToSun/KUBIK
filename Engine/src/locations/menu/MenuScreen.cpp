@@ -1,26 +1,30 @@
 #include "MenuScreen.h"
 #include "Resources.h"
 
-MenuScreen::MenuScreen(vector<int> gameIDs)
-{	
-	font =  Font(loadFile(getAssetPath("fonts/Helvetica Neue.ttf")), 30);	
+using namespace kubik;
 
-	setTextures();
-	createMenuBtns(gameIDs);
-
+MenuScreen::MenuScreen()
+{
+	setTextures();	
 	//font =  Font( ci::app::App::loadResource( RES_CUSTOM_FONT ), 72 );
 	//font =  Font( ci::app::App::loadResource(  3, "FONT" ), 72 );	
 }
 
 void MenuScreen::setTextures()
 {
-	addToDictionary("background" , "menuDesign\\bg.jpg");
-	addToDictionary("background1" , "menuDesign\\title.jpg");
+	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
+	string menuPath   = "menuDesign\\";	
+	string path = mainFolder + menuPath;
+
+	addToDictionary("background",	path + "bg.jpg",    resourceType::IMAGE, loadingType::FULL_PATH );
+	addToDictionary("background1",  path + "title.jpg", resourceType::IMAGE, loadingType::FULL_PATH);
+	addToDictionary("helvetica30",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
 }
 
-void MenuScreen::init()
+void MenuScreen::init(vector<int> gameIDs)
 {
-
+	font =  designTexures["helvetica30"]->font;
+	createMenuBtns(gameIDs);
 }
 
 void MenuScreen::createMenuBtns(vector<int> gameIDs)

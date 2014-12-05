@@ -12,14 +12,16 @@ using namespace ci::signals;
 class MenuScreen:public IDrawable
 {
 public:
-	MenuScreen(vector<int> gameIDs);
+	MenuScreen();
 
 	signal<void(int)> startGameSignal;
 	signal<void(void)> startSettingsSignal;
 	signal<void(void)> startVideoSignal;
 	
 	void draw();	
-	void init();
+
+	virtual void init(){};
+	void init(vector<int> gameIDs);
 
 	void removeMouseUpListener();
 	void addMouseUpListener();	

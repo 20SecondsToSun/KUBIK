@@ -1,6 +1,6 @@
 #include "Funces.h"
 
-Funces::Funces()
+Funces::Funces(ISettings* config)
 {	
 	setTextures();	
 }
@@ -26,22 +26,28 @@ void Funces::removeMouseUpListener()
 
 void Funces::setTextures()
 {
-	addToDictionary("img1", "gamesDesign\\funces\\1.jpg");
-	addToDictionary("closeImg", "gamesDesign\\funces\\close.png");
-	addToDictionary("img3", "gamesDesign\\funces\\3.jpg");
+	//addToDictionary("img1", "gamesDesign\\funces\\1.jpg");
+	//addToDictionary("closeImg", "gamesDesign\\funces\\close.png");
+	//addToDictionary("img3", "gamesDesign\\funces\\3.jpg");
+
+	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
+	string menuPath   = "gamesDesign\\funces\\";	
+	string path = mainFolder + menuPath;
+
+	addToDictionary("closeImg",	path + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
 }
 
-void Funces::create()
+void Funces::reset()
+{
+	
+}
+
+void Funces::init()
 {
 	closeImg = designTexures["closeImg"]->tex;
 	console()<<"::funces createTextures::  "<<closeImg<<endl;
 	closeBtn = new Button(closeImg, Vec2f(getWindowWidth() - 100, 100));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
-}
-
-void Funces::init()
-{
-
 }
 
 void Funces::mouseUp( MouseEvent &event)

@@ -1,5 +1,74 @@
 #include "ScreenSaver.h"
 
+ScreenSaver::ScreenSaver()
+{
+	setTextures();
+}
+
+void ScreenSaver::setTextures()
+{
+	vector<ssFile> videos;
+	string path = getAppPath().string() + "data\\screensaver\\";
+	int videoIndex = -1;
+	bigSizeError = false;
+
+	for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
+	{
+		if (fs::is_regular_file(*it))
+		{
+			if (it->path().extension() == ".mov" ||
+				it->path().extension() == ".jpg" || 
+				it->path().extension() == ".jpeg"||
+				it->path().extension() == ".png") 	
+			{
+				string filePath = path + it->path().filename().string();
+				string ext = it->path().extension().string();
+
+				if(fileSizeNotTooBig(filePath, it->path().extension().string()))
+				{
+					if(it->path().extension() == ".mov")
+						videoIndex = videos.size();
+				
+					ssFile ss;
+					ss.ext = ext;
+					ss.path = filePath;
+					videos.push_back(ss);
+				}
+				else
+					bigSizeError = true;
+			}
+		}
+	}
+
+	_isEmpty = videos.empty();
+
+	if(!_isEmpty)
+	{	
+		if(videoIndex == -1)
+		{
+			addToDictionary("image",	videos[0].path, resourceType::IMAGE, loadingType::FULL_PATH );
+			mode = IMAGE_SS;
+		}		
+		else
+		{
+			addToDictionary("video",	videos[videoIndex].path, resourceType::VIDEO, loadingType::FULL_PATH );
+			mode = VIDEO_SS;			
+		}
+	}
+}
+
+void ScreenSaver::init()
+{
+	if(mode == VIDEO_SS)
+	{
+		movie = designTexures["video"]->movie;
+	}
+	else if(mode == IMAGE_SS)
+	{
+		image = designTexures["image"]->tex;
+	}
+}
+
 void ScreenSaver::play()
 {
 	if(mode == VIDEO_SS)
@@ -13,109 +82,6 @@ void ScreenSaver::stop()
 {
 	if(mode == VIDEO_SS)
 		movie.stop();	
-}
-
-void ScreenSaver::load()
-{
-	vector<ssFile> videos;
-	fs::path basePath = getAppPath()/"data"/"screensaver";
-
-	for (fs::directory_iterator it(basePath); it != fs::directory_iterator(); ++it)
-	{
-		if (fs::is_regular_file(*it))
-		{
-			if (it->path().extension() == ".mov" ||
-				it->path().extension() == ".jpg" || 
-				it->path().extension() == ".jpeg"||
-				it->path().extension() == ".png") 	
-			{
-				fs::path filePath = basePath / it->path().filename().string();
-				string ext = it->path().extension().string();
-
-				if(fileSizeNotTooBig(filePath))
-				{
-					ssFile ss;
-					ss.ext = ext;
-					ss.path = filePath;
-					videos.push_back(ss);
-				}
-			}
-		}
-	}
-
-	if(!videos.empty())
-	{
-		loadingStatus = SCREEN_SAVER_LOADING;
-		loadindUpdateConnection = App::get()->getSignalUpdate().connect(bind(&ScreenSaver::update, this));
-
-		if (videos[0].ext == ".mov")
-		{
-			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&ScreenSaver::loadMovieFile, this,  videos[0].path));
-		}
-		else
-		{
-			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&ScreenSaver::loadImageFile, this,  videos[0].path));
-		}
-	}
-	else
-	{
-		errorHandler();
-	}
-}
-
-void ScreenSaver::update()
-{
-	if(loadingStatus == SCREEN_SAVER_LOADED)
-	{
-		loadingThread->join();
-		loadindUpdateConnection.disconnect();
-		completeHandler();
-	}
-	else if(loadingStatus == SCREEN_SAVER_LOADING_ERROR)
-	{
-		loadingThread->join();
-		loadindUpdateConnection.disconnect();
-		errorHandler();
-	}
-}
-
-void ScreenSaver::loadImageFile( const fs::path &imagePath )
-{
-	try 
-	{
-		console()<<"try image loaded  "<<imagePath<<endl;
-		image = ci::Surface(loadImage( ci::loadFile( imagePath ) )); 
-		loadingStatus = SCREEN_SAVER_LOADED;
-		mode = IMAGE_SS;
-		console()<<"screen saver image loaded"<<endl;
-	}
-	catch( ... ) 
-	{
-		console() << "Unable to load the image." << std::endl;
-		loadingStatus = SCREEN_SAVER_LOADING_ERROR;
-	}
-}
-
-void ScreenSaver::loadMovieFile( const fs::path &moviePath )
-{	
-	try 
-	{
-		movie = qtime::MovieGl( moviePath);
-		loadingStatus = SCREEN_SAVER_LOADED;
-		mode = VIDEO_SS;
-		console()<<"screen saver video loaded"<<endl;
-		//completeHandler();
-
-		//console() << "Dimensions:" << movie.getWidth() << " x " << movie.getHeight() << std::endl;
-		//console() << "Duration:  " << movie.getDuration() << " seconds" << std::endl;
-		//console() << "Frames:    " << movie.getNumFrames() << std::endl;
-		//console() << "Framerate: " << movie.getFramerate() << std::endl;
-	}
-	catch( ... ) 
-	{
-		console() << "Unable to load the movie." << std::endl;
-		loadingStatus = SCREEN_SAVER_LOADING_ERROR;
-	}
 }
 
 void ScreenSaver::draw()
@@ -138,15 +104,31 @@ void ScreenSaver::mouseUp(MouseEvent &event)
 	closeVideoSignal();
 }
 
-bool ScreenSaver::fileSizeNotTooBig(fs::path filePath)
+bool ScreenSaver::fileSizeNotTooBig(fs::path filePath, string ext)
 {
-	return ((int)filesize(filePath.string().c_str()) < MAX_VIDEO_FILE_SIZE);
+	int filesizeInbytes  = (int)fileTools().filesize(filePath.string().c_str());
+	int sizeLimit = MAX_IMAGE_FILE_SIZE;
+
+	if (ext == ".mov")	
+		sizeLimit = MAX_VIDEO_FILE_SIZE;
+	
+	return  filesizeInbytes < sizeLimit;
 }
 
-std::ifstream::pos_type ScreenSaver::filesize(const char* filename)
+bool ScreenSaver::isError()
 {
-	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-	return in.tellg(); 
+	return bigSizeError;
+}
+
+ServiceMessage ScreenSaver::getMessage()
+{
+	ServiceMessage msg(103);
+	return msg;
+}
+
+bool ScreenSaver::isEmpty()
+{
+	return _isEmpty;
 }
 
 void ScreenSaver::addMouseUpListener()
@@ -157,24 +139,4 @@ void ScreenSaver::addMouseUpListener()
 void ScreenSaver::removeMouseUpListener()
 {
 	mouseUpListener.disconnect();
-}
-
-void ScreenSaver::addCompleteListener(const std::function<void(void)>& handler)
-{
-	completeHandler = handler;
-}
-
-void ScreenSaver::addErrorListener(const std::function<void(void)>& handler)
-{
-	errorHandler = handler;
-}
-
-void ScreenSaver::removeCompleteListener()
-{
-	//completeHandler = NULL;
-}
-
-void ScreenSaver::removeErrorListener()
-{
-	//errorHandler = NULL;
 }

@@ -4,9 +4,11 @@
 #include "cinder/Json.h"
 #include "cinder/gl/gl.h"
 #include <boost/algorithm/string.hpp>
-#include "TextureManager.h"
+#include "cinder/ImageIo.h"
+#include <boost/thread.hpp>
 #include "IDrawable.h"
 #include "ServiceMessage.h"
+#include "Types.h"
 
 using namespace std;
 using namespace ci;
@@ -25,21 +27,29 @@ public:
 		loadingCounter = 0 ;
 	}
 
-	void setLoadingTextures(OneBlockTexDictionary _textures)
+	void setLoadingTextures(Types::OneBlockTexDictionary _textures)
 	{	
 		for ( auto it = _textures.begin(); it != _textures.end(); it++)
 		{
-			textures.push_back((*it).second);
+			loadingRes.push_back((*it).second);
 		}
-		
-		loadingCounter = textures.size();
+
+		loadingCounter = loadingRes.size();
 	}
 
 	void load()
 	{
-		loadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::loadTextures, this ));
+		for (auto res: loadingRes)
+		{
+			console()<<" path::  "<<res->path<<endl;
+		}
+
+		loadingStatus = SCREEN_SAVER_LOADING;
+		loadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::waitLoadingComplete, this ));
+		loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
+
 	}
-	
+
 	void addCompleteListener(const std::function<void(void)>& handler)
 	{
 		completeHandler = handler;
@@ -67,53 +77,77 @@ public:
 
 private:
 
-	void loadTextures()
+	void waitLoadingComplete()
 	{
-		if (textures.size() == 0)
+		if(loadingStatus == SCREEN_SAVER_LOADED)
 		{
-			completeHandler();						
+			loadingThread->join();
 			loadingSignal.disconnect();
-			return;
+			loadingRes.clear();
+			completeHandler();
 		}
-
-		for ( auto it = textures.begin(); it != textures.end(); it++)
+		else if(loadingStatus == SCREEN_SAVER_LOADING_ERROR)
 		{
-			if ((*it)->isLoading == false)
+			loadingThread->join();
+			loadingSignal.disconnect();
+			loadingRes.clear();
+			ServiceMessage msg(101);			
+			errorHandler(msg);
+		}
+	}
+
+	void loadTextures()
+	{	
+		for (auto res: loadingRes)
+		{
+			if(res->resourceType == resourceType::IMAGE)
 			{
-				string url = getFullTexturePath((*it)->path);
-
-				if(url == "")
+				try 
 				{
-					ServiceMessage msg(101);
-					errorHandler(msg);
-
-					loadingSignal.disconnect();
-					textures.clear();
-					ph::clearTexture();
+					console()<<"try image loaded  "<< res->path <<endl;
+					Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
+					res->tex = image;
+					console()<<"screen saver image loaded"<<endl;
+				}
+				catch( ... ) 
+				{
+					loadingStatus = SCREEN_SAVER_LOADING_ERROR;
+					console() << "Unable to load the image." << std::endl;	
 					break;
 				}
-			
-				if(!ph::isTextureLoaded(url))
+			}
+			else if(res->resourceType == resourceType::VIDEO)
+			{
+				try 
 				{
-					(*it)->tex = ph::fetchTexture(url);
+					qtime::MovieGl movie = qtime::MovieGl( res->path);					
+					console()<<"screen saver video loaded"<<endl;
+					res->movie = movie;
 				}
-				else if (loadingCounter > 0)
+				catch( ... ) 
+				{
+					console() << "Unable to load the movie." << std::endl;
+					loadingStatus = SCREEN_SAVER_LOADING_ERROR;
+				}
+			}
+			else if(res->resourceType == resourceType::FONT)
+			{
+				try 
+				{					
+					Font font =  Font(loadFile(fs::path(res->path)), res->fontSize);
+					res->font = font;
+					console() << "font loaded." << std::endl;
+				}
+				catch( ... ) 
 				{
 
-					(*it)->tex = ph::fetchTexture(url);
-					(*it)->isLoading = true;
-					
-					if (--loadingCounter == 0)
-					{
-						completeHandler();
-						loadingSignal.disconnect();
-						textures.clear();
-						ph::clearTexture();
-						break;
-					}
 				}
 			}
 		}
+
+		if(loadingStatus == SCREEN_SAVER_LOADING)
+			loadingStatus = SCREEN_SAVER_LOADED;
+		
 	}
 
 	string getFullTexturePath(string url)
@@ -128,7 +162,18 @@ private:
 
 	ci::signals::connection loadingSignal;
 
-	vector<TexObject*> textures;
+	vector<Types::TexObject*> loadingRes;
+
+	boost::shared_ptr<boost::thread>	loadingThread;
+	
+	enum
+	{
+		SCREEN_SAVER_LOADING,
+		SCREEN_SAVER_LOADED,
+		SCREEN_SAVER_LOADING_ERROR
+	}
+	loadingStatus;
+	
 };
 
 inline Graphics&	graphics() { return Graphics::getInstance(); };
