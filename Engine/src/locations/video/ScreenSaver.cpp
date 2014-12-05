@@ -101,7 +101,7 @@ void ScreenSaver::draw()
 
 void ScreenSaver::mouseUp(MouseEvent &event)
 {
-	closeVideoSignal();
+	closeLocationSignal();
 }
 
 bool ScreenSaver::fileSizeNotTooBig(fs::path filePath, string ext)

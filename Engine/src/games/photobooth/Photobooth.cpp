@@ -1,8 +1,8 @@
 #include "Photobooth.h"
 
 Photobooth::Photobooth(ISettings* config)
-{	
-	console()<<"ISettings config::: "<<config<<endl;
+{
+	console()<<"ISettings config::: "<<endl;	
 
 	settings = static_cast<PhotoboothSettings*>(config);
 

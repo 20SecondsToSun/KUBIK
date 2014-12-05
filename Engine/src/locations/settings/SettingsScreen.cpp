@@ -19,7 +19,7 @@ void SettingsScreen::addMouseUpListener()
 
 void SettingsScreen::mouseUp(MouseEvent &event)
 {
-	closeSettingsSignal();
+	closeLocationSignal();
 }
 
 void SettingsScreen::removeMouseUpListener()

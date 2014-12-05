@@ -16,7 +16,6 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
-using namespace ci::signals;
 
 class ScreenSaver: public IDrawable
 {
@@ -45,9 +44,7 @@ public:
 	void removeMouseUpListener();
 
 	void setTextures();
-
-	signal<void(void)> closeVideoSignal;
-
+	
 	bool isEmpty();
 	bool isError();
 	ServiceMessage getMessage();

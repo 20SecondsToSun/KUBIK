@@ -128,7 +128,7 @@ private:
 
 		screenSaver->play();
 		screenSaver->addMouseUpListener();
-		connect_once(screenSaver->closeVideoSignal, bind(&Controller::closeScreenSaverHandler, this));
+		connect_once(screenSaver->closeLocationSignal, bind(&Controller::closeScreenSaverHandler, this));
 		view->startLocation(screenSaver);
 	}
 
@@ -192,7 +192,7 @@ private:
 	void startSettingsScreen()
 	{
 		console()<<"Start Settings Screen :::::"<<endl;
-		connect_once(settings->closeSettingsSignal, bind(&Controller::closeSettingsHandler, this));			
+		connect_once(settings->closeLocationSignal, bind(&Controller::closeSettingsHandler, this));			
 		settings->addMouseUpListener();		
 		view->startLocation(settings);
 	}
@@ -200,7 +200,7 @@ private:
 	void closeSettingsHandler()
 	{
 		console()<<"Close Settings Screen :::::"<<endl;
-		settings->closeSettingsSignal.disconnect_all_slots();
+		settings->closeLocationSignal.disconnect_all_slots();
 		settings->removeMouseUpListener();
 		startMenuScreen();
 	}
@@ -225,8 +225,7 @@ private:
 		else if(createGame(gameId))
 		{
 			console()<<"start!!! "<<endl;
-			view->startLocation(preloader);	
-			model->setCurrentGame(gameId);
+			view->startLocation(preloader);			
 
 			graphics().setLoadingTextures(game->getTextures());
 			graphics().addCompleteListener(bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
@@ -246,6 +245,7 @@ private:
 		if(model->checkIfGameIdPurchased(gameId))
 		{
 			clearPreviousGame(model->getCurrentGame());
+			model->setCurrentGame(gameId);
 			game = new GameScreen(gameId, model->getGameSettingsById());
 			return true;
 		}
@@ -293,7 +293,7 @@ private:
 	{		
 		game->addMouseUpListener();
 		view->startLocation(game);
-		connect_once(game->closeGameSignal,	bind(&Controller::closeGameHandler, this));
+		connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));
 	}
 
 	////////////////////////////////////////////////////////////////////////////

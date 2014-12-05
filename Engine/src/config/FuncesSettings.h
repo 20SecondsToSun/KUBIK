@@ -8,5 +8,5 @@ using namespace ci::app;
 
 class FuncesSettings: public ISettings
 {
-
+	
 };

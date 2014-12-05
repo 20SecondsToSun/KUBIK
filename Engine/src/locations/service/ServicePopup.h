@@ -14,8 +14,8 @@ class ServicePopup:public IDrawable
 {
 public:
 	ServicePopup()
-	{
-		font =  Font(loadFile(getAssetPath("fonts/Helvetica Neue.ttf")), 30);	
+	{	
+		addToDictionary("helvetica30",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
 	}
 
 	void draw()
@@ -34,12 +34,11 @@ public:
 
 	void init()
 	{
-
+		font = designTexures["helvetica30"]->font;
 	}
 
 	void setMessage(ServiceMessage _msg)
-	{
-		
+	{		
 		msg = _msg;
 	}
 

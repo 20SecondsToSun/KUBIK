@@ -114,11 +114,11 @@ public:
 	ISettings* getGameSettingsById()
 	{
 		ISettings *config;
-
+	
 		switch (currentGame)
 		{
-		case gameId::PHOTOBOOTH:
-			config = photoBoothSettings;
+		case gameId::PHOTOBOOTH:		
+			config = photoBoothSettings;			
 			break;
 
 		case gameId::FUNCES:

@@ -4,8 +4,6 @@ using namespace kubik;
 
 GameScreen::GameScreen(int gameID, ISettings* config)
 {	
-	this->gameID = gameID;
-
 	switch (gameID)
 	{
 		case gameId::FUNCES:
@@ -15,10 +13,6 @@ GameScreen::GameScreen(int gameID, ISettings* config)
 		case gameId::PHOTOBOOTH:
 			currentGame = shared_ptr<IGame>(new Photobooth(config));
 		break;
-
-		//case 3:
-			//currentGame = new Kotopoza();
-		//break;
 
 		default:
 		break;
@@ -33,11 +27,11 @@ GameScreen::~GameScreen()
 
 void GameScreen::closeGameHandler()
 {
-	closeGameSignal();
+	closeLocationSignal();
 }
 
 void GameScreen::draw()
-{	
+{
 	currentGame->draw();
 }
 

@@ -6,7 +6,7 @@
 
 using namespace std;
 using namespace kubik;
-
+using namespace ci::signals;
 
 class IDrawable
 {	
@@ -32,6 +32,7 @@ public:
 
 	virtual void draw() = 0;
 	virtual void init() = 0;
+	signal<void(void)> closeLocationSignal;
 
 	Types::OneBlockTexDictionary getTextures()
 	{	
