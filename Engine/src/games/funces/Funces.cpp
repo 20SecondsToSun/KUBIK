@@ -4,6 +4,7 @@ Funces::Funces(ISettings* config)
 {	
 	setTextures();	
 }
+
 Funces::~Funces()
 {	
 	console()<<"Funces destructor"<<endl;

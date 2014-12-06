@@ -164,9 +164,6 @@
     <ClInclude Include="..\src\locations\settings\SettingsScreen.h">
       <Filter>Source Files\locations\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\engine\IDrawable.h">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\games\IGame.h">
       <Filter>Source Files\games</Filter>
     </ClInclude>
@@ -271,6 +268,18 @@
     </ClInclude>
     <ClInclude Include="..\src\config\ISettings.h">
       <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\video\ImageScreenSaver.h">
+      <Filter>Source Files\locations\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\video\VideoScreenSaver.h">
+      <Filter>Source Files\locations\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\video\IResourceScreenSaver.h">
+      <Filter>Source Files\locations\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\engine\IScreen.h">
+      <Filter>Source Files\locations\engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

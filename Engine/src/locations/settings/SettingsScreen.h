@@ -3,18 +3,20 @@
 #include "ApplicationModel.h"
 #include "MenuButton.h"
 #include "Graphics.h"
-#include "IDrawable.h"
+#include "IScreen.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-class SettingsScreen:public IDrawable
+class SettingsScreen:public IScreen
 {
 public:
-	signal<void(int)> startGameSignal;
-	
+
 	SettingsScreen();
+
+	signal<void(int)> startGameSignal;	
+
 	void draw();	
 	void init();
 
@@ -25,9 +27,12 @@ public:
 
 	connection mouseUpListener;
 
+protected:
+	void setTextures();
+
 private:
 	void update();
-	void setTextures();
+	
 	void mouseUp(MouseEvent &event);
 
 	Font font;

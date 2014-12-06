@@ -147,13 +147,16 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\texmanager\TextureManager.h" />
-    <ClInclude Include="..\src\locations\engine\IDrawable.h" />
+    <ClInclude Include="..\src\locations\engine\IScreen.h" />
     <ClInclude Include="..\src\locations\game\GameScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
     <ClInclude Include="..\src\locations\settings\SettingsScreen.h" />
+    <ClInclude Include="..\src\locations\video\ImageScreenSaver.h" />
+    <ClInclude Include="..\src\locations\video\IResourceScreenSaver.h" />
     <ClInclude Include="..\src\locations\video\ScreenSaver.h" />
+    <ClInclude Include="..\src\locations\video\VideoScreenSaver.h" />
     <ClInclude Include="..\src\model\ApplicationModel.h" />
     <ClInclude Include="..\src\model\IModel.h" />
     <ClInclude Include="..\src\model\PhotoboothModel.h" />

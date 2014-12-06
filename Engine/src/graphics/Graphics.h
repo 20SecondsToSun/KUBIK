@@ -6,9 +6,9 @@
 #include <boost/algorithm/string.hpp>
 #include "cinder/ImageIo.h"
 #include <boost/thread.hpp>
-#include "IDrawable.h"
 #include "ServiceMessage.h"
 #include "Types.h"
+#include "IScreen.h"
 
 using namespace std;
 using namespace ci;
@@ -39,15 +39,9 @@ public:
 
 	void load()
 	{
-		for (auto res: loadingRes)
-		{
-			console()<<" path::  "<<res->path<<endl;
-		}
-
 		loadingStatus = SCREEN_SAVER_LOADING;
 		loadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::waitLoadingComplete, this ));
 		loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
-
 	}
 
 	void addCompleteListener(const std::function<void(void)>& handler)
@@ -68,12 +62,7 @@ public:
 	void removeErrorListener()
 	{
 		//errorHandler = NULL;
-	}
-
-	void uloadLastGame()
-	{
-
-	}
+	}	
 
 private:
 
@@ -172,8 +161,7 @@ private:
 		SCREEN_SAVER_LOADED,
 		SCREEN_SAVER_LOADING_ERROR
 	}
-	loadingStatus;
-	
+	loadingStatus;	
 };
 
 inline Graphics&	graphics() { return Graphics::getInstance(); };

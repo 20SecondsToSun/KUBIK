@@ -2,17 +2,21 @@
 #include "cinder/app/AppNative.h"
 #include "MenuButton.h"
 #include "Button.h"
-#include "IDrawable.h"
+#include "IScreen.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 
-class MenuScreen:public IDrawable
+class MenuScreen:public IScreen
 {
 public:
-	MenuScreen();
+	
+	MenuScreen():IScreen()
+	{		
+		setTextures();
+	}
 
 	signal<void(int)> startGameSignal;
 	signal<void(void)> startSettingsSignal;
@@ -24,7 +28,10 @@ public:
 	void init(vector<int> gameIDs);
 
 	void removeMouseUpListener();
-	void addMouseUpListener();	
+	void addMouseUpListener();
+
+protected:
+	void setTextures();
 
 private:
 	vector<MenuButton *> menuBtns;
@@ -40,7 +47,7 @@ private:
 	void clearButtonVector();
 	void mouseUp( MouseEvent &event);
 	void update();
-	void setTextures();
+	
 
 	ButtonText *settingsButton, *videoButton;
 

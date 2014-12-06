@@ -4,13 +4,14 @@
 #include "cinder/gl/gl.h"
 #include "Resources.h"
 #include "cinder/gl/Texture.h"
+#include "IScreen.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
 
-class Preloader:public IDrawable
+class Preloader:public IScreen
 {
 public:
 	Preloader(Vec2f position)
@@ -42,6 +43,11 @@ public:
 	}
 
 	void init()
+	{
+
+	}
+protected:
+	void setTextures()
 	{
 
 	}

@@ -1,102 +1,119 @@
 #include "ScreenSaver.h"
 
-ScreenSaver::ScreenSaver()
-{
-	setTextures();
-}
+using namespace kubik;
 
 void ScreenSaver::setTextures()
 {
-	vector<ssFile> videos;
-	string path = getAppPath().string() + "data\\screensaver\\";
+	vector<string> content;	
 	int videoIndex = -1;
-	bigSizeError = false;
+	bool bigSizeError = false;
 
-	for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
+	string PATH = getScreenSaverPath();
+
+	for (fs::directory_iterator it(PATH); it != fs::directory_iterator(); ++it)
 	{
 		if (fs::is_regular_file(*it))
 		{
-			if (it->path().extension() == ".mov" ||
-				it->path().extension() == ".jpg" || 
-				it->path().extension() == ".jpeg"||
-				it->path().extension() == ".png") 	
-			{
-				string filePath = path + it->path().filename().string();
-				string ext = it->path().extension().string();
+			string ext = it->path().extension().string();
+			int ssType = getContentType(ext);
 
-				if(fileSizeNotTooBig(filePath, it->path().extension().string()))
-				{
-					if(it->path().extension() == ".mov")
-						videoIndex = videos.size();
-				
-					ssFile ss;
-					ss.ext = ext;
-					ss.path = filePath;
-					videos.push_back(ss);
-				}
-				else
-					bigSizeError = true;
+			if(ssType == NONE_SS)
+				continue;
+
+			string filePath = PATH + it->path().filename().string();				
+
+			if(fileSizeNotTooBig(filePath, ext))
+			{
+				if(ssType == VIDEO_SS)				
+					videoIndex = content.size();				
+			
+				content.push_back(filePath);
+			}
+			else
+			{
+				bigSizeError = true;
 			}
 		}
 	}
 
-	_isEmpty = videos.empty();
+	_isExist = content.empty();
 
-	if(!_isEmpty)
+	if(!_isExist)
 	{	
 		if(videoIndex == -1)
 		{
-			addToDictionary("image",	videos[0].path, resourceType::IMAGE, loadingType::FULL_PATH );
+			addToDictionary("image", content[0], resourceType::IMAGE, loadingType::FULL_PATH);
 			mode = IMAGE_SS;
 		}		
 		else
 		{
-			addToDictionary("video",	videos[videoIndex].path, resourceType::VIDEO, loadingType::FULL_PATH );
+			addToDictionary("video", content[videoIndex], resourceType::VIDEO, loadingType::FULL_PATH);
 			mode = VIDEO_SS;			
 		}
 	}
+	else if (bigSizeError)
+	{
+		//throw
+
+		//ServiceMessage msg(103);
+		//return msg;
+	}
+}
+
+int ScreenSaver::getContentType(string ext)
+{
+	int type = NONE_SS;
+
+	if(isVideoExtension(ext))
+	{
+		type = VIDEO_SS;
+	}
+	else if(isImageExtension(ext))
+	{
+		type = IMAGE_SS;
+	}
+
+	return type;
+}
+
+bool ScreenSaver::fileSizeNotTooBig(fs::path filePath, string ext)
+{
+	int filesizeInbytes  = (int)fileTools().filesize(filePath.string().c_str());
+	int sizeLimit;
+
+	if (isVideoExtension(ext))	
+		sizeLimit = MAX_VIDEO_FILE_SIZE;
+	else  if(isImageExtension(ext))	
+		sizeLimit = MAX_IMAGE_FILE_SIZE;
+	
+	return  filesizeInbytes < sizeLimit;
 }
 
 void ScreenSaver::init()
 {
 	if(mode == VIDEO_SS)
 	{
-		movie = designTexures["video"]->movie;
+		screenSaverResource =  new VideoScreenSaver(designTexures["video"]->movie);	
 	}
 	else if(mode == IMAGE_SS)
 	{
-		image = designTexures["image"]->tex;
+		screenSaverResource =  new ImageScreenSaver(designTexures["image"]->tex);	
 	}
 }
 
-void ScreenSaver::play()
+void ScreenSaver::start()
 {
-	if(mode == VIDEO_SS)
-	{
-		movie.setLoop( true, false );
-		movie.play();
-	}
+	screenSaverResource->start();
 }
 
 void ScreenSaver::stop()
-{
-	if(mode == VIDEO_SS)
-		movie.stop();	
+{	
+	screenSaverResource->stop();
 }
 
 void ScreenSaver::draw()
 {
-	Texture texture;
-	if(mode == VIDEO_SS && movie)
-	{
-		texture = movie.getTexture();
-		if(texture)
-			gl::draw(texture, getWindowBounds());
-	}
-	else if(mode == IMAGE_SS)
-	{
-		gl::draw(image);
-	}
+	screenSaverResource->draw();
 }
 
 void ScreenSaver::mouseUp(MouseEvent &event)
@@ -104,31 +121,36 @@ void ScreenSaver::mouseUp(MouseEvent &event)
 	closeLocationSignal();
 }
 
-bool ScreenSaver::fileSizeNotTooBig(fs::path filePath, string ext)
+bool ScreenSaver::isVideoExtension(string ext)
 {
-	int filesizeInbytes  = (int)fileTools().filesize(filePath.string().c_str());
-	int sizeLimit = MAX_IMAGE_FILE_SIZE;
+	for (auto it: VIDEO_SUPPORT_EXTENSIONS)
+	{
+		if (ext == it)
+			return true;
+	}
 
-	if (ext == ".mov")	
-		sizeLimit = MAX_VIDEO_FILE_SIZE;
-	
-	return  filesizeInbytes < sizeLimit;
+	return false;
 }
 
-bool ScreenSaver::isError()
+bool ScreenSaver::isImageExtension(string ext)
 {
-	return bigSizeError;
+	for (auto it: IMAGE_SUPPORT_EXTENSIONS)
+	{
+		if (ext == it)
+			return true;
+	}
+
+	return false;	
 }
 
-ServiceMessage ScreenSaver::getMessage()
+string ScreenSaver::getScreenSaverPath()
 {
-	ServiceMessage msg(103);
-	return msg;
+	return getAppPath().string() + SCREEN_SAVER_PATH;
 }
 
-bool ScreenSaver::isEmpty()
+bool ScreenSaver::isExist()
 {
-	return _isEmpty;
+	return _isExist;
 }
 
 void ScreenSaver::addMouseUpListener()

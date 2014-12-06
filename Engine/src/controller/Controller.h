@@ -95,10 +95,11 @@ private:
 
 		view->init(screenSaver, menu, settings);
 		menu->init(model->getGameIDsTurnOn());
+		
 		settings->init();		
 		game->init();
 
-		bool screenSaverExist  = !screenSaver->isEmpty();
+		bool screenSaverExist  = !screenSaver->isExist();
 		model->setScreenSaverExist(screenSaverExist);
 
 		if(screenSaverExist)
@@ -106,10 +107,10 @@ private:
 			screenSaver->init();
 			startScreenSaver();	
 		}
-		else if(screenSaver->isError())
+		/*else if(screenSaver->isError())
 		{			
 			servecePopupShow(screenSaver->getMessage());
-		}
+		}*/
 		else
 		{
 			startMenuScreen();
@@ -126,7 +127,7 @@ private:
 	{	
 		console()<<"startScreenSaver::  "<<endl;		
 
-		screenSaver->play();
+		screenSaver->start();
 		screenSaver->addMouseUpListener();
 		connect_once(screenSaver->closeLocationSignal, bind(&Controller::closeScreenSaverHandler, this));
 		view->startLocation(screenSaver);

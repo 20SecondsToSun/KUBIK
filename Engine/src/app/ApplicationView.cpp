@@ -9,7 +9,7 @@ void ApplicationView::init(ScreenSaver* screenSaver, MenuScreen* menu, SettingsS
 	this->game = game;	
 }
 
-void ApplicationView::startLocation(IDrawable* screen)
+void ApplicationView::startLocation(IScreen* screen)
 {	
 	location = screen;
 }

@@ -8,7 +8,7 @@ using namespace std;
 using namespace kubik;
 using namespace ci::signals;
 
-class IDrawable
+class IScreen
 {	
 	
 protected:
@@ -27,11 +27,17 @@ protected:
 
 		designTexures[key] = value;
 	}
-
+	virtual void setTextures(){};
 public:
+	IScreen()
+	{
+		setTextures();
+	}
 
 	virtual void draw() = 0;
 	virtual void init() = 0;
+	
+
 	signal<void(void)> closeLocationSignal;
 
 	Types::OneBlockTexDictionary getTextures()

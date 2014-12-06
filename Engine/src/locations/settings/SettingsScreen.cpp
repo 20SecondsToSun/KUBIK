@@ -1,15 +1,13 @@
 #include "SettingsScreen.h"
 
-SettingsScreen::SettingsScreen()
+SettingsScreen::SettingsScreen():IScreen()
 {	
-	font =  Font(loadFile(getAssetPath("fonts/Helvetica Neue.ttf")), 70);
 	setTextures();
-	//mouseListener = getWindow()->getSignalMouseUp().connect( std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1) );
 }
 
 void SettingsScreen::setTextures()
 {
-	//addToDictionary("background" , "settingsDesign\\bg1.png");
+	addToDictionary("helvetica90",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 90);
 }
 
 void SettingsScreen::addMouseUpListener()
@@ -29,7 +27,7 @@ void SettingsScreen::removeMouseUpListener()
 
 void SettingsScreen::init()
 {
-
+	font =  designTexures["helvetica90"]->font;
 }
 
 void SettingsScreen::draw()

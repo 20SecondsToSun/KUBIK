@@ -2,13 +2,13 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
-#include "IDrawable.h"
+#include "IScreen.h"
 #include "ISettings.h"
 
 using namespace std;
 using namespace ci::signals;
 
-class IGame:public IDrawable
+class IGame:public IScreen
 {
 
 public:	

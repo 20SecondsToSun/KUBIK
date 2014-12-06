@@ -3,18 +3,13 @@
 
 using namespace kubik;
 
-MenuScreen::MenuScreen()
-{
-	setTextures();	
-	//font =  Font( ci::app::App::loadResource( RES_CUSTOM_FONT ), 72 );
-	//font =  Font( ci::app::App::loadResource(  3, "FONT" ), 72 );	
-}
-
 void MenuScreen::setTextures()
 {
 	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
 	string menuPath   = "menuDesign\\";	
 	string path = mainFolder + menuPath;
+
+	console()<<"SET MENU TEXTURES!!!!!!!!!!!!!!!!!!"<<endl;
 
 	addToDictionary("background",	path + "bg.jpg",    resourceType::IMAGE, loadingType::FULL_PATH );
 	addToDictionary("background1",  path + "title.jpg", resourceType::IMAGE, loadingType::FULL_PATH);
@@ -37,9 +32,9 @@ void MenuScreen::createMenuBtns(vector<int> gameIDs)
 
 	int i = 0;
 
-	for(auto it = gameIDs.begin(); it != gameIDs.end(); ++it)
+	for(auto it : gameIDs)
 	{
-		int btnId    = *it;
+		int btnId    = it;
 		float x      = 300.0f *(1 + i);
 		float y      = 400.0f;
 		float width  = 200.0f;
@@ -62,8 +57,8 @@ void MenuScreen::createMenuBtns(vector<int> gameIDs)
 
 void MenuScreen::clearButtonVector()
 {
-	for(auto it = menuBtns.begin(); it != menuBtns.end(); ++it)
-		delete *it;
+	for(auto it : menuBtns)
+		delete it;
 	menuBtns.clear();
 }
 
@@ -84,8 +79,8 @@ void MenuScreen::videoMouseUpListener(ButtonText& button )
 
 void MenuScreen::mouseUp( MouseEvent &event)
 {	
-	for(auto it = menuBtns.begin(); it != menuBtns.end(); ++it)
-		(*it)->mouseUpHandler(event.getPos());
+	for(auto it : menuBtns)
+		it->mouseUpHandler(event.getPos());
 
 	settingsButton->mouseUpHandler(event.getPos());
 	videoButton->mouseUpHandler(event.getPos());
@@ -93,8 +88,8 @@ void MenuScreen::mouseUp( MouseEvent &event)
 
 void MenuScreen::draw()
 {
-	for(auto it = menuBtns.begin(); it != menuBtns.end(); ++it)
-		(*it)->draw();
+	for(auto it : menuBtns)
+		it->draw();
 
 	settingsButton->draw();
 	videoButton->draw();

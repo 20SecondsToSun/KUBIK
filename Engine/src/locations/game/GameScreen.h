@@ -1,7 +1,7 @@
 #pragma once
 #include "cinder/app/AppNative.h"
 
-#include "IDrawable.h"
+#include "IScreen.h"
 #include "Funces.h"
 #include "Photobooth.h"
 #include "Types.h"
@@ -12,7 +12,7 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class GameScreen: public IDrawable
+class GameScreen: public IScreen
 {
 public:
 	
@@ -28,6 +28,9 @@ public:
 	void closeGameHandler();
 	void addMouseUpListener();
 	void removeMouseUpListener();
+
+protected:
+	void setTextures(){};
 
 private:
 	shared_ptr<IGame> currentGame;

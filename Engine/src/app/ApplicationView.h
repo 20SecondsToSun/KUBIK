@@ -3,7 +3,7 @@
 #include "MenuScreen.h"
 #include "GameScreen.h"
 #include "SettingsScreen.h"
-#include "IDrawable.h"
+#include "IScreen.h"
 #include "Preloader.h"
 #include "ScreenSaver.h"
 
@@ -17,10 +17,10 @@ public:
 
 	void init(ScreenSaver* screenSaver, MenuScreen* menu, SettingsScreen* settings);
 	void draw();
-	void startLocation(IDrawable* screen);
+	void startLocation(IScreen* screen);
 
 private:	
-	IDrawable *location;
+	IScreen *location;
 
 	MenuScreen* menu;
 	SettingsScreen* settings;
