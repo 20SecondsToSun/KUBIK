@@ -22,3 +22,9 @@ ExcFileDoesNotExist::ExcFileDoesNotExist() throw()
 	sprintf( mMessage, "Файла не существует" );
 	isCritical = true;
 }
+
+ExcGameDoesNotExist::ExcGameDoesNotExist() throw()
+{
+	sprintf( mMessage, "Игра не существует" );
+	isCritical = true;
+}

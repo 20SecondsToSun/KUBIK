@@ -118,10 +118,7 @@ private:
 		}
 
 		if(loadingStatus == LOADING)
-			loadingStatus = LOADED;
-		//else
-		//	throw ExcFileDoesNotExist();
-		
+			loadingStatus = LOADED;			
 	}
 
 	string getFullTexturePath(string url)

@@ -14,40 +14,26 @@ protected:
 	//friend class					FaceTracker;
 };
 
-//! Exception representing failure to create FaceTracker.
 class ExcBigFileSizeOfScreenSaver : public KubikException 
 {
 public:
 	ExcBigFileSizeOfScreenSaver() throw();
 };
 
-//! Exception representing failure to create image buffer.
 class ExcConfigFileParsing : public KubikException 
 {
 public:
 	ExcConfigFileParsing() throw();
 };
 
-//! Exception representing failure to create image buffer.
 class ExcFileDoesNotExist : public KubikException 
 {
 public:
 	ExcFileDoesNotExist() throw();
 };
 
-
-
-////! Exception representing failure to create FaceTracker result.
-//class ExcFaceTrackerCreateResult : public KubikException 
-//{
-//public:
-//	ExcFaceTrackerCreateResult( long hr ) throw();
-//};
-//
-////! Exception representing failure to initialize FaceTracker.
-//class ExcFaceTrackerInit : public KubikException 
-//{
-//public:
-//	ExcFaceTrackerInit( long hr ) throw();
-//};
-
+class ExcGameDoesNotExist : public KubikException 
+{
+public:
+	ExcGameDoesNotExist() throw();
+};

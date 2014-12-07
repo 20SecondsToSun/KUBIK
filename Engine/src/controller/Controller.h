@@ -160,6 +160,7 @@ private:
 
 	void closeScreenSaverHandler()
 	{
+		screenSaver->closeLocationSignal.disconnect_all_slots();
 		screenSaver->stop();
 		screenSaver->removeMouseUpListener();
 		startMenuScreen();
@@ -277,8 +278,7 @@ private:
 		}
 		else
 		{
-			//ServiceMessage msg(102);
-			//noSuchGameExist(msg);
+			servicePopupShow(ExcGameDoesNotExist());
 		}
 
 		return false;
@@ -328,11 +328,9 @@ private:
 	//
 	////////////////////////////////////////////////////////////////////////////
 
-	void servicePopupShow(KubikException exc)//const char* msg, bool isCritical = false)
+	void servicePopupShow(KubikException exc)
 	{
 		servicePopup->setMessage(exc.what());
 		view->startLocation(servicePopup);
 	}
-
-	boost::signals2::connection closeSettingsCon;//, startGameCon, startSettingsCon, startVideoCon;
 };
