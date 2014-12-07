@@ -6,19 +6,23 @@
 #include <boost/algorithm/string.hpp>
 #include "cinder/ImageIo.h"
 #include <boost/thread.hpp>
-#include "ServiceMessage.h"
 #include "Types.h"
 #include "IScreen.h"
+#include "KubikException.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
+using namespace ci::signals;
 
 class Graphics
 {
 
 public:
+	
+	signal<void(void)> completeLoadingSignal;
+	signal<void(KubikException)> errorLoadingSignal;
 
 	static Graphics& getInstance() { static Graphics graph; return graph; };
 
@@ -39,49 +43,28 @@ public:
 
 	void load()
 	{
-		loadingStatus = SCREEN_SAVER_LOADING;
-		loadingSignal = App::get()->getSignalUpdate().connect( bind( &Graphics::waitLoadingComplete, this ));
+		loadingStatus = LOADING;
+		loadingSignal = App::get()->getSignalUpdate().connect(bind(&Graphics::waitLoadingComplete, this));		
 		loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
 	}
-
-	void addCompleteListener(const std::function<void(void)>& handler)
-	{
-		completeHandler = handler;
-	}
-
-	void addErrorListener(const std::function<void(ServiceMessage)>& handler)
-	{
-		errorHandler = handler;
-	}
-
-	void removeCompleteListener()
-	{
-		//completeHandler = NULL;
-	}
-
-	void removeErrorListener()
-	{
-		//errorHandler = NULL;
-	}	
 
 private:
 
 	void waitLoadingComplete()
 	{
-		if(loadingStatus == SCREEN_SAVER_LOADED)
+		if(loadingStatus == LOADED)
 		{
 			loadingThread->join();
 			loadingSignal.disconnect();
 			loadingRes.clear();
-			completeHandler();
+			completeLoadingSignal();
 		}
-		else if(loadingStatus == SCREEN_SAVER_LOADING_ERROR)
+		else if(loadingStatus == LOADING_ERROR)
 		{
 			loadingThread->join();
 			loadingSignal.disconnect();
 			loadingRes.clear();
-			ServiceMessage msg(101);			
-			errorHandler(msg);
+			errorLoadingSignal(ExcFileDoesNotExist());
 		}
 	}
 
@@ -96,11 +79,11 @@ private:
 					console()<<"try image loaded  "<< res->path <<endl;
 					Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
 					res->tex = image;
-					console()<<"screen saver image loaded"<<endl;
+					console()<<"image loaded"<<endl;
 				}
 				catch( ... ) 
 				{
-					loadingStatus = SCREEN_SAVER_LOADING_ERROR;
+					loadingStatus = LOADING_ERROR;
 					console() << "Unable to load the image." << std::endl;	
 					break;
 				}
@@ -110,13 +93,13 @@ private:
 				try 
 				{
 					qtime::MovieGl movie = qtime::MovieGl( res->path);					
-					console()<<"screen saver video loaded"<<endl;
+					console()<<"video loaded"<<endl;
 					res->movie = movie;
 				}
 				catch( ... ) 
 				{
 					console() << "Unable to load the movie." << std::endl;
-					loadingStatus = SCREEN_SAVER_LOADING_ERROR;
+					loadingStatus = LOADING_ERROR;
 				}
 			}
 			else if(res->resourceType == resourceType::FONT)
@@ -129,13 +112,15 @@ private:
 				}
 				catch( ... ) 
 				{
-
+					loadingStatus = LOADING_ERROR;
 				}
 			}
 		}
 
-		if(loadingStatus == SCREEN_SAVER_LOADING)
-			loadingStatus = SCREEN_SAVER_LOADED;
+		if(loadingStatus == LOADING)
+			loadingStatus = LOADED;
+		//else
+		//	throw ExcFileDoesNotExist();
 		
 	}
 
@@ -145,8 +130,7 @@ private:
 	}	
 
 	std::function<void()> completeHandler;
-	std::function<void(ServiceMessage)> errorHandler;
-
+	
 	int loadingCounter;
 
 	ci::signals::connection loadingSignal;
@@ -157,9 +141,9 @@ private:
 	
 	enum
 	{
-		SCREEN_SAVER_LOADING,
-		SCREEN_SAVER_LOADED,
-		SCREEN_SAVER_LOADING_ERROR
+		LOADING,
+		LOADED,
+		LOADING_ERROR
 	}
 	loadingStatus;	
 };

@@ -3,6 +3,12 @@
 
 using namespace kubik;
 
+MenuScreen::MenuScreen(ISettings* config):IScreen()
+{	
+	settings = static_cast<MenuSettings*>(config);
+	setTextures();
+}
+
 void MenuScreen::setTextures()
 {
 	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
@@ -16,6 +22,17 @@ void MenuScreen::setTextures()
 	addToDictionary("helvetica30",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
 }
 
+void MenuScreen::reload(ISettings* config)
+{
+	clean();
+	settings = static_cast<MenuSettings*>(config);
+	setTextures();
+}
+
+void MenuScreen::clean()
+{
+}
+
 void MenuScreen::init(vector<int> gameIDs)
 {
 	font =  designTexures["helvetica30"]->font;
@@ -27,7 +44,7 @@ void MenuScreen::createMenuBtns(vector<int> gameIDs)
 	string gameNames[3] = {"Funces", "Photobooth", "Kotopoza"};
 	string settingsName = "Настройки";
 	string screenSaverName = "Заставка";
-	
+
 	clearButtonVector();
 
 	int i = 0;

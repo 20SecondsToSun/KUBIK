@@ -4,8 +4,7 @@
 #include "cinder/gl/gl.h"
 
 #include "IScreen.h"
-#include "FileTools.h"
-#include "ServiceMessage.h"
+#include "ScreenSaverSettings.h"
 #include "IResourceScreenSaver.h"
 #include "VideoScreenSaver.h"
 #include "ImageScreenSaver.h"
@@ -15,22 +14,11 @@ using namespace ci;
 
 namespace kubik
 {
-	static const int MAX_VIDEO_FILE_SIZE = 50000000;	
-	static const int MAX_IMAGE_FILE_SIZE = 10000000;
-
-	static const string IMAGE_SUPPORT_EXTENSIONS[3] = {".jpeg", ".jpg", ".png"};
-	static const string VIDEO_SUPPORT_EXTENSIONS[1] = {".mov"};
-
-	static const string SCREEN_SAVER_PATH = "data\\screensaver\\";
-
 	class ScreenSaver: public IScreen
 	{
 	public:
 
-		ScreenSaver():IScreen()
-		{		
-			setTextures();
-		}
+		ScreenSaver(ScreenSaverSettings *settings);
 
 		enum {IMAGE_SS,	VIDEO_SS, NONE_SS};		
 
@@ -40,10 +28,7 @@ namespace kubik
 		void draw();
 
 		void addMouseUpListener();
-		void removeMouseUpListener();		
-
-		bool isExist();
-		ServiceMessage getMessage();
+		void removeMouseUpListener();	
 
 	protected:
 		void setTextures();
@@ -51,21 +36,12 @@ namespace kubik
 	private:	
 
 		void mouseUp(MouseEvent &event);
-
-		connection mouseUpListener;
-
-		Surface	image;
-		int mode;
-
-		bool fileSizeNotTooBig(fs::path filePath, string ext);	
-		bool _isExist;
-
-		bool isVideoExtension(string ext);
-		bool isImageExtension(string ext);
-
-		string getScreenSaverPath();
-		int getContentType(string ext);
+		connection mouseUpListener;		
 
 		IResourceScreenSaver* screenSaverResource;
+		ScreenSaverSettings* settings;
+
+		int mode;
+		string path_ss;
 	};
 }

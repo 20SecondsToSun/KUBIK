@@ -135,6 +135,9 @@
     <ClCompile Include="..\src\tools\Utils.cpp">
       <Filter>Source Files\tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\config\KubikException.cpp">
+      <Filter>Source Files\config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -196,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\service\ServicePopup.h">
       <Filter>Source Files\locations\service</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\model\ServiceMessage.h">
-      <Filter>Source Files\model</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tools\Utils.h">
       <Filter>Source Files\tools</Filter>
@@ -280,6 +280,15 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\engine\IScreen.h">
       <Filter>Source Files\locations\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\MenuSettings.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\KubikException.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ScreenSaverSettings.h">
+      <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

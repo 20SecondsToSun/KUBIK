@@ -2,9 +2,7 @@
 #include "cinder/app/AppNative.h"
 #include <boost/algorithm/string.hpp>
 #include "cinder/Json.h"
-
 #include "IModel.h"
-#include "ServiceMessage.h"
 
 using namespace std;
 using namespace ci;
@@ -21,11 +19,6 @@ public:
 		completeHandler = handler;
 	}
 
-	void addErrorListener(const std::function<void(ServiceMessage)>& handler)
-	{
-		errorHandler = handler;
-	}
-
 protected:
 	fs::path getBasePath()
 	{
@@ -33,6 +26,5 @@ protected:
 		return basePath /"data/configs/";
 	}
 
-	std::function<void(void)> completeHandler;
-	std::function<void(ServiceMessage)> errorHandler;	
+	std::function<void(void)> completeHandler;	
 };

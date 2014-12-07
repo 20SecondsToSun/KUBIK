@@ -32,7 +32,7 @@ void Photobooth::removeMouseUpListener()
 void Photobooth::setTextures()
 {
 	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
-	string menuPath   = "gamesDesign\\funces\\";	
+	string menuPath   = "gamesDesign\\photobooth\\";	
 	string path = mainFolder + menuPath;
 
 	addToDictionary("closeImg",	path + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );

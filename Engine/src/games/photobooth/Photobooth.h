@@ -9,7 +9,6 @@
 #include "PhotoFilter.h"
 #include "PhotoTimer.h"
 #include "PhotoboothSettings.h"
-#include "ISettings.h"
 
 using namespace std;
 using namespace ci;

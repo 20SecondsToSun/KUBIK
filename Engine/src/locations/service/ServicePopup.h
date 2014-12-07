@@ -14,7 +14,8 @@ class ServicePopup:public IScreen
 {
 public:	
 	ServicePopup():IScreen()
-	{		
+	{	
+		font = Font(loadFile( getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf"), 30);
 		setTextures();
 	}
 
@@ -23,13 +24,13 @@ public:
 		gl::color(Color::white());
 		gl::drawSolidRect(getWindowBounds());
 
-		Texture textTex = textTools().getTextField(msg.getMessage(), &font, ColorA(1,0,0,1));
+		Texture textTex = textTools().getTextField(msg, &font, ColorA(1,0,0,1));
 		gl::pushMatrices();			
 		float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5;
 		float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5;		
 		gl::translate(shiftX, shiftY);
 		gl::draw(textTex);
-		gl::popMatrices();
+		gl::popMatrices();	
 	}	
 
 	void init()
@@ -37,9 +38,9 @@ public:
 		font = designTexures["helvetica30"]->font;
 	}
 
-	void setMessage(ServiceMessage _msg)
-	{		
-		msg = _msg;
+	void setMessage(const char* msg)
+	{			
+		this->msg = string(msg);
 	}
 
 protected:
@@ -49,6 +50,6 @@ protected:
 	}
 
 private:	
-	ServiceMessage msg;
+	string msg;
 	Font font;
 };

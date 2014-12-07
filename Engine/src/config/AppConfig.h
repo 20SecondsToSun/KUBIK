@@ -2,9 +2,8 @@
 #include "cinder/app/AppNative.h"
 #include <boost/algorithm/string.hpp>
 #include "cinder/Json.h"
-
+#include "KubikException.h"
 #include "ApplicationModel.h"
-#include "ServiceMessage.h"
 #include "IConfig.h"
 
 using namespace std;
@@ -50,16 +49,14 @@ public:
 
 			model->setGameIDsTurnOn(temp);
 			temp.clear();
+
+			if (completeHandler)
+				completeHandler();
 		}
 		catch(...)
 		{
-			ServiceMessage msg(100);
-			errorHandler(msg);
-			return;
-		}
-
-		if (completeHandler)
-			completeHandler();
+			throw ExcConfigFileParsing();
+		}			
 	}
 
 private:

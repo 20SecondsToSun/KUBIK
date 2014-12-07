@@ -6,11 +6,12 @@
 #include "SettingsScreen.h"
 #include "ScreenSaver.h"
 #include "ServicePopup.h"
-#include "ServiceMessage.h"
 #include "Types.h"
 #include "AppConfig.h"
 #include "PhotoboothModel.h"
 #include "GameConfigs.h"
+#include "ScreenSaverSettings.h"
+#include "KubikException.h"
 
 using namespace std;
 using namespace kubik;
@@ -30,11 +31,18 @@ public:
 	{
 		preloader   = new Preloader();
 		servicePopup= new ServicePopup();
-		view->startLocation(preloader);		
+		view->startLocation(preloader);	
 
-		config.addCompleteListener(bind(&Controller::configLoadingCompleteHandler, this));
-		config.addErrorListener(bind(&Controller::configLoadingErrorHandler, this, std::placeholders::_1));
-		config.load(model);
+		try
+		{
+			config.load(model);
+		}
+		catch(ExcConfigFileParsing exc)
+		{
+			servicePopupShow(exc);
+		}
+
+		loadAllLocationsConfigs();
 	}
 
 private:
@@ -53,69 +61,86 @@ private:
 	Preloader		*preloader;
 	ServicePopup	*servicePopup;
 
-	void configLoadingCompleteHandler()
+	MenuSettings *menuSettings;
+	ScreenSaverSettings *screenSaverSettings; 
+
+	void loadAllLocationsConfigs()
 	{
 		console()<<"Config Complete Handler"<<endl;
 
-		gamesConfigs.addCompleteListener(bind(&Controller::allConfigsLoadingCompleteHandler, this));
-		gamesConfigs.addErrorListener(bind(&Controller::allConfigsLoadingErrorHandler, this, std::placeholders::_1));
-		gamesConfigs.load(model);	
+		try
+		{
+			gamesConfigs.load(model);
+		}
+		catch(ExcConfigFileParsing exc)
+		{
+			servicePopupShow(exc);
+		}	
+
+		setConfigs();
 	}
 
-	void allConfigsLoadingCompleteHandler()
+	void setConfigs()
 	{
-		menu        = new MenuScreen();
+		menuSettings		    = new MenuSettings(model);		
+
+		try
+		{
+			screenSaverSettings	= new ScreenSaverSettings(model);
+		}
+		catch(ExcBigFileSizeOfScreenSaver exc)
+		{
+			servicePopupShow(exc);
+		}
+
+		screenSaver = new ScreenSaver(screenSaverSettings);	
+		menu        = new MenuScreen(menuSettings);
 		settings    = new SettingsScreen();	
-		screenSaver = new ScreenSaver();	
-	
+
+
 		if(createGame(model->getDefaultGameID()))
 		{
+			connect_once(graphics().completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
+			connect_once(graphics().errorLoadingSignal, bind(&Controller::allGraphicsLoadingErrorHandler, this, std::placeholders::_1));
+
 			graphics().setLoadingTextures(menu->getTextures());
 			graphics().setLoadingTextures(settings->getTextures());
 			graphics().setLoadingTextures(game->getTextures());
-			graphics().setLoadingTextures(screenSaver->getTextures());
-
-			graphics().addCompleteListener(bind(&Controller::allAppGraphicsLoadingCompleteHandler, this));
-			graphics().addErrorListener(bind(&Controller::allAppGraphicsLoadingErrorHandler, this, std::placeholders::_1));		
-			graphics().load();		
+			graphics().setLoadingTextures(screenSaver->getTextures());		
+			graphics().load();	
 		}
 	}
 
-	void allConfigsLoadingErrorHandler(ServiceMessage msg)
-	{	
-		servecePopupShow(msg);
-	}
-
-	void allAppGraphicsLoadingCompleteHandler()
+	void allGraphicsLoadingCompleteHandler()
 	{
-		console()<<"Graphics all Loaded::"<<endl;
+		console()<<"Graphics all Loaded:: "<<screenSaverSettings->isExist()<<endl;
 
-		graphics().removeCompleteListener();
-		graphics().removeErrorListener();
+		graphics().completeLoadingSignal.disconnect_all_slots();	
+		graphics().errorLoadingSignal.disconnect_all_slots();	
 
 		view->init(screenSaver, menu, settings);
 		menu->init(model->getGameIDsTurnOn());
-		
+
 		settings->init();		
-		game->init();
+		game->init();		
 
-		bool screenSaverExist  = !screenSaver->isExist();
-		model->setScreenSaverExist(screenSaverExist);
-
-		if(screenSaverExist)
+		if(screenSaverSettings->isExist())
 		{
 			screenSaver->init();
 			startScreenSaver();	
 		}
-		/*else if(screenSaver->isError())
-		{			
-			servecePopupShow(screenSaver->getMessage());
-		}*/
 		else
 		{
 			startMenuScreen();
 		}	
-	}		
+	}
+
+	void allGraphicsLoadingErrorHandler(KubikException exc)
+	{
+		graphics().completeLoadingSignal.disconnect_all_slots();	
+		graphics().errorLoadingSignal.disconnect_all_slots();	
+		servicePopupShow(exc);
+	}
 
 	////////////////////////////////////////////////////////////////////////////
 	//
@@ -226,12 +251,12 @@ private:
 		else if(createGame(gameId))
 		{
 			console()<<"start!!! "<<endl;
-			view->startLocation(preloader);			
+			view->startLocation(preloader);		
 
-			graphics().setLoadingTextures(game->getTextures());
-			graphics().addCompleteListener(bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
-			graphics().addErrorListener(bind(&Controller::gameGraphicsLoadingErrorHandler, this, std::placeholders::_1));
-			graphics().load();
+			connect_once(graphics().completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
+			connect_once(graphics().errorLoadingSignal, bind(&Controller::allGraphicsLoadingErrorHandler, this, std::placeholders::_1));
+			graphics().setLoadingTextures(game->getTextures());			
+			graphics().load();				
 		}
 		else
 		{
@@ -252,8 +277,8 @@ private:
 		}
 		else
 		{
-			ServiceMessage msg(102);
-			noSuchGameExist(msg);
+			//ServiceMessage msg(102);
+			//noSuchGameExist(msg);
 		}
 
 		return false;
@@ -278,8 +303,8 @@ private:
 
 	void gameGraphicsLoadingCompleteHandler()
 	{
-		graphics().removeCompleteListener();
-		graphics().removeErrorListener();
+		graphics().completeLoadingSignal.disconnect_all_slots();	
+		graphics().errorLoadingSignal.disconnect_all_slots();
 		
 		game->init();
 		startGame();	
@@ -303,29 +328,9 @@ private:
 	//
 	////////////////////////////////////////////////////////////////////////////
 
-	void noSuchGameExist(ServiceMessage msg)
+	void servicePopupShow(KubikException exc)//const char* msg, bool isCritical = false)
 	{
-		servecePopupShow(msg);
-	}	
-
-	void allAppGraphicsLoadingErrorHandler(ServiceMessage msg)
-	{	
-		servecePopupShow(msg);
-	}
-
-	void gameGraphicsLoadingErrorHandler(ServiceMessage msg)
-	{	
-		servecePopupShow(msg);
-	}
-
-	void configLoadingErrorHandler(ServiceMessage msg)
-	{	
-		servecePopupShow(msg);
-	}
-
-	void servecePopupShow(ServiceMessage msg)
-	{
-		servicePopup->setMessage(msg);
+		servicePopup->setMessage(exc.what());
 		view->startLocation(servicePopup);
 	}
 

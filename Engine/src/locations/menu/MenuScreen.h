@@ -2,6 +2,7 @@
 #include "cinder/app/AppNative.h"
 #include "MenuButton.h"
 #include "Button.h"
+#include "MenuSettings.h"
 #include "IScreen.h"
 
 using namespace std;
@@ -13,16 +14,15 @@ class MenuScreen:public IScreen
 {
 public:
 	
-	MenuScreen():IScreen()
-	{		
-		setTextures();
-	}
+	MenuScreen(ISettings* config);
 
 	signal<void(int)> startGameSignal;
 	signal<void(void)> startSettingsSignal;
 	signal<void(void)> startVideoSignal;
 	
 	void draw();	
+	void clean();
+	void reload(ISettings* config);
 
 	virtual void init(){};
 	void init(vector<int> gameIDs);
@@ -48,6 +48,7 @@ private:
 	void mouseUp( MouseEvent &event);
 	void update();
 	
+	MenuSettings* settings;
 
 	ButtonText *settingsButton, *videoButton;
 

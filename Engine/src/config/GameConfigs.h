@@ -2,7 +2,7 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/Json.h"
 #include "ApplicationModel.h"
-#include "ServiceMessage.h"
+#include "KubikException.h"
 #include "IConfig.h"
 #include "Types.h"
 
@@ -18,7 +18,7 @@ public:
 	FuncesSettings  *funcesSettings;
 	ApplicationModel  *model;
 
-	bool isError;
+	bool isError;	
 
 	void load(ApplicationModel *model)
 	{
@@ -46,17 +46,8 @@ public:
 			}
 
 			if(isError)
-			{
-				ServiceMessage msg(100);
-				errorHandler(msg);
-				return;
-			}
+			  throw ExcConfigFileParsing();
 		}
-
-		console()<<"__set ::: "<<photoBoothSettings<<endl;
-
-		if (completeHandler)
-			completeHandler();
 	}
 
 private:

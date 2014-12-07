@@ -41,6 +41,16 @@ public:
 		simple.addLine(stringTools().cp1251_to_utf8(text.c_str()));			
 		return gl::Texture( simple.render( true, false ) );
 	}
+
+	gl::Texture  getTextField(const char* text,ci::Font* font, ColorA color)
+	{		
+		ci::TextLayout simple;
+		simple.clear(ColorA(1,1,1,0));
+		simple.setFont( *font );
+		simple.setColor(color );
+		simple.addLine(stringTools().cp1251_to_utf8(text));			
+		return gl::Texture( simple.render( true, false ) );
+	}
 };
 
 // helper function(s) for easier access 
