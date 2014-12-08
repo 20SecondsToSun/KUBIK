@@ -1,9 +1,11 @@
 #include "TuneUpScreen.h"
 
-TuneUpScreen::TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig):IScreen()
+TuneUpScreen::TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings):IScreen()
 {	
-	settings = config;//static_cast<TuneUpSettings*>(config);
-	this->menuConfig = menuConfig;
+	settings			= config;
+	this->menuConfig	= menuConfig;
+	this->gameSettings	= gameSettings;
+
 	setTextures();
 }
 

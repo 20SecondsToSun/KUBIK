@@ -14,7 +14,6 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
-using namespace ci::signals;
 
 namespace kubik
 {
@@ -23,10 +22,8 @@ namespace kubik
 
 	public:
 
-		signal<void(void)> completeLoadingSignal;
-		signal<void(KubikException)> errorLoadingSignal;
-
-		static Graphics& getInstance() { static Graphics graph; return graph; };
+		ci::signals::signal<void(void)> completeLoadingSignal;
+		ci::signals::signal<void(KubikException)> errorLoadingSignal;
 
 		void setLoadingTextures(Types::OneBlockTexDictionary _textures)
 		{	
@@ -42,6 +39,18 @@ namespace kubik
 		}
 
 	private:
+
+		ci::signals::connection loadingSignal;
+		vector<Types::TexObject*> loadingRes;
+		boost::shared_ptr<boost::thread> loadingThread;
+
+		enum
+		{
+			LOADING,
+			LOADED,
+			LOADING_ERROR
+		}
+		loadingStatus;	
 
 		void waitLoadingComplete()
 		{
@@ -69,7 +78,7 @@ namespace kubik
 				{
 					try 
 					{
-						console()<<"try image loaded  "<< res->path <<endl;
+						console()<<"try image load  "<< res->path <<endl;
 						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
 						res->tex = image;
 						console()<<"image loaded"<<endl;
@@ -85,6 +94,7 @@ namespace kubik
 				{
 					try 
 					{
+						console()<<"try video load  "<< res->path <<endl;
 						qtime::MovieGl movie = qtime::MovieGl( res->path);					
 						console()<<"video loaded"<<endl;
 						res->movie = movie;
@@ -112,20 +122,6 @@ namespace kubik
 
 			if(loadingStatus == LOADING)
 				loadingStatus = LOADED;			
-		}
-
-		ci::signals::connection loadingSignal;
-		vector<Types::TexObject*> loadingRes;
-		boost::shared_ptr<boost::thread> loadingThread;
-
-		enum
-		{
-			LOADING,
-			LOADED,
-			LOADING_ERROR
-		}
-		loadingStatus;	
+		}		
 	};
-
-	inline Graphics&	graphics() {return Graphics::getInstance();};
 }

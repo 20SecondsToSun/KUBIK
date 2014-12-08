@@ -10,39 +10,42 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 
-class MenuScreen:public IScreen
+namespace kubik
 {
-public:
-	
-	signal<void(int)> startGameSignal;
-	signal<void(void)> startSettingsSignal;
-	signal<void(void)> startVideoSignal;
-	
-	void draw();	
-	void clean();
-	void reload();
-	void init(MenuSettings* config);
+	class MenuScreen:public IScreen
+	{
+	public:
 
-	void removeMouseUpListener();
-	void addMouseUpListener();
+		signal<void(int)> startGameSignal;
+		signal<void(void)> startSettingsSignal;
+		signal<void(void)> startVideoSignal;
 
-private:
-	vector<MenuButton*> menuBtns;
+		void draw();	
+		void clean();
+		void reload();
+		void init(MenuSettings* config);
 
-	connection appUpdateSignal;
-	connection mouseListener;	
+		void removeMouseUpListener();
+		void addMouseUpListener();
 
-	void mouseUpListener(MenuButton& button);
-	void settingsMouseUpListener(ButtonText& button);
-	void videoMouseUpListener(ButtonText& button);
+	private:
+		vector<MenuButton*> menuBtns;
 
-	void createMenuBtns(vector<int> gameIDs);
-	void clearButtonVector();
-	void mouseUp( MouseEvent &event);
-	void update();
-	
-	MenuSettings *settings;
-	ButtonText *settingsButton, *videoButton;
-	gl::Texture bckgnd;
-	ci::Font font;
-};
+		connection appUpdateSignal;
+		connection mouseListener;	
+
+		void mouseUpListener(MenuButton& button);
+		void settingsMouseUpListener(ButtonText& button);
+		void videoMouseUpListener(ButtonText& button);
+
+		void createMenuBtns(vector<int> gameIDs);
+		void clearButtonVector();
+		void mouseUp( MouseEvent &event);
+		void update();
+
+		MenuSettings *settings;
+		ButtonText *settingsButton, *videoButton;
+		gl::Texture bckgnd;
+		ci::Font font;
+	};
+}

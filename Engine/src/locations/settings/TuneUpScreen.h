@@ -7,6 +7,7 @@
 #include "TuneUpSettings.h"
 #include "MenuSettings.h"
 #include "Button.h"
+#include "GameSettings.h"
 
 using namespace std;
 using namespace ci;
@@ -18,7 +19,7 @@ namespace kubik
 	{
 	public:
 
-		TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig);
+		TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings);
 		~TuneUpScreen();
 
 		signal<void(int)> startGameSignal;	
@@ -44,6 +45,7 @@ namespace kubik
 		Font font;
 		TuneUpSettings* settings;
 		MenuSettings* menuConfig;
+		GameSettings* gameSettings;
 
 		ButtonText *menuDesignChngBtn;
 		shared_ptr<Button> closeBtn;

@@ -10,95 +10,43 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-class GameConfigs: public IConfig
+namespace kubik
 {
-
-public:
-	PhotoboothSettings  *photoBoothSettings;
-	FuncesSettings  *funcesSettings;
-	ApplicationModel  *model;
-
-	bool isError;	
-
-	void load(ApplicationModel *model)
+	class GameConfigs: public IConfig
 	{
-		isError = false;
 
-		this->model = model;
+	public:	
 
-		vector<int> gameIDs = model-> getGameIDsTurnOn();
+		void load(ApplicationModel *model, GameSettings *gameSettings)
+		{		
+			this->model = model;
 
-		for (auto gameID: gameIDs)
-		{
+			vector<int> gameIDs = model->getGameIDsTurnOn();
 
-			switch (gameID)
+			for (auto gameID: gameIDs)
 			{
+				switch (gameID)
+				{
 				case gameId::PHOTOBOOTH:
 					parsePhotoboothSettings();
-				break;
+					break;
 
 				case gameId::FUNCES:
 					parseFuncesSettings();
-				break;
+					break;
 
 				default:
-				break;
+					break;
+				}				  
 			}
-
-			if(isError)
-			  throw ExcConfigFileParsing();
 		}
-	}
 
-private:
-	void parsePhotoboothSettings()
-	{
-		console()<<"parse photobooth settings"<<endl;
+	private:
+		PhotoboothSettings  *photoBoothSettings;
+		FuncesSettings  *funcesSettings;
+		ApplicationModel  *model;
+		GameSettings *gameSettings;	
 
-		photoBoothSettings = new PhotoboothSettings();
 		
-
-   //"filtersIds"    : [1, 2],
-   //"photoNum": 5,
-   //"isFacebook": true,
-   //"isVkotakte": true,
-   //"isTwitter": true,
-   //"isEmail": true,
-   //"isQrCode": true,
-   //"isPrint": true  
-
-		try	
-		{
-			JsonTree configJSON = JsonTree(loadFile(getSettingsConfigPath()));
-			photoBoothSettings->setSeconds(configJSON.getChild("seconds").getValue<int>());
-			photoBoothSettings->setSecondsBetweenShots(configJSON.getChild("secondsBetweenShots").getValue<int>());
-			
-			//photoBoothSettings->
-			/*vector<int> temp;
-			
-			JsonTree gamesAvailable = JsonTree(configJSON.getChild( "gamesAvailable"));
-			for(auto it = gamesAvailable.begin(); it != gamesAvailable.end(); ++it)
-				temp.push_back(it->getValue<int>());
-
-			temp.clear();*/			
-			model->setPhotoboothSettings(photoBoothSettings);
-		}
-		catch(...)
-		{
-			isError = true;
-			return;
-		}
-
-	}
-
-	void parseFuncesSettings()
-	{
-		console()<<"parse funces settings"<<endl;
-	}
-
-	fs::path getSettingsConfigPath()
-	{
-		fs::path basePath = getAppPath();	
-		return basePath / "data" / "configs" / "photobooth.txt";
-	}
-};
+	};
+}

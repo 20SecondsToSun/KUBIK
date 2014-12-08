@@ -22,7 +22,7 @@ GameScreen::GameScreen(int gameID, ISettings* config)
 
 GameScreen::~GameScreen()
 {
-	console()<<"game screen destrpy------------------->"<<endl;
+	console()<<"~~~~~~~~~~~~~~game screen destroy~~~~~~~~~~~~~~~~~~~~~~"<<endl;
 }
 
 void GameScreen::closeGameHandler()

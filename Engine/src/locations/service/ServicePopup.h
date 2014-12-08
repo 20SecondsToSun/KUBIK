@@ -16,7 +16,7 @@ public:
 	ServicePopup():IScreen()
 	{	
 		font = Font(loadFile( getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf"), 30);
-		setTextures();
+		//setTextures();
 	}
 
 	void draw()

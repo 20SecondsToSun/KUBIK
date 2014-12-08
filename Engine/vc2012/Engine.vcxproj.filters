@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\model">
-      <UniqueIdentifier>{89c98543-2651-42e7-9684-653c58ca8ea8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\locations">
       <UniqueIdentifier>{74f60d72-28ce-4600-9354-53dd8482a79e}</UniqueIdentifier>
     </Filter>
@@ -64,9 +61,6 @@
     <Filter Include="Source Files\devices\printer">
       <UniqueIdentifier>{176d0808-ec4d-438f-8457-f2e10893585b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\graphics\texmanager">
-      <UniqueIdentifier>{e1253bc8-bd10-4aaf-ad3b-060422603aaa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\app">
       <UniqueIdentifier>{17ec98ba-54e8-441e-a31f-fda40d4e7c79}</UniqueIdentifier>
     </Filter>
@@ -97,6 +91,12 @@
     <Filter Include="Source Files\locations\screensaver">
       <UniqueIdentifier>{b791b344-b1d4-42f4-9ab6-4ff16c26567b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\config\exception">
+      <UniqueIdentifier>{15c01e21-71b4-43f0-916a-184096d3e464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\locations">
+      <UniqueIdentifier>{9f2b8059-ff48-49ec-8992-b0b5588d3f17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -108,9 +108,6 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp">
-      <Filter>Source Files\graphics\texmanager</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp">
       <Filter>Source Files\locations\menu</Filter>
     </ClCompile>
@@ -132,25 +129,22 @@
     <ClCompile Include="..\src\tools\Utils.cpp">
       <Filter>Source Files\tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config\KubikException.cpp">
-      <Filter>Source Files\config</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp">
       <Filter>Source Files\locations\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\controller\Controller.cpp">
+      <Filter>Source Files\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\KubikException.cpp">
+      <Filter>Source Files\config\exception</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\model\ApplicationModel.h">
-      <Filter>Source Files\model</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\graphics\Graphics.h">
       <Filter>Source Files\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\texmanager\TextureManager.h">
-      <Filter>Source Files\graphics\texmanager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\menu\MenuScreen.h">
       <Filter>Source Files\locations\menu</Filter>
@@ -239,28 +233,7 @@
     <ClInclude Include="..\src\games\ILocation.h">
       <Filter>Source Files\games</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\model\Types.h">
-      <Filter>Source Files\model</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\IConfig.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\model\IModel.h">
-      <Filter>Source Files\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\AppConfig.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\model\PhotoboothModel.h">
-      <Filter>Source Files\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\GameConfigs.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\PhotoboothSettings.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\FuncesSettings.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\ISettings.h">
@@ -278,19 +251,34 @@
     <ClInclude Include="..\src\locations\engine\IScreen.h">
       <Filter>Source Files\locations\engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\MenuSettings.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\KubikException.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\ScreenSaverSettings.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\TuneUpScreen.h">
       <Filter>Source Files\locations\settings</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\config\KubikException.h">
+      <Filter>Source Files\config\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\MenuSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\FuncesSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ScreenSaverSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\PhotoboothSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\config\TuneUpSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\GameSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\model\Types.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ApplicationModel.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>

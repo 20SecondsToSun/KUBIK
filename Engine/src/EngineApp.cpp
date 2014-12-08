@@ -18,8 +18,7 @@ public:
 	void update();
 	void draw();
 
-private:
-	ApplicationModel* model;
+private:	
 	ApplicationView* view;
 	Controller* controller;
 	void prepareSettings(ci::app::AppBasic::Settings *settings);
@@ -34,8 +33,7 @@ void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
 void EngineApp::setup()
 {
 	view		= new ApplicationView();
-	model		= new ApplicationModel();
-	controller  = new Controller(model, view);
+	controller  = new Controller(view);
 	controller->initLoad();
 
 	gl::enableAlphaBlending();
