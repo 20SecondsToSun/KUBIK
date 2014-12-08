@@ -3,49 +3,30 @@
 
 using namespace kubik;
 
-MenuScreen::MenuScreen(ISettings* config):IScreen()
-{	
-	settings = static_cast<MenuSettings*>(config);
-	setTextures();
-}
-
-void MenuScreen::setTextures()
-{
-	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
-	string menuPath   = "menuDesign\\";	
-	string path = mainFolder + menuPath;
-
-	console()<<"SET MENU TEXTURES!!!!!!!!!!!!!!!!!!"<<endl;
-
-	addToDictionary("background",	path + "bg.jpg",    resourceType::IMAGE, loadingType::FULL_PATH );
-	addToDictionary("background1",  path + "title.jpg", resourceType::IMAGE, loadingType::FULL_PATH);
-	addToDictionary("helvetica30",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
-}
-
-void MenuScreen::reload(ISettings* config)
+void MenuScreen::reload()
 {
 	clean();
-	settings = static_cast<MenuSettings*>(config);
-	setTextures();
 }
 
 void MenuScreen::clean()
 {
+	clearButtonVector();
 }
 
-void MenuScreen::init(vector<int> gameIDs)
-{
-	font =  designTexures["helvetica30"]->font;
-	createMenuBtns(gameIDs);
+void MenuScreen::init(MenuSettings* settings)
+{	
+	this->settings = settings;
+	font		   =  settings->getTextures()["helvetica30"]->font;
+	bckgnd         =  settings->getTextures()["background"]->tex;
+
+	createMenuBtns(settings->getGameIDs());
 }
 
 void MenuScreen::createMenuBtns(vector<int> gameIDs)
 {
 	string gameNames[3] = {"Funces", "Photobooth", "Kotopoza"};
 	string settingsName = "Настройки";
-	string screenSaverName = "Заставка";
-
-	clearButtonVector();
+	string screenSaverName = "Заставка";	
 
 	int i = 0;
 
@@ -58,25 +39,33 @@ void MenuScreen::createMenuBtns(vector<int> gameIDs)
 		float height = 200.0f;
 
 		Rectf buttonArea = Rectf(x, y, x + width, y + height);
-
 		MenuButton *button = new MenuButton(btnId, buttonArea, gameNames[i], font);		
-		button->mouseUpSignal.connect(bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
+		connect_once(button->mouseUpSignal, bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
 		menuBtns.push_back(button);
 		i++;
-	}
+	}	
 
 	settingsButton = new ButtonText(Rectf(50.0f, 50.0f, 350.0f, 150.0f), settingsName, font);	
-	settingsButton->mouseUpSignal.connect(bind(&MenuScreen::settingsMouseUpListener, this, std::placeholders::_1));
+	connect_once(settingsButton->mouseUpSignal, bind(&MenuScreen::settingsMouseUpListener, this, std::placeholders::_1));
 
 	videoButton = new ButtonText(Rectf(400.0f, 50.0f, 700.0f, 150.0f), screenSaverName, font);	
-	videoButton->mouseUpSignal.connect(bind(&MenuScreen::videoMouseUpListener, this, std::placeholders::_1));
+	connect_once(videoButton->mouseUpSignal, bind(&MenuScreen::videoMouseUpListener, this, std::placeholders::_1));
 }
 
 void MenuScreen::clearButtonVector()
 {
 	for(auto it : menuBtns)
+	{
+		it->mouseUpSignal.disconnect_all_slots();
 		delete it;
+	}
 	menuBtns.clear();
+
+	videoButton->mouseUpSignal.disconnect_all_slots();
+	settingsButton->mouseUpSignal.disconnect_all_slots();	
+
+	delete settingsButton;
+	delete videoButton;
 }
 
 void MenuScreen::mouseUpListener(MenuButton& button )
@@ -105,6 +94,8 @@ void MenuScreen::mouseUp( MouseEvent &event)
 
 void MenuScreen::draw()
 {
+	gl::draw(bckgnd);
+
 	for(auto it : menuBtns)
 		it->draw();
 

@@ -10,6 +10,13 @@ using namespace ci;
 
 namespace kubik
 {
+	enum SettingTypes
+	{
+		MENU = 1,
+		TUNEUP = 2,
+		SCREENSAVER = 3
+	};
+
 	enum gameId
 	{
 		FUNCES = 1,

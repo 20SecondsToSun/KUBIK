@@ -1,7 +1,7 @@
 #include "ApplicationView.h"
 
 
-void ApplicationView::init(ScreenSaver* screenSaver, MenuScreen* menu, SettingsScreen* settings)
+void ApplicationView::init(ScreenSaver* screenSaver, MenuScreen* menu, TuneUpScreen* settings)
 {
 	this->screenSaver = screenSaver;
 	this->menu = menu;

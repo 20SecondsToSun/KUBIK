@@ -31,7 +31,7 @@ void Photobooth::removeMouseUpListener()
 
 void Photobooth::setTextures()
 {
-	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
+	string mainFolder = getAppPath().string() + "kubik\\templates\\1\\";
 	string menuPath   = "gamesDesign\\photobooth\\";	
 	string path = mainFolder + menuPath;
 

@@ -6,6 +6,8 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
+namespace kubik
+{
 class PhotoboothSettings:public ISettings
 {
 public:
@@ -30,3 +32,4 @@ private:
 	int secondsBetweenShots;
 	int seconds;
 };
+}

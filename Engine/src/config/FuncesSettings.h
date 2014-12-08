@@ -6,7 +6,10 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-class FuncesSettings: public ISettings
+namespace kubik
 {
+	class FuncesSettings: public ISettings
+	{
 	
-};
+	};
+}

@@ -1,37 +1,11 @@
 #include "ScreenSaver.h"
+
 using namespace kubik;
 
-ScreenSaver::ScreenSaver(ScreenSaverSettings* settings)
-{	
+void ScreenSaver::init(ScreenSaverSettings* settings)
+{
 	this->settings = settings;
-
-	mode = this->settings->getScreenSaverMode();
-	path_ss = this->settings->getScreenSaverPath();
-	setTextures();
-}
-
-void ScreenSaver::setTextures()
-{
-	if(mode == IMAGE_SS)
-	{
-		addToDictionary("image", path_ss, resourceType::IMAGE, loadingType::FULL_PATH);		
-	}		
-	else if(mode == VIDEO_SS)
-	{
-		addToDictionary("video", path_ss, resourceType::VIDEO, loadingType::FULL_PATH);
-	}	
-}
-
-void ScreenSaver::init()
-{
-	if(mode == VIDEO_SS)
-	{
-		screenSaverResource =  new VideoScreenSaver(designTexures["video"]->movie);	
-	}
-	else if(mode == IMAGE_SS)
-	{
-		screenSaverResource =  new ImageScreenSaver(designTexures["image"]->tex);	
-	}
+	screenSaverResource = settings->getResource();	
 }
 
 void ScreenSaver::start()

@@ -1,13 +1,13 @@
 #pragma once
 
+#include <boost/algorithm/string.hpp>
+#include <boost/thread.hpp>
+
 #include "cinder/app/AppNative.h"
 #include "cinder/Json.h"
 #include "cinder/gl/gl.h"
-#include <boost/algorithm/string.hpp>
 #include "cinder/ImageIo.h"
-#include <boost/thread.hpp>
 #include "Types.h"
-#include "IScreen.h"
 #include "KubikException.h"
 
 using namespace std;
@@ -16,133 +16,116 @@ using namespace ci::app;
 using namespace ci::gl;
 using namespace ci::signals;
 
-class Graphics
+namespace kubik
 {
-
-public:
-	
-	signal<void(void)> completeLoadingSignal;
-	signal<void(KubikException)> errorLoadingSignal;
-
-	static Graphics& getInstance() { static Graphics graph; return graph; };
-
-	Graphics()
+	class Graphics
 	{
-		loadingCounter = 0 ;
-	}
 
-	void setLoadingTextures(Types::OneBlockTexDictionary _textures)
-	{	
-		for ( auto it = _textures.begin(); it != _textures.end(); it++)
-		{
-			loadingRes.push_back((*it).second);
+	public:
+
+		signal<void(void)> completeLoadingSignal;
+		signal<void(KubikException)> errorLoadingSignal;
+
+		static Graphics& getInstance() { static Graphics graph; return graph; };
+
+		void setLoadingTextures(Types::OneBlockTexDictionary _textures)
+		{	
+			for ( auto it = _textures.begin(); it != _textures.end(); it++)		
+				loadingRes.push_back((*it).second);
 		}
 
-		loadingCounter = loadingRes.size();
-	}
-
-	void load()
-	{
-		loadingStatus = LOADING;
-		loadingSignal = App::get()->getSignalUpdate().connect(bind(&Graphics::waitLoadingComplete, this));		
-		loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
-	}
-
-private:
-
-	void waitLoadingComplete()
-	{
-		if(loadingStatus == LOADED)
+		void load()
 		{
-			loadingThread->join();
-			loadingSignal.disconnect();
-			loadingRes.clear();
-			completeLoadingSignal();
+			loadingStatus = LOADING;
+			loadingSignal = App::get()->getSignalUpdate().connect(bind(&Graphics::waitLoadingComplete, this));		
+			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
 		}
-		else if(loadingStatus == LOADING_ERROR)
-		{
-			loadingThread->join();
-			loadingSignal.disconnect();
-			loadingRes.clear();
-			errorLoadingSignal(ExcFileDoesNotExist());
-		}
-	}
 
-	void loadTextures()
-	{	
-		for (auto res: loadingRes)
+	private:
+
+		void waitLoadingComplete()
 		{
-			if(res->resourceType == resourceType::IMAGE)
+			if(loadingStatus == LOADED)
 			{
-				try 
-				{
-					console()<<"try image loaded  "<< res->path <<endl;
-					Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
-					res->tex = image;
-					console()<<"image loaded"<<endl;
-				}
-				catch( ... ) 
-				{
-					loadingStatus = LOADING_ERROR;
-					console() << "Unable to load the image." << std::endl;	
-					break;
-				}
+				loadingThread->join();
+				loadingSignal.disconnect();
+				loadingRes.clear();
+				completeLoadingSignal();
 			}
-			else if(res->resourceType == resourceType::VIDEO)
+			else if(loadingStatus == LOADING_ERROR)
 			{
-				try 
-				{
-					qtime::MovieGl movie = qtime::MovieGl( res->path);					
-					console()<<"video loaded"<<endl;
-					res->movie = movie;
-				}
-				catch( ... ) 
-				{
-					console() << "Unable to load the movie." << std::endl;
-					loadingStatus = LOADING_ERROR;
-				}
-			}
-			else if(res->resourceType == resourceType::FONT)
-			{
-				try 
-				{					
-					Font font =  Font(loadFile(fs::path(res->path)), res->fontSize);
-					res->font = font;
-					console() << "font loaded." << std::endl;
-				}
-				catch( ... ) 
-				{
-					loadingStatus = LOADING_ERROR;
-				}
+				loadingThread->join();
+				loadingSignal.disconnect();
+				loadingRes.clear();
+				errorLoadingSignal(ExcFileDoesNotExist());
 			}
 		}
 
-		if(loadingStatus == LOADING)
-			loadingStatus = LOADED;			
-	}
+		void loadTextures()
+		{	
+			for (auto res: loadingRes)
+			{
+				if(res->resourceType == resourceType::IMAGE)
+				{
+					try 
+					{
+						console()<<"try image loaded  "<< res->path <<endl;
+						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
+						res->tex = image;
+						console()<<"image loaded"<<endl;
+					}
+					catch( ... ) 
+					{
+						loadingStatus = LOADING_ERROR;
+						console() << "Unable to load the image." << std::endl;	
+						break;
+					}
+				}
+				else if(res->resourceType == resourceType::VIDEO)
+				{
+					try 
+					{
+						qtime::MovieGl movie = qtime::MovieGl( res->path);					
+						console()<<"video loaded"<<endl;
+						res->movie = movie;
+					}
+					catch( ... ) 
+					{
+						console() << "Unable to load the movie." << std::endl;
+						loadingStatus = LOADING_ERROR;
+					}
+				}
+				else if(res->resourceType == resourceType::FONT)
+				{
+					try 
+					{					
+						Font font =  Font(loadFile(fs::path(res->path)), res->fontSize);
+						res->font = font;
+						console() << "font loaded." << std::endl;
+					}
+					catch( ... ) 
+					{
+						loadingStatus = LOADING_ERROR;
+					}
+				}
+			}
 
-	string getFullTexturePath(string url)
-	{	
-		return getAssetPath(url).string();
-	}	
+			if(loadingStatus == LOADING)
+				loadingStatus = LOADED;			
+		}
 
-	std::function<void()> completeHandler;
-	
-	int loadingCounter;
+		ci::signals::connection loadingSignal;
+		vector<Types::TexObject*> loadingRes;
+		boost::shared_ptr<boost::thread> loadingThread;
 
-	ci::signals::connection loadingSignal;
+		enum
+		{
+			LOADING,
+			LOADED,
+			LOADING_ERROR
+		}
+		loadingStatus;	
+	};
 
-	vector<Types::TexObject*> loadingRes;
-
-	boost::shared_ptr<boost::thread>	loadingThread;
-	
-	enum
-	{
-		LOADING,
-		LOADED,
-		LOADING_ERROR
-	}
-	loadingStatus;	
-};
-
-inline Graphics&	graphics() { return Graphics::getInstance(); };
+	inline Graphics&	graphics() {return Graphics::getInstance();};
+}

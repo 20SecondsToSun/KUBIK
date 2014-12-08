@@ -4,11 +4,10 @@
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 
-
 class ImageScreenSaver:public IResourceScreenSaver
 {
-public:
 
+public:
 	ImageScreenSaver(gl::Texture texture)
 	{
 		this->texture = texture;

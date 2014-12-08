@@ -31,7 +31,7 @@ void Funces::setTextures()
 	//addToDictionary("closeImg", "gamesDesign\\funces\\close.png");
 	//addToDictionary("img3", "gamesDesign\\funces\\3.jpg");
 
-	string mainFolder = getAppPath().string() + "data\\design\\template1\\";
+	string mainFolder = getAppPath().string() + "kubik\\templates\\1\\";
 	string menuPath   = "gamesDesign\\funces\\";	
 	string path = mainFolder + menuPath;
 

@@ -1,0 +1,3 @@
+{
+   "designPath" : "kubik\\templates\\1\\menuDesign\\"   
+}

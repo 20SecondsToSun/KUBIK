@@ -18,13 +18,9 @@ namespace kubik
 	{
 	public:
 
-		ScreenSaver(ScreenSaverSettings *settings);
-
-		enum {IMAGE_SS,	VIDEO_SS, NONE_SS};		
-
 		void start();
 		void stop();
-		void init();	
+		void init(ScreenSaverSettings* settings);			
 		void draw();
 
 		void addMouseUpListener();
@@ -40,8 +36,5 @@ namespace kubik
 
 		IResourceScreenSaver* screenSaverResource;
 		ScreenSaverSettings* settings;
-
-		int mode;
-		string path_ss;
 	};
 }

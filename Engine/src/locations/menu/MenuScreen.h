@@ -1,7 +1,7 @@
 #pragma once
 #include "cinder/app/AppNative.h"
 #include "MenuButton.h"
-#include "Button.h"
+#include "ButtonText.h"
 #include "MenuSettings.h"
 #include "IScreen.h"
 
@@ -14,27 +14,20 @@ class MenuScreen:public IScreen
 {
 public:
 	
-	MenuScreen(ISettings* config);
-
 	signal<void(int)> startGameSignal;
 	signal<void(void)> startSettingsSignal;
 	signal<void(void)> startVideoSignal;
 	
 	void draw();	
 	void clean();
-	void reload(ISettings* config);
-
-	virtual void init(){};
-	void init(vector<int> gameIDs);
+	void reload();
+	void init(MenuSettings* config);
 
 	void removeMouseUpListener();
 	void addMouseUpListener();
 
-protected:
-	void setTextures();
-
 private:
-	vector<MenuButton *> menuBtns;
+	vector<MenuButton*> menuBtns;
 
 	connection appUpdateSignal;
 	connection mouseListener;	
@@ -48,9 +41,8 @@ private:
 	void mouseUp( MouseEvent &event);
 	void update();
 	
-	MenuSettings* settings;
-
+	MenuSettings *settings;
 	ButtonText *settingsButton, *videoButton;
-
+	gl::Texture bckgnd;
 	ci::Font font;
 };

@@ -80,8 +80,7 @@ private:
 			for(auto it = gamesAvailable.begin(); it != gamesAvailable.end(); ++it)
 				temp.push_back(it->getValue<int>());
 
-			temp.clear();*/
-			console()<<"set ::: "<<photoBoothSettings<<endl;
+			temp.clear();*/			
 			model->setPhotoboothSettings(photoBoothSettings);
 		}
 		catch(...)

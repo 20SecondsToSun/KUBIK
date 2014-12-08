@@ -4,6 +4,9 @@
 #include "ApplicationModel.h"
 #include "FileTools.h"
 #include "KubikException.h"
+#include "IResourceScreenSaver.h"
+#include "VideoScreenSaver.h"
+#include "ImageScreenSaver.h"
 
 using namespace std;
 using namespace ci;
@@ -17,15 +20,16 @@ namespace kubik
 	static const string IMAGE_SUPPORT_EXTENSIONS[3] = {".jpeg", ".jpg", ".png"};
 	static const string VIDEO_SUPPORT_EXTENSIONS[1] = {".mov"};
 
-	static const string SCREEN_SAVER_PATH = "data\\screensaver\\";
-
 	class ScreenSaverSettings:public ISettings
 	{
 	public:	
 
 		ScreenSaverSettings(ApplicationModel *model)
 		{
+			console()<<"findScreenSaver   "<<endl;
+			this->model = model;
 			findScreenSaver();
+			setTextures();
 		}
 
 		int getScreenSaverMode()
@@ -40,23 +44,52 @@ namespace kubik
 
 		bool isExist()
 		{
-			return _isExist;
+			return mode != NONE_SS;
+		}
+
+		void setTextures()
+		{
+			if(mode == IMAGE_SS)
+			{
+				addToDictionary("image", path_ss, resourceType::IMAGE, loadingType::FULL_PATH);		
+			}		
+			else if(mode == VIDEO_SS)
+			{
+				addToDictionary("video", path_ss, resourceType::VIDEO, loadingType::FULL_PATH);
+			}	
+		}
+
+		IResourceScreenSaver* getResource()
+		{
+			if(mode == VIDEO_SS)
+			{
+				screenSaverResource =  new VideoScreenSaver(designTexures["video"]->movie);	
+			}
+			else if(mode == IMAGE_SS)
+			{
+				screenSaverResource =  new ImageScreenSaver(designTexures["image"]->tex);	
+			}
+
+			return screenSaverResource;
 		}
 
 	private:
 
-		bool _isExist;
 		enum {IMAGE_SS,	VIDEO_SS, NONE_SS};		
 		int mode;
 		string path_ss;
+
+		ApplicationModel *model;
+
+		IResourceScreenSaver* screenSaverResource;
 
 		void findScreenSaver()
 		{
 			vector<string> content;	
 			int videoIndex = -1;
-			bool bigSizeError = false;
-
-			string PATH = getAppPath().string() + SCREEN_SAVER_PATH;
+			bool bigSizeError = false;			
+			string PATH = model->getScreenSaverConfigPath();
+			mode = NONE_SS;
 
 			for (fs::directory_iterator it(PATH); it != fs::directory_iterator(); ++it)
 			{
@@ -68,12 +101,12 @@ namespace kubik
 					if(ssType == NONE_SS)
 						continue;
 
-					string filePath = PATH + it->path().filename().string();				
+					string filePath = PATH + it->path().filename().string();
 
 					if(fileSizeNotTooBig(filePath, ext))
 					{
-						if(ssType == VIDEO_SS)				
-							videoIndex = content.size();				
+						if(ssType == VIDEO_SS)
+							videoIndex = content.size();
 
 						content.push_back(filePath);
 					}
@@ -83,10 +116,8 @@ namespace kubik
 					}
 				}
 			}
-
-			_isExist = !content.empty();
-
-			if(_isExist)
+			
+			if(content.empty() == false)
 			{
 				if(videoIndex == -1)
 				{
@@ -96,7 +127,7 @@ namespace kubik
 				else
 				{
 					path_ss = content[videoIndex];
-					mode = VIDEO_SS;			
+					mode = VIDEO_SS;
 				}
 			}
 			else if (bigSizeError)	

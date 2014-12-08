@@ -27,15 +27,15 @@ protected:
 
 		designTexures[key] = value;
 	}
-	virtual void setTextures(){};
+	//virtual void setTextures(){};
 public:
-	IScreen()
+	/*IScreen()
 	{
 		setTextures();
-	}
+	}*/
 
 	virtual void draw() = 0;
-	virtual void init() = 0;
+	//virtual void init() = 0;
 	
 
 	signal<void(void)> closeLocationSignal;

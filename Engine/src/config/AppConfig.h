@@ -13,6 +13,11 @@ using namespace ci::app;
 class AppConfig: public IConfig
 {
 public:
+
+	AppConfig(ApplicationModel *model)
+	{
+		load(model);
+	}
 	
 	void load(ApplicationModel *model)
 	{
@@ -22,6 +27,10 @@ public:
 			model->setUserID(configJSON.getChild("userID").getValue<string>());
 			model->setStandID(configJSON.getChild("standID").getValue<int>());
 			model->setNetConnection(configJSON.getChild("netConnection").getValue<bool>());
+
+			model->setMenuConfigPath(configJSON.getChild("menuConfigPath").getValue<string>());
+			model->setTuneUpConfigPath(configJSON.getChild("tuneUpConfigPath").getValue<string>());
+			model->setScreenSaverConfigPath(configJSON.getChild("screenSaverConfigPath").getValue<string>());
 
 			int gameID = configJSON.getChild("defaultGameID").getValue<int>();
 			model->setDefaultGameID(gameID);

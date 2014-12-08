@@ -116,7 +116,7 @@
     <ClCompile Include="..\src\graphics\texmanager\TextureManager.cpp" />
     <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
-    <ClCompile Include="..\src\locations\settings\SettingsScreen.cpp" />
+    <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp" />
     <ClCompile Include="..\src\locations\video\ScreenSaver.cpp" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
   </ItemGroup>
@@ -136,6 +136,7 @@
     <ClInclude Include="..\src\config\MenuSettings.h" />
     <ClInclude Include="..\src\config\PhotoboothSettings.h" />
     <ClInclude Include="..\src\config\ScreenSaverSettings.h" />
+    <ClInclude Include="..\src\config\TuneUpSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\IGame.h" />
@@ -156,7 +157,7 @@
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
-    <ClInclude Include="..\src\locations\settings\SettingsScreen.h" />
+    <ClInclude Include="..\src\locations\settings\TuneUpScreen.h" />
     <ClInclude Include="..\src\locations\video\ImageScreenSaver.h" />
     <ClInclude Include="..\src\locations\video\IResourceScreenSaver.h" />
     <ClInclude Include="..\src\locations\video\ScreenSaver.h" />

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Exception.h"
 
 class KubikException : public cinder::Exception
@@ -11,7 +10,7 @@ public:
 protected:
 	char							mMessage[ 2048 ];
 	bool							isCritical;
-	//friend class					FaceTracker;
+	//friend class					
 };
 
 class ExcBigFileSizeOfScreenSaver : public KubikException 

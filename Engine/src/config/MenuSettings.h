@@ -1,19 +1,65 @@
 #pragma once
 #include "cinder/app/AppNative.h"
+#include "cinder/Json.h"
 #include "ISettings.h"
 #include "ApplicationModel.h"
+#include "KubikException.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-class MenuSettings:public ISettings
+namespace kubik
 {
-public:
-	MenuSettings(ApplicationModel *model)
+	class MenuSettings:public ISettings
 	{
-	}
+	public:
+		MenuSettings(ApplicationModel *model)
+		{	
+			this->model = model;
 
-private:
+			load();
+			setTextures();
+		}
 
-};
+		void load()
+		{
+			try	
+			{
+				JsonTree configJSON = JsonTree(loadFile(model->getMenuConfigPath()));
+				designPath = configJSON.getChild("designPath").getValue<string>();
+			}
+			catch(...)
+			{
+				throw ExcConfigFileParsing();
+			}
+		}
+
+		void setDesignPath(string path)
+		{
+			designPath = path;
+		}
+
+		vector<int> getGameIDs()
+		{
+			return model->getGameIDsTurnOn();
+		}
+
+		void reload()
+		{
+			setTextures();
+		}
+
+	private:
+
+		ApplicationModel *model;
+
+		void setTextures()
+		{		
+			designTexures.clear();
+			addToDictionary("background",	getDesignPath() + "bg.jpg",    resourceType::IMAGE, loadingType::FULL_PATH );
+			addToDictionary("background1",  getDesignPath() + "title.jpg", resourceType::IMAGE, loadingType::FULL_PATH);
+			addToDictionary("helvetica30",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
+		}
+	};
+}

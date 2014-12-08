@@ -70,6 +70,9 @@ public:
 		return gameIDsPurchased;
 	}	
 
+
+	////////////////////////////////////////////
+
 	bool isGameCurrent(int id)
 	{
 		return currentGame == id;
@@ -96,20 +99,13 @@ public:
 		return false;
 	}
 
+	/////////////////////////////////////////
+
 	bool onlyOneGameOn()
 	{
 		return gameIDsTurnOn.size() == 1;
 	}
 
-	void setScreenSaverExist(bool value)
-	{
-		screenSaverExist =  value;
-	}
-
-	bool getScreenSaverExist()
-	{
-		return screenSaverExist;
-	}
 
 	ISettings* getGameSettingsById()
 	{
@@ -142,14 +138,50 @@ public:
 		photoBoothSettings =  phs;
 	}
 
+	// set paths //
+
+	void setMenuConfigPath(string path)
+	{
+		menuConfigPath = getAppPath().string() +path;
+	}
+
+	void setTuneUpConfigPath(string path)
+	{
+		tuneUpConfigPath = getAppPath().string() +path;
+	}	
+
+	void setScreenSaverConfigPath(string path)
+	{
+		screenSaverConfigPath = getAppPath().string() +path;
+	}
+
+	string getMenuConfigPath()
+	{
+		return menuConfigPath;
+	}
+
+	string getTuneUpConfigPath()
+	{
+		return tuneUpConfigPath;
+	}
+
+	string getScreenSaverConfigPath()
+	{
+		return screenSaverConfigPath;
+	}
+
+
 private:
 	string userID;
 	int standID;
 	int defaultGameID;
 	bool netConnection;
-	bool screenSaverExist;
-
 	int currentGame;
+
+	string menuConfigPath;
+	string tuneUpConfigPath;
+	string screenSaverConfigPath;
+	
 
 	vector<int> gameIDsAvailable;
 	vector<int> gameIDsPurchased;

@@ -5,5 +5,8 @@
    "userID": "1fggh",     
    "gamesAvailable" : [1, 2, 3],
    "gamesPurchased" : [1, 2],
-   "gamesTurnOn"    : [1, 2]
+   "gamesTurnOn"    : [1, 2],
+   "menuConfigPath" : "data\\configs\\menu.txt",
+   "tuneupConfigPath" : "data\\configs\\tuneup.txt",
+   "screenSaverConfigPath" : "user_design\\screensaver"
 }

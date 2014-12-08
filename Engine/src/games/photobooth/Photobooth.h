@@ -13,7 +13,8 @@
 using namespace std;
 using namespace ci;
 using namespace ci::app;
-
+namespace kubik
+{
 class Photobooth:public IGame
 {
 public:	
@@ -49,3 +50,4 @@ private:
 
 	PhotoboothSettings* settings;
 };
+}
