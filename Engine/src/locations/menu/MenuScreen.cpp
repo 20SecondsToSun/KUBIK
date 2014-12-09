@@ -13,6 +13,11 @@ void MenuScreen::clean()
 	clearButtonVector();
 }
 
+MenuScreen::MenuScreen(MenuSettings* settings)
+{
+	init(settings);
+}
+
 void MenuScreen::init(MenuSettings* settings)
 {	
 	this->settings = settings;

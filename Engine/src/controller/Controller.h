@@ -54,7 +54,9 @@ namespace kubik
 		void loadGraphics();
 		void allGraphicsLoadingCompleteHandler();
 		void removeGraphicsLoadingSignals();
-		void allGraphicsLoadingErrorHandler(KubikException exc);
+		void graphicsLoadErrorHandler(KubikException exc);
+
+		void firstStart();
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -87,8 +89,7 @@ namespace kubik
 		void appSettingsChangedHandler(vector<int> changes);
 		void reloadScreens(vector<int> changes);
 		void allGraphicsReloadCompleteHandler();
-		void allGraphicsReloadErrorHandler(KubikException exc);
-
+		
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					GAME SCREEN

@@ -6,6 +6,7 @@ TuneUpScreen::TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, Gam
 	settings			= config;
 	this->menuConfig	= menuConfig;
 	this->gameSettings	= gameSettings;
+	init(config);
 }
 
 TuneUpScreen::~TuneUpScreen()

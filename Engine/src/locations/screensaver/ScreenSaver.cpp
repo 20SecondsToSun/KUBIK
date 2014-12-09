@@ -2,6 +2,11 @@
 
 using namespace kubik;
 
+ScreenSaver::ScreenSaver(ScreenSaverSettings* settings)
+{
+	init(settings);
+}
+
 void ScreenSaver::init(ScreenSaverSettings* settings)
 {
 	this->settings = settings;

@@ -16,6 +16,9 @@ namespace kubik
 	{
 	public:
 
+		MenuScreen(MenuSettings* config);
+		void init(MenuSettings* config);
+
 		signal<void(int)> startGameSignal;
 		signal<void(void)> startSettingsSignal;
 		signal<void(void)> startVideoSignal;
@@ -23,7 +26,7 @@ namespace kubik
 		void draw();	
 		void clean();
 		void reload();
-		void init(MenuSettings* config);
+		
 
 		void removeMouseUpListener();
 		void addMouseUpListener();

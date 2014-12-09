@@ -17,17 +17,10 @@ namespace kubik
 	{
 	public:
 
-		void init(ScreenSaver* screenSaver, MenuScreen* menu, TuneUpScreen* settings);
 		void draw();
 		void startLocation(IScreen* screen);
 
 	private:	
-		IScreen *location;
-
-		MenuScreen* menu;
-		TuneUpScreen* settings;
-		GameScreen* game;
-		ScreenSaver* screenSaver;
-		Preloader* preloader;	
+		IScreen *location;	
 	};
 }

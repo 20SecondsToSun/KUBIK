@@ -17,7 +17,7 @@ namespace kubik
 	class ScreenSaver: public IScreen
 	{
 	public:
-
+		ScreenSaver(ScreenSaverSettings* settings);
 		void start();
 		void stop();
 		void init(ScreenSaverSettings* settings);

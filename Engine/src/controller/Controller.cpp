@@ -20,13 +20,13 @@ void Controller::initLoad()
 	{
 		model = new ApplicationModel();
 		model->load();
+
+		loadAllLocationsConfigs();
 	}
 	catch(ExcConfigFileParsing exc)
 	{
 		servicePopupShow(exc);
-	}
-
-	loadAllLocationsConfigs();
+	}	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -42,44 +42,17 @@ void Controller::loadAllLocationsConfigs()
 		gameSettings		 = new GameSettings(model);
 		menuSettings		 = new MenuSettings(model);	
 		screenSaverSettings	 = new ScreenSaverSettings(model);
-		tuneUpSettings		 = new TuneUpSettings(model);
+		tuneUpSettings		 = new TuneUpSettings(model);	
 
-		gameSettings->loadGamesSettings();
+		// фабрика сеттингов
 
-		setScreens();
+		loadGraphics();
 	}
 	catch(ExcConfigFileParsing exc)
 	{
 		servicePopupShow(exc);
 	}
 	catch(ExcBigFileSizeOfScreenSaver exc)
-	{
-		servicePopupShow(exc);
-	}
-	catch(...)
-	{
-
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////
-//
-//				CREATING LOCATIONS
-//
-////////////////////////////////////////////////////////////////////////////
-
-void Controller::setScreens()
-{
-	screenSaver = new ScreenSaver();	
-	menu        = new MenuScreen();
-	settings    = new TuneUpScreen(tuneUpSettings, menuSettings, gameSettings);	
-
-	try
-	{
-		createGame(model->getDefaultGameID());
-		loadGraphics();
-	}
-	catch(ExcGameDoesNotExist exc)
 	{
 		servicePopupShow(exc);
 	}
@@ -96,8 +69,9 @@ void Controller::loadGraphics()
 	graphicsLoader = new Graphics();
 
 	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
-	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::allGraphicsLoadingErrorHandler, this, std::placeholders::_1));
+	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
 
+	// ->allSettingsTexture()
 	graphicsLoader->setLoadingTextures(menuSettings->getTextures());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getTextures());
 	graphicsLoader->setLoadingTextures(tuneUpSettings->getTextures());
@@ -105,22 +79,42 @@ void Controller::loadGraphics()
 	graphicsLoader->load();
 }
 
+////////////////////////////////////////////////////////////////////////////
+//
+//				CREATING LOCATIONS
+//
+////////////////////////////////////////////////////////////////////////////
+
 void Controller::allGraphicsLoadingCompleteHandler()
 {
 	console()<<"Graphics all Loaded:: "<<endl;
-
 	removeGraphicsLoadingSignals();
 
-	// INIT LOCATIONS
+	screenSaver = new ScreenSaver(screenSaverSettings);	
+	menu        = new MenuScreen(menuSettings);
+	settings    = new TuneUpScreen(tuneUpSettings, menuSettings, gameSettings);	// all settings pass
 
-	view->init(screenSaver, menu, settings);
-	menu->init(menuSettings);
-	game->init(gameSettings);
-	settings->init(tuneUpSettings);
+	// фабрика игр
 
+	// ошибка записи в файл
+
+	try
+	{
+		createGame(model->getDefaultGameID());
+		game->init(gameSettings);// спрятать
+
+		firstStart();		
+	}
+	catch(ExcGameDoesNotExist exc)
+	{
+		servicePopupShow(exc);
+	}	
+}
+
+void Controller::firstStart()
+{
 	if(screenSaverSettings->isExist())
 	{
-		screenSaver->init(screenSaverSettings);
 		startScreenSaver();	
 	}
 	else
@@ -135,7 +129,7 @@ void Controller::removeGraphicsLoadingSignals()
 	graphicsLoader->errorLoadingSignal.disconnect_all_slots();			
 }
 
-void Controller::allGraphicsLoadingErrorHandler(KubikException exc)
+void Controller::graphicsLoadErrorHandler(KubikException exc)
 {
 	removeGraphicsLoadingSignals();
 	servicePopupShow(exc);
@@ -160,8 +154,8 @@ void Controller::startScreenSaver()
 void Controller::closeScreenSaverHandler()
 {
 	screenSaver->closeLocationSignal.disconnect_all_slots();
-	screenSaver->stop();
 	screenSaver->removeMouseUpListener();
+	screenSaver->stop();	
 	startMenuScreen();
 }
 
@@ -205,112 +199,6 @@ void Controller::startMultiplyGameMode()
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//					SETTINGS SCREEN
-//
-////////////////////////////////////////////////////////////////////////////
-
-void Controller::startSettingsHandler()
-{		
-	menu->removeMouseUpListener();	
-	startSettingsScreen();
-}
-
-void Controller::startSettingsScreen()
-{
-	console()<<"Start Settings Screen :::::"<<endl;
-	connect_once(settings->closeLocationSignal, bind(&Controller::closeSettingsHandler, this));			
-	connect_once(settings->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));			
-	settings->addMouseUpListener();	
-	settings->startUpParams();
-	view->startLocation(settings);
-}
-
-void Controller::closeSettingsHandler()
-{
-	console()<<"Close Settings Screen :::::"<<endl;
-	settings->closeLocationSignal.disconnect_all_slots();
-	settings->appSettingsChangedSignal.disconnect_all_slots();
-	settings->removeMouseUpListener();
-
-	startMenuScreen();
-}
-
-void Controller::appSettingsChangedHandler(vector<int> changes)
-{
-	console()<<"App Settings Changed :::::"<<endl;
-	settings->closeLocationSignal.disconnect_all_slots();
-	settings->appSettingsChangedSignal.disconnect_all_slots();
-	settings->removeMouseUpListener();
-		
-	reloadScreens(changes);	
-}
-
-void Controller::reloadScreens(vector<int> changes)
-{
-	this->changes = changes;
-	bool needToReload = false;
-
-	for(auto changedID : changes)
-	{
-		if(changedID == SettingTypes::MENU)
-		{
-			menu->reload();
-			menuSettings->reload();
-			graphicsLoader->setLoadingTextures(menuSettings->getTextures());
-			view->startLocation(preloader);
-			needToReload = true;
-		}
-		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
-		{
-			game->reload();
-			gameSettings->reload();
-			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
-			view->startLocation(preloader);
-			needToReload = true;
-		}
-	}
-
-	console()<<"NEED TO RELOAD?::  "<<needToReload<<endl;
-
-	if(needToReload)
-	{
-		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this));
-		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::allGraphicsReloadErrorHandler, this, std::placeholders::_1));	
-		graphicsLoader->load();
-	}
-	else
-	{
-		startMenuScreen();
-	}
-}
-
-void Controller::allGraphicsReloadCompleteHandler()
-{
-	removeGraphicsLoadingSignals();
-
-	for(auto changedID : changes)
-	{
-		if(changedID == SettingTypes::MENU)
-		{
-			menu->init(menuSettings);
-		}
-		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
-		{			
-			game->init(gameSettings);
-		}
-	}
-
-	startMenuScreen();
-}
-
-void Controller::allGraphicsReloadErrorHandler(KubikException exc)
-{
-	removeGraphicsLoadingSignals();
-	servicePopupShow(exc);
-}
-
-////////////////////////////////////////////////////////////////////////////
-//
 //					GAME SCREEN
 //
 ////////////////////////////////////////////////////////////////////////////	
@@ -333,7 +221,7 @@ void Controller::startGameHandler(int gameId)
 
 			view->startLocation(preloader);	
 			connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
-			connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::allGraphicsLoadingErrorHandler, this, std::placeholders::_1));
+			connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
 			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
 
 			graphicsLoader->load();	
@@ -396,6 +284,106 @@ void Controller::startGame()
 	game->addMouseUpListener();
 	view->startLocation(game);
 	connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+//					SETTINGS SCREEN
+//
+////////////////////////////////////////////////////////////////////////////
+
+void Controller::startSettingsHandler()
+{		
+	menu->removeMouseUpListener();	
+	startSettingsScreen();
+}
+
+void Controller::startSettingsScreen()
+{
+	console()<<"Start Settings Screen :::::"<<endl;
+	connect_once(settings->closeLocationSignal, bind(&Controller::closeSettingsHandler, this));			
+	connect_once(settings->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));			
+	settings->addMouseUpListener();	
+	settings->startUpParams();
+	view->startLocation(settings);
+}
+
+void Controller::closeSettingsHandler()
+{
+	console()<<"Close Settings Screen :::::"<<endl;
+	settings->closeLocationSignal.disconnect_all_slots();
+	settings->appSettingsChangedSignal.disconnect_all_slots();
+	settings->removeMouseUpListener();
+
+	startMenuScreen();
+}
+
+void Controller::appSettingsChangedHandler(vector<int> changes)
+{
+	console()<<"App Settings Changed :::::"<<endl;
+	settings->closeLocationSignal.disconnect_all_slots();
+	settings->appSettingsChangedSignal.disconnect_all_slots();
+	settings->removeMouseUpListener();
+
+	reloadScreens(changes);	
+}
+
+void Controller::reloadScreens(vector<int> changes)
+{
+	this->changes = changes;
+	bool needToReload = false;
+
+	for(auto changedID : changes)
+	{
+		if(changedID == SettingTypes::MENU)
+		{
+			menu->reload();
+			menuSettings->reload();
+			graphicsLoader->setLoadingTextures(menuSettings->getTextures());
+			view->startLocation(preloader);
+			needToReload = true;
+		}
+		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
+		{
+			game->reload();
+			gameSettings->reload();
+			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
+			view->startLocation(preloader);
+			needToReload = true;
+		}
+	}
+
+	console()<<"NEED TO RELOAD?::  "<<needToReload<<endl;
+
+	if(needToReload)
+	{
+		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this));
+		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));	
+		graphicsLoader->load();
+	}
+	else
+	{
+		startMenuScreen();
+	}
+}
+
+void Controller::allGraphicsReloadCompleteHandler()
+{
+	removeGraphicsLoadingSignals();
+
+	for(auto changedID : changes)
+	{
+		if(changedID == SettingTypes::MENU)
+		{
+			menu->init(menuSettings);
+		}
+		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
+		{			
+			game->init(gameSettings);
+		}
+	}
+
+	startMenuScreen();
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -19,6 +19,8 @@ namespace kubik
 			console()<<"game settings create   "<<endl;
 			this->model = model;
 			currentGame = model->getDefaultGameID();
+
+			loadGamesSettings();
 		}
 
 		bool isGameCurrent(int id)
