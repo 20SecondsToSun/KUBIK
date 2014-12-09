@@ -33,7 +33,7 @@ namespace kubik
 		void setTextures()
 		{		
 			designTexures.clear();
-			addToDictionary("closeImg", getDesignPath() + "close.png", resourceType::IMAGE, loadingType::FULL_PATH );
+			addToDictionary("closeImg", getDesignPath() + "close.png");
 		}
 	};
 }

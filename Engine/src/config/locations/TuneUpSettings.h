@@ -36,13 +36,13 @@ namespace kubik
 		}
 
 	private:	
-		ApplicationModel *model;
+		ApplicationModel *model;		
 
 		void setTextures()
 		{
 			addToDictionary("helvetica90",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 90);
 			addToDictionary("helvetica20",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 20);
-			addToDictionary("closeImg",		getDesignPath() + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
+			addToDictionary("closeImg",		getDesignPath() + "close.png");
 		}
 	};
 }

@@ -20,7 +20,7 @@ namespace kubik
 
 		void start();
 		void stop();
-		void init(ScreenSaverSettings* settings);			
+		void init(ScreenSaverSettings* settings);
 		void draw();
 
 		void addMouseUpListener();
@@ -32,7 +32,7 @@ namespace kubik
 	private:	
 
 		void mouseUp(MouseEvent &event);
-		ci::signals::connection mouseUpListener;		
+		ci::signals::connection mouseUpListener;
 
 		IResourceScreenSaver* screenSaverResource;
 		ScreenSaverSettings* settings;

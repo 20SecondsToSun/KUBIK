@@ -5,31 +5,23 @@ using namespace kubik;
 GameScreen::GameScreen(int gameID)
 {	
 	this->gameID = gameID;
-
-	switch (gameID)
-	{
-		case gameId::FUNCES:
-			currentGame = shared_ptr<IGame>(new Funces());
-		break;
-
-		case gameId::PHOTOBOOTH:
-			currentGame = shared_ptr<IGame>(new Photobooth());
-		break;
-
-		default:
-		break;
-	}
-	
-	currentGame->closeGameSignal.connect(bind(&GameScreen::closeGameHandler, this));	
+	create();	
 }
 
 GameScreen::~GameScreen()
 {
 	console()<<"~~~~~~~~~~~~~~game screen destroy~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+	currentGame->closeGameSignal.disconnect_all_slots();
+}
+
+void GameScreen::reload()
+{	
+	create();
 }
 
 void GameScreen::closeGameHandler()
 {
+	console()<<"CLOSE GAME:::"<<endl;
 	closeLocationSignal();
 }
 
@@ -40,19 +32,23 @@ void GameScreen::draw()
 
 void GameScreen::init(GameSettings* config)
 {
+	if(config->getCurrentGame() == gameID)
+		currentGame->init(config->getGameSettingsById());	
+}
+
+void GameScreen::create()
+{
 	switch (gameID)
 	{
 		case gameId::FUNCES:
-			currentGame->init(config->getFuncesSettings());
+			currentGame = shared_ptr<IGame>(new Funces());
 		break;
 
 		case gameId::PHOTOBOOTH:
-			currentGame->init(config->getPhotoboothSettings());
-		break;
-
-		default:
-		break;
-	}	
+			currentGame = shared_ptr<IGame>(new Photobooth());
+		break;	
+	}
+	connect_once(currentGame->closeGameSignal, bind(&GameScreen::closeGameHandler, this));	
 }
 
 void GameScreen::reset()

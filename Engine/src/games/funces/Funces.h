@@ -31,7 +31,7 @@ namespace kubik
 	private:	
 
 		Texture closeImg;
-		Button *closeBtn;
+		shared_ptr<Button> closeBtn;
 
 		void mouseUp( MouseEvent &event);
 		void mouseUpHandler(Button& button );

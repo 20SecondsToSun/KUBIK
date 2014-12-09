@@ -57,8 +57,8 @@ namespace kubik
 		void setTextures()
 		{		
 			designTexures.clear();
-			addToDictionary("background",	getDesignPath() + "bg.jpg",    resourceType::IMAGE, loadingType::FULL_PATH );
-			addToDictionary("background1",  getDesignPath() + "title.jpg", resourceType::IMAGE, loadingType::FULL_PATH);
+			addToDictionary("background",	getDesignPath() + "bg.jpg");
+			addToDictionary("background1",  getDesignPath() + "title.jpg");
 			addToDictionary("helvetica30",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
 		}
 	};

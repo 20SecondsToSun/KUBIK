@@ -11,8 +11,12 @@ Photobooth::~Photobooth()
 {	
 	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor ~~~~~~~~~~~~~~~"<<endl;
 	mouseUpListener.disconnect();
-	closeBtnListener.disconnect();	
-	designTexures.clear();
+	closeBtn->mouseUpSignal.disconnect_all_slots();
+
+	for (auto it: locations)	
+		it->nextLocationSignal.disconnect_all_slots();
+
+	locations.clear();
 }
 
 void Photobooth::addMouseUpListener()
@@ -38,13 +42,13 @@ void Photobooth::init(ISettings* config)
 	locations.push_back(photoTimer);
 
 	for (auto it: locations)	
-		it->nextLocationSignal.connect(bind(&Photobooth::nextLocationHandler, this));
+		connect_once(it->nextLocationSignal, bind(&Photobooth::nextLocationHandler, this));
 
 	currentLocation = locations.begin();
 
 	closeImg = settings->getTextures()["closeImg"]->tex;
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
-	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
+	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
 }
 
 void Photobooth::reset()
@@ -63,14 +67,12 @@ void Photobooth::nextLocationHandler()
 
 void Photobooth::mouseUp( MouseEvent &event)
 {	
-	console()<<"Photobooth main mouse event::"<<endl;
 	closeBtn->mouseUpHandler(event.getPos());
 	(*currentLocation)->mouseUpHandler(event.getPos());
 }
 
 void Photobooth::mouseUpHandler(Button& button )
 {	
-	console()<<"Photobooth close event::"<<endl;
 	closeGameSignal();
 }
 

@@ -44,6 +44,8 @@ namespace kubik
 		TuneUpSettings		*tuneUpSettings; 
 		GameSettings		*gameSettings; 		
 
+		vector<int>			changes;	
+
 		void loadAllLocationsConfigs();
 
 		void setConfigs();
@@ -82,8 +84,8 @@ namespace kubik
 		void startSettingsHandler();
 		void startSettingsScreen();
 		void closeSettingsHandler();
-		void appSettingsChangedHandler(vector<SettingTypes> changes);
-		void reloadScreens(vector<SettingTypes> changes);
+		void appSettingsChangedHandler(vector<int> changes);
+		void reloadScreens(vector<int> changes);
 		void allGraphicsReloadCompleteHandler();
 		void allGraphicsReloadErrorHandler(KubikException exc);
 
@@ -96,10 +98,10 @@ namespace kubik
 		void startGameHandler(int gameId);
 		void createGame(int gameId);
 		void closeGameHandler();
-		void clearPreviousGame(int id);
+		void clearGameByID(int id);
 		void gameGraphicsLoadingCompleteHandler();
 		void resetGame();
-		void startGame();
+		void startGame();		
 
 		////////////////////////////////////////////////////////////////////////////
 		//

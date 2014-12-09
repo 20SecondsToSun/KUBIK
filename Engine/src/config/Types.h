@@ -12,9 +12,8 @@ namespace kubik
 {
 	enum SettingTypes
 	{
-		MENU = 1,
-		TUNEUP = 2,
-		SCREENSAVER = 3
+		MENU = 10,
+		TUNEUP = 20
 	};
 
 	enum gameId

@@ -15,6 +15,16 @@ namespace kubik
 			return getBasePath().string() + designPath;
 		}
 
+		std::string getStaticDesignPath()
+		{
+			return getBasePath().string() + staticDesignPath;
+		}
+
+		std::string getTemplateDesignPath()
+		{
+			return getBasePath().string() + templateDesignPath;
+		}
+
 		static std::string getFontsPath()
 		{
 			ci::fs::path path = getBasePath()/"data/fonts/";
@@ -29,6 +39,9 @@ namespace kubik
 	protected:	
 
 		std::string designPath;
+		std::string staticDesignPath;
+		std::string templateDesignPath;
+
 		std::string fontsPath;
 
 		static ci::fs::path getBasePath()

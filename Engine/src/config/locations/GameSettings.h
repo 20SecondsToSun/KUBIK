@@ -79,6 +79,19 @@ namespace kubik
 			}			
 		}
 
+		void reload()
+		{
+			switch (currentGame)
+			{
+			case gameId::PHOTOBOOTH:
+				photoBoothSettings->setTextures();
+				break;
+			case gameId::FUNCES:
+				funcesSettings->setTextures();
+				break;
+			}	
+		}
+
 		void loadGamesSettings()
 		{				
 			vector<int> gameIDs = model->getGameIDsTurnOn();
@@ -109,6 +122,12 @@ namespace kubik
 		Types::OneBlockTexDictionary getFuncesTextures()
 		{	
 			return funcesSettings->getTextures();
+		}
+
+		
+		bool isGameID(int id)
+		{
+			return (id == gameId::PHOTOBOOTH || id == gameId::FUNCES);
 		}
 
 	private:

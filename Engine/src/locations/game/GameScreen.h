@@ -29,11 +29,15 @@ namespace kubik
 		void addMouseUpListener();
 		void removeMouseUpListener();
 
+		void reload();
+
 	protected:
 		void setTextures(){};
 
 	private:
 		shared_ptr<IGame> currentGame;
 		int gameID;
+
+		void create();
 	};
 }

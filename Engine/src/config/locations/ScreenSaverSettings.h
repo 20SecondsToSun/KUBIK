@@ -51,7 +51,7 @@ namespace kubik
 		{
 			if(mode == IMAGE_SS)
 			{
-				addToDictionary("image", path_ss, resourceType::IMAGE, loadingType::FULL_PATH);		
+				addToDictionary("image", path_ss);		
 			}		
 			else if(mode == VIDEO_SS)
 			{
