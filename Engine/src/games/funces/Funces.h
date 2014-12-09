@@ -6,33 +6,38 @@
 #include "IGame.h"
 #include "Button.h"
 #include "ISettings.h"
+#include "FuncesSettings.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-class Funces:public IGame
+namespace kubik
 {
-public:	
-	
-	Funces(ISettings* config);
-	~Funces();
+	class Funces:public IGame
+	{
+	public:	
 
-	void draw();	
-	void init();
-	void reset();
+		Funces();
+		~Funces();
 
-	void addMouseUpListener();
-	void removeMouseUpListener();
+		void draw();	
+		void init(ISettings* config);
+		void reset();
 
-private:	
+		void addMouseUpListener();
+		void removeMouseUpListener();
 
-	Texture closeImg;
-	Button *closeBtn;
+	private:	
 
-	void setTextures();
-	void mouseUp( MouseEvent &event);
-	void mouseUpHandler(Button& button );
+		Texture closeImg;
+		Button *closeBtn;
 
-	connection mouseUpListener, closeBtnListener;	
-};
+		void mouseUp( MouseEvent &event);
+		void mouseUpHandler(Button& button );
+
+		connection mouseUpListener, closeBtnListener;	
+
+		FuncesSettings* settings;
+	};
+}

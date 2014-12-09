@@ -1,5 +1,6 @@
 #include "ApplicationView.h"
 
+using namespace kubik;
 
 void ApplicationView::init(ScreenSaver* screenSaver, MenuScreen* menu, TuneUpScreen* settings)
 {

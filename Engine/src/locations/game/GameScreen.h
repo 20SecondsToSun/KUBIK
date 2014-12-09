@@ -5,33 +5,35 @@
 #include "Funces.h"
 #include "Photobooth.h"
 #include "Types.h"
-#include "ISettings.h"
+#include "GameSettings.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class GameScreen: public IScreen
+namespace kubik
 {
-public:
-	
-	GameScreen(int gameId, ISettings* config);	
-	~GameScreen();	
+	class GameScreen: public IScreen
+	{
+	public:
 
-	Types::OneBlockTexDictionary getTextures();
+		GameScreen(int gameId);	
+		~GameScreen();
 
-	void draw();
-	void init();
-	void reset();
+		void draw();
+		void init(GameSettings* config);
+		void reset();
 
-	void closeGameHandler();
-	void addMouseUpListener();
-	void removeMouseUpListener();
+		void closeGameHandler();
+		void addMouseUpListener();
+		void removeMouseUpListener();
 
-protected:
-	void setTextures(){};
+	protected:
+		void setTextures(){};
 
-private:
-	shared_ptr<IGame> currentGame;
-};
+	private:
+		shared_ptr<IGame> currentGame;
+		int gameID;
+	};
+}

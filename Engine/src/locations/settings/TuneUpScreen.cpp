@@ -1,12 +1,11 @@
 #include "TuneUpScreen.h"
+using namespace kubik;
 
 TuneUpScreen::TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings):IScreen()
 {	
 	settings			= config;
 	this->menuConfig	= menuConfig;
 	this->gameSettings	= gameSettings;
-
-	setTextures();
 }
 
 TuneUpScreen::~TuneUpScreen()
@@ -18,13 +17,6 @@ TuneUpScreen::~TuneUpScreen()
 	designTexures.clear();
 }
 
-void TuneUpScreen::setTextures()
-{
-	addToDictionary("helvetica90",  settings->getFontsPath() + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 90);
-	addToDictionary("helvetica20",  settings->getFontsPath() + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 20);
-	addToDictionary("closeImg",		settings->getDesignPath() + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
-}
-
 void TuneUpScreen::addMouseUpListener()
 {
 	mouseUpListener = getWindow()->connectMouseUp(&TuneUpScreen::mouseUp, this);	
@@ -34,7 +26,6 @@ void TuneUpScreen::mouseUp(MouseEvent &event)
 {
 	closeBtn->mouseUpHandler(event.getPos());
 	menuDesignChngBtn->mouseUpHandler(event.getPos());
-
 }
 
 void TuneUpScreen::removeMouseUpListener()
@@ -42,22 +33,23 @@ void TuneUpScreen::removeMouseUpListener()
 	mouseUpListener.disconnect();
 }
 
-void TuneUpScreen::init()
+void TuneUpScreen::init(TuneUpSettings* settings)
 {
-	font =  designTexures["helvetica90"]->font;
-	Font fontBtn =  designTexures["helvetica20"]->font;
+	console()<<"set settings screen"<<endl;
+
+	font =  settings->getTextures()["helvetica90"]->font;
+	Font fontBtn =  settings->getTextures()["helvetica20"]->font;
 
 	menuDesignChngBtn = new ButtonText(Rectf(150.0f, 250.0f, 350.0f, 350.0f), "Меню дизайн", fontBtn);	
 	appSettingsChgListener = menuDesignChngBtn->mouseUpSignal.connect(bind(&TuneUpScreen::appSettingsChgHandler, this, std::placeholders::_1));
 
-	Texture closeImg = designTexures["closeImg"]->tex;
+	Texture closeImg = settings->getTextures()["closeImg"]->tex;
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&TuneUpScreen::closeLocationHandler, this, std::placeholders::_1));
 }
 
 void TuneUpScreen::closeLocationHandler(Button& button )
 {	
-	console()<<"TuneUpScreen close event::"<<endl;
 	closeLocationSignal();
 }
 

@@ -8,15 +8,17 @@
 using namespace std;
 using namespace ci::signals;
 
-class IGame:public IScreen
+namespace kubik
 {
-
-public:	
-	~IGame(){};
-	virtual void draw() = 0;
-	virtual void init(){};
-	virtual void reset() = 0;
-	virtual void addMouseUpListener() = 0;
-	virtual void removeMouseUpListener() = 0;
-	signal<void(void)> closeGameSignal;
-};
+	class IGame:public IScreen
+	{
+	public:	
+		~IGame(){};
+		virtual void draw() = 0;
+		virtual void init(ISettings* config){};
+		virtual void reset() = 0;
+		virtual void addMouseUpListener() = 0;
+		virtual void removeMouseUpListener() = 0;
+		signal<void(void)> closeGameSignal;
+	};
+}

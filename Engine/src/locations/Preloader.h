@@ -11,48 +11,51 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
 
-class Preloader:public IScreen
+namespace kubik
 {
-public:
-	Preloader(Vec2f position)
+	class Preloader:public IScreen
 	{
-		this->position = position;
-		tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
-	}
+	public:
+		Preloader(Vec2f position)
+		{
+			this->position = position;
+			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
+		}
 
-	Preloader()
-	{
-		this->position = Vec2f(getWindowWidth() * 0.5, getWindowHeight() * 0.5);
-		tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
-	}
+		Preloader()
+		{
+			this->position = Vec2f(getWindowWidth() * 0.5, getWindowHeight() * 0.5);
+			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
+		}
 
-	void draw()
-	{
-		gl::pushMatrices();
-		gl::translate(position);
-		gl::scale( 0.5f, 0.5f );
-		gl::rotate( 180.0f * float( getElapsedSeconds() ) );
-		gl::translate( -0.5f * Vec2f(151.0f, 151.0f ) );
-		gl::draw(tex);
-		gl::popMatrices();
-	}
+		void draw()
+		{
+			gl::pushMatrices();
+			gl::translate(position);
+			gl::scale( 0.5f, 0.5f );
+			gl::rotate( 180.0f * float( getElapsedSeconds() ) );
+			gl::translate( -0.5f * Vec2f(151.0f, 151.0f ) );
+			gl::draw(tex);
+			gl::popMatrices();
+		}
 
-	void setPosition(Vec2f position)
-	{
-		this->position = position;
-	}
+		void setPosition(Vec2f position)
+		{
+			this->position = position;
+		}
 
-	void init()
-	{
+		void init()
+		{
 
-	}
-protected:
-	void setTextures()
-	{
+		}
+	protected:
+		void setTextures()
+		{
 
-	}
+		}
 
-private:
-	Vec2f position;
-	Texture tex;
-};
+	private:
+		Vec2f position;
+		Texture tex;
+	};
+}

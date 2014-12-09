@@ -57,14 +57,26 @@ namespace kubik
 			return config;
 		}
 
-		void setFuncesSettings(FuncesSettings* fs)
+		FuncesSettings* getFuncesSettings()
 		{
-			funcesSettings =  fs;
+			return funcesSettings;
 		}
 
-		void setPhotoboothSettings(PhotoboothSettings* phs)
+		PhotoboothSettings* getPhotoboothSettings()
 		{
-			photoBoothSettings =  phs;
+			return photoBoothSettings;
+		}
+
+		Types::OneBlockTexDictionary getActiveGameTextures()
+		{
+			switch (currentGame)
+			{
+			case gameId::PHOTOBOOTH:
+				return getPhotoboothTextures();
+
+			case gameId::FUNCES:
+				return getFuncesTextures();
+			}			
 		}
 
 		void loadGamesSettings()
@@ -86,9 +98,18 @@ namespace kubik
 				default:
 					break;
 				}				  
-			}		
+			}			
 		}
 
+		Types::OneBlockTexDictionary getPhotoboothTextures()
+		{	
+			return photoBoothSettings->getTextures();
+		}
+
+		Types::OneBlockTexDictionary getFuncesTextures()
+		{	
+			return funcesSettings->getTextures();
+		}
 
 	private:
 
@@ -100,40 +121,32 @@ namespace kubik
 		void parsePhotoboothSettings()
 		{
 			console()<<"parse photobooth settings"<<endl;
+
 			photoBoothSettings = new PhotoboothSettings();
-
-
-			//"filtersIds"    : [1, 2],
-			//"photoNum": 5,
-			//"isFacebook": true,
-			//"isVkotakte": true,
-			//"isTwitter": true,
-			//"isEmail": true,
-			//"isQrCode": true,
-			//"isPrint": true  
-
 			try	
-			{
-				JsonTree configJSON = JsonTree(loadFile(getSettingsConfigPath()));
-				photoBoothSettings->setSeconds(configJSON.getChild("seconds").getValue<int>());
-				photoBoothSettings->setSecondsBetweenShots(configJSON.getChild("secondsBetweenShots").getValue<int>());						
+			{				
+				photoBoothSettings->load(model->getPhotoboothConfigPath());
 			}
 			catch(...)
 			{
 				throw ExcConfigFileParsing();
 			}
-
 		}
 
 		void parseFuncesSettings()
 		{
-			console()<<"parse funces settings"<<endl;
+			console()<<"parse funces settings"<<model->getFuncesConfigPath()<<endl;
+
+			funcesSettings = new FuncesSettings();			
+			try	
+			{				
+				funcesSettings->load(model->getFuncesConfigPath());
+			}
+			catch(...)
+			{
+				throw ExcConfigFileParsing();
+			}
 		}
 
-		fs::path getSettingsConfigPath()
-		{
-			fs::path basePath = getAppPath();	
-			return basePath / "data" / "configs" / "photobooth.txt";
-		}
 	};
 }

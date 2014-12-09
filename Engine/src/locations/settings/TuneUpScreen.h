@@ -22,11 +22,10 @@ namespace kubik
 		TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings);
 		~TuneUpScreen();
 
-		signal<void(int)> startGameSignal;	
-
 		void draw();	
-		void init();
+		void init(TuneUpSettings* settings);
 		
+		signal<void(int)>  startGameSignal;	
 		signal<void(void)> closeSettingsSignal;
 		signal<void(vector<SettingTypes>)> appSettingsChangedSignal;
 
@@ -34,9 +33,6 @@ namespace kubik
 		void removeMouseUpListener();
 
 		ci::signals::connection mouseUpListener, closeBtnListener, appSettingsChgListener;	
-
-	protected:
-		void setTextures();
 
 	private:
 		void update();

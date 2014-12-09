@@ -1,19 +1,15 @@
 #include "Photobooth.h"
 
-Photobooth::Photobooth(ISettings* config)
+using namespace kubik;
+
+Photobooth::Photobooth()
 {
-	console()<<"ISettings config::: "<<endl;	
-
-	settings = static_cast<PhotoboothSettings*>(config);
-
-	console()<<"PHOTOBOOTH SETTINGS::: "<<settings->getSeconds()<<endl;
-
-	setTextures();	
+	console()<<"ISettings config::: "<<endl;
 }
 
 Photobooth::~Photobooth()
 {	
-	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor"<<endl;
+	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor ~~~~~~~~~~~~~~~"<<endl;
 	mouseUpListener.disconnect();
 	closeBtnListener.disconnect();	
 	designTexures.clear();
@@ -29,17 +25,10 @@ void Photobooth::removeMouseUpListener()
 	mouseUpListener.disconnect();
 }
 
-void Photobooth::setTextures()
-{
-	string mainFolder = getAppPath().string() + "kubik\\templates\\1\\";
-	string menuPath   = "gamesDesign\\photobooth\\";	
-	string path = mainFolder + menuPath;
-
-	addToDictionary("closeImg",	path + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
-}
-
-void Photobooth::init()
+void Photobooth::init(ISettings* config)
 {	
+	settings = static_cast<PhotoboothSettings*>(config);
+
 	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction());
 	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter());
 	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer());
@@ -53,7 +42,7 @@ void Photobooth::init()
 
 	currentLocation = locations.begin();
 
-	closeImg = designTexures["closeImg"]->tex;
+	closeImg = settings->getTextures()["closeImg"]->tex;
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
 }

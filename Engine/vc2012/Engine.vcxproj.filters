@@ -123,9 +123,6 @@
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp">
       <Filter>Source Files\games\photobooth</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\locations\video\ScreenSaver.cpp">
-      <Filter>Source Files\locations\screensaver</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\tools\Utils.cpp">
       <Filter>Source Files\tools</Filter>
     </ClCompile>
@@ -135,8 +132,11 @@
     <ClCompile Include="..\src\controller\Controller.cpp">
       <Filter>Source Files\controller</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config\KubikException.cpp">
+    <ClCompile Include="..\src\config\exception\KubikException.cpp">
       <Filter>Source Files\config\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp">
+      <Filter>Source Files\locations\screensaver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\video\ScreenSaver.h">
-      <Filter>Source Files\locations\screensaver</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\service\ServicePopup.h">
       <Filter>Source Files\locations\service</Filter>
@@ -236,50 +233,53 @@
     <ClInclude Include="..\src\config\IConfig.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\ISettings.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\video\ImageScreenSaver.h">
-      <Filter>Source Files\locations\screensaver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\video\VideoScreenSaver.h">
-      <Filter>Source Files\locations\screensaver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\video\IResourceScreenSaver.h">
-      <Filter>Source Files\locations\screensaver</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\engine\IScreen.h">
       <Filter>Source Files\locations\engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\TuneUpScreen.h">
       <Filter>Source Files\locations\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\KubikException.h">
-      <Filter>Source Files\config\exception</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\MenuSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\FuncesSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\ScreenSaverSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\PhotoboothSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\TuneUpSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\GameSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\model\Types.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\ApplicationModel.h">
       <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\GameSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\FuncesSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\ISettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\MenuSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\PhotoboothSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\TuneUpSettings.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\Types.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\exception\KubikException.h">
+      <Filter>Source Files\config\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\screensaver\ImageScreenSaver.h">
+      <Filter>Source Files\locations\screensaver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\screensaver\IResourceScreenSaver.h">
+      <Filter>Source Files\locations\screensaver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h">
+      <Filter>Source Files\locations\screensaver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h">
+      <Filter>Source Files\locations\screensaver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

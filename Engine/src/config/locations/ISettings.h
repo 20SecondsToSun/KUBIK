@@ -2,6 +2,7 @@
 
 #include "cinder/app/AppNative.h"
 #include "Types.h"
+#include "cinder/Json.h"
 
 namespace kubik
 {

@@ -29,12 +29,17 @@ namespace kubik
 				userID					= configJSON.getChild("userID").getValue<string>();
 				standID					= configJSON.getChild("standID").getValue<int>();
 				netConnection			= configJSON.getChild("netConnection").getValue<bool>();
+				defaultGameID			= configJSON.getChild("defaultGameID").getValue<int>();	
 
-				menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();
-				tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();
-				screenSaverConfigPath	= configJSON.getChild("screenSaverConfigPath").getValue<string>();
+				screenSaverPath			= getAppPath().string() +  configJSON.getChild("screenSaverPath").getValue<string>();
 
-				defaultGameID			= configJSON.getChild("defaultGameID").getValue<int>();					
+				menuConfigPath			= getAppPath().string() +  configJSON.getChild("menuConfigPath").getValue<string>();
+				tuneUpConfigPath		= getAppPath().string() +  configJSON.getChild("tuneUpConfigPath").getValue<string>();				
+				photoboothConfigPath	= getAppPath().string() +  configJSON.getChild("photoboothConfigPath").getValue<string>();
+				funcesConfigPath		= getAppPath().string() +  configJSON.getChild("funcesConfigPath").getValue<string>();
+				instagramConfigPath		= getAppPath().string() +  configJSON.getChild("instagramConfigPath").getValue<string>();
+				kotopozaConfigPath		= getAppPath().string() +  configJSON.getChild("kotopozaConfigPath").getValue<string>();
+
 
 				vector<int> temp;
 
@@ -152,9 +157,9 @@ namespace kubik
 			tuneUpConfigPath = getAppPath().string() + path;
 		}	
 
-		void setScreenSaverConfigPath(string path)
+		void setScreenSaverPath(string path)
 		{
-			screenSaverConfigPath = getAppPath().string() + path;
+			screenSaverPath = getAppPath().string() + path;
 		}
 
 		string getMenuConfigPath()
@@ -167,11 +172,30 @@ namespace kubik
 			return tuneUpConfigPath;
 		}
 
-		string getScreenSaverConfigPath()
+		string getScreenSaverPath()
 		{
-			return screenSaverConfigPath;
+			return screenSaverPath;
 		}
 
+		string getPhotoboothConfigPath()
+		{
+			return photoboothConfigPath;
+		}
+
+		string getFuncesConfigPath()
+		{
+			return funcesConfigPath;
+		}
+
+		string getInstagramConfigPath()
+		{
+			return instagramConfigPath;
+		}
+
+		string getKotopozaConfigPath()
+		{
+			return kotopozaConfigPath;
+		}
 
 	private:
 
@@ -182,7 +206,12 @@ namespace kubik
 
 		string menuConfigPath;
 		string tuneUpConfigPath;
-		string screenSaverConfigPath;
+		string screenSaverPath;
+		string photoboothConfigPath;
+		string funcesConfigPath;
+		string instagramConfigPath;
+		string kotopozaConfigPath;
+
 
 		vector<int> gameIDsAvailable;
 		vector<int> gameIDsPurchased;

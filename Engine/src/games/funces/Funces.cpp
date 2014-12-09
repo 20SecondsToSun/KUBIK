@@ -1,8 +1,10 @@
 #include "Funces.h"
 
-Funces::Funces(ISettings* config)
+using namespace kubik;
+
+Funces::Funces()
 {	
-	setTextures();	
+
 }
 
 Funces::~Funces()
@@ -25,28 +27,19 @@ void Funces::removeMouseUpListener()
 	mouseUpListener.disconnect();
 }
 
-void Funces::setTextures()
-{
-	//addToDictionary("img1", "gamesDesign\\funces\\1.jpg");
-	//addToDictionary("closeImg", "gamesDesign\\funces\\close.png");
-	//addToDictionary("img3", "gamesDesign\\funces\\3.jpg");
-
-	string mainFolder = getAppPath().string() + "kubik\\templates\\1\\";
-	string menuPath   = "gamesDesign\\funces\\";	
-	string path = mainFolder + menuPath;
-
-	addToDictionary("closeImg",	path + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
-}
-
 void Funces::reset()
 {
 	
 }
 
-void Funces::init()
+void Funces::init(ISettings* config)
 {
-	closeImg = designTexures["closeImg"]->tex;
-	console()<<"::funces createTextures::  "<<closeImg<<endl;
+	console()<<"::funces createTextures::  "<<endl;
+
+	settings = static_cast<FuncesSettings*>(config);
+	console()<<"casted"<<endl;
+	closeImg = settings->getTextures()["closeImg"]->tex;	
+	console()<<"created"<<endl;
 	closeBtn = new Button(closeImg, Vec2f(getWindowWidth() - 100, 100));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
 }
@@ -58,7 +51,6 @@ void Funces::mouseUp( MouseEvent &event)
 
 void Funces::mouseUpHandler(Button& button )
 {	
-	console()<<"close event::"<<endl;
 	closeGameSignal();
 }
 

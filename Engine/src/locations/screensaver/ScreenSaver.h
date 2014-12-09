@@ -32,7 +32,7 @@ namespace kubik
 	private:	
 
 		void mouseUp(MouseEvent &event);
-		connection mouseUpListener;		
+		ci::signals::connection mouseUpListener;		
 
 		IResourceScreenSaver* screenSaverResource;
 		ScreenSaverSettings* settings;

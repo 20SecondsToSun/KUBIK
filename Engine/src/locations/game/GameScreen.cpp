@@ -2,21 +2,24 @@
 
 using namespace kubik;
 
-GameScreen::GameScreen(int gameID, ISettings* config)
+GameScreen::GameScreen(int gameID)
 {	
+	this->gameID = gameID;
+
 	switch (gameID)
 	{
 		case gameId::FUNCES:
-			currentGame = shared_ptr<IGame>(new Funces(config));		
+			currentGame = shared_ptr<IGame>(new Funces());
 		break;
 
 		case gameId::PHOTOBOOTH:
-			currentGame = shared_ptr<IGame>(new Photobooth(config));
+			currentGame = shared_ptr<IGame>(new Photobooth());
 		break;
 
 		default:
 		break;
 	}
+	
 	currentGame->closeGameSignal.connect(bind(&GameScreen::closeGameHandler, this));	
 }
 
@@ -35,19 +38,26 @@ void GameScreen::draw()
 	currentGame->draw();
 }
 
-void GameScreen::init()
+void GameScreen::init(GameSettings* config)
 {
-	currentGame->init();
+	switch (gameID)
+	{
+		case gameId::FUNCES:
+			currentGame->init(config->getFuncesSettings());
+		break;
+
+		case gameId::PHOTOBOOTH:
+			currentGame->init(config->getPhotoboothSettings());
+		break;
+
+		default:
+		break;
+	}	
 }
 
 void GameScreen::reset()
 {
 	currentGame->reset();
-}
-
-Types::OneBlockTexDictionary GameScreen::getTextures()
-{
-	return currentGame->getTextures();
 }
 
 void GameScreen::removeMouseUpListener()

@@ -1,5 +1,5 @@
 {
-   "designPath" : "kubik\\templates\\1\\gamesDesign\\photobooth\\",
+   "designPath" : "kubik\\templates\\1\\gamesDesign\\funces\\",
    "seconds" : 5,
    "filtersIds"    : [1, 2],
    "secondsBetweenShots" : 1,   

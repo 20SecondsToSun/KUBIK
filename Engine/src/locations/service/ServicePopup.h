@@ -10,46 +10,43 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
 
-class ServicePopup:public IScreen
+namespace kubik
 {
-public:	
-	ServicePopup():IScreen()
-	{	
-		font = Font(loadFile( getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf"), 30);
-		//setTextures();
-	}
-
-	void draw()
-	{	
-		gl::color(Color::white());
-		gl::drawSolidRect(getWindowBounds());
-
-		Texture textTex = textTools().getTextField(msg, &font, ColorA(1,0,0,1));
-		gl::pushMatrices();			
-		float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5;
-		float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5;		
-		gl::translate(shiftX, shiftY);
-		gl::draw(textTex);
-		gl::popMatrices();	
-	}	
-
-	void init()
+	class ServicePopup:public IScreen
 	{
-		font = designTexures["helvetica30"]->font;
-	}
+	public:	
+		ServicePopup():IScreen()
+		{	
+			font = Font(loadFile( getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf"), 30);
+			//setTextures();
+		}
 
-	void setMessage(const char* msg)
-	{			
-		this->msg = string(msg);
-	}
+		void draw()
+		{	
+			gl::color(Color::white());
+			gl::drawSolidRect(getWindowBounds());
 
-protected:
-	void setTextures()
-	{	
-		addToDictionary("helvetica30",  getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
-	}
+			Texture textTex = textTools().getTextField(msg, &font, ColorA(1,0,0,1));
+			gl::pushMatrices();			
+			float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5;
+			float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5;		
+			gl::translate(shiftX, shiftY);
+			gl::draw(textTex);
+			gl::popMatrices();	
+		}	
 
-private:	
-	string msg;
-	Font font;
-};
+		void init()
+		{
+			font = designTexures["helvetica30"]->font;
+		}
+
+		void setMessage(const char* msg)
+		{			
+			this->msg = string(msg);
+		}
+
+	private:	
+		string msg;
+		Font font;
+	};
+}

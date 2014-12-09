@@ -1,6 +1,5 @@
 #pragma once
 #include "cinder/app/AppNative.h"
-#include "cinder/Json.h"
 #include "ISettings.h"
 #include "ApplicationModel.h"
 #include "KubikException.h"
@@ -15,7 +14,8 @@ namespace kubik
 	{
 	public:
 		MenuSettings(ApplicationModel *model)
-		{	
+		{
+			console()<<"menu settings create"<<endl;
 			this->model = model;
 
 			load();

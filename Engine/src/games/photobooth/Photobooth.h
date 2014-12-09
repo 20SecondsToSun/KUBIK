@@ -15,39 +15,39 @@ using namespace ci;
 using namespace ci::app;
 namespace kubik
 {
-class Photobooth:public IGame
-{
-public:	
-	
-	Photobooth(ISettings* config);
-	~Photobooth();
-	void draw();	
-	void init();
-	void reset();
+	class Photobooth:public IGame
+	{
+	public:	
 
-	void addMouseUpListener();
-	void removeMouseUpListener();
+		Photobooth();
+		~Photobooth();
+		void draw();	
+		void init(ISettings* config);
+		void reset();
 
-private:	
+		void addMouseUpListener();
+		void removeMouseUpListener();
 
-	Texture closeImg;
-	shared_ptr<Button> closeBtn;
+	private:	
 
-	void setTextures();
-	void mouseUp( MouseEvent &event);
-	void mouseUpHandler(Button& button );
+		Texture closeImg;
+		shared_ptr<Button> closeBtn;
 
-	connection mouseUpListener, closeBtnListener;	
+		void setTextures();
+		void mouseUp( MouseEvent &event);
+		void mouseUpHandler(Button& button );
 
-	shared_ptr<PhotoInstruction> photoInstruction;
-	shared_ptr<PhotoFilter>	photoFilter;
-	shared_ptr<PhotoTimer>	photoTimer;
+		connection mouseUpListener, closeBtnListener;	
 
-	list<shared_ptr<ILocation>>  locations;
-	list<shared_ptr<ILocation>>::iterator currentLocation;
+		shared_ptr<PhotoInstruction> photoInstruction;
+		shared_ptr<PhotoFilter>	photoFilter;
+		shared_ptr<PhotoTimer>	photoTimer;
 
-	void nextLocationHandler();
+		list<shared_ptr<ILocation>>  locations;
+		list<shared_ptr<ILocation>>::iterator currentLocation;
 
-	PhotoboothSettings* settings;
-};
+		void nextLocationHandler();
+
+		PhotoboothSettings* settings;
+	};
 }

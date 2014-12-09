@@ -100,9 +100,8 @@ void Controller::loadGraphics()
 
 	graphicsLoader->setLoadingTextures(menuSettings->getTextures());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getTextures());
-	graphicsLoader->setLoadingTextures(game->getTextures());
-	graphicsLoader->setLoadingTextures(settings->getTextures());
-
+	graphicsLoader->setLoadingTextures(tuneUpSettings->getTextures());
+	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
 	graphicsLoader->load();
 }
 
@@ -115,9 +114,9 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	// INIT LOCATIONS
 
 	view->init(screenSaver, menu, settings);
-	menu->init(menuSettings);		
-	game->init();
-	settings->init();	
+	menu->init(menuSettings);
+	game->init(gameSettings);
+	settings->init(tuneUpSettings);
 
 	if(screenSaverSettings->isExist())
 	{
@@ -303,7 +302,7 @@ void Controller::startGameHandler(int gameId)
 			view->startLocation(preloader);	
 			connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
 			connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::allGraphicsLoadingErrorHandler, this, std::placeholders::_1));
-			graphicsLoader->setLoadingTextures(game->getTextures());
+			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
 
 			graphicsLoader->load();	
 		}
@@ -322,7 +321,7 @@ void Controller::createGame(int gameId)
 	{
 		clearPreviousGame(gameSettings->getCurrentGame());
 		gameSettings->setCurrentGame(gameId);
-		game = new GameScreen(gameId, gameSettings);	
+		game = new GameScreen(gameId);	
 	}
 	else		
 		throw ExcGameDoesNotExist();
@@ -350,7 +349,7 @@ void Controller::gameGraphicsLoadingCompleteHandler()
 	graphicsLoader->completeLoadingSignal.disconnect_all_slots();	
 	graphicsLoader->errorLoadingSignal.disconnect_all_slots();
 
-	game->init();
+	game->init(gameSettings);
 	startGame();	
 }	
 

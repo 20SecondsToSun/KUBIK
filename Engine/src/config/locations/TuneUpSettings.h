@@ -18,6 +18,8 @@ namespace kubik
 		{
 			this->model = model;
 			load(model);
+
+			setTextures();
 		}
 
 		void load(ApplicationModel *model)
@@ -36,5 +38,11 @@ namespace kubik
 	private:	
 		ApplicationModel *model;
 
+		void setTextures()
+		{
+			addToDictionary("helvetica90",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 90);
+			addToDictionary("helvetica20",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 20);
+			addToDictionary("closeImg",		getDesignPath() + "close.png",    resourceType::IMAGE, loadingType::FULL_PATH );
+		}
 	};
 }

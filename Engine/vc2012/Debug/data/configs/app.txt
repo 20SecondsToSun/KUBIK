@@ -8,5 +8,10 @@
    "gamesTurnOn"    : [1, 2],
    "menuConfigPath" : "data\\configs\\menu.txt",
    "tuneupConfigPath" : "data\\configs\\tuneup.txt",
-   "screenSaverConfigPath" : "user_design\\screensaver\\"
+   "screenSaverPath" : "user_design\\screensaver\\",
+   "photoboothConfigPath"  : "data\\configs\\photobooth.txt",
+   "instagramConfigPath"   : "data\\configs\\instagram.txt",
+   "funcesConfigPath" 	   : "data\\configs\\funces.txt",
+   "kotopozaConfigPath"    : "data\\configs\\kotopozaConfigPath.txt"
+
 }

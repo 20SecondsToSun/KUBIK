@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\model;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\video;..\src\locations\service;..\src\tools;..\src\games\photobooth\states</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\games\photobooth\states;..\src\config\exception;..\src\config\locations</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\app\ApplicationView.cpp" />
-    <ClCompile Include="..\src\config\KubikException.cpp" />
+    <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
@@ -117,7 +117,7 @@
     <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp" />
-    <ClCompile Include="..\src\locations\video\ScreenSaver.cpp" />
+    <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -128,15 +128,15 @@
     <ClInclude Include="..\src\buttons\IButton.h" />
     <ClInclude Include="..\src\buttons\MenuButton.h" />
     <ClInclude Include="..\src\config\ApplicationModel.h" />
-    <ClInclude Include="..\src\config\FuncesSettings.h" />
-    <ClInclude Include="..\src\config\GameSettings.h" />
+    <ClInclude Include="..\src\config\locations\FuncesSettings.h" />
+    <ClInclude Include="..\src\config\locations\GameSettings.h" />
     <ClInclude Include="..\src\config\IConfig.h" />
-    <ClInclude Include="..\src\config\ISettings.h" />
-    <ClInclude Include="..\src\config\KubikException.h" />
-    <ClInclude Include="..\src\config\MenuSettings.h" />
-    <ClInclude Include="..\src\config\PhotoboothSettings.h" />
-    <ClInclude Include="..\src\config\ScreenSaverSettings.h" />
-    <ClInclude Include="..\src\config\TuneUpSettings.h" />
+    <ClInclude Include="..\src\config\locations\ISettings.h" />
+    <ClInclude Include="..\src\config\exception\KubikException.h" />
+    <ClInclude Include="..\src\config\locations\MenuSettings.h" />
+    <ClInclude Include="..\src\config\locations\PhotoboothSettings.h" />
+    <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h" />
+    <ClInclude Include="..\src\config\locations\TuneUpSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\IGame.h" />
@@ -157,11 +157,11 @@
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
     <ClInclude Include="..\src\locations\settings\TuneUpScreen.h" />
-    <ClInclude Include="..\src\locations\video\ImageScreenSaver.h" />
-    <ClInclude Include="..\src\locations\video\IResourceScreenSaver.h" />
-    <ClInclude Include="..\src\locations\video\ScreenSaver.h" />
-    <ClInclude Include="..\src\locations\video\VideoScreenSaver.h" />
-    <ClInclude Include="..\src\model\Types.h" />
+    <ClInclude Include="..\src\locations\screensaver\ImageScreenSaver.h" />
+    <ClInclude Include="..\src\locations\screensaver\IResourceScreenSaver.h" />
+    <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h" />
+    <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
+    <ClInclude Include="..\src\config\Types.h" />
     <ClInclude Include="..\src\tools\FileTools.h" />
     <ClInclude Include="..\src\tools\MathTools.h" />
     <ClInclude Include="..\src\tools\StringTools.h" />

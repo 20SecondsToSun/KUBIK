@@ -88,7 +88,7 @@ namespace kubik
 			vector<string> content;	
 			int videoIndex = -1;
 			bool bigSizeError = false;			
-			string PATH = model->getScreenSaverConfigPath();
+			string PATH = model->getScreenSaverPath();
 			mode = NONE_SS;
 
 			for (fs::directory_iterator it(PATH); it != fs::directory_iterator(); ++it)

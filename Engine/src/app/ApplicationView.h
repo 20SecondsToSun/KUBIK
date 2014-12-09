@@ -13,21 +13,21 @@ using namespace ci::app;
 
 namespace kubik
 {
-class ApplicationView
-{
-public:
+	class ApplicationView
+	{
+	public:
 
-	void init(ScreenSaver* screenSaver, MenuScreen* menu, TuneUpScreen* settings);
-	void draw();
-	void startLocation(IScreen* screen);
+		void init(ScreenSaver* screenSaver, MenuScreen* menu, TuneUpScreen* settings);
+		void draw();
+		void startLocation(IScreen* screen);
 
-private:	
-	IScreen *location;
+	private:	
+		IScreen *location;
 
-	MenuScreen* menu;
-	TuneUpScreen* settings;
-	GameScreen* game;
-	ScreenSaver* screenSaver;
-	Preloader* preloader;	
-};
+		MenuScreen* menu;
+		TuneUpScreen* settings;
+		GameScreen* game;
+		ScreenSaver* screenSaver;
+		Preloader* preloader;	
+	};
 }
