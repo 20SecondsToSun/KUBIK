@@ -35,9 +35,9 @@ namespace kubik
 			gl::popMatrices();	
 		}	
 
-		void init()
+		void init(shared_ptr<ISettings> config) override
 		{
-			font = designTexures["helvetica30"]->font;
+
 		}
 
 		void setMessage(const char* msg)

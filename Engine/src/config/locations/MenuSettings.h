@@ -13,10 +13,10 @@ namespace kubik
 	class MenuSettings:public ISettings
 	{
 	public:
-		MenuSettings(ApplicationModel *model)
+		MenuSettings(shared_ptr<ApplicationModel> model)
 		{
-			console()<<"menu settings create"<<endl;
 			this->model = model;
+			configPath = model->getMenuConfigPath();
 
 			load();
 			setTextures();
@@ -26,7 +26,7 @@ namespace kubik
 		{
 			try	
 			{
-				JsonTree configJSON = JsonTree(loadFile(model->getMenuConfigPath()));
+				JsonTree configJSON = JsonTree(loadFile(configPath));
 				designPath = configJSON.getChild("designPath").getValue<string>();
 			}
 			catch(...)
@@ -43,16 +43,7 @@ namespace kubik
 		vector<int> getGameIDs()
 		{
 			return model->getGameIDsTurnOn();
-		}
-
-		void reload()
-		{
-			setTextures();
-		}
-
-	private:
-
-		ApplicationModel *model;
+		}		
 
 		void setTextures()
 		{		
@@ -61,5 +52,9 @@ namespace kubik
 			addToDictionary("background1",  getDesignPath() + "title.jpg");
 			addToDictionary("helvetica30",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
 		}
+
+	private:
+		
+		
 	};
 }

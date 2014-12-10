@@ -1,17 +1,20 @@
 #include "TuneUpScreen.h"
 using namespace kubik;
 
-TuneUpScreen::TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings):IScreen()
-{	
-	settings			= config;
-	this->menuConfig	= menuConfig;
-	this->gameSettings	= gameSettings;
+TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>		config,
+						   shared_ptr<ScreenSaverSettings> screenSaverSettings,
+						   shared_ptr<MenuSettings>        menuConfig,
+						   shared_ptr<GameSettings>		   gameSettings)
+{
+	
+	this->menuConfig		= menuConfig;
+	this->gameSettings		= gameSettings;
 	init(config);
 }
 
 TuneUpScreen::~TuneUpScreen()
 {	
-	console()<<"~~~~~~~~~~~~~~~ TuneUpScreen destructor"<<endl;
+	console()<<"~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~"<<endl;
 	mouseUpListener.disconnect();
 	closeBtnListener.disconnect();	
 	appSettingsChgListener.disconnect();	
@@ -37,18 +40,20 @@ void TuneUpScreen::removeMouseUpListener()
 	menuParams->hide();
 }
 
-void TuneUpScreen::init(TuneUpSettings* settings)
+void TuneUpScreen::init(shared_ptr<ISettings> settings)
 {
 	console()<<"set settings screen"<<endl;
 
-	font		 =  settings->getTextures()["helvetica90"]->font;
-	Font fontBtn =  settings->getTextures()["helvetica20"]->font;
+	tuneUpSettings	= static_pointer_cast<TuneUpSettings>(settings);
+
+	font		 =  tuneUpSettings->getTextures()["helvetica90"]->font;
+	Font fontBtn =  tuneUpSettings->getTextures()["helvetica20"]->font;
 
 	saveChngBtn = new ButtonText(Rectf(800.0f, 450.0f, 950.0f, 550.0f), "Сохранить", fontBtn);	
 	appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&TuneUpScreen::appSettingsChgHandler, this, std::placeholders::_1));
 
-	Texture closeImg = settings->getTextures()["closeImg"]->tex;
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
+	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->tex;
+	closeBtn = new Button(closeImg, Vec2f(getWindowWidth() - 100, 100));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&TuneUpScreen::closeLocationHandler, this, std::placeholders::_1));
 
 	createPhotoboothParams();
@@ -70,8 +75,7 @@ void TuneUpScreen::createPhotoboothParams()
 	photoBoothParams->addParam( "Email",		&phSet.isEmail);
 	photoBoothParams->addParam( "QrCode",		&phSet.isQrCode);
 	photoBoothParams->addSeparator();
-	
-	photoBoothParams->addSeparator();
+
 	photoBoothParams->addButton( "SAVE!", std::bind( &TuneUpScreen::savePhtbtn, this ) );
 	photoBoothParams->hide();
 }
@@ -87,7 +91,7 @@ void TuneUpScreen::startUpParams()
 {
 	changes.clear();
 
-	PhotoboothSettings* phbthSettings = gameSettings->getPhotoboothSettings();
+	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
 	phSet.isFacebook			 = phbthSettings->getFacebook();
 	phSet.isVkotakte			 = phbthSettings->getVontakte();
 	phSet.seconds				 = phbthSettings->getSeconds();
@@ -97,13 +101,17 @@ void TuneUpScreen::startUpParams()
 
 void TuneUpScreen::savePhtbtn()
 {	
-	changes.push_back(gameId::PHOTOBOOTH);
+	Changes chng;
+	chng.id = gameId::PHOTOBOOTH;
+	chng.texReload = true;
+
+	changes.push_back(chng);
 }
 
 void TuneUpScreen::savePhotoboothParams()
 {
 	// TO DO CHECK FOR CHANGES
-	PhotoboothSettings* phbthSettings = gameSettings->getPhotoboothSettings();
+	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
 	phbthSettings->setFacebook(phSet.isFacebook);
 	phbthSettings->setVontakte(phSet.isVkotakte);
 	phbthSettings->setSeconds(phSet.seconds);
@@ -121,7 +129,7 @@ void TuneUpScreen::appSettingsChgHandler(ButtonText& button )
 {
 	for (auto change: changes)
 	{
-		if(change == gameId::PHOTOBOOTH)
+		if(change.id == gameId::PHOTOBOOTH)
 		{
 			savePhotoboothParams();
 		}

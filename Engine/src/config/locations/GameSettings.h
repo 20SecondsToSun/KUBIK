@@ -14,13 +14,74 @@ namespace kubik
 	{
 	public:
 
-		GameSettings(ApplicationModel *model)
+		GameSettings(shared_ptr<ApplicationModel> model)
 		{
-			console()<<"game settings create   "<<endl;
 			this->model = model;
 			currentGame = model->getDefaultGameID();
 
-			loadGamesSettings();
+			load();
+		}
+
+		shared_ptr<ISettings> get(int id)
+		{
+			return gameSettingsMap[id];
+		}		
+
+		Types::OneBlockTexDictionary getActiveGameTextures()
+		{
+			return getGameTexturesById(currentGame);
+		}
+
+		Types::OneBlockTexDictionary getGameTexturesById(int id)
+		{
+			return gameSettingsMap[id]->getTextures();		
+		}		
+
+		void setTextures() override
+		{
+			gameSettingsMap[currentGame]->setTextures();	
+		}
+
+		void load() override
+		{				
+			vector<int> gameIDs = model->getGameIDsTurnOn();
+
+			for (auto gameID: gameIDs)
+			{
+				switch (gameID)
+				{
+				case gameId::PHOTOBOOTH:					
+					gameSettingsMap[gameId::PHOTOBOOTH] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));				
+					break;
+
+				case gameId::FUNCES:
+					gameSettingsMap[gameId::FUNCES]  = shared_ptr<FuncesSettings>(new FuncesSettings(model));	
+					break;
+
+				default:
+					continue;
+				}
+
+				try	
+				{				
+					gameSettingsMap[gameID]->load();
+				}
+				catch(...)
+				{
+					throw ExcConfigFileParsing();
+				}
+			}
+		}
+	
+		bool isGameID(int id)
+		{
+			vector<int> gameIDs = model->getGameIDsTurnOn();
+			for (int value: gameIDs)
+			{
+				if(value == id)
+					return true;
+			}
+			return false;
 		}
 
 		bool isGameCurrent(int id)
@@ -38,136 +99,19 @@ namespace kubik
 			currentGame =  id;
 		}
 
-		ISettings* getGameSettingsById()
+		void setNextGameId(int id)
 		{
-			ISettings *config;
-
-			switch (currentGame)
-			{
-			case gameId::PHOTOBOOTH:		
-				config = photoBoothSettings;			
-				break;
-
-			case gameId::FUNCES:
-				config = funcesSettings;
-				break;
-
-			default:
-				break;
-			}
-
-			return config;
+			nextGameId = id;
 		}
 
-		FuncesSettings* getFuncesSettings()
+		int getNextGameId()
 		{
-			return funcesSettings;
-		}
-
-		PhotoboothSettings* getPhotoboothSettings()
-		{
-			return photoBoothSettings;
-		}
-
-		Types::OneBlockTexDictionary getActiveGameTextures()
-		{
-			switch (currentGame)
-			{
-			case gameId::PHOTOBOOTH:
-				return getPhotoboothTextures();
-
-			case gameId::FUNCES:
-				return getFuncesTextures();
-			}			
-		}
-
-		void reload()
-		{
-			switch (currentGame)
-			{
-			case gameId::PHOTOBOOTH:
-				photoBoothSettings->setTextures();
-				break;
-			case gameId::FUNCES:
-				funcesSettings->setTextures();
-				break;
-			}	
-		}
-
-		void loadGamesSettings()
-		{				
-			vector<int> gameIDs = model->getGameIDsTurnOn();
-
-			for (auto gameID: gameIDs)
-			{
-				switch (gameID)
-				{
-				case gameId::PHOTOBOOTH:
-					parsePhotoboothSettings();
-					break;
-
-				case gameId::FUNCES:
-					parseFuncesSettings();
-					break;
-
-				default:
-					break;
-				}				  
-			}			
-		}
-
-		Types::OneBlockTexDictionary getPhotoboothTextures()
-		{	
-			return photoBoothSettings->getTextures();
-		}
-
-		Types::OneBlockTexDictionary getFuncesTextures()
-		{	
-			return funcesSettings->getTextures();
-		}
-
-		
-		bool isGameID(int id)
-		{
-			return (id == gameId::PHOTOBOOTH || id == gameId::FUNCES);
-		}
+			return nextGameId;
+		}		
 
 	private:
 
-		int currentGame;
-		ApplicationModel *model;
-		FuncesSettings *funcesSettings;
-		PhotoboothSettings *photoBoothSettings;
-
-		void parsePhotoboothSettings()
-		{
-			console()<<"parse photobooth settings"<<endl;
-
-			photoBoothSettings = new PhotoboothSettings();
-			try	
-			{				
-				photoBoothSettings->load(model->getPhotoboothConfigPath());
-			}
-			catch(...)
-			{
-				throw ExcConfigFileParsing();
-			}
-		}
-
-		void parseFuncesSettings()
-		{
-			console()<<"parse funces settings"<<model->getFuncesConfigPath()<<endl;
-
-			funcesSettings = new FuncesSettings();			
-			try	
-			{				
-				funcesSettings->load(model->getFuncesConfigPath());
-			}
-			catch(...)
-			{
-				throw ExcConfigFileParsing();
-			}
-		}
-
+		int currentGame, nextGameId;	
+		map<int, shared_ptr<ISettings>> gameSettingsMap;
 	};
 }

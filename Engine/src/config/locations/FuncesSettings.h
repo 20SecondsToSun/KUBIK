@@ -11,9 +11,17 @@ namespace kubik
 	class FuncesSettings: public ISettings
 	{
 	public:
-		void load(string path)
+
+		FuncesSettings(shared_ptr<ApplicationModel> model) 
 		{
-			JsonTree configJSON = JsonTree(loadFile(path));
+			this->model = model;
+			configPath = model->getFuncesConfigPath();
+			
+		}
+
+		void load() override
+		{
+			JsonTree configJSON = JsonTree(loadFile(configPath));
 
 			designPath = configJSON.getChild("designPath").getValue<string>();
 			/*seconds = configJSON.getChild("seconds").getValue<int>();
@@ -30,10 +38,11 @@ namespace kubik
 			setTextures();
 		}
 
-		void setTextures()
+		void setTextures() override
 		{		
 			designTexures.clear();
 			addToDictionary("closeImg", getDesignPath() + "close.png");
-		}
+		}	
+
 	};
 }

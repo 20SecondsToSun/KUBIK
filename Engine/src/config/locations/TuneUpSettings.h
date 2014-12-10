@@ -14,19 +14,20 @@ namespace kubik
 	class TuneUpSettings:public ISettings
 	{
 	public:
-		TuneUpSettings(ApplicationModel *model)
+		TuneUpSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			load(model);
+			configPath = model->getTuneUpConfigPath();
 
+			load();
 			setTextures();
 		}
 
-		void load(ApplicationModel *model)
+		void load() override
 		{
 			try	
 			{
-				JsonTree configJSON = JsonTree(loadFile(model->getTuneUpConfigPath()));
+				JsonTree configJSON = JsonTree(loadFile(configPath));
 				designPath = configJSON.getChild("designPath").getValue<string>();
 			}
 			catch(...)
@@ -35,14 +36,12 @@ namespace kubik
 			}
 		}
 
-	private:	
-		ApplicationModel *model;		
-
 		void setTextures()
 		{
 			addToDictionary("helvetica90",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 90);
 			addToDictionary("helvetica20",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 20);
 			addToDictionary("closeImg",		getDesignPath() + "close.png");
 		}
+		
 	};
 }

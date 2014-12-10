@@ -3,24 +3,24 @@
 
 using namespace kubik;
 
-void MenuScreen::reload()
-{
-	clean();
-}
+//void MenuScreen::reload()
+//{
+//	clean();
+//}
+//
+//void MenuScreen::clean()
+//{
+//	clearButtonVector();
+//}
 
-void MenuScreen::clean()
-{
-	clearButtonVector();
-}
-
-MenuScreen::MenuScreen(MenuSettings* settings)
+MenuScreen::MenuScreen(shared_ptr<ISettings>  settings)
 {
 	init(settings);
 }
 
-void MenuScreen::init(MenuSettings* settings)
+void MenuScreen::init(shared_ptr<ISettings>  _settings)
 {	
-	this->settings = settings;
+	settings	   = static_pointer_cast<MenuSettings>(_settings);	
 	font		   =  settings->getTextures()["helvetica30"]->font;
 	bckgnd         =  settings->getTextures()["background"]->tex;
 
@@ -69,8 +69,11 @@ void MenuScreen::clearButtonVector()
 	videoButton->mouseUpSignal.disconnect_all_slots();
 	settingsButton->mouseUpSignal.disconnect_all_slots();	
 
-	delete settingsButton;
-	delete videoButton;
+	if(settingsButton)
+		delete settingsButton;
+
+	if(videoButton)
+		delete videoButton;
 }
 
 void MenuScreen::mouseUpListener(MenuButton& button )

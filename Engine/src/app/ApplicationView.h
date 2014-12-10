@@ -1,15 +1,10 @@
 #pragma once
 #include "cinder/app/AppNative.h"
-#include "MenuScreen.h"
-#include "GameScreen.h"
-#include "TuneUpScreen.h"
 #include "IScreen.h"
-#include "Preloader.h"
-#include "ScreenSaver.h"
+#include "IGame.h"
 
 using namespace std;
 using namespace ci;
-using namespace ci::app;
 
 namespace kubik
 {
@@ -17,10 +12,22 @@ namespace kubik
 	{
 	public:
 
-		void draw();
-		void startLocation(IScreen* screen);
+		void startLocation(shared_ptr<IScreen> screen)
+		{	
+			location = screen;
+		}
+
+		void startGameLocation(shared_ptr<IGame> screen)
+		{	
+			location = static_pointer_cast<IScreen>(screen);
+		}
+
+		void draw()
+		{
+			location->draw();
+		}
 
 	private:	
-		IScreen *location;	
+		shared_ptr<IScreen> location;	
 	};
 }

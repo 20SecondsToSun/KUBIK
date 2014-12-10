@@ -8,6 +8,8 @@
 #include "MenuSettings.h"
 #include "Button.h"
 #include "GameSettings.h"
+#include "ScreenSaverSettings.h"
+#include "Types.h"
 
 #include "cinder/params/Params.h"
 
@@ -21,15 +23,18 @@ namespace kubik
 	{
 	public:
 
-		TuneUpScreen(TuneUpSettings* config, MenuSettings* menuConfig, GameSettings* gameSettings);
+		TuneUpScreen(shared_ptr<TuneUpSettings> screenSaverSettings,
+					 shared_ptr<ScreenSaverSettings>      config,
+					 shared_ptr<MenuSettings>        menuConfig,
+					 shared_ptr<GameSettings>		 gameSettings);
+
 		~TuneUpScreen();
 
 		void draw();	
-		void init(TuneUpSettings* settings);
+		void init(shared_ptr<ISettings> settings) override;
 		
-		signal<void(int)>  startGameSignal;	
 		signal<void(void)> closeSettingsSignal;
-		signal<void(vector<int>)> appSettingsChangedSignal;
+		signal<void(vector<Changes>)> appSettingsChangedSignal;
 
 		void addMouseUpListener();
 		void removeMouseUpListener();
@@ -43,22 +48,23 @@ namespace kubik
 
 		params::InterfaceGlRef	photoBoothParams, menuParams;
 
-
 		void update();
 		void mouseUp(MouseEvent &event);
 
 		Font font;
-		TuneUpSettings* settings;
-		MenuSettings* menuConfig;
-		GameSettings* gameSettings;
 
-		ButtonText *saveChngBtn;
-		shared_ptr<Button> closeBtn;
+		shared_ptr<TuneUpSettings>		tuneUpSettings;
+		shared_ptr<ScreenSaverSettings> screnSaversettings;
+		shared_ptr<MenuSettings>		menuConfig;
+		shared_ptr<GameSettings>		gameSettings;
+
+		ButtonText*	saveChngBtn;
+		Button*		closeBtn;
 
 		void closeLocationHandler(Button& button);
 		void appSettingsChgHandler(ButtonText& button);
 
-		vector<int> changes;
+		vector<Changes> changes;
 		
 		void savePhotoboothParams();
 

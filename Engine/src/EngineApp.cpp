@@ -19,8 +19,8 @@ public:
 	void draw();
 
 private:	
-	ApplicationView* view;
-	Controller* controller;
+	shared_ptr<ApplicationView> view;
+	shared_ptr<Controller> controller;
 	void prepareSettings(ci::app::AppBasic::Settings *settings);
 };
 
@@ -32,8 +32,8 @@ void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
 
 void EngineApp::setup()
 {
-	view		= new ApplicationView();
-	controller  = new Controller(view);
+	view		= shared_ptr<ApplicationView>(new ApplicationView());
+	controller  = shared_ptr<Controller>(new Controller(view));
 	controller->initLoad();
 
 	gl::enableAlphaBlending();

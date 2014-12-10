@@ -3,22 +3,27 @@
 using namespace kubik;
 using namespace std;
 
-Controller::Controller(ApplicationView* view)
+Controller::Controller(shared_ptr<ApplicationView> view)
 {
 	this->view  = view;
 	game		= NULL;
 }
 
+Controller::~Controller()
+{
+	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct()~~~~~~~~~~~~~~~~~"<<endl;
+}
+
 void Controller::initLoad()
 {
-	preloader		= new Preloader();
-	servicePopup	= new ServicePopup();
+	preloader		= shared_ptr<Preloader>(new Preloader());
+	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());
 
 	view->startLocation(preloader);	
 
 	try
 	{
-		model = new ApplicationModel();
+		model = shared_ptr<ApplicationModel>(new ApplicationModel());
 		model->load();
 
 		loadAllLocationsConfigs();
@@ -39,12 +44,10 @@ void Controller::loadAllLocationsConfigs()
 {
 	try
 	{
-		gameSettings		 = new GameSettings(model);
-		menuSettings		 = new MenuSettings(model);	
-		screenSaverSettings	 = new ScreenSaverSettings(model);
-		tuneUpSettings		 = new TuneUpSettings(model);	
-
-		// фабрика сеттингов
+		gameSettings		 = shared_ptr<GameSettings>(new GameSettings(model));
+		menuSettings		 = shared_ptr<MenuSettings>(new MenuSettings(model));
+		tuneUpSettings		 = shared_ptr<TuneUpSettings>(new TuneUpSettings(model));
+		screenSaverSettings	 = shared_ptr<ScreenSaverSettings>(new ScreenSaverSettings(model));
 
 		loadGraphics();
 	}
@@ -66,12 +69,11 @@ void Controller::loadAllLocationsConfigs()
 
 void Controller::loadGraphics()
 {
-	graphicsLoader = new Graphics();
+	graphicsLoader =shared_ptr<Graphics>(new Graphics());
 
 	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
 
-	// ->allSettingsTexture()
 	graphicsLoader->setLoadingTextures(menuSettings->getTextures());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getTextures());
 	graphicsLoader->setLoadingTextures(tuneUpSettings->getTextures());
@@ -90,25 +92,15 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	console()<<"Graphics all Loaded:: "<<endl;
 	removeGraphicsLoadingSignals();
 
-	screenSaver = new ScreenSaver(screenSaverSettings);	
-	menu        = new MenuScreen(menuSettings);
-	settings    = new TuneUpScreen(tuneUpSettings, menuSettings, gameSettings);	// all settings pass
+	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));	
+	menu        = shared_ptr<MenuScreen>(new MenuScreen(menuSettings));
+	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
+	
+	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings->get(gameId::PHOTOBOOTH));
+	gamesFactory.reg<Funces>    (gameId::FUNCES,	 gameSettings->get(gameId::FUNCES));	
 
-	// фабрика игр
-
-	// ошибка записи в файл
-
-	try
-	{
-		createGame(model->getDefaultGameID());
-		game->init(gameSettings);// спрятать
-
-		firstStart();		
-	}
-	catch(ExcGameDoesNotExist exc)
-	{
-		servicePopupShow(exc);
-	}	
+	createGame(model->getDefaultGameID());	
+	firstStart();	
 }
 
 void Controller::firstStart()
@@ -143,8 +135,6 @@ void Controller::graphicsLoadErrorHandler(KubikException exc)
 
 void Controller::startScreenSaver()
 {	
-	console()<<"startScreenSaver::  "<<endl;		
-
 	screenSaver->start();
 	screenSaver->addMouseUpListener();
 	connect_once(screenSaver->closeLocationSignal, bind(&Controller::closeScreenSaverHandler, this));
@@ -178,7 +168,6 @@ void Controller::startMenuScreen()
 {
 	if(model->onlyOneGameOn())
 	{
-		resetGame();
 		startGame();
 	}
 	else
@@ -205,85 +194,52 @@ void Controller::startMultiplyGameMode()
 
 void Controller::startGameHandler(int gameId)
 {
-	console()<<"game id:: "<<gameId<<endl;
 	menu->removeMouseUpListener();
 
 	if(gameSettings->isGameCurrent(gameId))
 	{
-		resetGame();
 		startGame();
 	}
 	else
 	{
-		try
-		{
-			createGame(gameId);
-
-			view->startLocation(preloader);	
-			connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
-			connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
-			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
-
-			graphicsLoader->load();	
-		}
-		catch(ExcGameDoesNotExist exc)
-		{
-			servicePopupShow(exc);
-		}
+		view->startLocation(preloader);	
+		gameSettings->setNextGameId(gameId);
+			
+		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
+		connect_once(graphicsLoader->errorLoadingSignal,	bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
+		graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(gameId));	
+		graphicsLoader->load();	
 	}	
-}		
-
-void Controller::createGame(int gameId)
-{
-	console()<<"::create new game::"<<endl;	
-
-	if(model->checkIfGameIdPurchased(gameId))
-	{
-		clearGameByID(gameSettings->getCurrentGame());
-		gameSettings->setCurrentGame(gameId);
-		game = new GameScreen(gameId);	
-	}
-	else		
-		throw ExcGameDoesNotExist();
-}
-
-void Controller::closeGameHandler()
-{
-	console()<<"::::closeGameHandler fired::::"<<endl;
-	game->removeMouseUpListener();
-	menu->addMouseUpListener();	
-	view->startLocation(menu);	
-}
-
-void Controller::clearGameByID(int id)
-{
-	if(game)
-	{
-		delete game;
-		game = NULL;
-	}
-}
+}	
 
 void Controller::gameGraphicsLoadingCompleteHandler()
 {
-	graphicsLoader->completeLoadingSignal.disconnect_all_slots();	
-	graphicsLoader->errorLoadingSignal.disconnect_all_slots();
+	removeGraphicsLoadingSignals();
 
-	game->init(gameSettings);
+	createGame(gameSettings->getNextGameId());
 	startGame();	
-}	
+}
 
-void Controller::resetGame()
+void Controller::createGame(int gameId)
 {
-	game->reset();
+	console()<<"::create new game::"<<gameId<<endl;	
+	gameSettings->setCurrentGame(gameId);
+	game = gamesFactory.create(gameId);		
 }
 
 void Controller::startGame()
 {	
 	console()<<"START GAME::"<<endl;
 	game->addMouseUpListener();
-	view->startLocation(game);
-	connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));
+	view->startGameLocation(game);
+	connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));	
+}
+
+void Controller::closeGameHandler()
+{
+	game->removeMouseUpListener();
+	menu->addMouseUpListener();	
+	view->startLocation(menu);	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -300,62 +256,66 @@ void Controller::startSettingsHandler()
 
 void Controller::startSettingsScreen()
 {
-	console()<<"Start Settings Screen :::::"<<endl;
 	connect_once(settings->closeLocationSignal, bind(&Controller::closeSettingsHandler, this));			
-	connect_once(settings->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));			
+	connect_once(settings->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));	
+
 	settings->addMouseUpListener();	
 	settings->startUpParams();
+
 	view->startLocation(settings);
 }
 
 void Controller::closeSettingsHandler()
 {
-	console()<<"Close Settings Screen :::::"<<endl;
-	settings->closeLocationSignal.disconnect_all_slots();
-	settings->appSettingsChangedSignal.disconnect_all_slots();
-	settings->removeMouseUpListener();
-
+	settingsScreenRemoveListeners();
 	startMenuScreen();
 }
 
-void Controller::appSettingsChangedHandler(vector<int> changes)
+void Controller::settingsScreenRemoveListeners()
 {
-	console()<<"App Settings Changed :::::"<<endl;
 	settings->closeLocationSignal.disconnect_all_slots();
 	settings->appSettingsChangedSignal.disconnect_all_slots();
 	settings->removeMouseUpListener();
+}
 
+void Controller::appSettingsChangedHandler(vector<Changes> changes)
+{
+	settingsScreenRemoveListeners();
 	reloadScreens(changes);	
 }
 
-void Controller::reloadScreens(vector<int> changes)
+void Controller::reloadScreens(vector<Changes> changes)
 {
-	this->changes = changes;
-	bool needToReload = false;
+	this->reloadSettingsChanges = changes;
+	bool toReload = false;
 
-	for(auto changedID : changes)
+	for(auto change : changes)
 	{
-		if(changedID == SettingTypes::MENU)
+		int id = change.id;
+		bool texReload = change.texReload;
+
+		bool isGame = gameSettings->isGameID(id);
+		LocMapper mapper   = getLocationPair(id);
+		
+		if(!isGame || (isGame && gameSettings->isGameCurrent(id)))
 		{
-			menu->reload();
-			menuSettings->reload();
-			graphicsLoader->setLoadingTextures(menuSettings->getTextures());
-			view->startLocation(preloader);
-			needToReload = true;
-		}
-		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
-		{
-			game->reload();
-			gameSettings->reload();
-			graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
-			view->startLocation(preloader);
-			needToReload = true;
-		}
+			if(texReload)
+			{
+				mapper.settings->setTextures();
+				graphicsLoader->setLoadingTextures(mapper.settings->getTextures());
+				view->startLocation(preloader);
+				toReload = true;
+			}
+			else
+			{
+				mapper.screen->init(mapper.settings);
+			}
+		}		
 	}
 
-	console()<<"NEED TO RELOAD?::  "<<needToReload<<endl;
+	console()<<"NEED TO RELOAD?::  "<<toReload<<endl;
 
-	if(needToReload)
+	if(toReload)
 	{
 		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this));
 		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));	
@@ -371,19 +331,31 @@ void Controller::allGraphicsReloadCompleteHandler()
 {
 	removeGraphicsLoadingSignals();
 
-	for(auto changedID : changes)
+	for(auto change : reloadSettingsChanges)
 	{
-		if(changedID == SettingTypes::MENU)
-		{
-			menu->init(menuSettings);
-		}
-		else if(gameSettings->isGameID(changedID) && gameSettings->isGameCurrent(changedID))
-		{			
-			game->init(gameSettings);
-		}
+		LocMapper mapper = getLocationPair(change.id);
+		mapper.screen->init(mapper.settings);
 	}
 
 	startMenuScreen();
+}
+
+Controller::LocMapper Controller::getLocationPair(int id)
+{
+	LocMapper mapper;
+	
+	if(gameSettings->isGameID(id))
+	{
+		mapper.screen   = game;
+		mapper.settings = gameSettings->get(id);
+	}
+	else if (id == LocationID::MENU)
+	{
+		mapper.screen = menu;
+		mapper.settings = menuSettings;
+	}
+
+	return mapper;
 }
 
 ////////////////////////////////////////////////////////////////////////////

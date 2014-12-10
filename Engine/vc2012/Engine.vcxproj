@@ -108,13 +108,11 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
-    <ClCompile Include="..\src\locations\game\GameScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
@@ -130,7 +128,6 @@
     <ClInclude Include="..\src\config\ApplicationModel.h" />
     <ClInclude Include="..\src\config\locations\FuncesSettings.h" />
     <ClInclude Include="..\src\config\locations\GameSettings.h" />
-    <ClInclude Include="..\src\config\IConfig.h" />
     <ClInclude Include="..\src\config\locations\ISettings.h" />
     <ClInclude Include="..\src\config\exception\KubikException.h" />
     <ClInclude Include="..\src\config\locations\MenuSettings.h" />
@@ -139,6 +136,7 @@
     <ClInclude Include="..\src\config\locations\TuneUpSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
+    <ClInclude Include="..\src\games\GamesFactory.h" />
     <ClInclude Include="..\src\games\IGame.h" />
     <ClInclude Include="..\src\games\ILocation.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
@@ -152,7 +150,6 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\locations\engine\IScreen.h" />
-    <ClInclude Include="..\src\locations\game\GameScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />

@@ -28,7 +28,7 @@ public:
 
 	virtual void mouseUpHandler( Vec2i vec)
 	{
-		if(buttonArea.contains(vec))
-			mouseUpSignal(*this);
+		if(buttonArea.contains(vec))		
+			mouseUpSignal(*this);		
 	}
 };

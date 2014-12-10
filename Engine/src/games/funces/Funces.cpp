@@ -2,16 +2,26 @@
 
 using namespace kubik;
 
-Funces::Funces()
+Funces::Funces(shared_ptr<ISettings> config)
 {	
-
+	console()<<":: FUNCES CREATED::"<<endl;
+	init(config);
 }
 
 Funces::~Funces()
-{	
+{
+	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Funces destructor~~~~~~~~~~~~~~~~~~~"<<endl;
 	mouseUpListener.disconnect();
 	closeBtn->mouseUpSignal.disconnect_all_slots();
-	console()<<"Funces destructor"<<endl;
+}
+
+void Funces::init(shared_ptr<ISettings> config)
+{
+	settings = static_pointer_cast<FuncesSettings>(config);
+	
+	closeImg = settings->getTextures()["closeImg"]->tex;	
+	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));	
+	connect_once(closeBtn->mouseUpSignal, bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
 }
 
 void Funces::addMouseUpListener()
@@ -29,17 +39,6 @@ void Funces::reset()
 	
 }
 
-void Funces::init(ISettings* config)
-{
-	console()<<"::funces createTextures::  "<<endl;
-
-	settings = static_cast<FuncesSettings*>(config);
-	
-	closeImg = settings->getTextures()["closeImg"]->tex;	
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));	
-	connect_once(closeBtn->mouseUpSignal, bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
-}
-
 void Funces::mouseUp( MouseEvent &event)
 {	
 	closeBtn->mouseUpHandler(event.getPos());
@@ -47,10 +46,10 @@ void Funces::mouseUp( MouseEvent &event)
 
 void Funces::mouseUpHandler(Button& button )
 {	
-	closeGameSignal();
+	closeLocationSignal();
 }
 
 void Funces::draw()
-{	
+{
 	closeBtn->draw();
 }

@@ -24,10 +24,11 @@ namespace kubik
 	{
 	public:	
 
-		ScreenSaverSettings(ApplicationModel *model)
+		ScreenSaverSettings(shared_ptr<ApplicationModel> model)
 		{
-			console()<<"findScreenSaver   "<<endl;
 			this->model = model;
+			configPath = model->getScreenSaverPath();
+
 			findScreenSaver();
 			setTextures();
 		}
@@ -47,7 +48,12 @@ namespace kubik
 			return mode != NONE_SS;
 		}
 
-		void setTextures()
+		void load() override
+		{
+
+		};
+
+		void setTextures() override
 		{
 			if(mode == IMAGE_SS)
 			{
@@ -79,8 +85,6 @@ namespace kubik
 		int mode;
 		string path_ss;
 
-		ApplicationModel *model;
-
 		IResourceScreenSaver* screenSaverResource;
 
 		void findScreenSaver()
@@ -88,10 +92,10 @@ namespace kubik
 			vector<string> content;	
 			int videoIndex = -1;
 			bool bigSizeError = false;			
-			string PATH = model->getScreenSaverPath();
+			
 			mode = NONE_SS;
 
-			for (fs::directory_iterator it(PATH); it != fs::directory_iterator(); ++it)
+			for (fs::directory_iterator it(configPath); it != fs::directory_iterator(); ++it)
 			{
 				if (fs::is_regular_file(*it))
 				{
@@ -101,7 +105,7 @@ namespace kubik
 					if(ssType == NONE_SS)
 						continue;
 
-					string filePath = PATH + it->path().filename().string();
+					string filePath = configPath + it->path().filename().string();
 
 					if(fileSizeNotTooBig(filePath, ext))
 					{

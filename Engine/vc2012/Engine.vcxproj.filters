@@ -67,9 +67,6 @@
     <Filter Include="Source Files\locations\menu">
       <UniqueIdentifier>{334396e2-8676-41cf-a2c9-478e16d6e237}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\locations\game">
-      <UniqueIdentifier>{cb7248f9-e1e6-4c1c-863c-cf7d5920dd9d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\locations\settings">
       <UniqueIdentifier>{28a76c3c-24c8-4fe1-b75d-d293b3346020}</UniqueIdentifier>
     </Filter>
@@ -111,12 +108,6 @@
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp">
       <Filter>Source Files\locations\menu</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\locations\game\GameScreen.cpp">
-      <Filter>Source Files\locations\game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\app\ApplicationView.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\games\funces\Funces.cpp">
       <Filter>Source Files\games\funces</Filter>
     </ClCompile>
@@ -148,9 +139,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\menu\MenuScreen.h">
       <Filter>Source Files\locations\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\game\GameScreen.h">
-      <Filter>Source Files\locations\game</Filter>
     </ClInclude>
     <ClInclude Include="..\src\controller\Controller.h">
       <Filter>Source Files\controller</Filter>
@@ -230,9 +218,6 @@
     <ClInclude Include="..\src\games\ILocation.h">
       <Filter>Source Files\games</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\IConfig.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\engine\IScreen.h">
       <Filter>Source Files\locations\engine</Filter>
     </ClInclude>
@@ -280,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h">
       <Filter>Source Files\locations\screensaver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\GamesFactory.h">
+      <Filter>Source Files\games</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

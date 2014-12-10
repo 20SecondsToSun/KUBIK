@@ -2,9 +2,11 @@
 
 using namespace kubik;
 
-Photobooth::Photobooth()
+Photobooth::Photobooth(shared_ptr<ISettings> config)
 {
-	console()<<"ISettings config::: "<<endl;
+	console()<<"Photobooth CREATED::: "<<endl;
+
+	init(config);
 }
 
 Photobooth::~Photobooth()
@@ -19,6 +21,12 @@ Photobooth::~Photobooth()
 	locations.clear();
 }
 
+void Photobooth::init(shared_ptr<ISettings> config)
+{
+	settings = static_pointer_cast<PhotoboothSettings>(config);
+	create();
+}
+
 void Photobooth::addMouseUpListener()
 {
 	mouseUpListener = getWindow()->connectMouseUp(&Photobooth::mouseUp, this);
@@ -29,10 +37,8 @@ void Photobooth::removeMouseUpListener()
 	mouseUpListener.disconnect();
 }
 
-void Photobooth::init(ISettings* config)
+void Photobooth::create()
 {	
-	settings = static_cast<PhotoboothSettings*>(config);
-
 	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction());
 	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter());
 	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer());
@@ -73,7 +79,7 @@ void Photobooth::mouseUp( MouseEvent &event)
 
 void Photobooth::mouseUpHandler(Button& button )
 {	
-	closeGameSignal();
+	closeLocationSignal();
 }
 
 void Photobooth::draw()

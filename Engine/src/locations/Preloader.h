@@ -44,10 +44,11 @@ namespace kubik
 			this->position = position;
 		}
 
-		void init()
+		void init(shared_ptr<ISettings> config) override
 		{
 
 		}
+
 	protected:
 		void setTextures()
 		{

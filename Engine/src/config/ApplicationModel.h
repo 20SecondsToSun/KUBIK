@@ -3,7 +3,7 @@
 #include <boost/algorithm/string.hpp>
 #include "KubikException.h"
 #include "ApplicationModel.h"
-#include "IConfig.h"
+#include "cinder/Json.h"
 
 using namespace std;
 using namespace ci;
@@ -11,15 +11,10 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class ApplicationModel: public IConfig
+	class ApplicationModel 
 	{
 
-	public:		
-
-		ApplicationModel()
-		{
-			
-		}
+	public:	
 
 		void load()
 		{
@@ -145,7 +140,11 @@ namespace kubik
 			return gameIDsTurnOn.size() == 1;
 		}
 
-		// set paths //
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//				SET PATH
+		//
+		////////////////////////////////////////////////////////////////////////////
 
 		void setMenuConfigPath(string path)
 		{

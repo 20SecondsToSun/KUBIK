@@ -16,16 +16,16 @@ namespace kubik
 	{
 	public:
 
-		MenuScreen(MenuSettings* config);
-		void init(MenuSettings* config);
+		MenuScreen(shared_ptr<ISettings> config);
+		void init(shared_ptr<ISettings>  config) override;
 
 		signal<void(int)> startGameSignal;
 		signal<void(void)> startSettingsSignal;
 		signal<void(void)> startVideoSignal;
 
 		void draw();	
-		void clean();
-		void reload();
+		/*void clean();
+		void reload();*/
 		
 
 		void removeMouseUpListener();
@@ -46,7 +46,7 @@ namespace kubik
 		void mouseUp( MouseEvent &event);
 		void update();
 
-		MenuSettings *settings;
+		shared_ptr<MenuSettings> settings;
 		ButtonText *settingsButton, *videoButton;
 		gl::Texture bckgnd;
 		ci::Font font;

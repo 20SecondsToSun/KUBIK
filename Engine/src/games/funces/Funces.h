@@ -18,12 +18,12 @@ namespace kubik
 	{
 	public:	
 
-		Funces();
+		Funces(shared_ptr<ISettings>);
 		~Funces();
 
 		void draw();	
-		void init(ISettings* config);
 		void reset();
+		void init(shared_ptr<ISettings> config) override;
 
 		void addMouseUpListener();
 		void removeMouseUpListener();
@@ -38,6 +38,6 @@ namespace kubik
 
 		connection mouseUpListener, closeBtnListener;	
 
-		FuncesSettings* settings;
+		shared_ptr<FuncesSettings> settings;
 	};
 }

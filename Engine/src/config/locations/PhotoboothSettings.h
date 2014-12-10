@@ -10,12 +10,17 @@ namespace kubik
 {
 	class PhotoboothSettings:public ISettings
 	{
-	public:		
+	public:	
 
-		void load(string path)
+		PhotoboothSettings(shared_ptr<ApplicationModel> model) 
 		{
-			configPath = path;
-			JsonTree configJSON = JsonTree(loadFile(path));
+			this->model = model;
+			configPath = model->getPhotoboothConfigPath();
+		}
+
+		void load() override
+		{			
+			JsonTree configJSON = JsonTree(loadFile(configPath));
 
 			seconds				= configJSON.getChild("seconds").getValue<int>();
 			secondsBetweenShots = configJSON.getChild("secondsBetweenShots").getValue<int>();
@@ -66,7 +71,6 @@ namespace kubik
 			doc.addChild( JsonTree("seconds", seconds));		
 			doc.addChild( JsonTree("secondsBetweenShots", secondsBetweenShots));
 
-
 			doc.addChild( JsonTree("staticPartDesignPath", staticPartDesignPath));
 			doc.addChild( JsonTree("kubikTemplatePartDesignPath", kubikTemplatePartDesignPath));
 			doc.addChild( JsonTree("userTemplatePartDesignPath", userTemplatePartDesignPath));
@@ -101,7 +105,7 @@ namespace kubik
 			staticDesignPath = staticPartDesignPath+ finalPath;
 		}
 
-		void setTextures()
+		void setTextures() override
 		{		
 			designTexures.clear();
 			addToDictionary("closeImg", getTemplateDesignPath() + "close.png");
@@ -178,7 +182,6 @@ namespace kubik
 		}
 
 	private:
-		string configPath;
 
 		vector<int> filtersIds;
 
@@ -189,7 +192,7 @@ namespace kubik
 		bool isFacebook, isVkotakte, isTwitter, isEmail, isQrCode, isPrint;
 
 		string staticPartDesignPath;	
-		string	kubikTemplatePartDesignPath	;
+		string kubikTemplatePartDesignPath;
 		string userTemplatePartDesignPath;
 		string finalPath;
 		int templateId;

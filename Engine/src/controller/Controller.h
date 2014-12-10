@@ -6,6 +6,7 @@
 #include "TuneUpScreen.h"
 #include "ScreenSaver.h"
 #include "ServicePopup.h"
+#include "Preloader.h"
 #include "Types.h"
 #include "ScreenSaverSettings.h"
 #include "TuneUpSettings.h"
@@ -13,6 +14,9 @@
 #include "ApplicationView.h"
 #include "ApplicationModel.h"
 #include "GameSettings.h"
+#include "GamesFactory.h"
+#include "Photobooth.h"
+#include "Funces.h"
 
 using namespace std;
 
@@ -22,29 +26,36 @@ namespace kubik
 	{
 	public:
 
-		Controller(ApplicationView* view);
+		Controller(shared_ptr<ApplicationView> view);
+		~Controller();
 		void initLoad();
 
 	private:
 
-		ApplicationModel	*model;	
-		ApplicationView		*view;
+		struct LocMapper
+		{
+			shared_ptr<IScreen> screen;
+			shared_ptr<ISettings> settings;
+		};	
 
-		Graphics			*graphicsLoader;
+		shared_ptr<ApplicationModel>	model;	
+		shared_ptr<ApplicationView>		view;
 
-		MenuScreen			*menu;
-		TuneUpScreen		*settings;
-		GameScreen			*game;
-		ScreenSaver			*screenSaver;
-		Preloader			*preloader;
-		ServicePopup		*servicePopup;
+		shared_ptr<Graphics>			graphicsLoader;
 
-		MenuSettings		*menuSettings;
-		ScreenSaverSettings *screenSaverSettings; 
-		TuneUpSettings		*tuneUpSettings; 
-		GameSettings		*gameSettings; 		
+		shared_ptr<MenuScreen>			menu;
+		shared_ptr<TuneUpScreen>		settings;		
+		shared_ptr<ScreenSaver>			screenSaver;
+		shared_ptr<Preloader>			preloader;
+		shared_ptr<ServicePopup>		servicePopup;
 
-		vector<int>			changes;	
+		shared_ptr<ScreenSaverSettings>	screenSaverSettings; 
+		shared_ptr<TuneUpSettings>		tuneUpSettings; 
+		shared_ptr<GameSettings>		gameSettings; 	
+		shared_ptr<MenuSettings>		menuSettings; 		
+
+		GamesFactory<IGame>				gamesFactory;
+		GamesFactory<IGame>::base_ptr	game;		
 
 		void loadAllLocationsConfigs();
 
@@ -86,10 +97,11 @@ namespace kubik
 		void startSettingsHandler();
 		void startSettingsScreen();
 		void closeSettingsHandler();
-		void appSettingsChangedHandler(vector<int> changes);
-		void reloadScreens(vector<int> changes);
+		void appSettingsChangedHandler(vector<Changes> changes);
+		void reloadScreens(vector<Changes> changes);
 		void allGraphicsReloadCompleteHandler();
-		
+		void settingsScreenRemoveListeners();
+
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					GAME SCREEN
@@ -102,7 +114,8 @@ namespace kubik
 		void clearGameByID(int id);
 		void gameGraphicsLoadingCompleteHandler();
 		void resetGame();
-		void startGame();		
+		void startGame();	
+
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -111,5 +124,15 @@ namespace kubik
 		////////////////////////////////////////////////////////////////////////////
 
 		void servicePopupShow(KubikException exc);
+
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//				
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		LocMapper getLocationPair(int id);
+		vector<Changes> reloadSettingsChanges;
 	};
 }

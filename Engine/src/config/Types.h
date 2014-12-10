@@ -10,10 +10,14 @@ using namespace ci;
 
 namespace kubik
 {
-	enum SettingTypes
+	enum LocationID
 	{
 		MENU = 10,
-		TUNEUP = 20
+		CONTROL = 20,
+		SCREENSAVER = 30,
+		PRELOADER = 40,
+		SERVICEPOPUP = 50,
+
 	};
 
 	enum gameId
@@ -55,8 +59,16 @@ namespace kubik
 		}
 		TexObject;
 
-		typedef map<string, TexObject *> OneBlockTexDictionary;		
+		typedef map<string, TexObject *> OneBlockTexDictionary;	
+	
 	};	
+
+	typedef struct _changes
+	{
+		int id;
+		bool texReload;
+	}
+	Changes;
 }
 
 template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 

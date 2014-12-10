@@ -2,14 +2,14 @@
 
 using namespace kubik;
 
-ScreenSaver::ScreenSaver(ScreenSaverSettings* settings)
+ScreenSaver::ScreenSaver(shared_ptr<ISettings> config)
 {
-	init(settings);
+	init(config);
 }
 
-void ScreenSaver::init(ScreenSaverSettings* settings)
+void ScreenSaver::init(shared_ptr<ISettings> config)
 {
-	this->settings = settings;
+	settings =  static_pointer_cast<ScreenSaverSettings>(config);
 	screenSaverResource = settings->getResource();	
 }
 

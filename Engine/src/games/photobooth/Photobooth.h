@@ -19,12 +19,14 @@ namespace kubik
 	{
 	public:	
 
-		Photobooth();
+		Photobooth(shared_ptr<ISettings> config);
 		~Photobooth();
-		void draw();	
-		void init(ISettings* config);
-		void reset();
 
+		void draw();	
+		void reset();
+		void create();
+		void init(shared_ptr<ISettings> config);
+		
 		void addMouseUpListener();
 		void removeMouseUpListener();
 
@@ -48,6 +50,6 @@ namespace kubik
 
 		void nextLocationHandler();
 
-		PhotoboothSettings* settings;
+		shared_ptr<PhotoboothSettings> settings;
 	};
 }
