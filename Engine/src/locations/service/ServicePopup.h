@@ -17,7 +17,10 @@ namespace kubik
 	public:	
 		ServicePopup():IScreen()
 		{	
-			font = Font(loadFile( getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf"), 30);
+			string path = getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf";
+			DataSourceRef ref = loadFile(path);
+			font = Font(ref, 30);
+			
 			//setTextures();
 		}
 
@@ -39,6 +42,8 @@ namespace kubik
 		{
 
 		}
+
+		void reset(shared_ptr<ISettings> config) override{};
 
 		void setMessage(const char* msg)
 		{			

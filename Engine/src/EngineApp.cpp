@@ -4,6 +4,7 @@
 #include "ApplicationView.h"
 #include "Controller.h"
 
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
@@ -31,7 +32,7 @@ void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
 }
 
 void EngineApp::setup()
-{
+{	
 	view		= shared_ptr<ApplicationView>(new ApplicationView());
 	controller  = shared_ptr<Controller>(new Controller(view));
 	controller->initLoad();
@@ -65,7 +66,7 @@ void EngineApp::update()
 void EngineApp::draw()
 {
 	gl::clear(Color::black()); 
-	view->draw();
+	//view->draw();
 }
 
 CINDER_APP_NATIVE( EngineApp, RendererGl )

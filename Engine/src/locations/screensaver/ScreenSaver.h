@@ -21,6 +21,7 @@ namespace kubik
 		void start();
 		void stop();
 		void init(shared_ptr<ISettings> settings) override;
+		void reset(shared_ptr<ISettings> config) override{};
 		void draw();
 
 		void addMouseUpListener();
@@ -34,7 +35,7 @@ namespace kubik
 		void mouseUp(MouseEvent &event);
 		ci::signals::connection mouseUpListener;
 
-		IResourceScreenSaver* screenSaverResource;
+		shared_ptr<IResourceScreenSaver> screenSaverResource;
 		shared_ptr<ScreenSaverSettings> settings;
 	};
 }

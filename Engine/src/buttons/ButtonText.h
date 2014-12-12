@@ -41,8 +41,8 @@ public:
 
 		Texture textTex = textTools().getTextField(text, &font, ColorA(1,0,0,1));
 		gl::pushMatrices();			
-			double shiftX = (buttonArea.getWidth() - textTex.getWidth()) * 0.5;
-			double shiftY = (buttonArea.getHeight() - textTex.getHeight()) * 0.5;
+			float shiftX = (buttonArea.getWidth() - textTex.getWidth()) * 0.5f;
+			float shiftY = (buttonArea.getHeight() - textTex.getHeight()) * 0.5f;
 			gl::translate(shift);
 			gl::translate(shiftX, shiftY);
 			gl::draw(textTex);

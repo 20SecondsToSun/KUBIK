@@ -57,23 +57,23 @@ namespace kubik
 		{
 			if(mode == IMAGE_SS)
 			{
-				addToDictionary("image", path_ss);		
+				addToDictionary("image", createImageResource(path_ss));		
 			}		
 			else if(mode == VIDEO_SS)
 			{
-				addToDictionary("video", path_ss, resourceType::VIDEO, loadingType::FULL_PATH);
+				addToDictionary("video", createVideoResource(path_ss));
 			}	
 		}
 
-		IResourceScreenSaver* getResource()
+		shared_ptr<IResourceScreenSaver> getResource()
 		{
 			if(mode == VIDEO_SS)
 			{
-				screenSaverResource =  new VideoScreenSaver(designTexures["video"]->movie);	
+				screenSaverResource =  shared_ptr<VideoScreenSaver>(new VideoScreenSaver(designTexures["video"]->getMovie()));	
 			}
 			else if(mode == IMAGE_SS)
 			{
-				screenSaverResource =  new ImageScreenSaver(designTexures["image"]->tex);	
+				screenSaverResource =  shared_ptr<ImageScreenSaver>(new ImageScreenSaver(designTexures["image"]->getTex()));	
 			}
 
 			return screenSaverResource;
@@ -81,11 +81,11 @@ namespace kubik
 
 	private:
 
-		enum {IMAGE_SS,	VIDEO_SS, NONE_SS};		
-		int mode;
+		enum   {IMAGE_SS,	VIDEO_SS, NONE_SS};
+		int	   mode;
 		string path_ss;
 
-		IResourceScreenSaver* screenSaverResource;
+		shared_ptr<IResourceScreenSaver> screenSaverResource;
 
 		void findScreenSaver()
 		{

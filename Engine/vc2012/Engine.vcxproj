@@ -141,6 +141,7 @@
     <ClInclude Include="..\src\games\ILocation.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
+    <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoInstruction.h" />

@@ -6,20 +6,23 @@
 using namespace std;
 using namespace ci::signals;
 
-class ILocation
+namespace kubik
 {
-
-public:	
-	~ILocation(){};
-	virtual void draw() = 0;
-	virtual void init() = 0;
-	virtual void reset() = 0;
-//	virtual void addMouseUpListener() = 0;
-//	virtual void removeMouseUpListener() = 0;
-	signal<void(void)> nextLocationSignal;
-
-	virtual void mouseUpHandler( Vec2i vec)
+	class ILocation
 	{
-		
-	}
-};
+
+	public:	
+		~ILocation(){};
+
+		virtual void draw() = 0;
+		virtual void init(shared_ptr<ISettings>) = 0;
+		virtual void reset(shared_ptr<ISettings>) = 0;
+	
+		signal<void(void)> nextLocationSignal;
+
+		virtual void mouseUpHandler( Vec2i vec)
+		{
+
+		}
+	};
+}

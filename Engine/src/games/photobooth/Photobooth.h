@@ -13,6 +13,7 @@
 using namespace std;
 using namespace ci;
 using namespace ci::app;
+
 namespace kubik
 {
 	class Photobooth:public IGame
@@ -23,9 +24,9 @@ namespace kubik
 		~Photobooth();
 
 		void draw();	
-		void reset();
+		void reset(shared_ptr<ISettings> config) override;
 		void create();
-		void init(shared_ptr<ISettings> config);
+		void init(shared_ptr<ISettings> config) override;
 		
 		void addMouseUpListener();
 		void removeMouseUpListener();
@@ -45,8 +46,8 @@ namespace kubik
 		shared_ptr<PhotoFilter>	photoFilter;
 		shared_ptr<PhotoTimer>	photoTimer;
 
-		list<shared_ptr<ILocation>>  locations;
-		list<shared_ptr<ILocation>>::iterator currentLocation;
+		list<shared_ptr<IPhotoboothLocation>>  locations;
+		list<shared_ptr<IPhotoboothLocation>>::iterator currentLocation;
 
 		void nextLocationHandler();
 

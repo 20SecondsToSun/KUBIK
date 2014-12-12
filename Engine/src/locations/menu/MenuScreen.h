@@ -17,22 +17,21 @@ namespace kubik
 	public:
 
 		MenuScreen(shared_ptr<ISettings> config);
-		void init(shared_ptr<ISettings>  config) override;
+		~MenuScreen();
 
+		void init(shared_ptr<ISettings>  config) override;
+		void reset(shared_ptr<ISettings> config) override{};
 		signal<void(int)> startGameSignal;
 		signal<void(void)> startSettingsSignal;
 		signal<void(void)> startVideoSignal;
 
-		void draw();	
-		/*void clean();
-		void reload();*/
-		
+		void draw();
 
 		void removeMouseUpListener();
 		void addMouseUpListener();
 
 	private:
-		vector<MenuButton*> menuBtns;
+		vector<shared_ptr<MenuButton>> menuBtns;
 
 		connection appUpdateSignal;
 		connection mouseListener;	
@@ -41,13 +40,13 @@ namespace kubik
 		void settingsMouseUpListener(ButtonText& button);
 		void videoMouseUpListener(ButtonText& button);
 
-		void createMenuBtns(vector<int> gameIDs);
+		void createMenuBtns(vector<GamesInfo> gameIDs);
 		void clearButtonVector();
 		void mouseUp( MouseEvent &event);
 		void update();
 
 		shared_ptr<MenuSettings> settings;
-		ButtonText *settingsButton, *videoButton;
+		shared_ptr<ButtonText> settingsButton, videoButton;
 		gl::Texture bckgnd;
 		ci::Font font;
 	};

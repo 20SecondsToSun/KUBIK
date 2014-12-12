@@ -5,9 +5,8 @@ TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>		config,
 						   shared_ptr<ScreenSaverSettings> screenSaverSettings,
 						   shared_ptr<MenuSettings>        menuConfig,
 						   shared_ptr<GameSettings>		   gameSettings)
-{
-	
-	this->menuConfig		= menuConfig;
+{	
+	this->menuSettings		= menuConfig;
 	this->gameSettings		= gameSettings;
 	init(config);
 }
@@ -15,6 +14,9 @@ TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>		config,
 TuneUpScreen::~TuneUpScreen()
 {	
 	console()<<"~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~"<<endl;
+	//menuParams->clear();
+	
+
 	mouseUpListener.disconnect();
 	closeBtnListener.disconnect();	
 	appSettingsChgListener.disconnect();	
@@ -22,9 +24,10 @@ TuneUpScreen::~TuneUpScreen()
 
 void TuneUpScreen::addMouseUpListener()
 {
-	mouseUpListener = getWindow()->connectMouseUp(&TuneUpScreen::mouseUp, this);	
-	photoBoothParams->show();
-	menuParams->show();
+	mouseUpListener = getWindow()->connectMouseUp(&TuneUpScreen::mouseUp, this);
+
+	for(auto param:params)
+		param->show();
 }
 
 void TuneUpScreen::mouseUp(MouseEvent &event)
@@ -36,8 +39,9 @@ void TuneUpScreen::mouseUp(MouseEvent &event)
 void TuneUpScreen::removeMouseUpListener()
 {
 	mouseUpListener.disconnect();
-	photoBoothParams->hide();
-	menuParams->hide();
+
+	for(auto param:params)
+		param->hide();
 }
 
 void TuneUpScreen::init(shared_ptr<ISettings> settings)
@@ -46,45 +50,88 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 
 	tuneUpSettings	= static_pointer_cast<TuneUpSettings>(settings);
 
-	font		 =  tuneUpSettings->getTextures()["helvetica90"]->font;
-	Font fontBtn =  tuneUpSettings->getTextures()["helvetica20"]->font;
+	font		 =  tuneUpSettings->getTextures()["helvetica90"]->getFont();
+	Font fontBtn =  tuneUpSettings->getTextures()["helvetica20"]->getFont();
 
-	saveChngBtn = new ButtonText(Rectf(800.0f, 450.0f, 950.0f, 550.0f), "Сохранить", fontBtn);	
+	saveChngBtn = shared_ptr<ButtonText>(new ButtonText(Rectf(800.0f, 450.0f, 950.0f, 550.0f), "Сохранить", fontBtn));	
 	appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&TuneUpScreen::appSettingsChgHandler, this, std::placeholders::_1));
 
-	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->tex;
-	closeBtn = new Button(closeImg, Vec2f(getWindowWidth() - 100, 100));		
+	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->getTex();
+	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&TuneUpScreen::closeLocationHandler, this, std::placeholders::_1));
 
-	createPhotoboothParams();
+	
+	createFuncesParams();
 	createMenuParams();
+	return;
+	createPhotoboothParams();
+	
+	createGamesParams();
 }
 
 void TuneUpScreen::createPhotoboothParams()
 {
-	photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
-	photoBoothParams->addParam( "seconds", &phSet.seconds).min(3).max(5).step(1);
-	photoBoothParams->addParam( "secondsBetweenShots", &phSet.secondsBetweenShots ).min(1).max( 3).step(1);
-	photoBoothParams->addParam( "photoNum", &phSet.photoNum).min(1).max( 3 ).step(1);
-	photoBoothParams->addParam( "Custom design",	 &phSet.isCustomDesign);
-	photoBoothParams->addSeparator();
-	photoBoothParams->addParam( "Facebook Sharing", &phSet.isFacebook);
-	photoBoothParams->addParam( "Vkontakte Sharing", &phSet.isVkotakte);
-	photoBoothParams->addParam( "Twitter Sharing",  &phSet.isTwitter);
-	photoBoothParams->addParam( "Printer",		&phSet.isPrinter);
-	photoBoothParams->addParam( "Email",		&phSet.isEmail);
-	photoBoothParams->addParam( "QrCode",		&phSet.isQrCode);
-	photoBoothParams->addSeparator();
 
-	photoBoothParams->addButton( "SAVE!", std::bind( &TuneUpScreen::savePhtbtn, this ) );
+	photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
+	photoBoothParams->addParam( "seconds", &photoboothData.seconds).min(3).max(5).step(1);
+	photoBoothParams->addParam( "secondsBetweenShots", &photoboothData.secondsBetweenShots ).min(1).max( 3).step(1);
+	photoBoothParams->addParam( "photoNum", &photoboothData.photoNum).min(1).max( 3 ).step(1);
+	photoBoothParams->addSeparator();
+	photoBoothParams->addParam( "Custom design",	 &photoboothData.isCustomDesign);
+	photoBoothParams->addParam( "Template id",	 &photoboothData.templateId).min(1).max(2).step(1);
+	photoBoothParams->addSeparator();
+	photoBoothParams->addParam( "Facebook Sharing", &photoboothData.isFacebook);
+	photoBoothParams->addParam( "Vkontakte Sharing", &photoboothData.isVkotakte);
+	photoBoothParams->addParam( "Twitter Sharing",  &photoboothData.isTwitter);
+	photoBoothParams->addParam( "Printer",		&photoboothData.isPrint);
+	photoBoothParams->addParam( "Email",		&photoboothData.isEmail);
+	photoBoothParams->addParam( "QrCode",		&photoboothData.isQrCode);
 	photoBoothParams->hide();
+
+	params.push_back(photoBoothParams);
+}
+
+void TuneUpScreen::createFuncesParams()
+{
+
 }
 
 void TuneUpScreen::createMenuParams()
 {
-	menuParams = params::InterfaceGl::create(getWindow(), "Menu parameters", toPixels( Vec2i( 300, 400)));
-	menuParams->setPosition(Vec2i(600, 20));
+
+	menuData = menuSettings->getData();
+	
+	menuParams = params::InterfaceGl::create(getWindow(), "Menu parameters", toPixels( Vec2i( 300, 200)));
+	menuParams.~shared_ptr();
+	return;
+	menuParams->setPosition(Vec2i(350, 20));
+	menuParams->addParam( "Custom design",	 &menuData.isCustomDesign);
+	menuParams->addParam( "Template id",	 &menuData.templateId).min(1).max(2).step(1);
+	menuParams->addSeparator();	
 	menuParams->hide();
+
+	params.push_back(menuParams);
+}
+
+void TuneUpScreen::createGamesParams()
+{
+	initialGamesData = gameSettings->getData();
+
+	gamesParams = params::InterfaceGl::create(getWindow(), "Games parameters", toPixels( Vec2i( 300, 200)));
+	gamesParams->setPosition(Vec2i(690, 20));
+
+	for (int i = 0; i < initialGamesData.games.size(); i++)
+	{
+		if( initialGamesData.games[i].isPurchased)
+		{
+			gamesParams->addParam( initialGamesData.games[i].name,	 &initialGamesData.games[i].isOn);
+		}
+	}
+	gamesParams->addSeparator();	
+	gamesParams->addParam( "Default Game ID",	 &initialGamesData.defaultGameID).min(1).max(2).step(1);
+	gamesParams->hide();
+
+	params.push_back(gamesParams);
 }
 
 void TuneUpScreen::startUpParams()
@@ -92,32 +139,14 @@ void TuneUpScreen::startUpParams()
 	changes.clear();
 
 	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
-	phSet.isFacebook			 = phbthSettings->getFacebook();
-	phSet.isVkotakte			 = phbthSettings->getVontakte();
-	phSet.seconds				 = phbthSettings->getSeconds();
-	phSet.secondsBetweenShots	 = phbthSettings->getSecondsBetweenShots();
-	phSet.photoNum				 = phbthSettings->getPhotoNum();
-}
+	photoboothData = phbthSettings->getData();
+	initialPhotoboothData = phbthSettings->getData();
 
-void TuneUpScreen::savePhtbtn()
-{	
-	Changes chng;
-	chng.id = gameId::PHOTOBOOTH;
-	chng.texReload = true;
+	menuData = menuSettings->getData();
+	initialMenuData = menuSettings->getData();
 
-	changes.push_back(chng);
-}
-
-void TuneUpScreen::savePhotoboothParams()
-{
-	// TO DO CHECK FOR CHANGES
-	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
-	phbthSettings->setFacebook(phSet.isFacebook);
-	phbthSettings->setVontakte(phSet.isVkotakte);
-	phbthSettings->setSeconds(phSet.seconds);
-	phbthSettings->setSecondsBetweenShots(phSet.secondsBetweenShots);
-	phbthSettings->setPhotoNum(phSet.photoNum);
-	phbthSettings->saveConfig();
+	gamesData = gameSettings->getData();
+	initialGamesData = gameSettings->getData();
 }
 
 void TuneUpScreen::closeLocationHandler(Button& button )
@@ -127,15 +156,74 @@ void TuneUpScreen::closeLocationHandler(Button& button )
 
 void TuneUpScreen::appSettingsChgHandler(ButtonText& button )
 {
-	for (auto change: changes)
+	checkPhotoBoothParamsForChanges();
+	checkMenuParamsForChanges();
+	checkGamesParamsForChanges();
+	appSettingsChangedSignal(changes);
+}
+
+void TuneUpScreen::checkPhotoBoothParamsForChanges()
+{
+	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
+	
+	Changes chng;
+	chng.texReload = false;
+	chng.id = gameId::PHOTOBOOTH;
+
+	if (initialPhotoboothData.isCustomDesign != photoboothData.isCustomDesign ||
+		initialPhotoboothData.templateId != photoboothData.templateId)
 	{
-		if(change.id == gameId::PHOTOBOOTH)
-		{
-			savePhotoboothParams();
-		}
+		chng.texReload = true;
+		changes.push_back(chng);
+		phbthSettings->setData(photoboothData);	
+		phbthSettings->setDesignPath();		
+		return;
 	}
 
-	appSettingsChangedSignal(changes);
+	if (initialPhotoboothData.isEmail != photoboothData.isEmail ||
+		initialPhotoboothData.isFacebook != photoboothData.isFacebook ||
+		initialPhotoboothData.isPrint != photoboothData.isPrint ||
+		initialPhotoboothData.isQrCode != photoboothData.isQrCode ||
+		initialPhotoboothData.isSticker != photoboothData.isSticker ||
+		initialPhotoboothData.isTwitter != photoboothData.isTwitter ||
+		initialPhotoboothData.isVkotakte != photoboothData.isVkotakte ||
+		initialPhotoboothData.photoNum != photoboothData.photoNum ||
+		initialPhotoboothData.seconds != photoboothData.seconds ||
+		initialPhotoboothData.secondsBetweenShots != photoboothData.secondsBetweenShots ||
+		initialPhotoboothData.stickerID != photoboothData.stickerID)
+	{
+		changes.push_back(chng);
+		phbthSettings->setData(photoboothData);	
+	}
+}
+
+void TuneUpScreen::checkMenuParamsForChanges()
+{
+	Changes chng;
+	chng.texReload = false;
+	chng.id = LocationID::MENU;
+
+	if (initialMenuData.isCustomDesign != menuData.isCustomDesign ||
+		initialMenuData.templateId != menuData.templateId)
+	{
+		chng.texReload = true;
+		changes.push_back(chng);
+		menuSettings->setData(menuData);	
+		menuSettings->setDesignPath();		
+		return;
+	}
+}
+
+void TuneUpScreen::checkFuncesParamsForChanges()
+{
+
+}
+
+void TuneUpScreen::checkGamesParamsForChanges()
+{
+	Changes chng;
+	chng.texReload = false;
+	chng.id = LocationID::MENU;
 }
 
 void TuneUpScreen::draw()
@@ -147,6 +235,7 @@ void TuneUpScreen::draw()
 
 	saveChngBtn->draw();
 	closeBtn->draw();	
-	photoBoothParams->draw();
-	menuParams->draw();
+
+	for(auto param:params)
+		param->draw();
 }

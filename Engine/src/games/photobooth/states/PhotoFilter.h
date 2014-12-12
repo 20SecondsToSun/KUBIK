@@ -3,41 +3,48 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "ILocation.h"
+#include "PhotoboothSettings.h"
 
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
+using namespace ci::gl;
 
-class PhotoFilter:public ILocation
+namespace kubik
 {
+	class PhotoFilter:public IPhotoboothLocation
+	{		
+		Texture fon;
+		ci::Font font;
 
-public:	
-	~PhotoFilter()
-	{
-		console()<<"photo filter destructor"<<endl;
+	public:	
+
+		PhotoFilter(shared_ptr<PhotoboothSettings> settings)
+		{
+			reset(settings);
+		}
+
+		~PhotoFilter()
+		{
+			console()<<"photo filter destructor"<<endl;
+		}		
+
+		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		{
+			settings = _settings;
+			fon = settings->getTextures()["fon2"]->getTex();
+			font		   =  settings->getTextures()["helvetica40"]->getFont();
+		}
+
+		void draw()
+		{
+			gl::draw(fon, getWindowBounds());
+			textTools().textFieldDraw("¬€¡Œ– ‘»À‹“–¿", &font, Vec2f(100, 100), Color::white());
+		}
+
+		void mouseUpHandler( Vec2i vec)
+		{
+			nextLocationSignal();
+		}
 	};
-
-
-	void init()
-	{
-
-	}
-
-	void reset()
-	{
-
-	}
-
-	void draw()
-	{
-		gl::color(Color(0, 0, 1));
-		gl::drawSolidRect(getWindowBounds());
-		gl::color(Color::white());
-	}
-	
-	void mouseUpHandler( Vec2i vec)
-	{
-		//console()<<" mouse up :::: PhotoInstruction "<<endl;
-		nextLocationSignal();
-	}
-};
+}

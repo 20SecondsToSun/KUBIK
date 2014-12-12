@@ -16,23 +16,24 @@ namespace kubik
 			return getBasePath().string() + designPath;
 		}
 
-		std::string getStaticDesignPath()
+		std::string getStaticDesignPath(string value = "")
 		{
-			return getBasePath().string() + staticDesignPath;
+			
+			return getBasePath().string() + staticDesignPath + value;
 		}
 
-		std::string getTemplateDesignPath()
+		std::string getTemplateDesignPath(string value = "")
 		{
-			return getBasePath().string() + templateDesignPath;
+			return getBasePath().string() + templateDesignPath + value;
 		}
 
-		static std::string getFontsPath()
+		static std::string getFontsPath(string value = "")
 		{
 			ci::fs::path path = getBasePath()/"data/fonts/";
-			return path.string();
+			return path.string() + value;
 		}
 
-		Types::OneBlockTexDictionary getTextures()
+		ResourceDictionary getTextures()
 		{	
 			return designTexures;
 		}
@@ -57,20 +58,46 @@ namespace kubik
 			return basePath;
 		}	
 
-		Types::OneBlockTexDictionary designTexures;
+		ResourceDictionary designTexures;
 
-		void addToDictionary(string key, string path, resourceType resType = resourceType::IMAGE, loadingType loadType = loadingType::FULL_PATH, float fontSize = 30)
+		void addToDictionary(string key, shared_ptr<IResource>  value)
 		{
-			Types::TexObject *value	= new Types::TexObject();
+			designTexures[key] = value;
+		}
+
+		shared_ptr<ImageResource> createImageResource( string path, loadingType loadType = loadingType::FULL_PATH)
+		{
+			shared_ptr<ImageResource> value	= shared_ptr<ImageResource>(new ImageResource);
 			value->path				= path;
 			value->isLoading		= false;
 			value->tex				= ci::Surface();
+			value->resourceType		= resourceType::IMAGE;
+			value->loadingType		= loadType;	
 
-			value->resourceType				= resType;
-			value->loadingType				= loadType;
-			value->fontSize					= fontSize;
+			return value;
+		}
 
-			designTexures[key] = value;
+		shared_ptr<FontResource> createFontResource( string path, float size = 30, loadingType loadType = loadingType::FULL_PATH)
+		{
+			shared_ptr<FontResource> value	= shared_ptr<FontResource>(new FontResource);
+			value->path				= path;
+			value->isLoading		= false;
+			value->fontSize			= size;
+			value->resourceType		= resourceType::FONT;
+			value->loadingType		= loadType;	
+
+			return value;
+		}
+
+		shared_ptr<VideoResource> createVideoResource( string path, loadingType loadType = loadingType::FULL_PATH)
+		{
+			shared_ptr<VideoResource> value	= shared_ptr<VideoResource>(new VideoResource);
+			value->path				= path;
+			value->isLoading		= false;
+			value->resourceType		= resourceType::VIDEO;
+			value->loadingType		= loadType;	
+
+			return value;
 		}
 	};
 }

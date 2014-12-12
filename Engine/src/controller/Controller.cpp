@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include "cinder/params/Params.h"
 
 using namespace kubik;
 using namespace std;
@@ -16,8 +17,14 @@ Controller::~Controller()
 
 void Controller::initLoad()
 {
+	
 	preloader		= shared_ptr<Preloader>(new Preloader());
+	
 	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());
+	params::InterfaceGlRef photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
+	return;
+	
+
 
 	view->startLocation(preloader);	
 
@@ -48,7 +55,6 @@ void Controller::loadAllLocationsConfigs()
 		menuSettings		 = shared_ptr<MenuSettings>(new MenuSettings(model));
 		tuneUpSettings		 = shared_ptr<TuneUpSettings>(new TuneUpSettings(model));
 		screenSaverSettings	 = shared_ptr<ScreenSaverSettings>(new ScreenSaverSettings(model));
-
 		loadGraphics();
 	}
 	catch(ExcConfigFileParsing exc)
@@ -69,11 +75,12 @@ void Controller::loadAllLocationsConfigs()
 
 void Controller::loadGraphics()
 {
+	
+	console()<<"start loading graphics"<<endl;
 	graphicsLoader =shared_ptr<Graphics>(new Graphics());
 
 	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
-
 	graphicsLoader->setLoadingTextures(menuSettings->getTextures());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getTextures());
 	graphicsLoader->setLoadingTextures(tuneUpSettings->getTextures());
@@ -91,9 +98,10 @@ void Controller::allGraphicsLoadingCompleteHandler()
 {
 	console()<<"Graphics all Loaded:: "<<endl;
 	removeGraphicsLoadingSignals();
-
-	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));	
+	return;
+	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));		
 	menu        = shared_ptr<MenuScreen>(new MenuScreen(menuSettings));
+	
 	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
 	
 	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings->get(gameId::PHOTOBOOTH));
@@ -308,7 +316,7 @@ void Controller::reloadScreens(vector<Changes> changes)
 			}
 			else
 			{
-				mapper.screen->init(mapper.settings);
+				mapper.screen->reset(mapper.settings);
 			}
 		}		
 	}
@@ -334,7 +342,7 @@ void Controller::allGraphicsReloadCompleteHandler()
 	for(auto change : reloadSettingsChanges)
 	{
 		LocMapper mapper = getLocationPair(change.id);
-		mapper.screen->init(mapper.settings);
+		mapper.screen->reset(mapper.settings);
 	}
 
 	startMenuScreen();

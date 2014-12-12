@@ -32,6 +32,7 @@ namespace kubik
 
 		void draw();	
 		void init(shared_ptr<ISettings> settings) override;
+		void reset(shared_ptr<ISettings> config) override{};
 		
 		signal<void(void)> closeSettingsSignal;
 		signal<void(vector<Changes>)> appSettingsChangedSignal;
@@ -46,7 +47,8 @@ namespace kubik
 
 	private:
 
-		params::InterfaceGlRef	photoBoothParams, menuParams;
+		params::InterfaceGlRef	photoBoothParams, menuParams, gamesParams, funcesParams;
+		vector<params::InterfaceGlRef> params;
 
 		void update();
 		void mouseUp(MouseEvent &event);
@@ -55,11 +57,11 @@ namespace kubik
 
 		shared_ptr<TuneUpSettings>		tuneUpSettings;
 		shared_ptr<ScreenSaverSettings> screnSaversettings;
-		shared_ptr<MenuSettings>		menuConfig;
+		shared_ptr<MenuSettings>		menuSettings;
 		shared_ptr<GameSettings>		gameSettings;
 
-		ButtonText*	saveChngBtn;
-		Button*		closeBtn;
+		shared_ptr<ButtonText>	saveChngBtn;
+		shared_ptr<Button>		closeBtn;
 
 		void closeLocationHandler(Button& button);
 		void appSettingsChgHandler(ButtonText& button);
@@ -69,20 +71,18 @@ namespace kubik
 		void savePhotoboothParams();
 
 		void createPhotoboothParams();
-		void createMenuParams();
+		void createMenuParams();	
+		void createFuncesParams();	
+
+		void checkPhotoBoothParamsForChanges();
+		void checkFuncesParamsForChanges();
+		void checkMenuParamsForChanges();
+		void checkGamesParamsForChanges();
 		
-		struct
-		{
-			bool isFacebook;
-			bool isVkotakte;
-			bool isTwitter;
-			bool isCustomDesign;
-			bool isPrinter;
-			bool isEmail;
-			bool isQrCode;
-			int  seconds;
-			int  secondsBetweenShots;
-			int  photoNum;
-		}phSet;
+		void createGamesParams();
+		
+		PhotoboothSettings::PhotoboothDataStruct photoboothData, initialPhotoboothData;
+		MenuSettings::MenuDataStruct menuData, initialMenuData;		
+		GameSettings::GamesDataStruct gamesData, initialGamesData;		
 	};
 }

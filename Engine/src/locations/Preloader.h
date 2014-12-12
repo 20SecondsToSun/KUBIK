@@ -49,6 +49,8 @@ namespace kubik
 
 		}
 
+		void reset(shared_ptr<ISettings> config) override{};
+
 	protected:
 		void setTextures()
 		{

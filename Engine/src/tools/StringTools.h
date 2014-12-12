@@ -35,7 +35,6 @@ public:
 			return 0;
 		}
 
-
 		result_c = WideCharToMultiByte(	CP_UTF8, 0,	ures,	-1,	0,	0,	0, 0);
 
 		if(!result_c)
@@ -56,8 +55,6 @@ public:
 		delete[] cres;
 		return res;
 	}
-
 };
 
-// helper function(s) for easier access 
 inline StringTools&	stringTools() { return StringTools::getInstance(); };

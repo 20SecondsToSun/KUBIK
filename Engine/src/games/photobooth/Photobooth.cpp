@@ -7,6 +7,7 @@ Photobooth::Photobooth(shared_ptr<ISettings> config)
 	console()<<"Photobooth CREATED::: "<<endl;
 
 	init(config);
+	create();
 }
 
 Photobooth::~Photobooth()
@@ -23,8 +24,17 @@ Photobooth::~Photobooth()
 
 void Photobooth::init(shared_ptr<ISettings> config)
 {
-	settings = static_pointer_cast<PhotoboothSettings>(config);
-	create();
+	settings = static_pointer_cast<PhotoboothSettings>(config);	
+}
+
+void Photobooth::reset(shared_ptr<ISettings> config)
+{
+	settings = static_pointer_cast<PhotoboothSettings>(config);	
+
+	for (auto it: locations)
+		it->reset(settings);
+
+	currentLocation = locations.begin();
 }
 
 void Photobooth::addMouseUpListener()
@@ -39,30 +49,23 @@ void Photobooth::removeMouseUpListener()
 
 void Photobooth::create()
 {	
-	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction());
-	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter());
-	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer());
+	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction(settings));
+	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter(settings));
+	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer(settings));
 
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
+
 
 	for (auto it: locations)	
 		connect_once(it->nextLocationSignal, bind(&Photobooth::nextLocationHandler, this));
 
 	currentLocation = locations.begin();
 
-	closeImg = settings->getTextures()["closeImg"]->tex;
+	closeImg = settings->getTextures()["closeImg"]->getTex();
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
 	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
-}
-
-void Photobooth::reset()
-{
-	for (auto it: locations)	
-		it->reset();
-
-	currentLocation = locations.begin();
 }
 
 void Photobooth::nextLocationHandler()

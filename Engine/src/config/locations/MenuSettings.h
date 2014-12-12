@@ -13,10 +13,21 @@ namespace kubik
 	class MenuSettings:public ISettings
 	{
 	public:
+		struct MenuDataStruct
+		{
+			bool isCustomDesign;
+			int  templateId;			
+
+			string staticPartDesignPath;
+			string kubikTemplatePartDesignPath;
+			string userTemplatePartDesignPath;
+			string finalPath;			
+		};
+
 		MenuSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			configPath = model->getMenuConfigPath();
+			configPath  = model->getMenuConfigPath();
 
 			load();
 			setTextures();
@@ -24,37 +35,56 @@ namespace kubik
 
 		void load()
 		{
-			try	
-			{
-				JsonTree configJSON = JsonTree(loadFile(configPath));
-				designPath = configJSON.getChild("designPath").getValue<string>();
-			}
-			catch(...)
-			{
-				throw ExcConfigFileParsing();
-			}
+			JsonTree configJSON					= JsonTree(loadFile(configPath));
+			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();
+			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();
+			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();
+			data.finalPath						= configJSON.getChild("finalPath").getValue<string>();
+			data.templateId						= configJSON.getChild("templateId").getValue<int>();
+			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
+			
+			setDesignPath();
 		}
 
-		void setDesignPath(string path)
+		void saveConfig()
 		{
-			designPath = path;
+			console()<<"SAVE MENU CONFIG"<<endl;
 		}
 
-		vector<int> getGameIDs()
+		void setDesignPath()
 		{
-			return model->getGameIDsTurnOn();
-		}		
+			if(data.isCustomDesign)
+				templateDesignPath = data.userTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
+			else
+				templateDesignPath = data.kubikTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
 
+			staticDesignPath = data.staticPartDesignPath + data.finalPath;
+		}			
+		
 		void setTextures()
 		{		
 			designTexures.clear();
-			addToDictionary("background",	getDesignPath() + "bg.jpg");
-			addToDictionary("background1",  getDesignPath() + "title.jpg");
-			addToDictionary("helvetica30",  getFontsPath()  + "Helvetica Neue.ttf", resourceType::FONT, loadingType::FULL_PATH, 30);
+			addToDictionary("background",	createImageResource(getTemplateDesignPath("bg.jpg")));
+			addToDictionary("helvetica30",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 		}
 
-	private:
-		
-		
+		MenuDataStruct getData()
+		{
+			return data;
+		}
+
+		vector<GamesInfo> getGames()
+		{
+			return model->getGames();
+		}
+
+		void setData(MenuDataStruct value)
+		{
+			data = value;
+			saveConfig();
+		}
+
+		private:
+			MenuDataStruct data;	
 	};
 }

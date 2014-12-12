@@ -15,7 +15,6 @@ namespace kubik
 	public:	
 		~IGame(){};
 		virtual void draw() = 0;		
-		virtual void reset() = 0;
 		virtual void clean(){};
 		virtual void addMouseUpListener() = 0;
 		virtual void removeMouseUpListener() = 0;

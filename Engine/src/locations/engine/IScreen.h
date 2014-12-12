@@ -14,11 +14,12 @@ namespace kubik
 	{
 
 	protected:
-		Types::OneBlockTexDictionary designTexures;
+		ResourceDictionary designTexures;
 
 	public:	
 		virtual void draw() = 0;
 		ci::signals::signal<void(void)> closeLocationSignal;
 		virtual void init(shared_ptr<ISettings> config) = 0;
+		virtual void reset(shared_ptr<ISettings> config) = 0;
 	};
 }

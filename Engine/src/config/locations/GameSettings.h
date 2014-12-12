@@ -14,11 +14,18 @@ namespace kubik
 	{
 	public:
 
+		struct GamesDataStruct
+		{
+			vector<GamesInfo> games;
+			int		defaultGameID;		
+		};
+
 		GameSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
 			currentGame = model->getDefaultGameID();
-
+			data.games = model->getGames();
+			data.defaultGameID = model->getDefaultGameID();
 			load();
 		}
 
@@ -27,14 +34,15 @@ namespace kubik
 			return gameSettingsMap[id];
 		}		
 
-		Types::OneBlockTexDictionary getActiveGameTextures()
+		ResourceDictionary getActiveGameTextures()
 		{
 			return getGameTexturesById(currentGame);
 		}
 
-		Types::OneBlockTexDictionary getGameTexturesById(int id)
+		ResourceDictionary getGameTexturesById(int id)
 		{
-			return gameSettingsMap[id]->getTextures();		
+			ResourceDictionary rd = gameSettingsMap[id]->getTextures();
+			return rd;		
 		}		
 
 		void setTextures() override
@@ -43,15 +51,18 @@ namespace kubik
 		}
 
 		void load() override
-		{				
-			vector<int> gameIDs = model->getGameIDsTurnOn();
+		{
+			vector<GamesInfo> games = model->getGames();
 
-			for (auto gameID: gameIDs)
+			for (auto game: games)
 			{
-				switch (gameID)
+				if (!game.isOn || !game.isPurchased)
+					continue;
+
+				switch (game.id)
 				{
-				case gameId::PHOTOBOOTH:					
-					gameSettingsMap[gameId::PHOTOBOOTH] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));				
+				case gameId::PHOTOBOOTH:
+					gameSettingsMap[gameId::PHOTOBOOTH] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));
 					break;
 
 				case gameId::FUNCES:
@@ -64,7 +75,7 @@ namespace kubik
 
 				try	
 				{				
-					gameSettingsMap[gameID]->load();
+					gameSettingsMap[game.id]->load();
 				}
 				catch(...)
 				{
@@ -72,7 +83,7 @@ namespace kubik
 				}
 			}
 		}
-	
+		
 		bool isGameID(int id)
 		{
 			vector<int> gameIDs = model->getGameIDsTurnOn();
@@ -107,11 +118,18 @@ namespace kubik
 		int getNextGameId()
 		{
 			return nextGameId;
-		}		
+		}
+
+		GamesDataStruct getData()
+		{
+			return data;
+		}
 
 	private:
 
 		int currentGame, nextGameId;	
 		map<int, shared_ptr<ISettings>> gameSettingsMap;
+
+		GamesDataStruct data;
 	};
 }

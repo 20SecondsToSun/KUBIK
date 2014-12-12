@@ -2,38 +2,48 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
-#include "ILocation.h"
+#include "IPhotoboothLocation.h"
+#include "PhotoboothSettings.h"
+#include "cinder/gl/Texture.h"
 
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
+using namespace ci::gl;
 
-class PhotoInstruction:public ILocation
+namespace kubik
 {
-
-public:	
-	~PhotoInstruction(){};
-
-	void init()
+	class PhotoInstruction:public IPhotoboothLocation
 	{
+		Texture fon;
+		ci::Font font;
 
-	}
+	public:	
 
-	void reset()
-	{
+		PhotoInstruction(shared_ptr<PhotoboothSettings> settings)
+		{
+			reset(settings);		
+		};
 
-	}
+		~PhotoInstruction(){};
 
-	void draw()
-	{
-		gl::color(Color(0, 1, 0));
-		gl::drawSolidRect(getWindowBounds());
-		gl::color(Color::white());
-	}
+		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		{
+			settings = _settings;
+			fon = settings->getTextures()["fon1"]->getTex();
+			font		   =  settings->getTextures()["helvetica40"]->getFont();
+		}
 
-	void mouseUpHandler( Vec2i vec)
-	{
-		console()<<" mouse up :::: PhotoInstruction "<<endl;
-		nextLocationSignal();
-	}
-};
+		void draw()
+		{
+			gl::draw(fon, getWindowBounds());
+			gl::color(Color::white());
+			textTools().textFieldDraw("ÈÍÑÒÐÓÊÖÈß", &font, Vec2f(100, 100), Color::white());
+		}
+
+		void mouseUpHandler( Vec2i vec)
+		{
+			nextLocationSignal();
+		}
+	};
+}

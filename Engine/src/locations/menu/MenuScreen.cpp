@@ -3,77 +3,66 @@
 
 using namespace kubik;
 
-//void MenuScreen::reload()
-//{
-//	clean();
-//}
-//
-//void MenuScreen::clean()
-//{
-//	clearButtonVector();
-//}
-
 MenuScreen::MenuScreen(shared_ptr<ISettings>  settings)
 {
 	init(settings);
 }
 
+MenuScreen::~MenuScreen()
+{
+	clearButtonVector();
+	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
+}
+
 void MenuScreen::init(shared_ptr<ISettings>  _settings)
 {	
 	settings	   = static_pointer_cast<MenuSettings>(_settings);	
-	font		   =  settings->getTextures()["helvetica30"]->font;
-	bckgnd         =  settings->getTextures()["background"]->tex;
+	font		   =  settings->getTextures()["helvetica30"]->getFont();
+	bckgnd         =  settings->getTextures()["background"]->getTex();
 
-	createMenuBtns(settings->getGameIDs());
+	createMenuBtns(settings->getGames());
 }
 
-void MenuScreen::createMenuBtns(vector<int> gameIDs)
+void MenuScreen::createMenuBtns(vector<GamesInfo> games)
 {
-	string gameNames[3] = {"Funces", "Photobooth", "Kotopoza"};
-	string settingsName = "Настройки";
-	string screenSaverName = "Заставка";	
-
+	string settingsName	   = "Настройки";
+	string screenSaverName = "Заставка";
+	
 	int i = 0;
 
-	for(auto it : gameIDs)
+	for(auto it : games)
 	{
-		int btnId    = it;
-		float x      = 300.0f *(1 + i);
+		if(!it.isOn || !it.isPurchased)
+			continue;
+
+		int btnId    = it.id;
+		float x      = 300.0f *(1 + i++);
 		float y      = 400.0f;
 		float width  = 200.0f;
 		float height = 200.0f;
 
 		Rectf buttonArea = Rectf(x, y, x + width, y + height);
-		MenuButton *button = new MenuButton(btnId, buttonArea, gameNames[i], font);		
+		shared_ptr<MenuButton> button = shared_ptr<MenuButton>(new MenuButton(btnId, buttonArea, it.name, font));		
 		connect_once(button->mouseUpSignal, bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
 		menuBtns.push_back(button);
-		i++;
 	}	
 
-	settingsButton = new ButtonText(Rectf(50.0f, 50.0f, 350.0f, 150.0f), settingsName, font);	
+	settingsButton = shared_ptr<ButtonText>(new ButtonText(Rectf(50.0f, 50.0f, 350.0f, 150.0f), settingsName, font));	
 	connect_once(settingsButton->mouseUpSignal, bind(&MenuScreen::settingsMouseUpListener, this, std::placeholders::_1));
 
-	videoButton = new ButtonText(Rectf(400.0f, 50.0f, 700.0f, 150.0f), screenSaverName, font);	
+	videoButton = shared_ptr<ButtonText>(new ButtonText(Rectf(400.0f, 50.0f, 700.0f, 150.0f), screenSaverName, font));	
 	connect_once(videoButton->mouseUpSignal, bind(&MenuScreen::videoMouseUpListener, this, std::placeholders::_1));
 }
 
 void MenuScreen::clearButtonVector()
 {
-	for(auto it : menuBtns)
-	{
+	for(auto it : menuBtns)	
 		it->mouseUpSignal.disconnect_all_slots();
-		delete it;
-	}
+
 	menuBtns.clear();
 
 	videoButton->mouseUpSignal.disconnect_all_slots();
-	settingsButton->mouseUpSignal.disconnect_all_slots();	
-
-	if(settingsButton)
-		delete settingsButton;
-
-	if(videoButton)
-		delete videoButton;
+	settingsButton->mouseUpSignal.disconnect_all_slots();
 }
 
 void MenuScreen::mouseUpListener(MenuButton& button )
@@ -102,7 +91,7 @@ void MenuScreen::mouseUp( MouseEvent &event)
 
 void MenuScreen::draw()
 {
-	gl::draw(bckgnd);
+	gl::draw(bckgnd, getWindowBounds());
 
 	for(auto it : menuBtns)
 		it->draw();
@@ -118,5 +107,5 @@ void MenuScreen::removeMouseUpListener()
 
 void MenuScreen::addMouseUpListener()
 {
-	mouseListener = getWindow()->getSignalMouseUp().connect( std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1) );
+	mouseListener = getWindow()->getSignalMouseUp().connect(std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1));
 }

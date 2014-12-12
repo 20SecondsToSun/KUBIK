@@ -3,37 +3,44 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "ILocation.h"
+#include "IPhotoboothLocation.h"
 
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
+using namespace ci::gl;
 
-class PhotoTimer:public ILocation
+namespace kubik
 {
-
-public:	
-	~PhotoTimer(){};
-
-	void init()
+	class PhotoTimer:public IPhotoboothLocation
 	{
+		Texture fon;
+		ci::Font font;
 
-	}
+	public:	
+		~PhotoTimer(){};
 
-	void reset()
-	{
+		PhotoTimer(shared_ptr<PhotoboothSettings> settings)
+		{
+			reset(settings);
+		}
 
-	}
+		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		{
+			settings = _settings;
+			fon = settings->getTextures()["fon3"]->getTex();
+			font  =  settings->getTextures()["helvetica40"]->getFont();
+		}
 
-	void draw()
-	{
-		gl::color(Color(0, 0.5, 0));
-		gl::drawSolidRect(getWindowBounds());
-		gl::color(Color::white());
-	}
+		void draw()
+		{
+			gl::draw(fon, getWindowBounds());
+			textTools().textFieldDraw("“¿…Ã≈–", &font, Vec2f(100, 100), Color::white());
+		}
 
-	void mouseUpHandler( Vec2i vec)
-	{
-		console()<<" mouse up :::: PhotoTimer "<<endl;
-		nextLocationSignal();
-	}
-};
+		void mouseUpHandler( Vec2i vec)
+		{
+			nextLocationSignal();
+		}
+	};
+}

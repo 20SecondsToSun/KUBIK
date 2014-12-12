@@ -22,7 +22,7 @@ namespace kubik
 		~Funces();
 
 		void draw();	
-		void reset();
+		void reset(shared_ptr<ISettings> config) override;
 		void init(shared_ptr<ISettings> config) override;
 
 		void addMouseUpListener();

@@ -12,6 +12,39 @@ namespace kubik
 	{
 	public:	
 
+		enum PhotoboothDesignTemplates
+		{
+			POP_ART,
+			NATURE,
+			ABSTRACT
+		};
+
+		struct PhotoboothDataStruct
+		{
+			bool isFacebook;
+			bool isVkotakte;
+			bool isTwitter;
+			bool isCustomDesign;
+			bool isPrint;
+			bool isEmail;
+			bool isQrCode;
+			bool isSticker;
+
+			int  seconds;
+			int  secondsBetweenShots;
+			int  photoNum;
+			int  templateId;
+			int  stickerID;
+			int  frameMode;
+
+			string staticPartDesignPath;
+			string kubikTemplatePartDesignPath;
+			string userTemplatePartDesignPath;
+			string finalPath;
+
+			vector<int> filtersIds;
+		};
+
 		PhotoboothSettings(shared_ptr<ApplicationModel> model) 
 		{
 			this->model = model;
@@ -21,36 +54,35 @@ namespace kubik
 		void load() override
 		{			
 			JsonTree configJSON = JsonTree(loadFile(configPath));
-
-			seconds				= configJSON.getChild("seconds").getValue<int>();
-			secondsBetweenShots = configJSON.getChild("secondsBetweenShots").getValue<int>();
-			photoNum			= configJSON.getChild("photoNum").getValue<int>();
-			isFacebook			= configJSON.getChild("isFacebook").getValue<bool>();
-			isVkotakte			= configJSON.getChild("isVkotakte").getValue<bool>();
-			isTwitter			= configJSON.getChild("isTwitter").getValue<bool>();
-			isEmail				= configJSON.getChild("isEmail").getValue<bool>();
-			isQrCode			= configJSON.getChild("isQrCode").getValue<bool>();
-			isPrint			    = configJSON.getChild("isPrint").getValue<bool>();
-
+		
+			data.seconds				= configJSON.getChild("seconds").getValue<int>();
+			data.secondsBetweenShots	= configJSON.getChild("secondsBetweenShots").getValue<int>();
+			data.photoNum				= configJSON.getChild("photoNum").getValue<int>();
+			data.isFacebook				= configJSON.getChild("isFacebook").getValue<bool>();
+			data.isVkotakte				= configJSON.getChild("isVkotakte").getValue<bool>();
+			data.isTwitter				= configJSON.getChild("isTwitter").getValue<bool>();
+			data.isEmail				= configJSON.getChild("isEmail").getValue<bool>();
+			data.isQrCode				= configJSON.getChild("isQrCode").getValue<bool>();
+			data.isPrint			    = configJSON.getChild("isPrint").getValue<bool>();
+		
 			JsonTree datas = JsonTree(configJSON.getChild( "filtersIds"));
 			
-			for( auto data : datas)		
-				filtersIds.push_back(data.getChild("id").getValue<int>());
-
-			staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
-			kubikTemplatePartDesignPath		= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
-			userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
-			finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
-			templateId						= configJSON.getChild("templateId").getValue<int>();
-
-			isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
-
-			isSticker						= configJSON.getChild("templateId").getValue<bool>();
-			stickerID						= configJSON.getChild("stickerID").getValue<int>();
-			frameMode						= configJSON.getChild("frameMode").getValue<int>();
-
-			setDesignPath();		
+			for( auto it : datas)		
+				data.filtersIds.push_back(it.getChild("id").getValue<int>());
 		
+			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
+			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
+			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
+			data.finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
+			data.templateId						= configJSON.getChild("templateId").getValue<int>();
+		
+			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
+		
+			data.isSticker						= configJSON.getChild("isSticker").getValue<bool>();
+			data.stickerID						= configJSON.getChild("stickerID").getValue<int>();
+			data.frameMode						= configJSON.getChild("frameMode").getValue<int>();
+
+			setDesignPath();
 			setTextures();
 		}
 
@@ -60,30 +92,30 @@ namespace kubik
 
 			JsonTree doc;
 
-			doc.addChild( JsonTree("isFacebook", isFacebook));		
-			doc.addChild( JsonTree("isVkotakte", isVkotakte));		
-			doc.addChild( JsonTree("isTwitter", isTwitter));		
-			doc.addChild( JsonTree("isEmail", isEmail));		
-			doc.addChild( JsonTree("isQrCode", isQrCode));		
-			doc.addChild( JsonTree("isPrint", isPrint));
+			doc.addChild( JsonTree("isFacebook", data.isFacebook));		
+			doc.addChild( JsonTree("isVkotakte", data.isVkotakte));		
+			doc.addChild( JsonTree("isTwitter", data.isTwitter));		
+			doc.addChild( JsonTree("isEmail", data.isEmail));		
+			doc.addChild( JsonTree("isQrCode", data.isQrCode));		
+			doc.addChild( JsonTree("isPrint", data.isPrint));
 
-			doc.addChild( JsonTree("photoNum", photoNum));		
-			doc.addChild( JsonTree("seconds", seconds));		
-			doc.addChild( JsonTree("secondsBetweenShots", secondsBetweenShots));
+			doc.addChild( JsonTree("photoNum", data.photoNum));		
+			doc.addChild( JsonTree("seconds", data.seconds));		
+			doc.addChild( JsonTree("secondsBetweenShots", data.secondsBetweenShots));
 
-			doc.addChild( JsonTree("staticPartDesignPath", staticPartDesignPath));
-			doc.addChild( JsonTree("kubikTemplatePartDesignPath", kubikTemplatePartDesignPath));
-			doc.addChild( JsonTree("userTemplatePartDesignPath", userTemplatePartDesignPath));
-			doc.addChild( JsonTree("finalPath", finalPath));
-			doc.addChild( JsonTree("templateId", templateId));
-			doc.addChild( JsonTree("isCustomDesign", isCustomDesign));
-			doc.addChild( JsonTree("isSticker", isSticker));
-			doc.addChild( JsonTree("stickerID", stickerID));
-			doc.addChild( JsonTree("frameMode", frameMode));
+			doc.addChild( JsonTree("staticPartDesignPath", data.staticPartDesignPath));
+			doc.addChild( JsonTree("kubikTemplatePartDesignPath", data.kubikTemplatePartDesignPath));
+			doc.addChild( JsonTree("userTemplatePartDesignPath", data.userTemplatePartDesignPath));
+			doc.addChild( JsonTree("finalPath", data.finalPath));
+			doc.addChild( JsonTree("templateId", data.templateId));
+			doc.addChild( JsonTree("isCustomDesign", data.isCustomDesign));
+			doc.addChild( JsonTree("isSticker", data.isSticker));
+			doc.addChild( JsonTree("stickerID", data.stickerID));
+			doc.addChild( JsonTree("frameMode", data.frameMode));
 
 			JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
 
-			for (auto it: filtersIds)
+			for (auto it: data.filtersIds)
 			{
 				JsonTree id;
 				id.addChild(JsonTree("id", it));
@@ -91,114 +123,43 @@ namespace kubik
 			}
 			
 			doc.addChild(filtersIdsJ);
-
 			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
 		}
 
 		void setDesignPath()
 		{
-			if(isCustomDesign)
-				templateDesignPath = userTemplatePartDesignPath + to_string(templateId)+"\\" + finalPath;
+			if(data.isCustomDesign)
+				templateDesignPath = data.userTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
 			else
-				templateDesignPath = kubikTemplatePartDesignPath + to_string(templateId)+"\\" + finalPath;
+				templateDesignPath = data.kubikTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
 
-			staticDesignPath = staticPartDesignPath+ finalPath;
+			staticDesignPath = data.staticPartDesignPath + data.finalPath;
 		}
 
 		void setTextures() override
 		{		
 			designTexures.clear();
-			addToDictionary("closeImg", getTemplateDesignPath() + "close.png");
+		
+			addToDictionary("closeImg",		createImageResource(getStaticDesignPath("close.png")));
+			addToDictionary("fon1",			createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));
+			addToDictionary("fon2",			createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
+			addToDictionary("fon3",			createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
+			addToDictionary("helvetica40",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
+		}
+		
+		PhotoboothDataStruct getData()
+		{
+			return data;
 		}
 
-		void setSeconds(int _seconds)
+		void setData(PhotoboothDataStruct value)
 		{
-			seconds = _seconds;
-		}
+			data = value;
 
-		int getSeconds()
-		{
-			return seconds;
-		}
-
-		void setSecondsBetweenShots(int _secondsBetweenShots)
-		{
-			secondsBetweenShots = _secondsBetweenShots;
-		}
-
-		int getSecondsBetweenShots( )
-		{
-			return secondsBetweenShots ;
-		}	
-
-		bool getFacebook()
-		{
-			return isFacebook;
-		}
-
-		bool getVontakte()
-		{
-			return isVkotakte;
-		}
-
-		bool getTwitter()
-		{
-			return isTwitter;
-		}
-
-		bool getEmail()
-		{
-			return isEmail;
-		}
-
-		bool getQrCode()
-		{
-			return isQrCode;
-		}
-
-		bool getPrint()
-		{
-			return isPrint;
-		}	
-
-		int getPhotoNum( )
-		{
-			return photoNum ;
-		}
-
-		void setFacebook(bool value)
-		{
-			isFacebook = value;
-		}
-
-		void setVontakte(bool value)
-		{
-			isVkotakte = value;
-		}
-
-		void setPhotoNum(int value)
-		{
-			photoNum = value;
+			saveConfig();
 		}
 
 	private:
-
-		vector<int> filtersIds;
-
-		int secondsBetweenShots;
-		int seconds;
-		int photoNum;
-
-		bool isFacebook, isVkotakte, isTwitter, isEmail, isQrCode, isPrint;
-
-		string staticPartDesignPath;	
-		string kubikTemplatePartDesignPath;
-		string userTemplatePartDesignPath;
-		string finalPath;
-		int templateId;
-		bool isCustomDesign;
-		bool isSticker;
-		int stickerID;
-		int frameMode;
+		PhotoboothDataStruct data;
 	};
 }

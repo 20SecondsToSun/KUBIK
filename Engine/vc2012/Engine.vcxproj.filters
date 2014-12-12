@@ -269,6 +269,9 @@
     <ClInclude Include="..\src\games\GamesFactory.h">
       <Filter>Source Files\games</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

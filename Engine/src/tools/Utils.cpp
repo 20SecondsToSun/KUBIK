@@ -184,8 +184,6 @@ LPWSTR Utils::ConvertToLPWSTR( const std::wstring& s )
 	return ws;
 }
 
-
-
 std::wstring Utils::s2ws(const std::string& s)
 {
 	int len;
