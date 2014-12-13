@@ -5,9 +5,9 @@
 #include "Graphics.h"
 #include "IGame.h"
 #include "Button.h"
-#include "PhotoInstruction.h"
-#include "PhotoFilter.h"
-#include "PhotoTimer.h"
+#include "states/PhotoInstruction.h"
+#include "states/PhotoFilter.h"
+#include "states/PhotoTimer.h"
 #include "PhotoboothSettings.h"
 
 using namespace std;

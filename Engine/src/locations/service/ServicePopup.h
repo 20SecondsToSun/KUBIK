@@ -15,13 +15,18 @@ namespace kubik
 	class ServicePopup:public IScreen
 	{
 	public:	
-		ServicePopup():IScreen()
+		ServicePopup()
 		{	
 			string path = getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf";
 			DataSourceRef ref = loadFile(path);
-			font = Font(ref, 30);
+			font =  Font(ref, 30);
+			
 			
 			//setTextures();
+		}
+		~ServicePopup()
+		{
+			console()<<"~~~~~~~~~ServicePopup dextruct~~~~~~~~~~~"<<endl;
 		}
 
 		void draw()
@@ -31,8 +36,8 @@ namespace kubik
 
 			Texture textTex = textTools().getTextField(msg, &font, ColorA(1,0,0,1));
 			gl::pushMatrices();			
-			float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5;
-			float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5;		
+			float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5f;
+			float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5f;		
 			gl::translate(shiftX, shiftY);
 			gl::draw(textTex);
 			gl::popMatrices();	

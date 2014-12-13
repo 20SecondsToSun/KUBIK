@@ -64,7 +64,7 @@ void Photobooth::create()
 	currentLocation = locations.begin();
 
 	closeImg = settings->getTextures()["closeImg"]->getTex();
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100, 100)));		
+	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
 	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
 }
 

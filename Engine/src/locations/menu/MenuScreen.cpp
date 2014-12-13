@@ -11,12 +11,13 @@ MenuScreen::MenuScreen(shared_ptr<ISettings>  settings)
 MenuScreen::~MenuScreen()
 {
 	clearButtonVector();
+	mouseListener.disconnect();
 	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
 }
 
 void MenuScreen::init(shared_ptr<ISettings>  _settings)
 {	
-	settings	   = static_pointer_cast<MenuSettings>(_settings);	
+	settings	   =  static_pointer_cast<MenuSettings>(_settings);	
 	font		   =  settings->getTextures()["helvetica30"]->getFont();
 	bckgnd         =  settings->getTextures()["background"]->getTex();
 

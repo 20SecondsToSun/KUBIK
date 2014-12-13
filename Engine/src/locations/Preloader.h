@@ -24,7 +24,7 @@ namespace kubik
 
 		Preloader()
 		{
-			this->position = Vec2f(getWindowWidth() * 0.5, getWindowHeight() * 0.5);
+			this->position = Vec2f(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f);
 			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
 		}
 

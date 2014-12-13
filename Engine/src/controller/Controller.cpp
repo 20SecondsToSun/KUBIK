@@ -16,16 +16,9 @@ Controller::~Controller()
 }
 
 void Controller::initLoad()
-{
-	
-	preloader		= shared_ptr<Preloader>(new Preloader());
-	
-	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());
-	params::InterfaceGlRef photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
-	return;
-	
-
-
+{	
+	preloader		= shared_ptr<Preloader>(new Preloader());	
+	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());// font memory leak
 	view->startLocation(preloader);	
 
 	try
@@ -48,7 +41,7 @@ void Controller::initLoad()
 ////////////////////////////////////////////////////////////////////////////
 
 void Controller::loadAllLocationsConfigs()
-{
+{	
 	try
 	{
 		gameSettings		 = shared_ptr<GameSettings>(new GameSettings(model));
@@ -74,10 +67,9 @@ void Controller::loadAllLocationsConfigs()
 ////////////////////////////////////////////////////////////////////////////
 
 void Controller::loadGraphics()
-{
-	
+{	
 	console()<<"start loading graphics"<<endl;
-	graphicsLoader =shared_ptr<Graphics>(new Graphics());
+	graphicsLoader = shared_ptr<Graphics>(new Graphics());
 
 	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
@@ -98,7 +90,7 @@ void Controller::allGraphicsLoadingCompleteHandler()
 {
 	console()<<"Graphics all Loaded:: "<<endl;
 	removeGraphicsLoadingSignals();
-	return;
+
 	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));		
 	menu        = shared_ptr<MenuScreen>(new MenuScreen(menuSettings));
 	
@@ -106,7 +98,7 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	
 	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings->get(gameId::PHOTOBOOTH));
 	gamesFactory.reg<Funces>    (gameId::FUNCES,	 gameSettings->get(gameId::FUNCES));	
-
+	
 	createGame(model->getDefaultGameID());	
 	firstStart();	
 }
@@ -351,9 +343,10 @@ void Controller::allGraphicsReloadCompleteHandler()
 Controller::LocMapper Controller::getLocationPair(int id)
 {
 	LocMapper mapper;
-	
+	console()<<"game!!!!!!!!!!!!!!!!!"<<id<<gameSettings->isGameID(id)<<endl;
 	if(gameSettings->isGameID(id))
 	{
+		
 		mapper.screen   = game;
 		mapper.settings = gameSettings->get(id);
 	}

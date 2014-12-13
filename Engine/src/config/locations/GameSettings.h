@@ -86,12 +86,18 @@ namespace kubik
 		
 		bool isGameID(int id)
 		{
-			vector<int> gameIDs = model->getGameIDsTurnOn();
-			for (int value: gameIDs)
+			vector<GamesInfo> games = model->getGames();
+
+			for (auto game: games)
 			{
-				if(value == id)
+				if (!game.isOn || !game.isPurchased)
+					continue;
+
+				if(game.id == id)
 					return true;
+
 			}
+		
 			return false;
 		}
 

@@ -101,7 +101,7 @@ namespace kubik
 		Font font;		
 		float fontSize;
 
-		Surface getTex(){return Texture();};
+		Surface getTex(){return Surface();};
 		qtime::MovieGl getMovie(){ return qtime::MovieGl();};
 		Font getFont()
 		{
@@ -128,7 +128,7 @@ namespace kubik
 	public:
 		qtime::MovieGl movie;
 
-		Surface getTex(){return Texture();};
+		Surface getTex(){return Surface();};
 		Font getFont(){return Font();};
 		qtime::MovieGl getMovie()
 		{

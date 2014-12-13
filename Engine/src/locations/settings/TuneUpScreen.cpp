@@ -62,8 +62,7 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 
 	
 	createFuncesParams();
-	createMenuParams();
-	return;
+	createMenuParams();	
 	createPhotoboothParams();
 	
 	createGamesParams();
@@ -98,12 +97,8 @@ void TuneUpScreen::createFuncesParams()
 
 void TuneUpScreen::createMenuParams()
 {
-
-	menuData = menuSettings->getData();
-	
-	menuParams = params::InterfaceGl::create(getWindow(), "Menu parameters", toPixels( Vec2i( 300, 200)));
-	menuParams.~shared_ptr();
-	return;
+	menuData = menuSettings->getData();	
+	menuParams = params::InterfaceGl::create(getWindow(), "Menu parameters", toPixels( Vec2i( 300, 200)));	
 	menuParams->setPosition(Vec2i(350, 20));
 	menuParams->addParam( "Custom design",	 &menuData.isCustomDesign);
 	menuParams->addParam( "Template id",	 &menuData.templateId).min(1).max(2).step(1);
@@ -120,13 +115,10 @@ void TuneUpScreen::createGamesParams()
 	gamesParams = params::InterfaceGl::create(getWindow(), "Games parameters", toPixels( Vec2i( 300, 200)));
 	gamesParams->setPosition(Vec2i(690, 20));
 
-	for (int i = 0; i < initialGamesData.games.size(); i++)
-	{
-		if( initialGamesData.games[i].isPurchased)
-		{
-			gamesParams->addParam( initialGamesData.games[i].name,	 &initialGamesData.games[i].isOn);
-		}
-	}
+	for (auto game : initialGamesData.games)	
+		if( game.isPurchased)		
+			gamesParams->addParam( game.name, &game.isOn);		
+	
 	gamesParams->addSeparator();	
 	gamesParams->addParam( "Default Game ID",	 &initialGamesData.defaultGameID).min(1).max(2).step(1);
 	gamesParams->hide();

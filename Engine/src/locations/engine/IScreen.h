@@ -17,9 +17,14 @@ namespace kubik
 		ResourceDictionary designTexures;
 
 	public:	
-		virtual void draw() = 0;
-		ci::signals::signal<void(void)> closeLocationSignal;
+		~IScreen()
+		{
+			//ci::app::console()<<"~~~~~~~~~~~~~~~~IScreen destruct~~~~~~~~~~~~~~~~~~~"<<endl;
+		}
+		virtual void draw() = 0;		
 		virtual void init(shared_ptr<ISettings> config) = 0;
 		virtual void reset(shared_ptr<ISettings> config) = 0;
+
+		ci::signals::signal<void(void)> closeLocationSignal;
 	};
 }

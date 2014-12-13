@@ -3,7 +3,7 @@
 #include "Graphics.h"
 #include "ApplicationView.h"
 #include "Controller.h"
-
+#include <vld.h>
 
 using namespace ci;
 using namespace ci::app;
@@ -66,7 +66,7 @@ void EngineApp::update()
 void EngineApp::draw()
 {
 	gl::clear(Color::black()); 
-	//view->draw();
+	view->draw();
 }
 
 CINDER_APP_NATIVE( EngineApp, RendererGl )

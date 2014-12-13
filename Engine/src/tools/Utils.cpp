@@ -65,6 +65,7 @@ int Utils::spc_email_isvalid(const char *address)
 	// console()<<"LAST CHARTACTER  "<<address[strlen(address)-1]<<std::endl;
 
 	return (count >= 1);
+
 }
 
 bool Utils::isValidEmail(string _email)
@@ -77,7 +78,7 @@ bool Utils::isValidTel(string tel)
 {	
 	if (tel.size()==0) return false;
 	if (tel.size()<10) return false;
-	for (auto i = 0; i < tel.size(); i++)
+	for (size_t i = 0; i < tel.size(); i++)
 	{
 		if (!isdigit(tel[i])) return false;
 	}
