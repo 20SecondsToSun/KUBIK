@@ -25,7 +25,7 @@ namespace kubik
 		ci::signals::signal<void(void)> completeLoadingSignal;
 		ci::signals::signal<void(KubikException)> errorLoadingSignal;
 	
-		void setLoadingTextures(ResourceDictionary _textures)
+		void setLoadingTextures(IResourceDictionary _textures)
 		{	
 			for ( auto it = _textures.begin(); it != _textures.end(); it++)		
 				loadingRes.push_back((*it).second);
@@ -41,7 +41,7 @@ namespace kubik
 	private:
 
 		ci::signals::connection loadingSignal;
-		vector<shared_ptr<IResource>> loadingRes;
+		vector<shared_ptr<IResourceBase>> loadingRes;
 		boost::shared_ptr<boost::thread> loadingThread;
 
 		enum
@@ -78,9 +78,11 @@ namespace kubik
 				{
 					try 
 					{
+						shared_ptr<ImageResource> imageRes = static_pointer_cast<ImageResource>(res);	
+
 						console()<<"try image load  "<< res->path <<endl;
 						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
-						res->setTex(image);
+						imageRes->set(image);
 						console()<<"image loaded"<<endl;
 					}
 					catch( ... ) 
@@ -94,10 +96,12 @@ namespace kubik
 				{
 					try 
 					{
+						shared_ptr<VideoResource> videoRes = static_pointer_cast<VideoResource>(res);	
+
 						console()<<"try video load  "<< res->path <<endl;
 						qtime::MovieGl movie = qtime::MovieGl( res->path);					
 						console()<<"video loaded"<<endl;
-						res->setMovie(movie);
+						videoRes->set(movie);
 					}
 					catch( ... ) 
 					{
@@ -108,10 +112,12 @@ namespace kubik
 				else if(res->resourceType == resourceType::FONT)
 				{
 					try 
-					{		
-						console() << "font :: " <<res->path<<" size:  "<<res->getFontSize()<<std::endl;
-						Font font =  Font(loadFile(fs::path(res->path)), res->getFontSize());
-						res->setFont(font);
+					{	
+						shared_ptr<FontResource> fontRes = static_pointer_cast<FontResource>(res);	
+
+						//console() << "font :: " <<res->path<<" size:  "<<res->getFontSize()<<std::endl;
+						Font font =  Font(loadFile(fs::path(res->path)), fontRes->fontSize);
+						fontRes->set(font);
 						console() << "font loaded." << std::endl;
 					}
 					catch( ... ) 

@@ -18,8 +18,8 @@ MenuScreen::~MenuScreen()
 void MenuScreen::init(shared_ptr<ISettings>  _settings)
 {	
 	settings	   =  static_pointer_cast<MenuSettings>(_settings);	
-	font		   =  settings->getTextures()["helvetica30"]->getFont();
-	bckgnd         =  settings->getTextures()["background"]->getTex();
+	font		   =  settings->getFonts()["helvetica30"]->get();
+	bckgnd         =  settings->getTextures()["background"]->get();
 
 	createMenuBtns(settings->getGames());
 }

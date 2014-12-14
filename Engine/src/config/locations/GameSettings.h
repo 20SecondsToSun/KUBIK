@@ -34,14 +34,14 @@ namespace kubik
 			return gameSettingsMap[id];
 		}		
 
-		ResourceDictionary getActiveGameTextures()
+		IResourceDictionary getActiveGameTextures()
 		{
 			return getGameTexturesById(currentGame);
 		}
 
-		ResourceDictionary getGameTexturesById(int id)
+		IResourceDictionary getGameTexturesById(int id)
 		{
-			ResourceDictionary rd = gameSettingsMap[id]->getTextures();
+			IResourceDictionary rd = gameSettingsMap[id]->getResources();
 			return rd;		
 		}		
 

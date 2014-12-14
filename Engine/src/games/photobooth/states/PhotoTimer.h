@@ -28,8 +28,8 @@ namespace kubik
 		void reset(shared_ptr<PhotoboothSettings> _settings) override
 		{
 			settings = _settings;
-			fon = settings->getTextures()["fon3"]->getTex();
-			font  =  settings->getTextures()["helvetica40"]->getFont();
+			fon = settings->getTextures()["fon3"]->get();
+			font  =  settings->getFonts()["helvetica40"]->get();
 		}
 
 		void draw()

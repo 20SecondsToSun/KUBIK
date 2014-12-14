@@ -63,7 +63,7 @@ namespace kubik
 		
 		void setTextures()
 		{		
-			designTexures.clear();
+			clearResources();
 			addToDictionary("background",	createImageResource(getTemplateDesignPath("bg.jpg")));
 			addToDictionary("helvetica30",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 		}

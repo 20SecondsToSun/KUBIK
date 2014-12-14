@@ -9,6 +9,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::gl;
 
+
 namespace kubik
 {
 	struct GamesInfo
@@ -47,107 +48,70 @@ namespace kubik
 		ASSET,
 		FULL_PATH,
 		URL
-	};	
+	};
 
-	class IResource
+	class IResourceBase
 	{
-	public:
+	public:	
+		IResourceBase()
+		{
+			isLoading = false;
+		}
+
 		string path;
 		bool isLoading;
 		resourceType resourceType;
 		loadingType  loadingType;
-
-		virtual Surface getTex( ) = 0;
-		virtual qtime::MovieGl getMovie( ) = 0;
-		virtual Font getFont( ) = 0;
-		virtual float getFontSize( ) = 0;
-
-		virtual void setTex(Surface surf) = 0;
-		virtual void setMovie(qtime::MovieGl movie) = 0;
-		virtual void setFont(Font font) = 0;
-		virtual void setFontSize(float size) = 0;
 	};
 
-	typedef map<string, shared_ptr<IResource>> ResourceDictionary;
-
-	class ImageResource: public IResource
+	template <class T>
+	class IResource: public IResourceBase
 	{
-	public:
-		Surface tex;
+	public:		
+		T data;
 
-
-		Surface getTex( )
+		T get()
 		{
-			return tex;
+			return data;
 		}
-
-		void setTex(Surface surf)
+		void set(T value)
 		{
-			tex = surf;
+			data = value;
 		}
-
-		qtime::MovieGl getMovie(){return qtime::MovieGl();};
-		Font getFont(){return Font();};
-
-		void  setMovie(qtime::MovieGl movie){};
-		void  setFont(Font font){};
-		void  setFontSize(float size){};
-		float getFontSize() {return 0;};
 	};
 
-	class FontResource: public IResource
+	class ImageResource: public IResource<Surface>
 	{
-	public:
-		Font font;		
+	public:	
+		ImageResource()
+		{
+			resourceType		= resourceType::IMAGE;
+		}
+	};
+
+	class FontResource: public IResource<Font>
+	{
+	public:	
+		FontResource()
+		{
+			resourceType		= resourceType::FONT;
+		}			
 		float fontSize;
-
-		Surface getTex(){return Surface();};
-		qtime::MovieGl getMovie(){ return qtime::MovieGl();};
-		Font getFont()
-		{
-			return font;
-		};
-
-		void setTex(Surface surf){};
-		void setMovie(qtime::MovieGl movie){};
-		void setFont(Font _font)
-		{
-			font = _font;
-		};
-
-		void setFontSize(float size)
-		{
-			fontSize = size;
-		};
-
-		float getFontSize(){ return fontSize;};
 	};
 
-	class VideoResource: public IResource
+	class VideoResource: public IResource<qtime::MovieGl>
 	{
-	public:
-		qtime::MovieGl movie;
-
-		Surface getTex(){return Surface();};
-		Font getFont(){return Font();};
-		qtime::MovieGl getMovie()
+	public:	
+		VideoResource()
 		{
-			return movie;
-		};
-
-		void setTex(Surface surf){};
-		void setMovie(qtime::MovieGl _movie)
-		{
-			movie = _movie;
-		};
-
-		void setFont(Font _font)
-		{
-
-		};
-		void setFontSize(float size){};
-		float getFontSize(){return 0;};
+			resourceType		= resourceType::VIDEO;
+		}
 	};
+
+	typedef map<string, shared_ptr<ImageResource>> ImageResourceDictionary;
+	typedef map<string, shared_ptr<FontResource>>  FontResourceDictionary;
+	typedef map<string, shared_ptr<VideoResource>> VideoResourceDictionary;
+	typedef map<string, shared_ptr<IResourceBase>> IResourceDictionary;
 
 	typedef struct _changes
 	{

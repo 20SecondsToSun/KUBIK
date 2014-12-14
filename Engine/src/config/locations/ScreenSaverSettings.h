@@ -69,11 +69,11 @@ namespace kubik
 		{
 			if(mode == VIDEO_SS)
 			{
-				screenSaverResource =  shared_ptr<VideoScreenSaver>(new VideoScreenSaver(designTexures["video"]->getMovie()));	
+				screenSaverResource =  shared_ptr<VideoScreenSaver>(new VideoScreenSaver(videos["video"]->get()));	
 			}
 			else if(mode == IMAGE_SS)
 			{
-				screenSaverResource =  shared_ptr<ImageScreenSaver>(new ImageScreenSaver(designTexures["image"]->getTex()));	
+				screenSaverResource =  shared_ptr<ImageScreenSaver>(new ImageScreenSaver(textures["image"]->get()));	
 			}
 
 			return screenSaverResource;

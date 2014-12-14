@@ -138,7 +138,7 @@ namespace kubik
 
 		void setTextures() override
 		{		
-			designTexures.clear();
+			clearResources();
 		
 			addToDictionary("closeImg",		createImageResource(getStaticDesignPath("close.png")));
 			addToDictionary("fon1",			createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));

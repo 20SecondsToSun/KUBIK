@@ -19,7 +19,7 @@ void Funces::init(shared_ptr<ISettings> config)
 {
 	settings = static_pointer_cast<FuncesSettings>(config);
 	
-	closeImg = settings->getTextures()["closeImg"]->getTex();	
+	closeImg = settings->getTextures()["closeImg"]->get();	
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));	
 	connect_once(closeBtn->mouseUpSignal, bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
 }

@@ -33,9 +33,32 @@ namespace kubik
 			return path.string() + value;
 		}
 
-		ResourceDictionary getTextures()
+		ImageResourceDictionary getTextures()
 		{	
-			return designTexures;
+			return textures;
+		}
+
+		FontResourceDictionary getFonts()
+		{	
+			return fonts;
+		}
+
+		VideoResourceDictionary getVideos()
+		{	
+			return videos;
+		}
+
+		IResourceDictionary getResources()
+		{	
+			return resources;
+		}
+
+		void clearResources()
+		{
+			textures.clear();
+			fonts.clear();
+			videos.clear();
+			resources.clear();
 		}
 
 		virtual void load() = 0;
@@ -52,26 +75,39 @@ namespace kubik
 
 		std::string fontsPath;
 
+		ImageResourceDictionary textures;
+		FontResourceDictionary fonts;
+		VideoResourceDictionary videos;
+		IResourceDictionary	resources;
+
 		static ci::fs::path getBasePath()
 		{
 			ci::fs::path basePath = ci::app::getAppPath();
 			return basePath;
-		}	
+		}		
 
-		ResourceDictionary designTexures;
-
-		void addToDictionary(string key, shared_ptr<IResource>  value)
-		{
-			designTexures[key] = value;
+		void addToDictionary(string key, shared_ptr<ImageResource>  value)
+		{			
+			textures[key] = value;
+			resources[key] = value;
 		}
+
+		void addToDictionary(string key, shared_ptr<FontResource>  value)
+		{
+			fonts[key] = value;
+			resources[key] = value;
+		}
+
+		void addToDictionary(string key, shared_ptr<VideoResource>  value)
+		{
+			videos[key] = value;
+			resources[key] = value;
+		}		
 
 		shared_ptr<ImageResource> createImageResource( string path, loadingType loadType = loadingType::FULL_PATH)
 		{
 			shared_ptr<ImageResource> value	= shared_ptr<ImageResource>(new ImageResource);
-			value->path				= path;
-			value->isLoading		= false;
-			value->tex				= ci::Surface();
-			value->resourceType		= resourceType::IMAGE;
+			value->path				= path;			
 			value->loadingType		= loadType;	
 
 			return value;
@@ -80,10 +116,8 @@ namespace kubik
 		shared_ptr<FontResource> createFontResource( string path, float size = 30, loadingType loadType = loadingType::FULL_PATH)
 		{
 			shared_ptr<FontResource> value	= shared_ptr<FontResource>(new FontResource);
-			value->path				= path;
-			value->isLoading		= false;
-			value->fontSize			= size;
-			value->resourceType		= resourceType::FONT;
+			value->path				= path;			
+			value->fontSize			= size;	
 			value->loadingType		= loadType;	
 
 			return value;
@@ -93,8 +127,6 @@ namespace kubik
 		{
 			shared_ptr<VideoResource> value	= shared_ptr<VideoResource>(new VideoResource);
 			value->path				= path;
-			value->isLoading		= false;
-			value->resourceType		= resourceType::VIDEO;
 			value->loadingType		= loadType;	
 
 			return value;

@@ -73,9 +73,9 @@ void Controller::loadGraphics()
 
 	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
-	graphicsLoader->setLoadingTextures(menuSettings->getTextures());
-	graphicsLoader->setLoadingTextures(screenSaverSettings->getTextures());
-	graphicsLoader->setLoadingTextures(tuneUpSettings->getTextures());
+	graphicsLoader->setLoadingTextures(menuSettings->getResources());
+	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
+	graphicsLoader->setLoadingTextures(tuneUpSettings->getResources());
 	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
 	graphicsLoader->load();
 }
@@ -302,7 +302,7 @@ void Controller::reloadScreens(vector<Changes> changes)
 			if(texReload)
 			{
 				mapper.settings->setTextures();
-				graphicsLoader->setLoadingTextures(mapper.settings->getTextures());
+				graphicsLoader->setLoadingTextures(mapper.settings->getResources());
 				view->startLocation(preloader);
 				toReload = true;
 			}

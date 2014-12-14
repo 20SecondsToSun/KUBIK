@@ -50,13 +50,13 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 
 	tuneUpSettings	= static_pointer_cast<TuneUpSettings>(settings);
 
-	font		 =  tuneUpSettings->getTextures()["helvetica90"]->getFont();
-	Font fontBtn =  tuneUpSettings->getTextures()["helvetica20"]->getFont();
+	font		 =  tuneUpSettings->getFonts()["helvetica90"]->get();
+	Font fontBtn =  tuneUpSettings->getFonts()["helvetica20"]->get();
 
 	saveChngBtn = shared_ptr<ButtonText>(new ButtonText(Rectf(800.0f, 450.0f, 950.0f, 550.0f), "Сохранить", fontBtn));	
 	appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&TuneUpScreen::appSettingsChgHandler, this, std::placeholders::_1));
 
-	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->getTex();
+	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->get();
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&TuneUpScreen::closeLocationHandler, this, std::placeholders::_1));
 
