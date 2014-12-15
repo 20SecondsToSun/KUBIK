@@ -1,17 +1,41 @@
 {
-   "standID" : 1,
-   "defaultGameID" : 1,   
-   "netConnection": true,
-   "userID": "1fggh",     
-   "gamesAvailable" : [1, 2, 3],
-   "gamesPurchased" : [1, 2],
-   "gamesTurnOn"    : [1, 2],
-   "menuConfigPath" : "data\\configs\\menu.txt",
-   "tuneupConfigPath" : "data\\configs\\tuneup.txt",
-   "screenSaverPath" : "user_design\\screensaver\\",
-   "photoboothConfigPath"  : "data\\configs\\photobooth.txt",
-   "instagramConfigPath"   : "data\\configs\\instagram.txt",
-   "funcesConfigPath" 	   : "data\\configs\\funces.txt",
-   "kotopozaConfigPath"    : "data\\configs\\kotopozaConfigPath.txt"
+   "defaultGameID" : 1,
+   "funcesConfigPath" : "data\\configs\\funces.txt",
+   "gamesAvailable" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 2
+      },
+      {
+         "id" : 3
+      }
+   ],
+   "gamesPurchased" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 2
+      }
+   ],
+   "gamesTurnOn" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 2
+      }
 
+   ],
+   "instagramConfigPath" : "data\\configs\\instagram.txt",
+   "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
+   "menuConfigPath" : "data\\configs\\menu.txt",
+   "netConnection" : true,
+   "photoboothConfigPath" : "data\\configs\\photobooth.txt",
+   "screenSaverPath" : "user_design\\screensaver\\",
+   "standID" : 1,
+   "tuneUpConfigPath" : "data\\configs\\tuneup.txt",
+   "userID" : "1fggh"
 }

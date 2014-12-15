@@ -12,16 +12,17 @@ namespace kubik
 {
 	class MenuSettings:public ISettings
 	{
+
 	public:
 		struct MenuDataStruct
 		{
 			bool isCustomDesign;
-			int  templateId;			
+			int  templateId;
 
 			string staticPartDesignPath;
 			string kubikTemplatePartDesignPath;
 			string userTemplatePartDesignPath;
-			string finalPath;			
+			string finalPath;
 		};
 
 		MenuSettings(shared_ptr<ApplicationModel> model)
@@ -49,6 +50,17 @@ namespace kubik
 		void saveConfig()
 		{
 			console()<<"SAVE MENU CONFIG"<<endl;
+
+			fs::path basePath(configPath);
+
+			JsonTree doc;		
+			doc.addChild( JsonTree("staticPartDesignPath", data.staticPartDesignPath));
+			doc.addChild( JsonTree("kubikTemplatePartDesignPath", data.kubikTemplatePartDesignPath));
+			doc.addChild( JsonTree("userTemplatePartDesignPath", data.userTemplatePartDesignPath));
+			doc.addChild( JsonTree("finalPath", data.finalPath));
+			doc.addChild( JsonTree("templateId", data.templateId));
+			doc.addChild( JsonTree("isCustomDesign", data.isCustomDesign));	
+			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
 		}
 
 		void setDesignPath()

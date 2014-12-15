@@ -30,6 +30,8 @@ namespace kubik
 		void removeMouseUpListener();
 		void addMouseUpListener();
 
+		void resetMenuBtnGames();
+
 	private:
 		vector<shared_ptr<MenuButton>> menuBtns;
 

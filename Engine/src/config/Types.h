@@ -26,6 +26,7 @@ namespace kubik
 		SCREENSAVER = 30,
 		PRELOADER = 40,
 		SERVICEPOPUP = 50,
+		GAMES = 60,
 	};
 
 	enum gameId
@@ -117,6 +118,13 @@ namespace kubik
 	{
 		int id;
 		bool texReload;
+		bool gamesReload;
+
+		_changes()
+		{
+			texReload = false;
+			gamesReload = false;
+		}
 	}
 	Changes;
 }

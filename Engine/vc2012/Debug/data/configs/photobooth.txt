@@ -14,18 +14,26 @@
    "frameMode" : 1,
    "isCustomDesign" : true,
    "isEmail" : false,
-   "isFacebook" : true,
-   "isPrint" : false,
-   "isQrCode" : false,
+   "isFacebook" : false,
+   "isPrint" : true,
+   "isQrCode" : true,
    "isSticker" : true,
-   "isTwitter" : true,
+   "isTwitter" : false,
    "isVkotakte" : true,
    "kubikTemplatePartDesignPath" : "kubik\\templates\\",
    "photoNum" : 1,
-   "seconds" : 3,
+   "seconds" : 5,
    "secondsBetweenShots" : 1,
    "staticPartDesignPath" : "data\\interface\\",
    "stickerID" : 0,
    "templateId" : 2,
+   "useIds" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 3
+      }
+   ],
    "userTemplatePartDesignPath" : "user_design\\templates\\"
 }

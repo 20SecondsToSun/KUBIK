@@ -19,6 +19,12 @@ namespace kubik
 			ABSTRACT
 		};
 
+		struct Filter
+		{
+			int id;
+			bool isOn;
+		};
+
 		struct PhotoboothDataStruct
 		{
 			bool isFacebook;
@@ -42,7 +48,21 @@ namespace kubik
 			string userTemplatePartDesignPath;
 			string finalPath;
 
-			vector<int> filtersIds;
+			vector<Filter> filters;
+
+			vector<int> getOnFilters()
+			{
+				vector<int> onFilters;
+
+				for (size_t i = 0; i < filters.size(); i++)
+				{
+					if(filters[i].isOn)
+					{
+						onFilters.push_back(filters[i].id);
+					}
+				}
+				return onFilters;
+			}
 		};
 
 		PhotoboothSettings(shared_ptr<ApplicationModel> model) 
@@ -66,24 +86,44 @@ namespace kubik
 			data.isPrint			    = configJSON.getChild("isPrint").getValue<bool>();
 		
 			JsonTree datas = JsonTree(configJSON.getChild( "filtersIds"));
+			JsonTree useIds	= JsonTree(configJSON.getChild( "useIds"));
+
+			vector<int> useIdsVec;
+
+			for(auto it : useIds)
+				useIdsVec.push_back(it.getChild("id").getValue<int>());
 			
-			for( auto it : datas)		
-				data.filtersIds.push_back(it.getChild("id").getValue<int>());
+			for( auto it : datas)
+			{
+				Filter filter;
+				filter.id	  = it.getChild("id").getValue<int>();
+				filter.isOn = findFilterId(filter.id, useIdsVec);
+
+				data.filters.push_back(filter);
+			}
 		
 			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
 			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
 			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
 			data.finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
-			data.templateId						= configJSON.getChild("templateId").getValue<int>();
-		
-			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
-		
+			data.templateId						= configJSON.getChild("templateId").getValue<int>();		
+			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();		
 			data.isSticker						= configJSON.getChild("isSticker").getValue<bool>();
 			data.stickerID						= configJSON.getChild("stickerID").getValue<int>();
 			data.frameMode						= configJSON.getChild("frameMode").getValue<int>();
 
 			setDesignPath();
 			setTextures();
+		}
+
+		bool findFilterId(int id, vector<int> filters)
+		{
+			for (auto it : filters)
+			{
+				if(it == id)
+					return true;
+			}
+			return false;
 		}
 
 		void saveConfig()
@@ -114,15 +154,24 @@ namespace kubik
 			doc.addChild( JsonTree("frameMode", data.frameMode));
 
 			JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
+			JsonTree useIdsJ	 = JsonTree::makeArray("useIds");
 
-			for (auto it: data.filtersIds)
+			for (auto it: data.filters)
 			{
 				JsonTree id;
-				id.addChild(JsonTree("id", it));
+				id.addChild(JsonTree("id", it.id));
 				filtersIdsJ.pushBack( id);
+
+				if(it.isOn)
+				{
+					JsonTree id1;
+					id1.addChild(JsonTree("id", it.id));
+					useIdsJ.pushBack( id1);
+				}
 			}
 			
 			doc.addChild(filtersIdsJ);
+			doc.addChild(useIdsJ);
 			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
 		}
 
@@ -145,6 +194,7 @@ namespace kubik
 			addToDictionary("fon2",			createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
 			addToDictionary("fon3",			createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
 			addToDictionary("helvetica40",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
+			addToDictionary("helvetica100",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 		}
 		
 		PhotoboothDataStruct getData()

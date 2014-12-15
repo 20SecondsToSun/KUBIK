@@ -231,6 +231,7 @@ void Controller::startGame()
 {	
 	console()<<"START GAME::"<<endl;
 	game->addMouseUpListener();
+	game->start();
 	view->startGameLocation(game);
 	connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));	
 }
@@ -289,6 +290,8 @@ void Controller::reloadScreens(vector<Changes> changes)
 	this->reloadSettingsChanges = changes;
 	bool toReload = false;
 
+	reloadOneGame = false;
+
 	for(auto change : changes)
 	{
 		int id = change.id;
@@ -306,6 +309,25 @@ void Controller::reloadScreens(vector<Changes> changes)
 				view->startLocation(preloader);
 				toReload = true;
 			}
+			else if (id == LocationID::GAMES)
+			{
+				menu->resetMenuBtnGames();
+
+				if(!gameSettings->isCurrentGameInSwitchOnGames() && 
+					gameSettings->getData().getCountSwitchOnGames() == 1)
+				{					
+					for (size_t i = 0; i < gameSettings->getData().games.size(); i++)
+					{
+						if( gameSettings->getData().games[i].isOn)
+						{
+							reloadOneGameId = gameSettings->getData().games[i].id;
+							break;
+						}
+					}
+
+					reloadOneGame = true;	
+				}
+			}
 			else
 			{
 				mapper.screen->reset(mapper.settings);
@@ -321,6 +343,10 @@ void Controller::reloadScreens(vector<Changes> changes)
 		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));	
 		graphicsLoader->load();
 	}
+	else if(reloadOneGame)
+	{
+		startGameHandler(reloadOneGameId);
+	}
 	else
 	{
 		startMenuScreen();
@@ -333,20 +359,28 @@ void Controller::allGraphicsReloadCompleteHandler()
 
 	for(auto change : reloadSettingsChanges)
 	{
+		if (change.id == LocationID::GAMES)
+			 continue;
 		LocMapper mapper = getLocationPair(change.id);
 		mapper.screen->reset(mapper.settings);
 	}
 
-	startMenuScreen();
+	if(reloadOneGame)
+	{
+		startGameHandler(reloadOneGameId);
+	}
+	else
+	{
+		startMenuScreen();
+	}
 }
 
 Controller::LocMapper Controller::getLocationPair(int id)
 {
 	LocMapper mapper;
-	console()<<"game!!!!!!!!!!!!!!!!!"<<id<<gameSettings->isGameID(id)<<endl;
+
 	if(gameSettings->isGameID(id))
-	{
-		
+	{		
 		mapper.screen   = game;
 		mapper.settings = gameSettings->get(id);
 	}

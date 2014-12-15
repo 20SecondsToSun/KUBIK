@@ -134,5 +134,9 @@ namespace kubik
 
 		LocMapper getLocationPair(int id);
 		vector<Changes> reloadSettingsChanges;
+
+		bool reloadOneGame;
+
+		int reloadOneGameId;
 	};
 }

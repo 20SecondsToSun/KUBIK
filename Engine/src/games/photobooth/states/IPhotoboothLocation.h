@@ -16,6 +16,7 @@ namespace kubik
 	public:	
 		~IPhotoboothLocation(){};
 		virtual void draw() = 0;
+		virtual void start() = 0;
 		virtual void reset(shared_ptr<PhotoboothSettings> config) = 0;	
 	
 		signal<void(void)> nextLocationSignal;

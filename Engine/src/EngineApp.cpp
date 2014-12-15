@@ -3,7 +3,7 @@
 #include "Graphics.h"
 #include "ApplicationView.h"
 #include "Controller.h"
-#include <vld.h>
+//#include <vld.h>
 
 using namespace ci;
 using namespace ci::app;

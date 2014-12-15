@@ -17,15 +17,43 @@ namespace kubik
 		struct GamesDataStruct
 		{
 			vector<GamesInfo> games;
-			int		defaultGameID;		
+			int		defaultGameID;	
+
+			int getCountSwitchOnGames()
+			{
+				int count = 0;
+
+				for (auto game: games)
+				{
+					if(game.isOn)
+						count++;
+				}
+
+				return count;
+			}
+
+			bool isIdInSwitchOnGames(int id)
+			{
+				for (auto game: games)
+				{
+					if(game.isOn)
+					{
+						if(game.id == id)
+							return true;
+					}
+				}
+
+				return false;
+			}
 		};
 
 		GameSettings(shared_ptr<ApplicationModel> model)
 		{
-			this->model = model;
-			currentGame = model->getDefaultGameID();
-			data.games = model->getGames();
+			this->model		   = model;
+			currentGame		   = model->getDefaultGameID();
+			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();
+			console()<<"loaded game::  "<<data.games.size()<<endl;
 			load();
 		}
 
@@ -90,12 +118,11 @@ namespace kubik
 
 			for (auto game: games)
 			{
-				if (!game.isOn || !game.isPurchased)
-					continue;
+				//if (!game.isOn || !game.isPurchased)
+				//	continue;
 
 				if(game.id == id)
 					return true;
-
 			}
 		
 			return false;
@@ -129,6 +156,20 @@ namespace kubik
 		GamesDataStruct getData()
 		{
 			return data;
+		}
+
+		void setData(GamesDataStruct _data)
+		{
+			data = _data;
+
+			model->setGames(data.games);
+			model->setDefaultGameID(data.defaultGameID);
+			model->saveConfig();
+		}
+
+		bool isCurrentGameInSwitchOnGames()
+		{
+			return data.isIdInSwitchOnGames(currentGame);
 		}
 
 	private:

@@ -22,6 +22,7 @@ namespace kubik
 		~Funces();
 
 		void draw();	
+		void start(){};	
 		void reset(shared_ptr<ISettings> config) override;
 		void init(shared_ptr<ISettings> config) override;
 

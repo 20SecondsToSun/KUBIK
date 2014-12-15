@@ -34,6 +34,11 @@ namespace kubik
 			font =  settings->getFonts()["helvetica40"]->get();
 		}
 
+		void start()
+		{
+			console()<<"start Instruction"<<endl;
+		}
+
 		void draw()
 		{
 			gl::draw(fon, getWindowBounds());

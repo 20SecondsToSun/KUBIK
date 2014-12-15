@@ -24,6 +24,12 @@ void MenuScreen::init(shared_ptr<ISettings>  _settings)
 	createMenuBtns(settings->getGames());
 }
 
+void MenuScreen::resetMenuBtnGames()
+{
+	clearButtonVector();
+	createMenuBtns(settings->getGames());
+}
+
 void MenuScreen::createMenuBtns(vector<GamesInfo> games)
 {
 	string settingsName	   = "Настройки";

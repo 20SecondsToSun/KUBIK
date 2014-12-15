@@ -14,8 +14,6 @@ TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>		config,
 TuneUpScreen::~TuneUpScreen()
 {	
 	console()<<"~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~"<<endl;
-	//menuParams->clear();
-	
 
 	mouseUpListener.disconnect();
 	closeBtnListener.disconnect();	
@@ -60,17 +58,14 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
 	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&TuneUpScreen::closeLocationHandler, this, std::placeholders::_1));
 
-	
+	createPhotoboothParams();
 	createFuncesParams();
 	createMenuParams();	
-	createPhotoboothParams();
-	
 	createGamesParams();
 }
 
 void TuneUpScreen::createPhotoboothParams()
 {
-
 	photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
 	photoBoothParams->addParam( "seconds", &photoboothData.seconds).min(3).max(5).step(1);
 	photoBoothParams->addParam( "secondsBetweenShots", &photoboothData.secondsBetweenShots ).min(1).max( 3).step(1);
@@ -78,6 +73,8 @@ void TuneUpScreen::createPhotoboothParams()
 	photoBoothParams->addSeparator();
 	photoBoothParams->addParam( "Custom design",	 &photoboothData.isCustomDesign);
 	photoBoothParams->addParam( "Template id",	 &photoboothData.templateId).min(1).max(2).step(1);
+	photoBoothParams->addSeparator();
+	//photoBoothParams->addParam( "Filters count", &photoboothData.);
 	photoBoothParams->addSeparator();
 	photoBoothParams->addParam( "Facebook Sharing", &photoboothData.isFacebook);
 	photoBoothParams->addParam( "Vkontakte Sharing", &photoboothData.isVkotakte);
@@ -110,17 +107,19 @@ void TuneUpScreen::createMenuParams()
 
 void TuneUpScreen::createGamesParams()
 {
-	initialGamesData = gameSettings->getData();
+	gamesData = gameSettings->getData();
 
 	gamesParams = params::InterfaceGl::create(getWindow(), "Games parameters", toPixels( Vec2i( 300, 200)));
 	gamesParams->setPosition(Vec2i(690, 20));
 
-	for (auto game : initialGamesData.games)	
-		if( game.isPurchased)		
-			gamesParams->addParam( game.name, &game.isOn);		
-	
+	for (auto it = gamesData.games.begin(); it < gamesData.games.end(); it++)
+	{
+		if( it->isPurchased)		
+			gamesParams->addParam( it->name, &it->isOn);
+	}
+
 	gamesParams->addSeparator();	
-	gamesParams->addParam( "Default Game ID",	 &initialGamesData.defaultGameID).min(1).max(2).step(1);
+	gamesParams->addParam( "Default Game ID",	 &gamesData.defaultGameID).min(1).max(2).step(1);
 	gamesParams->hide();
 
 	params.push_back(gamesParams);
@@ -157,9 +156,8 @@ void TuneUpScreen::appSettingsChgHandler(ButtonText& button )
 void TuneUpScreen::checkPhotoBoothParamsForChanges()
 {
 	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));
-	
+
 	Changes chng;
-	chng.texReload = false;
 	chng.id = gameId::PHOTOBOOTH;
 
 	if (initialPhotoboothData.isCustomDesign != photoboothData.isCustomDesign ||
@@ -189,10 +187,14 @@ void TuneUpScreen::checkPhotoBoothParamsForChanges()
 	}
 }
 
+void TuneUpScreen::checkFuncesParamsForChanges()
+{
+
+}
+
 void TuneUpScreen::checkMenuParamsForChanges()
 {
 	Changes chng;
-	chng.texReload = false;
 	chng.id = LocationID::MENU;
 
 	if (initialMenuData.isCustomDesign != menuData.isCustomDesign ||
@@ -201,21 +203,49 @@ void TuneUpScreen::checkMenuParamsForChanges()
 		chng.texReload = true;
 		changes.push_back(chng);
 		menuSettings->setData(menuData);	
-		menuSettings->setDesignPath();		
-		return;
-	}
-}
-
-void TuneUpScreen::checkFuncesParamsForChanges()
-{
-
+		menuSettings->setDesignPath();	
+	}	
 }
 
 void TuneUpScreen::checkGamesParamsForChanges()
 {
 	Changes chng;
-	chng.texReload = false;
-	chng.id = LocationID::MENU;
+	chng.id = LocationID::GAMES;
+
+	size_t len = gamesData.games.size()
+		;
+	if(gamesData.getCountSwitchOnGames() == 0)
+	{
+		// don't save
+		return ;
+	}
+
+	if(!gamesData.isIdInSwitchOnGames(gamesData.defaultGameID))
+	{
+		for (size_t i = 0; i < len; i++)
+		{
+			if(gamesData.games[i].isOn)
+			{
+				gamesData.defaultGameID = gamesData.games[i].id;
+				break;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < len; i++)
+	{
+		if( gamesData.games[i].isPurchased && gamesData.games[i].isOn != initialGamesData.games[i].isOn)	
+		{
+			chng.gamesReload = true;
+			break;			
+		}	
+	}
+
+	if (initialGamesData.defaultGameID != gamesData.defaultGameID || chng.gamesReload)
+	{
+		changes.push_back(chng);
+		gameSettings->setData(gamesData);
+	}
 }
 
 void TuneUpScreen::draw()
