@@ -76,7 +76,7 @@ void Controller::loadGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(tuneUpSettings->getResources());
-	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());	
+	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameResources());	
 	graphicsLoader->load();
 }
 
@@ -93,12 +93,12 @@ void Controller::allGraphicsLoadingCompleteHandler()
 
 	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));		
 	menu        = shared_ptr<MenuScreen>(new MenuScreen(menuSettings));
-	
+
 	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
-	
-	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings->get(gameId::PHOTOBOOTH));
-	gamesFactory.reg<Funces>    (gameId::FUNCES,	 gameSettings->get(gameId::FUNCES));	
-	
+
+	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings);
+	gamesFactory.reg<Funces>    (gameId::FUNCES,	 gameSettings);	
+
 	createGame(model->getDefaultGameID());	
 	firstStart();	
 }
@@ -204,7 +204,7 @@ void Controller::startGameHandler(int gameId)
 	{
 		view->startLocation(preloader);	
 		gameSettings->setNextGameId(gameId);
-			
+
 		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
 		connect_once(graphicsLoader->errorLoadingSignal,	bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
 		graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(gameId));	
@@ -294,22 +294,21 @@ void Controller::reloadScreens(vector<Changes> changes)
 
 	for(auto change : changes)
 	{
-		int id = change.id;
-		bool texReload = change.texReload;
-
+		int id = change.id;	
 		bool isGame = gameSettings->isGameID(id);
-		LocMapper mapper   = getLocationPair(id);
-		
+
+		LocMapper mapper = getLocationPair(id);
+
 		if(!isGame || (isGame && gameSettings->isGameCurrent(id)))
 		{
-			if(texReload)
+			if(change.texReload)
 			{
 				mapper.settings->setTextures();
 				graphicsLoader->setLoadingTextures(mapper.settings->getResources());
 				view->startLocation(preloader);
 				toReload = true;
 			}
-			else if (id == LocationID::GAMES)
+			else if (id == ChangeSettingID::GAMES)
 			{
 				menu->resetMenuBtnGames();
 
@@ -343,14 +342,8 @@ void Controller::reloadScreens(vector<Changes> changes)
 		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));	
 		graphicsLoader->load();
 	}
-	else if(reloadOneGame)
-	{
-		startGameHandler(reloadOneGameId);
-	}
 	else
-	{
-		startMenuScreen();
-	}
+		startAfterReload();
 }
 
 void Controller::allGraphicsReloadCompleteHandler()
@@ -359,12 +352,17 @@ void Controller::allGraphicsReloadCompleteHandler()
 
 	for(auto change : reloadSettingsChanges)
 	{
-		if (change.id == LocationID::GAMES)
-			 continue;
+		if (change.id == ChangeSettingID::GAMES)
+			continue;
 		LocMapper mapper = getLocationPair(change.id);
 		mapper.screen->reset(mapper.settings);
 	}
 
+	startAfterReload();
+}
+
+void Controller::startAfterReload()
+{
 	if(reloadOneGame)
 	{
 		startGameHandler(reloadOneGameId);
@@ -384,7 +382,7 @@ Controller::LocMapper Controller::getLocationPair(int id)
 		mapper.screen   = game;
 		mapper.settings = gameSettings->get(id);
 	}
-	else if (id == LocationID::MENU)
+	else if (id == ChangeSettingID::MENU)
 	{
 		mapper.screen = menu;
 		mapper.settings = menuSettings;

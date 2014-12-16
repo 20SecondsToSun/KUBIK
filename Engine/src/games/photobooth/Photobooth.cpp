@@ -53,10 +53,12 @@ void Photobooth::create()
 	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter(settings));
 	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer(settings));
 	photoShooting	 = shared_ptr<PhotoShooting>(new PhotoShooting(settings));
+	photoChoosing	 = shared_ptr<PhotoChoosing>(new PhotoChoosing(settings));
+	photoTemplate	 = shared_ptr<PhotoTemplate>(new PhotoTemplate(settings));
 	photoSharing     = shared_ptr<PhotoSharing>(new PhotoSharing(settings));
 	initLocations();	
 
-	closeImg = settings->getTextures()["closeImg"]->get();
+	Texture closeImg = settings->getTextures()["closeImg"]->get();
 	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
 	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
 }
@@ -76,6 +78,8 @@ void Photobooth::initLocations()
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
 	locations.push_back(photoShooting);
+	locations.push_back(photoChoosing);
+	locations.push_back(photoTemplate);
 	locations.push_back(photoSharing);
 
 	for (auto it: locations)	
@@ -99,7 +103,7 @@ void Photobooth::mouseUp( MouseEvent &event)
 	(*currentLocation)->mouseUpHandler(event.getPos());
 }
 
-void Photobooth::mouseUpHandler(Button& button )
+void Photobooth::mouseUpHandler(Button&button)
 {	
 	closeLocationSignal();
 }

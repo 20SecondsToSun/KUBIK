@@ -9,29 +9,32 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class MenuButton: public ButtonText
+namespace kubik
 {
-public:
-	typedef boost::signals2::signal<void(MenuButton&)> ButtonSignal;	
-	ButtonSignal mouseUpSignal;
-
-	MenuButton(int gameId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
-	{		
-		this->gameId = gameId;
-	}
-
-	int getGameId()
+	class MenuButton: public ButtonText
 	{
-		return gameId;
-	}
+	public:
+		typedef boost::signals2::signal<void(MenuButton&)> ButtonSignal;	
+		ButtonSignal mouseUpSignal;
 
-	void mouseUpHandler( Vec2i vec)
-	{
-		if(buttonArea.contains(vec))
-			mouseUpSignal(*this);
-	}
+		MenuButton(int gameId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
+		{		
+			this->gameId = gameId;
+		}
 
-private:
+		int getGameId()
+		{
+			return gameId;
+		}
 
-	int gameId;	
-};
+		void mouseUpHandler( Vec2i vec)
+		{
+			if(buttonArea.contains(vec))
+				mouseUpSignal(*this);
+		}
+
+	private:
+
+		int gameId;	
+	};
+}

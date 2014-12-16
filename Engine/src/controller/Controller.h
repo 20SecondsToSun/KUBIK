@@ -138,5 +138,6 @@ namespace kubik
 		bool reloadOneGame;
 
 		int reloadOneGameId;
+		void startAfterReload();
 	};
 }

@@ -234,10 +234,6 @@ namespace kubik
 		string instagramConfigPath;
 		string kotopozaConfigPath;
 
-		//vector<int> gameIDsAvailable;
-		//vector<int> gameIDsPurchased;
-		//vector<int> gameIDsTurnOn;	
-
 		fs::path getConfigPath()
 		{		
 			return getAppPath() / "data/configs/app.txt";

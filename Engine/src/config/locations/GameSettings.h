@@ -62,7 +62,7 @@ namespace kubik
 			return gameSettingsMap[id];
 		}		
 
-		IResourceDictionary getActiveGameTextures()
+		IResourceDictionary getActiveGameResources()
 		{
 			return getGameTexturesById(currentGame);
 		}

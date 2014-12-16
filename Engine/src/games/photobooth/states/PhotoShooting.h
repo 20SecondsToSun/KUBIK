@@ -25,28 +25,33 @@ namespace kubik
 			reset(settings);		
 		};
 
-		~PhotoShooting(){};
-
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		~PhotoShooting()
 		{
-			settings = _settings;
-			fon = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
-		}
 
-		void start()
+		};
+
+		void start() override
 		{
 			console()<<"start PhotoShooting"<<endl;
 		}
 
-		void draw()
+		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		{
+			settings = _settings;
+			fon  = settings->getTextures()["fon1"]->get();
+			font =  settings->getFonts()["helvetica40"]->get();
+		}
+
+		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
-			textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Vec2f(100, 100), Color::white());
+			textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Vec2f(100.0f, 100.0f), Color::white());
+			textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(settings->getData().getPhotoShots()), &font, Vec2f(100.0f, 200.0f), Color::white());
+			textTools().textFieldDraw("ÂÐÅÌß ÎÄÍÎÃÎ ÑÍÈÌÊÀ(ÑÅÊ.) " + to_string(settings->getData().secondsBetweenShots), &font, Vec2f(100.0f, 300.0f), Color::white());
 		}
 
-		void mouseUpHandler( Vec2i vec)
+		void mouseUpHandler( Vec2i vec) override
 		{
 			nextLocationSignal();
 		}

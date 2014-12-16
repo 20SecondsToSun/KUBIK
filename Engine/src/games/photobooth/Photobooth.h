@@ -5,12 +5,14 @@
 #include "Graphics.h"
 #include "IGame.h"
 #include "Button.h"
+#include "PhotoboothSettings.h"
 #include "states/PhotoInstruction.h"
 #include "states/PhotoFilter.h"
 #include "states/PhotoTimer.h"
-#include "PhotoboothSettings.h"
 #include "states/PhotoShooting.h"
 #include "states/PhotoSharing.h"
+#include "states/PhotoChoosing.h"
+#include "states/PhotoTemplate.h"
 
 using namespace std;
 using namespace ci;
@@ -26,31 +28,31 @@ namespace kubik
 		~Photobooth();
 
 		void draw();	
-		void start();	
-		void reset(shared_ptr<ISettings> config) override;
+		void start();
 		void create();
+		void reset(shared_ptr<ISettings> config) override;		
 		void init(shared_ptr<ISettings> config) override;
-		
+
 		void addMouseUpListener();
 		void removeMouseUpListener();
 
-	private:	
-
-		Texture closeImg;
+	private:		
 		shared_ptr<Button> closeBtn;
 
 		void setTextures();
-		void mouseUp( MouseEvent &event);
-		void mouseUpHandler(Button& button );
+		void mouseUp(MouseEvent& event);
+		void mouseUpHandler(Button& button);
 
 		connection mouseUpListener, closeBtnListener;	
 
-		shared_ptr<PhotoInstruction> photoInstruction;
-		shared_ptr<PhotoFilter>	photoFilter;
-		shared_ptr<PhotoTimer>	photoTimer;
+		shared_ptr<PhotoInstruction>photoInstruction;
+		shared_ptr<PhotoFilter>		photoFilter;
+		shared_ptr<PhotoTimer>		photoTimer;
 		shared_ptr<PhotoShooting>	photoShooting;
+		shared_ptr<PhotoChoosing>	photoChoosing;
+		shared_ptr<PhotoTemplate>	photoTemplate;
 		shared_ptr<PhotoSharing>	photoSharing;
-		
+
 		list<shared_ptr<IPhotoboothLocation>>  locations;
 		list<shared_ptr<IPhotoboothLocation>>::iterator currentLocation;
 

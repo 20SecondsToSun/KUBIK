@@ -14,6 +14,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
+using namespace ci::signals;
 
 namespace kubik
 {
@@ -22,9 +23,9 @@ namespace kubik
 
 	public:
 
-		ci::signals::signal<void(void)> completeLoadingSignal;
-		ci::signals::signal<void(KubikException)> errorLoadingSignal;
-	
+		signal<void(void)> completeLoadingSignal;
+		signal<void(KubikException)> errorLoadingSignal;
+
 		void setLoadingTextures(IResourceDictionary _textures)
 		{	
 			for ( auto it = _textures.begin(); it != _textures.end(); it++)		
@@ -40,7 +41,7 @@ namespace kubik
 
 	private:
 
-		ci::signals::connection loadingSignal;
+		connection loadingSignal;
 		vector<shared_ptr<IResourceBase>> loadingRes;
 		boost::shared_ptr<boost::thread> loadingThread;
 
@@ -71,60 +72,39 @@ namespace kubik
 		}
 
 		void loadTextures()
-		{	
-			for (auto res: loadingRes)
+		{
+			try 
 			{
-				if(res->resourceType == resourceType::IMAGE)
+				for (auto res: loadingRes)
 				{
-					try 
-					{
+					if(res->resourceType == resourceType::IMAGE)
+					{					
 						shared_ptr<ImageResource> imageRes = static_pointer_cast<ImageResource>(res);	
 
 						console()<<"try image load  "<< res->path <<endl;
 						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
-						imageRes->set(image);
-						console()<<"image loaded"<<endl;
+						imageRes->set(image);								
 					}
-					catch( ... ) 
-					{
-						loadingStatus = LOADING_ERROR;
-						console() << "Unable to load the image." << std::endl;	
-						break;
-					}
-				}
-				else if(res->resourceType == resourceType::VIDEO)
-				{
-					try 
-					{
+					else if(res->resourceType == resourceType::VIDEO)
+					{				
 						shared_ptr<VideoResource> videoRes = static_pointer_cast<VideoResource>(res);	
 
 						console()<<"try video load  "<< res->path <<endl;
 						qtime::MovieGl movie = qtime::MovieGl( res->path);					
-						console()<<"video loaded"<<endl;
-						videoRes->set(movie);
+						videoRes->set(movie);							
 					}
-					catch( ... ) 
-					{
-						console() << "Unable to load the movie." << std::endl;
-						loadingStatus = LOADING_ERROR;
-					}
-				}
-				else if(res->resourceType == resourceType::FONT)
-				{
-					try 
-					{	
+					else if(res->resourceType == resourceType::FONT)
+					{					
 						shared_ptr<FontResource> fontRes = static_pointer_cast<FontResource>(res);	
-
-						//console() << "font :: " <<res->path<<" size:  "<<res->getFontSize()<<std::endl;
 						Font font =  Font(loadFile(fs::path(res->path)), fontRes->fontSize);
-						fontRes->set(font);
-						console() << "font loaded." << std::endl;
-					}
-					catch( ... ) 
-					{
-						loadingStatus = LOADING_ERROR;
+						fontRes->set(font);	
 					}
 				}
+			}
+			catch( ... ) 
+			{
+				loadingStatus = LOADING_ERROR;
+				console() << "Unable to load the resource." <<endl;
 			}
 
 			if(loadingStatus == LOADING)

@@ -13,9 +13,6 @@ namespace kubik
 	class IScreen
 	{
 
-	//protected:
-		//ResourceDictionary designTexures;
-
 	public:	
 		~IScreen()
 		{

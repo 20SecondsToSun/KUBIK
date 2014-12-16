@@ -27,7 +27,6 @@
       {
          "id" : 2
       }
-
    ],
    "instagramConfigPath" : "data\\configs\\instagram.txt",
    "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",

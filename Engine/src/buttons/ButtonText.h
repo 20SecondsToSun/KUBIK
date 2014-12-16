@@ -10,47 +10,50 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class ButtonText: public IButton
+namespace kubik
 {
-public:
-	typedef boost::signals2::signal<void(ButtonText&)> ButtonSignal;
-	
-	ButtonSignal mouseUpSignal;
-
-	ButtonText(Rectf rectf, string text, Font font):IButton(rectf)
+	class ButtonText: public IButton
 	{
-		this->font = font;
-		this->text = text;
-	}
+	public:
+		typedef boost::signals2::signal<void(ButtonText&)> ButtonSignal;
 
-	ButtonText(ci::gl::Texture tex, ci::Vec2f pos, string text, Font font):IButton(tex, pos)
-	{
-		this->font = font;
-		this->text = text;
-	}
+		ButtonSignal mouseUpSignal;
 
-	virtual void mouseUpHandler( Vec2i vec)
-	{
-		if(buttonArea.contains(vec))
-			mouseUpSignal(*this);
-	}
-	
-	void draw()
-	{
-		IButton::draw();
+		ButtonText(Rectf rectf, string text, Font font):IButton(rectf)
+		{
+			this->font = font;
+			this->text = text;
+		}
 
-		Texture textTex = textTools().getTextField(text, &font, ColorA(1,0,0,1));
-		gl::pushMatrices();			
+		ButtonText(ci::gl::Texture tex, ci::Vec2f pos, string text, Font font):IButton(tex, pos)
+		{
+			this->font = font;
+			this->text = text;
+		}
+
+		virtual void mouseUpHandler( Vec2i vec)
+		{
+			if(buttonArea.contains(vec))
+				mouseUpSignal(*this);
+		}
+
+		void draw()
+		{
+			IButton::draw();
+
+			Texture textTex = textTools().getTextField(text, &font, ColorA(1,0,0,1));
+			gl::pushMatrices();			
 			float shiftX = (buttonArea.getWidth() - textTex.getWidth()) * 0.5f;
 			float shiftY = (buttonArea.getHeight() - textTex.getHeight()) * 0.5f;
 			gl::translate(shift);
 			gl::translate(shiftX, shiftY);
 			gl::draw(textTex);
-		gl::popMatrices();
-	}
+			gl::popMatrices();
+		}
+	
+	protected:
 
-protected:
-
-	Font	font;
-	string  text;
-};
+		Font	font;
+		string  text;
+	};
+}

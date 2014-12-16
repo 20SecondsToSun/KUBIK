@@ -109,11 +109,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\buttons\FilterButton.h" />
+    <ClCompile Include="..\src\buttons\ShareButton.h" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
@@ -123,6 +125,7 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\buttons\Button.h" />
+    <ClInclude Include="..\src\buttons\PhotoButton.h" />
     <ClInclude Include="..\src\buttons\ButtonText.h" />
     <ClInclude Include="..\src\buttons\IButton.h" />
     <ClInclude Include="..\src\buttons\MenuButton.h" />

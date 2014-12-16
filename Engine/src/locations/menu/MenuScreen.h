@@ -21,12 +21,11 @@ namespace kubik
 
 		void init(shared_ptr<ISettings>  config) override;
 		void reset(shared_ptr<ISettings> config) override{};
-		signal<void(int)> startGameSignal;
+		signal<void(int)>  startGameSignal;
 		signal<void(void)> startSettingsSignal;
 		signal<void(void)> startVideoSignal;
 
 		void draw();
-
 		void removeMouseUpListener();
 		void addMouseUpListener();
 
@@ -50,6 +49,6 @@ namespace kubik
 		shared_ptr<MenuSettings> settings;
 		shared_ptr<ButtonText> settingsButton, videoButton;
 		gl::Texture bckgnd;
-		ci::Font font;
+		Font font;
 	};
 }

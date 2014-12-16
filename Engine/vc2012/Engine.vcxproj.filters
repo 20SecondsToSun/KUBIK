@@ -132,6 +132,12 @@
     <ClCompile Include="..\src\buttons\FilterButton.h">
       <Filter>Source Files\buttons</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\buttons\ShareButton.h">
+      <Filter>Source Files\buttons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -277,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\PhotoShooting.h">
       <Filter>Source Files\games\photobooth\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\buttons\PhotoButton.h">
+      <Filter>Source Files\buttons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,10 +14,10 @@ namespace kubik
 		typedef std::shared_ptr<base> base_ptr;
 
 		template <class derived>
-		void reg(int const& name, std::shared_ptr<ISettings> setting)
+		void reg(int const& name, std::shared_ptr<GameSettings> setting)
 		{
 			games[name] = base_type_ptr(new derived_type<derived>);
-			settings[name] = setting;
+			settings[name] = setting->get(name);
 		}
 
 		base_ptr create(int const& name)

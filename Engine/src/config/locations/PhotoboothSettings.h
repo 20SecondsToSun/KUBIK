@@ -27,6 +27,15 @@ namespace kubik
 
 		struct PhotoboothDataStruct
 		{
+			static const int MIN_PHOTO_SHOTS = 1;
+			static const int MAX_PHOTO_SHOTS = 3;
+
+			static const int MIN_SEC_BETWEEN_SHOTS = 1;
+			static const int MAX_SEC_BETWEEN_SHOTS = 3;
+
+			static const int MIN_COUNTDOWN_TIMER = 3;
+			static const int MAX_COUNTDOWN_TIMER = 5;			
+
 			bool isFacebook;
 			bool isVkotakte;
 			bool isTwitter;
@@ -62,6 +71,11 @@ namespace kubik
 					}
 				}
 				return onFilters;
+			}
+
+			int getPhotoShots()
+			{
+				return photoNum + 2;
 			}
 		};
 

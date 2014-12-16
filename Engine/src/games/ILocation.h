@@ -2,6 +2,7 @@
 
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "ISettings.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -17,12 +18,7 @@ namespace kubik
 		virtual void draw() = 0;
 		virtual void init(shared_ptr<ISettings>) = 0;
 		virtual void reset(shared_ptr<ISettings>) = 0;
-	
-		signal<void(void)> nextLocationSignal;
-
-		virtual void mouseUpHandler( Vec2i vec)
-		{
-
-		}
+		virtual void mouseUpHandler(ci::Vec2i vec) = 0;
+		signal<void(void)> nextLocationSignal;		
 	};
 }

@@ -83,6 +83,9 @@ namespace kubik
 		
 		PhotoboothSettings::PhotoboothDataStruct photoboothData, initialPhotoboothData;
 		MenuSettings::MenuDataStruct menuData, initialMenuData;		
-		GameSettings::GamesDataStruct gamesData, initialGamesData;		
+		GameSettings::GamesDataStruct gamesData, initialGamesData;	
+
+		void setDefaultGameIdInSwitchOnGames();
+		void setReloadGamePropertyIfNeedIt(Changes &chng);
 	};
 }

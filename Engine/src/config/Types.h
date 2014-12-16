@@ -19,7 +19,7 @@ namespace kubik
 		string name;
 	};
 
-	enum LocationID
+	enum ChangeSettingID
 	{
 		MENU = 10,
 		CONTROL = 20,

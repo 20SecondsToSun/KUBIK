@@ -9,29 +9,31 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class FilterButton: public ButtonText
+namespace kubik
 {
-public:
-	typedef boost::signals2::signal<void(FilterButton&)> ButtonSignal;	
-	ButtonSignal mouseUpSignal;
-
-	FilterButton(int filterId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
-	{		
-		this->filterId = filterId;
-	}
-
-	int getFilterId()
+	class FilterButton: public ButtonText
 	{
-		return filterId;
-	}
+	public:
+		typedef boost::signals2::signal<void(FilterButton&)> ButtonSignal;	
+		ButtonSignal mouseUpSignal;
 
-	void mouseUpHandler( Vec2i vec)
-	{
-		if(buttonArea.contains(vec))
-			mouseUpSignal(*this);
-	}
+		FilterButton(int filterId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
+		{		
+			this->filterId = filterId;
+		}
 
-private:
+		int getFilterId()
+		{
+			return filterId;
+		}
 
-	int filterId;	
-};
+		void mouseUpHandler( Vec2i vec)
+		{
+			if(buttonArea.contains(vec))
+				mouseUpSignal(*this);
+		}
+
+	private:
+		int filterId;	
+	};
+}
