@@ -47,7 +47,7 @@ namespace kubik
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
 			textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Vec2f(100.0f, 100.0f), Color::white());
-			textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(settings->getData().getPhotoShots()), &font, Vec2f(100.0f, 200.0f), Color::white());
+			textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(settings->getPhotoShots()), &font, Vec2f(100.0f, 200.0f), Color::white());
 			textTools().textFieldDraw("ÂÐÅÌß ÎÄÍÎÃÎ ÑÍÈÌÊÀ(ÑÅÊ.) " + to_string(settings->getData().secondsBetweenShots), &font, Vec2f(100.0f, 300.0f), Color::white());
 		}
 

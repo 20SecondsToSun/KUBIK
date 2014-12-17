@@ -36,3 +36,11 @@ class ExcGameDoesNotExist : public KubikException
 public:
 	ExcGameDoesNotExist() throw();
 };
+
+class StickerDoesNotExist : public KubikException 
+{
+public:
+	StickerDoesNotExist() throw();
+};
+
+

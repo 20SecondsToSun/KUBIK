@@ -65,11 +65,15 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 }
 
 void TuneUpScreen::createPhotoboothParams()
-{
+{	
+	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(gameId::PHOTOBOOTH));	
+	photoboothData = phbthSettings->getData();
+
 	photoBoothParams = params::InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels( Vec2i( 300, 400)));
+
 	photoBoothParams->addParam("seconds", &photoboothData.seconds)
-		.min(photoboothData.MIN_COUNTDOWN_TIMER)
-		.max(photoboothData.MAX_COUNTDOWN_TIMER)
+		.min((float)photoboothData.MIN_COUNTDOWN_TIMER)
+		.max((float)photoboothData.MAX_COUNTDOWN_TIMER)
 		.step(1);
 	photoBoothParams->addParam("secondsBetweenShots", &photoboothData.secondsBetweenShots )
 		.min(photoboothData.MIN_SEC_BETWEEN_SHOTS)
@@ -77,20 +81,26 @@ void TuneUpScreen::createPhotoboothParams()
 		.step(1);
 	photoBoothParams->addParam("photoNum", &photoboothData.photoNum)
 		.min(photoboothData.MIN_PHOTO_SHOTS)
-		.max(photoboothData.MAX_PHOTO_SHOTS)
+		.max(photoboothData.MAX_PHOTO_SHOTS) 
 		.step(2);
 	photoBoothParams->addSeparator();
 	photoBoothParams->addParam( "Custom design",	 &photoboothData.isCustomDesign);
-	photoBoothParams->addParam( "Template id",	 &photoboothData.templateId).min(1).max(2).step(1);
+	photoBoothParams->addParam( "Template id",		 &photoboothData.templateId).min(1).max(2).step(1);
 	photoBoothParams->addSeparator();
-	//photoBoothParams->addParam( "Filters count", &photoboothData.);
+	photoBoothParams->addParam( "Is Sticker Custom", &photoboothData.activeSticker.isCustom);
+	photoBoothParams->addParam( "Custom ids",		 &photoboothData.activeSticker.id).max(photoboothData.customStickers.size()-1).min(0).step(1);
+	photoBoothParams->addParam( "Kubik ids",		 &photoboothData.activeSticker.id).max(photoboothData.kubikStickers.size()-1).min(0).step(1);
+	photoBoothParams->addSeparator();
+	photoBoothParams->addParam( "Is Bg Print Custom", &photoboothData.activeBgPrint.isCustom);
+	photoBoothParams->addParam( "Custom ids",		 &photoboothData.activeBgPrint.id).max(photoboothData.customBgPrint.size()-1).min(0).step(1);
+	photoBoothParams->addParam( "Kubik  ids",		 &photoboothData.activeBgPrint.id).max(photoboothData.kubikBgPrint.size()-1).min(0).step(1);
 	photoBoothParams->addSeparator();
 	photoBoothParams->addParam( "Facebook Sharing", &photoboothData.isFacebook);
-	photoBoothParams->addParam( "Vkontakte Sharing", &photoboothData.isVkotakte);
+	photoBoothParams->addParam( "Vkontakte Sharing",&photoboothData.isVkotakte);
 	photoBoothParams->addParam( "Twitter Sharing",  &photoboothData.isTwitter);
-	photoBoothParams->addParam( "Printer",		&photoboothData.isPrint);
-	photoBoothParams->addParam( "Email",		&photoboothData.isEmail);
-	photoBoothParams->addParam( "QrCode",		&photoboothData.isQrCode);
+	photoBoothParams->addParam( "Printer",			&photoboothData.isPrint);
+	photoBoothParams->addParam( "Email",			&photoboothData.isEmail);
+	photoBoothParams->addParam( "QrCode",			&photoboothData.isQrCode);
 	photoBoothParams->hide();
 
 	params.push_back(photoBoothParams);
@@ -189,7 +199,10 @@ void TuneUpScreen::checkPhotoBoothParamsForChanges()
 		initialPhotoboothData.photoNum != photoboothData.photoNum ||
 		initialPhotoboothData.seconds != photoboothData.seconds ||
 		initialPhotoboothData.secondsBetweenShots != photoboothData.secondsBetweenShots ||
-		initialPhotoboothData.stickerID != photoboothData.stickerID)
+		initialPhotoboothData.activeSticker.isCustom != photoboothData.activeSticker.isCustom ||
+		initialPhotoboothData.activeSticker.id != photoboothData.activeSticker.id ||
+		initialPhotoboothData.activeBgPrint.isCustom != photoboothData.activeBgPrint.isCustom ||
+		initialPhotoboothData.activeBgPrint.id != photoboothData.activeBgPrint.id)
 	{
 		changes.push_back(chng);
 		phbthSettings->setData(photoboothData);	

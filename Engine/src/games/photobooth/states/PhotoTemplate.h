@@ -15,9 +15,9 @@ namespace kubik
 {
 	class PhotoTemplate:public IPhotoboothLocation
 	{
-		Texture fon;
+		Texture fon, stickerTex;
 		ci::Font font;
-
+	
 		public:
 
 		PhotoTemplate(shared_ptr<PhotoboothSettings> settings)
@@ -37,9 +37,10 @@ namespace kubik
 
 		void reset(shared_ptr<PhotoboothSettings> _settings) override
 		{
-			settings = _settings;
-			fon  = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
+			settings	= _settings;
+			fon			= settings->getTextures()["fon1"]->get();
+			font		= settings->getFonts()["helvetica40"]->get();
+			stickerTex  = settings->getActiveStickerTex();
 		}
 
 		void draw() override
@@ -47,6 +48,9 @@ namespace kubik
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
 			textTools().textFieldDraw("бшаепхре ьюакнм", &font, Vec2f(100.0f, 100.0f), Color::white());
+
+			if(stickerTex)
+				gl::draw(stickerTex, Vec2f(100.0f, 300.0f));
 		}
 
 		void mouseUpHandler( Vec2i vec) override

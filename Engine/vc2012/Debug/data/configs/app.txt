@@ -32,7 +32,7 @@
    "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
    "menuConfigPath" : "data\\configs\\menu.txt",
    "netConnection" : true,
-   "photoboothConfigPath" : "data\\configs\\photobooth.txt",
+   "photoboothConfigPath" : "data\\configs\\photobooth\\",
    "screenSaverPath" : "user_design\\screensaver\\",
    "standID" : 1,
    "tuneUpConfigPath" : "data\\configs\\tuneup.txt",

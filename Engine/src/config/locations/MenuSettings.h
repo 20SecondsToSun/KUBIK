@@ -28,7 +28,7 @@ namespace kubik
 		MenuSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			configPath  = model->getMenuConfigPath();
+			mainConfigPath  = model->getMenuConfigPath();
 
 			load();
 			setTextures();
@@ -36,7 +36,7 @@ namespace kubik
 
 		void load()
 		{
-			JsonTree configJSON					= JsonTree(loadFile(configPath));
+			JsonTree configJSON					= JsonTree(loadFile(mainConfigPath));
 			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();
 			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();
 			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();
@@ -51,7 +51,7 @@ namespace kubik
 		{
 			console()<<"SAVE MENU CONFIG"<<endl;
 
-			fs::path basePath(configPath);
+			fs::path basePath(mainConfigPath);
 
 			JsonTree doc;		
 			doc.addChild( JsonTree("staticPartDesignPath", data.staticPartDesignPath));

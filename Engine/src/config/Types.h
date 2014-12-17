@@ -12,6 +12,12 @@ using namespace ci::gl;
 
 namespace kubik
 {
+	enum DesignType
+	{
+		KUBIK,
+		CUSTOM
+	};
+
 	struct GamesInfo
 	{
 		int id;

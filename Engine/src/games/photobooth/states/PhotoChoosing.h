@@ -41,7 +41,7 @@ namespace kubik
 		{
 			console()<<"start PhotoChoosing"<<endl;
 
-			for (size_t i = 0; i < photoBtns.size(); i++)
+			for (int i = 0; i < photoBtns.size(); i++)
 			{
 				bool value = i < canSelectCount;
 				photoBtns[i]->setSelection(value);
@@ -60,7 +60,7 @@ namespace kubik
 
 			photoBtns.clear();
 
-			for (int i = 0; i < settings->getData().getPhotoShots(); i++)
+			for (int i = 0; i < settings->getPhotoShots(); i++)
 				createPhotoButton(i, to_string(i), i);
 
 			nextButton = shared_ptr<MenuButton>(new MenuButton(1, Rectf(800.0f, 500.0f, 900.0f, 600.0f), "дюкее", font));	

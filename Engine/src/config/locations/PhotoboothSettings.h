@@ -1,28 +1,55 @@
 #pragma once
 #include "cinder/app/AppNative.h"
 #include "ISettings.h"
+#include "KubikException.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
+using namespace ci::gl;
 
 namespace kubik
 {
+	static const string STICKER_SUPPORT_EXTENSION = ".png";
+	static const string CONFIG_FILE = "path.txt";
+	static const string PARAMS_FILE = "params.txt";
+
+	static const string CUSTOM_STICKER_NAME = "custom_sticker";
+	static const string KUBIK_STICKER_NAME  = "kubik_sticker";
+
 	class PhotoboothSettings:public ISettings
 	{
 	public:	
-
-		enum PhotoboothDesignTemplates
-		{
-			POP_ART,
-			NATURE,
-			ABSTRACT
-		};
 
 		struct Filter
 		{
 			int id;
 			bool isOn;
+		};
+
+		struct ImageElement
+		{
+			string path;
+			Texture tex;
+			int id;
+			bool isCustom;
+		};
+
+		typedef ImageElement Sticker;
+		typedef ImageElement BackgroundPrint;
+
+		struct ConfigPath
+		{
+			string staticPartDesignPath;
+			string kubikTemplatePartDesignPath;
+			string userTemplatePartDesignPath;
+			string finalPath;
+
+			string kubikStickersPath;
+			string userStickersPath;
+
+			string userBgPrintsPath;
+			string kubikBgPrintsPath;
 		};
 
 		struct PhotoboothDataStruct
@@ -49,64 +76,83 @@ namespace kubik
 			int  secondsBetweenShots;
 			int  photoNum;
 			int  templateId;
-			int  stickerID;
-			int  frameMode;
+		
+			vector<Filter> filters;		
+			vector<Sticker> customStickers;
+			vector<Sticker> kubikStickers;
+			vector<BackgroundPrint> customBgPrint;
+			vector<BackgroundPrint> kubikBgPrint;
 
-			string staticPartDesignPath;
-			string kubikTemplatePartDesignPath;
-			string userTemplatePartDesignPath;
-			string finalPath;
-
-			vector<Filter> filters;
-
-			vector<int> getOnFilters()
-			{
-				vector<int> onFilters;
-
-				for (size_t i = 0; i < filters.size(); i++)
-				{
-					if(filters[i].isOn)
-					{
-						onFilters.push_back(filters[i].id);
-					}
-				}
-				return onFilters;
-			}
-
-			int getPhotoShots()
-			{
-				return photoNum + 2;
-			}
-		};
+			BackgroundPrint activeBgPrint;
+			Sticker activeSticker;
+		};		
 
 		PhotoboothSettings(shared_ptr<ApplicationModel> model) 
 		{
 			this->model = model;
-			configPath = model->getPhotoboothConfigPath();
+			mainConfigPath  = model->getPhotoboothConfigPath();
 		}
 
 		void load() override
-		{			
-			JsonTree configJSON = JsonTree(loadFile(configPath));
-		
-			data.seconds				= configJSON.getChild("seconds").getValue<int>();
-			data.secondsBetweenShots	= configJSON.getChild("secondsBetweenShots").getValue<int>();
-			data.photoNum				= configJSON.getChild("photoNum").getValue<int>();
-			data.isFacebook				= configJSON.getChild("isFacebook").getValue<bool>();
-			data.isVkotakte				= configJSON.getChild("isVkotakte").getValue<bool>();
-			data.isTwitter				= configJSON.getChild("isTwitter").getValue<bool>();
-			data.isEmail				= configJSON.getChild("isEmail").getValue<bool>();
-			data.isQrCode				= configJSON.getChild("isQrCode").getValue<bool>();
-			data.isPrint			    = configJSON.getChild("isPrint").getValue<bool>();
-		
-			JsonTree datas = JsonTree(configJSON.getChild( "filtersIds"));
-			JsonTree useIds	= JsonTree(configJSON.getChild( "useIds"));
+		{
+			setConfigPaths();
+			setParams();
+			setDesignPath();
+			setTextures();
+		}	
+
+		void setConfigPaths()
+		{
+			JsonTree configJSON = JsonTree(loadFile(mainConfigPath + CONFIG_FILE));
+			configPaths.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
+			configPaths.kubikTemplatePartDesignPath		= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
+			configPaths.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
+			configPaths.finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
+			configPaths.kubikStickersPath				= configJSON.getChild("kubikStickersPath").getValue<string>();
+			configPaths.userStickersPath				= configJSON.getChild("userStickersPath").getValue<string>();
+			configPaths.userBgPrintsPath				= configJSON.getChild("userBgPrintsPath").getValue<string>();
+			configPaths.kubikBgPrintsPath				= configJSON.getChild("kubikBgPrintsPath").getValue<string>();
+		}
+
+		void setParams()
+		{
+			JsonTree configJSON = JsonTree(loadFile(mainConfigPath + PARAMS_FILE));
+			
+			setPhotoParams(configJSON);
+			setSocialParams(configJSON);
+			setPhotoFilterParams(configJSON);
+			setGameDesignParams(configJSON);
+			setGameStickerParams(configJSON);
+			setGameBgPrintParams(configJSON);	
+		}
+
+		void setPhotoParams(JsonTree config)
+		{
+			data.seconds				= config.getChild("seconds").getValue<int>();
+			data.secondsBetweenShots	= config.getChild("secondsBetweenShots").getValue<int>();
+			data.photoNum				= config.getChild("photoNum").getValue<int>();
+		}
+
+		void setSocialParams(JsonTree config)
+		{
+			data.isFacebook				= config.getChild("isFacebook").getValue<bool>();
+			data.isVkotakte				= config.getChild("isVkotakte").getValue<bool>();
+			data.isTwitter				= config.getChild("isTwitter").getValue<bool>();
+			data.isEmail				= config.getChild("isEmail").getValue<bool>();
+			data.isQrCode				= config.getChild("isQrCode").getValue<bool>();
+			data.isPrint			    = config.getChild("isPrint").getValue<bool>();
+		}
+
+		void setPhotoFilterParams(JsonTree config)
+		{
+			JsonTree datas = JsonTree(config.getChild( "filtersIds"));
+			JsonTree useIds	= JsonTree(config.getChild( "useIds"));
 
 			vector<int> useIdsVec;
 
 			for(auto it : useIds)
 				useIdsVec.push_back(it.getChild("id").getValue<int>());
-			
+
 			for( auto it : datas)
 			{
 				Filter filter;
@@ -115,19 +161,68 @@ namespace kubik
 
 				data.filters.push_back(filter);
 			}
-		
-			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
-			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
-			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
-			data.finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
-			data.templateId						= configJSON.getChild("templateId").getValue<int>();		
-			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();		
-			data.isSticker						= configJSON.getChild("isSticker").getValue<bool>();
-			data.stickerID						= configJSON.getChild("stickerID").getValue<int>();
-			data.frameMode						= configJSON.getChild("frameMode").getValue<int>();
+		}		
 
-			setDesignPath();
-			setTextures();
+		void setGameDesignParams(JsonTree config)
+		{
+			data.templateId						= config.getChild("templateId").getValue<int>();		
+			data.isCustomDesign					= config.getChild("isCustomDesign").getValue<bool>();	
+		}
+
+		void setGameStickerParams(JsonTree config)
+		{
+			data.isSticker						= config.getChild("isSticker").getValue<bool>();			
+			data.activeSticker.isCustom			= config.getChild("activeSticker").getChild("isCustom").getValue<bool>();
+			data.activeSticker.id				= config.getChild("activeSticker").getChild("id").getValue<int>();			
+			findAllImagePrints(getBasePath().string() + configPaths.userStickersPath,  data.customStickers, true);
+			findAllImagePrints(getBasePath().string() + configPaths.kubikStickersPath, data.kubikStickers,  false);
+		}
+
+		void setGameBgPrintParams(JsonTree config)
+		{
+			data.activeBgPrint.isCustom			= config.getChild("activeBgPrint").getChild("isCustom").getValue<bool>();
+			data.activeBgPrint.id				= config.getChild("activeBgPrint").getChild("id").getValue<int>();
+
+			findAllImagePrints(getBasePath().string() + configPaths.userBgPrintsPath,  data.customBgPrint, true);		
+			findAllImagePrints(getBasePath().string() + configPaths.kubikBgPrintsPath, data.kubikBgPrint,  false);	
+		}	
+
+		void findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom) 
+		{
+			for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
+			{
+				if (fs::is_regular_file(*it))
+				{
+					string ext = it->path().extension().string();
+
+					if(ext == STICKER_SUPPORT_EXTENSION)
+					{
+						BackgroundPrint print;
+						print.isCustom = isCustom;
+						print.path =  path + it->path().filename().string();
+						print.id = prints.size();
+						prints.push_back(print);
+					}
+				}
+			}
+		}
+
+		Texture getActiveStickerTex()
+		{
+			Texture tex;
+			string name;
+
+			if(data.activeSticker.isCustom)			
+				name = CUSTOM_STICKER_NAME + to_string(data.activeSticker.id);			
+			else			
+				name = KUBIK_STICKER_NAME + to_string(data.activeSticker.id);
+
+			auto it = textures.find(name);
+
+			if(it != textures.end())
+				tex = textures[name]->get();			
+
+			return tex;
 		}
 
 		bool findFilterId(int id, vector<int> filters)
@@ -142,7 +237,7 @@ namespace kubik
 
 		void saveConfig()
 		{
-			fs::path basePath(configPath);
+			fs::path basePath(mainConfigPath + PARAMS_FILE);
 
 			JsonTree doc;
 
@@ -157,16 +252,10 @@ namespace kubik
 			doc.addChild( JsonTree("seconds", data.seconds));		
 			doc.addChild( JsonTree("secondsBetweenShots", data.secondsBetweenShots));
 
-			doc.addChild( JsonTree("staticPartDesignPath", data.staticPartDesignPath));
-			doc.addChild( JsonTree("kubikTemplatePartDesignPath", data.kubikTemplatePartDesignPath));
-			doc.addChild( JsonTree("userTemplatePartDesignPath", data.userTemplatePartDesignPath));
-			doc.addChild( JsonTree("finalPath", data.finalPath));
 			doc.addChild( JsonTree("templateId", data.templateId));
 			doc.addChild( JsonTree("isCustomDesign", data.isCustomDesign));
 			doc.addChild( JsonTree("isSticker", data.isSticker));
-			doc.addChild( JsonTree("stickerID", data.stickerID));
-			doc.addChild( JsonTree("frameMode", data.frameMode));
-
+		
 			JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
 			JsonTree useIdsJ	 = JsonTree::makeArray("useIds");
 
@@ -182,8 +271,18 @@ namespace kubik
 					id1.addChild(JsonTree("id", it.id));
 					useIdsJ.pushBack( id1);
 				}
-			}
-			
+			}	
+
+			JsonTree sticker = JsonTree::makeObject("activeSticker");
+			sticker.addChild( JsonTree("isCustom", data.activeSticker.isCustom));
+			sticker.addChild( JsonTree("id", data.activeSticker.id));
+			doc.addChild(sticker);		
+
+			JsonTree bgPrint = JsonTree::makeObject("activeBgPrint");
+			bgPrint.addChild( JsonTree("isCustom", data.activeBgPrint.isCustom));
+			bgPrint.addChild( JsonTree("id", data.activeBgPrint.id));
+			doc.addChild(bgPrint);	
+
 			doc.addChild(filtersIdsJ);
 			doc.addChild(useIdsJ);
 			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
@@ -192,25 +291,47 @@ namespace kubik
 		void setDesignPath()
 		{
 			if(data.isCustomDesign)
-				templateDesignPath = data.userTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
+				templateDesignPath = configPaths.userTemplatePartDesignPath + to_string(data.templateId)+"\\" + configPaths.finalPath;
 			else
-				templateDesignPath = data.kubikTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
+				templateDesignPath = configPaths.kubikTemplatePartDesignPath + to_string(data.templateId)+"\\" + configPaths.finalPath;
 
-			staticDesignPath = data.staticPartDesignPath + data.finalPath;
+			staticDesignPath = configPaths.staticPartDesignPath + configPaths.finalPath;
 		}
 
 		void setTextures() override
 		{		
 			clearResources();
-		
+
 			addToDictionary("closeImg",		createImageResource(getStaticDesignPath("close.png")));
 			addToDictionary("fon1",			createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));
 			addToDictionary("fon2",			createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
 			addToDictionary("fon3",			createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
 			addToDictionary("helvetica40",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
-			addToDictionary("helvetica100",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
+			addToDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
+
+			for (int i = 0; i < data.customStickers.size(); i++)
+				addToDictionary(CUSTOM_STICKER_NAME + to_string(i), createImageResource(data.customStickers[i].path));	
+
+			for (int i = 0; i < data.kubikStickers.size(); i++)					
+				addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));	
 		}
-		
+
+		vector<int> getOnFilters()
+		{
+			vector<int> onFilters;
+
+			for (size_t i = 0; i < data.filters.size(); i++)			
+				if(data.filters[i].isOn)				
+					onFilters.push_back(data.filters[i].id);				
+
+			return onFilters;
+		}
+
+		int getPhotoShots()
+		{
+			return data.photoNum + 2;
+		}
+
 		PhotoboothDataStruct getData()
 		{
 			return data;
@@ -219,11 +340,11 @@ namespace kubik
 		void setData(PhotoboothDataStruct value)
 		{
 			data = value;
-
 			saveConfig();
 		}
 
 	private:
 		PhotoboothDataStruct data;
+		ConfigPath configPaths;
 	};
 }

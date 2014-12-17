@@ -67,7 +67,7 @@ namespace kubik
 	protected:		
 		shared_ptr<ApplicationModel> model;	
 
-		std::string configPath;
+		std::string mainConfigPath;
 
 		std::string designPath;
 		std::string staticDesignPath;

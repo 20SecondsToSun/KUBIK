@@ -1,0 +1,42 @@
+{
+   "activeBgPrint" : {
+      "id" : 2,
+      "isCustom" : true
+   },
+   "activeSticker" : {
+      "id" : 2,
+      "isCustom" : false
+   },
+   "filtersIds" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 2
+      },
+      {
+         "id" : 3
+      }
+   ],
+   "frameMode" : 1,
+   "isCustomDesign" : true,
+   "isEmail" : true,
+   "isFacebook" : false,
+   "isPrint" : true,
+   "isQrCode" : true,
+   "isSticker" : true,
+   "isTwitter" : true,
+   "isVkotakte" : true,
+   "photoNum" : 3,
+   "seconds" : 5,
+   "secondsBetweenShots" : 2,
+   "templateId" : 2,
+   "useIds" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 3
+      }
+   ]
+}

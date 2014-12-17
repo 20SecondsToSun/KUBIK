@@ -1,0 +1,10 @@
+{
+   "finalPath" : "gamesDesign\\photobooth\\",
+   "kubikBgPrintsPath" : "user_design\\design_elements\\photobooth\\stickers\\",
+   "kubikStickersPath" : "kubik\\design_elements\\photobooth\\stickers\\",
+   "kubikTemplatePartDesignPath" : "kubik\\templates\\", 
+   "staticPartDesignPath" : "data\\interface\\",   
+   "userBgPrintsPath" : "kubik\\design_elements\\photobooth\\stickers\\",
+   "userStickersPath" : "user_design\\design_elements\\photobooth\\stickers\\",
+   "userTemplatePartDesignPath" : "user_design\\templates\\"
+}

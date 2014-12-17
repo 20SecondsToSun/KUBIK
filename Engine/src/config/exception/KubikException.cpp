@@ -28,3 +28,11 @@ ExcGameDoesNotExist::ExcGameDoesNotExist() throw()
 	sprintf( mMessage, "Игра не существует" );
 	isCritical = true;
 }
+
+StickerDoesNotExist::StickerDoesNotExist() throw()
+{
+	sprintf( mMessage, "Стикера не существует" );
+	isCritical = true;
+}
+
+

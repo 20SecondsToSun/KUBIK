@@ -50,7 +50,7 @@ namespace kubik
 
 			if (getCountFiltersOn() > 1)
 			{
-				vector<int> filters = settings->getData().getOnFilters();
+				vector<int> filters = settings->getOnFilters();
 				int i = 0;
 				for (auto filter: filters)
 				{
@@ -76,7 +76,7 @@ namespace kubik
 
 		int getCountFiltersOn()
 		{
-			return settings->getData().getOnFilters().size();
+			return settings->getOnFilters().size();
 		}
 
 		void draw()

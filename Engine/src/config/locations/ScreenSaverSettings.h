@@ -27,7 +27,7 @@ namespace kubik
 		ScreenSaverSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			configPath = model->getScreenSaverPath();
+			mainConfigPath = model->getScreenSaverPath();
 
 			findScreenSaver();
 			setTextures();
@@ -95,7 +95,7 @@ namespace kubik
 			
 			mode = NONE_SS;
 
-			for (fs::directory_iterator it(configPath); it != fs::directory_iterator(); ++it)
+			for (fs::directory_iterator it(mainConfigPath); it != fs::directory_iterator(); ++it)
 			{
 				if (fs::is_regular_file(*it))
 				{
@@ -105,7 +105,7 @@ namespace kubik
 					if(ssType == NONE_SS)
 						continue;
 
-					string filePath = configPath + it->path().filename().string();
+					string filePath = mainConfigPath + it->path().filename().string();
 
 					if(fileSizeNotTooBig(filePath, ext))
 					{

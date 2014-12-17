@@ -17,7 +17,7 @@ namespace kubik
 		TuneUpSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			configPath = model->getTuneUpConfigPath();
+			mainConfigPath = model->getTuneUpConfigPath();
 
 			load();
 			setTextures();
@@ -27,7 +27,7 @@ namespace kubik
 		{
 			try	
 			{
-				JsonTree configJSON = JsonTree(loadFile(configPath));
+				JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
 				designPath = configJSON.getChild("designPath").getValue<string>();
 			}
 			catch(...)
