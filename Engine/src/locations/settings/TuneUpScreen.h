@@ -1,5 +1,6 @@
 #pragma once
 #include "cinder/app/AppNative.h"
+#include "cinder/params/Params.h"
 #include "ApplicationModel.h"
 #include "MenuButton.h"
 #include "Graphics.h"
@@ -11,11 +12,11 @@
 #include "ScreenSaverSettings.h"
 #include "Types.h"
 
-#include "cinder/params/Params.h"
-
 using namespace std;
 using namespace ci;
 using namespace ci::app;
+using namespace ci::signals;
+using namespace params;
 
 namespace kubik
 {
@@ -24,7 +25,7 @@ namespace kubik
 	public:
 
 		TuneUpScreen(shared_ptr<TuneUpSettings> screenSaverSettings,
-					 shared_ptr<ScreenSaverSettings>      config,
+					 shared_ptr<ScreenSaverSettings> config,
 					 shared_ptr<MenuSettings>        menuConfig,
 					 shared_ptr<GameSettings>		 gameSettings);
 
@@ -33,27 +34,26 @@ namespace kubik
 		void draw();	
 		void init(shared_ptr<ISettings> settings) override;
 		void reset(shared_ptr<ISettings> config) override{};
+		void addMouseUpListener();
+		void removeMouseUpListener();
+		void startUpParams();
+		void savePhtbtn();
 		
 		signal<void(void)> closeSettingsSignal;
 		signal<void(vector<Changes>)> appSettingsChangedSignal;
 
-		void addMouseUpListener();
-		void removeMouseUpListener();
-
-		ci::signals::connection mouseUpListener, closeBtnListener, appSettingsChgListener;	
-
-		void startUpParams();
-		void savePhtbtn();
+		connection mouseUpListener;
+		connection closeBtnListener;
+		connection appSettingsChgListener;
 
 	private:
 
-		params::InterfaceGlRef	photoBoothParams, menuParams, gamesParams, funcesParams;
-		vector<params::InterfaceGlRef> params;
+		InterfaceGlRef	photoBoothParams;
+		InterfaceGlRef	menuParams;
+		InterfaceGlRef	gamesParams;
+		InterfaceGlRef	funcesParams;
 
-		void update();
-		void mouseUp(MouseEvent &event);
-
-		Font font;
+		vector<InterfaceGlRef> params;
 
 		shared_ptr<TuneUpSettings>		tuneUpSettings;
 		shared_ptr<ScreenSaverSettings> screnSaversettings;
@@ -62,11 +62,18 @@ namespace kubik
 
 		shared_ptr<ButtonText>	saveChngBtn;
 		shared_ptr<Button>		closeBtn;
-
-		void closeLocationHandler(Button& button);
-		void appSettingsChgHandler(ButtonText& button);
+		Font font;
 
 		vector<Changes> changes;
+
+		PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
+		MenuSettings::MenuDataStruct menuData, initialMenuData;		
+		GameSettings::GamesDataStruct gamesData, initialGamesData;	
+
+		void update();
+		void mouseUp(MouseEvent &event);	
+		void closeLocationHandler(Button& button);
+		void appSettingsChgHandler(ButtonText& button);		
 		
 		void savePhotoboothParams();
 
@@ -80,10 +87,6 @@ namespace kubik
 		void checkGamesParamsForChanges();
 		
 		void createGamesParams();
-		
-		PhotoboothSettings::PhotoboothDataStruct photoboothData, initialPhotoboothData;
-		MenuSettings::MenuDataStruct menuData, initialMenuData;		
-		GameSettings::GamesDataStruct gamesData, initialGamesData;	
 
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);

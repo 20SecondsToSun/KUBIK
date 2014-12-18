@@ -41,9 +41,9 @@ namespace kubik
 		{
 			console()<<"start PhotoChoosing"<<endl;
 
-			for (int i = 0; i < photoBtns.size(); i++)
+			for (size_t i = 0; i < photoBtns.size(); i++)
 			{
-				bool value = i < canSelectCount;
+				bool value = (i < canSelectCount);
 				photoBtns[i]->setSelection(value);
 			}
 
@@ -63,7 +63,7 @@ namespace kubik
 			for (int i = 0; i < settings->getPhotoShots(); i++)
 				createPhotoButton(i, to_string(i), i);
 
-			nextButton = shared_ptr<MenuButton>(new MenuButton(1, Rectf(800.0f, 500.0f, 900.0f, 600.0f), "дюкее", font));	
+			nextButton = shared_ptr<MenuButton>(new MenuButton((game::id)1, Rectf(800.0f, 500.0f, 900.0f, 600.0f), "дюкее", font));	
 			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, std::placeholders::_1));
 
 			start();
@@ -106,7 +106,7 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());		
-			textTools().textFieldDraw("бшаепхре " + to_string(canSelectCount) +" тнрнцпютхх", &font, Vec2f(100.0f, 100.0f), Color::white());
+			textTools().textFieldDraw("бшаепхре " + to_string(canSelectCount) + " тнрнцпютхх", &font, Vec2f(100.0f, 100.0f), Color::white());
 
 			for (auto btn: photoBtns)
 				btn->draw();

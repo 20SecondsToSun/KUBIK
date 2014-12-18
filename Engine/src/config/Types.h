@@ -18,28 +18,37 @@ namespace kubik
 		CUSTOM
 	};
 
+	namespace game
+	{
+		enum id
+		{
+			FUNCES = 1,
+			PHOTOBOOTH = 2,
+			KOTOPOZA = 3
+		};
+	}
+
+	namespace changeSetting
+	{	
+		enum id
+		{
+			MENU = 10,
+			CONTROL = 20,
+			SCREENSAVER = 30,
+			PRELOADER = 40,
+			SERVICEPOPUP = 50,
+			GAMES = 60,
+			FUNCES = game::FUNCES,
+			PHOTOBOOTH = game::PHOTOBOOTH,
+			KOTOPOZA = game::KOTOPOZA,
+		};	
+	}
+
 	struct GamesInfo
 	{
-		int id;
+		game::id id;
 		bool isOn, isPurchased;
 		string name;
-	};
-
-	enum ChangeSettingID
-	{
-		MENU = 10,
-		CONTROL = 20,
-		SCREENSAVER = 30,
-		PRELOADER = 40,
-		SERVICEPOPUP = 50,
-		GAMES = 60,
-	};
-
-	enum gameId
-	{
-		FUNCES = 1,
-		PHOTOBOOTH = 2,
-		KOTOPOZA = 3
 	};
 
 	enum resourceType
@@ -122,7 +131,7 @@ namespace kubik
 
 	typedef struct _changes
 	{
-		int id;
+		changeSetting::id id;
 		bool texReload;
 		bool gamesReload;
 

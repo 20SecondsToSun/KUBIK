@@ -42,14 +42,13 @@ void MenuScreen::createMenuBtns(vector<GamesInfo> games)
 		if(!it.isOn || !it.isPurchased)
 			continue;
 
-		int btnId    = it.id;
 		float x      = 300.0f *(1 + i++);
 		float y      = 400.0f;
 		float width  = 200.0f;
 		float height = 200.0f;
 
 		Rectf buttonArea = Rectf(x, y, x + width, y + height);
-		shared_ptr<MenuButton> button = shared_ptr<MenuButton>(new MenuButton(btnId, buttonArea, it.name, font));		
+		shared_ptr<MenuButton> button = shared_ptr<MenuButton>(new MenuButton(it.id, buttonArea, it.name, font));		
 		connect_once(button->mouseUpSignal, bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
 		menuBtns.push_back(button);
 	}	

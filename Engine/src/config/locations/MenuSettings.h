@@ -23,6 +23,12 @@ namespace kubik
 			string kubikTemplatePartDesignPath;
 			string userTemplatePartDesignPath;
 			string finalPath;
+
+			bool hasDesignChanges(MenuDataStruct menu)
+			{
+				return (isCustomDesign != menu.isCustomDesign ||
+						    templateId != menu.templateId);
+			}
 		};
 
 		MenuSettings(shared_ptr<ApplicationModel> model)

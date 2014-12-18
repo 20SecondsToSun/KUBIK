@@ -21,7 +21,7 @@ namespace kubik
 
 		void init(shared_ptr<ISettings>  config) override;
 		void reset(shared_ptr<ISettings> config) override{};
-		signal<void(int)>  startGameSignal;
+		signal<void(game::id)>  startGameSignal;
 		signal<void(void)> startSettingsSignal;
 		signal<void(void)> startVideoSignal;
 

@@ -1,5 +1,4 @@
 #include "Controller.h"
-#include "cinder/params/Params.h"
 
 using namespace kubik;
 using namespace std;
@@ -96,8 +95,8 @@ void Controller::allGraphicsLoadingCompleteHandler()
 
 	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
 
-	gamesFactory.reg<Photobooth>(gameId::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Funces>    (gameId::FUNCES,	 gameSettings);	
+	gamesFactory.reg<Photobooth>(game::id::PHOTOBOOTH, gameSettings);
+	gamesFactory.reg<Funces>    (game::id::FUNCES,	 gameSettings);	
 
 	createGame(model->getDefaultGameID());	
 	firstStart();	
@@ -192,7 +191,7 @@ void Controller::startMultiplyGameMode()
 //
 ////////////////////////////////////////////////////////////////////////////	
 
-void Controller::startGameHandler(int gameId)
+void Controller::startGameHandler(game::id gameId)
 {
 	menu->removeMouseUpListener();
 
@@ -220,7 +219,7 @@ void Controller::gameGraphicsLoadingCompleteHandler()
 	startGame();	
 }
 
-void Controller::createGame(int gameId)
+void Controller::createGame(game::id gameId)
 {
 	console()<<"::create new game::"<<gameId<<endl;	
 	gameSettings->setCurrentGame(gameId);
@@ -294,7 +293,7 @@ void Controller::reloadScreens(vector<Changes> changes)
 
 	for(auto change : changes)
 	{
-		int id = change.id;	
+		changeSetting::id id = change.id;	
 		bool isGame = gameSettings->isGameID(id);
 
 		LocMapper mapper = getLocationPair(id);
@@ -308,7 +307,7 @@ void Controller::reloadScreens(vector<Changes> changes)
 				view->startLocation(preloader);
 				toReload = true;
 			}
-			else if (id == ChangeSettingID::GAMES)
+			else if (id == changeSetting::id::GAMES)
 			{
 				menu->resetMenuBtnGames();
 
@@ -352,7 +351,7 @@ void Controller::allGraphicsReloadCompleteHandler()
 
 	for(auto change : reloadSettingsChanges)
 	{
-		if (change.id == ChangeSettingID::GAMES)
+		if (change.id == changeSetting::id::GAMES)
 			continue;
 		LocMapper mapper = getLocationPair(change.id);
 		mapper.screen->reset(mapper.settings);
@@ -380,9 +379,9 @@ Controller::LocMapper Controller::getLocationPair(int id)
 	if(gameSettings->isGameID(id))
 	{		
 		mapper.screen   = game;
-		mapper.settings = gameSettings->get(id);
+		mapper.settings = gameSettings->get((game::id)id);
 	}
-	else if (id == ChangeSettingID::MENU)
+	else if (id == changeSetting::id::MENU)
 	{
 		mapper.screen = menu;
 		mapper.settings = menuSettings;

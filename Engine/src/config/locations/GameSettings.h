@@ -3,6 +3,7 @@
 #include "ISettings.h"
 #include "FuncesSettings.h"
 #include "PhotoboothSettings.h"
+#include "Types.h"
 
 using namespace std;
 using namespace ci;
@@ -17,7 +18,7 @@ namespace kubik
 		struct GamesDataStruct
 		{
 			vector<GamesInfo> games;
-			int		defaultGameID;	
+			int defaultGameID;	
 
 			int getCountSwitchOnGames()
 			{
@@ -32,7 +33,7 @@ namespace kubik
 				return count;
 			}
 
-			bool isIdInSwitchOnGames(int id)
+			bool isIdInSwitchOnGames(game::id id)
 			{
 				for (auto game: games)
 				{
@@ -57,7 +58,7 @@ namespace kubik
 			load();
 		}
 
-		shared_ptr<ISettings> get(int id)
+		shared_ptr<ISettings> get(game::id id)
 		{
 			return gameSettingsMap[id];
 		}		
@@ -67,7 +68,7 @@ namespace kubik
 			return getGameTexturesById(currentGame);
 		}
 
-		IResourceDictionary getGameTexturesById(int id)
+		IResourceDictionary getGameTexturesById(game::id id)
 		{
 			IResourceDictionary rd = gameSettingsMap[id]->getResources();
 			return rd;		
@@ -89,12 +90,12 @@ namespace kubik
 
 				switch (game.id)
 				{
-				case gameId::PHOTOBOOTH:
-					gameSettingsMap[gameId::PHOTOBOOTH] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));
+				case  game::id::PHOTOBOOTH:
+					gameSettingsMap[game.id] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));
 					break;
 
-				case gameId::FUNCES:
-					gameSettingsMap[gameId::FUNCES]  = shared_ptr<FuncesSettings>(new FuncesSettings(model));	
+				case  game::id::FUNCES:
+					gameSettingsMap[game.id]  = shared_ptr<FuncesSettings>(new FuncesSettings(model));	
 					break;
 
 				default:
@@ -130,25 +131,25 @@ namespace kubik
 
 		bool isGameCurrent(int id)
 		{
-			return currentGame == id;
+			return currentGame == (game::id)id;
 		}
 
-		int getCurrentGame()
+		game::id getCurrentGame()
 		{
 			return currentGame;
 		}
 
-		void setCurrentGame(int id)
+		void setCurrentGame(game::id id)
 		{
 			currentGame =  id;
 		}
 
-		void setNextGameId(int id)
+		void setNextGameId(game::id id)
 		{
 			nextGameId = id;
 		}
 
-		int getNextGameId()
+		game::id getNextGameId()
 		{
 			return nextGameId;
 		}
@@ -163,7 +164,7 @@ namespace kubik
 			data = _data;
 
 			model->setGames(data.games);
-			model->setDefaultGameID(data.defaultGameID);
+			model->setDefaultGameID((game::id)data.defaultGameID);
 			model->saveConfig();
 		}
 
@@ -174,8 +175,8 @@ namespace kubik
 
 	private:
 
-		int currentGame, nextGameId;	
-		map<int, shared_ptr<ISettings>> gameSettingsMap;
+		game::id currentGame, nextGameId;	
+		map<game::id, shared_ptr<ISettings>> gameSettingsMap;
 
 		GamesDataStruct data;
 	};

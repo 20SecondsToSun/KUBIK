@@ -3,6 +3,7 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "ButtonText.h"
+#include "Types.h"
 
 using namespace std;
 using namespace ci;
@@ -17,12 +18,12 @@ namespace kubik
 		typedef boost::signals2::signal<void(MenuButton&)> ButtonSignal;	
 		ButtonSignal mouseUpSignal;
 
-		MenuButton(int gameId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
+		MenuButton(game::id gameId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
 		{		
 			this->gameId = gameId;
 		}
 
-		int getGameId()
+		game::id getGameId()
 		{
 			return gameId;
 		}
@@ -35,6 +36,6 @@ namespace kubik
 
 	private:
 
-		int gameId;	
+		game::id gameId;	
 	};
 }

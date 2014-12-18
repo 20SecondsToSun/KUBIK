@@ -108,14 +108,13 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////	
 
-		void startGameHandler(int gameId);
-		void createGame(int gameId);
+		void startGameHandler(game::id gameId);
+		void createGame(game::id gameId);
 		void closeGameHandler();
-		void clearGameByID(int id);
+		void clearGameByID(game::id id);
 		void gameGraphicsLoadingCompleteHandler();
 		void resetGame();
 		void startGame();	
-
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -124,7 +123,6 @@ namespace kubik
 		////////////////////////////////////////////////////////////////////////////
 
 		void servicePopupShow(KubikException exc);
-
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -137,7 +135,7 @@ namespace kubik
 
 		bool reloadOneGame;
 
-		int reloadOneGameId;
+		game::id reloadOneGameId;
 		void startAfterReload();
 	};
 }

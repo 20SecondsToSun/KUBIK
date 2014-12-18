@@ -23,7 +23,7 @@ namespace kubik
 			userID					= configJSON.getChild("userID").getValue<string>();
 			standID					= configJSON.getChild("standID").getValue<int>();
 			netConnection			= configJSON.getChild("netConnection").getValue<bool>();
-			defaultGameID			= configJSON.getChild("defaultGameID").getValue<int>();	
+			defaultGameID			= (game::id)configJSON.getChild("defaultGameID").getValue<int>();	
 
 			screenSaverPath			= configJSON.getChild("screenSaverPath").getValue<string>();
 
@@ -49,7 +49,7 @@ namespace kubik
 			for(auto it : gamesAvailable)
 			{
 				GamesInfo game;
-				game.id	  = it.getChild("id").getValue<int>();
+				game.id	  = (game::id)it.getChild("id").getValue<int>();
 				game.isOn = findGameId(game.id, turnOnGames);
 				game.isPurchased = findGameId(game.id, purchasedGames);
 				game.name = getNameById(game.id);
@@ -62,17 +62,17 @@ namespace kubik
 			fs::path basePath(getConfigPath());
 
 			JsonTree doc;		
-			doc.addChild( JsonTree("userID", userID));
-			doc.addChild( JsonTree("standID", standID));
-			doc.addChild( JsonTree("netConnection", netConnection));
-			doc.addChild( JsonTree("defaultGameID", defaultGameID));
-			doc.addChild( JsonTree("screenSaverPath", screenSaverPath));
-			doc.addChild( JsonTree("menuConfigPath", menuConfigPath));	
-			doc.addChild( JsonTree("tuneUpConfigPath", tuneUpConfigPath));	
-			doc.addChild( JsonTree("photoboothConfigPath", photoboothConfigPath));	
-			doc.addChild( JsonTree("funcesConfigPath", funcesConfigPath));	
-			doc.addChild( JsonTree("instagramConfigPath", instagramConfigPath));	
-			doc.addChild( JsonTree("kotopozaConfigPath", kotopozaConfigPath));	
+			doc.addChild(JsonTree("userID", userID));
+			doc.addChild(JsonTree("standID", standID));
+			doc.addChild(JsonTree("netConnection", netConnection));
+			doc.addChild(JsonTree("defaultGameID", defaultGameID));
+			doc.addChild(JsonTree("screenSaverPath", screenSaverPath));
+			doc.addChild(JsonTree("menuConfigPath", menuConfigPath));	
+			doc.addChild(JsonTree("tuneUpConfigPath", tuneUpConfigPath));	
+			doc.addChild(JsonTree("photoboothConfigPath", photoboothConfigPath));	
+			doc.addChild(JsonTree("funcesConfigPath", funcesConfigPath));	
+			doc.addChild(JsonTree("instagramConfigPath", instagramConfigPath));	
+			doc.addChild(JsonTree("kotopozaConfigPath", kotopozaConfigPath));	
 
 			JsonTree gamesJ = JsonTree::makeArray("gamesAvailable");
 			JsonTree gamesTurnOnJ = JsonTree::makeArray("gamesTurnOn");
@@ -116,14 +116,14 @@ namespace kubik
 			return false;
 		}
 
-		string getNameById(int id)
+		string getNameById(game::id id)
 		{			
 			switch (id)
 			{
-			case gameId::PHOTOBOOTH:
+			case game::id::PHOTOBOOTH:
 				return "Photobooth";
 
-			case gameId::FUNCES:
+			case  game::id::FUNCES:
 				return "Funces";
 			}	
 			return "none";
@@ -139,12 +139,12 @@ namespace kubik
 			games = _games;
 		}
 		
-		void setDefaultGameID(int _value)
+		void setDefaultGameID(game::id _value)
 		{
 			defaultGameID = _value;
 		}
 
-		int getDefaultGameID()
+		game::id getDefaultGameID()
 		{
 			return defaultGameID;
 		}
@@ -186,45 +186,50 @@ namespace kubik
 
 		string getMenuConfigPath()
 		{
-			return getAppPath().string() +  menuConfigPath;
+			return getFullPath(menuConfigPath);
 		}
 
 		string getTuneUpConfigPath()
 		{
-			return  getAppPath().string() + tuneUpConfigPath;
+			return  getFullPath(tuneUpConfigPath);
 		}
 
 		string getScreenSaverPath()
 		{
-			return getAppPath().string() + screenSaverPath;
+			return getFullPath(screenSaverPath);
 		}
 
 		string getPhotoboothConfigPath()
 		{
-			return  getAppPath().string() + photoboothConfigPath;
+			return  getFullPath(photoboothConfigPath);
 		}
 
 		string getFuncesConfigPath()
 		{
-			return  getAppPath().string() + funcesConfigPath;
+			return  getFullPath(funcesConfigPath);
 		}
 
 		string getInstagramConfigPath()
 		{
-			return  getAppPath().string() + instagramConfigPath;
+			return getFullPath(instagramConfigPath);
 		}
 
 		string getKotopozaConfigPath()
 		{
-			return  getAppPath().string() + kotopozaConfigPath;
+			return  getFullPath(kotopozaConfigPath);
+		}
+
+		string getFullPath(string path)
+		{
+			return  getAppPath().string() + path;
 		}
 
 	private:
 
 		string userID;
-		int standID;
-		int defaultGameID;
-		bool netConnection;	
+		int  standID;
+		bool netConnection;
+		game::id defaultGameID;			
 
 		string menuConfigPath;
 		string tuneUpConfigPath;
