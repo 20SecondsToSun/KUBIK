@@ -101,7 +101,7 @@ void TuneUpScreen::createPhotoboothParams()
 		.min((float)phData.MIN_COUNTDOWN_TIMER)
 		.max((float)phData.MAX_COUNTDOWN_TIMER)
 		.step(1);
-	photoBoothParams->addParam("secondsBetweenShots", &phData.secondsBetweenShots )
+	photoBoothParams->addParam("secondsBetweenShots", &phData.secondsBetweenShots)
 		.min((float)phData.MIN_SEC_BETWEEN_SHOTS)
 		.max((float)phData.MAX_SEC_BETWEEN_SHOTS)
 		.step(1);
