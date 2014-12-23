@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "ILocation.h"
 #include "IPhotoboothLocation.h"
+#include "CameraAdapter.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -19,16 +20,12 @@ namespace kubik
 		Font font;
 		Font font100;
 		int seconds;
-		Timer cdTimer;
-		bool isRunning;
-		ci::signals::connection updSignal;
+		Timer cdTimer;		
 
 	public:
 
 		void clear()
 		{
-			updSignal.disconnect();
-			isRunning = false;
 			cdTimer.stop();
 		}
 
@@ -38,15 +35,14 @@ namespace kubik
 		};
 
 		PhotoTimer(shared_ptr<PhotoboothSettings> settings)
-		{
-			isRunning = false;
+		{		
 			reset(settings);
 		}
 
 		void reset(shared_ptr<PhotoboothSettings> _settings) override
 		{
-			settings = _settings;
-			fon		 = settings->getTextures()["fon3"]->get();
+			settings =  _settings;
+			fon		 =  settings->getTextures()["fon3"]->get();
 			font	 =  settings->getFonts()["helvetica40"]->get();
 			font100	 =  settings->getFonts()["helvetica100"]->get();
 		}
@@ -55,35 +51,32 @@ namespace kubik
 		{
 			seconds = settings->getData().seconds;
 			cdTimer.start();
-			console()<<"start PhotoTimer"<<endl;
-
-			if(!isRunning)
-			{
-				updSignal = App::get()->getSignalUpdate().connect(bind(&PhotoTimer::update, this));	
-				isRunning = true;
-			}			
+			console()<<"start PhotoTimer"<<endl;			
 		}		
 
-		void update()
+		void update() override
 		{
 			seconds = (settings->getData().seconds - (int)cdTimer.getSeconds());
+
 			if(seconds < 0)
 			{
 				clear();
 				nextLocationSignal();
 			}
+
+			cameraCanon().update();
 		}
 
-		void draw()
+		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
+			cameraCanon().draw();
 			textTools().textFieldDraw("ÒÀÉÌÅÐ", &font, Vec2f(100.0f, 100.0f), Color::white());
-			textTools().textFieldDraw( to_string(seconds), &font100, Vec2f(200.0f, 200.0f), Color::white());
+			textTools().textFieldDraw(to_string(seconds), &font100, Vec2f(200.0f, 200.0f), Color::white());
 		}
 
-		void mouseUpHandler( Vec2i vec)
+		void mouseUpHandler(Vec2i vec)
 		{
-			console()<<"mouseUP PhotoTimer"<<endl;
 			clear();
 			nextLocationSignal();
 		}

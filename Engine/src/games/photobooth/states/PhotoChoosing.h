@@ -15,20 +15,25 @@ namespace kubik
 {
 	class PhotoChoosing:public IPhotoboothLocation
 	{
-		gl::Texture fon;
-		ci::Font font;
+		Texture fon;
+		Font font;
 
-		int canSelectCount;
-		int nowSelectCount;
+		unsigned int canSelectCount;
+		unsigned int nowSelectCount;
 		PhotoButton* lastSelectedPhotoButton;
 
 		vector<shared_ptr<PhotoButton>> photoBtns;
 		shared_ptr<MenuButton> nextButton;
+		shared_ptr<PhotoStorage>  photoStorage;
+
+
+		Surface image;
 
 	public:
 
-		PhotoChoosing(shared_ptr<PhotoboothSettings> settings)
+		PhotoChoosing(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
 		{
+			photoStorage = _photoStorage;
 			reset(settings);
 		};
 
@@ -50,6 +55,10 @@ namespace kubik
 			canSelectCount = settings->getData().photoNum;
 			nowSelectCount = canSelectCount;
 			lastSelectedPhotoButton = photoBtns[canSelectCount - 1].get();
+
+			vector<Surface> arr = photoStorage->getHiResPhoto();
+			if(arr.size())
+				image = arr[0];
 		}
 
 		void reset(shared_ptr<PhotoboothSettings> _settings) override
@@ -103,9 +112,18 @@ namespace kubik
 			lastSelectedPhotoButton = &button;
 		}
 
+		void update() override
+		{
+
+		}
+
 		void draw() override
 		{
-			gl::draw(fon, getWindowBounds());		
+			gl::draw(fon, getWindowBounds());
+
+			if(image)
+				gl::draw(image);
+
 			textTools().textFieldDraw("¬€¡≈–»“≈ " + to_string(canSelectCount) + " ‘Œ“Œ√–¿‘»»", &font, Vec2f(100.0f, 100.0f), Color::white());
 
 			for (auto btn: photoBtns)

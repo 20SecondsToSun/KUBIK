@@ -6,6 +6,7 @@
 #include "IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
 #include "ShareButton.h"
+#include "model/PhotoStorage.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -17,6 +18,7 @@ namespace kubik
 	{
 		gl::Texture fon;
 		ci::Font font;
+		shared_ptr<PhotoStorage>  photoStorage;
 
 		enum shareID
 		{
@@ -30,8 +32,9 @@ namespace kubik
 
 		public:
 
-		PhotoSharing(shared_ptr<PhotoboothSettings> settings)
+		PhotoSharing(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
 		{
+			photoStorage = _photoStorage;
 			reset(settings);		
 		};
 
@@ -89,6 +92,11 @@ namespace kubik
 		void start() override
 		{
 			console()<<"start PhotoSharing"<<endl;
+		}
+
+		void update() override
+		{
+
 		}
 
 		void draw() override

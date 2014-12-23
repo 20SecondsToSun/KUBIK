@@ -31,9 +31,6 @@
     <Filter Include="Source Files\devices">
       <UniqueIdentifier>{034b7e4a-d64e-424c-bc60-d764f26bb369}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\devices\photocamera">
-      <UniqueIdentifier>{8f1fc16d-1331-4a89-9e2e-3c669012c83c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\devices\kinect">
       <UniqueIdentifier>{a8a64435-6bcf-4ebc-a807-1d4a76f29ecc}</UniqueIdentifier>
     </Filter>
@@ -94,6 +91,21 @@
     <Filter Include="Source Files\config\locations">
       <UniqueIdentifier>{9f2b8059-ff48-49ec-8992-b0b5588d3f17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blocks\CanonSDK">
+      <UniqueIdentifier>{57cb7e94-492a-45d0-8fa3-6b0341daa89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blocks\CanonSDK\include">
+      <UniqueIdentifier>{5b70e924-eb45-4e69-8eff-5da3405f58fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blocks\CanonSDK\src">
+      <UniqueIdentifier>{0e5cbe12-6587-411d-8cbc-e842c7e6a64b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\devices\canon">
+      <UniqueIdentifier>{8f1fc16d-1331-4a89-9e2e-3c669012c83c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\model">
+      <UniqueIdentifier>{b56bac05-009a-4adf-bd46-4a2c431901e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -140,6 +152,24 @@
     </ClCompile>
     <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp">
       <Filter>Source Files\config\locations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\CanonSDK\src\BaseCanon.cpp">
+      <Filter>blocks\CanonSDK\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraCanon.cpp">
+      <Filter>blocks\CanonSDK\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraController.cpp">
+      <Filter>blocks\CanonSDK\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraEventListener.cpp">
+      <Filter>blocks\CanonSDK\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\CanonSDK\src\CanonException.cpp">
+      <Filter>blocks\CanonSDK\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp">
+      <Filter>Source Files\devices\canon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +319,30 @@
     </ClInclude>
     <ClInclude Include="..\src\buttons\PhotoButton.h">
       <Filter>Source Files\buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraCanon.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraController.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraEventListener.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\CanonEventCodes.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\CanonSDK\include\CanonException.h">
+      <Filter>blocks\CanonSDK\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\devices\canon\CameraAdapter.h">
+      <Filter>Source Files\devices\canon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h">
+      <Filter>Source Files\games\photobooth\model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

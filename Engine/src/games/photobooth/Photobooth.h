@@ -13,6 +13,9 @@
 #include "states/PhotoSharing.h"
 #include "states/PhotoChoosing.h"
 #include "states/PhotoTemplate.h"
+#include "states/PhotoProcessing.h"
+#include "model/PhotoStorage.h"
+#include "CameraAdapter.h"
 
 using namespace std;
 using namespace ci;
@@ -27,6 +30,7 @@ namespace kubik
 		Photobooth(shared_ptr<ISettings> config);
 		~Photobooth();
 
+		void update();	
 		void draw();	
 		void start();
 		void create();
@@ -35,6 +39,8 @@ namespace kubik
 
 		void addMouseUpListener();
 		void removeMouseUpListener();
+
+		connection updateSignal;
 
 	private:		
 		shared_ptr<Button> closeBtn;
@@ -49,6 +55,7 @@ namespace kubik
 		shared_ptr<PhotoFilter>		photoFilter;
 		shared_ptr<PhotoTimer>		photoTimer;
 		shared_ptr<PhotoShooting>	photoShooting;
+		shared_ptr<PhotoProcessing>	photoProcessing;		
 		shared_ptr<PhotoChoosing>	photoChoosing;
 		shared_ptr<PhotoTemplate>	photoTemplate;
 		shared_ptr<PhotoSharing>	photoSharing;
@@ -60,5 +67,6 @@ namespace kubik
 		void initLocations();
 
 		shared_ptr<PhotoboothSettings> settings;
+		shared_ptr<PhotoStorage> photoStorage;
 	};
 }

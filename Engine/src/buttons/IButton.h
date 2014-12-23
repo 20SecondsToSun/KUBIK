@@ -38,6 +38,21 @@ public:
 			drawSolidRect(buttonArea);
 	}
 
+	Vec2f getPosition() const
+	{
+		return Vec2f(buttonArea.x1, buttonArea.y1);
+	}
+
+	float getWidth() const
+	{
+		return buttonArea.x2 - buttonArea.x1;
+	}
+
+	float getHeight() const
+	{
+		return buttonArea.y2 - buttonArea.y1;
+	}
+
 protected:
 	Rectf buttonArea;
 	bool isTexture;

@@ -68,7 +68,7 @@ namespace kubik
 			static const int MAX_PHOTO_SHOTS = 3;
 
 			static const int MIN_SEC_BETWEEN_SHOTS = 1;
-			static const int MAX_SEC_BETWEEN_SHOTS = 3;
+			static const int MAX_SEC_BETWEEN_SHOTS = 6;
 
 			static const int MIN_COUNTDOWN_TIMER = 3;
 			static const int MAX_COUNTDOWN_TIMER = 5;

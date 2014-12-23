@@ -5,6 +5,7 @@
 #include "IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
 #include "cinder/gl/Texture.h"
+#include "model/PhotoStorage.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -16,12 +17,13 @@ namespace kubik
 	class PhotoTemplate:public IPhotoboothLocation
 	{
 		Texture fon, stickerTex;
-		ci::Font font;
-	
-		public:
+		Font font;
+		shared_ptr<PhotoStorage>  photoStorage;
 
-		PhotoTemplate(shared_ptr<PhotoboothSettings> settings)
+	public:
+		PhotoTemplate(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
 		{
+			photoStorage = _photoStorage;
 			reset(settings);		
 		};
 
@@ -41,6 +43,11 @@ namespace kubik
 			fon			= settings->getTextures()["fon1"]->get();
 			font		= settings->getFonts()["helvetica40"]->get();
 			stickerTex  = settings->getActiveStickerTex();
+		}
+
+		void update() override
+		{
+
 		}
 
 		void draw() override

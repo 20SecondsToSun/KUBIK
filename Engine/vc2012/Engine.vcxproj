@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -65,7 +65,7 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -108,11 +108,17 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\blocks\CanonSDK\src\BaseCanon.cpp" />
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraCanon.cpp" />
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraController.cpp" />
+    <ClCompile Include="..\blocks\CanonSDK\src\CameraEventListener.cpp" />
+    <ClCompile Include="..\blocks\CanonSDK\src\CanonException.cpp" />
     <ClCompile Include="..\src\buttons\FilterButton.h" />
     <ClCompile Include="..\src\buttons\ShareButton.h" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
+    <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
@@ -123,6 +129,12 @@
     <ClCompile Include="..\src\tools\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h" />
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraCanon.h" />
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraController.h" />
+    <ClInclude Include="..\blocks\CanonSDK\include\CameraEventListener.h" />
+    <ClInclude Include="..\blocks\CanonSDK\include\CanonEventCodes.h" />
+    <ClInclude Include="..\blocks\CanonSDK\include\CanonException.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\buttons\Button.h" />
@@ -140,11 +152,13 @@
     <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h" />
     <ClInclude Include="..\src\config\locations\TuneUpSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
+    <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\GamesFactory.h" />
     <ClInclude Include="..\src\games\IGame.h" />
     <ClInclude Include="..\src\games\ILocation.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
+    <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
     <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h" />

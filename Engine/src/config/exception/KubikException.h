@@ -8,7 +8,7 @@ class KubikException : public cinder::Exception
 public:
 	const char* what() const throw();
 protected:
-	char							mMessage[ 2048 ];
+	char							mMessage[2048];
 	bool							isCritical;
 	//friend class					
 };

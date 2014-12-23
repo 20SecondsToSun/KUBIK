@@ -7,13 +7,13 @@ const char* KubikException::what() const throw()
 
 ExcBigFileSizeOfScreenSaver::ExcBigFileSizeOfScreenSaver() throw()
 {
-	sprintf( mMessage, "Большой размер файла у заставки (video <= 50мб | image <= 10мб)" );
+	sprintf( mMessage, "Большой размер файла у заставки (video <= 50мб | image <= 10мб)");
 	isCritical = true;
 }
 
 ExcConfigFileParsing::ExcConfigFileParsing() throw()
 {
-	sprintf( mMessage, "Ошибка в файле конфигурации" );
+	sprintf(mMessage, "Ошибка в файле конфигурации");
 	isCritical = true;
 }
 

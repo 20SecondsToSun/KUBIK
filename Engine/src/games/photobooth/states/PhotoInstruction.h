@@ -39,7 +39,12 @@ namespace kubik
 			console()<<"start Instruction"<<endl;
 		}
 
-		void draw()
+		void update() override
+		{
+
+		}
+
+		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
