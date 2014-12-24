@@ -38,4 +38,6 @@ namespace kubik
 
 		game::id gameId;	
 	};
+
+	typedef shared_ptr<MenuButton> MenuButtonRef;
 }

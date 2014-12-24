@@ -13,15 +13,17 @@ namespace kubik
 	{
 
 	protected:
-		static shared_ptr<PhotoboothSettings> settings;
+		static PhotoboothSettingsRef settings;
 
 	public:	
 		virtual void update() = 0;
 		virtual void draw() = 0;
 		virtual void start() = 0;
-		virtual void reset(shared_ptr<PhotoboothSettings> config) = 0;	
+		virtual void reset(PhotoboothSettingsRef config) = 0;	
 		virtual void mouseUpHandler(ci::Vec2i vec) = 0;
 
 		signal<void(void)> nextLocationSignal;
 	};
+
+	typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;
 }

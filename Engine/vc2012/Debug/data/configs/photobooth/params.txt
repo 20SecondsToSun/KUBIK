@@ -4,7 +4,7 @@
       "isCustom" : true
    },
    "activeSticker" : {
-      "id" : 2,
+      "id" : 1,
       "isCustom" : false
    },
    "filtersIds" : [
@@ -26,7 +26,7 @@
    "isSticker" : true,
    "isTwitter" : true,
    "isVkotakte" : true,
-   "photoNum" : 1,
+   "photoNum" : 3,
    "seconds" : 5,
    "secondsBetweenShots" : 1,
    "templateId" : 2,

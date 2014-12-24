@@ -2,7 +2,7 @@
 
 using namespace kubik;
 
-Photobooth::Photobooth(shared_ptr<ISettings> config)
+Photobooth::Photobooth(ISettingsRef config)
 {
 	console()<<"Photobooth CREATED::: "<<endl;
 
@@ -25,12 +25,12 @@ Photobooth::~Photobooth()
 	locations.clear();
 }
 
-void Photobooth::init(shared_ptr<ISettings> config)
+void Photobooth::init(ISettingsRef config)
 {
 	settings = static_pointer_cast<PhotoboothSettings>(config);	
 }
 
-void Photobooth::reset(shared_ptr<ISettings> config)
+void Photobooth::reset(ISettingsRef config)
 {
 	settings = static_pointer_cast<PhotoboothSettings>(config);	
 
@@ -53,21 +53,21 @@ void Photobooth::removeMouseUpListener()
 void Photobooth::create()
 {	
 	console()<<"CREATION::: "<<endl;
-	photoStorage	 = shared_ptr<PhotoStorage>(new PhotoStorage());
+	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 
-	photoInstruction = shared_ptr<PhotoInstruction>(new PhotoInstruction(settings));
-	photoFilter		 = shared_ptr<PhotoFilter>(new PhotoFilter(settings));
-	photoTimer		 = shared_ptr<PhotoTimer>(new PhotoTimer(settings));
-	photoShooting	 = shared_ptr<PhotoShooting>(new PhotoShooting(settings, photoStorage));
-	photoProcessing	 = shared_ptr<PhotoProcessing>(new PhotoProcessing(settings, photoStorage));
-	photoChoosing	 = shared_ptr<PhotoChoosing>(new PhotoChoosing(settings, photoStorage));
-	photoTemplate	 = shared_ptr<PhotoTemplate>(new PhotoTemplate(settings, photoStorage));
-	photoSharing     = shared_ptr<PhotoSharing>(new PhotoSharing(settings,	 photoStorage));
+	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings));
+	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings));
+	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
+	photoProcessing	 = PhotoProcessingRef(new PhotoProcessing(settings, photoStorage));
+	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));
+	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
+	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	 photoStorage));
 	initLocations();	
 
 	Texture closeImg = settings->getTextures()["closeImg"]->get();
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
-	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, std::placeholders::_1));
+	closeBtn = ButtonRef(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
+	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, placeholders::_1));
 	
 	cameraCanon().setup();
 	cameraCanon().startLiveView();
@@ -75,6 +75,7 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
+	console()<<"STARTING::: "<<endl;
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));	
 	currentLocation = locations.begin();
 	(*currentLocation)->start();	
@@ -82,6 +83,7 @@ void Photobooth::start()
 
 void Photobooth::initLocations()
 {
+	console()<<"INITITALIZATION::: "<<endl;
 	for (auto it: locations)	
 		it->nextLocationSignal.disconnect_all_slots();
 
@@ -109,7 +111,7 @@ void Photobooth::nextLocationHandler()
 	(*currentLocation)->start();
 }
 
-void Photobooth::mouseUp( MouseEvent &event)
+void Photobooth::mouseUp(MouseEvent &event)
 {	
 	closeBtn->mouseUpHandler(event.getPos());
 	(*currentLocation)->mouseUpHandler(event.getPos());

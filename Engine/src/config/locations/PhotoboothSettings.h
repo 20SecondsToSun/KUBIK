@@ -146,4 +146,6 @@ namespace kubik
 
 		void findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom);
 	};
+
+	typedef shared_ptr<PhotoboothSettings> PhotoboothSettingsRef;
 }

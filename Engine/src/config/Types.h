@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/qtime/QuickTime.h"
 #include <stdint.h>
+#include <boost/thread.hpp>
 
 using namespace std;
 using namespace ci;
@@ -12,6 +13,7 @@ using namespace ci::gl;
 
 namespace kubik
 {
+	typedef boost::shared_ptr<boost::thread> ThreadRef;
 	enum DesignType
 	{
 		KUBIK,
@@ -101,7 +103,7 @@ namespace kubik
 	public:	
 		ImageResource()
 		{
-			resourceType		= resourceType::IMAGE;
+			resourceType = resourceType::IMAGE;
 		}
 	};
 
@@ -110,7 +112,7 @@ namespace kubik
 	public:	
 		FontResource()
 		{
-			resourceType		= resourceType::FONT;
+			resourceType = resourceType::FONT;
 		}			
 		float fontSize;
 	};
@@ -120,14 +122,18 @@ namespace kubik
 	public:	
 		VideoResource()
 		{
-			resourceType		= resourceType::VIDEO;
+			resourceType = resourceType::VIDEO;
 		}
 	};
+	typedef shared_ptr<ImageResource> ImageResourceRef;
+	typedef shared_ptr<FontResource>  FontResourceRef;
+	typedef shared_ptr<VideoResource> VideoResourceRef;
+	typedef shared_ptr<IResourceBase> IResourceBaseRef;
 
-	typedef map<string, shared_ptr<ImageResource>> ImageResourceDictionary;
-	typedef map<string, shared_ptr<FontResource>>  FontResourceDictionary;
-	typedef map<string, shared_ptr<VideoResource>> VideoResourceDictionary;
-	typedef map<string, shared_ptr<IResourceBase>> IResourceDictionary;
+	typedef map<string, ImageResourceRef> ImageResourceDictionary;
+	typedef map<string, FontResourceRef>  FontResourceDictionary;
+	typedef map<string, VideoResourceRef> VideoResourceDictionary;
+	typedef map<string, IResourceBaseRef> IResourceDictionary;
 
 	typedef struct _changes
 	{

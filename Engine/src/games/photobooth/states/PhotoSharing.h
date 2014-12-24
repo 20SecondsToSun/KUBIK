@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace ci::signals;
+using namespace ci;
 using namespace ci::app;
 
 namespace kubik
@@ -17,8 +18,8 @@ namespace kubik
 	class PhotoSharing:public IPhotoboothLocation
 	{
 		gl::Texture fon;
-		ci::Font font;
-		shared_ptr<PhotoStorage>  photoStorage;
+		Font font;
+		PhotoStorageRef  photoStorage;
 
 		enum shareID
 		{
@@ -28,13 +29,12 @@ namespace kubik
 			EMAIL
 		};
 
-		vector<shared_ptr<ShareButton>> shareBtns;
+		vector<ShareButtonRef> shareBtns;
 
 		public:
 
-		PhotoSharing(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
-		{
-			photoStorage = _photoStorage;
+		PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		{			
 			reset(settings);		
 		};
 
@@ -43,11 +43,11 @@ namespace kubik
 
 		};
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings = _settings;
-			fon = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
+			fon  = settings->getTexture("fon1");
+			font = settings->getFont("helvetica40");
 
 			PhotoboothSettings::PhotoboothDataStruct data = settings->getData();
 			
@@ -69,8 +69,8 @@ namespace kubik
 
 		void createShareButton(shareID id, string text, int i)
 		{
-			shared_ptr<ShareButton> button = shared_ptr<ShareButton>(new ShareButton(id, getButtonArea(i), text, font));	
-			connect_once(button->mouseUpSignal, bind(&PhotoSharing::mouseUpListener, this, std::placeholders::_1));
+			ShareButtonRef button = ShareButtonRef(new ShareButton(id, getButtonArea(i), text, font));	
+			connect_once(button->mouseUpSignal, bind(&PhotoSharing::mouseUpListener, this, placeholders::_1));
 			shareBtns.push_back(button);
 		}
 
@@ -109,10 +109,12 @@ namespace kubik
 				btn->draw();
 		}
 
-		void mouseUpHandler( Vec2i vec) override
+		void mouseUpHandler(Vec2i vec) override
 		{
 			for (auto btn: shareBtns)		
 				btn->mouseUpHandler(vec);
 		}
 	};
+
+	typedef	shared_ptr<PhotoSharing> PhotoSharingRef;
 }

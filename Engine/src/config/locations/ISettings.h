@@ -38,9 +38,19 @@ namespace kubik
 			return textures;
 		}
 
+		Texture getTexture(const string& name)
+		{	
+			return textures[name]->get();
+		}
+
 		FontResourceDictionary getFonts()
 		{	
 			return fonts;
+		}
+
+		Font getFont(const string& name)
+		{	
+			return fonts[name]->get();
 		}
 
 		VideoResourceDictionary getVideos()
@@ -132,4 +142,6 @@ namespace kubik
 			return value;
 		}
 	};
+
+	typedef shared_ptr<ISettings> ISettingsRef;
 }

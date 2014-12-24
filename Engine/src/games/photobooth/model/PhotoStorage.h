@@ -3,6 +3,7 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/ip/Resize.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -11,43 +12,212 @@ using namespace ci::gl;
 
 namespace kubik
 {
-	class PhotoStorage
+	class PhotoSampler
 	{
-		vector<string> photoDownloadedPaths;
-		vector<Surface> screenshots;
-		vector<Surface> hiResPhotos;
+		string pathHiRes;
+		Surface screenshot;
+		Surface hiResSource;
+		bool isLoading;
+		int id;
 
 	public:
-		void clear()
+		PhotoSampler(int _id):id(_id), isLoading(false)
 		{
-			photoDownloadedPaths.clear();
-			screenshots.clear();
-			hiResPhotos.clear();
+			
 		}
 
-		vector<string> getPhotoPaths() 
+		string getHiResPath() 
 		{
-			return photoDownloadedPaths;
+			return pathHiRes;
 		}
 
-		void setPhotoPath(const string& downloadedPath) 
+		void setHiResPath(const string& path) 
 		{
-			photoDownloadedPaths.push_back(downloadedPath);
-		}	
+			pathHiRes = path;
+		}
 
-		void addScreenshot(const Surface& surface) 
+		Surface getScreenshot() 
 		{
-			screenshots.push_back(surface);
+			return screenshot;
+		}
+
+		void setScreenshot(const Surface& surface) 
+		{
+			screenshot = surface;
+		}
+
+		Surface getHiResPhoto() 
+		{
+			return hiResSource;
 		}
 
 		void setHiResPhoto(const Surface& surface) 
 		{
-			hiResPhotos.push_back(surface);
+			hiResSource = surface;
+			isLoading = true;
 		}
 
-		vector<Surface> getHiResPhoto() 
+		Surface resize(const int& width) 
 		{
-			return hiResPhotos;
+			Surface source;
+
+			if(isLoading)
+				source = hiResSource;
+			else
+				source = screenshot;
+
+			double scale = (double)width / source.getWidth();
+			Surface thumb = ci::Surface( width, (int)(source.getHeight() * scale), false); 
+			ci::ip::resize(source, source.getBounds(), &thumb, thumb.getBounds(), ci::FilterBox());
+
+			return thumb;
 		}
 	};
+
+	typedef shared_ptr<PhotoSampler> PhotoSamplerRef;
+
+	class PhotoStorage
+	{
+		map<int, PhotoSamplerRef> photos;
+		vector<Surface> choosingThumbs;
+		vector<int>	choosedIds;
+		
+		bool threadIsRunning;
+		ThreadRef loadingThread;
+	public:
+
+		PhotoStorage():threadIsRunning(false)
+		{
+
+		}
+
+		map<int, PhotoSamplerRef> getPhotos()
+		{
+			return photos;
+		}
+
+		vector<Surface> getChoosingThumbs()
+		{
+			return choosingThumbs;
+		}
+
+		void prepare(int count)
+		{
+			console()<<"PREPARE::"<<endl;
+			photos.clear();
+			choosingThumbs.clear();
+			choosedIds.clear();
+
+			for (int i = 1; i <= count; i++)
+				photos[i] = PhotoSamplerRef(new PhotoSampler(i));
+		}
+
+		string getPhotoPaths(int id) 
+		{
+			return photos[id]->getHiResPath();
+		}
+
+		void setPhotoPath(int id, const string& path) 
+		{
+			photos[id]->setHiResPath(path);
+		}	
+
+		void setScreenshot(int id, const Surface& surface) 
+		{
+			photos[id]->setScreenshot(surface);
+		}
+
+		Surface getScreenshot(int id) 
+		{
+			return photos[id]->getScreenshot();
+		}
+
+		void setHiResPhoto(int id, const Surface& surface) 
+		{
+			photos[id]->setHiResPhoto(surface);
+		}
+
+		Surface getHiResPhoto(int id)
+		{
+			return photos[id]->getHiResPhoto();
+		}
+
+		void prepareAllResizes()
+		{
+			int shift = 20;
+			int size = photos.size();
+		    int width = getWindowWidth() / size - shift;
+
+			for (int i = 1; i <= size; i++)
+			{
+				Surface resized = photos[i]->resize(width);
+				choosingThumbs.push_back(resized);
+			}
+		}
+
+		void loadHiRes()
+		{
+			threadIsRunning = true;
+			loadingThread = ThreadRef(new boost::thread(&PhotoStorage::loadPhotos, this));
+		}
+
+		void loadPhotos() 
+		{			
+			for (auto sampler : photos)
+			{
+				string  path = sampler.second->getHiResPath();				
+				try
+				{				
+					if(path!= "")
+					{
+						Surface image = Surface(loadImage(loadFile(path)));
+						sampler.second->setHiResPhoto(image);	
+					}
+				}
+				catch(...)
+				{
+					
+				}
+			}
+
+			threadIsRunning = false;
+		}
+
+		bool isHiResLoaded() const
+		{
+			return !threadIsRunning;
+		}
+
+		void clearPhotoChosenIds()
+		{
+			choosedIds.clear();
+		}
+
+		void setPhotosChoosenIds(int id)
+		{
+			choosedIds.push_back(id);
+		}
+
+		bool isPhotosChoosedEmpty() const
+		{
+			return choosedIds.empty();
+		}
+
+		bool isChoosedRightCount(int count) const
+		{
+			return choosedIds.size() == count;
+		}
+
+		void createSharingPhotos(Texture stickerTex)
+		{
+
+		}
+
+		void createPrintTemplatePhoto(Texture stickerTex)
+		{
+
+		}		
+	};
+
+	typedef shared_ptr<PhotoStorage> PhotoStorageRef;
 }

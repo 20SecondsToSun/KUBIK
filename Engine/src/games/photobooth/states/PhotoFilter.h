@@ -19,10 +19,10 @@ namespace kubik
 	{		
 		Texture fon;
 		Font	font;
-		vector<shared_ptr<FilterButton>> filterBtns;	
+		vector<FilterButtonRef> filterBtns;	
 
 	public:	
-		PhotoFilter(shared_ptr<PhotoboothSettings> settings)
+		PhotoFilter(PhotoboothSettingsRef settings)
 		{
 			reset(settings);			
 		}
@@ -41,11 +41,11 @@ namespace kubik
 				nextLocationSignal();
 		}
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{		
 			settings = _settings;
-			fon		 =  settings->getTextures()["fon2"]->get();
-			font	 =  settings->getFonts()["helvetica40"]->get();
+			fon		 =  settings->getTexture("fon2");
+			font	 =  settings->getFont("helvetica40");
 
 			filterBtns.clear();
 
@@ -63,7 +63,7 @@ namespace kubik
 
 					Rectf buttonArea = Rectf(x, y, x + width, y + height);
 
-					shared_ptr<FilterButton> button = shared_ptr<FilterButton>(new FilterButton(filter, buttonArea, to_string(filter), font));	
+					FilterButtonRef button = FilterButtonRef(new FilterButton(filter, buttonArea, to_string(filter), font));	
 					connect_once(button->mouseUpSignal, bind(&PhotoFilter::mouseUpListener, this, placeholders::_1));
 					filterBtns.push_back(button);
 				}
@@ -108,4 +108,5 @@ namespace kubik
 				btn->mouseUpHandler(vec);
 		}
 	};
+	typedef shared_ptr<PhotoFilter>	PhotoFilterRef;
 }

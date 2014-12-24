@@ -18,12 +18,12 @@ namespace kubik
 	{
 		Texture fon, stickerTex;
 		Font font;
-		shared_ptr<PhotoStorage>  photoStorage;
+		PhotoStorageRef photoStorage;
+		bool isPrint;
 
 	public:
-		PhotoTemplate(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
-		{
-			photoStorage = _photoStorage;
+		PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		{		
 			reset(settings);		
 		};
 
@@ -35,14 +35,22 @@ namespace kubik
 		void start() override
 		{
 			console()<<"start PhotoTemplate"<<endl;
+			photoStorage->createSharingPhotos(stickerTex);	
+
+			if (isPrint)
+				photoStorage->createPrintTemplatePhoto(stickerTex);
+
+			if(settings->getData().photoNum < 3 || !isPrint)
+				nextLocationSignal();
 		}
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings	= _settings;
-			fon			= settings->getTextures()["fon1"]->get();
-			font		= settings->getFonts()["helvetica40"]->get();
-			stickerTex  = settings->getActiveStickerTex();
+			fon			= settings->getTexture("fon1");
+			font		= settings->getFont("helvetica40");
+			stickerTex  = settings->getActiveStickerTex();	
+			isPrint		= settings->getData().sharing.isPrint;
 		}
 
 		void update() override
@@ -60,9 +68,11 @@ namespace kubik
 				gl::draw(stickerTex, Vec2f(100.0f, 300.0f));
 		}
 
-		void mouseUpHandler( Vec2i vec) override
+		void mouseUpHandler(Vec2i vec) override
 		{
 			nextLocationSignal();
 		}
 	};
+
+	typedef	shared_ptr<PhotoTemplate> PhotoTemplateRef;
 }

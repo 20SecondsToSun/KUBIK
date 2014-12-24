@@ -145,7 +145,7 @@ Texture PhotoboothSettings::getActiveStickerTex()
 	else			
 		name = KUBIK_STICKER_NAME;
 
-	name += to_string(data.activeSticker.id);
+	name += to_string(data.activeSticker.id);	
 
 	auto it = textures.find(name);
 
@@ -189,8 +189,8 @@ void PhotoboothSettings::setTextures()
 	for (size_t i = 0; i < data.customStickers.size(); i++)
 		addToDictionary(CUSTOM_STICKER_NAME + to_string(i), createImageResource(data.customStickers[i].path));	
 
-	for (size_t i = 0; i < data.kubikStickers.size(); i++)					
-		addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));	
+	for (size_t i = 0; i < data.kubikStickers.size(); i++)	
+		addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));		
 }
 
 vector<int> PhotoboothSettings::getOnFilters()

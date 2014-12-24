@@ -22,7 +22,6 @@ namespace kubik
 	{
 
 	public:
-
 		signal<void(void)> completeLoadingSignal;
 		signal<void(KubikException)> errorLoadingSignal;
 
@@ -36,14 +35,13 @@ namespace kubik
 		{
 			loadingStatus = LOADING;
 			loadingSignal = App::get()->getSignalUpdate().connect(bind(&Graphics::waitLoadingComplete, this));		
-			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&Graphics::loadTextures, this));
+			loadingThread = ThreadRef(new boost::thread(&Graphics::loadTextures, this));
 		}
 
 	private:
-
 		connection loadingSignal;
-		vector<shared_ptr<IResourceBase>> loadingRes;
-		boost::shared_ptr<boost::thread> loadingThread;
+		vector<IResourceBaseRef> loadingRes;
+		ThreadRef loadingThread;
 
 		enum
 		{
@@ -79,7 +77,7 @@ namespace kubik
 				{
 					if(res->resourceType == resourceType::IMAGE)
 					{					
-						shared_ptr<ImageResource> imageRes = static_pointer_cast<ImageResource>(res);	
+						ImageResourceRef imageRes = static_pointer_cast<ImageResource>(res);	
 
 						console()<<"try image load  "<< res->path <<endl;
 						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
@@ -87,7 +85,7 @@ namespace kubik
 					}
 					else if(res->resourceType == resourceType::VIDEO)
 					{				
-						shared_ptr<VideoResource> videoRes = static_pointer_cast<VideoResource>(res);	
+						VideoResourceRef videoRes = static_pointer_cast<VideoResource>(res);	
 
 						console()<<"try video load  "<< res->path <<endl;
 						qtime::MovieGl movie = qtime::MovieGl( res->path);					
@@ -95,13 +93,15 @@ namespace kubik
 					}
 					else if(res->resourceType == resourceType::FONT)
 					{					
-						shared_ptr<FontResource> fontRes = static_pointer_cast<FontResource>(res);	
+						FontResourceRef fontRes = static_pointer_cast<FontResource>(res);
+
+						console()<<"try font load  "<< res->path <<endl;
 						Font font =  Font(loadFile(fs::path(res->path)), fontRes->fontSize);
 						fontRes->set(font);	
 					}
 				}
 			}
-			catch( ... ) 
+			catch(...) 
 			{
 				loadingStatus = LOADING_ERROR;
 				console() << "Unable to load the resource." <<endl;

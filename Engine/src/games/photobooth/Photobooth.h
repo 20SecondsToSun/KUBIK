@@ -26,16 +26,15 @@ namespace kubik
 	class Photobooth:public IGame
 	{
 	public:	
-
-		Photobooth(shared_ptr<ISettings> config);
+		Photobooth(ISettingsRef config);
 		~Photobooth();
 
 		void update();	
 		void draw();	
 		void start();
 		void create();
-		void reset(shared_ptr<ISettings> config) override;		
-		void init(shared_ptr<ISettings> config) override;
+		void reset(ISettingsRef config) override;		
+		void init(ISettingsRef config) override;
 
 		void addMouseUpListener();
 		void removeMouseUpListener();
@@ -43,7 +42,7 @@ namespace kubik
 		connection updateSignal;
 
 	private:		
-		shared_ptr<Button> closeBtn;
+		ButtonRef closeBtn;
 
 		void setTextures();
 		void mouseUp(MouseEvent& event);
@@ -51,22 +50,22 @@ namespace kubik
 
 		connection mouseUpListener, closeBtnListener;	
 
-		shared_ptr<PhotoInstruction>photoInstruction;
-		shared_ptr<PhotoFilter>		photoFilter;
-		shared_ptr<PhotoTimer>		photoTimer;
-		shared_ptr<PhotoShooting>	photoShooting;
-		shared_ptr<PhotoProcessing>	photoProcessing;		
-		shared_ptr<PhotoChoosing>	photoChoosing;
-		shared_ptr<PhotoTemplate>	photoTemplate;
-		shared_ptr<PhotoSharing>	photoSharing;
+		PhotoInstructionRef photoInstruction;
+		PhotoFilterRef		photoFilter;
+		PhotoTimerRef		photoTimer;
+		PhotoShootingRef	photoShooting;
+		PhotoProcessingRef	photoProcessing;		
+		PhotoChoosingRef	photoChoosing;
+		PhotoTemplateRef	photoTemplate;
+		PhotoSharingRef		photoSharing;
 
-		list<shared_ptr<IPhotoboothLocation>>  locations;
-		list<shared_ptr<IPhotoboothLocation>>::iterator currentLocation;
+		list<IPhotoboothLocationRef>  locations;
+		list<IPhotoboothLocationRef>::iterator currentLocation;
 
 		void nextLocationHandler();
 		void initLocations();
 
-		shared_ptr<PhotoboothSettings> settings;
-		shared_ptr<PhotoStorage> photoStorage;
+		PhotoboothSettingsRef settings;
+		PhotoStorageRef photoStorage;
 	};
 }

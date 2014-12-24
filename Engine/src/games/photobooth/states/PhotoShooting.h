@@ -17,17 +17,17 @@ namespace kubik
 {
 	class PhotoShooting: public IPhotoboothLocation
 	{
-		int		currentShot;
+		int		currentShot, shotsNum;
+		int		secBetweenShots;
 		bool	checkTimerInUpdate;
 		Texture fon;
 		Font	font;		
 		Timer	shTimer;	
-		shared_ptr<PhotoStorage> photoStorage;
+		PhotoStorageRef photoStorage;
 
 	public:
-		PhotoShooting(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage> _photoStorage)
-		{
-			photoStorage = _photoStorage;
+		PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		{	
 			reset(settings);		
 		};
 
@@ -39,18 +39,27 @@ namespace kubik
 		void start() override
 		{
 			console()<<"start PhotoShooting"<<endl;
-			currentShot = 0;
-			photoStorage->clear();
+			currentShot = 1;
+			shotsNum = settings->getPhotoShots();
+			secBetweenShots = settings->getData().secondsBetweenShots;
 
+			photoStorage->prepare(shotsNum);
+			///
+			for (int i = 1; i <= shotsNum; i++)
+			{
+				photoStorage->setPhotoPath(i, getAppPath().string() + to_string(i) + ".png");
+			}
+			nextLocationSignal();
+			///
 			connect_once(cameraCanon().photoDownloadedEvent, bind(&PhotoShooting::photoDownloadHandler, this, placeholders::_1));
 			shooting();
 		}
 
 		void photoDownloadHandler(const string& downloadedPath) 
 		{
-			photoStorage->setPhotoPath(downloadedPath);
+			photoStorage->setPhotoPath(currentShot, downloadedPath);
 
-			if(++currentShot >= settings->getPhotoShots())		
+			if(++currentShot > shotsNum)		
 			{
 				cameraCanon().photoDownloadedEvent.disconnect_all_slots();
 				nextLocationSignal();
@@ -69,7 +78,7 @@ namespace kubik
 			{
 				return true;
 			}
-			else if(shTimer.getSeconds() > settings->getData().secondsBetweenShots)
+			else if(shTimer.getSeconds() > secBetweenShots)
 			{
 				shTimer.stop();
 				return true;
@@ -82,7 +91,7 @@ namespace kubik
 		{
 			checkTimerInUpdate = false;
 			shTimer.start();
-			photoStorage->addScreenshot(copyWindowSurface());
+			photoStorage->setScreenshot(currentShot, copyWindowSurface());
 			cameraCanon().takePicture();
 		}		
 
@@ -101,15 +110,15 @@ namespace kubik
 
 			gl::color(Color::white());
 			textTools().textFieldDraw("тнрнцпютхпсел", &font, Vec2f(100.0f, 100.0f), Color::white());
-			textTools().textFieldDraw("йнкхвеярбн ямхлйнб " + to_string(settings->getPhotoShots()), &font, Vec2f(100.0f, 200.0f), Color::white());
-			textTools().textFieldDraw("бпелъ ндмнцн ямхлйю(яей.) " + to_string(settings->getData().secondsBetweenShots), &font, Vec2f(100.0f, 300.0f), Color::white());
+			textTools().textFieldDraw("йнкхвеярбн ямхлйнб " + to_string(shotsNum), &font, Vec2f(100.0f, 200.0f), Color::white());
+			textTools().textFieldDraw("бпелъ ндмнцн ямхлйю(яей.) " + to_string(secBetweenShots), &font, Vec2f(100.0f, 300.0f), Color::white());
 		}
 
 		void reset(shared_ptr<PhotoboothSettings> _settings) override
 		{
 			settings = _settings;
-			fon  = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
+			fon  = settings->getTexture("fon1");
+			font = settings->getFont("helvetica40");
 		}
 
 		void mouseUpHandler(Vec2i vec) override
@@ -119,4 +128,5 @@ namespace kubik
 			nextLocationSignal();
 		}
 	};
+	typedef shared_ptr<PhotoShooting>	 PhotoShootingRef;
 }

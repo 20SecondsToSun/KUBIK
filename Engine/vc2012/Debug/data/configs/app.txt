@@ -1,5 +1,5 @@
 {
-   "defaultGameID" : 1,
+   "defaultGameID" : 2,
    "funcesConfigPath" : "data\\configs\\funces.txt",
    "gamesAvailable" : [
       {

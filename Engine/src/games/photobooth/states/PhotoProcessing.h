@@ -17,17 +17,16 @@ namespace kubik
 {
 	class PhotoProcessing: public IPhotoboothLocation
 	{
-		int		currentShot;
-		bool	checkTimerInUpdate;
+		int	 currentShot;
+		bool checkTimerInUpdate;
+	
 		Texture fon;
 		Font	font;		
 		Timer	shTimer;	
-		shared_ptr<PhotoStorage> photoStorage;
-		boost::shared_ptr<boost::thread> loadingThread;
-		bool threadIsRunning;
+		PhotoStorageRef photoStorage;		
 
 	public:
-		PhotoProcessing(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage> _photoStorage)
+		PhotoProcessing(PhotoboothSettingsRef settings, PhotoStorageRef _photoStorage)
 		{
 			photoStorage = _photoStorage;
 			reset(settings);		
@@ -41,26 +40,17 @@ namespace kubik
 		void start() override
 		{
 			console()<<"start PhotoProcessing"<<endl;
-			threadIsRunning = true;
-			loadingThread = boost::shared_ptr<boost::thread>(new boost::thread(&PhotoProcessing::loadPhotos, this));
-		}
-
-		void loadPhotos() 
-		{
-			for (auto path : photoStorage->getPhotoPaths())
-			{
-				Surface image = Surface(loadImage(loadFile(path)));
-				photoStorage->setHiResPhoto(image);				
-			}
-			threadIsRunning = false;
-		}
-
+			photoStorage->loadHiRes();
+		}	
 
 		void update() override
 		{	
-			if(!threadIsRunning)
+			if(photoStorage->isHiResLoaded())
+			{
+				photoStorage->prepareAllResizes();
 				nextLocationSignal();
-		}
+			}
+		}		
 
 		void draw() override
 		{
@@ -70,11 +60,11 @@ namespace kubik
 			textTools().textFieldDraw("¬€√–”∆¿ﬁ ‘Œ“Œ", &font, Vec2f(100.0f, 100.0f), Color::white());
 		}
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings = _settings;
-			fon  = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
+			fon  = settings->getTexture("fon1");
+			font = settings->getFont("helvetica40");
 		}
 
 		void mouseUpHandler(Vec2i vec) override
@@ -82,4 +72,6 @@ namespace kubik
 			nextLocationSignal();
 		}
 	};
+
+	typedef	shared_ptr<PhotoProcessing> PhotoProcessingRef;
 }

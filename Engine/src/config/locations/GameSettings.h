@@ -43,7 +43,6 @@ namespace kubik
 							return true;
 					}
 				}
-
 				return false;
 			}
 		};
@@ -54,7 +53,6 @@ namespace kubik
 			currentGame		   = model->getDefaultGameID();
 			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();
-			console()<<"loaded game::  "<<data.games.size()<<endl;
 			load();
 		}
 
@@ -103,7 +101,7 @@ namespace kubik
 				}
 
 				try	
-				{				
+				{	
 					gameSettingsMap[game.id]->load();
 				}
 				catch(...)

@@ -11,28 +11,29 @@ using namespace ci::app;
 
 namespace kubik
 {	
-	class PhotoButton: public ButtonText
+	class PhotoButton: public IButton
 	{
+		Surface thumb;
 		bool _isSelect;
+		int id;		
 
 	public:
-
 		typedef boost::signals2::signal<void(PhotoButton&)> ButtonSignal;
-
 		ButtonSignal mouseUpSignal;
-
-		PhotoButton(int filterId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
+		
+		PhotoButton(int id, Surface surf, Vec2f vec):IButton(Rectf(vec.x, vec.y, vec.x + surf.getWidth(), vec.y + surf.getHeight()))
 		{		
-			this->filterId = filterId;
+			this->id = id;
 			_isSelect = false;
+			thumb = surf;
 		}
 
 		int getFilterId()
 		{
-			return filterId;
+			return id;
 		}
 
-		void mouseUpHandler( ci::Vec2i vec)
+		void mouseUpHandler(Vec2i vec)
 		{
 			if(buttonArea.contains(vec))
 			{
@@ -43,16 +44,18 @@ namespace kubik
 
 		void draw()
 		{
+			gl::draw(thumb, shift);
+
 			if(_isSelect)
-				gl::color(Color::black());
+				gl::color(ColorA(0.0f, 0.0f, 0.0f, 0.6f));
 			else
-				gl::color(Color::white());
+				gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.6f));
 
 			IButton::draw();
 
 			gl::color(Color::white());
 
-			Texture textTex = textTools().getTextField(text, &font, ColorA(1, 0, 0, 1));
+		/*	Texture textTex = textTools().getTextField(text, &font, ColorA(1, 0, 0, 1));
 			gl::pushMatrices();			
 			float shiftX = (buttonArea.getWidth() - textTex.getWidth()) * 0.5f;
 			float shiftY = (buttonArea.getHeight() - textTex.getHeight()) * 0.5f;
@@ -60,7 +63,7 @@ namespace kubik
 			gl::translate(shiftX, shiftY);
 
 			gl::draw(textTex);
-			gl::popMatrices();
+			gl::popMatrices();*/
 		}
 
 		void setSelection(bool value)
@@ -72,9 +75,7 @@ namespace kubik
 		{
 			return _isSelect;
 		}
-
-	private:
-
-		int filterId;	
 	};
+
+	typedef shared_ptr<PhotoButton> PhotoButtonRef;
 }

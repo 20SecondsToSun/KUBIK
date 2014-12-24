@@ -56,4 +56,6 @@ namespace kubik
 		Font	font;
 		string  text;
 	};
+
+	typedef shared_ptr<ButtonText> ButtonTextRef;
 }

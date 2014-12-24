@@ -9,58 +9,61 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-class IButton
+namespace kubik
 {
-public:
-	IButton(Rectf rectf)
+	class IButton
 	{
-		this->shift = Vec2f(rectf.x1, rectf.y1);
-		setButtonArea(rectf);	
-		isTexture = false;
-	}
-
-	IButton(Texture tex, Vec2f shift)
-	{
-		this->tex = tex;
-		this->shift = shift;
-
-		setButtonArea(Rectf(shift.x, shift.y, shift.x + tex.getWidth(), shift.y + tex.getHeight()));	
-		isTexture = true;
-	}	
-
-	void draw()
-	{
-		if(isTexture)
+	public:
+		IButton(Rectf rectf)
 		{
-			gl::draw(tex, shift);
+			this->shift = Vec2f(rectf.x1, rectf.y1);
+			setButtonArea(rectf);	
+			isTexture = false;
 		}
-		else
-			drawSolidRect(buttonArea);
-	}
 
-	Vec2f getPosition() const
-	{
-		return Vec2f(buttonArea.x1, buttonArea.y1);
-	}
+		IButton(Texture tex, Vec2f shift)
+		{
+			this->tex = tex;
+			this->shift = shift;
 
-	float getWidth() const
-	{
-		return buttonArea.x2 - buttonArea.x1;
-	}
+			setButtonArea(Rectf(shift.x, shift.y, shift.x + tex.getWidth(), shift.y + tex.getHeight()));	
+			isTexture = true;
+		}	
 
-	float getHeight() const
-	{
-		return buttonArea.y2 - buttonArea.y1;
-	}
+		void draw()
+		{
+			if(isTexture)
+			{
+				gl::draw(tex, shift);
+			}
+			else
+				drawSolidRect(buttonArea);
+		}
 
-protected:
-	Rectf buttonArea;
-	bool isTexture;
-	Vec2f shift;
-	Texture tex;
+		Vec2f getPosition() const
+		{
+			return Vec2f(buttonArea.x1, buttonArea.y1);
+		}
 
-	void setButtonArea(Rectf rectf)
-	{
-		buttonArea =  rectf;
-	}
-};
+		float getWidth() const
+		{
+			return buttonArea.x2 - buttonArea.x1;
+		}
+
+		float getHeight() const
+		{
+			return buttonArea.y2 - buttonArea.y1;
+		}
+
+	protected:
+		Rectf buttonArea;
+		bool isTexture;
+		Vec2f shift;
+		Texture tex;
+
+		void setButtonArea(Rectf rectf)
+		{
+			buttonArea =  rectf;
+		}
+	};
+}

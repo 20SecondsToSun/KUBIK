@@ -20,18 +20,18 @@ namespace kubik
 
 	public:	
 
-		PhotoInstruction(shared_ptr<PhotoboothSettings> settings)
+		PhotoInstruction(PhotoboothSettingsRef settings)
 		{
 			reset(settings);		
 		};
 
 		~PhotoInstruction(){};
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings = _settings;
-			fon = settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();
+			fon = settings->getTexture("fon1");
+			font =  settings->getFont("helvetica40");
 		}
 
 		void start()
@@ -51,9 +51,10 @@ namespace kubik
 			textTools().textFieldDraw("»Õ—“–” ÷»ﬂ", &font, Vec2f(100, 100), Color::white());
 		}
 
-		void mouseUpHandler( Vec2i vec)
+		void mouseUpHandler(Vec2i vec)
 		{
 			nextLocationSignal();
 		}
 	};
+	typedef shared_ptr<PhotoInstruction> PhotoInstructionRef;
 }

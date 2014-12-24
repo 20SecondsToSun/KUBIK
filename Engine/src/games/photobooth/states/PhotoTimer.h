@@ -34,17 +34,17 @@ namespace kubik
 			clear();
 		};
 
-		PhotoTimer(shared_ptr<PhotoboothSettings> settings)
+		PhotoTimer(PhotoboothSettingsRef settings)
 		{		
 			reset(settings);
 		}
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings =  _settings;
-			fon		 =  settings->getTextures()["fon3"]->get();
-			font	 =  settings->getFonts()["helvetica40"]->get();
-			font100	 =  settings->getFonts()["helvetica100"]->get();
+			fon		 =  settings->getTexture("fon3");
+			font	 =  settings->getFont("helvetica40");
+			font100	 =  settings->getFont("helvetica100");
 		}
 
 		void start()
@@ -81,4 +81,6 @@ namespace kubik
 			nextLocationSignal();
 		}
 	};
+
+	typedef shared_ptr<PhotoTimer> PhotoTimerRef;
 }

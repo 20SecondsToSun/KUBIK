@@ -37,4 +37,6 @@ namespace kubik
 
 		int filterId;	
 	};
+
+	typedef shared_ptr<ShareButton> ShareButtonRef;
 }

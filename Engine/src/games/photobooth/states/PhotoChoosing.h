@@ -13,27 +13,24 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class PhotoChoosing:public IPhotoboothLocation
+	class PhotoChoosing: public IPhotoboothLocation
 	{
 		Texture fon;
 		Font font;
-
-		unsigned int canSelectCount;
-		unsigned int nowSelectCount;
-		PhotoButton* lastSelectedPhotoButton;
-
-		vector<shared_ptr<PhotoButton>> photoBtns;
-		shared_ptr<MenuButton> nextButton;
-		shared_ptr<PhotoStorage>  photoStorage;
-
-
 		Surface image;
+		int canSelectCount;
+		int nowSelectCount;
+
+		PhotoButton *lastSelectedPhotoButton;
+
+		vector<PhotoButtonRef> photoBtns;
+		MenuButtonRef nextButton;
+		PhotoStorageRef photoStorage;
+		vector<Surface> thumbs;
 
 	public:
-
-		PhotoChoosing(shared_ptr<PhotoboothSettings> settings, shared_ptr<PhotoStorage>  _photoStorage)
-		{
-			photoStorage = _photoStorage;
+		PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		{			
 			reset(settings);
 		};
 
@@ -44,63 +41,53 @@ namespace kubik
 
 		void start() override
 		{
-			console()<<"start PhotoChoosing"<<endl;
+			console()<<"start PhotoChoosing"<<endl;			
 
-			for (size_t i = 0; i < photoBtns.size(); i++)
-			{
-				bool value = (i < canSelectCount);
-				photoBtns[i]->setSelection(value);
-			}
-
-			canSelectCount = settings->getData().photoNum;
-			nowSelectCount = canSelectCount;
-			lastSelectedPhotoButton = photoBtns[canSelectCount - 1].get();
-
-			vector<Surface> arr = photoStorage->getHiResPhoto();
-			if(arr.size())
-				image = arr[0];
-		}
-
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
-		{
-			settings = _settings;
-			fon  =  settings->getTextures()["fon1"]->get();
-			font =  settings->getFonts()["helvetica40"]->get();	
-
+			canSelectCount = settings->getData().photoNum;			
+			nowSelectCount = canSelectCount;			
+			thumbs = photoStorage->getChoosingThumbs();
+			
 			photoBtns.clear();
 
-			for (int i = 0; i < settings->getPhotoShots(); i++)
-				createPhotoButton(i, to_string(i), i);
+			float shift = 0.0f;
+			for (size_t i = 0; i < thumbs.size(); i++)
+			{			
+				createPhotoButton(i, Vec2f(shift, 200.0f));
+				shift += thumbs[i].getWidth() + 20;
 
-			nextButton = shared_ptr<MenuButton>(new MenuButton((game::id)1, Rectf(800.0f, 500.0f, 900.0f, 600.0f), "ÄÀËÅÅ", font));	
-			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, std::placeholders::_1));
+				bool value = (i < canSelectCount);
+				photoBtns[i]->setSelection(value);
+			}	
 
-			start();
-		}	
+			lastSelectedPhotoButton = photoBtns[canSelectCount - 1].get();		
+		}
 
-		void createPhotoButton(int id, std::string text, int i)
+		void createPhotoButton(int id, Vec2f vec)
 		{
-			shared_ptr<PhotoButton> button = shared_ptr<PhotoButton>(new PhotoButton(id, getButtonArea(i), text, font));	
-			connect_once(button->mouseUpSignal, bind(&PhotoChoosing::mouseUpListener, this, std::placeholders::_1));
+			PhotoButtonRef button = PhotoButtonRef(new PhotoButton(id, thumbs[id], vec));	
+			connect_once(button->mouseUpSignal, bind(&PhotoChoosing::mouseUpListener, this, placeholders::_1));
 			photoBtns.push_back(button);
 		}
 
-		Rectf getButtonArea(int i) 
+		void reset(PhotoboothSettingsRef _settings) override
 		{
-			float x      = 200.0f * i;
-			float y      = 200.0f;
-			float width  = 100.0f;
-			float height = 100.0f;
+			settings = _settings;
+			fon  =  settings->getTexture("fon1");
+			font =  settings->getFont("helvetica40");				
 
-			return Rectf(x, y, x + width, y + height);
-		}
+			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(600.0f, 500.0f, 700.0f, 600.0f), "ÄÀËÅÅ", font));	
+			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, placeholders::_1));
+		}	
 
 		void mouseUpListener(PhotoButton& button)
 		{
 			if(button.isSelect())
 				nowSelectCount++;
 			else
+			{
 				nowSelectCount--;
+				button.setSelection(false);
+			}
 
 			if(nowSelectCount > canSelectCount)
 			{
@@ -120,11 +107,7 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
-
-			if(image)
-				gl::draw(image);
-
-			textTools().textFieldDraw("ÂÛÁÅÐÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃÐÀÔÈÈ", &font, Vec2f(100.0f, 100.0f), Color::white());
+			textTools().textFieldDraw("ÂÛÁÅÐÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃÐÀÔÈÈ", &font, Vec2f(10.0f, 10.0f), Color::white());
 
 			for (auto btn: photoBtns)
 				btn->draw();
@@ -142,7 +125,21 @@ namespace kubik
 
 		void mouseUpNextListener(MenuButton& button)
 		{
-			nextLocationSignal();
-		}		
+			storeSelectedItems();
+
+			if(photoStorage->isChoosedRightCount(canSelectCount))
+				nextLocationSignal();
+		}
+
+		void storeSelectedItems()
+		{
+			photoStorage->clearPhotoChosenIds();
+
+			for (size_t i = 0; i < photoBtns.size(); i++)			
+				if(photoBtns[i]->isSelect())
+					photoStorage->setPhotosChoosenIds(i);			
+		}
 	};
+
+	typedef	shared_ptr<PhotoChoosing> PhotoChoosingRef;
 }
