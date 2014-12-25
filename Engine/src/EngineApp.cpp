@@ -27,7 +27,7 @@ private:
 
 void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
 {
-	settings->setWindowSize(1200, 600);	
+	settings->setWindowSize(1400, 800);	
 	//settings->setBorderless(true);	
 }
 

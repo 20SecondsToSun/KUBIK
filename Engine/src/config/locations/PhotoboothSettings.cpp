@@ -104,7 +104,6 @@ void PhotoboothSettings::setGameBgPrintParams(JsonTree config)
 {
 	data.activeBgPrint.isCustom			= config.getChild("activeBgPrint").getChild("isCustom").getValue<bool>();
 	data.activeBgPrint.id				= config.getChild("activeBgPrint").getChild("id").getValue<int>();
-
 	findAllImagePrints(getBasePath().string() + configPaths.userBgPrintsPath,  data.customBgPrint, true);		
 	findAllImagePrints(getBasePath().string() + configPaths.kubikBgPrintsPath, data.kubikBgPrint,  false);	
 }
@@ -116,8 +115,7 @@ void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &p
 		if (fs::is_regular_file(*it))
 		{
 			string ext = it->path().extension().string();
-
-			if(ext == STICKER_SUPPORT_EXTENSION)
+			if(ext == STICKER_SUPPORT_EXTENSION || ext == ".jpg")
 			{
 				ImageElement imageElement;
 				imageElement.isCustom = isCustom;
@@ -152,6 +150,26 @@ Texture PhotoboothSettings::getActiveStickerTex()
 	if(it != textures.end())
 		tex = textures[name]->get();
 
+	return tex;
+}
+
+Texture PhotoboothSettings::getActivePrintBgTex()
+{
+	Texture tex;
+	string name;	
+
+	if(data.activeBgPrint.isCustom)
+		name = CUSTOM_PRINT_TEMPATE_NAME;
+	else			
+		name = KUBIK_PRINT_TEMPATE_NAME;
+
+	name += to_string(data.activeBgPrint.id);	
+
+	auto it = textures.find(name);
+
+	if(it != textures.end())
+		tex = textures[name]->get();
+	
 	return tex;
 }
 
@@ -190,7 +208,13 @@ void PhotoboothSettings::setTextures()
 		addToDictionary(CUSTOM_STICKER_NAME + to_string(i), createImageResource(data.customStickers[i].path));	
 
 	for (size_t i = 0; i < data.kubikStickers.size(); i++)	
-		addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));		
+		addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));
+
+	for (size_t i = 0; i < data.customBgPrint.size(); i++)
+		addToDictionary(CUSTOM_PRINT_TEMPATE_NAME + to_string(i), createImageResource(data.customBgPrint[i].path));	
+
+	for (size_t i = 0; i < data.kubikBgPrint.size(); i++)	
+		addToDictionary(KUBIK_PRINT_TEMPATE_NAME + to_string(i), createImageResource(data.kubikBgPrint[i].path));
 }
 
 vector<int> PhotoboothSettings::getOnFilters()

@@ -6,6 +6,7 @@
 #include "IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
 #include "CameraAdapter.h"
+#include "Preloader.h"
 #include "model/PhotoStorage.h"
 
 using namespace std;
@@ -23,12 +24,15 @@ namespace kubik
 		Texture fon;
 		Font	font;		
 		Timer	shTimer;	
-		PhotoStorageRef photoStorage;		
+		PhotoStorageRef photoStorage;	
+
+		shared_ptr<Preloader> preloader;
 
 	public:
 		PhotoProcessing(PhotoboothSettingsRef settings, PhotoStorageRef _photoStorage)
 		{
 			photoStorage = _photoStorage;
+			preloader	 = shared_ptr<Preloader>(new Preloader());
 			reset(settings);		
 		};
 
@@ -58,6 +62,10 @@ namespace kubik
 		
 			gl::color(Color::white());
 			textTools().textFieldDraw("ÂÛÃÐÓÆÀÞ ÔÎÒÎ", &font, Vec2f(100.0f, 100.0f), Color::white());
+
+			gl::pushMatrices();
+			preloader->draw();
+			gl::popMatrices();
 		}
 
 		void reset(PhotoboothSettingsRef _settings) override
@@ -69,7 +77,7 @@ namespace kubik
 
 		void mouseUpHandler(Vec2i vec) override
 		{
-			nextLocationSignal();
+			//nextLocationSignal();
 		}
 	};
 

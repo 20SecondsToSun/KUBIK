@@ -169,6 +169,13 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
+    <ClInclude Include="..\src\graphics\filter\AutoLevelFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\BlackWhiteFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\BrickFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\BrightContrastFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\ColorToneFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\MistFilter.h" />
+    <ClInclude Include="..\src\graphics\filter\ReliefFilter.h" />
     <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\locations\engine\IScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />

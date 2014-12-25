@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/ip/Resize.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace ci::signals;
@@ -80,7 +81,9 @@ namespace kubik
 	{
 		map<int, PhotoSamplerRef> photos;
 		vector<Surface> choosingThumbs;
+		vector<Surface> sharingPhotos;		
 		vector<int>	choosedIds;
+		vector<Surface> printTemplates;
 		
 		bool threadIsRunning;
 		ThreadRef loadingThread;
@@ -168,7 +171,7 @@ namespace kubik
 				string  path = sampler.second->getHiResPath();				
 				try
 				{				
-					if(path!= "")
+					if(path != "")
 					{
 						Surface image = Surface(loadImage(loadFile(path)));
 						sampler.second->setHiResPhoto(image);	
@@ -209,14 +212,49 @@ namespace kubik
 		}
 
 		void createSharingPhotos(Texture stickerTex)
-		{
+		{			
+			int size = photos.size();
+		    int width = 1000;
 
+			for (int i = 1; i <= size; i++)
+			{
+				Surface resized = photos[i]->resize(width);
+				gl::Fbo mFbo = gl::Fbo(resized.getWidth(), resized.getHeight());
+				drawAllInFinallFBO(mFbo, resized, stickerTex);
+				sharingPhotos.push_back(Surface(mFbo.getTexture()));
+				Utils::clearFBO(mFbo);
+				writeImage( getAppPath()/"data"/"temp"/(to_string(i)+".jpg"), sharingPhotos[i-1]);
+				console()<<"create:::::::::::"<<endl;
+			}
 		}
 
-		void createPrintTemplatePhoto(Texture stickerTex)
+		void drawAllInFinallFBO(gl::Fbo& mFbo, Surface img, Texture sticker)
 		{
+			Utils::drawGraphicsToFBO(mFbo, [ & ]()
+			{
+				gl::pushMatrices();
+				gl::clear(Color::black());
+				gl::enableAlphaBlending();  
+				gl::draw(img);			
+				gl::draw(sticker);
+				gl::popMatrices();
+			});	
+		}
 
+		
+		void createPrintTemplatePhoto(Texture printTemplateTex, Texture stickerTex)
+		{
+			printTemplates.clear();
+
+			printTemplates.push_back(Surface(printTemplateTex));
+			printTemplates.push_back(Surface(printTemplateTex));
+			printTemplates.push_back(Surface(printTemplateTex));
 		}		
+
+		vector<Surface> getPrintTemplates()
+		{			
+			return printTemplates;
+		}
 	};
 
 	typedef shared_ptr<PhotoStorage> PhotoStorageRef;

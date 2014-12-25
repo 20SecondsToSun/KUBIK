@@ -6,6 +6,7 @@
 #include "IPhotoboothLocation.h"
 #include "CameraAdapter.h"
 
+
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
@@ -70,7 +71,15 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
+
+			/*Surface surf = cameraCanon().getLiveSurface();
+			ImageFilter::BlackWhiteFilter filter;
+			surf = filter.process(surf);
+			gl::draw(surf);*/
+
 			cameraCanon().draw();
+
+
 			textTools().textFieldDraw("“¿…Ã≈–", &font, Vec2f(100.0f, 100.0f), Color::white());
 			textTools().textFieldDraw(to_string(seconds), &font100, Vec2f(200.0f, 200.0f), Color::white());
 		}

@@ -15,16 +15,17 @@ namespace kubik
 {
 	class PhotoChoosing: public IPhotoboothLocation
 	{
-		Texture fon;
-		Font font;
+		Texture fon;		
 		Surface image;
+		Font font;
+
 		int canSelectCount;
 		int nowSelectCount;
 
 		PhotoButton *lastSelectedPhotoButton;
 
 		vector<PhotoButtonRef> photoBtns;
-		MenuButtonRef nextButton;
+		MenuButtonRef	nextButton;
 		PhotoStorageRef photoStorage;
 		vector<Surface> thumbs;
 
@@ -32,12 +33,12 @@ namespace kubik
 		PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
 		{			
 			reset(settings);
-		};
+		}
 
 		~PhotoChoosing()
 		{
-
-		};
+			//disconnect buttons
+		}
 
 		void start() override
 		{
@@ -75,7 +76,7 @@ namespace kubik
 			fon  =  settings->getTexture("fon1");
 			font =  settings->getFont("helvetica40");				
 
-			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(600.0f, 500.0f, 700.0f, 600.0f), "ÄÀËÅÅ", font));	
+			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
 			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, placeholders::_1));
 		}	
 
@@ -117,7 +118,7 @@ namespace kubik
 
 		void mouseUpHandler(Vec2i vec) override
 		{
-			for (auto btn: photoBtns)		
+			for (auto btn : photoBtns)		
 				btn->mouseUpHandler(vec);
 
 			nextButton->mouseUpHandler(vec);

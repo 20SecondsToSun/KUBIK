@@ -19,13 +19,13 @@ namespace kubik
 		Preloader(Vec2f position)
 		{
 			this->position = position;
-			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
+			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" )));
 		}
 
 		Preloader()
 		{
 			this->position = Vec2f(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f);
-			tex = gl::Texture ( loadImage( ci::app::App::loadResource( 2, "IMAGE" ) ) );
+			tex = gl::Texture (loadImage(ci::app::App::loadResource( 2, "IMAGE" )));
 		}
 
 		void draw()

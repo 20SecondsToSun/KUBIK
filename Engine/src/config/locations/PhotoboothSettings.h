@@ -17,6 +17,9 @@ namespace kubik
 	static const string CUSTOM_STICKER_NAME = "custom_sticker";
 	static const string KUBIK_STICKER_NAME  = "kubik_sticker";
 
+	static const string CUSTOM_PRINT_TEMPATE_NAME = "custom_print_template";
+	static const string KUBIK_PRINT_TEMPATE_NAME  = "kubik_print_template";
+
 	class PhotoboothSettings:public ISettings
 	{
 		public:
@@ -121,6 +124,8 @@ namespace kubik
 		void setTextures() override;
 
 		Texture getActiveStickerTex();
+		Texture getActivePrintBgTex();
+		
 		bool findFilterId(int id, vector<int> filters);		
 		
 		vector<int> getOnFilters();

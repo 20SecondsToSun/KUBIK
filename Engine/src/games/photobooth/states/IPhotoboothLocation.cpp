@@ -2,4 +2,4 @@
 
 using namespace kubik;
 
-std::shared_ptr<PhotoboothSettings> IPhotoboothLocation::settings;
+PhotoboothSettingsRef IPhotoboothLocation::settings;

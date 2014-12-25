@@ -106,6 +106,9 @@
     <Filter Include="Source Files\games\photobooth\model">
       <UniqueIdentifier>{b56bac05-009a-4adf-bd46-4a2c431901e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\filters">
+      <UniqueIdentifier>{e5112596-298c-401c-89f2-413b52a388b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -343,6 +346,27 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h">
       <Filter>Source Files\games\photobooth\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\AutoLevelFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\BlackWhiteFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\BrickFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\BrightContrastFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\ColorToneFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\MistFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\filter\ReliefFilter.h">
+      <Filter>Source Files\graphics\filters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

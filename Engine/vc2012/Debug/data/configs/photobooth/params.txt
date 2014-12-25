@@ -1,7 +1,7 @@
 {
    "activeBgPrint" : {
-      "id" : 2,
-      "isCustom" : true
+      "id" : 0,
+      "isCustom" : false
    },
    "activeSticker" : {
       "id" : 1,

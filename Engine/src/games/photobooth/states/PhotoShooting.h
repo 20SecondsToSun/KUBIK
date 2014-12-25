@@ -47,7 +47,7 @@ namespace kubik
 			///
 			for (int i = 1; i <= shotsNum; i++)
 			{
-				photoStorage->setPhotoPath(i, getAppPath().string() + to_string(i) + ".png");
+				photoStorage->setPhotoPath(i, getAppPath().string() + to_string(i) + ".JPG");
 			}
 			nextLocationSignal();
 			///
