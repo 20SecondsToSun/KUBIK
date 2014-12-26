@@ -1,9 +1,7 @@
 #pragma once
-#include "cinder/app/AppNative.h"
-#include <boost/algorithm/string.hpp>
+
 #include "KubikException.h"
 #include "ApplicationModel.h"
-#include "cinder/Json.h"
 #include "Types.h"
 
 using namespace std;

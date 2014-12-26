@@ -1,5 +1,5 @@
 #pragma once
-#include "cinder/app/AppNative.h"
+
 #include "ISettings.h"
 #include "ApplicationModel.h"
 #include "FileTools.h"

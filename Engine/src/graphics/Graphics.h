@@ -1,12 +1,5 @@
 #pragma once
 
-#include <boost/algorithm/string.hpp>
-#include <boost/thread.hpp>
-
-#include "cinder/app/AppNative.h"
-#include "cinder/Json.h"
-#include "cinder/gl/gl.h"
-#include "cinder/ImageIo.h"
 #include "Types.h"
 #include "KubikException.h"
 

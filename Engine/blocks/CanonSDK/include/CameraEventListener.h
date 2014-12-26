@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "cinder/app/AppBasic.h"
+//#include "cinder/app/AppBasic.h"
 #include "EDSDK.h"
 #include "CanonEventCodes.h"
 #include "CameraController.h"

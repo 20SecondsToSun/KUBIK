@@ -1,9 +1,6 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
 #include "Resources.h"
-#include "cinder/gl/Texture.h"
 #include "IScreen.h"
 
 using namespace std;

@@ -1,11 +1,5 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
-#include "cinder/qtime/QuickTime.h"
-#include <stdint.h>
-#include <boost/thread.hpp>
-
 using namespace std;
 using namespace ci;
 using namespace ci::gl;

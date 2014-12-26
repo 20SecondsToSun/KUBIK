@@ -1,5 +1,5 @@
 #pragma once
-#include "cinder/app/AppNative.h"
+
 #include "IScreen.h"
 #include "IGame.h"
 

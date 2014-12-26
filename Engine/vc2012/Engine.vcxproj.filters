@@ -106,8 +106,8 @@
     <Filter Include="Source Files\games\photobooth\model">
       <UniqueIdentifier>{b56bac05-009a-4adf-bd46-4a2c431901e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\graphics\filters">
-      <UniqueIdentifier>{e5112596-298c-401c-89f2-413b52a388b6}</UniqueIdentifier>
+    <Filter Include="Source Files\graphics\shaders">
+      <UniqueIdentifier>{a2beaf61-29f2-4c04-9fd3-56ef0d7ed9fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp">
       <Filter>Source Files\devices\canon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\srdafx.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,26 +350,35 @@
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h">
       <Filter>Source Files\games\photobooth\model</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\AutoLevelFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\stdafx.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\BlackWhiteFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\BleachShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\BrickFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\ContrastShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\BrightContrastFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\PixelateShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\ColorToneFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\BaseShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\MistFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\KaleidoscopeShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\filter\ReliefFilter.h">
-      <Filter>Source Files\graphics\filters</Filter>
+    <ClInclude Include="..\src\graphics\shaders\BloomShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\BrcosaShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\FishEyeShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\LutShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

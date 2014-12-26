@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cinder/app/AppBasic.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
+//#include "cinder/app/AppBasic.h"
+//#include "cinder/gl/gl.h"
+//#include "cinder/gl/Texture.h"
 #include "BaseCanon.h"
 
 using namespace ci;

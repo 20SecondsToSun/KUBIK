@@ -1,8 +1,9 @@
 #pragma once
 
-#include "cinder/app/AppBasic.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Filesystem.h"
+//#include "cinder/app/AppBasic.h"
+//#include "cinder/ImageIo.h"
+//#include "cinder/Filesystem.h"
+//#include <boost/thread.hpp>
 
 #include "EDSDK.h"
 #include "EDSDKErrors.h"
@@ -11,7 +12,6 @@
 #include "CanonException.h"
 #include "CameraEventListener.h"
 #include "CameraController.h"
-#include <boost/thread.hpp>
 
 using namespace ci;
 using namespace ci::app;

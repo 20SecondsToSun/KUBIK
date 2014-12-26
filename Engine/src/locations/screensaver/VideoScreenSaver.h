@@ -1,10 +1,5 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/qtime/QuickTime.h"
-
 class VideoScreenSaver:public IResourceScreenSaver
 {
 public:

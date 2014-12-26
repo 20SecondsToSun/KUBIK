@@ -1,10 +1,7 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
 #include "IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
-#include "cinder/gl/Texture.h"
 
 using namespace std;
 using namespace ci::signals;

@@ -1,15 +1,5 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/gl/gl.h"
-#include "cinder/CinderMath.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Base64.h"
-#include "cinder/Text.h"
-#include "cinder/ip/Resize.h"
-#include "cinder/gl/Fbo.h"
-
 using namespace std;
 using namespace ci;
 using namespace ci::gl;

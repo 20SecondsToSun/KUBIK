@@ -1,9 +1,10 @@
 #pragma once 
 
-#include "cinder/app/AppBasic.h"
+//#include "cinder/app/AppBasic.h"
+//#include "cinder/Filesystem.h"
+
 #include "EDSDK.h"
 #include "CanonEventCodes.h"
-#include "cinder/Filesystem.h"
 #include "CanonException.h"
 
 using namespace ci;

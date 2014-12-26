@@ -1,8 +1,6 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
 #include "Types.h"
-#include "cinder/Json.h"
 #include "ApplicationModel.h"
 
 namespace kubik

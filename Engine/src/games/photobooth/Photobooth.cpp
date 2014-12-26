@@ -115,6 +115,7 @@ void Photobooth::mouseUp(MouseEvent &event)
 {	
 	closeBtn->mouseUpHandler(event.getPos());
 	(*currentLocation)->mouseUpHandler(event.getPos());
+
 }
 
 void Photobooth::mouseUpHandler(Button&button)

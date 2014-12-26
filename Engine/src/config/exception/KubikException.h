@@ -1,8 +1,5 @@
 #pragma once
 
-#include "cinder/app/AppNative.h"
-#include "cinder/Exception.h"
-
 class KubikException : public cinder::Exception
 {
 public:
