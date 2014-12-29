@@ -29,10 +29,8 @@ void PhotoboothSettings::setConfigPaths()
 	configPaths.kubikTemplatePartDesignPath		= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
 	configPaths.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
 	configPaths.finalPath						= configJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
-	configPaths.kubikStickersPath				= configJSON.getChild("kubikStickersPath").getValue<string>();
-	configPaths.userStickersPath				= configJSON.getChild("userStickersPath").getValue<string>();
-	configPaths.userBgPrintsPath				= configJSON.getChild("userBgPrintsPath").getValue<string>();
-	configPaths.kubikBgPrintsPath				= configJSON.getChild("kubikBgPrintsPath").getValue<string>();
+	configPaths.stickersPath					= configJSON.getChild("stickersPath").getValue<string>();
+	configPaths.bgPrintsPath					= configJSON.getChild("bgPrintsPath").getValue<string>();
 }
 
 void PhotoboothSettings::setParams()
@@ -88,25 +86,22 @@ void PhotoboothSettings::setPhotoFilterParams(JsonTree config)
 
 void PhotoboothSettings::setGameDesignParams(JsonTree config)
 {
-	data.templateId						= config.getChild("templateId").getValue<int>();		
-	data.isCustomDesign					= config.getChild("isCustomDesign").getValue<bool>();	
+	data.templateId		= config.getChild("templateId").getValue<int>();		
+	data.isCustomDesign	= config.getChild("isCustomDesign").getValue<bool>();	
 }
 
 void PhotoboothSettings::setGameStickerParams(JsonTree config)
 {
-	data.isSticker						= config.getChild("isSticker").getValue<bool>();			
-	data.activeSticker.isCustom			= config.getChild("activeSticker").getChild("isCustom").getValue<bool>();
-	data.activeSticker.id				= config.getChild("activeSticker").getChild("id").getValue<int>();			
-	findAllImagePrints(getBasePath().string() + configPaths.userStickersPath,  data.customStickers, true);
-	findAllImagePrints(getBasePath().string() + configPaths.kubikStickersPath, data.kubikStickers,  false);
+	data.isSticker		  = config.getChild("isSticker").getValue<bool>();			
+	data.activeSticker.id = config.getChild("activeSticker").getChild("id").getValue<int>();			
+	findAllImagePrints(getBasePath().string() + configPaths.stickersPath,  data.stickers, true);
+
 }
 
 void PhotoboothSettings::setGameBgPrintParams(JsonTree config)
 {
-	data.activeBgPrint.isCustom			= config.getChild("activeBgPrint").getChild("isCustom").getValue<bool>();
-	data.activeBgPrint.id				= config.getChild("activeBgPrint").getChild("id").getValue<int>();
-	findAllImagePrints(getBasePath().string() + configPaths.userBgPrintsPath,  data.customBgPrint, true);		
-	findAllImagePrints(getBasePath().string() + configPaths.kubikBgPrintsPath, data.kubikBgPrint,  false);	
+	data.activeBgPrint.id = config.getChild("activeBgPrint").getChild("id").getValue<int>();
+	findAllImagePrints(getBasePath().string() + configPaths.bgPrintsPath,  data.bgPrint, true);
 }
 
 void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom) 
@@ -116,10 +111,9 @@ void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &p
 		if (fs::is_regular_file(*it))
 		{
 			string ext = it->path().extension().string();
-			if(ext == STICKER_SUPPORT_EXTENSION || ext == ".jpg")
+			if(fileTools().isImageExtension(ext))
 			{
-				ImageElement imageElement;
-				imageElement.isCustom = isCustom;
+				ImageElement imageElement;			
 				imageElement.path	  = path + it->path().filename().string();
 				imageElement.id		  = prints.size();
 				prints.push_back(imageElement);
@@ -135,16 +129,9 @@ void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &p
 ////////////////////////////////////////////////////////////////////////////
 
 Texture PhotoboothSettings::getActiveStickerTex()
-{
+{	
+	string name = STICKER_NAME + to_string(data.activeSticker.id);
 	Texture tex;
-	string name;
-
-	if(data.activeSticker.isCustom)
-		name = CUSTOM_STICKER_NAME;
-	else			
-		name = KUBIK_STICKER_NAME;
-
-	name += to_string(data.activeSticker.id);	
 
 	auto it = textures.find(name);
 
@@ -155,16 +142,9 @@ Texture PhotoboothSettings::getActiveStickerTex()
 }
 
 Texture PhotoboothSettings::getActivePrintBgTex()
-{
+{	
+	string name = PRINT_TEMPATE_NAME + to_string(data.activeBgPrint.id);	
 	Texture tex;
-	string name;	
-
-	if(data.activeBgPrint.isCustom)
-		name = CUSTOM_PRINT_TEMPATE_NAME;
-	else			
-		name = KUBIK_PRINT_TEMPATE_NAME;
-
-	name += to_string(data.activeBgPrint.id);	
 
 	auto it = textures.find(name);
 
@@ -205,17 +185,11 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("helvetica40",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 
-	for (size_t i = 0; i < data.customStickers.size(); i++)
-		addToDictionary(CUSTOM_STICKER_NAME + to_string(i), createImageResource(data.customStickers[i].path));	
-
-	for (size_t i = 0; i < data.kubikStickers.size(); i++)	
-		addToDictionary(KUBIK_STICKER_NAME + to_string(i), createImageResource(data.kubikStickers[i].path));
-
-	for (size_t i = 0; i < data.customBgPrint.size(); i++)
-		addToDictionary(CUSTOM_PRINT_TEMPATE_NAME + to_string(i), createImageResource(data.customBgPrint[i].path));	
-
-	for (size_t i = 0; i < data.kubikBgPrint.size(); i++)	
-		addToDictionary(KUBIK_PRINT_TEMPATE_NAME + to_string(i), createImageResource(data.kubikBgPrint[i].path));
+	for (size_t i = 0; i < data.stickers.size(); i++)
+		addToDictionary(STICKER_NAME + to_string(i), createImageResource(data.stickers[i].path));
+	
+	for (size_t i = 0; i < data.bgPrint.size(); i++)
+		addToDictionary(PRINT_TEMPATE_NAME + to_string(i), createImageResource(data.bgPrint[i].path));	
 }
 
 vector<int> PhotoboothSettings::getOnFilters()
@@ -284,12 +258,10 @@ void PhotoboothSettings::saveConfig()
 	}	
 
 	JsonTree sticker = JsonTree::makeObject("activeSticker");
-	sticker.addChild(JsonTree("isCustom", data.activeSticker.isCustom));
 	sticker.addChild(JsonTree("id", data.activeSticker.id));
 	doc.addChild(sticker);		
 
 	JsonTree bgPrint = JsonTree::makeObject("activeBgPrint");
-	bgPrint.addChild(JsonTree("isCustom", data.activeBgPrint.isCustom));
 	bgPrint.addChild(JsonTree("id", data.activeBgPrint.id));
 	doc.addChild(bgPrint);	
 

@@ -27,7 +27,7 @@ namespace kubik
 		vector<Surface> thumbs;
 
 	public:
-		PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage):photoStorage(photoStorage)
 		{			
 			reset(settings);
 		}
@@ -105,7 +105,7 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
-			textTools().textFieldDraw("ÂÛÁÅÐÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃÐÀÔÈÈ", &font, Vec2f(10.0f, 10.0f), Color::white());
+			textTools().textFieldDraw("ÂÛÁÅÐÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃÐÀÔÈÈ", &font, Vec2i(10, 10), Color::white());
 
 			for (auto btn: photoBtns)
 				btn->draw();

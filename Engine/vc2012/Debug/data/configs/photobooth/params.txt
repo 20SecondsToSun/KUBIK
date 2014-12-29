@@ -1,11 +1,9 @@
 {
    "activeBgPrint" : {
-      "id" : 0,
-      "isCustom" : false
+      "id" : 0
    },
    "activeSticker" : {
-      "id" : 1,
-      "isCustom" : false
+      "id" : 2
    },
    "filtersIds" : [
       {

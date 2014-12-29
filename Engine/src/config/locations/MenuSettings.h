@@ -28,7 +28,7 @@ namespace kubik
 			{
 				return (isCustomDesign != menu.isCustomDesign ||
 						    templateId != menu.templateId);
-			}
+			}		
 		};
 
 		MenuSettings(shared_ptr<ApplicationModel> model)
@@ -86,6 +86,12 @@ namespace kubik
 			addToDictionary("helvetica30",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 		}
 
+		void setData(MenuDataStruct value)
+		{
+			data = value;
+			saveConfig();
+		}
+
 		MenuDataStruct getData()
 		{
 			return data;
@@ -96,11 +102,15 @@ namespace kubik
 			return model->getGames();
 		}
 
-		void setData(MenuDataStruct value)
+		string getUserDesighFullPath()
 		{
-			data = value;
-			saveConfig();
+			return getBasePath().string() + data.userTemplatePartDesignPath + to_string(data.templateId)+ "\\" + data.finalPath;			
 		}
+
+		string getKubikDesighFullPath()
+		{
+			return getBasePath().string() + data.kubikTemplatePartDesignPath + to_string(data.templateId)+ "\\" + data.finalPath;			
+		}		
 
 		private:
 			MenuDataStruct data;	

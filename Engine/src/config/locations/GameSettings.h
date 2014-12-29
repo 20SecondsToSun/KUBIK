@@ -19,6 +19,7 @@ namespace kubik
 		{
 			vector<GamesInfo> games;
 			int defaultGameID;	
+			string actionName;
 
 			int getCountSwitchOnGames()
 			{
@@ -53,6 +54,7 @@ namespace kubik
 			currentGame		   = model->getDefaultGameID();
 			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();
+			data.actionName	   = model->getActionName();
 			load();
 		}
 

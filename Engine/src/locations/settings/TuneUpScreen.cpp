@@ -1,4 +1,7 @@
 #include "TuneUpScreen.h"
+#include <shellapi.h>
+//#pragma comment(lib, "shell32")
+
 using namespace kubik;
 
 TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>	   config,
@@ -6,8 +9,9 @@ TuneUpScreen::TuneUpScreen(shared_ptr<TuneUpSettings>	   config,
 						   shared_ptr<MenuSettings>        menuConfig,
 						   shared_ptr<GameSettings>		   gameSettings)
 {	
-	this->menuSettings		= menuConfig;
-	this->gameSettings		= gameSettings;
+	this->menuSettings		  = menuConfig;
+	this->gameSettings		  = gameSettings;
+	this->screenSaverSettings = screenSaverSettings;
 	init(config);
 }
 
@@ -33,6 +37,9 @@ void TuneUpScreen::startUpParams()
 
 	gamesData = gameSettings->getData();
 	initialGamesData = gameSettings->getData();
+
+	screensaverData		   = screenSaverSettings->getData();
+	initialScreensaverData = screenSaverSettings->getData();
 }
 
 void TuneUpScreen::addMouseUpListener()
@@ -66,7 +73,7 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 	font			=  tuneUpSettings->getFonts()["helvetica90"]->get();
 	Font fontBtn	=  tuneUpSettings->getFonts()["helvetica20"]->get();
 
-	saveChngBtn = shared_ptr<ButtonText>(new ButtonText(Rectf(800.0f, 450.0f, 950.0f, 550.0f), "Ñîõðàíèòü", fontBtn));	
+	saveChngBtn = shared_ptr<ButtonText>(new ButtonText(Rectf(1200.0f, 650.0f, 1350.0f, 750.0f), "Ñîõðàíèòü", fontBtn));	
 	appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&TuneUpScreen::appSettingsChgHandler, this, std::placeholders::_1));
 
 	Texture closeImg = tuneUpSettings->getTextures()["closeImg"]->get();
@@ -77,6 +84,7 @@ void TuneUpScreen::init(shared_ptr<ISettings> settings)
 	createFuncesParams();
 	createMenuParams();	
 	createGamesParams();
+	createScreensaverParams();
 }
 
 void TuneUpScreen::closeLocationHandler(Button& button )
@@ -110,23 +118,24 @@ void TuneUpScreen::createPhotoboothParams()
 		.max((float)phData.MAX_PHOTO_SHOTS) 
 		.step(2);
 	photoBoothParams->addSeparator();
-	photoBoothParams->addParam( "Custom design",	 &phData.isCustomDesign);
-	photoBoothParams->addParam( "Template id",		 &phData.templateId).min(1).max(2).step(1);
+	photoBoothParams->addParam("Custom design",		&phData.isCustomDesign);
+	photoBoothParams->addParam("Template id",		&phData.templateId).min(1).max(2).step(1);
+	photoBoothParams->addButton("Show In Explorer1", bind(&TuneUpScreen::showInExplorerMenuDesignPath, this));
 	photoBoothParams->addSeparator();
-	photoBoothParams->addParam( "Is Sticker Custom", &phData.activeSticker.isCustom);
-	photoBoothParams->addParam( "Custom ids",		 &phData.activeSticker.id).max((float)phData.customStickers.size()-1).min(0).step(1);
-	photoBoothParams->addParam( "Kubik ids",		 &phData.activeSticker.id).max((float)phData.kubikStickers.size() -1).min(0).step(1);
+	
+	photoBoothParams->addParam("isSticker",			&phData.isSticker);
+	photoBoothParams->addParam("Sticker ids",		&phData.activeSticker.id).max((float)phData.stickers.size()-1).min(0).step(1);
+	photoBoothParams->addButton("Show In Explorer2", bind(&TuneUpScreen::showInExplorerMenuDesignPath, this));
 	photoBoothParams->addSeparator();
-	photoBoothParams->addParam( "Is Bg Print Custom",&phData.activeBgPrint.isCustom);
-	photoBoothParams->addParam( "Custom ids",		 &phData.activeBgPrint.id).max((float)phData.customBgPrint.size()-1).min(0).step(1);
-	photoBoothParams->addParam( "Kubik  ids",		 &phData.activeBgPrint.id).max((float)phData.kubikBgPrint.size() -1).min(0).step(1);
+	photoBoothParams->addParam("Bg Print ids",		&phData.activeBgPrint.id).max((float)phData.bgPrint.size()-1).min(0).step(1);
+	photoBoothParams->addButton("Show In Explorer3", bind(&TuneUpScreen::showInExplorerMenuDesignPath, this));
 	photoBoothParams->addSeparator();
-	photoBoothParams->addParam( "Facebook Sharing",  &phData.sharing.isFacebook);
-	photoBoothParams->addParam( "Vkontakte Sharing", &phData.sharing.isVkotakte);
-	photoBoothParams->addParam( "Twitter Sharing",   &phData.sharing.isTwitter);
-	photoBoothParams->addParam( "Printer",			 &phData.sharing.isPrint);
-	photoBoothParams->addParam( "Email",			 &phData.sharing.isEmail);
-	photoBoothParams->addParam( "QrCode",			 &phData.sharing.isQrCode);
+	photoBoothParams->addParam("Facebook Sharing",  &phData.sharing.isFacebook);
+	photoBoothParams->addParam("Vkontakte Sharing", &phData.sharing.isVkotakte);
+	photoBoothParams->addParam("Twitter Sharing",   &phData.sharing.isTwitter);
+	photoBoothParams->addParam("Printer",			&phData.sharing.isPrint);
+	photoBoothParams->addParam("Email",				&phData.sharing.isEmail);
+	photoBoothParams->addParam("QrCode",			&phData.sharing.isQrCode);
 	photoBoothParams->hide();
 
 	params.push_back(photoBoothParams);
@@ -143,31 +152,62 @@ void TuneUpScreen::createMenuParams()
 	menuParams = InterfaceGl::create(getWindow(), "Menu parameters", toPixels(Vec2i(300, 200)));	
 	menuParams->setPosition(Vec2i(350, 20));
 	menuParams->addParam("Custom design",	 &menuData.isCustomDesign);
-	menuParams->addParam("Template id",		 &menuData.templateId).min(1).max(2).step(1);
+	menuParams->addParam("Template id",		 &menuData.templateId).min(1).max(2).step(1);	
+	menuParams->addButton("Show In Explorer", bind(&TuneUpScreen::showInExplorerMenuDesignPath, this));
 	menuParams->addSeparator();	
 	menuParams->hide();
 
 	params.push_back(menuParams);
 }
 
+void TuneUpScreen::showInExplorerMenuDesignPath()
+{
+	if(menuData.isCustomDesign)	
+		showInExplorer(menuSettings->getUserDesighFullPath());
+	else
+	   showInExplorer(menuSettings->getKubikDesighFullPath());
+}
+
+void TuneUpScreen::showInExplorer(string path)
+{
+	//system("start explorer c:\\");
+	std::wstring stemp = stringTools().s2ws(path);	
+	console()<<"show in explorer::: "<<path<<endl;
+
+	ShellExecute(NULL, L"open", (LPCWSTR)path.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+}
+
 void TuneUpScreen::createGamesParams()
 {
 	gamesData = gameSettings->getData();
-
 	gamesParams = InterfaceGl::create(getWindow(), "Games parameters", toPixels(Vec2i(300, 200)));
 	gamesParams->setPosition(Vec2i(690, 20));
-
+	gamesParams->addText("Action Name -------------    " + stringTools().cp1251_to_utf8(gameSettings->getData().actionName.c_str()));
+	gamesParams->addSeparator();	
 	for (auto it = gamesData.games.begin(); it < gamesData.games.end(); it++)
 	{
 		if( it->isPurchased)		
-			gamesParams->addParam( it->name, &it->isOn);
+			gamesParams->addParam(it->name, &it->isOn);
 	}
 
 	gamesParams->addSeparator();	
-	gamesParams->addParam( "Default Game ID",	 &gamesData.defaultGameID).min(1).max(2).step(1);
+	gamesParams->addParam("Default Game ID", &gamesData.defaultGameID).min(1).max(2).step(1);
 	gamesParams->hide();
 
 	params.push_back(gamesParams);
+}
+
+void TuneUpScreen::createScreensaverParams()
+{
+	screensaverData = screenSaverSettings->getData();
+
+	screensaverParams = InterfaceGl::create(getWindow(), "Screensaver parameters", toPixels(Vec2i(300, 60)));
+	screensaverParams->setPosition(Vec2i(690, 250));
+	screensaverParams->addParam("Is Active", &screensaverData.isActive);
+	screensaverParams->addButton("Show In Explorer", bind(&TuneUpScreen::showInExplorerMenuDesignPath, this));
+	screensaverParams->hide();
+
+	params.push_back(screensaverParams);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -181,6 +221,7 @@ void TuneUpScreen::appSettingsChgHandler(ButtonText& button )
 	checkPhotoBoothParamsForChanges();
 	checkMenuParamsForChanges();
 	checkGamesParamsForChanges();
+	checkScreenSaverParamsForChanges();
 
 	if(changes.size())
 		appSettingsChangedSignal(changes);
@@ -245,6 +286,17 @@ void TuneUpScreen::checkGamesParamsForChanges()
 	}	
 }
 
+void TuneUpScreen::checkScreenSaverParamsForChanges()
+{
+	if (screensaverData.hasChanges(initialScreensaverData))
+	{
+		Changes chng;
+		chng.id = changeSetting::id::SCREENSAVER;	
+		changes.push_back(chng);
+		screenSaverSettings->setData(screensaverData);
+	}
+}
+
 void TuneUpScreen::setDefaultGameIdInSwitchOnGames()
 {
 	size_t len = gamesData.games.size();
@@ -290,7 +342,7 @@ void TuneUpScreen::draw()
 	gl::drawSolidRect(getWindowBounds());
 
 	gl::color(Color::white());
-	textTools().textFieldDraw("ÍÀÑÒÐÎÉÊÈ", &font, Vec2i(100, 100), Color::white());
+	//textTools().textFieldDraw("ÍÀÑÒÐÎÉÊÈ", &font, Vec2i(100, 100), Color::white());
 
 	saveChngBtn->draw();
 	closeBtn->draw();	

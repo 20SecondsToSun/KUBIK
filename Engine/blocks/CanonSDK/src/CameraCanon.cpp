@@ -239,7 +239,7 @@ void CameraCanon::photoTaken(EdsDirectoryItemRef directoryItem)//, EdsError erro
 {
 	//if (error == EDS_ERR_OK)
 	//{
-	startLiveView();
+	//startLiveView();
 	photoTakenEvent();
 		//downloadImage(directoryItem);
 	//}
@@ -251,7 +251,7 @@ void CameraCanon::photoDownloaded(const string& downloadPath)
 {
 	//if (error == EDS_ERR_OK)
 	//{
-	startLiveView();
+	//startLiveView();
 	photoDownloadedEvent(downloadPath);
 	//}
 	//else

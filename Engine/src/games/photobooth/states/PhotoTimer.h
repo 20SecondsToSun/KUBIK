@@ -55,6 +55,7 @@ namespace kubik
 		PhotoTimer(PhotoboothSettingsRef settings)
 		{		
 			reset(settings);
+			setParams();
 		}
 
 		void reset(PhotoboothSettingsRef _settings) override
@@ -62,8 +63,11 @@ namespace kubik
 			settings =  _settings;
 			fon		 =  settings->getTexture("fon3");
 			font	 =  settings->getFont("helvetica40");
-			font100	 =  settings->getFont("helvetica100");
+			font100	 =  settings->getFont("helvetica100");			
+		}
 
+		void setParams()
+		{
 			pixelateShdr = PixelateShdrRef(new PixelateShader(Vec2f(100.0f, 100.0f)));
 			contrastShdr = ContrastShaderRef(new ContrastShader(1, 0.4f));
 			bleachShdr   = BleachShaderRef(new BleachShader( 2.0f));
@@ -80,7 +84,7 @@ namespace kubik
 			params->addButton("Pixel",  bind(&PhotoTimer::cooseShader, this, 4));
 			params->addButton("Constrast", bind(&PhotoTimer::cooseShader, this, 5));
 			params->addButton("Bleach",    bind(&PhotoTimer::cooseShader, this, 6));
-			params->addButton("Fish Eye",  bind(&PhotoTimer::cooseShader, this, 7));
+			//params->addButton("Fish Eye",  bind(&PhotoTimer::cooseShader, this, 7));
 			params->setPosition(Vec2i(690, 0));
 			params->hide();
 		}

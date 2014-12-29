@@ -47,14 +47,15 @@ namespace kubik
 	private:
 
 		InterfaceGlRef	photoBoothParams;
+		InterfaceGlRef	funcesParams;
 		InterfaceGlRef	menuParams;
 		InterfaceGlRef	gamesParams;
-		InterfaceGlRef	funcesParams;
+		InterfaceGlRef	screensaverParams;		
 
 		vector<InterfaceGlRef> params;
 
 		shared_ptr<TuneUpSettings>		tuneUpSettings;
-		shared_ptr<ScreenSaverSettings> screnSaversettings;
+		shared_ptr<ScreenSaverSettings> screenSaverSettings;
 		shared_ptr<MenuSettings>		menuSettings;
 		shared_ptr<GameSettings>		gameSettings;
 
@@ -67,6 +68,7 @@ namespace kubik
 		PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
 		MenuSettings::MenuDataStruct menuData, initialMenuData;		
 		GameSettings::GamesDataStruct gamesData, initialGamesData;	
+		ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	
 
 		void update();
 		void mouseUp(MouseEvent &event);	
@@ -83,9 +85,13 @@ namespace kubik
 		void checkFuncesParamsForChanges();
 		void checkMenuParamsForChanges();
 		void checkGamesParamsForChanges();
-		
-		void createGamesParams();
+		void checkScreenSaverParamsForChanges();
+		void createGamesParams();		
+		void createScreensaverParams();
 
+		void showInExplorer(string path);
+		void showInExplorerMenuDesignPath();
+		
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
 	};

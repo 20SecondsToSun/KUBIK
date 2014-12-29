@@ -2,6 +2,7 @@
 
 #include "ISettings.h"
 #include "KubikException.h"
+#include "FileTools.h"
 
 using namespace std;
 using namespace ci;
@@ -14,13 +15,10 @@ namespace kubik
 	static const string CONFIG_FILE = "path.txt";
 	static const string PARAMS_FILE = "params.txt";
 
-	static const string CUSTOM_STICKER_NAME = "custom_sticker";
-	static const string KUBIK_STICKER_NAME  = "kubik_sticker";
+	static const string STICKER_NAME = "sticker";
+	static const string PRINT_TEMPATE_NAME = "print_template";
 
-	static const string CUSTOM_PRINT_TEMPATE_NAME = "custom_print_template";
-	static const string KUBIK_PRINT_TEMPATE_NAME  = "kubik_print_template";
-
-	class PhotoboothSettings:public ISettings
+	class PhotoboothSettings: public ISettings
 	{
 		public:
 
@@ -35,7 +33,6 @@ namespace kubik
 			string path;
 			Texture tex;
 			int id;
-			bool isCustom;
 		};
 
 		typedef ImageElement Sticker;
@@ -48,11 +45,8 @@ namespace kubik
 			string userTemplatePartDesignPath;
 			string finalPath;
 
-			string kubikStickersPath;
-			string userStickersPath;
-
-			string userBgPrintsPath;
-			string kubikBgPrintsPath;
+			string stickersPath;		
+			string bgPrintsPath;
 		};
 
 		struct SharingStruct
@@ -86,10 +80,9 @@ namespace kubik
 			bool isSticker;
 
 			vector<Filter>			filters;		
-			vector<Sticker>			customStickers;
-			vector<Sticker>			kubikStickers;
-			vector<BackgroundPrint> customBgPrint;
-			vector<BackgroundPrint> kubikBgPrint;
+			vector<Sticker>			stickers;
+			vector<BackgroundPrint> bgPrint;
+	
 
 			BackgroundPrint activeBgPrint;
 			Sticker			activeSticker;
@@ -112,9 +105,7 @@ namespace kubik
 						val.photoNum				  != photoNum ||
 						val.seconds					  != seconds ||
 						val.secondsBetweenShots		  != secondsBetweenShots ||
-						val.activeSticker.isCustom	  != activeSticker.isCustom ||
-						val.activeSticker.id		  != activeSticker.id ||
-						val.activeBgPrint.isCustom	  != activeBgPrint.isCustom ||
+						val.activeSticker.id		  != activeSticker.id ||					
 						val.activeBgPrint.id		  != activeBgPrint.id);
 			}
 		};

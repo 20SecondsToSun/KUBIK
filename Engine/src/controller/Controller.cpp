@@ -30,7 +30,12 @@ void Controller::initLoad()
 	catch(ExcConfigFileParsing exc)
 	{
 		servicePopupShow(exc);
-	}	
+	}
+	catch(...)
+	{
+		ExcConfigFileParsing exc;
+		servicePopupShow(exc);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -96,7 +101,7 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
 
 	gamesFactory.reg<Photobooth>(game::id::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Funces>    (game::id::FUNCES,	 gameSettings);	
+	gamesFactory.reg<Funces>    (game::id::FUNCES, gameSettings);	
 
 	createGame(model->getDefaultGameID());	
 	firstStart();	
@@ -104,7 +109,7 @@ void Controller::allGraphicsLoadingCompleteHandler()
 
 void Controller::firstStart()
 {
-	if(screenSaverSettings->isExist())
+	if(screenSaverSettings->isShow())
 	{
 		startScreenSaver();	
 	}
@@ -338,7 +343,7 @@ void Controller::reloadScreens(vector<Changes> changes)
 	if(toReload)
 	{
 		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this));
-		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));	
+		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, placeholders::_1));	
 		graphicsLoader->load();
 	}
 	else
@@ -385,6 +390,11 @@ Controller::LocMapper Controller::getLocationPair(int id)
 	{
 		mapper.screen = menu;
 		mapper.settings = menuSettings;
+	}
+	else if (id == changeSetting::id::SCREENSAVER)
+	{
+		mapper.screen = screenSaver;
+		mapper.settings = screenSaverSettings;
 	}
 
 	return mapper;

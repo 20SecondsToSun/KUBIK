@@ -7,6 +7,7 @@
 #include "IResourceScreenSaver.h"
 #include "VideoScreenSaver.h"
 #include "ImageScreenSaver.h"
+#include "FileTools.h"
 
 using namespace std;
 using namespace ci;
@@ -14,23 +15,48 @@ using namespace ci::app;
 
 namespace kubik
 {
-	static const int MAX_VIDEO_FILE_SIZE = 50000000;	
-	static const int MAX_IMAGE_FILE_SIZE = 10000000;
-
-	static const string IMAGE_SUPPORT_EXTENSIONS[3] = {".jpeg", ".jpg", ".png"};
-	static const string VIDEO_SUPPORT_EXTENSIONS[1] = {".mov"};
-
 	class ScreenSaverSettings:public ISettings
 	{
+
 	public:	
+		struct ScreenSaverDataStruct
+		{
+			bool isActive;		
+			string path;
+
+			bool hasChanges(ScreenSaverDataStruct ss)
+			{
+				return (isActive != ss.isActive);
+			}
+		};
 
 		ScreenSaverSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			mainConfigPath = model->getScreenSaverPath();
+			mainConfigPath = model->getScreenSaverConfigPath();
 
+			load();
 			findScreenSaver();
 			setTextures();
+		}
+
+		void load() override
+		{			
+			JsonTree configJSON	= JsonTree(loadFile(mainConfigPath));
+			data.path			= configJSON.getChild("path").getValue<string>();
+			data.isActive		= configJSON.getChild("isActive").getValue<bool>();			
+		};
+
+		void saveConfig()
+		{
+			console()<<"SAVE SCREENSAVER CONFIG"<<endl;
+
+			fs::path basePath(mainConfigPath);
+
+			JsonTree doc;		
+			doc.addChild( JsonTree("path", data.path));
+			doc.addChild( JsonTree("isActive", data.isActive));
+			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
 		}
 
 		int getScreenSaverMode()
@@ -48,10 +74,15 @@ namespace kubik
 			return mode != NONE_SS;
 		}
 
-		void load() override
+		bool isActive()
 		{
+			return data.isActive;
+		}
 
-		};
+		bool isShow()
+		{
+			return isExist() && isActive();
+		}
 
 		void setTextures() override
 		{
@@ -79,13 +110,26 @@ namespace kubik
 			return screenSaverResource;
 		}
 
+		ScreenSaverDataStruct getData()
+		{
+			return data;
+		}	
+
+		void setData(ScreenSaverDataStruct value)
+		{
+			data = value;
+			saveConfig();
+		}
+
 	private:
 
-		enum   {IMAGE_SS,	VIDEO_SS, NONE_SS};
-		int	   mode;
+		enum {IMAGE_SS, VIDEO_SS, NONE_SS};
+		int mode;
 		string path_ss;
 
 		shared_ptr<IResourceScreenSaver> screenSaverResource;
+
+		ScreenSaverDataStruct data;
 
 		void findScreenSaver()
 		{
@@ -94,18 +138,18 @@ namespace kubik
 			bool bigSizeError = false;			
 			
 			mode = NONE_SS;
-
-			for (fs::directory_iterator it(mainConfigPath); it != fs::directory_iterator(); ++it)
+			string path = getAppPath().string() + data.path;
+			for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
 			{
 				if (fs::is_regular_file(*it))
 				{
 					string ext = it->path().extension().string();
 					int ssType = getContentType(ext);
-
+				
 					if(ssType == NONE_SS)
 						continue;
 
-					string filePath = mainConfigPath + it->path().filename().string();
+					string filePath = path + it->path().filename().string();
 
 					if(fileSizeNotTooBig(filePath, ext))
 					{
@@ -142,38 +186,16 @@ namespace kubik
 		{
 			int type = NONE_SS;
 
-			if(isVideoExtension(ext))
+			if(fileTools().isVideoExtension(ext))
 			{
 				type = VIDEO_SS;
 			}
-			else if(isImageExtension(ext))
+			else if(fileTools().isImageExtension(ext))
 			{
 				type = IMAGE_SS;
 			}
 
 			return type;
-		}
-
-		bool isVideoExtension(string ext)
-		{
-			for (auto it: VIDEO_SUPPORT_EXTENSIONS)
-			{
-				if (ext == it)
-					return true;
-			}
-
-			return false;
-		}
-
-		bool isImageExtension(string ext)
-		{
-			for (auto it: IMAGE_SUPPORT_EXTENSIONS)
-			{
-				if (ext == it)
-					return true;
-			}
-
-			return false;	
 		}		
 
 		bool fileSizeNotTooBig(fs::path filePath, string ext)
@@ -181,9 +203,9 @@ namespace kubik
 			int filesizeInbytes  = (int)fileTools().filesize(filePath.string().c_str());
 			int sizeLimit;
 
-			if (isVideoExtension(ext))	
+			if (fileTools().isVideoExtension(ext))	
 				sizeLimit = MAX_VIDEO_FILE_SIZE;
-			else  if(isImageExtension(ext))	
+			else  if(fileTools().isImageExtension(ext))	
 				sizeLimit = MAX_IMAGE_FILE_SIZE;
 
 			return  filesizeInbytes < sizeLimit;

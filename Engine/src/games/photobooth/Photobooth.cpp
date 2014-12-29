@@ -62,7 +62,7 @@ void Photobooth::create()
 	photoProcessing	 = PhotoProcessingRef(new PhotoProcessing(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
-	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	 photoStorage));
+	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));
 	initLocations();	
 
 	Texture closeImg = settings->getTextures()["closeImg"]->get();
@@ -83,7 +83,6 @@ void Photobooth::start()
 
 void Photobooth::initLocations()
 {
-	console()<<"INITITALIZATION::: "<<endl;
 	for (auto it: locations)	
 		it->nextLocationSignal.disconnect_all_slots();
 
@@ -100,8 +99,9 @@ void Photobooth::initLocations()
 	for (auto it: locations)	
 		connect_once(it->nextLocationSignal, bind(&Photobooth::nextLocationHandler, this));
 
-	currentLocation = locations.begin();	
+	currentLocation = locations.begin();
 }
+	
 
 void Photobooth::nextLocationHandler()
 {
