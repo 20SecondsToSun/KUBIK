@@ -23,7 +23,7 @@ private:
 	void prepareSettings(ci::app::AppBasic::Settings *settings);
 };
 
-void EngineApp::prepareSettings( ci::app::AppBasic::Settings *settings)
+void EngineApp::prepareSettings(ci::app::AppBasic::Settings *settings)
 {
 	settings->setWindowSize(1400, 800);	
 	//settings->setBorderless(true);	
@@ -33,7 +33,6 @@ void EngineApp::setup()
 {	
 	view		= shared_ptr<ApplicationView>(new ApplicationView());
 	controller  = shared_ptr<Controller>(new Controller(view));
-	controller->initLoad();
 
 	gl::enableAlphaBlending();
 }

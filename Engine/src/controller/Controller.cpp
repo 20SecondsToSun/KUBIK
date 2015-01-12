@@ -7,15 +7,7 @@ Controller::Controller(shared_ptr<ApplicationView> view)
 {
 	this->view  = view;
 	game		= NULL;
-}
 
-Controller::~Controller()
-{
-	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct()~~~~~~~~~~~~~~~~~"<<endl;
-}
-
-void Controller::initLoad()
-{	
 	preloader		= shared_ptr<Preloader>(new Preloader());	
 	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());// font memory leak
 	view->startLocation(preloader);	
@@ -37,6 +29,12 @@ void Controller::initLoad()
 		servicePopupShow(exc);
 	}
 }
+
+Controller::~Controller()
+{
+	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct()~~~~~~~~~~~~~~~~~"<<endl;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 //

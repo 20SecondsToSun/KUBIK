@@ -26,7 +26,6 @@ namespace kubik
 
 		Controller(shared_ptr<ApplicationView> view);
 		~Controller();
-		void initLoad();
 
 	private:
 
