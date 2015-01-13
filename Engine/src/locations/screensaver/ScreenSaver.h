@@ -14,11 +14,14 @@ namespace kubik
 	class ScreenSaver: public IScreen
 	{
 	public:
-		ScreenSaver(shared_ptr<ISettings> settings);
+		ScreenSaver(ISettingsRef config);
+
 		void start();
 		void stop();
-		void init(shared_ptr<ISettings> settings) override;
-		void reset(shared_ptr<ISettings> config) override{};
+
+		void init(ISettingsRef settings) override;
+		void reset() override{};
+
 		void draw();
 
 		void addMouseUpListener();
@@ -27,12 +30,13 @@ namespace kubik
 	protected:
 		void setTextures();
 
-	private:	
-
+	private:
 		void mouseUp(MouseEvent &event);
 		ci::signals::connection mouseUpListener;
 
 		shared_ptr<IResourceScreenSaver> screenSaverResource;
-		shared_ptr<ScreenSaverSettings> settings;
+		ScreenSaverSettingsRef settings;
 	};
+
+	typedef shared_ptr<ScreenSaver> ScreenSaverRef;	
 }

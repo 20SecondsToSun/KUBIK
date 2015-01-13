@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ILocation.h"
 #include "PhotoboothSettings.h"
 
 using namespace std;
@@ -20,7 +19,7 @@ namespace kubik
 		virtual void reset(PhotoboothSettingsRef config) = 0;	
 		virtual void mouseUpHandler(ci::Vec2i vec) = 0;
 
-		signal<void(void)> nextLocationSignal;
+		SignalVoid nextLocationSignal;
 	};
 
 	typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;

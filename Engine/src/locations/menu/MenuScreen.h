@@ -15,15 +15,18 @@ namespace kubik
 	class MenuScreen:public IScreen
 	{
 	public:
-
-		MenuScreen(shared_ptr<ISettings> config);
+		MenuScreen(ISettingsRef config);
 		~MenuScreen();
 
-		void init(shared_ptr<ISettings>  config) override;
-		void reset(shared_ptr<ISettings> config) override{};
+		void init(ISettingsRef  config) override;
+		void reset() override{};
+
 		signal<void(game::id)>  startGameSignal;
-		signal<void(void)> startSettingsSignal;
-		signal<void(void)> startVideoSignal;
+		SignalVoid startSettingsSignal;
+		SignalVoid startVideoSignal;
+
+		void start();
+		void stop() override;
 
 		void draw();
 		void removeMouseUpListener();
@@ -43,7 +46,7 @@ namespace kubik
 
 		void createMenuBtns(vector<GamesInfo> gameIDs);
 		void clearButtonVector();
-		void mouseUp( MouseEvent &event);
+		void mouseUp(MouseEvent &event);
 		void update();
 
 		shared_ptr<MenuSettings> settings;
@@ -51,4 +54,6 @@ namespace kubik
 		gl::Texture bckgnd;
 		Font font;
 	};
+
+	typedef shared_ptr<MenuScreen> MenuScreenRef;	
 }

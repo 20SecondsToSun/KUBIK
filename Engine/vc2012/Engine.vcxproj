@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -126,7 +126,7 @@
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
-    <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp" />
+    <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
     <ClCompile Include="..\src\srdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -161,7 +161,6 @@
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\GamesFactory.h" />
     <ClInclude Include="..\src\games\IGame.h" />
-    <ClInclude Include="..\src\games\ILocation.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
@@ -174,7 +173,6 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
-    <ClInclude Include="..\src\graphics\Graphics.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\BleachShader.h" />
     <ClInclude Include="..\src\graphics\shaders\BloomShader.h" />
@@ -184,11 +182,14 @@
     <ClInclude Include="..\src\graphics\shaders\KaleidoscopeShader.h" />
     <ClInclude Include="..\src\graphics\shaders\LutShader.h" />
     <ClInclude Include="..\src\graphics\shaders\PixelateShader.h" />
-    <ClInclude Include="..\src\locations\engine\IScreen.h" />
+    <ClInclude Include="..\src\loaders\ConfigLoader.h" />
+    <ClInclude Include="..\src\loaders\GraphicsLoader.h" />
+    <ClInclude Include="..\src\loaders\Iloader.h" />
+    <ClInclude Include="..\src\locations\IScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
-    <ClInclude Include="..\src\locations\settings\TuneUpScreen.h" />
+    <ClInclude Include="..\src\locations\settings\ConfigScreen.h" />
     <ClInclude Include="..\src\locations\screensaver\ImageScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\IResourceScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h" />

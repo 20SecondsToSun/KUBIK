@@ -2,12 +2,12 @@
 
 using namespace kubik;
 
-ScreenSaver::ScreenSaver(shared_ptr<ISettings> config)
+ScreenSaver::ScreenSaver(ISettingsRef config):IScreen(ScreenId::SCREENSAVER)
 {
 	init(config);
 }
 
-void ScreenSaver::init(shared_ptr<ISettings> config)
+void ScreenSaver::init(ISettingsRef config)
 {
 	settings =  static_pointer_cast<ScreenSaverSettings>(config);
 	screenSaverResource = settings->getResource();	
@@ -15,11 +15,13 @@ void ScreenSaver::init(shared_ptr<ISettings> config)
 
 void ScreenSaver::start()
 {
+	addMouseUpListener();
 	screenSaverResource->start();
 }
 
 void ScreenSaver::stop()
 {	
+	removeMouseUpListener();
 	screenSaverResource->stop();
 }
 

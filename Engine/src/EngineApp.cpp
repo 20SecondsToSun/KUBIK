@@ -1,6 +1,6 @@
-#include "Graphics.h"
 #include "ApplicationView.h"
 #include "Controller.h"
+#include "Types.h"
 //#include <vld.h>
 
 using namespace ci;
@@ -18,12 +18,13 @@ public:
 	void draw();
 
 private:	
-	shared_ptr<ApplicationView> view;
-	shared_ptr<Controller> controller;
-	void prepareSettings(ci::app::AppBasic::Settings *settings);
+	AppViewRef view;
+	ControllerRef controller;
+	AppModelRef model;
+	void prepareSettings(AppBasic::Settings *settings);
 };
 
-void EngineApp::prepareSettings(ci::app::AppBasic::Settings *settings)
+void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
 	settings->setWindowSize(1400, 800);	
 	//settings->setBorderless(true);	
@@ -31,8 +32,9 @@ void EngineApp::prepareSettings(ci::app::AppBasic::Settings *settings)
 
 void EngineApp::setup()
 {	
-	view		= shared_ptr<ApplicationView>(new ApplicationView());
-	controller  = shared_ptr<Controller>(new Controller(view));
+	model		= AppModelRef(new ApplicationModel());
+	view		= AppViewRef(new ApplicationView());
+	controller  = ControllerRef(new Controller(model, view));
 
 	gl::enableAlphaBlending();
 }

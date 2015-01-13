@@ -1,11 +1,14 @@
 #pragma once
 
+#include "ConfigLoader.h"
+#include "GraphicsLoader.h"
+
 #include "MenuScreen.h"
-#include "TuneUpScreen.h"
+#include "ConfigScreen.h"
 #include "ScreenSaver.h"
-#include "ServicePopup.h"
-#include "Preloader.h"
+
 #include "Types.h"
+
 #include "ScreenSaverSettings.h"
 #include "TuneUpSettings.h"
 #include "KubikException.h"
@@ -23,48 +26,53 @@ namespace kubik
 	class Controller
 	{
 	public:
-
-		Controller(shared_ptr<ApplicationView> view);
+		Controller(AppModelRef model, AppViewRef view);
 		~Controller();
 
 	private:
+		AppModelRef				model;	
+		AppViewRef				view;
 
-		struct LocMapper
-		{
-			shared_ptr<IScreen> screen;
-			shared_ptr<ISettings> settings;
-		};	
+		ConfigLoaderRef			configLoader;
+		GraphicsLoaderRef		graphicsLoader;
 
-		shared_ptr<ApplicationModel>	model;	
-		shared_ptr<ApplicationView>		view;
+		ScreenSaverSettingsRef	screenSaverSettings; 
+		ConfigSettingsRef		controlSettings; 
+		GameSettingsRef			gameSettings; 	
+		MenuSettingsRef			menuSettings; 
 
-		shared_ptr<Graphics>			graphicsLoader;
-
-		shared_ptr<MenuScreen>			menu;
-		shared_ptr<TuneUpScreen>		settings;		
-		shared_ptr<ScreenSaver>			screenSaver;
-		shared_ptr<Preloader>			preloader;
-		shared_ptr<ServicePopup>		servicePopup;
-
-		shared_ptr<ScreenSaverSettings>	screenSaverSettings; 
-		shared_ptr<TuneUpSettings>		tuneUpSettings; 
-		shared_ptr<GameSettings>		gameSettings; 	
-		shared_ptr<MenuSettings>		menuSettings; 		
+		MenuScreenRef			menuScreen;
+		ConfigScreenRef			controlScreen;		
+		ScreenSaverRef			screenSaver;
 
 		GamesFactory<IGame>				gamesFactory;
-		GamesFactory<IGame>::base_ptr	game;		
+		GamesFactory<IGame>::base_ptr	game;
 
-		void loadAllLocationsConfigs();
+		IScreenRef currentLocation;			
 
-		void setConfigs();
-		void setScreens();
+		void loadKubikConfig();
+		void kubikConfigLoadingCompleteHandler();
+		void kubikConfigLoadingErrorHandler(KubikException exc);
+		void removeKubikConfigLoadingConnections();	
+		
+		void loadSettings();
+		void configsLoadingCompleteHandler();
+		void configsLoadingErrorHandler(KubikException exc);
+		void removeConfigsLoadingConnections();
 
-		void loadGraphics();
+		void loadAllLocationsGraphics();
 		void allGraphicsLoadingCompleteHandler();
-		void removeGraphicsLoadingSignals();
-		void graphicsLoadErrorHandler(KubikException exc);
+		void graphicsLoadingErrorHandler(KubikException exc);
+		void removeGraphicsLoadingConnections();
 
-		void firstStart();
+		void createLocations();
+		void startup();
+
+		void startLocation(IScreenRef location);
+		void closeCurrentLocation();
+
+		void setLocationHandlers(ScreenId type);
+		void removeLocationHandlers(ScreenId type);
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -72,67 +80,61 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		void startScreenSaver();
-		void closeScreenSaverHandler();
-		void startScreenSaverHandler();
-
+		void setScreenSaverHandlers();
+		void removeScreenSaverHandlers();
+	
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					MENU SCREEN
 		//
 		////////////////////////////////////////////////////////////////////////////
-
-		void startMenuScreen();
+		
+		void setMenuScreenHandlers();
+		void removeMenuScreenHandlers();
 		void startMultiplyGameMode();
 
 		////////////////////////////////////////////////////////////////////////////
 		//
-		//					SETTINGS SCREEN
+		//					CONFIG SCREEN
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		void startSettingsHandler();
-		void startSettingsScreen();
-		void closeSettingsHandler();
+		void setConfigScreenHandlers();
+		void removeConfigScreenHandlers();	
+		void configScreenRemoveListeners();
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					RELOAD KUBIK DATA	
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		ISettingsRef getSettingsByChangeId(ChangeId id);
+		IScreenRef getScreenByChangeId(ChangeId id);	
+
+		void startAfterReload(GameId id = GameId::UNDEFINED);
 		void appSettingsChangedHandler(vector<Changes> changes);
 		void reloadScreens(vector<Changes> changes);
-		void allGraphicsReloadCompleteHandler();
-		void settingsScreenRemoveListeners();
+		void allGraphicsReloadCompleteHandler(vector<Changes> changes);	
+
+		GameId getReloadGameId();
 
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					GAME SCREEN
 		//
-		////////////////////////////////////////////////////////////////////////////	
-
-		void startGameHandler(game::id gameId);
-		void createGame(game::id gameId);
-		void closeGameHandler();
-		void clearGameByID(game::id id);
-		void gameGraphicsLoadingCompleteHandler();
+		////////////////////////////////////////////////////////////////////////////
+		
+		void createGame(GameId id);
 		void resetGame();
-		void startGame();	
+		void reloadGame(GameId id);
 
-		////////////////////////////////////////////////////////////////////////////
-		//
-		//					SERVICE POPUP SCREEN
-		//
-		////////////////////////////////////////////////////////////////////////////
+		void addGameHandlers();
+		void removeGameHandlers();
+		void startGameHandler(GameId id);		
 
-		void servicePopupShow(KubikException exc);
-
-		////////////////////////////////////////////////////////////////////////////
-		//
-		//				
-		//
-		////////////////////////////////////////////////////////////////////////////
-
-		LocMapper getLocationPair(int id);
-		vector<Changes> reloadSettingsChanges;
-
-		bool reloadOneGame;
-
-		game::id reloadOneGameId;
-		void startAfterReload();
+		void closeGameHandler();
+		void clearGameByID(GameId id);
+		void gameGraphicsLoadingCompleteHandler();		
 	};
 }

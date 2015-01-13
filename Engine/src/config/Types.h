@@ -1,13 +1,26 @@
 #pragma once
 
+#include "KubikException.h"
+
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
 
-
 namespace kubik
 {
+	class ApplicationView;
+	class ApplicationModel;
+	class Controller;
+
+	typedef shared_ptr<ApplicationView> AppViewRef;
+	typedef shared_ptr<ApplicationModel> AppModelRef;
+	typedef shared_ptr<Controller> ControllerRef;
+
 	typedef boost::shared_ptr<boost::thread> ThreadRef;
+
+	typedef ci::signals::signal<void(void)> SignalVoid;
+	typedef ci::signals::signal<void(KubikException)> SignalException;
+	
 	enum DesignType
 	{
 		KUBIK,
@@ -18,6 +31,7 @@ namespace kubik
 	{
 		enum id
 		{
+			UNDEFINED = 0,
 			FUNCES = 1,
 			PHOTOBOOTH = 2,
 			KOTOPOZA = 3
@@ -29,7 +43,24 @@ namespace kubik
 		enum id
 		{
 			MENU = 10,
-			CONTROL = 20,
+			CONFIG = 20,
+			SCREENSAVER = 30,
+			PRELOADER = 40,
+			SERVICEPOPUP = 50,
+			GAMES = 60,
+			FUNCES = game::FUNCES,
+			PHOTOBOOTH = game::PHOTOBOOTH,
+			KOTOPOZA = game::KOTOPOZA,
+		};	
+	}
+
+	namespace screen
+	{	
+		enum id
+		{
+			UNDEFINED = 0,
+			MENU = 10,
+			CONFIG = 20,
 			SCREENSAVER = 30,
 			PRELOADER = 40,
 			SERVICEPOPUP = 50,
@@ -128,6 +159,10 @@ namespace kubik
 	typedef map<string, FontResourceRef>  FontResourceDictionary;
 	typedef map<string, VideoResourceRef> VideoResourceDictionary;
 	typedef map<string, IResourceBaseRef> IResourceDictionary;
+
+	typedef screen::id ScreenId;
+	typedef game::id GameId;
+	typedef changeSetting::id ChangeId;
 
 	typedef struct _changes
 	{

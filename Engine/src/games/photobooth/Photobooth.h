@@ -2,7 +2,7 @@
 
 #include "ApplicationModel.h"
 #include "MenuButton.h"
-#include "Graphics.h"
+
 #include "IGame.h"
 #include "Button.h"
 #include "PhotoboothSettings.h"
@@ -29,11 +29,13 @@ namespace kubik
 		Photobooth(ISettingsRef config);
 		~Photobooth();
 
+		void start();
+		void stop() override;
+
 		void update();	
 		void draw();	
-		void start();
 		void create();
-		void reset(ISettingsRef config) override;		
+		void reset() override;		
 		void init(ISettingsRef config) override;
 
 		void addMouseUpListener();

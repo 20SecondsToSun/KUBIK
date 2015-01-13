@@ -1,6 +1,6 @@
 {
    "finalPath" : "menuDesign\\",
-   "isCustomDesign" : false,
+   "isCustomDesign" : true,
    "kubikTemplatePartDesignPath" : "kubik\\templates\\",
    "staticPartDesignPath" : "data\\interface\\",
    "templateId" : 1,

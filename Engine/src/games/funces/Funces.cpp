@@ -6,6 +6,7 @@ Funces::Funces(shared_ptr<ISettings> config)
 {	
 	console()<<":: FUNCES CREATED::"<<endl;
 	init(config);
+	setType(ScreenId::FUNCES);
 }
 
 Funces::~Funces()
@@ -13,6 +14,18 @@ Funces::~Funces()
 	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Funces destructor~~~~~~~~~~~~~~~~~~~"<<endl;
 	mouseUpListener.disconnect();
 	closeBtn->mouseUpSignal.disconnect_all_slots();
+}
+
+void Funces::start()
+{
+	console()<<"STARTING::: "<<endl;
+	addMouseUpListener();
+}
+
+void Funces::stop()
+{
+	console()<<"STOPPING::: "<<endl;
+	removeMouseUpListener();	
 }
 
 void Funces::init(shared_ptr<ISettings> config)
@@ -34,7 +47,7 @@ void Funces::removeMouseUpListener()
 	mouseUpListener.disconnect();
 }
 
-void Funces::reset(shared_ptr<ISettings> config) 
+void Funces::reset() 
 {
 	
 }

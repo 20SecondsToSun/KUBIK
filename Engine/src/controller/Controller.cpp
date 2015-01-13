@@ -3,63 +3,99 @@
 using namespace kubik;
 using namespace std;
 
-Controller::Controller(shared_ptr<ApplicationView> view)
+Controller::Controller(AppModelRef model, AppViewRef view)
 {
-	this->view  = view;
-	game		= NULL;
+	this->view    = view;
+	this->model   = model;
+	game		  = NULL;
 
-	preloader		= shared_ptr<Preloader>(new Preloader());	
-	servicePopup	= shared_ptr<ServicePopup>(new ServicePopup());// font memory leak
-	view->startLocation(preloader);	
-
-	try
-	{
-		model = shared_ptr<ApplicationModel>(new ApplicationModel());
-		model->load();
-
-		loadAllLocationsConfigs();
-	}
-	catch(ExcConfigFileParsing exc)
-	{
-		servicePopupShow(exc);
-	}
-	catch(...)
-	{
-		ExcConfigFileParsing exc;
-		servicePopupShow(exc);
-	}
+	view->showPreloader();
+	loadKubikConfig();	
 }
 
 Controller::~Controller()
 {
-	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct()~~~~~~~~~~~~~~~~~"<<endl;
+	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct ~~~~~~~~~~~~~~~~~"<<endl;
 }
 
+////////////////////////////////////////////////////////////////////////////
+//
+//				LOADING KUBIK CONFIG
+//
+////////////////////////////////////////////////////////////////////////////
+
+void Controller::loadKubikConfig()
+{
+	console()<<"start loading kubik config"<<endl;
+	configLoader = ConfigLoaderRef(new ConfigLoader(model));
+
+	connect_once(configLoader->LoadingCompleteSignal, bind(&Controller::kubikConfigLoadingCompleteHandler, this));
+	connect_once(configLoader->LoadingErrorSignal, bind(&Controller::kubikConfigLoadingErrorHandler, this, std::placeholders::_1));
+
+	configLoader->load();	
+}
+
+void Controller::kubikConfigLoadingCompleteHandler()
+{
+	removeKubikConfigLoadingConnections();
+	loadSettings();
+}
+
+void Controller::kubikConfigLoadingErrorHandler(KubikException exc)
+{
+	removeKubikConfigLoadingConnections();
+	view->showServicePopup(exc);
+}
+
+void Controller::removeKubikConfigLoadingConnections()
+{
+	configLoader->LoadingCompleteSignal.disconnect_all_slots();	
+	configLoader->LoadingErrorSignal.disconnect_all_slots();	
+}
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//				CREATING CONFIGS
+//				CREATE SETTINGS
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::loadAllLocationsConfigs()
-{	
-	try
-	{
-		gameSettings		 = shared_ptr<GameSettings>(new GameSettings(model));
-		menuSettings		 = shared_ptr<MenuSettings>(new MenuSettings(model));
-		tuneUpSettings		 = shared_ptr<TuneUpSettings>(new TuneUpSettings(model));
-		screenSaverSettings	 = shared_ptr<ScreenSaverSettings>(new ScreenSaverSettings(model));
-		loadGraphics();
-	}
-	catch(ExcConfigFileParsing exc)
-	{
-		servicePopupShow(exc);
-	}
-	catch(ExcBigFileSizeOfScreenSaver exc)
-	{
-		servicePopupShow(exc);
-	}
+void Controller::loadSettings()
+{
+	console()<<"start loading other configs"<<endl;
+
+	gameSettings		 = GameSettingsRef(new GameSettings(model));
+	menuSettings		 = MenuSettingsRef(new MenuSettings(model));
+	controlSettings		 = ConfigSettingsRef(new ConfigSettings(model));
+	screenSaverSettings	 = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
+
+	list<ISettingsRef> configs;
+	configs.push_back(gameSettings);
+	configs.push_back(menuSettings);
+	configs.push_back(controlSettings);
+	configs.push_back(screenSaverSettings);
+
+	connect_once(configLoader->LoadingCompleteSignal, bind(&Controller::configsLoadingCompleteHandler, this));
+	connect_once(configLoader->LoadingErrorSignal,	  bind(&Controller::configsLoadingErrorHandler, this, std::placeholders::_1));
+
+	configLoader->loadConfigs(configs);
+}
+
+void Controller::configsLoadingCompleteHandler()
+{
+	removeConfigsLoadingConnections();	
+	loadAllLocationsGraphics();
+}
+
+void Controller::configsLoadingErrorHandler(KubikException exc)
+{
+	removeConfigsLoadingConnections();
+	view->showServicePopup(exc);
+}
+
+void Controller::removeConfigsLoadingConnections()
+{
+	configLoader->LoadingCompleteSignal.disconnect_all_slots();	
+	configLoader->LoadingErrorSignal.disconnect_all_slots();	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -68,65 +104,145 @@ void Controller::loadAllLocationsConfigs()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::loadGraphics()
+void Controller::loadAllLocationsGraphics()
 {	
 	console()<<"start loading graphics"<<endl;
-	graphicsLoader = shared_ptr<Graphics>(new Graphics());
+	graphicsLoader = GraphicsLoaderRef(new GraphicsLoader());
 
-	connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
-	connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
+	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
+	connect_once(graphicsLoader->LoadingErrorSignal, bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
+
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
-	graphicsLoader->setLoadingTextures(tuneUpSettings->getResources());
+	graphicsLoader->setLoadingTextures(controlSettings->getResources());
 	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameResources());	
+
 	graphicsLoader->load();
 }
 
-////////////////////////////////////////////////////////////////////////////
-//
-//				CREATING LOCATIONS
-//
-////////////////////////////////////////////////////////////////////////////
-
 void Controller::allGraphicsLoadingCompleteHandler()
 {
-	console()<<"Graphics all Loaded:: "<<endl;
-	removeGraphicsLoadingSignals();
-
-	screenSaver = shared_ptr<ScreenSaver>(new ScreenSaver(screenSaverSettings));		
-	menu        = shared_ptr<MenuScreen>(new MenuScreen(menuSettings));
-
-	settings    = shared_ptr<TuneUpScreen>(new TuneUpScreen(tuneUpSettings, screenSaverSettings, menuSettings, gameSettings));
-
-	gamesFactory.reg<Photobooth>(game::id::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Funces>    (game::id::FUNCES, gameSettings);	
-
-	createGame(model->getDefaultGameID());	
-	firstStart();	
+	removeGraphicsLoadingConnections();
+	createLocations();
 }
 
-void Controller::firstStart()
+void Controller::graphicsLoadingErrorHandler(KubikException exc)
 {
-	if(screenSaverSettings->isShow())
+	removeGraphicsLoadingConnections();
+	view->showServicePopup(exc);
+}
+
+void Controller::removeGraphicsLoadingConnections()
+{
+	graphicsLoader->LoadingCompleteSignal.disconnect_all_slots();	
+	graphicsLoader->LoadingErrorSignal.disconnect_all_slots();			
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+//				CREATE LOCATIONS
+//
+////////////////////////////////////////////////////////////////////////////
+
+void Controller::createLocations()
+{	
+	console()<<"create locations"<<endl;
+
+	screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
+	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
+
+	controlScreen = ConfigScreenRef(new ConfigScreen(controlSettings));
+	controlScreen->setScreenSaverSettings(screenSaverSettings);
+	controlScreen->setMenuSettings(menuSettings);
+	controlScreen->setGameSettings(gameSettings);
+	controlScreen->init();
+
+	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
+	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
+	createGame(model->getDefaultGameID());	
+
+	startup();
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+//				STARTUP
+//
+////////////////////////////////////////////////////////////////////////////
+
+void Controller::startup()
+{
+	if(screenSaverSettings->isShow())	
+		startLocation(screenSaver);	
+	else
+		startLocation(menuScreen);		
+}
+
+void Controller::startLocation(IScreenRef location)
+{
+	closeCurrentLocation();
+
+	currentLocation = location;
+	currentLocation->start();
+
+	setLocationHandlers(currentLocation->getType());	
+	view->startLocation(currentLocation);
+}
+
+void Controller::closeCurrentLocation()
+{
+	if(currentLocation)
 	{
-		startScreenSaver();	
+		currentLocation->stop();
+		removeLocationHandlers(currentLocation->getType());	
 	}
+}
+
+void Controller::setLocationHandlers(ScreenId type)
+{
+
+	if(gameSettings->isGameID(type))
+		addGameHandlers();
 	else
 	{
-		startMenuScreen();
-	}	
+		switch(type)
+		{	
+		case ScreenId::SCREENSAVER:
+			setScreenSaverHandlers();
+			break;
+
+		case ScreenId::MENU:
+			setMenuScreenHandlers();
+			break;
+
+		case ScreenId::CONFIG:
+			setConfigScreenHandlers();
+			break;		
+		}
+	}
 }
 
-void Controller::removeGraphicsLoadingSignals()
+void Controller::removeLocationHandlers(ScreenId type)
 {
-	graphicsLoader->completeLoadingSignal.disconnect_all_slots();	
-	graphicsLoader->errorLoadingSignal.disconnect_all_slots();			
-}
+	if(gameSettings->isGameID(type))
+		removeGameHandlers();
+	else
+	{
+	switch(type)
+	{
+	case ScreenId::SCREENSAVER:
+		removeScreenSaverHandlers();
+		break;
 
-void Controller::graphicsLoadErrorHandler(KubikException exc)
-{
-	removeGraphicsLoadingSignals();
-	servicePopupShow(exc);
+	case ScreenId::MENU:
+		removeMenuScreenHandlers();
+		break;
+
+	case ScreenId::CONFIG:
+		removeConfigScreenHandlers();
+		break;
+	}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -135,29 +251,14 @@ void Controller::graphicsLoadErrorHandler(KubikException exc)
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::startScreenSaver()
-{	
-	screenSaver->start();
-	screenSaver->addMouseUpListener();
-	connect_once(screenSaver->closeLocationSignal, bind(&Controller::closeScreenSaverHandler, this));
-	view->startLocation(screenSaver);
+void Controller::setScreenSaverHandlers()
+{
+	connect_once(currentLocation->closeLocationSignal, bind(&Controller::startLocation, this, menuScreen));
 }
 
-void Controller::closeScreenSaverHandler()
+void Controller::removeScreenSaverHandlers()
 {
 	screenSaver->closeLocationSignal.disconnect_all_slots();
-	screenSaver->removeMouseUpListener();
-	screenSaver->stop();	
-	startMenuScreen();
-}
-
-void Controller::startScreenSaverHandler()
-{
-	if(screenSaverSettings->isExist())
-	{
-		menu->removeMouseUpListener();	
-		startScreenSaver();
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -166,26 +267,29 @@ void Controller::startScreenSaverHandler()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::startMenuScreen()
+void Controller::setMenuScreenHandlers()
 {
-	if(model->onlyOneGameOn())
-	{
-		startGame();
-	}
-	else
-	{
-		startMultiplyGameMode();
-	}
+	if(model->onlyOneGameOn())	
+		startLocation(game);	
+	else	
+		startMultiplyGameMode();	
 }
 
 void Controller::startMultiplyGameMode()
 {
-	connect_once(menu->startGameSignal,		bind(&Controller::startGameHandler, this, std::placeholders::_1));
-	connect_once(menu->startSettingsSignal, bind(&Controller::startSettingsHandler, this));
-	connect_once(menu->startVideoSignal,	bind(&Controller::startScreenSaverHandler, this));		
+	connect_once(menuScreen->startGameSignal,		bind(&Controller::startGameHandler, this, std::placeholders::_1));
+	connect_once(menuScreen->startSettingsSignal,	bind(&Controller::startLocation, this, controlScreen));
+	connect_once(menuScreen->startVideoSignal,		bind(&Controller::startLocation, this, screenSaver));	
+}
 
-	menu->addMouseUpListener();	
-	view->startLocation(menu);
+void Controller::removeMenuScreenHandlers()
+{
+	if(!model->onlyOneGameOn())	
+	{
+		menuScreen->startGameSignal.disconnect_all_slots();
+		menuScreen->startSettingsSignal.disconnect_all_slots();
+		menuScreen->startVideoSignal.disconnect_all_slots();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -194,55 +298,48 @@ void Controller::startMultiplyGameMode()
 //
 ////////////////////////////////////////////////////////////////////////////	
 
-void Controller::startGameHandler(game::id gameId)
+void Controller::startGameHandler(GameId id)
+{	
+	if(gameSettings->isGameCurrent(id))	
+		startLocation(game);	
+	else	
+		reloadGame(id);
+}
+
+void Controller::reloadGame(GameId id)
 {
-	menu->removeMouseUpListener();
+	view->showPreloader();
+	gameSettings->setNextGameId(id);
 
-	if(gameSettings->isGameCurrent(gameId))
-	{
-		startGame();
-	}
-	else
-	{
-		view->startLocation(preloader);	
-		gameSettings->setNextGameId(gameId);
+	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
+	connect_once(graphicsLoader->LoadingErrorSignal,	bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
 
-		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
-		connect_once(graphicsLoader->errorLoadingSignal,	bind(&Controller::graphicsLoadErrorHandler, this, std::placeholders::_1));
-		graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(gameId));	
-		graphicsLoader->load();	
-	}	
-}	
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(id));	
+
+	graphicsLoader->load();	
+}
 
 void Controller::gameGraphicsLoadingCompleteHandler()
 {
-	removeGraphicsLoadingSignals();
-
+	removeGraphicsLoadingConnections();
 	createGame(gameSettings->getNextGameId());
-	startGame();	
+	startLocation(game);	
 }
 
-void Controller::createGame(game::id gameId)
+void Controller::createGame(GameId id)
 {
-	console()<<"::create new game::"<<gameId<<endl;	
-	gameSettings->setCurrentGame(gameId);
-	game = gamesFactory.create(gameId);		
+	gameSettings->setCurrentGame(id);
+	game = gamesFactory.create(id);		
 }
 
-void Controller::startGame()
-{	
-	console()<<"START GAME::"<<endl;
-	game->addMouseUpListener();
-	game->start();
-	view->startGameLocation(game);
-	connect_once(game->closeLocationSignal,	bind(&Controller::closeGameHandler, this));	
-}
-
-void Controller::closeGameHandler()
+void Controller::addGameHandlers()
 {
-	game->removeMouseUpListener();
-	menu->addMouseUpListener();	
-	view->startLocation(menu);	
+	connect_once(game->closeLocationSignal,	bind(&Controller::startLocation, this, menuScreen));	
+}
+
+void Controller::removeGameHandlers()
+{
+	game->closeLocationSignal.disconnect_all_slots();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -251,161 +348,130 @@ void Controller::closeGameHandler()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::startSettingsHandler()
-{		
-	menu->removeMouseUpListener();	
-	startSettingsScreen();
-}
-
-void Controller::startSettingsScreen()
+void Controller::setConfigScreenHandlers()
 {
-	connect_once(settings->closeLocationSignal, bind(&Controller::closeSettingsHandler, this));			
-	connect_once(settings->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));	
-
-	settings->addMouseUpListener();	
-	settings->startUpParams();
-
-	view->startLocation(settings);
-}
-
-void Controller::closeSettingsHandler()
-{
-	settingsScreenRemoveListeners();
-	startMenuScreen();
-}
-
-void Controller::settingsScreenRemoveListeners()
-{
-	settings->closeLocationSignal.disconnect_all_slots();
-	settings->appSettingsChangedSignal.disconnect_all_slots();
-	settings->removeMouseUpListener();
+	connect_once(controlScreen->closeLocationSignal, bind(&Controller::startLocation, this, menuScreen));		
+	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));
+	controlScreen->startUpParams();
 }
 
 void Controller::appSettingsChangedHandler(vector<Changes> changes)
 {
-	settingsScreenRemoveListeners();
-	reloadScreens(changes);	
+	if(changes.empty())
+		startLocation(menuScreen);
+	else
+		reloadScreens(changes);	
 }
+
+void Controller::removeConfigScreenHandlers()
+{
+	controlScreen->closeLocationSignal.disconnect_all_slots();
+	controlScreen->appSettingsChangedSignal.disconnect_all_slots();
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+//					RELOADING
+//
+////////////////////////////////////////////////////////////////////////////
 
 void Controller::reloadScreens(vector<Changes> changes)
 {
-	this->reloadSettingsChanges = changes;
 	bool toReload = false;
 
-	reloadOneGame = false;
-
 	for(auto change : changes)
-	{
-		changeSetting::id id = change.id;	
-		bool isGame = gameSettings->isGameID(id);
+	{		
+		ISettingsRef settings = getSettingsByChangeId(change.id);
 
-		LocMapper mapper = getLocationPair(id);
-
-		if(!isGame || (isGame && gameSettings->isGameCurrent(id)))
+		if(change.texReload)
 		{
-			if(change.texReload)
-			{
-				mapper.settings->setTextures();
-				graphicsLoader->setLoadingTextures(mapper.settings->getResources());
-				view->startLocation(preloader);
-				toReload = true;
-			}
-			else if (id == changeSetting::id::GAMES)
-			{
-				menu->resetMenuBtnGames();
-
-				if(!gameSettings->isCurrentGameInSwitchOnGames() && 
-					gameSettings->getData().getCountSwitchOnGames() == 1)
-				{					
-					for (size_t i = 0; i < gameSettings->getData().games.size(); i++)
-					{
-						if( gameSettings->getData().games[i].isOn)
-						{
-							reloadOneGameId = gameSettings->getData().games[i].id;
-							break;
-						}
-					}
-
-					reloadOneGame = true;	
-				}
-			}
-			else
-			{
-				mapper.screen->reset(mapper.settings);
-			}
-		}		
+			view->showPreloader();
+			settings->setTextures();
+			graphicsLoader->setLoadingTextures(settings->getResources());			
+			toReload = true;
+		}
+		else if (change.id == ChangeId::GAMES)		
+			menuScreen->resetMenuBtnGames();		
+		else			
+			getScreenByChangeId(change.id)->reset();
 	}
-
-	console()<<"NEED TO RELOAD?::  "<<toReload<<endl;
+	console()<<"NEED TO RELOAD:::::::::::::::::::  "<<toReload<<endl;
 
 	if(toReload)
 	{
-		connect_once(graphicsLoader->completeLoadingSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this));
-		connect_once(graphicsLoader->errorLoadingSignal, bind(&Controller::graphicsLoadErrorHandler, this, placeholders::_1));	
+		connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this, changes));
+		connect_once(graphicsLoader->LoadingErrorSignal, bind(&Controller::graphicsLoadingErrorHandler, this, placeholders::_1));	
 		graphicsLoader->load();
 	}
 	else
 		startAfterReload();
 }
 
-void Controller::allGraphicsReloadCompleteHandler()
+void Controller::allGraphicsReloadCompleteHandler(vector<Changes> changes)
 {
-	removeGraphicsLoadingSignals();
+	removeGraphicsLoadingConnections();
 
-	for(auto change : reloadSettingsChanges)
-	{
-		if (change.id == changeSetting::id::GAMES)
-			continue;
-		LocMapper mapper = getLocationPair(change.id);
-		mapper.screen->reset(mapper.settings);
-	}
+	GameId id = GameId::UNDEFINED;
 
-	startAfterReload();
+	for(auto change : changes)	
+		if (change.id == ChangeId::GAMES)
+			id = getReloadGameId();
+		else
+			getScreenByChangeId(change.id)->reset();
+
+	startAfterReload(id);
 }
 
-void Controller::startAfterReload()
+GameId Controller::getReloadGameId()
 {
-	if(reloadOneGame)
-	{
-		startGameHandler(reloadOneGameId);
+	GameId reloadGameId = GameId::UNDEFINED;
+	GameSettings::GamesDataStruct gameData = gameSettings->getData();
+
+	if(!gameSettings->isCurrentGameInSwitchOnGames() && gameData.getCountSwitchOnGames() == 1)
+	{	
+		vector<GamesInfo> games = gameData.games;
+
+		for (size_t i = 0; i < games.size(); i++)		
+			if( games[i].isOn)
+			{
+				reloadGameId = games[i].id;
+				break;
+			}				
 	}
+	return  reloadGameId;
+}
+
+void Controller::startAfterReload(GameId id)
+{
+	if(id != GameId::UNDEFINED)	
+		startGameHandler(id);	
 	else
-	{
-		startMenuScreen();
-	}
+		startLocation(menuScreen);
 }
 
-Controller::LocMapper Controller::getLocationPair(int id)
+ISettingsRef Controller::getSettingsByChangeId(ChangeId id)
 {
-	LocMapper mapper;
+	ISettingsRef settings;
 
+	if(gameSettings->isGameID(id))			
+		settings = gameSettings->get((game::id)id);	
+	else if (id == ChangeId::MENU)
+		settings = menuSettings;	
+	else if (id == ChangeId::SCREENSAVER)	
+		settings = screenSaverSettings;
+
+	return settings;
+}
+
+IScreenRef Controller::getScreenByChangeId(ChangeId id)
+{
+	IScreenRef screen;
 	if(gameSettings->isGameID(id))
-	{		
-		mapper.screen   = game;
-		mapper.settings = gameSettings->get((game::id)id);
-	}
-	else if (id == changeSetting::id::MENU)
-	{
-		mapper.screen = menu;
-		mapper.settings = menuSettings;
-	}
-	else if (id == changeSetting::id::SCREENSAVER)
-	{
-		mapper.screen = screenSaver;
-		mapper.settings = screenSaverSettings;
-	}
+		screen   = game;
+	else if (id == ChangeId::MENU)
+		screen = menuScreen;
+	else if (id == ChangeId::SCREENSAVER)
+		screen = screenSaver;
 
-	return mapper;
-}
-
-////////////////////////////////////////////////////////////////////////////
-//
-//					SERVICE POPUP SCREEN
-//
-////////////////////////////////////////////////////////////////////////////
-
-void Controller::servicePopupShow(KubikException exc)
-{
-	servicePopup->setMessage(exc.what());
-	view->startLocation(servicePopup);
+	return screen;
 }

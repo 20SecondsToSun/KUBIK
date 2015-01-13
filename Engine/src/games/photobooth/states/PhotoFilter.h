@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ILocation.h"
 #include "PhotoboothSettings.h"
 #include "FilterButton.h"
 #include "CameraAdapter.h"

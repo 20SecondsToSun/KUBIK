@@ -16,9 +16,6 @@
     <Filter Include="Source Files\locations">
       <UniqueIdentifier>{74f60d72-28ce-4600-9354-53dd8482a79e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\locations\engine">
-      <UniqueIdentifier>{29e48972-76c6-4b45-804b-6600dfb060a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\controller">
       <UniqueIdentifier>{1d6d4a7a-34f4-4b8f-a7a0-366da65ebe66}</UniqueIdentifier>
     </Filter>
@@ -109,6 +106,9 @@
     <Filter Include="Source Files\graphics\shaders">
       <UniqueIdentifier>{a2beaf61-29f2-4c04-9fd3-56ef0d7ed9fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\loaders">
+      <UniqueIdentifier>{3a959db3-c427-4cb0-bc9b-7e3202cb53ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -131,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="..\src\tools\Utils.cpp">
       <Filter>Source Files\tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\locations\settings\TuneUpScreen.cpp">
-      <Filter>Source Files\locations\settings</Filter>
     </ClCompile>
     <ClCompile Include="..\src\controller\Controller.cpp">
       <Filter>Source Files\controller</Filter>
@@ -177,13 +174,13 @@
     <ClCompile Include="..\src\srdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\Graphics.h">
-      <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\menu\MenuScreen.h">
       <Filter>Source Files\locations\menu</Filter>
@@ -262,15 +259,6 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h">
       <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\ILocation.h">
-      <Filter>Source Files\games</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\engine\IScreen.h">
-      <Filter>Source Files\locations\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\TuneUpScreen.h">
-      <Filter>Source Files\locations\settings</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\ApplicationModel.h">
       <Filter>Source Files\config</Filter>
@@ -379,6 +367,21 @@
     </ClInclude>
     <ClInclude Include="..\src\graphics\shaders\LutShader.h">
       <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\ConfigLoader.h">
+      <Filter>Source Files\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\GraphicsLoader.h">
+      <Filter>Source Files\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\Iloader.h">
+      <Filter>Source Files\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\ConfigScreen.h">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\IScreen.h">
+      <Filter>Source Files\locations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,6 @@
 
 #include "ApplicationModel.h"
 #include "MenuButton.h"
-#include "Graphics.h"
 #include "IGame.h"
 #include "Button.h"
 #include "ISettings.h"
@@ -21,9 +20,11 @@ namespace kubik
 		Funces(shared_ptr<ISettings>);
 		~Funces();
 
+		void start();
+		void stop() override;
+
 		void draw();	
-		void start(){};	
-		void reset(shared_ptr<ISettings> config) override;
+		void reset() override;
 		void init(shared_ptr<ISettings> config) override;
 
 		void addMouseUpListener();

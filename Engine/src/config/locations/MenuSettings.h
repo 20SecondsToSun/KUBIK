@@ -36,8 +36,7 @@ namespace kubik
 			this->model = model;
 			mainConfigPath  = model->getMenuConfigPath();
 
-			load();
-			setTextures();
+			//load();		
 		}
 
 		void load()
@@ -51,6 +50,7 @@ namespace kubik
 			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
 			
 			setDesignPath();
+			setTextures();
 		}
 
 		void saveConfig()
@@ -115,4 +115,6 @@ namespace kubik
 		private:
 			MenuDataStruct data;	
 	};
+
+	typedef shared_ptr<MenuSettings> MenuSettingsRef;
 }

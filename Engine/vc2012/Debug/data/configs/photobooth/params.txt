@@ -3,7 +3,7 @@
       "id" : 0
    },
    "activeSticker" : {
-      "id" : 2
+      "id" : 1
    },
    "filtersIds" : [
       {
@@ -16,18 +16,18 @@
          "id" : 3
       }
    ],
-   "isCustomDesign" : true,
-   "isEmail" : true,
+   "isCustomDesign" : false,
+   "isEmail" : false,
    "isFacebook" : false,
    "isPrint" : false,
-   "isQrCode" : true,
+   "isQrCode" : false,
    "isSticker" : true,
-   "isTwitter" : true,
+   "isTwitter" : false,
    "isVkotakte" : false,
    "photoNum" : 3,
    "seconds" : 3,
    "secondsBetweenShots" : 1,
-   "templateId" : 2,
+   "templateId" : 1,
    "useIds" : [
       {
          "id" : 1

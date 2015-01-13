@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ILocation.h"
 #include "IPhotoboothLocation.h"
 #include "CameraAdapter.h"
 #include "shaders/PixelateShader.h"

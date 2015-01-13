@@ -33,18 +33,17 @@ namespace kubik
 		ScreenSaverSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
-			mainConfigPath = model->getScreenSaverConfigPath();
-
-			load();
-			findScreenSaver();
-			setTextures();
+			mainConfigPath = model->getScreenSaverConfigPath();				
 		}
 
 		void load() override
 		{			
 			JsonTree configJSON	= JsonTree(loadFile(mainConfigPath));
 			data.path			= configJSON.getChild("path").getValue<string>();
-			data.isActive		= configJSON.getChild("isActive").getValue<bool>();			
+			data.isActive		= configJSON.getChild("isActive").getValue<bool>();	
+
+			findScreenSaver();
+			setTextures();
 		};
 
 		void saveConfig()
@@ -211,4 +210,6 @@ namespace kubik
 			return  filesizeInbytes < sizeLimit;
 		}
 	};
+
+	typedef shared_ptr<ScreenSaverSettings> ScreenSaverSettingsRef;	
 }

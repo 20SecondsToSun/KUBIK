@@ -8,6 +8,7 @@ Photobooth::Photobooth(ISettingsRef config)
 
 	init(config);
 	create();
+	setType(ScreenId::PHOTOBOOTH);
 }
 
 Photobooth::~Photobooth()
@@ -30,10 +31,8 @@ void Photobooth::init(ISettingsRef config)
 	settings = static_pointer_cast<PhotoboothSettings>(config);	
 }
 
-void Photobooth::reset(ISettingsRef config)
+void Photobooth::reset()
 {
-	settings = static_pointer_cast<PhotoboothSettings>(config);	
-
 	initLocations();
 
 	for (auto it: locations)
@@ -76,9 +75,16 @@ void Photobooth::create()
 void Photobooth::start()
 {
 	console()<<"STARTING::: "<<endl;
+	addMouseUpListener();	
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));	
 	currentLocation = locations.begin();
 	(*currentLocation)->start();	
+}
+
+void Photobooth::stop()
+{
+	console()<<"STOPPING::: "<<endl;
+	removeMouseUpListener();	
 }
 
 void Photobooth::initLocations()

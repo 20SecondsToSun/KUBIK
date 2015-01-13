@@ -55,7 +55,7 @@ namespace kubik
 			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();
 			data.actionName	   = model->getActionName();
-			load();
+			//load();
 		}
 
 		shared_ptr<ISettings> get(game::id id)
@@ -76,6 +76,7 @@ namespace kubik
 
 		void setTextures() override
 		{
+			console()<<"  currentGame  "<<currentGame<<endl;
 			gameSettingsMap[currentGame]->setTextures();	
 		}
 
@@ -180,4 +181,6 @@ namespace kubik
 
 		GamesDataStruct data;
 	};
+
+	typedef shared_ptr<GameSettings> GameSettingsRef;
 }

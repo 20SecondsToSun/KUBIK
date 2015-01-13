@@ -46,7 +46,7 @@ namespace kubik
 
 		}
 
-		void reset(shared_ptr<ISettings> config) override{};
+		void reset() override{};
 
 	protected:
 		void setTextures()
@@ -58,4 +58,6 @@ namespace kubik
 		Vec2f position;
 		Texture tex;
 	};
+
+	typedef shared_ptr<Preloader> PreloaderRef;
 }

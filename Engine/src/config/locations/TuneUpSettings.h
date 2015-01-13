@@ -10,16 +10,13 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class TuneUpSettings:public ISettings
+	class ConfigSettings:public ISettings
 	{
 	public:
-		TuneUpSettings(shared_ptr<ApplicationModel> model)
+		ConfigSettings(shared_ptr<ApplicationModel> model)
 		{
 			this->model = model;
 			mainConfigPath = model->getTuneUpConfigPath();
-
-			load();
-			setTextures();
 		}
 
 		void load() override
@@ -28,6 +25,7 @@ namespace kubik
 			{
 				JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
 				designPath = configJSON.getChild("designPath").getValue<string>();
+				setTextures();
 			}
 			catch(...)
 			{
@@ -42,4 +40,6 @@ namespace kubik
 			addToDictionary("closeImg",		createImageResource(getDesignPath() +"close.png"));
 		}		
 	};
+
+	typedef shared_ptr<ConfigSettings> ConfigSettingsRef;	
 }

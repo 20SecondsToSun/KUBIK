@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IScreen.h"
+#include "TextTools.h"
 
 using namespace std;
 using namespace ci;
@@ -40,12 +41,12 @@ namespace kubik
 			gl::popMatrices();	
 		}	
 
-		void init(shared_ptr<ISettings> config) override
+		void init(ISettingsRef config) override
 		{
 
 		}
 
-		void reset(shared_ptr<ISettings> config) override{};
+		void reset() override{};
 
 		void setMessage(const char* msg)
 		{			
@@ -56,4 +57,6 @@ namespace kubik
 		string msg;
 		Font font;
 	};
+
+	typedef shared_ptr<ServicePopup> ServicePopupRef;
 }

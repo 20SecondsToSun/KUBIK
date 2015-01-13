@@ -1,7 +1,6 @@
 #pragma once
 
 #include "KubikException.h"
-#include "ApplicationModel.h"
 #include "Types.h"
 
 using namespace std;

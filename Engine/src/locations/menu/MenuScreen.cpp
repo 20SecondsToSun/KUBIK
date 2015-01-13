@@ -3,9 +3,9 @@
 
 using namespace kubik;
 
-MenuScreen::MenuScreen(shared_ptr<ISettings>  settings)
+MenuScreen::MenuScreen(ISettingsRef config):IScreen(ScreenId::MENU)
 {
-	init(settings);
+	init(config);
 }
 
 MenuScreen::~MenuScreen()
@@ -15,7 +15,7 @@ MenuScreen::~MenuScreen()
 	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
 }
 
-void MenuScreen::init(shared_ptr<ISettings>  _settings)
+void MenuScreen::init(ISettingsRef  _settings)
 {	
 	settings	   =  static_pointer_cast<MenuSettings>(_settings);	
 	font		   =  settings->getFonts()["helvetica30"]->get();
@@ -69,6 +69,16 @@ void MenuScreen::clearButtonVector()
 
 	videoButton->mouseUpSignal.disconnect_all_slots();
 	settingsButton->mouseUpSignal.disconnect_all_slots();
+}
+
+void MenuScreen::start()
+{
+	addMouseUpListener();
+}
+
+void MenuScreen::stop()
+{	
+	removeMouseUpListener();	
 }
 
 void MenuScreen::mouseUpListener(MenuButton& button )
