@@ -2,18 +2,29 @@
 #include "ApplicationModel.h"
 #include "MenuButton.h"
 #include "IScreen.h"
-#include "TuneUpSettings.h"
+#include "ConfigSettings.h"
 #include "MenuSettings.h"
 #include "Button.h"
 #include "GameSettings.h"
 #include "ScreenSaverSettings.h"
 #include "Types.h"
 
+#include "elements/Title.h"
+#include "elements/StartNewActivity.h"
+#include "elements/StatBlock.h"
+#include "elements/MenuBlock.h"
+#include "elements/ScreenSaverBlock.h"
+#include "elements/GamesBlock.h"
+#include "elements/PrinterBlock.h"
+#include "elements/Logo.h"
+#include "elements/CloseBlock.h"
+
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 using namespace params;
+using namespace kubik::config;
 
 namespace kubik
 {
@@ -74,7 +85,7 @@ namespace kubik
 
 		void update();
 		void mouseUp(MouseEvent &event);	
-		void closeLocationHandler(Button& button);
+		void closeLocationHandler(IButton& button);
 		void appSettingsChgHandler(ButtonText& button);		
 		
 		void savePhotoboothParams();
@@ -96,6 +107,18 @@ namespace kubik
 		
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
+
+		Texture tempBg;
+		CloseBlockRef		closeBlock;
+		TitleRef			title;
+		StartNewActivityRef startNewActivity;
+		StatBlockRef		statBlock;
+		MenuBlockRef		menuBlock;
+		ScreenSaverBlockRef screenSaverBlock;
+		GamesBlockRef		gamesBlock;
+		PrinterBlockRef		printerBlock;
+		LogoRef				logo;
+		vector<IDrawableRef> components;
 	};
 
 	typedef shared_ptr<ConfigScreen> ConfigScreenRef;	

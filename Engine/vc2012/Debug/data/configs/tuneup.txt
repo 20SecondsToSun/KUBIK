@@ -1,3 +1,9 @@
 {
-   "designPath" : "kubik\\templates\\1\\tuneupDesign\\"
+   "designPath" : "data\\interface\\tuneupDesign\\",
+   "actionName" : "Party 1",
+   "playedCount": 382,
+   "printedCount": 81,
+   "puplishedCount": 125,
+   "currentPhotosPrinted": 89,
+   "maxPhotosToPrint": 400	
 }

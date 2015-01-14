@@ -11,6 +11,7 @@ namespace kubik
 	class ApplicationView;
 	class ApplicationModel;
 	class Controller;
+	class IButton;
 
 	typedef shared_ptr<ApplicationView> AppViewRef;
 	typedef shared_ptr<ApplicationModel> AppModelRef;
@@ -20,7 +21,7 @@ namespace kubik
 
 	typedef ci::signals::signal<void(void)> SignalVoid;
 	typedef ci::signals::signal<void(KubikException)> SignalException;
-	
+	typedef boost::signals2::signal<void(IButton&)> ButtonSignal;
 	enum DesignType
 	{
 		KUBIK,

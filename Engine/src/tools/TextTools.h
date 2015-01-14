@@ -13,7 +13,7 @@ public:
 		return tt; 
 	};
 
-	void textFieldDraw(std::string text,ci::Font *font, Vec2f coords, ColorA color)
+	void textFieldDraw(std::string text,ci::Font *font,  ColorA color, Vec2f coords = Vec2f::zero())
 	{
 		gl::pushMatrices();
 		gl::translate(coords);

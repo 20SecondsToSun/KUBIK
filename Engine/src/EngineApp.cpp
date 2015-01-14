@@ -26,7 +26,7 @@ private:
 
 void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
-	settings->setWindowSize(1400, 800);	
+	settings->setWindowSize(1080, 1000);	
 	//settings->setBorderless(true);	
 }
 

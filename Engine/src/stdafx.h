@@ -20,3 +20,5 @@
 #include <boost/thread.hpp>
 
 #include <stdint.h>
+
+#include "IDrawable.h"

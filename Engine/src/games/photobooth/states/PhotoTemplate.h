@@ -111,7 +111,7 @@ namespace kubik
 		{
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
-			textTools().textFieldDraw("ÂÛÁÅĞÈÒÅ ØÀÁËÎÍ", &font, Vec2f(50.0f, 50.0f), Color::white());
+			textTools().textFieldDraw("ÂÛÁÅĞÈÒÅ ØÀÁËÎÍ", &font, Color::white(), Vec2f(50.0f, 50.0f));
 
 			for (auto temp : choosingTemplatesBtns)			
 				temp->draw();

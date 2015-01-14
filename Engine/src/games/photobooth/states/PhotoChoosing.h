@@ -105,7 +105,7 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
-			textTools().textFieldDraw("ÂÛÁÅĞÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃĞÀÔÈÈ", &font, Vec2i(10, 10), Color::white());
+			textTools().textFieldDraw("ÂÛÁÅĞÈÒÅ " + to_string(canSelectCount) + " ÔÎÒÎÃĞÀÔÈÈ", &font, Color::white(), Vec2i(10, 10));
 
 			for (auto btn: photoBtns)
 				btn->draw();

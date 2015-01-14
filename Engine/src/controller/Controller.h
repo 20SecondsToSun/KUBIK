@@ -10,7 +10,7 @@
 #include "Types.h"
 
 #include "ScreenSaverSettings.h"
-#include "TuneUpSettings.h"
+#include "ConfigSettings.h"
 #include "KubikException.h"
 #include "ApplicationView.h"
 #include "ApplicationModel.h"

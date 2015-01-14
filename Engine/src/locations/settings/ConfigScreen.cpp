@@ -37,7 +37,7 @@ void ConfigScreen::startUpParams()
 {
 	changes.clear();
 
-	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(game::id::PHOTOBOOTH));
+	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	phData	   = phbthSettings->getData();
 	initPhData = phbthSettings->getData();
 
@@ -49,10 +49,22 @@ void ConfigScreen::startUpParams()
 
 	screensaverData		   = screenSaverSettings->getData();
 	initialScreensaverData = screenSaverSettings->getData();
+
+
+
+	console()<<"STARTUP!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+	statBlock->setPlayedTimes(configSettings->getData().playedCount);
+	statBlock->setPrintedPhotos(configSettings->getData().printedCount);
+	statBlock->setSharedAndEmail(configSettings->getData().puplishedCount);
+
+	printerBlock->setÑurrentPhotosPrinted(configSettings->getData().currentPhotosPrinted);	
+
+	title->setActivityName("Ïðîìîàêöèÿ");
 }
 
 void ConfigScreen::start()
 {
+	startUpParams();
 	addMouseUpListener();
 }
 
@@ -67,20 +79,27 @@ void ConfigScreen::stop()
 void ConfigScreen::addMouseUpListener()
 {
 	mouseUpListener = getWindow()->connectMouseUp(&ConfigScreen::mouseUp, this);
-
-	for(auto param:params)
-		param->show();
+	closeBlock->addMouseUpListener();
+	startNewActivity->addMouseUpListener();
+	menuBlock->addMouseUpListener();
+	screenSaverBlock->addMouseUpListener();
+	printerBlock->addMouseUpListener();	
 }
 
 void ConfigScreen::mouseUp(MouseEvent &event)
 {
-	closeBtn->mouseUpHandler(event.getPos());
-	saveChngBtn->mouseUpHandler(event.getPos());	
+	//closeBtn->mouseUpHandler(event.getPos());
+	//saveChngBtn->mouseUpHandler(event.getPos());	
 }
 
 void ConfigScreen::removeMouseUpListener()
 {
-	mouseUpListener.disconnect();	
+	mouseUpListener.disconnect();
+	closeBlock->removeMouseUpListener();
+	startNewActivity->removeMouseUpListener();
+	menuBlock->removeMouseUpListener();
+	screenSaverBlock->removeMouseUpListener();
+	printerBlock->removeMouseUpListener();	
 }
 
 void ConfigScreen::init()
@@ -90,19 +109,89 @@ void ConfigScreen::init()
 
 void ConfigScreen::init(ISettingsRef settings)
 {
-	console()<<"set settings screen"<<endl;
-
 	configSettings	= static_pointer_cast<ConfigSettings>(settings);
 
-	font			=  configSettings->getFonts()["helvetica90"]->get();
-	Font fontBtn	=  configSettings->getFonts()["helvetica20"]->get();
+	font					= configSettings->getFont("helvetica90");
+	Font fontBtn			= configSettings->getFont("helvetica20");
+	Font introLight44		= configSettings->getFont("introLight44");
+	Font helveticaLight22	= configSettings->getFont("helveticaLight22");
+	Font helveticaLight24	= configSettings->getFont("helveticaLight24");
+	Font introBold110		= configSettings->getFont("introBold110");
+	Font introBold72		= configSettings->getFont("introBold72");
 
-	saveChngBtn = shared_ptr<ButtonText>(new ButtonText(Rectf(1200.0f, 650.0f, 1350.0f, 750.0f), "Ñîõðàíèòü", fontBtn));	
-	appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&ConfigScreen::appSettingsChgHandler, this, std::placeholders::_1));
+	//saveChngBtn = ButtonTextRef(new ButtonText(Rectf(1200.0f, 650.0f, 1350.0f, 750.0f), "Ñîõðàíèòü", fontBtn));	
+	//appSettingsChgListener = saveChngBtn->mouseUpSignal.connect(bind(&ConfigScreen::appSettingsChgHandler, this, std::placeholders::_1));
+	//tempBg = configSettings->getTexture("tempBg");
 
-	Texture closeImg = configSettings->getTextures()["closeImg"]->get();
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
-	closeBtnListener = closeBtn->mouseUpSignal.connect(bind(&ConfigScreen::closeLocationHandler, this, std::placeholders::_1));
+	tempBg = configSettings->getTexture("tempBottom");
+
+	closeBlock = CloseBlockRef(new CloseBlock());
+	closeBlock->setPosition(Vec2i(916, 66));
+	closeBlock->setCloseTexture(configSettings->getTexture("closeImg"));
+	closeBlock->createBtn();
+	connect_once(closeBlock->closeSignal, bind(&ConfigScreen::closeLocationHandler, this, std::placeholders::_1));
+
+	title = TitleRef(new Title());
+	title->setPosition(Vec2i(100, 60));
+	title->setFont(introLight44);
+
+	startNewActivity = StartNewActivityRef(new StartNewActivity());
+	startNewActivity->setPosition(Vec2i(96, 137));
+	startNewActivity->setIcon(configSettings->getTexture("iconStartNew"));
+	startNewActivity->setFont(helveticaLight24);
+	startNewActivity->createBtn();
+	//connect_once(startNewActivity->startNewActivitySignal, bind(&ConfigScreen::startNewActivityHandler, this, std::placeholders::_1));
+	//connect_once(startNewActivity->cancelNewActivityTrySignal, bind(&ConfigScreen::, this, std::placeholders::_1));
+	//connect_once(startNewActivity->tryToStartNewActivitySignal, bind(&ConfigScreen::, this, std::placeholders::_1));
+
+	statBlock = StatBlockRef(new StatBlock());
+	statBlock->setPosition(Vec2i(100, 235));
+	statBlock->setTitleFont(helveticaLight22);
+	statBlock->setNumsFont(introBold110);
+
+	menuBlock = MenuBlockRef(new MenuBlock());
+	menuBlock->setPosition(Vec2i(100, 424));
+	menuBlock->setTitleFont(introLight44);
+	menuBlock->setSubTitleFont(helveticaLight22);
+	menuBlock->setIcon(configSettings->getTexture("menuIcon"));
+	menuBlock->createBtn();
+	//connect_once(menuBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
+
+	screenSaverBlock = ScreenSaverBlockRef(new ScreenSaverBlock());
+	screenSaverBlock->setPosition(Vec2i(533, 424));
+	screenSaverBlock->setTitleFont(introLight44);
+	screenSaverBlock->setSubTitleFont(helveticaLight22);
+	screenSaverBlock->setIcon(configSettings->getTexture("ssIcon"));
+	screenSaverBlock->createBtn();
+	//connect_once(screenSaverBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
+	
+	gamesBlock = GamesBlockRef(new GamesBlock());
+	gamesBlock->setPosition(Vec2i(100, 602));
+
+	printerBlock = PrinterBlockRef(new PrinterBlock());
+	printerBlock->setPosition(Vec2i(0, getWindowHeight() - 170.0f));
+	printerBlock->setNumsFont(introBold72);
+	printerBlock->setHintFont(helveticaLight24);
+	printerBlock->setChangeBtnFont(helveticaLight24);
+	printerBlock->setChangeBtnIcon(configSettings->getTexture("catridgeIcon"));
+	printerBlock->setMaxPhotosToPrint(configSettings->getData().maxPhotosToPrint);
+	printerBlock->createBtn();
+	//connect_once(printerBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
+
+	logo = LogoRef(new Logo());
+	logo->setIcon(configSettings->getTexture("logoIcon"));
+	logo->setPosition(Vec2i(835, getWindowHeight() - 170.0f));
+
+	components.clear();
+	components.push_back(title);
+	components.push_back(startNewActivity);
+	components.push_back(statBlock);
+	components.push_back(menuBlock);
+	components.push_back(closeBlock);
+	components.push_back(screenSaverBlock);
+	components.push_back(gamesBlock);
+	components.push_back(printerBlock);
+	components.push_back(logo);
 
 	createPhotoboothParams();
 	createFuncesParams();
@@ -111,7 +200,29 @@ void ConfigScreen::init(ISettingsRef settings)
 	createScreensaverParams();
 }
 
-void ConfigScreen::closeLocationHandler(Button& button )
+////////////////////////////////////////////////////////////////////////////
+//
+//				DRAW
+//
+////////////////////////////////////////////////////////////////////////////
+
+void ConfigScreen::draw()
+{
+	gl::color(Color::hex(0x0d0917));
+	gl::drawSolidRect(getWindowBounds());
+	
+	gl::color(ColorA(1, 1, 1, 0.5f));	
+	gl::draw(tempBg, Vec2f(0, getWindowHeight() - tempBg.getHeight()));
+	gl::color(Color::white());
+
+	for (auto comp : components)
+		comp->draw();	
+
+	//for(auto param: params)
+	//	param->draw();
+}
+
+void ConfigScreen::closeLocationHandler(IButton& button )
 {	
 	closeLocationSignal();
 }
@@ -206,7 +317,7 @@ void ConfigScreen::createGamesParams()
 	gamesData = gameSettings->getData();
 	gamesParams = InterfaceGl::create(getWindow(), "Games parameters", toPixels(Vec2i(300, 200)));
 	gamesParams->setPosition(Vec2i(690, 20));
-	gamesParams->addText("Action Name -------------    " + stringTools().cp1251_to_utf8(gameSettings->getData().actionName.c_str()));
+	//gamesParams->addText("Action Name -------------    " + stringTools().cp1251_to_utf8(gameSettings->getData().actionName.c_str()));
 	gamesParams->addSeparator();	
 	for (auto it = gamesData.games.begin(); it < gamesData.games.end(); it++)
 	{
@@ -352,25 +463,4 @@ void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
 			break;			
 		}	
 	}
-}
-
-////////////////////////////////////////////////////////////////////////////
-//
-//				DRAW
-//
-////////////////////////////////////////////////////////////////////////////
-
-void ConfigScreen::draw()
-{
-	gl::color(Color(1, 0, 0));
-	gl::drawSolidRect(getWindowBounds());
-
-	gl::color(Color::white());
-	//textTools().textFieldDraw("ÍÀÑÒÐÎÉÊÈ", &font, Vec2i(100, 100), Color::white());
-
-	saveChngBtn->draw();
-	closeBtn->draw();	
-
-	for(auto param: params)
-		param->draw();
 }

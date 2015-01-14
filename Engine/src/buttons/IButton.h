@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Types.h"
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
@@ -7,7 +7,7 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class IButton
+	class IButton : public IDrawable
 	{
 	public:
 		IButton(Rectf rectf)
@@ -51,6 +51,19 @@ namespace kubik
 			return buttonArea.y2 - buttonArea.y1;
 		}
 
+		Rectf getButtonArea()
+		{
+			return buttonArea;
+		}
+
+		virtual void mouseUpHandler( Vec2i vec)
+		{
+			if(buttonArea.contains(vec))		
+				mouseUpSignal(*this);		
+		}
+
+		ButtonSignal mouseUpSignal;
+
 	protected:
 		Rectf buttonArea;
 		bool isTexture;
@@ -62,4 +75,7 @@ namespace kubik
 			buttonArea =  rectf;
 		}
 	};
+
+	typedef shared_ptr<IButton> IButtonRef;
+
 }

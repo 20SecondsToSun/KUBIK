@@ -17,7 +17,7 @@ namespace kubik
 		{			
 			JsonTree configJSON		= JsonTree(loadFile(getConfigPath()));
 			userID					= configJSON.getChild("userID").getValue<string>();
-			actionName				= configJSON.getChild("actionName").getValue<string>();
+			//actionName				= configJSON.getChild("actionName").getValue<string>();
 			standID					= configJSON.getChild("standID").getValue<int>();
 			netConnection			= configJSON.getChild("netConnection").getValue<bool>();
 			defaultGameID			= (game::id)configJSON.getChild("defaultGameID").getValue<int>();	
@@ -60,7 +60,7 @@ namespace kubik
 
 			JsonTree doc;		
 			doc.addChild(JsonTree("userID", userID));
-			doc.addChild(JsonTree("actionName", actionName));
+			//doc.addChild(JsonTree("actionName", actionName));
 			doc.addChild(JsonTree("standID", standID));
 			doc.addChild(JsonTree("netConnection", netConnection));
 			doc.addChild(JsonTree("defaultGameID", defaultGameID));
@@ -103,10 +103,10 @@ namespace kubik
 			doc.write( writeFile(basePath), JsonTree::WriteOptions());
 		}
 
-		string getActionName()
+		/*string getActionName()
 		{
 			return actionName;
-		}
+		}*/
 
 		bool findGameId(int id, vector<int> gamesTurnOn)
 		{
@@ -233,7 +233,7 @@ namespace kubik
 		bool netConnection;
 		game::id defaultGameID;			
 		
-		string actionName;
+	//	string actionName;
 		string menuConfigPath;
 		string tuneUpConfigPath;
 		string screenSaverConfigPath;

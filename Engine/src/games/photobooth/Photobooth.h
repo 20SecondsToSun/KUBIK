@@ -48,7 +48,7 @@ namespace kubik
 
 		void setTextures();
 		void mouseUp(MouseEvent& event);
-		void mouseUpHandler(Button& button);
+		void mouseUpHandler(IButton& button);
 
 		connection mouseUpListener, closeBtnListener;	
 

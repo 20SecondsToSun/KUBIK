@@ -100,7 +100,7 @@ namespace kubik
 		{
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
-			textTools().textFieldDraw("SHARING", &font, Vec2f(100.0f, 100.0f), Color::white());
+			textTools().textFieldDraw("SHARING", &font, Color::white(), Vec2f(100.0f, 100.0f));
 
 			for (auto btn: shareBtns)
 				btn->draw();

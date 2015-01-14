@@ -85,7 +85,7 @@ namespace kubik
 		void draw() override
 		{
 			gl::draw(fon, getWindowBounds());
-			textTools().textFieldDraw("¬€¡Œ– ‘»À‹“–¿", &font, Vec2f(100.0f, 100.0f), Color::white());			
+			textTools().textFieldDraw("¬€¡Œ– ‘»À‹“–¿", &font, Color::white(), Vec2f(100.0f, 100.0f));			
 
 			for (auto btn: filterBtns)
 			{

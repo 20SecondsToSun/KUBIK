@@ -155,7 +155,7 @@
     <ClInclude Include="..\src\config\locations\MenuSettings.h" />
     <ClInclude Include="..\src\config\locations\PhotoboothSettings.h" />
     <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h" />
-    <ClInclude Include="..\src\config\locations\TuneUpSettings.h" />
+    <ClInclude Include="..\src\config\locations\ConfigSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
@@ -173,6 +173,7 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
+    <ClInclude Include="..\src\graphics\IDrawable.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\BleachShader.h" />
     <ClInclude Include="..\src\graphics\shaders\BloomShader.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="..\src\loaders\ConfigLoader.h" />
     <ClInclude Include="..\src\loaders\GraphicsLoader.h" />
     <ClInclude Include="..\src\loaders\Iloader.h" />
+    <ClInclude Include="..\src\locations\IDispatcher.h" />
     <ClInclude Include="..\src\locations\IScreen.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
@@ -195,6 +197,15 @@
     <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
     <ClInclude Include="..\src\config\Types.h" />
+    <ClInclude Include="..\src\locations\settings\elements\CloseBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\GamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\Logo.h" />
+    <ClInclude Include="..\src\locations\settings\elements\MenuBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\PrinterBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\ScreenSaverBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\StartNewActivity.h" />
+    <ClInclude Include="..\src\locations\settings\elements\StatBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\Title.h" />
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\tools\FileTools.h" />
     <ClInclude Include="..\src\tools\MathTools.h" />

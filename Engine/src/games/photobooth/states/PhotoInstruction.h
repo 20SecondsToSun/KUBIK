@@ -45,7 +45,7 @@ namespace kubik
 		{
 			gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
-			textTools().textFieldDraw("»Õ—“–” ÷»ﬂ", &font, Vec2f(100, 100), Color::white());
+			textTools().textFieldDraw("»Õ—“–” ÷»ﬂ", &font, Color::white(), Vec2f(100, 100));
 		}
 
 		void mouseUpHandler(Vec2i vec)

@@ -15,8 +15,7 @@ namespace kubik
 		}
 
 		std::string getStaticDesignPath(string value = "")
-		{
-			
+		{			
 			return getBasePath().string() + staticDesignPath + value;
 		}
 
@@ -27,7 +26,7 @@ namespace kubik
 
 		static std::string getFontsPath(string value = "")
 		{
-			ci::fs::path path = getBasePath()/"data/fonts/";
+			ci::fs::path path = getBasePath()/"data\\fonts\\";
 			return path.string() + value;
 		}
 

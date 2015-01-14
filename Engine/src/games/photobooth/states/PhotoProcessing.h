@@ -58,7 +58,7 @@ namespace kubik
 			gl::draw(fon, getWindowBounds());
 		
 			gl::color(Color::white());
-			textTools().textFieldDraw("ÂÛÃĞÓÆÀŞ ÔÎÒÎ", &font, Vec2f(100.0f, 100.0f), Color::white());
+			textTools().textFieldDraw("ÂÛÃĞÓÆÀŞ ÔÎÒÎ", &font, Color::white(), Vec2f(100.0f, 100.0f));
 
 			gl::pushMatrices();
 			preloader->draw();

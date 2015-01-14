@@ -106,9 +106,9 @@ namespace kubik
 			cameraCanon().draw();
 
 			gl::color(Color::white());
-			textTools().textFieldDraw("тнрнцпютхпсел", &font, Vec2f(100.0f, 100.0f), Color::white());
-			textTools().textFieldDraw("йнкхвеярбн ямхлйнб " + to_string(shotsNum), &font, Vec2f(100.0f, 200.0f), Color::white());
-			textTools().textFieldDraw("бпелъ ндмнцн ямхлйю(яей.) " + to_string(secBetweenShots), &font, Vec2f(100.0f, 300.0f), Color::white());
+			textTools().textFieldDraw("тнрнцпютхпсел", &font, Color::white(), Vec2f(100.0f, 100.0f));
+			textTools().textFieldDraw("йнкхвеярбн ямхлйнб " + to_string(shotsNum), &font, Color::white(), Vec2f(100.0f, 200.0f));
+			textTools().textFieldDraw("бпелъ ндмнцн ямхлйю(яей.) " + to_string(secBetweenShots), &font, Color::white(), Vec2f(100.0f, 300.0f));
 		}
 
 		void reset(shared_ptr<PhotoboothSettings> _settings) override

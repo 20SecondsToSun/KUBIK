@@ -314,8 +314,7 @@ void Controller::reloadGame(GameId id)
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->LoadingErrorSignal,	bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
 
-	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(id));	
-
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(id));
 	graphicsLoader->load();	
 }
 
@@ -351,8 +350,7 @@ void Controller::removeGameHandlers()
 void Controller::setConfigScreenHandlers()
 {
 	connect_once(controlScreen->closeLocationSignal, bind(&Controller::startLocation, this, menuScreen));		
-	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));
-	controlScreen->startUpParams();
+	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));	
 }
 
 void Controller::appSettingsChangedHandler(vector<Changes> changes)

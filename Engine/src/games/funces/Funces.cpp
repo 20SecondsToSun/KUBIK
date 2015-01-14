@@ -52,12 +52,12 @@ void Funces::reset()
 	
 }
 
-void Funces::mouseUp( MouseEvent &event)
+void Funces::mouseUp(MouseEvent &event)
 {	
 	closeBtn->mouseUpHandler(event.getPos());
 }
 
-void Funces::mouseUpHandler(Button& button )
+void Funces::mouseUpHandler(IButton& button )
 {	
 	closeLocationSignal();
 }

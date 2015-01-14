@@ -124,7 +124,7 @@ void Photobooth::mouseUp(MouseEvent &event)
 
 }
 
-void Photobooth::mouseUpHandler(Button&button)
+void Photobooth::mouseUpHandler(IButton& button)
 {	
 	updateSignal.disconnect();
 	closeLocationSignal();

@@ -168,8 +168,8 @@ namespace kubik
 			shader->drawParams();
 			params->draw();
 
-			textTools().textFieldDraw("“¿…Ã≈–", &font, Vec2f(100.0f, 100.0f), Color::white());
-			textTools().textFieldDraw(to_string(seconds), &font100, Vec2f(200.0f, 200.0f), Color::white());
+			textTools().textFieldDraw("“¿…Ã≈–", &font, Color::white(), Vec2f(100.0f, 100.0f));
+			textTools().textFieldDraw(to_string(seconds), &font100, Color::white(), Vec2f(200.0f, 200.0f));
 		}
 
 		void mouseUpHandler(Vec2i vec)
