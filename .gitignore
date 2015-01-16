@@ -43,7 +43,7 @@ Icon
 *.lastbuildstate
 *.map
 ipch/
-debug/
+
 design/
 Engine/blocks/CanonSDK/lib/EDSDK/Library/
 Engine/blocks/CanonSDK/bin/
