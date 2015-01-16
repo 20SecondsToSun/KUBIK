@@ -12,7 +12,7 @@ namespace kubik
 	{
 	public:
 
-		FuncesSettings(shared_ptr<ApplicationModel> model) 
+		FuncesSettings(ApplicationModelRef model) 
 		{
 			this->model = model;
 			mainConfigPath = model->getFuncesConfigPath();
@@ -30,7 +30,8 @@ namespace kubik
 		{		
 			clearResources();
 			addToDictionary("closeImg", createImageResource(getDesignPath() + "close.png"));
-		}	
-
+		}
 	};
+
+	typedef shared_ptr<FuncesSettings> FuncesSettingsRef;
 }

@@ -112,6 +112,15 @@
     <Filter Include="Source Files\locations\settings\elements">
       <UniqueIdentifier>{0082b1b3-1423-4160-9dd3-ddb686d5e27a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\settings\elements\gamesBlock">
+      <UniqueIdentifier>{2c8d8305-fbca-47b1-ba0a-7d3a9a9cf2be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events">
+      <UniqueIdentifier>{4708ef9c-5f22-4fdb-b750-3da99b45f862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events\settings">
+      <UniqueIdentifier>{473d97a5-5eca-4186-b65e-cb515d15da62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -401,9 +410,6 @@
     <ClInclude Include="..\src\locations\settings\elements\ScreenSaverBlock.h">
       <Filter>Source Files\locations\settings\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\elements\GamesBlock.h">
-      <Filter>Source Files\locations\settings\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\elements\PrinterBlock.h">
       <Filter>Source Files\locations\settings\elements</Filter>
     </ClInclude>
@@ -418,6 +424,33 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\IDispatcher.h">
       <Filter>Source Files\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\PurchasedGamesBlock.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGamePurchased.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolField.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolButton.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\GamesBlock.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\Event.h">
+      <Filter>Source Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\StatisticEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\GameConfEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

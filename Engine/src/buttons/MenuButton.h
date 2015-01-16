@@ -26,7 +26,7 @@ namespace kubik
 			return gameId;
 		}
 
-		void mouseUpHandler( Vec2i vec)
+		void mouseUpHandler(Vec2i vec)
 		{
 			if(buttonArea.contains(vec))
 				mouseUpSignal(*this);

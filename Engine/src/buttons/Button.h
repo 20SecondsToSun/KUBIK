@@ -15,13 +15,22 @@ namespace kubik
 
 		Button(Rectf rectf):IButton(rectf)
 		{
-
+			event = EventRef(new Event("buttonClick"));
 		}
 
 		Button(Texture tex, Vec2f pos):IButton(tex, pos)
 		{
+			event = EventRef(new Event("buttonClick"));
+		}	
 
-		}		
+		virtual void mouseUpHandler(Vec2i vec)
+		{
+			if(buttonArea.contains(vec))
+			{
+				mouseUpSignal(event);
+			}
+		}
+		EventRef event;
 	};
 
 	typedef shared_ptr<Button> ButtonRef;

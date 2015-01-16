@@ -1,5 +1,6 @@
 #pragma once
 #include "Types.h"
+#include "IDispatcher.h"
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
@@ -7,7 +8,7 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class IButton : public IDrawable
+	class IButton : public IDispatcher
 	{
 	public:
 		IButton(Rectf rectf)
@@ -58,24 +59,23 @@ namespace kubik
 
 		virtual void mouseUpHandler( Vec2i vec)
 		{
-			if(buttonArea.contains(vec))		
-				mouseUpSignal(*this);		
+			//if(buttonArea.contains(vec))		
+			//	mouseUpSignal(*this);		
 		}
 
-		ButtonSignal mouseUpSignal;
-
-	protected:
-		Rectf buttonArea;
-		bool isTexture;
-		Vec2f shift;
-		Texture tex;
+	//	ButtonSignal mouseUpSignal;
 
 		void setButtonArea(Rectf rectf)
 		{
 			buttonArea =  rectf;
 		}
+
+	protected:
+		Rectf buttonArea;
+		bool isTexture;
+		Vec2f shift;
+		Texture tex;		
 	};
 
 	typedef shared_ptr<IButton> IButtonRef;
-
 }

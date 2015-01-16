@@ -11,15 +11,16 @@ MenuScreen::MenuScreen(ISettingsRef config):IScreen(ScreenId::MENU)
 MenuScreen::~MenuScreen()
 {
 	clearButtonVector();
-	mouseListener.disconnect();
+	removeMouseUpListener();
 	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
 }
 
 void MenuScreen::init(ISettingsRef  _settings)
 {	
 	settings	   =  static_pointer_cast<MenuSettings>(_settings);	
-	font		   =  settings->getFonts()["helvetica30"]->get();
-	bckgnd         =  settings->getTextures()["background"]->get();
+
+	font		   =  settings->getFont("helvetica30");
+	bckgnd         =  settings->getTexture("background");
 
 	createMenuBtns(settings->getGames());
 }
@@ -48,32 +49,31 @@ void MenuScreen::createMenuBtns(vector<GamesInfo> games)
 		float height = 200.0f;
 
 		Rectf buttonArea = Rectf(x, y, x + width, y + height);
-		shared_ptr<MenuButton> button = shared_ptr<MenuButton>(new MenuButton(it.id, buttonArea, it.name, font));		
-		connect_once(button->mouseUpSignal, bind(&MenuScreen::mouseUpListener, this, std::placeholders::_1));
-		menuBtns.push_back(button);
+		MenuButtonRef button = MenuButtonRef(new MenuButton(it.id, buttonArea, it.name, font));		
+		button->addMouseUpListener(&MenuScreen::gameMouseUpListener, this);
+		displayList.push_back(button);
 	}	
 
-	settingsButton = shared_ptr<ButtonText>(new ButtonText(Rectf(50.0f, 50.0f, 350.0f, 150.0f), settingsName, font));	
-	connect_once(settingsButton->mouseUpSignal, bind(&MenuScreen::settingsMouseUpListener, this, std::placeholders::_1));
+	Rectf setButtonArea = Rectf(50.0f, 50.0f, 350.0f, 150.0f);
+	settingsButton = ButtonTextRef(new ButtonText(setButtonArea, settingsName, font));	
+	settingsButton->addMouseUpListener(&MenuScreen::settingsMouseUpListener, this);
+	displayList.push_back(settingsButton);
 
-	videoButton = shared_ptr<ButtonText>(new ButtonText(Rectf(400.0f, 50.0f, 700.0f, 150.0f), screenSaverName, font));	
-	connect_once(videoButton->mouseUpSignal, bind(&MenuScreen::videoMouseUpListener, this, std::placeholders::_1));
+	Rectf videoButtonArea = Rectf(400.0f, 50.0f, 700.0f, 150.0f);
+	videoButton = ButtonTextRef(new ButtonText(videoButtonArea, screenSaverName, font));	
+	videoButton->addMouseUpListener(&MenuScreen::videoMouseUpListener, this);
+	displayList.push_back(videoButton);
 }
 
 void MenuScreen::clearButtonVector()
 {
-	for(auto it : menuBtns)	
-		it->mouseUpSignal.disconnect_all_slots();
-
-	menuBtns.clear();
-
-	videoButton->mouseUpSignal.disconnect_all_slots();
-	settingsButton->mouseUpSignal.disconnect_all_slots();
+	for(auto it : displayList)	
+		it->removeMouseUpListener();
 }
 
 void MenuScreen::start()
 {
-	addMouseUpListener();
+	addMouseUpListener(&MenuScreen::mouseUpFunction, this);
 }
 
 void MenuScreen::stop()
@@ -81,47 +81,27 @@ void MenuScreen::stop()
 	removeMouseUpListener();	
 }
 
-void MenuScreen::mouseUpListener(MenuButton& button )
+void MenuScreen::gameMouseUpListener(EventRef& button )
 {	
-	startGameSignal(button.getGameId());
+	//startGameSignal(button.getGameId());
 }
 
-void MenuScreen::settingsMouseUpListener(ButtonText& button )
+void MenuScreen::settingsMouseUpListener(EventRef& button )
 {
-	startSettingsSignal();
+	if(isMouseUpSet)
+		startSettingsSignal();
 }
 
-void MenuScreen::videoMouseUpListener(ButtonText& button )
+void MenuScreen::videoMouseUpListener(EventRef& button )
 {
-	startVideoSignal();
-}
-
-void MenuScreen::mouseUp( MouseEvent &event)
-{	
-	for(auto it : menuBtns)
-		it->mouseUpHandler(event.getPos());
-
-	settingsButton->mouseUpHandler(event.getPos());
-	videoButton->mouseUpHandler(event.getPos());
+	if(isMouseUpSet)
+		startVideoSignal();
 }
 
 void MenuScreen::draw()
 {
 	gl::draw(bckgnd, getWindowBounds());
 
-	for(auto it : menuBtns)
+	for(auto it : displayList)
 		it->draw();
-
-	settingsButton->draw();
-	videoButton->draw();
-}
-
-void MenuScreen::removeMouseUpListener()
-{
-	mouseListener.disconnect();
-}
-
-void MenuScreen::addMouseUpListener()
-{
-	mouseListener = getWindow()->getSignalMouseUp().connect(std::bind( &MenuScreen::mouseUp, this, std::placeholders::_1));
 }

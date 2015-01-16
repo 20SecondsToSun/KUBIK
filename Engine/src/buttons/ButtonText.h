@@ -15,24 +15,29 @@ namespace kubik
 	public:
 		typedef boost::signals2::signal<void(ButtonText&)> ButtonSignal;
 
-		ButtonSignal mouseUpSignal;
+	//	ButtonSignal mouseUpSignal;
+		EventRef event;
 
 		ButtonText(Rectf rectf, string text, Font font):IButton(rectf)
 		{
 			this->font = font;
 			this->text = text;
+			event = EventRef(new Event("buttonClick"));
 		}
 
 		ButtonText(ci::gl::Texture tex, ci::Vec2f pos, string text, Font font):IButton(tex, pos)
 		{
 			this->font = font;
 			this->text = text;
+			event = EventRef(new Event("buttonClick"));
 		}
 
-		virtual void mouseUpHandler( Vec2i vec)
+		virtual void mouseUpHandler(Vec2i vec)
 		{
 			if(buttonArea.contains(vec))
-				mouseUpSignal(*this);
+			{
+				mouseUpSignal(event);
+			}
 		}
 
 		void draw()
@@ -50,7 +55,6 @@ namespace kubik
 		}
 	
 	protected:
-
 		Font	font;
 		string  text;
 	};

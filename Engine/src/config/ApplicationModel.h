@@ -14,7 +14,9 @@ namespace kubik
 
 	public:
 		void load()
-		{			
+		{
+			lang = "ru";
+			
 			JsonTree configJSON		= JsonTree(loadFile(getConfigPath()));
 			userID					= configJSON.getChild("userID").getValue<string>();
 			//actionName				= configJSON.getChild("actionName").getValue<string>();
@@ -42,14 +44,19 @@ namespace kubik
 
 			for(auto it : gamesTurnOn)
 				turnOnGames.push_back(it.getChild("id").getValue<int>());
-			
+
+			string iconUrl = configJSON.getChild("iconPath").getValue<string>();
+
 			for(auto it : gamesAvailable)
 			{
 				GamesInfo game;
-				game.id	  = (game::id)it.getChild("id").getValue<int>();
+				game.id	  = (GameId)it.getChild("id").getValue<int>();
 				game.isOn = findGameId(game.id, turnOnGames);
 				game.isPurchased = findGameId(game.id, purchasedGames);
-				game.name = getNameById(game.id);
+				game.name = it.getChild("name").getValue<string>();				
+				
+				game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
+				game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
 				games.push_back(game);	
 			}			
 		}
@@ -100,7 +107,7 @@ namespace kubik
 			doc.addChild(gamesJ);
 			doc.addChild(gamesTurnOnJ);
 			doc.addChild(gamesPurchased);
-			doc.write( writeFile(basePath), JsonTree::WriteOptions());
+			doc.write(writeFile(basePath), JsonTree::WriteOptions());
 		}
 
 		/*string getActionName()
@@ -118,7 +125,7 @@ namespace kubik
 			return false;
 		}
 
-		string getNameById(game::id id)
+	/*	string getNameById(game::id id)
 		{			
 			switch (id)
 			{
@@ -129,7 +136,7 @@ namespace kubik
 				return "Funces";
 			}	
 			return "none";
-		}
+		}*/
 
 
 		vector<GamesInfo> getGames()
@@ -227,11 +234,18 @@ namespace kubik
 			return  getAppPath().string() + path;
 		}
 
+		string getLang()
+		{
+			return lang;
+		}
+
 	private:
 		string userID;
 		int standID;
 		bool netConnection;
-		game::id defaultGameID;			
+		game::id defaultGameID;	
+
+		string lang;
 		
 	//	string actionName;
 		string menuConfigPath;
@@ -249,4 +263,6 @@ namespace kubik
 
 		vector<GamesInfo> games;
 	};
+
+	typedef shared_ptr<ApplicationModel> ApplicationModelRef;	
 }

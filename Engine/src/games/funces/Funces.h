@@ -6,6 +6,7 @@
 #include "Button.h"
 #include "ISettings.h"
 #include "FuncesSettings.h"
+#include "IDispatcher.h"
 
 using namespace std;
 using namespace ci;
@@ -13,11 +14,10 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class Funces:public IGame
+	class Funces:public IGame, public IDispatcher
 	{
-	public:	
-
-		Funces(shared_ptr<ISettings>);
+	public:
+		Funces(ISettingsRef setRef);
 		~Funces();
 
 		void start();
@@ -25,21 +25,14 @@ namespace kubik
 
 		void draw();	
 		void reset() override;
-		void init(shared_ptr<ISettings> config) override;
+		void init(ISettingsRef config) override;
 
-		void addMouseUpListener();
-		void removeMouseUpListener();
-
-	private:	
-
+	private:
 		Texture closeImg;
-		shared_ptr<Button> closeBtn;
-
-		void mouseUp( MouseEvent &event);
-		void mouseUpHandler(IButton& button );
-
+		ButtonRef closeBtn;
 		connection mouseUpListener, closeBtnListener;	
+		FuncesSettingsRef settings;
 
-		shared_ptr<FuncesSettings> settings;
+		void closeMouseUpHandler(IButton& button);		
 	};
 }

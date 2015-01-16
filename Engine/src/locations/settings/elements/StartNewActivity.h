@@ -7,7 +7,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class StartNewActivity:public IDrawable, public IDispatcher
+		class StartNewActivity: public IDispatcher
 		{
 		public:	
 			StartNewActivity():text("Завершить и начать новое"),
@@ -45,7 +45,7 @@ namespace kubik
 			void createBtn()
 			{
 				startNewBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 350, position.y + 37)));	
-				connect_once(startNewBtn->mouseUpSignal, bind(&StartNewActivity::tryToStartNewActivity, this, std::placeholders::_1));
+				//connect_once(startNewBtn->mouseUpSignal, bind(&StartNewActivity::tryToStartNewActivity, this, std::placeholders::_1));
 				displayList.push_back(startNewBtn);
 			}
 

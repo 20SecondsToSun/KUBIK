@@ -72,11 +72,48 @@ namespace kubik
 		};	
 	}
 
+	struct IconPair
+	{
+		Texture activeIcon;
+		Texture unActiveIcon;
+	};
+
 	struct GamesInfo
 	{
 		game::id id;
 		bool isOn, isPurchased;
 		string name;
+		IconPair iconPair;
+
+		bool isGameOn()
+		{
+			return isOn;
+		}
+
+		game::id getGameId()
+		{
+			return id;
+		}
+
+		string getNameText()
+		{
+			return name;
+		}
+
+		IconPair getIcons()
+		{
+			return iconPair;
+		}
+
+		void setActiveIcon(Texture tex)
+		{
+			iconPair.activeIcon = tex;		
+		}
+
+		void setUnActiveIcon(Texture tex)
+		{
+			iconPair.unActiveIcon = tex;
+		}
 	};
 
 	enum resourceType

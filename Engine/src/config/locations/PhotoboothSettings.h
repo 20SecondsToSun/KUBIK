@@ -110,7 +110,7 @@ namespace kubik
 			}
 		};
 
-		PhotoboothSettings(shared_ptr<ApplicationModel> model);
+		PhotoboothSettings(ApplicationModelRef model);
 		void load() override;
 		void setTextures() override;
 

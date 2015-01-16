@@ -5,36 +5,32 @@
 #include "IResourceScreenSaver.h"
 #include "VideoScreenSaver.h"
 #include "ImageScreenSaver.h"
+#include "IDispatcher.h"
 
 using namespace std;
 using namespace ci;
 
 namespace kubik
 {
-	class ScreenSaver: public IScreen
+	class ScreenSaver: public IScreen, public IDispatcher
 	{
 	public:
 		ScreenSaver(ISettingsRef config);
 
 		void start();
 		void stop();
-
 		void init(ISettingsRef settings) override;
 		void reset() override{};
-
-		void draw();
-
-		void addMouseUpListener();
-		void removeMouseUpListener();	
+		void draw();		
 
 	protected:
 		void setTextures();
 
 	private:
 		void mouseUp(MouseEvent &event);
-		ci::signals::connection mouseUpListener;
+		connection mouseUpListener;
 
-		shared_ptr<IResourceScreenSaver> screenSaverResource;
+		IResourceScreenSaverRef screenSaverResource;
 		ScreenSaverSettingsRef settings;
 	};
 

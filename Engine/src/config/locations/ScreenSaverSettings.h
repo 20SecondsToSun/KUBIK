@@ -30,7 +30,7 @@ namespace kubik
 			}
 		};
 
-		ScreenSaverSettings(shared_ptr<ApplicationModel> model)
+		ScreenSaverSettings(ApplicationModelRef model)
 		{
 			this->model = model;
 			mainConfigPath = model->getScreenSaverConfigPath();				

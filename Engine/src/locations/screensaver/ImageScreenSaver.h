@@ -1,29 +1,32 @@
 #pragma once
 
-class ImageScreenSaver:public IResourceScreenSaver
+namespace kubik
 {
-
-public:
-	ImageScreenSaver(gl::Texture texture)
+	class ImageScreenSaver:public IResourceScreenSaver
 	{
-		this->texture = texture;
-	}
 
-	void draw()
-	{
-		gl::draw(texture);
-	}
+	public:
+		ImageScreenSaver(gl::Texture texture)
+		{
+			this->texture = texture;
+		}
 
-	void start()
-	{
-		
-	}
+		void draw()
+		{
+			gl::draw(texture);
+		}
 
-	void stop()
-	{
-	
-	}
+		void start()
+		{
 
-private:
-	gl::Texture texture;
-};
+		}
+
+		void stop()
+		{
+
+		}
+
+	private:
+		gl::Texture texture;
+	};
+}

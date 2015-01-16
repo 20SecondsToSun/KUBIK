@@ -15,14 +15,10 @@ Photobooth::~Photobooth()
 {	
 	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor ~~~~~~~~~~~~~~~"<<endl;
 
-	mouseUpListener.disconnect();
 	updateSignal.disconnect();
-
-	closeBtn->mouseUpSignal.disconnect_all_slots();
-
+	
 	for (auto it: locations)	
 		it->nextLocationSignal.disconnect_all_slots();
-
 	locations.clear();
 }
 
@@ -39,19 +35,8 @@ void Photobooth::reset()
 		it->reset(settings);
 }
 
-void Photobooth::addMouseUpListener()
-{
-	mouseUpListener = getWindow()->connectMouseUp(&Photobooth::mouseUp, this);
-}
-
-void Photobooth::removeMouseUpListener()
-{
-	mouseUpListener.disconnect();
-}
-
 void Photobooth::create()
 {	
-	console()<<"CREATION::: "<<endl;
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
@@ -66,7 +51,8 @@ void Photobooth::create()
 
 	Texture closeImg = settings->getTextures()["closeImg"]->get();
 	closeBtn = ButtonRef(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));		
-	connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, placeholders::_1));
+	//connect_once(closeBtn->mouseUpSignal, bind(&Photobooth::mouseUpHandler, this, placeholders::_1));
+	displayList.push_back(closeBtn);
 	
 	cameraCanon().setup();
 	cameraCanon().startLiveView();
@@ -74,17 +60,17 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
-	console()<<"STARTING::: "<<endl;
-	addMouseUpListener();	
+//	addMouseUpListener();	
+
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));	
+
 	currentLocation = locations.begin();
 	(*currentLocation)->start();	
 }
 
 void Photobooth::stop()
 {
-	console()<<"STOPPING::: "<<endl;
-	removeMouseUpListener();	
+//	removeMouseUpListener();	
 }
 
 void Photobooth::initLocations()
@@ -119,9 +105,8 @@ void Photobooth::nextLocationHandler()
 
 void Photobooth::mouseUp(MouseEvent &event)
 {	
-	closeBtn->mouseUpHandler(event.getPos());
+	IDispatcher::mouseUp(event);
 	(*currentLocation)->mouseUpHandler(event.getPos());
-
 }
 
 void Photobooth::mouseUpHandler(IButton& button)

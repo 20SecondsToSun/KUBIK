@@ -1,31 +1,34 @@
 #pragma once
 
-class VideoScreenSaver:public IResourceScreenSaver
+namespace kubik
 {
-public:
-	VideoScreenSaver(qtime::MovieGl movie)
+	class VideoScreenSaver:public IResourceScreenSaver
 	{
-		this->movie = movie;
-	}
+	public:
+		VideoScreenSaver(qtime::MovieGl movie)
+		{
+			this->movie = movie;
+		}
 
-	void draw()
-	{
-		gl::Texture  texture = movie.getTexture();
-		if(texture)
-			gl::draw(texture, getWindowBounds());
-	}
+		void draw()
+		{
+			gl::Texture  texture = movie.getTexture();
+			if(texture)
+				gl::draw(texture, getWindowBounds());
+		}
 
-	void start()
-	{
-		movie.setLoop( true, false );
-		movie.play();
-	}
+		void start()
+		{
+			movie.setLoop( true, false );
+			movie.play();
+		}
 
-	void stop()
-	{
-		movie.stop();
-	}
+		void stop()
+		{
+			movie.stop();
+		}
 
-private:
-	qtime::MovieGl movie;
-};
+	private:
+		qtime::MovieGl movie;
+	};
+}

@@ -5,5 +5,13 @@
    "printedCount": 81,
    "puplishedCount": 125,
    "currentPhotosPrinted": 89,
-   "maxPhotosToPrint": 400	
+   "maxPhotosToPrint": 400,
+   "texts" : [
+      {
+         "lang" : "ru",
+	 "text1": "Выключен",
+	 "text2": "Настроить",	
+	 "text3" : "Статистика"
+
+      }	]
 }

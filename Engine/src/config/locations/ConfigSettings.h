@@ -12,6 +12,44 @@ namespace kubik
 {
 	class ConfigSettings:public ISettings
 	{
+
+		class ButtonTexts
+		{
+		public:
+			string getSwitchOffText()
+			{
+				return switchOffText;
+			}
+			
+			string getConfigText()
+			{
+				return configText;
+			}
+		
+			string getStatText()
+			{
+				return statText;
+			}
+
+			void  setSwitchOffText(string switchOffText)
+			{
+				this->switchOffText = switchOffText;
+			}
+			
+			void setConfigText(string configText)
+			{
+				this->configText = configText;
+			}
+		
+			void setStatText(string statText)
+			{
+				this->statText = statText;
+			}
+
+		private:
+			string switchOffText, configText, statText;
+		};
+
 		struct ConfighDataStruct
 		{
 			string actionName;
@@ -20,6 +58,24 @@ namespace kubik
 			int puplishedCount;
 			int currentPhotosPrinted;
 			int maxPhotosToPrint;
+			std::map <string, ButtonTexts> btnTexts;
+			string lang;
+
+			void setLang(string lang)
+			{
+				this->lang = lang;
+			}
+
+			ButtonTexts getTexts()
+			{
+				return btnTexts[lang];
+			}
+
+			void setBtnTexts(string lang, ButtonTexts txts)
+			{
+				btnTexts[lang] = txts;
+			}
+
 		}data;
 
 	public:
@@ -41,6 +97,19 @@ namespace kubik
 				data.puplishedCount = configJSON.getChild("puplishedCount").getValue<int>();
 				data.currentPhotosPrinted = configJSON.getChild("currentPhotosPrinted").getValue<int>();
 				data.maxPhotosToPrint = configJSON.getChild("maxPhotosToPrint").getValue<int>();
+				data.setLang(this->model->getLang());
+
+				JsonTree texts = JsonTree(configJSON.getChild("texts"));
+				for(auto it : texts)
+				{
+					string lang = it.getChild("lang").getValue<string>();
+					ButtonTexts txts;
+					txts.setSwitchOffText(it.getChild("text1").getValue<string>());
+					txts.setConfigText(it.getChild("text2").getValue<string>());
+					txts.setStatText(it.getChild("text3").getValue<string>());
+
+					data.setBtnTexts(lang, txts);
+				}
 
 				setTextures();
 			}
@@ -71,7 +140,24 @@ namespace kubik
 			addToDictionary("catridgeIcon",		 createImageResource(getDesignPath() + "catridgeIcon.png"));
 			addToDictionary("catridgeIcon",		 createImageResource(getDesignPath() + "catridgeIcon.png"));
 			addToDictionary("logoIcon",			 createImageResource(getDesignPath() + "logo.png"));
+
+			addToDictionary("appsTemp",		 createImageResource(getDesignPath() + "appsTemp.png"));
 		}	
+
+		string  getSwitchOffText()	
+		{
+			return data.getTexts().getSwitchOffText();
+		}
+
+		string  getConfigText()	
+		{
+			return data.getTexts().getConfigText();
+		}
+
+		string  getStatText()	
+		{
+			return data.getTexts().getStatText();
+		}
 
 		ConfighDataStruct getData()	
 		{

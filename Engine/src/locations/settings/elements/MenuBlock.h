@@ -6,7 +6,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class MenuBlock:public IDrawable, public IDispatcher
+		class MenuBlock:public IDispatcher
 		{
 		public:	
 			MenuBlock():titleText("Μενώ"), 
@@ -46,7 +46,7 @@ namespace kubik
 			void createBtn()
 			{
 				showPathBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 405, position.y + 175)));	
-				connect_once(showPathBtn->mouseUpSignal, bind(&MenuBlock::showPath, this, std::placeholders::_1));
+				//connect_once(showPathBtn->mouseUpSignal, bind(&MenuBlock::showPath, this, std::placeholders::_1));
 				displayList.push_back(showPathBtn);
 			}
 

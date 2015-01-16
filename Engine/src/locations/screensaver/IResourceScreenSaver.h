@@ -1,9 +1,14 @@
 #pragma once
 
-class IResourceScreenSaver
+namespace kubik
 {
-public:	
-	virtual void draw()  = 0;
-	virtual void start() = 0;
-	virtual void stop()  = 0;
-};
+	class IResourceScreenSaver
+	{
+	public:	
+		virtual void draw()  = 0;
+		virtual void start() = 0;
+		virtual void stop()  = 0;
+	};
+
+	typedef shared_ptr<IResourceScreenSaver> IResourceScreenSaverRef;	
+}

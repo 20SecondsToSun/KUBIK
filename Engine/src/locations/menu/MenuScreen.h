@@ -4,6 +4,7 @@
 #include "ButtonText.h"
 #include "MenuSettings.h"
 #include "IScreen.h"
+#include "IDispatcher.h"
 
 using namespace std;
 using namespace ci;
@@ -12,7 +13,7 @@ using namespace ci::signals;
 
 namespace kubik
 {
-	class MenuScreen:public IScreen
+	class MenuScreen:public IScreen, public IDispatcher
 	{
 	public:
 		MenuScreen(ISettingsRef config);
@@ -21,36 +22,29 @@ namespace kubik
 		void init(ISettingsRef  config) override;
 		void reset() override{};
 
-		signal<void(game::id)>  startGameSignal;
+		signal<void(GameId)>  startGameSignal;
 		SignalVoid startSettingsSignal;
 		SignalVoid startVideoSignal;
 
 		void start();
 		void stop() override;
-
-		void draw();
-		void removeMouseUpListener();
-		void addMouseUpListener();
-
+		void draw();	
 		void resetMenuBtnGames();
 
-	private:
-		vector<shared_ptr<MenuButton>> menuBtns;
-
+	private:		
 		connection appUpdateSignal;
 		connection mouseListener;	
 
-		void mouseUpListener(MenuButton& button);
-		void settingsMouseUpListener(ButtonText& button);
-		void videoMouseUpListener(ButtonText& button);
+		void gameMouseUpListener(EventRef& button);
+		void settingsMouseUpListener(EventRef& button);
+		void videoMouseUpListener(EventRef& button);
 
 		void createMenuBtns(vector<GamesInfo> gameIDs);
 		void clearButtonVector();
-		void mouseUp(MouseEvent &event);
 		void update();
 
-		shared_ptr<MenuSettings> settings;
-		shared_ptr<ButtonText> settingsButton, videoButton;
+		MenuSettingsRef settings;
+		ButtonTextRef settingsButton, videoButton;
 		gl::Texture bckgnd;
 		Font font;
 	};

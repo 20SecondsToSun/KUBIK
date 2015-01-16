@@ -6,7 +6,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class ScreenSaverBlock:public IDrawable, public IDispatcher
+		class ScreenSaverBlock: public IDispatcher
 		{
 		public:	
 			ScreenSaverBlock():titleText("Заставка"), 
@@ -48,7 +48,7 @@ namespace kubik
 			void createBtn()
 			{
 				showPathBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 405, position.y + 175)));	
-				connect_once(showPathBtn->mouseUpSignal, bind(&ScreenSaverBlock::showPath, this, std::placeholders::_1));
+				//connect_once(showPathBtn->mouseUpSignal, bind(&ScreenSaverBlock::showPath, this, std::placeholders::_1));
 				displayList.push_back(showPathBtn);
 			}
 

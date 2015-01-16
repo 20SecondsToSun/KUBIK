@@ -11,40 +11,27 @@ Funces::Funces(shared_ptr<ISettings> config)
 
 Funces::~Funces()
 {
-	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Funces destructor~~~~~~~~~~~~~~~~~~~"<<endl;
-	mouseUpListener.disconnect();
-	closeBtn->mouseUpSignal.disconnect_all_slots();
+	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Funces destructor~~~~~~~~~~~~~~~~~~~"<<endl;	
 }
 
 void Funces::start()
 {
-	console()<<"STARTING::: "<<endl;
-	addMouseUpListener();
+//	addMouseUpListener();
 }
 
 void Funces::stop()
 {
-	console()<<"STOPPING::: "<<endl;
-	removeMouseUpListener();	
+//	removeMouseUpListener();	
 }
 
-void Funces::init(shared_ptr<ISettings> config)
+void Funces::init(ISettingsRef config)
 {
 	settings = static_pointer_cast<FuncesSettings>(config);
 	
-	closeImg = settings->getTextures()["closeImg"]->get();	
-	closeBtn = shared_ptr<Button>(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));	
-	connect_once(closeBtn->mouseUpSignal, bind(&Funces::mouseUpHandler, this, std::placeholders::_1));
-}
-
-void Funces::addMouseUpListener()
-{
-	mouseUpListener = getWindow()->connectMouseUp(&Funces::mouseUp, this);
-}
-
-void Funces::removeMouseUpListener()
-{
-	mouseUpListener.disconnect();
+	closeImg = settings->getTexture("closeImg");	
+	closeBtn = ButtonRef(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));	
+	//connect_once(closeBtn->mouseUpSignal, bind(&Funces::closeMouseUpHandler, this, std::placeholders::_1));
+	displayList.push_back(closeBtn);
 }
 
 void Funces::reset() 
@@ -52,12 +39,7 @@ void Funces::reset()
 	
 }
 
-void Funces::mouseUp(MouseEvent &event)
-{	
-	closeBtn->mouseUpHandler(event.getPos());
-}
-
-void Funces::mouseUpHandler(IButton& button )
+void Funces::closeMouseUpHandler(IButton& button )
 {	
 	closeLocationSignal();
 }

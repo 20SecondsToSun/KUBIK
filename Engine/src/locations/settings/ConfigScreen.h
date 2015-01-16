@@ -8,13 +8,14 @@
 #include "GameSettings.h"
 #include "ScreenSaverSettings.h"
 #include "Types.h"
+#include "IDispatcher.h"
 
 #include "elements/Title.h"
 #include "elements/StartNewActivity.h"
 #include "elements/StatBlock.h"
 #include "elements/MenuBlock.h"
 #include "elements/ScreenSaverBlock.h"
-#include "elements/GamesBlock.h"
+#include "elements/gamesBlock/GamesBlock.h"
 #include "elements/PrinterBlock.h"
 #include "elements/Logo.h"
 #include "elements/CloseBlock.h"
@@ -28,7 +29,7 @@ using namespace kubik::config;
 
 namespace kubik
 {
-	class ConfigScreen:public IScreen
+	class ConfigScreen:public IScreen, public IDispatcher
 	{
 	public:
 		ConfigScreen(ISettingsRef config);
@@ -37,17 +38,14 @@ namespace kubik
 		void start();
 		void stop();
 		void draw();	
-
 		void init();
 		void init(ISettingsRef settings) override;
 
 		void reset() override{};
-		void addMouseUpListener();
-		void removeMouseUpListener();
 		void startUpParams();
 		void savePhtbtn();
 		
-		signal<void(void)> closeSettingsSignal;
+		SignalVoid closeSettingsSignal;
 		signal<void(vector<Changes>)> appSettingsChangedSignal;
 
 		connection mouseUpListener;
@@ -58,24 +56,18 @@ namespace kubik
 		void setMenuSettings(MenuSettingsRef menuSettings);
 		void setGameSettings(GameSettingsRef gameSettings);
 
+		void activateListeners();
+		void unActivateListeners();
+	
 	private:
-		InterfaceGlRef	photoBoothParams;
-		InterfaceGlRef	funcesParams;
-		InterfaceGlRef	menuParams;
-		InterfaceGlRef	gamesParams;
-		InterfaceGlRef	screensaverParams;		
+		ConfigSettingsRef		configSettings;
+		ScreenSaverSettingsRef  screenSaverSettings;
+		MenuSettingsRef			menuSettings;
+		GameSettingsRef			gameSettings;
 
-		vector<InterfaceGlRef> params;
-
-		ConfigSettingsRef				configSettings;
-		shared_ptr<ScreenSaverSettings> screenSaverSettings;
-		shared_ptr<MenuSettings>		menuSettings;
-		shared_ptr<GameSettings>		gameSettings;
-
-		shared_ptr<ButtonText>	saveChngBtn;
-		shared_ptr<Button>		closeBtn;
-		Font font;
-
+		ButtonTextRef			saveChngBtn;
+		ButtonRef				closeBtn;
+	
 		vector<Changes> changes;
 
 		PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
@@ -84,8 +76,9 @@ namespace kubik
 		ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	
 
 		void update();
-		void mouseUp(MouseEvent &event);	
-		void closeLocationHandler(IButton& button);
+		void closeLocationHandler(EventRef& event);
+		void gamesBlockHandler(EventRef& event);
+
 		void appSettingsChgHandler(ButtonText& button);		
 		
 		void savePhotoboothParams();
@@ -108,7 +101,6 @@ namespace kubik
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
 
-		Texture tempBg;
 		CloseBlockRef		closeBlock;
 		TitleRef			title;
 		StartNewActivityRef startNewActivity;
@@ -118,7 +110,9 @@ namespace kubik
 		GamesBlockRef		gamesBlock;
 		PrinterBlockRef		printerBlock;
 		LogoRef				logo;
-		vector<IDrawableRef> components;
+
+		list<IDrawableRef>  components;
+		list<IDispatcherRef>iComponents;
 	};
 
 	typedef shared_ptr<ConfigScreen> ConfigScreenRef;	

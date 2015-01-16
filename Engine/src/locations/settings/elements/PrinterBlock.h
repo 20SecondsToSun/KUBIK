@@ -6,7 +6,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class PrinterBlock:public IDrawable, public IDispatcher
+		class PrinterBlock: public IDispatcher
 		{
 		public:	
 			PrinterBlock():hintText("фото до замены картриджа"), 
@@ -81,7 +81,7 @@ namespace kubik
 				btnRectf = Rectf(620 + position.x, 66 + position.y, 620 + position.x + 155, 66 + position.y + 35);
 
 				resetBtn = ButtonRef(new Button(btnRectf));	
-				connect_once(resetBtn->mouseUpSignal, bind(&PrinterBlock::showPath, this, std::placeholders::_1));
+				//connect_once(resetBtn->mouseUpSignal, bind(&PrinterBlock::showPath, this, std::placeholders::_1));
 				displayList.push_back(resetBtn);
 			}
 

@@ -16,6 +16,7 @@
 #include "states/PhotoProcessing.h"
 #include "model/PhotoStorage.h"
 #include "CameraAdapter.h"
+#include "IDispatcher.h"
 
 using namespace std;
 using namespace ci;
@@ -23,7 +24,7 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class Photobooth:public IGame
+	class Photobooth:public IGame, public IDispatcher
 	{
 	public:	
 		Photobooth(ISettingsRef config);
@@ -36,20 +37,14 @@ namespace kubik
 		void draw();	
 		void create();
 		void reset() override;		
-		void init(ISettingsRef config) override;
-
-		void addMouseUpListener();
-		void removeMouseUpListener();
-
+		void init(ISettingsRef config) override;	
 		connection updateSignal;
+		virtual void mouseUp(MouseEvent &event) override;		
 
 	private:		
 		ButtonRef closeBtn;
-
 		void setTextures();
-		void mouseUp(MouseEvent& event);
 		void mouseUpHandler(IButton& button);
-
 		connection mouseUpListener, closeBtnListener;	
 
 		PhotoInstructionRef photoInstruction;
