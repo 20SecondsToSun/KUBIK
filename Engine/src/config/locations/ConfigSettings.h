@@ -13,7 +13,7 @@ namespace kubik
 	class ConfigSettings:public ISettings
 	{
 
-		class ButtonTexts
+		class ConfigTexts
 		{
 		public:
 			string getSwitchOffText()
@@ -31,6 +31,11 @@ namespace kubik
 				return statText;
 			}
 
+			string getNotInstallGamesText()
+			{
+				return notInstallGamesText;
+			}
+
 			void  setSwitchOffText(string switchOffText)
 			{
 				this->switchOffText = switchOffText;
@@ -46,8 +51,13 @@ namespace kubik
 				this->statText = statText;
 			}
 
+			void setNotInstallGamesText(string notInstallGamesText)
+			{
+				this->notInstallGamesText = notInstallGamesText;
+			}
+
 		private:
-			string switchOffText, configText, statText;
+			string switchOffText, configText, statText, notInstallGamesText;
 		};
 
 		struct ConfighDataStruct
@@ -58,7 +68,7 @@ namespace kubik
 			int puplishedCount;
 			int currentPhotosPrinted;
 			int maxPhotosToPrint;
-			std::map <string, ButtonTexts> btnTexts;
+			std::map <string, ConfigTexts> btnTexts;
 			string lang;
 
 			void setLang(string lang)
@@ -66,12 +76,12 @@ namespace kubik
 				this->lang = lang;
 			}
 
-			ButtonTexts getTexts()
+			ConfigTexts getTexts()
 			{
 				return btnTexts[lang];
 			}
 
-			void setBtnTexts(string lang, ButtonTexts txts)
+			void setBtnTexts(string lang, ConfigTexts txts)
 			{
 				btnTexts[lang] = txts;
 			}
@@ -103,10 +113,11 @@ namespace kubik
 				for(auto it : texts)
 				{
 					string lang = it.getChild("lang").getValue<string>();
-					ButtonTexts txts;
+					ConfigTexts txts;
 					txts.setSwitchOffText(it.getChild("text1").getValue<string>());
 					txts.setConfigText(it.getChild("text2").getValue<string>());
 					txts.setStatText(it.getChild("text3").getValue<string>());
+					txts.setNotInstallGamesText(it.getChild("text4").getValue<string>());
 
 					data.setBtnTexts(lang, txts);
 				}
@@ -129,6 +140,7 @@ namespace kubik
 			addToDictionary("introBold110",  createFontResource(getFontsPath("introb.ttf"), 110));
 			addToDictionary("introBold72",  createFontResource(getFontsPath("introb.ttf"), 72));
 			addToDictionary("introLight44",  createFontResource(getFontsPath("IntroLight.ttf"), 44));
+			addToDictionary("introLight36",  createFontResource(getFontsPath("IntroLight.ttf"), 36));
 
 			addToDictionary("closeImg",		 createImageResource(getDesignPath() + "closeConfig.png"));
 			addToDictionary("tempBg",		 createImageResource(getDesignPath() + "tempMain.jpg"));
@@ -157,6 +169,11 @@ namespace kubik
 		string  getStatText()	
 		{
 			return data.getTexts().getStatText();
+		}
+
+		string  getNotInstallGamesText()	
+		{
+			return data.getTexts().getNotInstallGamesText();
 		}
 
 		ConfighDataStruct getData()	

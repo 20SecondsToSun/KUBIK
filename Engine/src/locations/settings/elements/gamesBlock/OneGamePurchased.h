@@ -29,11 +29,10 @@ namespace kubik
 				checker->setActive(info.isGameOn());
 			}
 
-			virtual void checkerClicked( shared_ptr<kubik::Event> event )
+			virtual void checkerClicked(shared_ptr<kubik::Event> event)
 			{
 				checker->swapActive();
-				toolfield->swapActive();
-				
+				toolfield->swapActive();				
 				mouseUpSignal(event);
 			}
 			
@@ -47,7 +46,6 @@ namespace kubik
 
 			virtual void setPosition(ci::Vec2i position)		
 			{
-				//checker->setPosition(position + Vec2f(, 4.0f));
 				float initX = position.x + 20.0f;
 				float initY = position.y + 4.0f;
 				float width = 210;
@@ -60,7 +58,7 @@ namespace kubik
 
 		private:
 			string nameText;
-			ci::Font nameFont;
+			Font nameFont;
 			Color nameColor;
 			ToolFieldRef toolfield;				
 			CheckerRef checker;				

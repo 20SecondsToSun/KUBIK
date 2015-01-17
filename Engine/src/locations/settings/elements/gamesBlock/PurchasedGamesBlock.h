@@ -12,7 +12,10 @@ namespace kubik
 		{
 		public:
 			PurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
-			{				
+				:oneGamePurchasedHeight(186)
+			{
+				purchasedGamesSize = games.size();
+
 				for (auto gameInfo : games)
 				{
 					OneGamePurchasedRef pGame  = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));	
@@ -25,11 +28,20 @@ namespace kubik
 				int i = 0;
 				for (auto game : displayList)
 				{
-					game->setPosition(position + Vec2f(0.0f, (184 + 2) * i++));
+					game->setPosition(position + Vec2f(0.0f, oneGamePurchasedHeight * i++));
 					game->addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);
 				}
 				IDrawable::setPosition(position);
-			}	
+			}
+
+			float getHeight() const
+			{
+				return oneGamePurchasedHeight * purchasedGamesSize;
+			}
+
+		private:
+			int oneGamePurchasedHeight;
+			int purchasedGamesSize;
 		};
 	}
 }

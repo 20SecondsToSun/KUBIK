@@ -203,6 +203,7 @@
     <ClInclude Include="..\src\locations\settings\elements\CloseBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\GamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGamePurchased.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\PurchasedGamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolButton.h" />

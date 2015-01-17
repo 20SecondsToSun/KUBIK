@@ -34,7 +34,7 @@ namespace kubik
 				return count;
 			}
 
-			bool isIdInSwitchOnGames(game::id id)
+			bool isIdInSwitchOnGames(GameId id)
 			{
 				for (auto game: games)
 				{
@@ -46,9 +46,36 @@ namespace kubik
 				}
 				return false;
 			}
+
+			vector<GamesInfo> getNotPurchasedGames()
+			{
+				vector<GamesInfo> _gamesSelect;
+				for (auto game: games)
+				{
+					if(!game.isPurchased)
+						_gamesSelect.push_back(game);
+				}
+				return _gamesSelect;
+			}
+
+			vector<GamesInfo> getPurchasedGames()
+			{
+				vector<GamesInfo> _gamesSelect;
+				for (auto game: games)
+				{
+					if(game.isPurchased)
+						_gamesSelect.push_back(game);
+				}
+				return _gamesSelect;
+			}	
+
+		/*	vector<GamesInfo> getSwitchOnGames()
+			{
+
+			}*/
 		};
 
-		GameSettings(shared_ptr<ApplicationModel> model)
+		GameSettings(ApplicationModelRef model)
 		{
 			this->model		   = model;
 			currentGame		   = model->getDefaultGameID();
@@ -58,7 +85,7 @@ namespace kubik
 			//load();
 		}
 
-		shared_ptr<ISettings> get(game::id id)
+		ISettingsRef get(GameId id)
 		{
 			return gameSettingsMap[id];
 		}		
@@ -68,7 +95,7 @@ namespace kubik
 			return getGameTexturesById(currentGame);
 		}
 
-		IResourceDictionary getGameTexturesById(game::id id)
+		IResourceDictionary getGameTexturesById(GameId id)
 		{
 			IResourceDictionary rd = gameSettingsMap[id]->getResources();
 			return rd;		
@@ -91,12 +118,12 @@ namespace kubik
 
 				switch (game.id)
 				{
-				case  game::id::PHOTOBOOTH:
-					gameSettingsMap[game.id] = shared_ptr<PhotoboothSettings>(new PhotoboothSettings(model));
+				case  GameId::PHOTOBOOTH:
+					gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model));
 					break;
 
-				case  game::id::FUNCES:
-					gameSettingsMap[game.id]  = shared_ptr<FuncesSettings>(new FuncesSettings(model));	
+				case  GameId::FUNCES:
+					gameSettingsMap[game.id]  = FuncesSettingsRef(new FuncesSettings(model));	
 					break;
 
 				default:
@@ -132,7 +159,7 @@ namespace kubik
 
 		bool isGameCurrent(int id)
 		{
-			return currentGame == (game::id)id;
+			return currentGame == (GameId)id;
 		}
 
 		game::id getCurrentGame()
@@ -140,17 +167,17 @@ namespace kubik
 			return currentGame;
 		}
 
-		void setCurrentGame(game::id id)
+		void setCurrentGame(GameId id)
 		{
 			currentGame =  id;
 		}
 
-		void setNextGameId(game::id id)
+		void setNextGameId(GameId id)
 		{
 			nextGameId = id;
 		}
 
-		game::id getNextGameId()
+		GameId getNextGameId()
 		{
 			return nextGameId;
 		}
@@ -165,7 +192,7 @@ namespace kubik
 			data = _data;
 
 			model->setGames(data.games);
-			model->setDefaultGameID((game::id)data.defaultGameID);
+			model->setDefaultGameID((GameId)data.defaultGameID);
 			model->saveConfig();
 		}
 
@@ -176,8 +203,8 @@ namespace kubik
 
 	private:
 
-		game::id currentGame, nextGameId;	
-		map<game::id, shared_ptr<ISettings>> gameSettingsMap;
+		GameId currentGame, nextGameId;	
+		map<GameId, ISettingsRef> gameSettingsMap;
 
 		GamesDataStruct data;
 	};

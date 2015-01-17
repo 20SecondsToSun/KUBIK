@@ -452,6 +452,9 @@
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h">
       <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

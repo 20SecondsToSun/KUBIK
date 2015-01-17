@@ -28,8 +28,7 @@ namespace kubik
 			}
 
 			void drawOffMessage()
-			{
-				
+			{				
 				textTools().textFieldDraw(offText, &font, offTextColor, Vec2f(position.x + 289, position.y + 55));
 			}
 

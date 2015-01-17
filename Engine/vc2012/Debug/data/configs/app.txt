@@ -27,6 +27,13 @@
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png"
       }
+,
+      {
+         "id" : 5,
+		 "name": "MiniMi",
+		 "iconOn" : "iconon1.png",
+		 "iconOff" : "iconoff1.png"
+      }
    ],
    "gamesPurchased" : [
       {
@@ -34,6 +41,12 @@
       },
       {
          "id" : 2
+      },
+      {
+         "id" : 3
+      },
+      {
+         "id" : 4
       }
    ],
    "gamesTurnOn" : [

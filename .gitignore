@@ -42,6 +42,7 @@ Icon
 *.opensdf
 *.lastbuildstate
 *.map
+*.dll
 ipch/
 
 design/
