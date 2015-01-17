@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -160,6 +160,7 @@
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\Event.h" />
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
+    <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
     <ClInclude Include="..\src\events\settings\StatisticEvent.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\GamesFactory.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\GamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGameNotPurchased.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGamePurchased.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\PurchasedGamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolButton.h" />

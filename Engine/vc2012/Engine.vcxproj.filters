@@ -455,6 +455,12 @@
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h">
       <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGameNotPurchased.h">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

@@ -154,6 +154,7 @@ namespace kubik
 			addToDictionary("logoIcon",			 createImageResource(getDesignPath() + "logo.png"));
 
 			addToDictionary("appsTemp",		 createImageResource(getDesignPath() + "appsTemp.png"));
+			addToDictionary("gameInWebIcon", createImageResource(getDesignPath() + "gameInWebIcon.png"));
 		}	
 
 		string  getSwitchOffText()	

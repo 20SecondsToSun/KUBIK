@@ -190,7 +190,7 @@ void ConfigScreen::draw()
 	Texture tempBg = configSettings->getTexture("tempBottom");
 	//gl::draw(tempBg, Vec2f(0.0f, getWindowHeight() - tempBg.getHeight()));
 	tempBg = configSettings->getTexture("appsTemp");
-	gl::draw(tempBg,  Vec2f(1080.0f, 10.0f));
+	gl::draw(tempBg,  Vec2f(1080.0f, 10.0f - 500));
 	gl::color(Color::white());
 
 	for (auto comp : components)
@@ -215,6 +215,11 @@ void ConfigScreen::gamesBlockHandler(EventRef& event)
 	{
 		GameConfEventRef statEvent = static_pointer_cast<GameConfEvent>(event);	
 		console()<<"config game ID:::::: "<<statEvent->getGameId()<<endl;
+	}
+	else if(typeid(*ev) == typeid(GameShowUrlEvent))
+	{
+		GameShowUrlEventRef urlEvent = static_pointer_cast<GameShowUrlEvent>(event);	
+		console()<<"show url game ID:::::: "<<urlEvent->getGameId()<<endl;
 	}
 	
 	console()<<"EVENT:::::: "<<event->getMsg()<<endl;

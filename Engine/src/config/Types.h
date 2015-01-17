@@ -84,6 +84,7 @@ namespace kubik
 		bool isOn, isPurchased;
 		string name;
 		IconPair iconPair;
+		Texture miniIcon;
 
 		bool isGameOn()
 		{
@@ -114,6 +115,16 @@ namespace kubik
 		{
 			iconPair.unActiveIcon = tex;
 		}
+
+		void setMiniIcon(Texture tex)
+		{
+			miniIcon = tex;
+		}
+
+		Texture getMiniIcon()
+		{
+			return miniIcon;
+		}		
 	};
 
 	enum resourceType
