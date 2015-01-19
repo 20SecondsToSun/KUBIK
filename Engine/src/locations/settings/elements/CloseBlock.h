@@ -8,22 +8,13 @@ namespace kubik
 {
 	namespace config
 	{
-		class CloseBlock: public IDispatcher
+		class CloseBlock: public Button
 		{
 		public:	
-			virtual void draw()
+			CloseBlock(Vec2i position, Texture tex):Button(tex, position)
 			{
-				closeBtn->draw();			
-			}		
-
-			void createBtn(Texture tex)
-			{
-				closeBtn = ButtonRef(new Button(tex, position));	
-				closeBtn->addMouseUpListener(&CloseBlock::mouseUpFunction, this);
-			}		
-		
-		private:				
-			ButtonRef closeBtn;
+				event = CloseConfigEventRef(new CloseConfigEvent());		
+			}	
 		};
 
 		typedef std::shared_ptr<CloseBlock> CloseBlockRef;

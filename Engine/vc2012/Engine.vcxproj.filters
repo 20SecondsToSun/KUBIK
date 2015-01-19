@@ -121,6 +121,12 @@
     <Filter Include="Source Files\events\settings">
       <UniqueIdentifier>{473d97a5-5eca-4186-b65e-cb515d15da62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\settings\photobooth">
+      <UniqueIdentifier>{b9d7b15e-7d45-4956-8e37-a279bb4ac4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\photobooth\elements">
+      <UniqueIdentifier>{4007baa9-3a3b-4e8a-bfc5-265633a0aae3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -460,6 +466,36 @@
     </ClInclude>
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h">
       <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\MainConfig.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\CloseConfigEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h">
+      <Filter>Source Files\locations\settings\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\InterfaceDesign.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoPrintCount.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

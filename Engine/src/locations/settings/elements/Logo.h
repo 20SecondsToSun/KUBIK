@@ -9,10 +9,11 @@ namespace kubik
 		class Logo:public IDrawable
 		{
 		public:
-			Logo():bckgrndColor(Color::hex(0x242135)),
-				   blockWidth(245), blockHeight(170) 
+			Logo(Vec2i position, Texture tex):bckgrndColor(Color::hex(0x242135)),
+				   blockWidth(245), blockHeight(170)				 
 			{
-				
+				 setIcon(tex);
+				 setPosition(position);
 			}
 
 			virtual void draw()

@@ -9,16 +9,11 @@
 #include "ScreenSaverSettings.h"
 #include "Types.h"
 #include "IDispatcher.h"
+#include "CloseConfigEvent.h"
 
-#include "elements/Title.h"
-#include "elements/StartNewActivity.h"
-#include "elements/StatBlock.h"
-#include "elements/MenuBlock.h"
-#include "elements/ScreenSaverBlock.h"
-#include "elements/gamesBlock/GamesBlock.h"
-#include "elements/PrinterBlock.h"
-#include "elements/Logo.h"
-#include "elements/CloseBlock.h"
+#include "elements/MainConfig.h"
+#include "photobooth/PhotoboothConfig.h"
+
 
 using namespace std;
 using namespace ci;
@@ -75,6 +70,9 @@ namespace kubik
 		GameSettings::GamesDataStruct gamesData, initialGamesData;	
 		ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	
 
+		MainConfigRef mainConfig; 
+		PhotoboothConfigRef photoboothConfig;
+
 		void update();
 		void closeLocationHandler(EventRef& event);
 		void gamesBlockHandler(EventRef& event);
@@ -100,19 +98,7 @@ namespace kubik
 		
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
-
-		CloseBlockRef		closeBlock;
-		TitleRef			title;
-		StartNewActivityRef startNewActivity;
-		StatBlockRef		statBlock;
-		MenuBlockRef		menuBlock;
-		ScreenSaverBlockRef screenSaverBlock;
-		GamesBlockRef		gamesBlock;
-		PrinterBlockRef		printerBlock;
-		LogoRef				logo;
-
-		list<IDrawableRef>  components;
-		list<IDispatcherRef>iComponents;
+		
 	};
 
 	typedef shared_ptr<ConfigScreen> ConfigScreenRef;	

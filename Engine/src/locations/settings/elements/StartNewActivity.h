@@ -10,19 +10,23 @@ namespace kubik
 		class StartNewActivity: public IDispatcher
 		{
 		public:	
-			StartNewActivity():text("Завершить и начать новое"),
-						textcolor(Color::hex(0x00f067))
+			StartNewActivity(Vec2i position, Texture tex, Font font)
+				:icon(tex),
+				 font(font),
+				 text("Завершить и начать новое"),
+				 textcolor(Color::hex(0x00f067))
 			{
-
+				setPosition(position);
+				startNewBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 350, position.y + 37)));	
+				displayList.push_back(startNewBtn);
 			}
 			
 			virtual void draw()
 			{
 				gl::pushMatrices();
 					gl::translate(position);
-					//gl::drawSolidRect(Rectf(0, 0, 350, 37));
-					gl::draw(icon);
 					gl::color(textcolor);
+					gl::draw(icon);					
 					textTools().textFieldDraw(text, &font, textcolor, Vec2f(42, -5));
 				gl::popMatrices();						
 			}	
@@ -40,13 +44,6 @@ namespace kubik
 			void setText(string text)
 			{
 				this->text = text;
-			}
-
-			void createBtn()
-			{
-				startNewBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 350, position.y + 37)));	
-				//connect_once(startNewBtn->mouseUpSignal, bind(&StartNewActivity::tryToStartNewActivity, this, std::placeholders::_1));
-				displayList.push_back(startNewBtn);
 			}
 
 			void tryToStartNewActivity(IButton& button)

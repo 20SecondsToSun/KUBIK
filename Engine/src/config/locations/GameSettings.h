@@ -15,11 +15,31 @@ namespace kubik
 	{
 	public:
 
-		struct GamesDataStruct
+		class GamesDataStruct
 		{
 			vector<GamesInfo> games;
 			int defaultGameID;	
-			//string actionName;
+			
+		public:
+			int getDefaultGameID()
+			{
+				return defaultGameID;	
+			}
+
+			int getGameID(int i)
+			{
+				return games[i].id;	
+			}
+
+			void setDefaultGameID(int value)
+			{
+				defaultGameID = value;
+			}
+
+			vector<GamesInfo> getGames()
+			{
+				return games;	
+			}
 
 			int getCountSwitchOnGames()
 			{
@@ -67,12 +87,9 @@ namespace kubik
 						_gamesSelect.push_back(game);
 				}
 				return _gamesSelect;
-			}	
+			}
 
-		/*	vector<GamesInfo> getSwitchOnGames()
-			{
-
-			}*/
+			friend GameSettings;
 		};
 
 		GameSettings(ApplicationModelRef model)
@@ -81,8 +98,6 @@ namespace kubik
 			currentGame		   = model->getDefaultGameID();
 			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();
-			//data.actionName	   = model->getActionName();
-			//load();
 		}
 
 		ISettingsRef get(GameId id)
@@ -103,7 +118,6 @@ namespace kubik
 
 		void setTextures() override
 		{
-			console()<<"  currentGame  "<<currentGame<<endl;
 			gameSettingsMap[currentGame]->setTextures();	
 		}
 
@@ -147,9 +161,6 @@ namespace kubik
 
 			for (auto game: games)
 			{
-				//if (!game.isOn || !game.isPurchased)
-				//	continue;
-
 				if(game.id == id)
 					return true;
 			}
@@ -193,7 +204,7 @@ namespace kubik
 
 			model->setGames(data.games);
 			model->setDefaultGameID((GameId)data.defaultGameID);
-			model->saveConfig();
+			model->saveUserData();
 		}
 
 		bool isCurrentGameInSwitchOnGames()
@@ -202,10 +213,8 @@ namespace kubik
 		}
 
 	private:
-
 		GameId currentGame, nextGameId;	
 		map<GameId, ISettingsRef> gameSettingsMap;
-
 		GamesDataStruct data;
 	};
 

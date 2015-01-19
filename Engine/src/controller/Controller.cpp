@@ -427,7 +427,7 @@ GameId Controller::getReloadGameId()
 
 	if(!gameSettings->isCurrentGameInSwitchOnGames() && gameData.getCountSwitchOnGames() == 1)
 	{	
-		vector<GamesInfo> games = gameData.games;
+		vector<GamesInfo> games = gameData.getGames();
 
 		for (size_t i = 0; i < games.size(); i++)		
 			if( games[i].isOn)

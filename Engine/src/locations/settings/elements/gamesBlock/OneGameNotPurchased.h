@@ -32,7 +32,7 @@ namespace kubik
 				gl::pushMatrices();
 				gl::translate(position);
 				gl::draw(miniIcon);				
-				gl::draw(textTexture, Vec2f(91, 2));
+				gl::draw(textTexture, Vec2f(91.0f, 2.0f));
 				gl::draw(gameInWebIcon, Vec2f(112.0f + textTexture.getWidth(), 13.0f));
 				gl:popMatrices();		
 			}

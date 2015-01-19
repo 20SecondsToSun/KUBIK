@@ -9,22 +9,22 @@ namespace kubik
 {
 	namespace config
 	{
-		class Title:public IDrawable
+		class Title:public IDispatcher
 		{
 		public:	
-			Title():activityNameColor(Color::hex(0xffffff))
+			Title(Vec2i position, string name, Font font)				
+				 :activityName(name),
+				 activityNameFont(font),
+				 activityNameColor(Color::white())
 			{
-
+				IDrawable::setPosition(position);
 			}
 
 			virtual void draw()
 			{
 				gl::pushMatrices();
-					gl::translate(position);
-					//gl::color(ColorA(1, 1, 1, 0.5f));
-					//gl::drawSolidRect(Rectf(0, 0, 350, 73));
-					//gl::color(ColorA(1, 1, 1, 1.0f));
-					textTools().textFieldDraw(activityName, &font, activityNameColor, Vec2f(-12, 3));				
+					gl::translate(position);	
+					textTools().textFieldDraw(activityName, &activityNameFont, activityNameColor, Vec2f(-12, 3));				
 				gl::popMatrices();
 			}
 
@@ -35,13 +35,13 @@ namespace kubik
 
 			void setFont(Font font)
 			{
-				this->font = font;
+				activityNameFont = font;
 			}
 
 		private:
 			string activityName;				
-			Color activityNameColor;
-			Font font;			
+			Color  activityNameColor;
+			Font   activityNameFont;			
 		};
 
 		typedef std::shared_ptr<Title> TitleRef;

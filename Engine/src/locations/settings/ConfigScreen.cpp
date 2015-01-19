@@ -36,50 +36,27 @@ void ConfigScreen::startUpParams()
 	changes.clear();
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	phData	   = phbthSettings->getData();
-	initPhData = phbthSettings->getData();
-
-	menuData = menuSettings->getData();
-	initialMenuData = menuSettings->getData();
-
-	gamesData = gameSettings->getData();
-	initialGamesData = gameSettings->getData();
-
-	screensaverData		   = screenSaverSettings->getData();
-	initialScreensaverData = screenSaverSettings->getData();
-
+	initPhData = phData = phbthSettings->getData();	
+	initialMenuData = menuData = menuSettings->getData();
+	initialGamesData = gamesData = gameSettings->getData();
+	initialScreensaverData = screensaverData = screenSaverSettings->getData();
 
 	console()<<"STARTUP!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-	statBlock->setPlayedTimes(configSettings->getData().playedCount);
-	statBlock->setPrintedPhotos(configSettings->getData().printedCount);
-	statBlock->setSharedAndEmail(configSettings->getData().puplishedCount);
-
-	printerBlock->setÑurrentPhotosPrinted(configSettings->getData().currentPhotosPrinted);	
-
-	title->setActivityName("Ïðîìîàêöèÿ");
+	mainConfig->setStartupData();
+	photoboothConfig->setInitPosition();
 }
 
 void ConfigScreen::start()
 {
 	startUpParams();	
-	activateListeners();	
+	mainConfig->addMouseUpListener(&ConfigScreen::gamesBlockHandler, this);
+	photoboothConfig->activateListeners();
 }
 
 void ConfigScreen::stop()
 {	
-	unActivateListeners();
-}
-
-void ConfigScreen::activateListeners()
-{
-	closeBlock->addMouseUpListener(&ConfigScreen::closeLocationHandler, this);
-	gamesBlock->addMouseUpListener(&ConfigScreen::gamesBlockHandler, this);
-}
-
-void ConfigScreen::unActivateListeners()
-{
-	closeBlock->removeMouseUpListener();
-	gamesBlock->removeMouseUpListener();
+	mainConfig->removeMouseUpListener();
+	photoboothConfig->unActivateListeners();
 }
 
 void ConfigScreen::init()
@@ -89,90 +66,11 @@ void ConfigScreen::init()
 
 void ConfigScreen::init(ISettingsRef settings)
 {
-	configSettings	= static_pointer_cast<ConfigSettings>(settings);
+	configSettings			= static_pointer_cast<ConfigSettings>(settings);
+	mainConfig				= MainConfigRef( new MainConfig(configSettings, gameSettings));
 
-	//font					= configSettings->getFont("helvetica90");
-	Font fontBtn			= configSettings->getFont("helvetica20");
-	Font introLight44		= configSettings->getFont("introLight44");
-	Font helveticaLight22	= configSettings->getFont("helveticaLight22");
-	Font helveticaLight24	= configSettings->getFont("helveticaLight24");
-	Font introBold110		= configSettings->getFont("introBold110");
-	Font introBold72		= configSettings->getFont("introBold72");
-	
-	closeBlock = CloseBlockRef(new CloseBlock());
-	closeBlock->setPosition(Vec2i(916, 66));
-	closeBlock->createBtn(configSettings->getTexture("closeImg"));	
-	
-	title = TitleRef(new Title());
-	title->setPosition(Vec2i(100, 60));
-	title->setFont(introLight44);
-
-	startNewActivity = StartNewActivityRef(new StartNewActivity());
-	startNewActivity->setPosition(Vec2i(96, 137));
-	startNewActivity->setIcon(configSettings->getTexture("iconStartNew"));
-	startNewActivity->setFont(helveticaLight24);
-	startNewActivity->createBtn();
-	//connect_once(startNewActivity->startNewActivitySignal, bind(&ConfigScreen::startNewActivityHandler, this, std::placeholders::_1));
-	//connect_once(startNewActivity->cancelNewActivityTrySignal, bind(&ConfigScreen::, this, std::placeholders::_1));
-	//connect_once(startNewActivity->tryToStartNewActivitySignal, bind(&ConfigScreen::, this, std::placeholders::_1));
-
-
-	statBlock = StatBlockRef(new StatBlock());
-	statBlock->setPosition(Vec2i(100, 235));
-	statBlock->setTitleFont(helveticaLight22);
-	statBlock->setNumsFont(introBold110);
-
-	menuBlock = MenuBlockRef(new MenuBlock());
-	menuBlock->setPosition(Vec2i(100, 424));
-	menuBlock->setTitleFont(introLight44);
-	menuBlock->setSubTitleFont(helveticaLight22);
-	menuBlock->setIcon(configSettings->getTexture("menuIcon"));
-	menuBlock->createBtn();
-	//connect_once(menuBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
-
-	screenSaverBlock = ScreenSaverBlockRef(new ScreenSaverBlock());
-	screenSaverBlock->setPosition(Vec2i(533, 424));
-	screenSaverBlock->setTitleFont(introLight44);
-	screenSaverBlock->setSubTitleFont(helveticaLight22);
-	screenSaverBlock->setIcon(configSettings->getTexture("ssIcon"));
-	screenSaverBlock->createBtn();
-	//connect_once(screenSaverBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
-	
-	gamesBlock = GamesBlockRef(new GamesBlock(configSettings, gameSettings));
-	gamesBlock->setPosition(Vec2f(1080.0f, 10.0f));
-	
-
-	printerBlock = PrinterBlockRef(new PrinterBlock());
-	printerBlock->setPosition(Vec2i(0, getWindowHeight() - 170.0f));
-	printerBlock->setNumsFont(introBold72);
-	printerBlock->setHintFont(helveticaLight24);
-	printerBlock->setChangeBtnFont(helveticaLight24);
-	printerBlock->setChangeBtnIcon(configSettings->getTexture("catridgeIcon"));
-	printerBlock->setMaxPhotosToPrint(configSettings->getData().maxPhotosToPrint);
-	printerBlock->createBtn();
-	//connect_once(printerBlock->..., bind(&ConfigScreen::, this, std::placeholders::_1));
-
-	logo = LogoRef(new Logo());
-	logo->setIcon(configSettings->getTexture("logoIcon"));
-	logo->setPosition(Vec2i(835, getWindowHeight() - 170.0f));
-
-	components.clear();
-	components.push_back(title);
-	components.push_back(startNewActivity);
-	components.push_back(statBlock);
-	components.push_back(menuBlock);
-	components.push_back(closeBlock);
-	components.push_back(screenSaverBlock);
-	components.push_back(gamesBlock);
-	components.push_back(printerBlock);
-	components.push_back(logo);
-
-	iComponents.push_back(closeBlock);
-	iComponents.push_back(startNewActivity);
-	iComponents.push_back(screenSaverBlock);
-	iComponents.push_back(menuBlock);
-	iComponents.push_back(printerBlock);
-	iComponents.push_back(gamesBlock);
+	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
+	photoboothConfig		= PhotoboothConfigRef( new PhotoboothConfig(configSettings, phbthSettings));	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -183,18 +81,16 @@ void ConfigScreen::init(ISettingsRef settings)
 
 void ConfigScreen::draw()
 {
-	gl::color(Color::hex(0x0d0917));
-	gl::drawSolidRect(getWindowBounds());
+	//mainConfig->draw();
 	
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
-	Texture tempBg = configSettings->getTexture("tempBottom");
+	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
+	Texture tempBg = configSettings->getTexture("temp");
 	//gl::draw(tempBg, Vec2f(0.0f, getWindowHeight() - tempBg.getHeight()));
-	tempBg = configSettings->getTexture("appsTemp");
-	gl::draw(tempBg,  Vec2f(1080.0f, 10.0f - 500));
-	gl::color(Color::white());
-
-	for (auto comp : components)
-		comp->draw();	
+	//tempBg = configSettings->getTexture("appsTemp");
+	//gl::draw(tempBg);//,  Vec2f(1080.0f, 10.0f - 500));
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
+	photoboothConfig->draw();
+	//gl::color(Color::white());	
 }
 
 void ConfigScreen::closeLocationHandler(EventRef& event)
@@ -221,7 +117,11 @@ void ConfigScreen::gamesBlockHandler(EventRef& event)
 		GameShowUrlEventRef urlEvent = static_pointer_cast<GameShowUrlEvent>(event);	
 		console()<<"show url game ID:::::: "<<urlEvent->getGameId()<<endl;
 	}
-	
+	else if(typeid(*ev) == typeid(CloseConfigEvent))
+	{
+		console()<<"close location:::::: "<<endl;
+		closeLocationSignal();
+	}	
 	console()<<"EVENT:::::: "<<event->getMsg()<<endl;
 }
 
@@ -411,7 +311,7 @@ void ConfigScreen::checkGamesParamsForChanges()
 		setDefaultGameIdInSwitchOnGames();
 		setReloadGamePropertyIfNeedIt(chng);
 
-		if (initialGamesData.defaultGameID != gamesData.defaultGameID || chng.gamesReload)
+		if (initialGamesData.getDefaultGameID() != gamesData.getDefaultGameID() || chng.gamesReload)
 		{
 			changes.push_back(chng);
 			gameSettings->setData(gamesData);
@@ -432,15 +332,15 @@ void ConfigScreen::checkScreenSaverParamsForChanges()
 
 void ConfigScreen::setDefaultGameIdInSwitchOnGames()
 {
-	size_t len = gamesData.games.size();
+	size_t len = gamesData.getGames().size();
 
-	if(!gamesData.isIdInSwitchOnGames((game::id)gamesData.defaultGameID))
+	if(!gamesData.isIdInSwitchOnGames((GameId)gamesData.getDefaultGameID()))
 	{
 		for (size_t i = 0; i < len; i++)
 		{
-			if(gamesData.games[i].isOn)
+			if(gamesData.getGames()[i].isOn)
 			{
-				gamesData.defaultGameID = gamesData.games[i].id;
+				gamesData.setDefaultGameID(gamesData.getGameID(i));
 				break;
 			}
 		}
@@ -449,13 +349,13 @@ void ConfigScreen::setDefaultGameIdInSwitchOnGames()
 
 void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
 {
-	size_t len = gamesData.games.size();
+	size_t len = gamesData.getGames().size();
 
 	for (size_t i = 0; i < len; i++)
 	{
-		GamesInfo game = gamesData.games[i];
+		GamesInfo game = gamesData.getGames()[i];
 
-		if( game.isPurchased && game.isOn != initialGamesData.games[i].isOn)	
+		if( game.isPurchased && game.isOn != initialGamesData.getGames()[i].isOn)	
 		{
 			chng.gamesReload = true;
 			break;			

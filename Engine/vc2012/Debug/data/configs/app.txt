@@ -1,89 +1,10 @@
 {
-   "defaultGameID" : 2,
-   "funcesConfigPath" : "data\\configs\\funces.txt",
-   "iconPath": "data\\interface\\tuneupDesign\\",
-   "gamesAvailable" : [
-      {
-         "id" : 1,
-		 "name": "Photobooth",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon1.png"
-      },
-      {
-         "id" : 3,
-		 "name": "Instakub",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon1.png"
-      },
-      {
-         "id" : 2,
-		 "name": "Funces",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon2.png"
-      },
-      {
-         "id" : 4,
-		 "name": "MiniMi",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon1.png"
-      }
-,
-      {
-         "id" : 5,
-		 "name": "Cool Pose",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon1.png"
-      }
-	  ,
-      {
-         "id" : 6,
-		 "name": "OneTwoDrink",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon2.png"
-      },
-      {
-         "id" : 7,
-		 "name": "Cool Pose",
-		 "iconOn" : "iconon1.png",
-		 "iconOff" : "iconoff1.png",
-		 "miniIcon" : "miniIcon2.png"
-      }
-   ],
-   "gamesPurchased" : [
-      {
-         "id" : 1
-      },
-      {
-         "id" : 2
-      },
-      {
-         "id" : 3
-      },
-      {
-         "id" : 4
-      }
-   ],
-   "gamesTurnOn" : [
-      {
-         "id" : 1
-      },
-      {
-         "id" : 2
-      }
-   ],
+   "funcesConfigPath" : "data\\configs\\funces.txt",  
    "instagramConfigPath" : "data\\configs\\instagram.txt",
    "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
    "menuConfigPath" : "data\\configs\\menu.txt",
-   "netConnection" : true,
    "photoboothConfigPath" : "data\\configs\\photobooth\\",
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
-   "standID" : 1,
    "tuneUpConfigPath" : "data\\configs\\tuneup.txt",
-   "userID" : "1fggh"
+   "userInfoPath" : "data\\configs\\userInfo.txt"
 }

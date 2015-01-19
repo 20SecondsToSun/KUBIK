@@ -32,7 +32,7 @@ namespace kubik
 				textTools().textFieldDraw(offText, &font, offTextColor, Vec2f(position.x + 289, position.y + 55));
 			}
 
-			void drawControls()
+			void drawControls() const
 			{				
 				toolBtn->draw();
 				statBtn->draw();

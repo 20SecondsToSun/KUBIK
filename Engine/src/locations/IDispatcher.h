@@ -45,8 +45,7 @@ namespace kubik
 		{	
 			//for (auto comp : displayList)			
 			//	comp->mouseUpHandler(event.getPos());
-
-			mouseUpHandler(event.getPos());
+			mouseUpHandler(event.getPos());			
 		}
 
 		virtual void mouseUpHandler(ci::Vec2i pos)
@@ -72,6 +71,7 @@ namespace kubik
 
 	protected:
 		list<shared_ptr<IDispatcher>> displayList;
+
 	private:
 		connection mouseUpListener, mouseUpSignalListener;
 	};

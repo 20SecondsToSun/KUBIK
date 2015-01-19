@@ -71,7 +71,7 @@ namespace kubik
 
 			virtual void setPosition(ci::Vec2i position)		
 			{
-				position -= Vec2f(0, 500);
+				//position -= Vec2f(0, 500);
 				pGameblock->setPosition(position + Vec2f(0.0f, blockTopShiftY));
 				if(hasGamesInShop)
 				{

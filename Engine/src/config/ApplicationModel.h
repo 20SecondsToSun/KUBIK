@@ -15,38 +15,46 @@ namespace kubik
 	public:
 		void load()
 		{
-			lang = "ru";
-			
+			parseConfigPaths();				
+			parseUserData();		
+		}
+
+		void parseConfigPaths()
+		{
 			JsonTree configJSON		= JsonTree(loadFile(getConfigPath()));
-			userID					= configJSON.getChild("userID").getValue<string>();
-			//actionName				= configJSON.getChild("actionName").getValue<string>();
-			standID					= configJSON.getChild("standID").getValue<int>();
-			netConnection			= configJSON.getChild("netConnection").getValue<bool>();
-			defaultGameID			= (game::id)configJSON.getChild("defaultGameID").getValue<int>();	
-
 			screenSaverConfigPath	= configJSON.getChild("screenSaverConfigPath").getValue<string>();
-
 			menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();
 			tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();				
 			photoboothConfigPath	= configJSON.getChild("photoboothConfigPath").getValue<string>();
 			funcesConfigPath		= configJSON.getChild("funcesConfigPath").getValue<string>();
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
 			kotopozaConfigPath		= configJSON.getChild("kotopozaConfigPath").getValue<string>();
+			userDataPath			= configJSON.getChild("userInfoPath").getValue<string>();
+		}
 
-			JsonTree gamesAvailable = JsonTree(configJSON.getChild("gamesAvailable"));
-			JsonTree gamesPurchased = JsonTree(configJSON.getChild("gamesPurchased"));
-			JsonTree gamesTurnOn	= JsonTree(configJSON.getChild("gamesTurnOn"));
+		void parseUserData()
+		{		
+			JsonTree userInfoJSON	= JsonTree(loadFile(getUserDataPath()));
+			lang					= userInfoJSON.getChild("lang").getValue<string>();	
+			userID					= userInfoJSON.getChild("userID").getValue<string>();	
+			standID					= userInfoJSON.getChild("standID").getValue<int>();
+			netConnection			= userInfoJSON.getChild("netConnection").getValue<bool>();
+			defaultGameID			= (GameId)userInfoJSON.getChild("defaultGameID").getValue<int>();			
 
-			vector<int> purchasedGames, turnOnGames;
+			JsonTree gamesAvailable = JsonTree(userInfoJSON.getChild("gamesAvailable"));
+			JsonTree gamesPurchased = JsonTree(userInfoJSON.getChild("gamesPurchased"));
+			JsonTree gamesTurnOn	= JsonTree(userInfoJSON.getChild("gamesTurnOn"));
 
+			vector<int> purchasedGames, turnOnGames;		
+			
 			for(auto it : gamesPurchased)
 				purchasedGames.push_back(it.getChild("id").getValue<int>());
-
+		
 			for(auto it : gamesTurnOn)
 				turnOnGames.push_back(it.getChild("id").getValue<int>());
-
-			string iconUrl = configJSON.getChild("iconPath").getValue<string>();
-
+		
+			string iconUrl = userInfoJSON.getChild("iconPath").getValue<string>();			
+			
 			for(auto it : gamesAvailable)
 			{
 				GamesInfo game;
@@ -62,24 +70,17 @@ namespace kubik
 			}			
 		}
 
-		void saveConfig()
+		void saveUserData()
 		{
 			fs::path basePath(getConfigPath());
 
 			JsonTree doc;		
 			doc.addChild(JsonTree("userID", userID));
-			//doc.addChild(JsonTree("actionName", actionName));
+			doc.addChild(JsonTree("lang", lang));
 			doc.addChild(JsonTree("standID", standID));
 			doc.addChild(JsonTree("netConnection", netConnection));
 			doc.addChild(JsonTree("defaultGameID", defaultGameID));
-			doc.addChild(JsonTree("screenSaverConfigPath", screenSaverConfigPath));
-			doc.addChild(JsonTree("menuConfigPath", menuConfigPath));	
-			doc.addChild(JsonTree("tuneUpConfigPath", tuneUpConfigPath));	
-			doc.addChild(JsonTree("photoboothConfigPath", photoboothConfigPath));	
-			doc.addChild(JsonTree("funcesConfigPath", funcesConfigPath));	
-			doc.addChild(JsonTree("instagramConfigPath", instagramConfigPath));	
-			doc.addChild(JsonTree("kotopozaConfigPath", kotopozaConfigPath));	
-
+			
 			JsonTree gamesJ			= JsonTree::makeArray("gamesAvailable");
 			JsonTree gamesTurnOnJ   = JsonTree::makeArray("gamesTurnOn");
 			JsonTree gamesPurchased = JsonTree::makeArray("gamesPurchased");
@@ -111,34 +112,20 @@ namespace kubik
 			doc.write(writeFile(basePath), JsonTree::WriteOptions());
 		}
 
-		/*string getActionName()
-		{
-			return actionName;
-		}*/
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//				ACCESSORS
+		//
+		////////////////////////////////////////////////////////////////////////////
 
 		bool findGameId(int id, vector<int> gamesTurnOn)
 		{
-			for (auto it:gamesTurnOn)
-			{
+			for (auto it:gamesTurnOn)			
 				if(it == id)
 					return true;
-			}
+			
 			return false;
 		}
-
-	/*	string getNameById(game::id id)
-		{			
-			switch (id)
-			{
-			case game::id::PHOTOBOOTH:
-				return "Photobooth";
-
-			case  game::id::FUNCES:
-				return "Funces";
-			}	
-			return "none";
-		}*/
-
 
 		vector<GamesInfo> getGames()
 		{
@@ -229,6 +216,10 @@ namespace kubik
 		{
 			return getFullPath(kotopozaConfigPath);
 		}
+		string getUserDataPath()
+		{
+			return getFullPath(userDataPath);
+		}
 
 		string getFullPath(string path)
 		{
@@ -240,15 +231,12 @@ namespace kubik
 			return lang;
 		}
 
-	private:
+	private:		
+		int	   standID;
+		bool   netConnection;
 		string userID;
-		int standID;
-		bool netConnection;
-		game::id defaultGameID;	
-
-		string lang;
-		
-	//	string actionName;
+		GameId defaultGameID;	
+		string lang;		
 		string menuConfigPath;
 		string tuneUpConfigPath;
 		string screenSaverConfigPath;
@@ -256,6 +244,7 @@ namespace kubik
 		string funcesConfigPath;
 		string instagramConfigPath;
 		string kotopozaConfigPath;
+		string userDataPath;		
 
 		fs::path getConfigPath()
 		{		
