@@ -20,7 +20,7 @@ namespace kubik
 
 	class PhotoboothSettings: public ISettings
 	{
-		public:
+	public:
 
 		struct Filter
 		{
@@ -49,14 +49,77 @@ namespace kubik
 			string bgPrintsPath;
 		};
 
-		struct SharingStruct
+		class Sharing
 		{
-			bool isFacebook;
-			bool isVkotakte;
-			bool isTwitter;
-			bool isPrint;
-			bool isEmail;
-			bool isQrCode;
+		public:
+			bool getFacebook(){return facebookOn;}
+			bool getVkontakte(){return vkotakteOn;}
+			bool getTwitter(){return twitterOn;}
+			bool getPrint(){return printOn;}
+			bool getEmail(){return emailOn;}
+			bool getQrCode(){return qrCodeOn;}	
+
+			void setFacebook(bool value){facebookOn = value;}
+			void setVkontakte(bool value){vkotakteOn = value;}
+			void setTwitter(bool value){twitterOn = value;}
+			void setPrint(bool value){printOn = value;}
+			void setEmail(bool value){emailOn = value;}
+			void setQrCode(bool value){qrCodeOn = value;}
+
+			friend PhotoboothSettings;
+		private:
+			bool facebookOn;
+			bool vkotakteOn;
+			bool twitterOn;
+			bool printOn;
+			bool emailOn;
+			bool qrCodeOn;			
+		};
+
+		class ConfigTexts
+		{
+		public:
+			string getDesignInterfaceText(){return designInterfaceText; }
+			string getPhotoStyleText()	{return photoOverText;}
+			string getPhotoPrintCountText(){return photoPrintCountText;}
+			string getPhotoOverElementsText(){return photoOverElementsText;}
+			string getPhotoFiltersText(){return photoFiltersTex;}
+			string getPublishText(){return publishText;}	
+
+			void setDesignInterfaceText(string value){designInterfaceText = value;}
+			void setPhotoStyleText(string value)	{photoOverText = value;}
+			void setPhotoPrintCountText(string value){photoPrintCountText = value;}
+			void setPhotoOverElementsText(string value){photoOverElementsText = value;}
+			void setPhotoFiltersText(string value){photoFiltersTex = value;}
+			void setPublishText(string value){publishText = value;}				
+
+		private:
+			string designInterfaceText;
+			string	photoOverText;
+			string photoPrintCountText;
+			string photoOverElementsText;
+			string photoFiltersTex;
+			string publishText;
+		};
+
+		class StringVO
+		{
+		public:
+			StringVO(string str = ""):data(str)
+			{
+			}
+
+			void set(string str)
+			{
+				data = str;
+			}
+
+			string get()
+			{
+				return data;
+			}
+		private:
+				string data;
 		};
 
 		struct PhotoboothDataStruct
@@ -70,8 +133,8 @@ namespace kubik
 			static const int MIN_COUNTDOWN_TIMER = 3;
 			static const int MAX_COUNTDOWN_TIMER = 5;
 
-			SharingStruct sharing;
-			
+			Sharing sharing;
+
 			int  seconds;
 			int  secondsBetweenShots;
 			int  photoNum;
@@ -82,7 +145,6 @@ namespace kubik
 			vector<Filter>			filters;		
 			vector<Sticker>			stickers;
 			vector<BackgroundPrint> bgPrint;
-	
 
 			BackgroundPrint activeBgPrint;
 			Sticker			activeSticker;
@@ -90,25 +152,68 @@ namespace kubik
 			bool hasDesignChanges(PhotoboothDataStruct val)
 			{
 				return (val.isCustomDesign != isCustomDesign ||
-						val.templateId	   != templateId);
+					val.templateId	   != templateId);
 			}
 
 			bool hasAnyChanges(PhotoboothDataStruct val)
 			{
-				return (val.sharing.isEmail			  != sharing.isEmail ||
-						val.sharing.isFacebook        != sharing.isFacebook ||
-						val.sharing.isPrint			  != sharing.isPrint ||
-						val.sharing.isQrCode		  != sharing.isQrCode ||
-						val.isSticker			      != isSticker ||
-						val.sharing.isTwitter	      != sharing.isTwitter ||
-						val.sharing.isVkotakte	      != sharing.isVkotakte ||
-						val.photoNum				  != photoNum ||
-						val.seconds					  != seconds ||
-						val.secondsBetweenShots		  != secondsBetweenShots ||
-						val.activeSticker.id		  != activeSticker.id ||					
-						val.activeBgPrint.id		  != activeBgPrint.id);
+				return (val.sharing.getEmail()	  != sharing.getEmail() ||
+					val.sharing.getFacebook()     != sharing.getFacebook() ||
+					val.sharing.getPrint()		  != sharing.getPrint() ||
+					val.sharing.getQrCode()		  != sharing.getQrCode() ||
+					val.isSticker			      != isSticker ||
+					val.sharing.getTwitter()	  != sharing.getTwitter() ||
+					val.sharing.getVkontakte()     != sharing.getVkontakte() ||
+					val.photoNum				  != photoNum ||
+					val.seconds					  != seconds ||
+					val.secondsBetweenShots		  != secondsBetweenShots ||
+					val.activeSticker.id		  != activeSticker.id ||					
+					val.activeBgPrint.id		  != activeBgPrint.id);
+			}
+
+			std::map <string, ConfigTexts> mainTitles, subTitles;
+			std::map <string, StringVO> yorDesignText, saveText;
+
+			void setMainTitles(string lang, ConfigTexts txts)
+			{
+				mainTitles[lang] = txts;			
+			}
+
+			void setSubTitles(string lang, ConfigTexts txts)
+			{
+				subTitles[lang] = txts;			
+			}
+
+			void setYourDesignText(string lang, StringVO txts)
+			{
+				yorDesignText[lang] = txts;			
+			}
+
+			void setSaveText(string lang, StringVO txts)
+			{
+				saveText[lang] = txts;			
 			}
 		};
+
+		ConfigTexts getMainTitles()
+		{
+			return getData().mainTitles[this->model->getLang()];
+		}
+
+		ConfigTexts getSubTitles()
+		{
+			return getData().subTitles[this->model->getLang()];
+		}
+
+		string getYourDesignText()
+		{
+			return getData().yorDesignText[this->model->getLang()].get();
+		}
+
+		string getSaveText()
+		{
+			return getData().saveText[this->model->getLang()].get();
+		}
 
 		PhotoboothSettings(ApplicationModelRef model);
 		void load() override;
@@ -116,9 +221,9 @@ namespace kubik
 
 		Texture getActiveStickerTex();
 		Texture getActivePrintBgTex();
-		
+
 		bool findFilterId(int id, vector<int> filters);		
-		
+
 		vector<int> getOnFilters();
 		int getPhotoShots();
 		void setDesignPath();
@@ -138,6 +243,8 @@ namespace kubik
 		void setGameDesignParams(JsonTree config);
 		void setGameStickerParams(JsonTree config);
 		void setGameBgPrintParams(JsonTree config);
+		void setConfigData(JsonTree config);
+
 		void saveConfig();
 
 		void findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom);

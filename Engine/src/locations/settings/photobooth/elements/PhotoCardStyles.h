@@ -8,10 +8,13 @@ namespace kubik
 		class PhotoCardStyles: public IPhotoboothItem
 		{
 		public:	
-			PhotoCardStyles(PhotoboothSettingsRef phbSettings, int index)
-				:IPhotoboothItem(phbSettings, index)
+			PhotoCardStyles(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index)
+				:IPhotoboothItem(configSettings,
+				phbSettings, index, Color::hex(0x3e82df),
+				phbSettings->getMainTitles().getPhotoStyleText(),
+				phbSettings->getSubTitles().getPhotoStyleText())
 			{
-				
+			
 			}	
 
 		protected:

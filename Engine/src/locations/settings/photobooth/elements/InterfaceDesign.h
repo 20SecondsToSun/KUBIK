@@ -9,13 +9,16 @@ namespace kubik
 		{
 		public:	
 			InterfaceDesign(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index)
-				:IPhotoboothItem(phbSettings, index)
+				:IPhotoboothItem(configSettings,
+									phbSettings, 
+									index, 
+									Color::hex(0x01a7fb),
+									phbSettings->getMainTitles().getDesignInterfaceText(),
+									phbSettings->getSubTitles().getDesignInterfaceText())
 			{
+				
 				this->configSettings = configSettings;
-				mainText = "Дизайн интерфейса";
-				subText  = "Minimal Epileptic";
-				yourDizText = "Ваш дизайн";
-				saveText = "Сохранить";
+				yourDizTex = textTools().getTextField(phbSettings->getYourDesignText(), &configSettings->getFont("introLight44"), Color::hex(0xffffff));
 			}	
 
 			virtual void draw()
@@ -23,11 +26,12 @@ namespace kubik
 				IPhotoboothItem::draw();
 				gl::color(ColorA(1,1,1,0.4));
 				gl::draw(configSettings->getTexture("temp3"), position);
+				gl::draw(yourDizTex, position + Vec2f(0.5*(itemWidth - yourDizTex.getWidth()), 540));
 			}
 
 		private:
 			ConfigSettingsRef configSettings;
-			string yourDizText, saveText;
+			Texture yourDizTex;
 		};
 
 		typedef std::shared_ptr<InterfaceDesign> InterfaceDesignRef;

@@ -91,7 +91,7 @@ namespace kubik
 			font			= settings->getFont("helvetica40");
 			stickerTex		= settings->getActiveStickerTex();	
 			printTempaleTex	= settings->getActivePrintBgTex();	
-			isPrint			= settings->getData().sharing.isPrint;
+			isPrint			= settings->getData().sharing.getPrint();
 
 			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
 			connect_once(nextButton->mouseUpSignal, bind(&PhotoTemplate::mouseUpNextListener, this, placeholders::_1));	

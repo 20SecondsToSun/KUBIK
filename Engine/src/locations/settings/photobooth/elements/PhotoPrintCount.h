@@ -8,8 +8,10 @@ namespace kubik
 		class PhotoPrintCount: public IPhotoboothItem
 		{
 		public:	
-			PhotoPrintCount(PhotoboothSettingsRef phbSettings, int index)
-				:IPhotoboothItem(phbSettings, index)
+			PhotoPrintCount(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index)
+				:IPhotoboothItem(configSettings, phbSettings, index, Color::hex(0x5e6fd1),
+				phbSettings->getMainTitles().getPhotoPrintCountText(),
+				phbSettings->getSubTitles().getPhotoPrintCountText())
 			{
 				
 			}	

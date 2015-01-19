@@ -51,16 +51,16 @@ namespace kubik
 			shareBtns.clear();
 			int i = 0;
 
-			if (data.sharing.isFacebook)
+			if (data.sharing.getFacebook())
 				createShareButton(FACEBOOK, "FACEBOOK", i++);
 
-			if (data.sharing.isVkotakte)
+			if (data.sharing.getVkontakte())
 				createShareButton(VKONTAKTE, "VKONTAKTE", i++);
 
-			if (data.sharing.isTwitter)
+			if (data.sharing.getTwitter())
 				createShareButton(TWITTER, "TWITTER", i++);
 
-			if (data.sharing.isEmail)
+			if (data.sharing.getEmail())
 				createShareButton(EMAIL, "EMAIL", i++);
 		}
 

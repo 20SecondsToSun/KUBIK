@@ -17,52 +17,24 @@ namespace kubik
 		{
 		public:	
 			PhotoboothConfig(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings)
-				:leftMargin(165),
-				itemsCount(6),
-				oneItemCloseHeightMax(320),
-				oneItemCloseHeightMin(171),
-				oneItemOpenHeight(1065)
-			{
-				openItemIndex = -1;	
+				:leftMargin(165)				
+			{				
 				int index = 0;
 
-				Color colors [] = { Color::hex(0x01a7fb), Color::hex(0x1f95ed), Color::hex(0x3e82df),
-									Color::hex(0x5e6fd1), Color::hex(0x7e5cc2), Color::hex(0x8e47aa)};
+				//Color colors [] = { Color::hex(0x01a7fb), Color::hex(0x1f95ed), Color::hex(0x3e82df),
+				//					Color::hex(0x5e6fd1), Color::hex(0x7e5cc2), Color::hex(0x8e47aa)};
 
-				string mainTitles[] = { "Дизайн интерфейса", "Элементы поверх фото", 
-										"Количество фото на печать", "Элементы поверх фото",
-										"Фотофильтры", "Публикация фото" };
-				string subTitles[]  = { "Minimal Epileptic", "Индивидуальный",
-										"Gift Boxes", "3 фотографии",
-										"Hudson, Amaretto, White&Black, Sepia", "Печать, Email, QR-code, Twitter" };
-
-				interfaceDesign = InterfaceDesignRef( new InterfaceDesign(configSettings, phbSettings, index++));				
+				interfaceDesign = InterfaceDesignRef(new InterfaceDesign(configSettings, phbSettings, index++));				
 				layouts.push_back(interfaceDesign);				
 				
-				photoOverElements = PhotoOverElementsRef( new PhotoOverElements(phbSettings, index++));				
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(configSettings, phbSettings, index++));				
 				layouts.push_back(photoOverElements);
 
-				photoCardStyles = PhotoCardStylesRef( new PhotoCardStyles(phbSettings, index++));
+				photoCardStyles = PhotoCardStylesRef(new PhotoCardStyles(configSettings, phbSettings, index++));
 				layouts.push_back(photoCardStyles);
 
-				photoPrintCount = PhotoPrintCountRef( new PhotoPrintCount(phbSettings, index++));
+				photoPrintCount = PhotoPrintCountRef(new PhotoPrintCount(configSettings, phbSettings, index++));
 				layouts.push_back(photoPrintCount);
-
-				int i = 0;
-
-				for (auto layout : layouts)
-				{
-					layout->setParams( colors[i],
-									   mainTitles[i],
-									   subTitles[i],
-									   configSettings->getFont("introLight44"),
-									   configSettings->getFont("helveticaLight24"),
-									   oneItemCloseHeightMin,
-									   oneItemCloseHeightMax,
-									   oneItemOpenHeight);			
-
-					i++;
-				}					
 			}
 
 			void activateListeners()
@@ -109,16 +81,14 @@ namespace kubik
 			virtual void draw()
 			{
 				for (auto layout : layouts)
-						layout->draw();			
+					layout->draw();			
 			}
 
 			void setInitPosition(Vec2i position = Vec2i(166, 0))//1080, 0))
 			{
 				setPosition(position);
-				interfaceDesign->setPosition(position);
-				photoOverElements->setPosition(position);
-				photoCardStyles->setPosition(position);
-				photoPrintCount->setPosition(position);
+				for (auto layout : layouts)
+					layout->setPosition(position);			
 			}	
 
 		private:

@@ -10,13 +10,24 @@ namespace kubik
 		class IPhotoboothItem: public IDispatcher
 		{
 		public:	
-			IPhotoboothItem(PhotoboothSettingsRef phbSettings, int index)
+			IPhotoboothItem(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index, Color color,
+				string mainText, string  subText)
 				:settings(phbSettings),
 				state(CLOSE),
 				index(index),
-				itemWidth(1080-166)
-			{				
+				itemWidth(1080-166),
+				closeHeigtMax(320),
+				closeHeightMin(171),
+				openHeight(1065),
+				color(color),
+				mainText(mainText),
+				subText(subText)
+			{	
+
 				mainTitleButton = MainTitleButtonRef(new MainTitleButton(Rectf(0,0,0,0), index));
+				mainTextTex = textTools().getTextField(mainText, &configSettings->getFont("introLight44"), Color::white());
+				subTextTex = textTools().getTextField(subText, &configSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
+				//saveText = phbSettings->getSaveText();
 						
 			}
 
@@ -28,26 +39,6 @@ namespace kubik
 			void unActivateListeners()
 			{
 				mainTitleButton->removeMouseUpListener();
-			}
-
-			void setParams( Color color, string mainText,
-							string subText, Font mainTextFont, Font subTextFont,
-							int closeHeigtMin, int closeHeigtMax, int oneItemOpenHeight)
-			{				
-				this->color = color;
-				this->mainText = mainText;
-				this->subText = subText;
-				this->mainTextFont = mainTextFont;
-				this->subTextFont = subTextFont;
-				this->closeHeigtMin = closeHeigtMin;
-				this->closeHeigtMax = closeHeigtMax;
-				this->openHeight = oneItemOpenHeight;
-
-				mainTextTex = textTools().getTextField(mainText, &mainTextFont, Color::white());
-				subTextTex = textTools().getTextField(subText, &subTextFont, Color::hex(0xfff600));
-
-				this->position = Vec2f(0.0f, index * closeHeigtMax);
-				mainTitleButton->setButtonArea(Rectf(this->position.x, this->position.y, this->position.x + itemWidth, this->position.y + closeHeigtMax));
 			}
 
 			void setPosition(Vec2i position)
@@ -73,7 +64,7 @@ namespace kubik
 				else if (state == CLOSE_MIN)
 				{
 					gl::color(color);
-					gl::drawSolidRect(Rectf(0, 0, itemWidth, closeHeigtMin));
+					gl::drawSolidRect(Rectf(0, 0, itemWidth, closeHeightMin));
 					gl::color(Color::white());
 					gl::draw(mainTextTex, Vec2f(0.5 * (itemWidth - mainTextTex.getWidth()), 31.0f));					
 					gl::draw(subTextTex, Vec2f(0.5  * (itemWidth - subTextTex.getWidth()), 92.0f));	
@@ -100,7 +91,7 @@ namespace kubik
 				{
 					state = OPEN;
 					unActivateListeners();
-					Vec2f pos = initPosition + Vec2f(0, openLayoutIndex * closeHeigtMin);					
+					Vec2f pos = initPosition + Vec2f(0, openLayoutIndex * closeHeightMin);					
 					IDispatcher::setPosition(pos);
 				}
 				else
@@ -109,11 +100,11 @@ namespace kubik
 					activateListeners();					
 					Vec2f pos;
 					if (openLayoutIndex > index)					
-						pos = initPosition + Vec2f(0, index * closeHeigtMin);					
+						pos = initPosition + Vec2f(0, index * closeHeightMin);					
 					else
-						pos = initPosition + Vec2f(0, (index -1)* (closeHeigtMin) + openHeight);	
+						pos = initPosition + Vec2f(0, (index -1)* (closeHeightMin) + openHeight);	
 					
-					mainTitleButton->setButtonArea(Rectf(pos.x, pos.y, pos.x + itemWidth, pos.y + closeHeigtMin));
+					mainTitleButton->setButtonArea(Rectf(pos.x, pos.y, pos.x + itemWidth, pos.y + closeHeightMin));
 					IDispatcher::setPosition(pos);
 				}
 			}
@@ -124,7 +115,7 @@ namespace kubik
 			string mainText, subText;
 			Font mainTextFont, subTextFont;
 			int itemWidth, index, openLayoutIndex;
-			int closeHeigtMin, closeHeigtMax, openHeight;
+			int closeHeightMin, closeHeigtMax, openHeight;
 			Vec2f initPosition;
 
 			Texture mainTextTex, subTextTex;
