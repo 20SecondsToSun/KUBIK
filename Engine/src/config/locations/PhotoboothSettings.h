@@ -23,6 +23,12 @@ namespace kubik
 	{
 	public:
 
+		enum TextID
+		{
+			SAVE_TEXT,
+			YOUR_DESIGN_TEXT
+		};
+
 		enum SettingsPartID
 		{
 			PHOTO_OVER,
@@ -97,9 +103,9 @@ namespace kubik
 				titles[key] = txts;
 			}
 
-			StringVO getSocialTitle(std::pair<SocialID, string> key)
+			string getSocialTitle(std::pair<SocialID, string> key)
 			{
-				return titles[key];
+				return titles[key].get();
 			}
 
 			void setSocialState(SocialID id, bool state)
@@ -144,20 +150,6 @@ namespace kubik
 		class ConfigTitles
 		{
 		public:
-			/*string getDesignInterfaceText(){return designInterfaceText; }
-			string getPhotoStyleText()	{return photoOverText;}
-			string getPhotoPrintCountText(){return photoPrintCountText;}
-			string getPhotoOverElementsText(){return photoOverElementsText;}
-			string getPhotoFiltersText(){return photoFiltersTex;}
-			string getPublishText(){return publishText;}	
-
-			void setDesignInterfaceText(string value){designInterfaceText = value;}
-			void setPhotoStyleText(string value)	{photoOverText = value;}
-			void setPhotoPrintCountText(string value){photoPrintCountText = value;}
-			void setPhotoOverElementsText(string value){photoOverElementsText = value;}
-			void setPhotoFiltersText(string value){photoFiltersTex = value;}
-			void setPublishText(string value){publishText = value;}		*/	
-
 			void set(SettingsPartID id, string title)
 			{
 				titles[id] = title;
@@ -169,13 +161,6 @@ namespace kubik
 			}
 
 		private:
-			/*string designInterfaceText;
-			string photoOverText;
-			string photoPrintCountText;
-			string photoOverElementsText;
-			string photoFiltersTex;
-			string publishText;	*/
-
 			std::map <SettingsPartID, string> titles;
 		};	
 
@@ -229,8 +214,7 @@ namespace kubik
 			}
 
 			std::map <string, ConfigTitles> mainTitles, subTitles;
-			std::map <string, StringVO> yorDesignText, saveText;
-
+			
 			void setMainTitles(string lang, ConfigTitles txts)
 			{
 				mainTitles[lang] = txts;			
@@ -241,39 +225,36 @@ namespace kubik
 				subTitles[lang] = txts;			
 			}
 
-			void setYourDesignText(string lang, StringVO txts)
+			void setText(std::pair<TextID, string> key, string txts)
 			{
-				yorDesignText[lang] = txts;			
+				texts[key].set(txts);
 			}
 
-			void setSaveText(string lang, StringVO txts)
+			string getText(std::pair<TextID, string> key)
 			{
-				saveText[lang] = txts;			
+				return texts[key].get();
 			}
+			std::map <std::pair<TextID, string>, StringVO> texts;
 		};
 
 		string getMainTitle(SettingsPartID id)
 		{
-			return getData().mainTitles[this->model->getLang()].get(id);
+			return getData().mainTitles[model->getLang()].get(id);
 		}
 
 		string getSubTitle(SettingsPartID id)
 		{
-			return getData().mainTitles[this->model->getLang()].get(id);
+			return getData().mainTitles[model->getLang()].get(id);
+		}		
+
+		string getText(TextID id)
+		{
+			return getData().getText(make_pair(id, model->getLang()));
 		}
 
-		string getYourDesignText()
-		{
-			return getData().yorDesignText[this->model->getLang()].get();
-		}
-
-		string getSaveText()
-		{
-			return getData().saveText[this->model->getLang()].get();
-		}
 		string getSocialTitle(SocialID id)
 		{
-			return getData().sharing.getSocialTitle(make_pair(id, this->model->getLang())).get();
+			return getData().sharing.getSocialTitle(make_pair(id, model->getLang()));
 		}
 
 		bool getSocialState(SocialID id)
@@ -322,8 +303,7 @@ namespace kubik
 		void setConfigData(JsonTree config);
 		void setSharingIcons(JsonTree config);
 
-		void saveConfig();
-		
+		void saveConfig();		
 
 		void findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom);
 	};

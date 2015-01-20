@@ -13,6 +13,7 @@ namespace kubik
 		{
 		public:
 			typedef PhotoboothSettings::SettingsPartID SettingsPartID;
+			typedef PhotoboothSettings::TextID TextID;
 			IPhotoboothItem(PhotoboothSettingsRef phbSettings, SettingsPartID id, Color color, int index)
 				:settings(phbSettings),
 				state(CLOSE),
@@ -33,7 +34,7 @@ namespace kubik
 				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id), &phbSettings->getFont("introLight44"), Color::white());
 				subTextTex		= textTools().getTextField(phbSettings->getSubTitle(id), &phbSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
 
-				saveBtn = SaveBtnRef(new SaveBtn(phbSettings->getSaveText(), phbSettings->getFont("introLight30")));						
+				saveBtn = SaveBtnRef(new SaveBtn(phbSettings->getText(TextID::SAVE_TEXT), phbSettings->getFont("introLight30")));						
 			}
 
 			void activateListeners()

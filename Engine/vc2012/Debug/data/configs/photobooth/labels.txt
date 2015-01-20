@@ -2,21 +2,21 @@
  "mainTitles" : [
       {
      "lang" : "ru",	
-	 "text2": "Оформление фотокарточки",	
-	 "text3" : "Количество фото на печать",
-	 "text4" : "Элементы поверх фото",
-	 "text5" : "Фотофильтры",
-	 "text6" : "Публикация фото"
+	 "text1": "Оформление фотокарточки",	
+	 "text2" : "Количество фото на печать",
+	 "text3" : "Элементы поверх фото",
+	 "text4" : "Фотофильтры",
+	 "text5" : "Публикация фото"
       }	],
 
    "subTitles" : [
       {
      "lang" : "ru",
-	 "text2": "Gift Boxes",	
-	 "text3" : "3 фотографии ",
-	 "text4" : "Индивидуальный",
-	 "text5" : "Hudson, Amaretto, White&Black, Sepia",
-	 "text6" : "Печать, Email, QR-code, Twitter"
+	 "text1": "Gift Boxes",	
+	 "text2" : "3 фотографии ",
+	 "text3" : "Индивидуальный",
+	 "text4" : "Hudson, Amaretto, White&Black, Sepia",
+	 "text5" : "Печать, Email, QR-code, Twitter"
       }	],
 
    "yourDesignText" : [

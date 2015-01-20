@@ -126,16 +126,21 @@ void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &p
 
 void PhotoboothSettings::setConfigData(JsonTree config)
 {
+	typedef Pair<SettingsPartID, string> JSONPairSet;
+	vector<JSONPairSet> setPairs;
+	setPairs.push_back(JSONPairSet(SettingsPartID::CARD_STYLE,	  "text1"));
+	setPairs.push_back(JSONPairSet(SettingsPartID::PRINT_COUNT,	  "text2"));
+	setPairs.push_back(JSONPairSet(SettingsPartID::PHOTO_OVER,	  "text3"));
+	setPairs.push_back(JSONPairSet(SettingsPartID::FILTERS,		  "text4"));
+	setPairs.push_back(JSONPairSet(SettingsPartID::SHARING,	      "text5"));
+
 	JsonTree mainTitles = JsonTree(config.getChild("mainTitles"));
 	for(auto it : mainTitles)
 	{
 		string lang = it.getChild("lang").getValue<string>();
 		ConfigTitles txts;
-		txts.set(SettingsPartID::CARD_STYLE, it.getChild("text2").getValue<string>());
-		txts.set(SettingsPartID::PRINT_COUNT,it.getChild("text3").getValue<string>());
-		txts.set(SettingsPartID::PHOTO_OVER, it.getChild("text4").getValue<string>());
-		txts.set(SettingsPartID::FILTERS,    it.getChild("text5").getValue<string>());
-		txts.set(SettingsPartID::SHARING,    it.getChild("text6").getValue<string>());
+		for(auto pair : setPairs)		
+			txts.set(pair.param1, it.getChild(pair.param2).getValue<string>());		
 		data.setMainTitles(lang, txts);
 	}
 
@@ -144,99 +149,48 @@ void PhotoboothSettings::setConfigData(JsonTree config)
 	{
 		string lang = it.getChild("lang").getValue<string>();
 		ConfigTitles txts;
-		txts.set(SettingsPartID::CARD_STYLE, it.getChild("text2").getValue<string>());
-		txts.set(SettingsPartID::PRINT_COUNT,it.getChild("text3").getValue<string>());
-		txts.set(SettingsPartID::PHOTO_OVER, it.getChild("text4").getValue<string>());
-		txts.set(SettingsPartID::FILTERS,    it.getChild("text5").getValue<string>());
-		txts.set(SettingsPartID::SHARING,    it.getChild("text6").getValue<string>());
-
+		for(auto pair : setPairs)		
+			txts.set(pair.param1, it.getChild(pair.param2).getValue<string>());
 		data.setSubTitles(lang, txts);
 	}
 
-	JsonTree yourDesign = JsonTree(config.getChild("yourDesignText"));
-	for(auto it : yourDesign)
+	typedef Pair<TextID, string> JSONPairText;
+	vector<JSONPairText> textPairs;
+	textPairs.push_back(JSONPairText(TextID::YOUR_DESIGN_TEXT, "yourDesignText"));
+	textPairs.push_back(JSONPairText(TextID::SAVE_TEXT, "saveText"));
+
+	for(auto textOne : textPairs)
 	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO yd;
-			yd.set(it.getChild("text").getValue<string>());
-		data.setYourDesignText(lang, yd);
+		JsonTree yourDesign = JsonTree(config.getChild(textOne.param2));
+		for(auto it : yourDesign)
+		{
+			string lang = it.getChild("lang").getValue<string>();
+			string yd(it.getChild("text").getValue<string>());
+			data.setText(std::make_pair(textOne.param1, lang), yd);
+		}
 	}
 
-	JsonTree save = JsonTree(config.getChild("saveText"));
-	for(auto it : save)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		data.setSaveText(lang, st);
-	}
-
-
-
-	Sharing sharing = data.sharing;
+	typedef Pair<SocialID, string> JSONPair;
+	vector<JSONPair> sharePairs;
 	
-	JsonTree fb = JsonTree(config.getChild("fbText"));
-	for(auto it : fb)
+	sharePairs.push_back(JSONPair(SocialID::EMAIL,	    "emailText"));
+	sharePairs.push_back(JSONPair(SocialID::PRINTER,    "printText"));
+	sharePairs.push_back(JSONPair(SocialID::QRCODE,	    "qrText"));
+	sharePairs.push_back(JSONPair(SocialID::TWITTER,    "twText"));
+	sharePairs.push_back(JSONPair(SocialID::VKONTAKTE,  "vkText"));
+	sharePairs.push_back(JSONPair(SocialID::FACEBOOK,   "fbText"));
+
+	for (auto item : sharePairs)
 	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
+		JsonTree tree = JsonTree(config.getChild(item.param2));
+		for(auto it : tree)
+		{
+			string lang = it.getChild("lang").getValue<string>();
+			StringVO st;
 			st.set(it.getChild("text").getValue<string>());
-		//sharing.setFbText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::FACEBOOK, lang), st);
+			data.sharing.setSocialTitle(std::make_pair(item.param1, lang), st);
+		}
 	}
-
-	JsonTree vk = JsonTree(config.getChild("vkText"));
-	for(auto it : vk)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		//sharing.setVkText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::VKONTAKTE, lang), st);
-	}
-
-	JsonTree tw = JsonTree(config.getChild("twText"));
-	for(auto it : tw)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		//sharing.setTwText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::TWITTER, lang), st);
-	}
-
-	JsonTree qr = JsonTree(config.getChild("qrText"));
-	for(auto it : qr)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		//sharing.setQrText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::QRCODE, lang), st);
-	}
-
-	JsonTree print = JsonTree(config.getChild("printText"));
-	for(auto it : print)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		//sharing.setPrintText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::PRINTER, lang), st);
-	}
-
-	JsonTree email = JsonTree(config.getChild("emailText"));
-	for(auto it : email)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-		//sharing.setEmailText(lang, st);
-		sharing.setSocialTitle(std::make_pair(SocialID::EMAIL, lang), st);
-	}
-
-
-	data.sharing = sharing;
 }
 
 void PhotoboothSettings::setSharingIcons(JsonTree config)
