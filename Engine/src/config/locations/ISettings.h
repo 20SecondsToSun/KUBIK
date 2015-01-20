@@ -30,6 +30,12 @@ namespace kubik
 			return path.string() + value;
 		}
 
+		static std::string getInterfacePath(string value = "")
+		{
+			ci::fs::path path = getBasePath()/"data\\interface\\";
+			return path.string() + value;
+		}
+
 		ImageResourceDictionary getTextures()
 		{	
 			return textures;

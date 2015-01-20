@@ -1,43 +1,4 @@
-{  
- "mainTitles" : [
-      {
-     "lang" : "ru",
-	 "text1": "Дизайн интерфейса",
-	 "text2": "Оформление фотокарточки",	
-	 "text3" : "Количество фото на печать",
-	 "text4" : "Элементы поверх фото",
-	 "text5" : "Фотофильтры",
-	 "text6" : "Публикация фото"
-      }	],
-
-   "subTitles" : [
-      {
-     "lang" : "ru",
-	 "text1": "Minimal Epileptic",
-	 "text2": "Gift Boxes",	
-	 "text3" : "3 фотографии ",
-	 "text4" : "Индивидуальный",
-	 "text5" : "Hudson, Amaretto, White&Black, Sepia",
-	 "text6" : "Печать, Email, QR-code, Twitter"
-      }	],
-
-   "yourDesignText" : [
-      {
-     "lang" : "ru",
- "text": "Ваш дизайн"
- }],
-
-	"saveText" : [
-      {
-     "lang" : "ru",
-	 "text": "Сохранить"
-	 }],
-
-	 "designs" : [
-      {    
-	 "name": "MinimalEpileptic",
-	 "path": "Tanzania"
-	 }],
+{ 
    "activeBgPrint" : {
       "id" : 0
    },

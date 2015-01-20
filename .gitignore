@@ -44,7 +44,6 @@ Icon
 *.map
 *.dll
 ipch/
-debug/
 
 design/
 Engine/blocks/CanonSDK/lib/EDSDK/Library/

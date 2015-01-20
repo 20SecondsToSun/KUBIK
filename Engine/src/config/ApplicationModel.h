@@ -15,8 +15,11 @@ namespace kubik
 	public:
 		void load()
 		{
-			parseConfigPaths();				
-			parseUserData();		
+			console()<<"parseConfigPaths"<<endl;
+			parseConfigPaths();		
+			console()<<"parseUserData"<<endl;
+			parseUserData();	
+			console()<<"parseAppConfig done"<<endl;
 		}
 
 		void parseConfigPaths()
@@ -30,7 +33,6 @@ namespace kubik
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
 			kotopozaConfigPath		= configJSON.getChild("kotopozaConfigPath").getValue<string>();
 			userDataPath			= configJSON.getChild("userInfoPath").getValue<string>();
-
 		}
 
 		void parseUserData()
@@ -41,7 +43,7 @@ namespace kubik
 			standID					= userInfoJSON.getChild("standID").getValue<int>();
 			netConnection			= userInfoJSON.getChild("netConnection").getValue<bool>();
 			defaultGameID			= (GameId)userInfoJSON.getChild("defaultGameID").getValue<int>();			
-				JsonTree gamesAvailable = JsonTree(userInfoJSON.getChild("gamesAvailable"));
+			JsonTree gamesAvailable = JsonTree(userInfoJSON.getChild("gamesAvailable"));
 			JsonTree gamesPurchased = JsonTree(userInfoJSON.getChild("gamesPurchased"));
 			JsonTree gamesTurnOn	= JsonTree(userInfoJSON.getChild("gamesTurnOn"));
 
@@ -65,8 +67,7 @@ namespace kubik
 				game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
 				game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
 				game.setMiniIcon(loadImage(getFullPath(iconUrl + it.getChild("miniIcon").getValue<string>())));
-				games.push_back(game);	
-				
+				games.push_back(game);				
 			}	
 		}
 

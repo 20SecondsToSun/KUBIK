@@ -1,5 +1,5 @@
 {
-   "designPath" : "data\\interface\\tuneupDesign\\",
+   "designPath" : "data\\interface\\configDesign\\",
    "actionName" : "Party 1",
    "playedCount": 382,
    "printedCount": 81,

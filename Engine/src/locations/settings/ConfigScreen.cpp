@@ -67,10 +67,10 @@ void ConfigScreen::init()
 void ConfigScreen::init(ISettingsRef settings)
 {
 	configSettings			= static_pointer_cast<ConfigSettings>(settings);
-	mainConfig				= MainConfigRef( new MainConfig(configSettings, gameSettings));
+	mainConfig				= MainConfigRef(new MainConfig(configSettings, gameSettings));
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	photoboothConfig		= PhotoboothConfigRef( new PhotoboothConfig(configSettings, phbthSettings));	
+	photoboothConfig		= PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));	
 }
 
 ////////////////////////////////////////////////////////////////////////////

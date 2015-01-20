@@ -8,10 +8,8 @@ namespace kubik
 		class PhotoOverElements: public IPhotoboothItem
 		{
 		public:	
-			PhotoOverElements(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index)
-				:IPhotoboothItem(configSettings, phbSettings, index, Color::hex(0x1f95ed),
-				phbSettings->getMainTitles().getPhotoOverElementsText(),
-				phbSettings->getSubTitles().getPhotoOverElementsText())
+			PhotoOverElements(PhotoboothSettingsRef phbSettings, Color color, int index)
+				:IPhotoboothItem(phbSettings, SettingsPartID::PHOTO_OVER, color, index)
 			{
 				
 			}	

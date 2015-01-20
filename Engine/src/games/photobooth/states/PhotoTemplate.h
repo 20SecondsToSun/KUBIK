@@ -86,14 +86,16 @@ namespace kubik
 
 		void reset(PhotoboothSettingsRef _settings) override
 		{
+			typedef PhotoboothSettings::SocialID SocialID;
+
 			settings		= _settings;
 			fon				= settings->getTexture("fon1");
 			font			= settings->getFont("helvetica40");
 			stickerTex		= settings->getActiveStickerTex();	
 			printTempaleTex	= settings->getActivePrintBgTex();	
-			isPrint			= settings->getData().sharing.getPrint();
+			isPrint			= settings->getData().sharing.getSocialState(SocialID::PRINTER);
 
-			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
+			nextButton = MenuButtonRef(new MenuButton((GameId)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
 			connect_once(nextButton->mouseUpSignal, bind(&PhotoTemplate::mouseUpNextListener, this, placeholders::_1));	
 		}
 

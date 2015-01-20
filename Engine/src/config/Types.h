@@ -74,6 +74,8 @@ namespace kubik
 
 	struct IconPair
 	{
+		IconPair(Texture activeIcon, Texture unActiveIcon):activeIcon(activeIcon),unActiveIcon(unActiveIcon){}
+		IconPair(){}
 		Texture activeIcon;
 		Texture unActiveIcon;
 	};
@@ -226,6 +228,14 @@ namespace kubik
 		}
 	}
 	Changes;
+
+	template<typename F, typename S>
+	struct Pair
+	{
+		Pair(F param1, S param2):param1(param1),param2(param2){}
+		F param1;
+		S param2;
+	};
 }
 
 template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 

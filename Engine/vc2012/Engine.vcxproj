@@ -163,6 +163,7 @@
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
+    <ClInclude Include="..\src\events\settings\SavePhotobootnConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\StatisticEvent.h" />
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\GamesFactory.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
+    <ClInclude Include="..\src\locations\settings\Checker.h" />
     <ClInclude Include="..\src\locations\settings\ConfigScreen.h" />
     <ClInclude Include="..\src\locations\screensaver\ImageScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\IResourceScreenSaver.h" />
@@ -204,7 +206,7 @@
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
     <ClInclude Include="..\src\config\Types.h" />
     <ClInclude Include="..\src\locations\settings\elements\CloseBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h" />
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checkerh" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\GamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGameNotPurchased.h" />
@@ -220,13 +222,17 @@
     <ClInclude Include="..\src\locations\settings\elements\StartNewActivity.h" />
     <ClInclude Include="..\src\locations\settings\elements\StatBlock.h" />
     <ClInclude Include="..\src\locations\settings\elements\Title.h" />
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\InterfaceDesign.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoPrintCount.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\SaveBtn.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
+    <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\tools\FileTools.h" />
     <ClInclude Include="..\src\tools\MathTools.h" />

@@ -12,7 +12,7 @@ namespace kubik
 		class MainTitleButton: public Button
 		{
 		public:	
-			MainTitleButton(Rectf rect, int index):Button(rect)
+			MainTitleButton(int index):Button(Rectf(0,0,0,0))
 			{
 				event = OpenPhotoBoothLayoutEventRef(new OpenPhotoBoothLayoutEvent(index));		
 			}	

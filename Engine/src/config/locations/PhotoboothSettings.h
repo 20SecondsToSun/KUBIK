@@ -14,6 +14,7 @@ namespace kubik
 	static const string STICKER_SUPPORT_EXTENSION = ".png";
 	static const string CONFIG_FILE = "path.txt";
 	static const string PARAMS_FILE = "params.txt";
+	static const string LABELS_FILE = "labels.txt";
 
 	static const string STICKER_NAME = "sticker";
 	static const string PRINT_TEMPATE_NAME = "print_template";
@@ -21,6 +22,25 @@ namespace kubik
 	class PhotoboothSettings: public ISettings
 	{
 	public:
+
+		enum SettingsPartID
+		{
+			PHOTO_OVER,
+			CARD_STYLE,
+			PRINT_COUNT,
+			FILTERS,
+			SHARING		
+		};
+
+		enum SocialID
+		{
+			VKONTAKTE,
+			FACEBOOK,
+			TWITTER,
+			QRCODE,
+			PRINTER,
+			EMAIL
+		};
 
 		struct Filter
 		{
@@ -49,59 +69,6 @@ namespace kubik
 			string bgPrintsPath;
 		};
 
-		class Sharing
-		{
-		public:
-			bool getFacebook(){return facebookOn;}
-			bool getVkontakte(){return vkotakteOn;}
-			bool getTwitter(){return twitterOn;}
-			bool getPrint(){return printOn;}
-			bool getEmail(){return emailOn;}
-			bool getQrCode(){return qrCodeOn;}	
-
-			void setFacebook(bool value){facebookOn = value;}
-			void setVkontakte(bool value){vkotakteOn = value;}
-			void setTwitter(bool value){twitterOn = value;}
-			void setPrint(bool value){printOn = value;}
-			void setEmail(bool value){emailOn = value;}
-			void setQrCode(bool value){qrCodeOn = value;}
-
-			friend PhotoboothSettings;
-		private:
-			bool facebookOn;
-			bool vkotakteOn;
-			bool twitterOn;
-			bool printOn;
-			bool emailOn;
-			bool qrCodeOn;			
-		};
-
-		class ConfigTexts
-		{
-		public:
-			string getDesignInterfaceText(){return designInterfaceText; }
-			string getPhotoStyleText()	{return photoOverText;}
-			string getPhotoPrintCountText(){return photoPrintCountText;}
-			string getPhotoOverElementsText(){return photoOverElementsText;}
-			string getPhotoFiltersText(){return photoFiltersTex;}
-			string getPublishText(){return publishText;}	
-
-			void setDesignInterfaceText(string value){designInterfaceText = value;}
-			void setPhotoStyleText(string value)	{photoOverText = value;}
-			void setPhotoPrintCountText(string value){photoPrintCountText = value;}
-			void setPhotoOverElementsText(string value){photoOverElementsText = value;}
-			void setPhotoFiltersText(string value){photoFiltersTex = value;}
-			void setPublishText(string value){publishText = value;}				
-
-		private:
-			string designInterfaceText;
-			string	photoOverText;
-			string photoPrintCountText;
-			string photoOverElementsText;
-			string photoFiltersTex;
-			string publishText;
-		};
-
 		class StringVO
 		{
 		public:
@@ -121,6 +88,96 @@ namespace kubik
 		private:
 				string data;
 		};
+
+		class Sharing
+		{
+		public:
+			void setSocialTitle(std::pair<SocialID, string> key, StringVO txts)
+			{
+				titles[key] = txts;
+			}
+
+			StringVO getSocialTitle(std::pair<SocialID, string> key)
+			{
+				return titles[key];
+			}
+
+			void setSocialState(SocialID id, bool state)
+			{
+				states[id] = state;
+			}
+
+			bool getSocialState(SocialID id)
+			{
+				return states[id];
+			}
+
+			void setIcon(Texture icon, SocialID id)
+			{
+				icons[id] = icon;
+			}
+
+			Texture getIcon(SocialID id)
+			{
+				return icons[id];
+			}
+
+			void setEmptyIcon(Texture icon)
+			{
+				emptyIcon = icon;
+			}
+
+			Texture getEmptyIcon()
+			{
+				return emptyIcon;
+			}
+
+			friend PhotoboothSettings;
+
+		private:
+			std::map <SocialID, bool> states;
+			std::map <SocialID, Texture> icons;
+			Texture emptyIcon;
+			std::map <std::pair<SocialID, string>, StringVO> titles;
+		};
+
+		class ConfigTitles
+		{
+		public:
+			/*string getDesignInterfaceText(){return designInterfaceText; }
+			string getPhotoStyleText()	{return photoOverText;}
+			string getPhotoPrintCountText(){return photoPrintCountText;}
+			string getPhotoOverElementsText(){return photoOverElementsText;}
+			string getPhotoFiltersText(){return photoFiltersTex;}
+			string getPublishText(){return publishText;}	
+
+			void setDesignInterfaceText(string value){designInterfaceText = value;}
+			void setPhotoStyleText(string value)	{photoOverText = value;}
+			void setPhotoPrintCountText(string value){photoPrintCountText = value;}
+			void setPhotoOverElementsText(string value){photoOverElementsText = value;}
+			void setPhotoFiltersText(string value){photoFiltersTex = value;}
+			void setPublishText(string value){publishText = value;}		*/	
+
+			void set(SettingsPartID id, string title)
+			{
+				titles[id] = title;
+			}
+
+			string get(SettingsPartID id)
+			{
+				return titles[id];
+			}
+
+		private:
+			/*string designInterfaceText;
+			string photoOverText;
+			string photoPrintCountText;
+			string photoOverElementsText;
+			string photoFiltersTex;
+			string publishText;	*/
+
+			std::map <SettingsPartID, string> titles;
+		};	
 
 		struct PhotoboothDataStruct
 		{
@@ -157,13 +214,13 @@ namespace kubik
 
 			bool hasAnyChanges(PhotoboothDataStruct val)
 			{
-				return (val.sharing.getEmail()	  != sharing.getEmail() ||
-					val.sharing.getFacebook()     != sharing.getFacebook() ||
-					val.sharing.getPrint()		  != sharing.getPrint() ||
-					val.sharing.getQrCode()		  != sharing.getQrCode() ||
+				return (val.sharing.getSocialState(SocialID::EMAIL)	 != sharing.getSocialState(SocialID::EMAIL) ||
+					val.sharing.getSocialState(SocialID::FACEBOOK)	 != sharing.getSocialState(SocialID::FACEBOOK) ||
+					val.sharing.getSocialState(SocialID::PRINTER)	 != sharing.getSocialState(SocialID::PRINTER)||
+					val.sharing.getSocialState(SocialID::QRCODE)	 != sharing.getSocialState(SocialID::QRCODE)||					
+					val.sharing.getSocialState(SocialID::TWITTER)	 != sharing.getSocialState(SocialID::TWITTER)||
+					val.sharing.getSocialState(SocialID::VKONTAKTE)  != sharing.getSocialState(SocialID::VKONTAKTE)||
 					val.isSticker			      != isSticker ||
-					val.sharing.getTwitter()	  != sharing.getTwitter() ||
-					val.sharing.getVkontakte()     != sharing.getVkontakte() ||
 					val.photoNum				  != photoNum ||
 					val.seconds					  != seconds ||
 					val.secondsBetweenShots		  != secondsBetweenShots ||
@@ -171,15 +228,15 @@ namespace kubik
 					val.activeBgPrint.id		  != activeBgPrint.id);
 			}
 
-			std::map <string, ConfigTexts> mainTitles, subTitles;
+			std::map <string, ConfigTitles> mainTitles, subTitles;
 			std::map <string, StringVO> yorDesignText, saveText;
 
-			void setMainTitles(string lang, ConfigTexts txts)
+			void setMainTitles(string lang, ConfigTitles txts)
 			{
 				mainTitles[lang] = txts;			
 			}
 
-			void setSubTitles(string lang, ConfigTexts txts)
+			void setSubTitles(string lang, ConfigTitles txts)
 			{
 				subTitles[lang] = txts;			
 			}
@@ -195,14 +252,14 @@ namespace kubik
 			}
 		};
 
-		ConfigTexts getMainTitles()
+		string getMainTitle(SettingsPartID id)
 		{
-			return getData().mainTitles[this->model->getLang()];
+			return getData().mainTitles[this->model->getLang()].get(id);
 		}
 
-		ConfigTexts getSubTitles()
+		string getSubTitle(SettingsPartID id)
 		{
-			return getData().subTitles[this->model->getLang()];
+			return getData().mainTitles[this->model->getLang()].get(id);
 		}
 
 		string getYourDesignText()
@@ -213,6 +270,25 @@ namespace kubik
 		string getSaveText()
 		{
 			return getData().saveText[this->model->getLang()].get();
+		}
+		string getSocialTitle(SocialID id)
+		{
+			return getData().sharing.getSocialTitle(make_pair(id, this->model->getLang())).get();
+		}
+
+		bool getSocialState(SocialID id)
+		{
+			return getData().sharing.getSocialState(id);
+		}
+
+		Texture getIcon(SocialID id)
+		{
+			return getData().sharing.getIcon(id);
+		}
+
+		Texture getEmptyIcon()
+		{
+			return getData().sharing.getEmptyIcon();
 		}
 
 		PhotoboothSettings(ApplicationModelRef model);
@@ -244,8 +320,10 @@ namespace kubik
 		void setGameStickerParams(JsonTree config);
 		void setGameBgPrintParams(JsonTree config);
 		void setConfigData(JsonTree config);
+		void setSharingIcons(JsonTree config);
 
 		void saveConfig();
+		
 
 		void findAllImagePrints(string path, vector<ImageElement> &prints, bool isCustom);
 	};

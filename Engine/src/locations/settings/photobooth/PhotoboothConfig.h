@@ -3,10 +3,11 @@
 #include "IDrawable.h"
 
 #include "elements/IPhotoboothItem.h"
-#include "elements/InterfaceDesign.h"
+#include "elements/PhotoFilters.h"
 #include "elements/PhotoOverElements.h"
 #include "elements/PhotoCardStyles.h"
 #include "elements/PhotoPrintCount.h"
+#include "elements/Sharing.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 
 namespace kubik 
@@ -16,26 +17,27 @@ namespace kubik
 		class PhotoboothConfig: public IDispatcher
 		{
 		public:	
-			PhotoboothConfig(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings)
+			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
 				:leftMargin(165)				
 			{				
-				int index = 0;
+				int index = 0;		
+				typedef PhotoboothSettings::SettingsPartID SettingsPartID;
 
-				//Color colors [] = { Color::hex(0x01a7fb), Color::hex(0x1f95ed), Color::hex(0x3e82df),
-				//					Color::hex(0x5e6fd1), Color::hex(0x7e5cc2), Color::hex(0x8e47aa)};
+				sharing = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), index++));
+				layouts.push_back(sharing);
 
-				interfaceDesign = InterfaceDesignRef(new InterfaceDesign(configSettings, phbSettings, index++));				
-				layouts.push_back(interfaceDesign);				
-				
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(configSettings, phbSettings, index++));				
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), index++));				
 				layouts.push_back(photoOverElements);
 
-				photoCardStyles = PhotoCardStylesRef(new PhotoCardStyles(configSettings, phbSettings, index++));
+				photoCardStyles = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), index++));
 				layouts.push_back(photoCardStyles);
 
-				photoPrintCount = PhotoPrintCountRef(new PhotoPrintCount(configSettings, phbSettings, index++));
+				photoPrintCount = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), index++));
 				layouts.push_back(photoPrintCount);
-			}
+
+				photoFilters = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), index++));
+				layouts.push_back(photoFilters);				
+			}		
 
 			void activateListeners()
 			{
@@ -67,6 +69,12 @@ namespace kubik
 					OpenPhotoBoothLayoutEventRef event = static_pointer_cast<OpenPhotoBoothLayoutEvent>(_event);	
 					setOpenItem(event->getlayoutIndex());
 				}
+				else if(typeid(*ev) == typeid(SavePhotobootnConfigEvent))
+				{
+					SavePhotobootnConfigEventRef event = static_pointer_cast<SavePhotobootnConfigEvent>(_event);	
+					setOpenItem(-1);
+				}				
+				console()<<"clicked"<<endl;
 			}
 
 			void setOpenItem(int index)
@@ -98,10 +106,11 @@ namespace kubik
 			int openItemIndex;
 
 			list<IPhotoboothItemRef> layouts;
-			InterfaceDesignRef interfaceDesign;
 			PhotoOverElementsRef photoOverElements;
-			PhotoCardStylesRef photoCardStyles;
-			PhotoPrintCountRef photoPrintCount;
+			PhotoCardStylesRef   photoCardStyles;
+			PhotoPrintCountRef   photoPrintCount;
+			PhotoFiltersRef	     photoFilters;
+			SharingRef		     sharing;
 		};
 
 		typedef std::shared_ptr<PhotoboothConfig> PhotoboothConfigRef;

@@ -27,7 +27,7 @@ namespace kubik
 		};
 
 		vector<ShareButtonRef> shareBtns;
-
+		
 		public:
 
 		PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
@@ -50,17 +50,17 @@ namespace kubik
 			
 			shareBtns.clear();
 			int i = 0;
-
-			if (data.sharing.getFacebook())
+			typedef PhotoboothSettings::SocialID SocialID;
+			if (data.sharing.getSocialState(SocialID::FACEBOOK))
 				createShareButton(FACEBOOK, "FACEBOOK", i++);
 
-			if (data.sharing.getVkontakte())
+			if (data.sharing.getSocialState(SocialID::VKONTAKTE))
 				createShareButton(VKONTAKTE, "VKONTAKTE", i++);
 
-			if (data.sharing.getTwitter())
+			if (data.sharing.getSocialState(SocialID::TWITTER))
 				createShareButton(TWITTER, "TWITTER", i++);
 
-			if (data.sharing.getEmail())
+			if (data.sharing.getSocialState(SocialID::EMAIL))
 				createShareButton(EMAIL, "EMAIL", i++);
 		}
 

@@ -8,11 +8,8 @@ namespace kubik
 		class PhotoCardStyles: public IPhotoboothItem
 		{
 		public:	
-			PhotoCardStyles(ConfigSettingsRef configSettings, PhotoboothSettingsRef phbSettings, int index)
-				:IPhotoboothItem(configSettings,
-				phbSettings, index, Color::hex(0x3e82df),
-				phbSettings->getMainTitles().getPhotoStyleText(),
-				phbSettings->getSubTitles().getPhotoStyleText())
+			PhotoCardStyles(PhotoboothSettingsRef phbSettings, Color color, int index)
+				:IPhotoboothItem(phbSettings, SettingsPartID::CARD_STYLE, color, index)
 			{
 			
 			}	

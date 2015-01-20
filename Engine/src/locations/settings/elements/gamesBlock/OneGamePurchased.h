@@ -1,7 +1,7 @@
 #pragma once
 #include "IDrawable.h"
 #include "elements/gamesBlock/ToolField.h"
-#include "elements/gamesBlock/Checker.h"
+#include "Checker.h"
 
 namespace kubik
 {

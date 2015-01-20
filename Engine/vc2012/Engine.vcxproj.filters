@@ -455,9 +455,6 @@
     <ClInclude Include="..\src\events\settings\GameConfEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checker.h">
-      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h">
       <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
     </ClInclude>
@@ -479,9 +476,6 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\InterfaceDesign.h">
-      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
@@ -496,6 +490,30 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\SaveBtn.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\SavePhotobootnConfigEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\Checker.h">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checkerh">
+      <Filter>Source Files\locations\settings\elements\gamesBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
