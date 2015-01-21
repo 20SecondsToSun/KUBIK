@@ -11,7 +11,7 @@
 #include "IDispatcher.h"
 #include "CloseConfigEvent.h"
 
-#include "elements/MainConfig.h"
+#include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
 
 
@@ -51,8 +51,8 @@ namespace kubik
 		void setMenuSettings(MenuSettingsRef menuSettings);
 		void setGameSettings(GameSettingsRef gameSettings);
 
-		void activateListeners();
-		void unActivateListeners();
+		//void activateListeners();
+		//void unActivateListeners();
 	
 	private:
 		ConfigSettingsRef		configSettings;

@@ -14,6 +14,7 @@
 #include "cinder/Exception.h"
 #include "cinder/Filesystem.h"
 #include "cinder/gl/GlslProg.h"
+#include "cinder/Timeline.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/thread.hpp>

@@ -42,7 +42,7 @@ namespace kubik
 
 		void draw()
 		{
-			gl::draw(thumb, shift);
+			gl::draw(thumb, position);
 
 			if(_isSelect)
 				gl::color(ColorA(0.0f, 0.0f, 0.0f, 0.6f));

@@ -3,7 +3,6 @@
 #include "PhotoboothSettings.h"
 #include "photobooth/elements/MainTitleButton.h"
 #include "SaveBtn.h"
-#include "cinder/Timeline.h"
 
 namespace kubik
 {
@@ -26,18 +25,25 @@ namespace kubik
 				closeMinY(50),
 				closeMaxY(130),
 				openY(170),
-				mainTitleY(closeMaxY),
-				subTitleY(closeMaxY + 60),
-				animHeight(closeHeightMax)
-			{	
+				offsetBetweenTitles(60),
+				animatePosition(Vec2f(0,0))
+			{
+				mainTitleY = closeMaxY;
+				subTitleY  = closeMaxY + offsetBetweenTitles;
+				animHeight = closeHeightMax;
+
 				mainTitleButton = MainTitleButtonRef(new MainTitleButton(index));
-				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id), &phbSettings->getFont("introLight44"), Color::white());
-				subTextTex		= textTools().getTextField(phbSettings->getSubTitle(id), &phbSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
+
+				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id),
+					&phbSettings->getFont("introLight44"), Color::white());
+
+				subTextTex		= textTools().getTextField(phbSettings->getSubTitle(id),
+					&phbSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
 
 				saveBtn = SaveBtnRef(new SaveBtn(phbSettings->getText(TextID::SAVE_TEXT), phbSettings->getFont("introLight30")));						
 			}
 
-			void activateListeners()
+			virtual void activateListeners()
 			{
 				mainTitleButton->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);			
 			}
@@ -47,7 +53,7 @@ namespace kubik
 				saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);
 			}
 
-			void unActivateListeners()
+			virtual void unActivateListeners()
 			{
 				mainTitleButton->removeMouseUpListener();
 			}
@@ -57,17 +63,33 @@ namespace kubik
 				saveBtn->removeMouseUpListener();
 			}
 
+			virtual void mouseUpFunction( shared_ptr<kubik::Event> event )
+			{	
+				Event *ev = event.get();
+				if(typeid(*ev) == typeid(SavePhotobootnConfigEvent))
+					saveConfiguration();						
+				
+				mouseUpSignal(event);
+			}
+
+			virtual void saveConfiguration(){};
+
 			void setPosition(Vec2i position)
 			{
 				initPosition = position;
 				position += Vec2f(0.0f, index * closeHeightMax);
-				float __x = position.x + 0.5 * (itemWidth - 245);
-				float __y = 835;
+				float __x = position.x + 0.5 * (itemWidth - 245.0f);
+				float __y = 835.0f;
 
 				animatePosition = position;
 				saveBtn->setButtonArea(Rectf(__x, __y + position.y, __x + 245, __y + position.y + 65));
 				mainTitleButton->setButtonArea(Rectf(position.x, position.y, position.x + itemWidth, position.y + closeHeightMax));
 				IDispatcher::setPosition(position);
+			}
+
+			void animPosition(Vec2i position)
+			{
+				animatePosition = Vec2f(position.x, animatePosition.value().y);
 			}
 
 			virtual void draw()
@@ -85,14 +107,21 @@ namespace kubik
 				gl::popMatrices();	
 				if (state == OPEN)
 				{
+					
+					gl::pushMatrices();
+					gl::translate(animatePosition);
 					drawContent();
 					saveBtn->draw();
+					gl::color(Color::white());
+				    gl::drawStrokedRect(saveBtn->getButtonArea());
+					gl::popMatrices();	
 				}
+				//gl::color(Color::white());
+				//gl::drawStrokedRect(mainTitleButton->getButtonArea());
 			}
 
 			virtual void drawContent()
 			{
-
 			}
 
 			void removeMainButtonListener()
@@ -103,8 +132,8 @@ namespace kubik
 			{
 				this->openLayoutIndex = openLayoutIndex;
 
-				float time =  0.5f;
-				EaseFn eFunc = EaseOutCubic();
+				float time =  0.7f;
+				EaseFn eFunc = EaseOutExpo();
 				Vec2f pos;
 				float height = 0;
 
@@ -117,7 +146,7 @@ namespace kubik
 					pos = initPosition + Vec2f(0, openLayoutIndex * closeHeightMin);					
 				
 					timeline().apply( &mainTitleY, openY, time, eFunc);
-					timeline().apply( &subTitleY,  openY + 60, time, eFunc);
+					timeline().apply( &subTitleY,  openY + offsetBetweenTitles, time, eFunc);
 					timeline().apply( &animHeight,  openHeight, time, eFunc);	
 				}
 				else
@@ -131,7 +160,7 @@ namespace kubik
 						pos = initPosition + Vec2f(0, index * height);
 
 						timeline().apply( &mainTitleY, closeMaxY, time, eFunc);
-						timeline().apply( &subTitleY,  closeMaxY + 60, time, eFunc);
+						timeline().apply( &subTitleY,  closeMaxY + offsetBetweenTitles, time, eFunc);
 						timeline().apply( &animHeight, closeHeightMax, time, eFunc);					
 					}	
 					else
@@ -144,7 +173,7 @@ namespace kubik
 							pos = initPosition + Vec2f(0, (index -1)* (height) + openHeight);	
 
 						timeline().apply( &mainTitleY, closeMinY, time, eFunc);
-						timeline().apply( &subTitleY,  closeMinY + 60, time, eFunc);
+						timeline().apply( &subTitleY,  closeMinY + offsetBetweenTitles, time, eFunc);
 						timeline().apply( &animHeight, closeHeightMin, time, eFunc);		
 					}								
 				}
@@ -157,11 +186,13 @@ namespace kubik
 			{
 				if(state != OPEN)
 				{
-					mainTitleButton->setButtonArea(Rectf(pos.x, pos.y, pos.x + itemWidth, pos.y + height));
+					mainTitleButton->setButtonArea(Rectf(pos, pos + Vec2f(itemWidth,height)));
 					activateListeners();
 				}
 				else
+				{
 					addSaveBtnListener();
+				}
 
 				IDispatcher::setPosition(pos);
 			}
@@ -190,6 +221,7 @@ namespace kubik
 			Anim<int> animHeight;
 
 			float closeMaxY, closeMinY, openY;
+			float offsetBetweenTitles;
 		};
 
 		typedef std::shared_ptr<IPhotoboothItem> IPhotoboothItemRef;

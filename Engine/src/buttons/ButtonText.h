@@ -48,7 +48,7 @@ namespace kubik
 			gl::pushMatrices();			
 			float shiftX = (buttonArea.getWidth() - textTex.getWidth()) * 0.5f;
 			float shiftY = (buttonArea.getHeight() - textTex.getHeight()) * 0.5f;
-			gl::translate(shift);
+			gl::translate(position);
 			gl::translate(shiftX, shiftY);
 			gl::draw(textTex);
 			gl::popMatrices();

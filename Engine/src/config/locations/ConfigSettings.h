@@ -142,7 +142,12 @@ namespace kubik
 			addToDictionary("introLight44",  createFontResource(getFontsPath("IntroLight.ttf"), 44));
 			addToDictionary("introLight36",  createFontResource(getFontsPath("IntroLight.ttf"), 36));
 
-			addToDictionary("closeImg",		 createImageResource(getDesignPath() + "closeConfig.png"));
+			addToDictionary("iconClose",		 createImageResource(getDesignPath() + "closeConfig.png"));
+			addToDictionary("iconBack",		 createImageResource(getDesignPath() + "backIcon.png"));
+
+
+
+
 			addToDictionary("tempBg",		 createImageResource(getDesignPath() + "tempMain.jpg"));
 			addToDictionary("iconStartNew",	 createImageResource(getDesignPath() + "iconStartNew.png"));
 			addToDictionary("ssIcon",		 createImageResource(getDesignPath() + "ssIcon.png"));

@@ -16,12 +16,22 @@ namespace kubik
 				:text(settings->getSocialTitle(id)),
 				font(settings->getFont("introLight30")),
 				icon(settings->getIcon(id)),
+				settings(settings),
 				id(id)
 			{
 				IconPair icons(icon, settings->getEmptyIcon());
 				checker = CheckerSocialRef(new CheckerSocial(icons));				
-				checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
 				checker->setActive(settings->getSocialState(id));
+			}
+
+			void activateListeners()
+			{
+				checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
+			}
+
+			void unActivateListeners()
+			{				
+				checker->removeMouseUpListener();				
 			}
 
 			void checkerClicked(shared_ptr<kubik::Event> event)
@@ -32,27 +42,33 @@ namespace kubik
 
 			void resetChecker()
 			{
-				checker->setActive(id);
+				checker->setActive(settings->getSocialState(id));
 			}
 
 			virtual void draw()
 			{
-				textTools().textFieldDraw(text, &font, Color::hex(0xffffff), position + Vec2f(159, 18));
+				textTools().textFieldDraw(text, &font, Color::white(), position + Vec2f(159, 18));
 				checker->draw();			
 			}
 
 			virtual void setPosition(Vec2f position)
-			{
-				checker->setButtonArea(Rectf(position.x, position.y, position.x + 131, position.y + 78));
+			{				
+				checker->setButtonArea(Rectf(position, position + Vec2f(131, 78)));
 				IDispatcher::setPosition(position);
+			}
+
+			void writeValue()
+			{
+				settings->setSocialState(id, checker->getValue());
 			}
 
 		private:
 			Font font;
-			string text;
-			CheckerSocialRef checker;
+			string text;			
 			Texture icon;
 			SocialID id;
+			CheckerSocialRef checker;
+			PhotoboothSettingsRef settings;			
 		};
 
 		typedef std::shared_ptr<OneSharingItem> OneSharingItemRef;
@@ -64,8 +80,7 @@ namespace kubik
 
 			Sharing(PhotoboothSettingsRef phbSettings, Color color, int index)
 				:IPhotoboothItem(phbSettings, SettingsPartID::SHARING, color, index)
-			{
-				
+			{				
 				typedef Pair<SocialID, Vec2f> PosPair;
 				vector<PosPair> pairs;
 
@@ -79,18 +94,29 @@ namespace kubik
 
 				for (auto item : pairs)
 				{
-					OneSharingItemRef shareEl = OneSharingItemRef(new OneSharingItem(settings, item.param1));
+					OneSharingItemRef shareEl = OneSharingItemRef(new OneSharingItem(phbSettings, item.param1));
 					shareEl->setPosition(item.param2);
 					items.push_back(shareEl);
 				}
 			}
 
-			virtual void draw()
-			{				
-				//gl::color(ColorA(1,1,1,0.4));
-				//gl::draw(settings->getTexture("_temp"), position);
-				//gl::color(Color::white());
-				IPhotoboothItem::draw();
+			void activateListeners()
+			{
+				for (auto item : items)
+				{
+					item->activateListeners();
+				}
+				IPhotoboothItem::activateListeners();
+			}
+
+			void unActivateListeners()
+			{
+				for (auto item : items)
+				{
+					item->unActivateListeners();
+					item->removeMouseUpListener();
+				}
+				IPhotoboothItem::unActivateListeners();
 			}
 
 			virtual void onOpenResetParams()
@@ -101,13 +127,21 @@ namespace kubik
 
 			virtual void drawContent()
 			{
+				//gl::pushMatrices();
+				//gl::translate(position);
 				for (auto item : items)				
 					item->draw();
+				//gl::popMatrices();
 			}
+
+			virtual void saveConfiguration()
+			{
+				for (auto item : items)
+					item->writeValue();
+			};
 
 		protected:
 			list<OneSharingItemRef> items;
-
 		};
 
 		typedef std::shared_ptr<Sharing> SharingRef;

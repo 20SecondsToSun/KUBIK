@@ -36,7 +36,7 @@ namespace kubik
 				layouts.push_back(photoPrintCount);
 
 				photoFilters = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), index++));
-				layouts.push_back(photoFilters);				
+				layouts.push_back(photoFilters);
 			}		
 
 			void activateListeners()
@@ -74,7 +74,6 @@ namespace kubik
 					SavePhotobootnConfigEventRef event = static_pointer_cast<SavePhotobootnConfigEvent>(_event);	
 					setOpenItem(-1);
 				}				
-				console()<<"clicked"<<endl;
 			}
 
 			void setOpenItem(int index)
@@ -87,17 +86,57 @@ namespace kubik
 			}
 
 			virtual void draw()
-			{
+			{				
 				for (auto layout : layouts)
 					layout->draw();			
 			}
 
-			void setInitPosition(Vec2i position = Vec2i(166, 0))//1080, 0))
+			void setInitPosition(Vec2i position)
 			{
+				animatePosition = position;
 				setPosition(position);
-				for (auto layout : layouts)
-					layout->setPosition(position);			
 			}	
+
+			void showAnimate(EaseFn eFunc, float time)
+			{	
+				unActivateListeners();
+				Vec2f finPos = Vec2f(166, 0.0f);
+				timeline().apply( &animatePosition, finPos, time, eFunc)
+						.finishFn( bind( &PhotoboothConfig::hideAnimationFinish, this, finPos, true))
+						.updateFn(bind( &PhotoboothConfig::hideAnimationUpdate, this));
+			}			
+
+			void hideAnimate(EaseFn eFunc, float time)
+			{
+				unActivateListeners();
+				Vec2f finPos = Vec2f(1080, 0.0f);
+				timeline().apply( &animatePosition, finPos, time, eFunc)
+						.finishFn( bind( &PhotoboothConfig::hideAnimationFinish, this, finPos, false))
+						.updateFn(bind( &PhotoboothConfig::hideAnimationUpdate, this));
+			}
+
+			void hideAnimationUpdate()
+			{
+				position = Vec2f(animatePosition.value().x, position.y);
+				for (auto layout : layouts)
+					layout->animPosition(position);							
+			}
+
+			void hideAnimationFinish(Vec2f finPos, bool showAnim)
+			{
+				setPosition(finPos);	
+				if(showAnim)
+					activateListeners();
+				else
+					setOpenItem(-1);
+			}
+
+			void setPosition(Vec2f position)
+			{
+				IDispatcher::setPosition(position);
+				for (auto layout : layouts)
+					layout->setPosition(position);	
+			}
 
 		private:
 			int leftMargin;
@@ -111,6 +150,8 @@ namespace kubik
 			PhotoPrintCountRef   photoPrintCount;
 			PhotoFiltersRef	     photoFilters;
 			SharingRef		     sharing;
+
+			Anim<Vec2f> animatePosition;
 		};
 
 		typedef std::shared_ptr<PhotoboothConfig> PhotoboothConfigRef;

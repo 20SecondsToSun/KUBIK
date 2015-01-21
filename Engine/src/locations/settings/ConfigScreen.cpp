@@ -43,19 +43,21 @@ void ConfigScreen::startUpParams()
 
 	console()<<"STARTUP!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 	mainConfig->setStartupData();
-	photoboothConfig->setInitPosition();
+	photoboothConfig->setInitPosition(Vec2f(1080, 0));
 }
 
 void ConfigScreen::start()
 {
 	startUpParams();	
 	mainConfig->addMouseUpListener(&ConfigScreen::gamesBlockHandler, this);
-	photoboothConfig->activateListeners();
+	mainConfig->activateListeners();
+	//photoboothConfig->activateListeners();
 }
 
 void ConfigScreen::stop()
 {	
 	mainConfig->removeMouseUpListener();
+	mainConfig->unActivateListeners();
 	photoboothConfig->unActivateListeners();
 }
 
@@ -81,15 +83,15 @@ void ConfigScreen::init(ISettingsRef settings)
 
 void ConfigScreen::draw()
 {
-	//mainConfig->draw();
-	
+	mainConfig->draw();
+	photoboothConfig->draw();
 	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
 	Texture tempBg = configSettings->getTexture("temp");
 	//gl::draw(tempBg, Vec2f(0.0f, getWindowHeight() - tempBg.getHeight()));
 	//tempBg = configSettings->getTexture("appsTemp");
 	//gl::draw(tempBg);//,  Vec2f(1080.0f, 10.0f - 500));
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
-	photoboothConfig->draw();
+	
 	//gl::color(Color::white());	
 }
 
@@ -110,6 +112,9 @@ void ConfigScreen::gamesBlockHandler(EventRef& event)
 	else if(typeid(*ev) == typeid(GameConfEvent))
 	{
 		GameConfEventRef statEvent = static_pointer_cast<GameConfEvent>(event);	
+		photoboothConfig->setInitPosition(Vec2f(1080, 0));		
+		mainConfig->hideAnimate(EaseOutCubic(), 0.7f);
+		photoboothConfig->showAnimate(EaseOutCubic(), 0.7f);
 		console()<<"config game ID:::::: "<<statEvent->getGameId()<<endl;
 	}
 	else if(typeid(*ev) == typeid(GameShowUrlEvent))
@@ -122,126 +127,15 @@ void ConfigScreen::gamesBlockHandler(EventRef& event)
 		console()<<"close location:::::: "<<endl;
 		closeLocationSignal();
 	}	
+	else if(typeid(*ev) == typeid(BackToMainConfigEvent))
+	{
+		console()<<"back to main location:::::: "<<endl;
+		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
+		photoboothConfig->hideAnimate(EaseOutCubic(), 0.7f);
+	}	
+	
 	console()<<"EVENT:::::: "<<event->getMsg()<<endl;
 }
-
-////////////////////////////////////////////////////////////////////////////
-//
-//				CREATING PARAMS
-//
-////////////////////////////////////////////////////////////////////////////
-//
-//void ConfigScreen::createPhotoboothParams()
-//{	
-//	shared_ptr<PhotoboothSettings> phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(game::id::PHOTOBOOTH));	
-//	phData = phbthSettings->getData();
-//
-//	photoBoothParams = InterfaceGl::create(getWindow(), "Photobooth parameters", toPixels(Vec2i(300, 400)));
-//
-//	photoBoothParams->addParam("seconds", &phData.seconds)
-//		.min((float)phData.MIN_COUNTDOWN_TIMER)
-//		.max((float)phData.MAX_COUNTDOWN_TIMER)
-//		.step(1);
-//	photoBoothParams->addParam("secondsBetweenShots", &phData.secondsBetweenShots)
-//		.min((float)phData.MIN_SEC_BETWEEN_SHOTS)
-//		.max((float)phData.MAX_SEC_BETWEEN_SHOTS)
-//		.step(1);
-//	photoBoothParams->addParam("photoNum", &phData.photoNum)
-//		.min((float)phData.MIN_PHOTO_SHOTS)
-//		.max((float)phData.MAX_PHOTO_SHOTS) 
-//		.step(2);
-//	photoBoothParams->addSeparator();
-//	photoBoothParams->addParam("Custom design",		&phData.isCustomDesign);
-//	photoBoothParams->addParam("Template id",		&phData.templateId).min(1).max(2).step(1);
-//	photoBoothParams->addButton("Show In Explorer1", bind(&ConfigScreen::showInExplorerMenuDesignPath, this));
-//	photoBoothParams->addSeparator();
-//	
-//	photoBoothParams->addParam("isSticker",			&phData.isSticker);
-//	photoBoothParams->addParam("Sticker ids",		&phData.activeSticker.id).max((float)phData.stickers.size()-1).min(0).step(1);
-//	photoBoothParams->addButton("Show In Explorer2", bind(&ConfigScreen::showInExplorerMenuDesignPath, this));
-//	photoBoothParams->addSeparator();
-//	photoBoothParams->addParam("Bg Print ids",		&phData.activeBgPrint.id).max((float)phData.bgPrint.size()-1).min(0).step(1);
-//	photoBoothParams->addButton("Show In Explorer3", bind(&ConfigScreen::showInExplorerMenuDesignPath, this));
-//	photoBoothParams->addSeparator();
-//	photoBoothParams->addParam("Facebook Sharing",  &phData.sharing.isFacebook);
-//	photoBoothParams->addParam("Vkontakte Sharing", &phData.sharing.isVkotakte);
-//	photoBoothParams->addParam("Twitter Sharing",   &phData.sharing.isTwitter);
-//	photoBoothParams->addParam("Printer",			&phData.sharing.isPrint);
-//	photoBoothParams->addParam("Email",				&phData.sharing.isEmail);
-//	photoBoothParams->addParam("QrCode",			&phData.sharing.isQrCode);
-//	photoBoothParams->hide();
-//
-//	params.push_back(photoBoothParams);
-//}
-//
-//void ConfigScreen::createFuncesParams()
-//{
-//
-//}
-//
-//void ConfigScreen::createMenuParams()
-//{
-//	menuData = menuSettings->getData();	
-//	menuParams = InterfaceGl::create(getWindow(), "Menu parameters", toPixels(Vec2i(300, 200)));	
-//	menuParams->setPosition(Vec2i(350, 20));
-//	menuParams->addParam("Custom design",	 &menuData.isCustomDesign);
-//	menuParams->addParam("Template id",		 &menuData.templateId).min(1).max(2).step(1);	
-//	menuParams->addButton("Show In Explorer", bind(&ConfigScreen::showInExplorerMenuDesignPath, this));
-//	menuParams->addSeparator();	
-//	menuParams->hide();
-//
-//	params.push_back(menuParams);
-//}
-//
-//void ConfigScreen::showInExplorerMenuDesignPath()
-//{
-//	if(menuData.isCustomDesign)	
-//		showInExplorer(menuSettings->getUserDesighFullPath());
-//	else
-//	   showInExplorer(menuSettings->getKubikDesighFullPath());
-//}
-//
-//void ConfigScreen::showInExplorer(string path)
-//{
-//	//system("start explorer c:\\");
-//	std::wstring stemp = stringTools().s2ws(path);	
-//	console()<<"show in explorer::: "<<path<<endl;
-//
-//	ShellExecute(NULL, L"open", (LPCWSTR)path.c_str(), NULL, NULL, SW_SHOWDEFAULT);
-//}
-//
-//void ConfigScreen::createGamesParams()
-//{
-//	gamesData = gameSettings->getData();
-//	gamesParams = InterfaceGl::create(getWindow(), "Games parameters", toPixels(Vec2i(300, 200)));
-//	gamesParams->setPosition(Vec2i(690, 20));
-//	//gamesParams->addText("Action Name -------------    " + stringTools().cp1251_to_utf8(gameSettings->getData().actionName.c_str()));
-//	gamesParams->addSeparator();	
-//	for (auto it = gamesData.games.begin(); it < gamesData.games.end(); it++)
-//	{
-//		if( it->isPurchased)		
-//			gamesParams->addParam(it->name, &it->isOn);
-//	}
-//
-//	gamesParams->addSeparator();	
-//	gamesParams->addParam("Default Game ID", &gamesData.defaultGameID).min(1).max(2).step(1);
-//	gamesParams->hide();
-//
-//	params.push_back(gamesParams);
-//}
-//
-//void ConfigScreen::createScreensaverParams()
-//{
-//	screensaverData = screenSaverSettings->getData();
-//
-//	screensaverParams = InterfaceGl::create(getWindow(), "Screensaver parameters", toPixels(Vec2i(300, 60)));
-//	screensaverParams->setPosition(Vec2i(690, 250));
-//	screensaverParams->addParam("Is Active", &screensaverData.isActive);
-//	screensaverParams->addButton("Show In Explorer", bind(&ConfigScreen::showInExplorerMenuDesignPath, this));
-//	screensaverParams->hide();
-//
-//	params.push_back(screensaverParams);
-//}
 
 ////////////////////////////////////////////////////////////////////////////
 //

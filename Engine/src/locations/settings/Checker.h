@@ -20,7 +20,8 @@ namespace kubik
 				radius(55),
 				startX(0),
 				finishX(77.0f),
-				sdvigX(startX)
+				sdvigX(startX),
+				iconColor(Color::white())
 			{
 				
 			}	
@@ -33,8 +34,15 @@ namespace kubik
 
 				gl::pushMatrices();		
 				gl::translate(sdvigX + buttonArea.x1, buttonArea.y1 - 3);
+				gl::color(iconColor);
 				gl::draw(icon);
 				gl::popMatrices();				
+			}
+
+			void setAlpha(float  alpha)
+			{
+				color = ColorA(color.r, color.g, color.b, alpha);
+				iconColor = ColorA(iconColor.r, iconColor.g, iconColor.b, alpha);
 			}
 
 			void setActive(bool isActive)
@@ -52,8 +60,12 @@ namespace kubik
 					icon = icons.unActiveIcon;
 					sdvigX = startX;
 				}
-			}
+			}		
 
+			bool getValue()
+			{
+				return isActive;
+			}
 
 			void setRadius(float radius)
 			{
@@ -80,7 +92,7 @@ namespace kubik
 			IconPair icons;
 			Texture icon;
 			bool isActive;
-			Color color;
+			ColorA color, iconColor;
 			Color activeColor, unActiveColor;
 			float radius, startX, finishX;
 		};

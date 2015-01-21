@@ -30,6 +30,12 @@ namespace kubik
 				mouseUpSignal(event);
 			}
 		}
+
+		void changeTexture(Texture _tex)
+		{
+			tex = _tex;
+		}
+
 		EventRef event;
 	};
 

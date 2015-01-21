@@ -53,7 +53,7 @@ namespace kubik
 				createPhotoButton(i, Vec2f(shift, 200.0f));
 				shift += thumbs[i].getWidth() + 20;
 
-				bool value = (i < canSelectCount);
+				bool value = (i < (size_t)canSelectCount);
 				photoBtns[i]->setSelection(value);
 			}	
 
@@ -73,7 +73,7 @@ namespace kubik
 			fon  =  settings->getTexture("fon1");
 			font =  settings->getFont("helvetica40");				
 
-			nextButton = MenuButtonRef(new MenuButton((game::id)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
+			nextButton = MenuButtonRef(new MenuButton((GameId)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
 			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, placeholders::_1));
 		}	
 

@@ -59,7 +59,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/Zm161 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -159,6 +159,7 @@
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\Event.h" />
+    <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
@@ -205,23 +206,22 @@
     <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
     <ClInclude Include="..\src\config\Types.h" />
-    <ClInclude Include="..\src\locations\settings\elements\CloseBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\Checkerh" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\GamesBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\NotPurchasedGamesBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGameNotPurchased.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\OneGamePurchased.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\PurchasedGamesBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolButton.h" />
-    <ClInclude Include="..\src\locations\settings\elements\gamesBlock\ToolField.h" />
-    <ClInclude Include="..\src\locations\settings\elements\Logo.h" />
-    <ClInclude Include="..\src\locations\settings\elements\MainConfig.h" />
-    <ClInclude Include="..\src\locations\settings\elements\MenuBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\PrinterBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\ScreenSaverBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\StartNewActivity.h" />
-    <ClInclude Include="..\src\locations\settings\elements\StatBlock.h" />
-    <ClInclude Include="..\src\locations\settings\elements\Title.h" />
+    <ClInclude Include="..\src\locations\settings\main\CloseBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\NotPurchasedGamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\OneGameNotPurchased.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\OneGamePurchased.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\PurchasedGamesBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\ToolButton.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\ToolField.h" />
+    <ClInclude Include="..\src\locations\settings\main\Logo.h" />
+    <ClInclude Include="..\src\locations\settings\main\MainConfig.h" />
+    <ClInclude Include="..\src\locations\settings\main\MenuBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\PrinterBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\ScreenSaverBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\StartNewActivity.h" />
+    <ClInclude Include="..\src\locations\settings\main\StatBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\Title.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h" />

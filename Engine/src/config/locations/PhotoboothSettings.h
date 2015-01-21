@@ -110,7 +110,7 @@ namespace kubik
 
 			void setSocialState(SocialID id, bool state)
 			{
-				states[id] = state;
+				states[id] = state;				
 			}
 
 			bool getSocialState(SocialID id)
@@ -239,37 +239,42 @@ namespace kubik
 
 		string getMainTitle(SettingsPartID id)
 		{
-			return getData().mainTitles[model->getLang()].get(id);
+			return data.mainTitles[model->getLang()].get(id);
 		}
 
 		string getSubTitle(SettingsPartID id)
 		{
-			return getData().mainTitles[model->getLang()].get(id);
+			return data.mainTitles[model->getLang()].get(id);
 		}		
 
 		string getText(TextID id)
 		{
-			return getData().getText(make_pair(id, model->getLang()));
+			return data.getText(make_pair(id, model->getLang()));
 		}
 
 		string getSocialTitle(SocialID id)
 		{
-			return getData().sharing.getSocialTitle(make_pair(id, model->getLang()));
+			return data.sharing.getSocialTitle(make_pair(id, model->getLang()));
 		}
 
 		bool getSocialState(SocialID id)
 		{
-			return getData().sharing.getSocialState(id);
+			return data.sharing.getSocialState(id);
+		}
+
+		void setSocialState(SocialID id, bool value)
+		{
+			data.sharing.setSocialState(id, value);
 		}
 
 		Texture getIcon(SocialID id)
 		{
-			return getData().sharing.getIcon(id);
+			return data.sharing.getIcon(id);
 		}
 
 		Texture getEmptyIcon()
 		{
-			return getData().sharing.getEmptyIcon();
+			return data.sharing.getEmptyIcon();
 		}
 
 		PhotoboothSettings(ApplicationModelRef model);

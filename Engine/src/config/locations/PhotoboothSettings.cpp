@@ -57,14 +57,14 @@ void PhotoboothSettings::setPhotoParams(JsonTree config)
 
 void PhotoboothSettings::setSocialParams(JsonTree config)
 {
-	Sharing sharing;
-	sharing.setSocialState(SocialID::FACEBOOK, config.getChild("isFacebook").getValue<bool>());
-	sharing.setSocialState(SocialID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
-	sharing.setSocialState(SocialID::TWITTER, config.getChild("isTwitter").getValue<bool>());
-	sharing.setSocialState(SocialID::EMAIL, config.getChild("isEmail").getValue<bool>());
-	sharing.setSocialState(SocialID::QRCODE, config.getChild("isQrCode").getValue<bool>());
-	sharing.setSocialState(SocialID::PRINTER, config.getChild("isPrint").getValue<bool>());
-	data.sharing = sharing;
+	//Sharing sharing;
+	setSocialState(SocialID::FACEBOOK, config.getChild("isFacebook").getValue<bool>());
+	setSocialState(SocialID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
+	setSocialState(SocialID::TWITTER, config.getChild("isTwitter").getValue<bool>());
+	setSocialState(SocialID::EMAIL, config.getChild("isEmail").getValue<bool>());
+	setSocialState(SocialID::QRCODE, config.getChild("isQrCode").getValue<bool>());
+	setSocialState(SocialID::PRINTER, config.getChild("isPrint").getValue<bool>());
+	//data.sharing = sharing;
 }
 
 void PhotoboothSettings::setPhotoFilterParams(JsonTree config)

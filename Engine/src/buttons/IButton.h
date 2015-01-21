@@ -13,7 +13,7 @@ namespace kubik
 	public:
 		IButton(Rectf rectf)
 		{
-			this->shift = Vec2f(rectf.x1, rectf.y1);
+			this->position = Vec2f(rectf.x1, rectf.y1);
 			setButtonArea(rectf);	
 			isTexture = false;
 		}
@@ -21,7 +21,7 @@ namespace kubik
 		IButton(Texture tex, Vec2f shift)
 		{
 			this->tex = tex;
-			this->shift = shift;
+			this->position = shift;
 
 			setButtonArea(Rectf(shift.x, shift.y, shift.x + tex.getWidth(), shift.y + tex.getHeight()));	
 			isTexture = true;
@@ -31,7 +31,7 @@ namespace kubik
 		{
 			if(isTexture)
 			{
-				gl::draw(tex, shift);
+				gl::draw(tex, position);
 			}
 			else
 				drawSolidRect(buttonArea);
@@ -73,7 +73,7 @@ namespace kubik
 	protected:
 		Rectf buttonArea;
 		bool isTexture;
-		Vec2f shift;
+		//Vec2f position;
 		Texture tex;		
 	};
 
