@@ -1,48 +1,41 @@
 #pragma once
-
-#include "IDispatcher.h"
+#include "gui/Dispatcher.h"
+#include "TextTools.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class StartNewActivity: public IDispatcher
+		class StartNewActivity: public SimpleButton
 		{
 		public:	
 			StartNewActivity(ConfigSettingsRef configSettings, Vec2i position)
-				:icon(configSettings->getTexture("iconStartNew")),
+				:SimpleButton(Rectf(0, 0, 350.0f, 37.0f)),
+				icon(configSettings->getTexture("iconStartNew")),
 				 font(configSettings->getFont("helveticaLight24")),
 				 text("Завершить и начать новое"),
-				 textcolor(Color::hex(0x00f067))
+				 textcolor(Color::hex(0x00f067))				 
 			{
 				setPosition(position);
-				startNewBtn = ButtonRef(new Button(Rectf(position, position + Vec2f(350.0f, 37.0f))));	
-				displayList.push_back(startNewBtn);
+				//startNewBtn = SimpleButtonRef(new SimpleButton(Rectf(0, 0, 350.0f, 37.0f)));	
+				//addChild(startNewBtn);
 			}
 			
-			virtual void draw()
+			virtual void drawLayout()
 			{
-				gl::pushMatrices();
-					gl::translate(position);
-					gl::color(textcolor);
-					gl::draw(icon);					
-					textTools().textFieldDraw(text, &font, textcolor, Vec2f(42, -5));
-				gl::popMatrices();						
+				gl::color(textcolor);
+				gl::draw(icon);					
+				textTools().textFieldDraw(text, &font, textcolor, Vec2f(42, -5));			
 			}
 
 			void setAlpha(float  alpha)
 			{
-				textcolor = ColorA(textcolor.r, textcolor.g, textcolor.b, alpha);
+				textcolor = Utils::colorAlpha(textcolor, alpha);	
 			}
 
 			void setIcon(Texture tex)
 			{
 				icon = tex;
-			}
-
-			void setFont(Font font)
-			{
-				this->font = font;
 			}
 
 			void setText(string text)
@@ -63,7 +56,7 @@ namespace kubik
 			string text;
 			ColorA textcolor;
 			Font font;
-			ButtonRef startNewBtn;			
+			//SimpleButtonRef startNewBtn;			
 		};
 
 		typedef std::shared_ptr<StartNewActivity> StartNewActivityRef;

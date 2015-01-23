@@ -1,9 +1,9 @@
 #pragma once
-#include "Event.h"
+#include "gui/EventGUI.h"
 
 namespace kubik
 {
-	class GameShowUrlEvent: public Event
+	class GameShowUrlEvent: public EventGUI
 	{			
 	public:
 		GameShowUrlEvent(GameId gameId):gameId(gameId)

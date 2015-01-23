@@ -43,15 +43,14 @@ void ConfigScreen::startUpParams()
 
 	console()<<"STARTUP!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 	mainConfig->setStartupData();
-	photoboothConfig->setInitPosition(Vec2f(1080, 0));
+	photoboothConfig->setPosition(Vec2f(1080, 0));
 }
 
 void ConfigScreen::start()
 {
 	startUpParams();	
 	mainConfig->addMouseUpListener(&ConfigScreen::gamesBlockHandler, this);
-	mainConfig->activateListeners();
-	//photoboothConfig->activateListeners();
+	mainConfig->startAnimation();
 }
 
 void ConfigScreen::stop()
@@ -70,9 +69,11 @@ void ConfigScreen::init(ISettingsRef settings)
 {
 	configSettings			= static_pointer_cast<ConfigSettings>(settings);
 	mainConfig				= MainConfigRef(new MainConfig(configSettings, gameSettings));
+	addChild(mainConfig);
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	photoboothConfig		= PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));	
+	addChild(photoboothConfig);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -83,8 +84,9 @@ void ConfigScreen::init(ISettingsRef settings)
 
 void ConfigScreen::draw()
 {
-	mainConfig->draw();
-	photoboothConfig->draw();
+	CompositeDispatcher::draw();
+	//mainConfig->draw();
+	//photoboothConfig->draw();
 	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
 	Texture tempBg = configSettings->getTexture("temp");
 	//gl::draw(tempBg, Vec2f(0.0f, getWindowHeight() - tempBg.getHeight()));
@@ -100,41 +102,39 @@ void ConfigScreen::closeLocationHandler(EventRef& event)
 	closeLocationSignal();
 }
 
-void ConfigScreen::gamesBlockHandler(EventRef& event)
+void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 {
-	Event *ev = event.get();
-
+	EventGUI *ev = event.get();
+	if(typeid(*ev) == typeid(CloseConfigEvent))
+	{
+		mainConfig->unActivateListeners();
+		CloseConfigEventRef statEvent = static_pointer_cast<CloseConfigEvent>(event);	
+		closeLocationSignal();		
+	}
+	else if(typeid(*ev) == typeid(GameConfEvent))
+	{
+		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);	
+		mainConfig->hideAnimate(EaseOutCubic(), 0.7f);
+		photoboothConfig->showAnimate(EaseOutCubic(), 0.7f);
+		console()<<"config game ID:::::: "<<confEvent->getGameId()<<endl;
+	}
+	else if(typeid(*ev) == typeid(BackToMainConfigEvent))
+	{
+		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
+		photoboothConfig->hideAnimate(EaseOutCubic(), 0.7f);
+	}	
 	if(typeid(*ev) == typeid(StatisticEvent))
 	{
 		StatisticEventRef statEvent = static_pointer_cast<StatisticEvent>(event);	
 		console()<<"Statistic game ID:::::: "<<statEvent->getGameId()<<endl;
 	}
-	else if(typeid(*ev) == typeid(GameConfEvent))
-	{
-		GameConfEventRef statEvent = static_pointer_cast<GameConfEvent>(event);	
-		photoboothConfig->setInitPosition(Vec2f(1080, 0));		
-		mainConfig->hideAnimate(EaseOutCubic(), 0.7f);
-		photoboothConfig->showAnimate(EaseOutCubic(), 0.7f);
-		console()<<"config game ID:::::: "<<statEvent->getGameId()<<endl;
-	}
 	else if(typeid(*ev) == typeid(GameShowUrlEvent))
 	{
 		GameShowUrlEventRef urlEvent = static_pointer_cast<GameShowUrlEvent>(event);	
 		console()<<"show url game ID:::::: "<<urlEvent->getGameId()<<endl;
-	}
-	else if(typeid(*ev) == typeid(CloseConfigEvent))
-	{
-		console()<<"close location:::::: "<<endl;
-		closeLocationSignal();
-	}	
-	else if(typeid(*ev) == typeid(BackToMainConfigEvent))
-	{
-		console()<<"back to main location:::::: "<<endl;
-		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
-		photoboothConfig->hideAnimate(EaseOutCubic(), 0.7f);
 	}	
 	
-	console()<<"EVENT:::::: "<<event->getMsg()<<endl;
+	console()<<"EVENT:::::: "<<endl;	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ void ConfigScreen::appSettingsChgHandler(ButtonText& button )
 
 void ConfigScreen::checkPhotoBoothParamsForChanges()
 {
-	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(game::id::PHOTOBOOTH));
+	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	Changes chng;
 	chng.id = changeSetting::id::PHOTOBOOTH;
 

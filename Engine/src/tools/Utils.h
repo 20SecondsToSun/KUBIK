@@ -51,4 +51,7 @@ class Utils
 
 		static void clearFBO(Fbo fbo);
 		static void printVideoMemoryInfo();
+
+		static ci::ColorA colorAlpha(ci::ColorA color, float alpha) {return ci::ColorA(color.r, color.g, color.b, alpha);};
+
 };

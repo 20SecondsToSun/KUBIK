@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -159,6 +159,7 @@
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\Event.h" />
+    <ClInclude Include="..\src\events\menu\GameChoosedEvent.h" />
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
@@ -191,6 +192,13 @@
     <ClInclude Include="..\src\graphics\shaders\KaleidoscopeShader.h" />
     <ClInclude Include="..\src\graphics\shaders\LutShader.h" />
     <ClInclude Include="..\src\graphics\shaders\PixelateShader.h" />
+    <ClInclude Include="..\src\gui\CompositeDispatcher.h" />
+    <ClInclude Include="..\src\gui\DecorateButton.h" />
+    <ClInclude Include="..\src\gui\Dispatcher.h" />
+    <ClInclude Include="..\src\gui\EventGUI.h" />
+    <ClInclude Include="..\src\gui\ImageButton.h" />
+    <ClInclude Include="..\src\gui\SimpleButton.h" />
+    <ClInclude Include="..\src\gui\TextButton.h" />
     <ClInclude Include="..\src\loaders\ConfigLoader.h" />
     <ClInclude Include="..\src\loaders\GraphicsLoader.h" />
     <ClInclude Include="..\src\loaders\Iloader.h" />
@@ -217,6 +225,9 @@
     <ClInclude Include="..\src\locations\settings\main\Logo.h" />
     <ClInclude Include="..\src\locations\settings\main\MainConfig.h" />
     <ClInclude Include="..\src\locations\settings\main\MenuBlock.h" />
+    <ClInclude Include="..\src\locations\settings\main\popup\ChangeCatridgePopup.h" />
+    <ClInclude Include="..\src\locations\settings\main\popup\MainPopup.h" />
+    <ClInclude Include="..\src\locations\settings\main\popup\NewActivityPopup.h" />
     <ClInclude Include="..\src\locations\settings\main\PrinterBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\ScreenSaverBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\StartNewActivity.h" />

@@ -24,7 +24,7 @@ namespace kubik
 
 				textTexture = textTools().getTextField(nameText, &nameFont, nameColor);		
 
-				event = GameShowUrlEventRef(new GameShowUrlEvent(info.getGameId()));
+				//event = GameShowUrlEventRef(new GameShowUrlEvent(info.getGameId()));
 			}		
 			
 			virtual void draw()

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "IDrawable.h"
+#include "gui/CompositeDispatcher.h"
+
 #include "main/gamesBlock/ToolButton.h"
 
 namespace kubik
@@ -9,38 +10,45 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class ToolField> ToolFieldRef;
 
-		class ToolField: public IDispatcher
+		class ToolField: public CompositeDispatcher
 		{
 		public:
 			ToolField(ConfigSettingsRef config, GameId gameId)
-				:offTextColor(Color::hex(0x939eb0)),
-				offText(config->getSwitchOffText())
-			{			
-				font =	config->getFont("helveticaLight24");
-				
-				statBtn = StatToolButtonRef(new StatToolButton(gameId, config->getStatText(), font));
-				statBtn->setColor(Color::hex(0x6798ff));	
-				
-				toolBtn = ConfToolButtonRef(new ConfToolButton(gameId, config->getConfigText(), font));
-				toolBtn->setColor(Color::hex(0x00f067));		
+				:CompositeDispatcher(),
+				offTextColor(Color::hex(0x939eb0)),
+				offText(config->getSwitchOffText()),
+				font(config->getFont("helveticaLight24"))
+			{					
+				Rectf ba1 = Rectf(295.0f, 65.0f, 295.0f + 180, 65.0f + 55);				
+				Rectf ba2 = Rectf(295.0f + 205, 65.0f, 295.0f + 205 + 180 + 10, 65.0f + 55);
+
+				statBtn = StatToolButtonRef(new StatToolButton(ba1, gameId, config->getStatText(), font));
+				statBtn->setColor(Color::hex(0x6798ff));
+				addChild(statBtn);
+
+				toolBtn = ConfToolButtonRef(new ConfToolButton(ba2, gameId, config->getConfigText(), font));
+				toolBtn->setColor(Color::hex(0x00f067));
+				addChild(toolBtn);
 				setActive(false);				
-			}			
+			}	
 
 			virtual void draw()
-			{
-				(isActive) ? drawControls() : drawOffMessage();
+			{	
+				gl::pushMatrices();				
+				gl::translate(getGlobalPosition());
+				if(!isActive)
+					drawOffMessage();
+				gl::popMatrices();
+
+				if(isActive)
+					CompositeDispatcher::draw();
 			}
 
 			void drawOffMessage()
-			{				
-				textTools().textFieldDraw(offText, &font, offTextColor, Vec2f(position.x + 289, position.y + 55));
-			}
-
-			void drawControls() const
-			{				
-				toolBtn->draw();
-				statBtn->draw();
-			}
+			{	
+				gl::color(Color::white());
+				textTools().textFieldDraw(offText, &font, offTextColor, Vec2f(289, 55));			
+			}		
 
 			void setActive(bool isActive)
 			{
@@ -56,29 +64,23 @@ namespace kubik
 					toolBtn->removeMouseUpListener();
 					statBtn->removeMouseUpListener();
 				}
-			}
+			}	
+
+			virtual void activateListeners()
+			{
+				setActive(isActive);
+				CompositeDispatcher::activateListeners();
+			}		
 
 			void setAlpha(float  alpha)
-			{
-				offTextColor = ColorA(offTextColor.r, offTextColor.g, offTextColor.b, alpha);
-				toolBtn->setAlpha(alpha);
-				statBtn->setAlpha(alpha);
+			{		
+				offTextColor = Utils::colorAlpha(offTextColor, alpha);
+				CompositeDispatcher::setAlpha(alpha);
 			}
 
 			void swapActive()
 			{
 				setActive(!isActive);
-			}		
-
-			virtual void setPosition(ci::Vec2i position)		
-			{
-				IDrawable::setPosition(position);
-				float shiftX = 295.0f + position.x;
-				float shiftY = 65.0f  + position.y;	
-				toolBtn->setButtonArea(Rectf(shiftX, shiftY, shiftX + 180, shiftY + 55));
-
-				shiftX += 205;
-				statBtn->setButtonArea(Rectf(shiftX, shiftY, shiftX + 180 + 10, shiftY + 55));
 			}
 
 		private:

@@ -1,14 +1,9 @@
 #pragma once
-#include "Event.h"
-
-using namespace ci::signals;
-using namespace ci::app;
-using namespace std;
-using namespace ci;
+#include "gui/EventGUI.h"
 
 namespace kubik
 {
-	class OpenPhotoBoothLayoutEvent: public Event
+	class OpenPhotoBoothLayoutEvent: public EventGUI
 	{			
 	public:
 		OpenPhotoBoothLayoutEvent(int index):index(index)

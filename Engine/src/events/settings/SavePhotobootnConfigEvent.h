@@ -1,11 +1,12 @@
 #pragma once
-#include "Event.h"
+#include "gui/EventGUI.h"
 
 namespace kubik
 {
-	class SavePhotobootnConfigEvent: public Event
+	class SavePhotobootnConfigEvent: public EventGUI
 	{			
 	public:
+
 		SavePhotobootnConfigEvent( )
 		{
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "IDrawable.h"
+
+#include "gui/CompositeDispatcher.h"
 #include "main/gamesBlock/OneGamePurchased.h"
 
 namespace kubik
@@ -8,52 +9,28 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class PurchasedGamesBlock> PurchasedGamesBlockRef;
 
-		class PurchasedGamesBlock: public IDispatcher
+		class PurchasedGamesBlock: public CompositeDispatcher
 		{
 		public:
 			PurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
-				:oneGamePurchasedHeight(186)
-			{
-				purchasedGamesSize = games.size();
-
+				:oneGamePurchasedHeight(186),
+				purchasedGamesSize(games.size())
+			{	
+				int i = 0;
 				for (auto gameInfo : games)
 				{
-					OneGamePurchasedRef pGame  = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));	
-					addChild(pGame);				
+					OneGamePurchasedRef game = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));	
+					game->setPosition(Vec2f(0.0f, oneGamePurchasedHeight * i++));
+					addChild(game);				
 				}
-			}
-
-			virtual void setPosition(ci::Vec2i position)		
-			{
-				int i = 0;
-				for (auto game : displayList)			
-					game->setPosition(position + Vec2f(0.0f, oneGamePurchasedHeight * i++));					
-				
-				IDrawable::setPosition(position);
-			}
-
-			void setAlpha(float alpha)
-			{
-				for (auto game : displayList)
-					game->setAlpha(alpha);
 			}
 
 			virtual void activateListeners()
 			{
-				for (auto game : displayList)
-				{
+				for (auto game : displayList)				
 					game->addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);
-					game->activateListeners();
-				}
-			}
-
-			virtual void unActivateListeners()
-			{
-				for (auto game : displayList)
-				{
-					game->removeMouseUpListener();
-					game->unActivateListeners();
-				}
+		
+				CompositeDispatcher::activateListeners();
 			}
 
 			float getHeight() const

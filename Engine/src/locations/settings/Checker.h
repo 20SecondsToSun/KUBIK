@@ -1,5 +1,5 @@
 #pragma once
-#include "Button.h"
+#include "gui/SimpleButton.h"
 
 namespace kubik
 {
@@ -7,10 +7,11 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class Checker> CheckerRef;
 
-		class Checker: public Button
+		class Checker: public SimpleButton
 		{
 		public:
-			Checker(IconPair icons, Color activeColor = Color::hex(0x00b6c4), Color unActiveColor = Color::hex(0x373049)):Button(Rectf(0,0,0,0)),
+			Checker(Rectf rect, IconPair icons, Color activeColor = Color::hex(0x00b6c4), Color unActiveColor = Color::hex(0x373049))
+				:SimpleButton(rect),
 				icons(icons),
 				icon(icons.unActiveIcon),
 				isActive(false),				
@@ -26,8 +27,10 @@ namespace kubik
 				
 			}	
 
-			virtual void draw()
-			{						
+			virtual void drawLayout()
+			{
+				//gl::pushMatrices();
+				//gl::translate(getAbsolutePosition());
 				gl::color(color);
 				gl::drawSolidRoundedRect(buttonArea, radius, 200);
 				gl::color(Color::white());
@@ -37,12 +40,13 @@ namespace kubik
 				gl::color(iconColor);
 				gl::draw(icon);
 				gl::popMatrices();				
+				//gl::popMatrices();				
 			}
 
 			void setAlpha(float  alpha)
 			{
-				color = ColorA(color.r, color.g, color.b, alpha);
-				iconColor = ColorA(iconColor.r, iconColor.g, iconColor.b, alpha);
+				color = Utils::colorAlpha(color, alpha);
+				iconColor = Utils::colorAlpha(iconColor, alpha);
 			}
 
 			void setActive(bool isActive)

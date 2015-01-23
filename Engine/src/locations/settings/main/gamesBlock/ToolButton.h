@@ -11,7 +11,8 @@ namespace kubik
 		class StatToolButton : public ToolRoundBtn
 		{
 		public:			
-			StatToolButton(GameId gameId, string text, Font font):ToolRoundBtn(text, font, Color::hex(0xffff00))
+			StatToolButton(Rectf rect, GameId gameId, string text, Font font)
+				:ToolRoundBtn(rect, text, font, Color::hex(0xffff00))
 			{
 				event = StatisticEventRef(new StatisticEvent(gameId));
 			}	
@@ -20,7 +21,8 @@ namespace kubik
 		class ConfToolButton : public ToolRoundBtn
 		{
 		public:
-			ConfToolButton(GameId gameId, string text, Font font):ToolRoundBtn(text, font, Color::hex(0xffff00))
+			ConfToolButton(Rectf rect, GameId gameId, string text, Font font)
+				:ToolRoundBtn(rect, text, font, Color::hex(0xffff00))
 			{
 				event = GameConfEventRef(new GameConfEvent(gameId));
 			}

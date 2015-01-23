@@ -95,8 +95,8 @@ namespace kubik
 			printTempaleTex	= settings->getActivePrintBgTex();	
 			isPrint			= settings->getData().sharing.getSocialState(SocialID::PRINTER);
 
-			nextButton = MenuButtonRef(new MenuButton((GameId)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
-			connect_once(nextButton->mouseUpSignal, bind(&PhotoTemplate::mouseUpNextListener, this, placeholders::_1));	
+			nextButton = MenuButtonRef(new MenuButton(Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font, (GameId)1));	
+			//connect_once(nextButton->mouseUpSignal, bind(&PhotoTemplate::mouseUpNextListener, this, placeholders::_1));	
 		}
 
 		void mouseUpNextListener(MenuButton& button)

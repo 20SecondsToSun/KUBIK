@@ -5,6 +5,7 @@
 #include "ConfigSettings.h"
 #include "MenuSettings.h"
 #include "Button.h"
+#include "ButtonText.h"
 #include "GameSettings.h"
 #include "ScreenSaverSettings.h"
 #include "Types.h"
@@ -13,7 +14,7 @@
 
 #include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
-
+#include "gui/CompositeDispatcher.h"
 
 using namespace std;
 using namespace ci;
@@ -24,7 +25,7 @@ using namespace kubik::config;
 
 namespace kubik
 {
-	class ConfigScreen:public IScreen, public IDispatcher
+	class ConfigScreen:public IScreen, public CompositeDispatcher
 	{
 	public:
 		ConfigScreen(ISettingsRef config);
@@ -75,7 +76,7 @@ namespace kubik
 
 		void update();
 		void closeLocationHandler(EventRef& event);
-		void gamesBlockHandler(EventRef& event);
+		void gamesBlockHandler(EventGUIRef& event);
 
 		void appSettingsChgHandler(ButtonText& button);		
 		

@@ -1,6 +1,5 @@
 #pragma once
-#include "IDispatcher.h"
-#include "IDrawable.h"
+#include "gui/CompositeDispatcher.h"
 
 #include "elements/IPhotoboothItem.h"
 #include "elements/PhotoFilters.h"
@@ -14,7 +13,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class PhotoboothConfig: public IDispatcher
+		class PhotoboothConfig: public CompositeDispatcher
 		{
 		public:	
 			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
@@ -23,46 +22,39 @@ namespace kubik
 				int index = 0;		
 				typedef PhotoboothSettings::SettingsPartID SettingsPartID;
 
-				sharing = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), index++));
-				layouts.push_back(sharing);
+				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), index++));
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), index++));
+				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), index++));
+				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), index++));
+				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), index++));
 
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), index++));				
-				layouts.push_back(photoOverElements);
-
-				photoCardStyles = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), index++));
-				layouts.push_back(photoCardStyles);
-
-				photoPrintCount = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), index++));
-				layouts.push_back(photoPrintCount);
-
-				photoFilters = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), index++));
-				layouts.push_back(photoFilters);
+				addChild(sharing);
+				addChild(photoOverElements);
+				addChild(photoCardStyles);
+				addChild(photoPrintCount);
+				addChild(photoFilters);		
 			}		
 
 			void activateListeners()
 			{
-				for (auto layout : layouts)
-				{
-					layout->activateListeners();
+				for (auto layout : displayList)						
 					layout->addMouseUpListener(&PhotoboothConfig::mouseUpHandler, this);
-				}
+				
+				CompositeDispatcher::activateListeners();		
 
 				//fake
-				setOpenItem(0);
+				//setOpenItem(0);
 			}
 
 			void unActivateListeners()
 			{
-				for (auto layout : layouts)
-				{
-					layout->unActivateListeners();
-					layout->removeMouseUpListener();
-				}
+				for (auto layout : displayList)				
+					layout->removeMouseUpListener();				
 			}
 
-			void mouseUpHandler(EventRef& _event)
+			void mouseUpHandler(EventGUIRef& _event)
 			{
-				Event *ev = _event.get();
+				EventGUI *ev = _event.get();
 
 				if(typeid(*ev) == typeid(OpenPhotoBoothLayoutEvent))
 				{
@@ -77,66 +69,47 @@ namespace kubik
 			}
 
 			void setOpenItem(int index)
-			{
-				for (auto layout : layouts)
+			{	
+				for (auto layout : displayList)		
 				{
-					layout->removeMainButtonListener();
-					layout->setOpenLayoutIndex(index);
+					(static_pointer_cast<IPhotoboothItem>(layout))->unActivateListeners();		
+					(static_pointer_cast<IPhotoboothItem>(layout))->setOpenLayoutIndex(index);		
 				}
-			}
-
-			virtual void draw()
-			{				
-				for (auto layout : layouts)
-					layout->draw();			
-			}
-
-			void setInitPosition(Vec2i position)
-			{
-				animatePosition = position;
-				setPosition(position);
 			}	
 
 			void showAnimate(EaseFn eFunc, float time)
 			{	
+				animatePosition = getGlobalPosition();
 				unActivateListeners();
 				Vec2f finPos = Vec2f(166, 0.0f);
 				timeline().apply( &animatePosition, finPos, time, eFunc)
-						.finishFn( bind( &PhotoboothConfig::hideAnimationFinish, this, finPos, true))
-						.updateFn(bind( &PhotoboothConfig::hideAnimationUpdate, this));
-			}			
+						.finishFn(bind( &PhotoboothConfig::showAnimationFinish, this))
+						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
+			}
+
+			void animationPosUpdate()
+			{
+				setPosition(animatePosition.value());					
+			}
+
+			void showAnimationFinish()
+			{
+				activateListeners();
+			}
 
 			void hideAnimate(EaseFn eFunc, float time)
 			{
 				unActivateListeners();
 				Vec2f finPos = Vec2f(1080, 0.0f);
 				timeline().apply( &animatePosition, finPos, time, eFunc)
-						.finishFn( bind( &PhotoboothConfig::hideAnimationFinish, this, finPos, false))
-						.updateFn(bind( &PhotoboothConfig::hideAnimationUpdate, this));
-			}
+						.finishFn(bind( &PhotoboothConfig::hideAnimationFinish, this))
+						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
+			}		
 
-			void hideAnimationUpdate()
-			{
-				position = Vec2f(animatePosition.value().x, position.y);
-				for (auto layout : layouts)
-					layout->animPosition(position);							
-			}
-
-			void hideAnimationFinish(Vec2f finPos, bool showAnim)
-			{
-				setPosition(finPos);	
-				if(showAnim)
-					activateListeners();
-				else
-					setOpenItem(-1);
-			}
-
-			void setPosition(Vec2f position)
-			{
-				IDispatcher::setPosition(position);
-				for (auto layout : layouts)
-					layout->setPosition(position);	
-			}
+			void hideAnimationFinish()
+			{		
+				setOpenItem(-1);
+			}			
 
 		private:
 			int leftMargin;
@@ -144,7 +117,6 @@ namespace kubik
 			int oneItemCloseHeightMax, oneItemCloseHeightMin, oneItemOpenHeight;
 			int openItemIndex;
 
-			list<IPhotoboothItemRef> layouts;
 			PhotoOverElementsRef photoOverElements;
 			PhotoCardStylesRef   photoCardStyles;
 			PhotoPrintCountRef   photoPrintCount;

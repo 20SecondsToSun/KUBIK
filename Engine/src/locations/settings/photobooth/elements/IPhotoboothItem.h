@@ -1,5 +1,6 @@
 #pragma once
-#include "IDispatcher.h"
+#include "gui/CompositeDispatcher.h"
+
 #include "PhotoboothSettings.h"
 #include "photobooth/elements/MainTitleButton.h"
 #include "SaveBtn.h"
@@ -8,16 +9,17 @@ namespace kubik
 {
 	namespace config
 	{
-		class IPhotoboothItem: public IDispatcher
+		class IPhotoboothItem: public CompositeDispatcher
 		{
 		public:
 			typedef PhotoboothSettings::SettingsPartID SettingsPartID;
 			typedef PhotoboothSettings::TextID TextID;
 			IPhotoboothItem(PhotoboothSettingsRef phbSettings, SettingsPartID id, Color color, int index)
-				:settings(phbSettings),
+				:CompositeDispatcher(),
+				settings(phbSettings),
 				state(CLOSE),
 				index(index),
-				itemWidth(1080-166),
+				itemWidth(1080 - 166),
 				closeHeightMax(384),
 				closeHeightMin(213),
 				openHeight(1068),
@@ -32,40 +34,44 @@ namespace kubik
 				subTitleY  = closeMaxY + offsetBetweenTitles;
 				animHeight = closeHeightMax;
 
-				mainTitleButton = MainTitleButtonRef(new MainTitleButton(index));
+				mainTitleButton = MainTitleButtonRef(new MainTitleButton(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax), index));
+				
+				addChild(mainTitleButton);
+				setPosition(Vec2f(0.0f, closeHeightMax * index));
 
+				animatePosition = Vec2f(0.0f, closeHeightMax * index);
+			
 				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id),
 					&phbSettings->getFont("introLight44"), Color::white());
 
 				subTextTex		= textTools().getTextField(phbSettings->getSubTitle(id),
 					&phbSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
+	
 
-				saveBtn = SaveBtnRef(new SaveBtn(phbSettings->getText(TextID::SAVE_TEXT), phbSettings->getFont("introLight30")));						
+				saveBtn = SaveBtnRef(new SaveBtn(Rectf(0.0f, 0.0f, 245.0f, 65.0f),
+											     phbSettings->getText(TextID::SAVE_TEXT),
+												 phbSettings->getFont("introLight30") )),	
+
+				saveBtn->setPosition(Vec2f(0.5 * (itemWidth - 245.0f),  835.0f));
+				addChild(saveBtn);
 			}
 
 			virtual void activateListeners()
 			{
-				mainTitleButton->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);			
-			}
-
-			void addSaveBtnListener()
-			{
-				saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);
+				mainTitleButton->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);	
+				CompositeDispatcher::activateListeners();
 			}
 
 			virtual void unActivateListeners()
 			{
 				mainTitleButton->removeMouseUpListener();
-			}
-
-			void removeSaveBtnListener()
-			{
 				saveBtn->removeMouseUpListener();
+				//CompositeDispatcher::unActivateListeners();
 			}
 
-			virtual void mouseUpFunction( shared_ptr<kubik::Event> event )
-			{	
-				Event *ev = event.get();
+			virtual void mouseUpFunction(EventGUIRef event )
+			{				
+				EventGUI *ev = event.get();
 				if(typeid(*ev) == typeid(SavePhotobootnConfigEvent))
 					saveConfiguration();						
 				
@@ -74,28 +80,10 @@ namespace kubik
 
 			virtual void saveConfiguration(){};
 
-			void setPosition(Vec2i position)
-			{
-				initPosition = position;
-				position += Vec2f(0.0f, index * closeHeightMax);
-				float __x = position.x + 0.5 * (itemWidth - 245.0f);
-				float __y = 835.0f;
-
-				animatePosition = position;
-				saveBtn->setButtonArea(Rectf(__x, __y + position.y, __x + 245, __y + position.y + 65));
-				mainTitleButton->setButtonArea(Rectf(position.x, position.y, position.x + itemWidth, position.y + closeHeightMax));
-				IDispatcher::setPosition(position);
-			}
-
-			void animPosition(Vec2i position)
-			{
-				animatePosition = Vec2f(position.x, animatePosition.value().y);
-			}
-
 			virtual void draw()
-			{				
+			{	
 				gl::pushMatrices();
-				gl::translate(animatePosition);
+				gl::translate(getGlobalPosition());
 				gl::color(color);
 				gl::drawSolidRect(Rectf(0, 0, itemWidth, animHeight));
 				gl::color(Color::white());
@@ -103,98 +91,91 @@ namespace kubik
 				if (state == CLOSE || state == CLOSE_MIN)
 				{								
 					gl::draw(subTextTex, Vec2f(0.5  * (itemWidth - subTextTex.getWidth()), subTitleY));
-				}					
-				gl::popMatrices();	
-				if (state == OPEN)
-				{
-					
-					gl::pushMatrices();
-					gl::translate(animatePosition);
-					drawContent();
-					saveBtn->draw();
-					gl::color(Color::white());
-				    gl::drawStrokedRect(saveBtn->getButtonArea());
-					gl::popMatrices();	
 				}
-				//gl::color(Color::white());
+				//if (state == OPEN)
+				//	drawLayout();
 				//gl::drawStrokedRect(mainTitleButton->getButtonArea());
+				gl::popMatrices();	
+
+				if (state == OPEN)	
+					CompositeDispatcher::draw();
+				//	saveBtn->draw();							
 			}
 
 			virtual void drawContent()
 			{
 			}
-
-			void removeMainButtonListener()
-			{
-			}
-
 			void setOpenLayoutIndex(int openLayoutIndex)
 			{
 				this->openLayoutIndex = openLayoutIndex;
-
+			
 				float time =  0.7f;
 				EaseFn eFunc = EaseOutExpo();
-				Vec2f pos;
+				Vec2f animateTo;
 				float height = 0;
 
 				if(openLayoutIndex == index)
+				{					
+					openingLayout(eFunc, time);
+					animateTo = Vec2f(0, openLayoutIndex * closeHeightMin);						
+				}
+				else if (openLayoutIndex == -1)
 				{
-					state = OPEN;
-					unActivateListeners();					
-					onOpenResetParams();
-
-					pos = initPosition + Vec2f(0, openLayoutIndex * closeHeightMin);					
-				
-					timeline().apply( &mainTitleY, openY, time, eFunc);
-					timeline().apply( &subTitleY,  openY + offsetBetweenTitles, time, eFunc);
-					timeline().apply( &animHeight,  openHeight, time, eFunc);	
-				}
+					closingLayoutMaxState(eFunc, time);						
+					animateTo = Vec2f(0, index * closeHeightMax);								
+				}	
 				else
-				{						
-					removeSaveBtnListener();					
+				{
+					closingLayoutMinState(eFunc, time);					
 
-					if (openLayoutIndex == -1)
-					{
-						state = CLOSE;
-						height = closeHeightMax;
-						pos = initPosition + Vec2f(0, index * height);
-
-						timeline().apply( &mainTitleY, closeMaxY, time, eFunc);
-						timeline().apply( &subTitleY,  closeMaxY + offsetBetweenTitles, time, eFunc);
-						timeline().apply( &animHeight, closeHeightMax, time, eFunc);					
-					}	
+					if (openLayoutIndex > index)					
+						animateTo =  Vec2f(0, index * closeHeightMin);					
 					else
-					{
-						state = CLOSE_MIN;
-						height = closeHeightMin;
-						if (openLayoutIndex > index)					
-							pos = initPosition + Vec2f(0, index * height);					
-						else
-							pos = initPosition + Vec2f(0, (index -1)* (height) + openHeight);	
-
-						timeline().apply( &mainTitleY, closeMinY, time, eFunc);
-						timeline().apply( &subTitleY,  closeMinY + offsetBetweenTitles, time, eFunc);
-						timeline().apply( &animHeight, closeHeightMin, time, eFunc);		
-					}								
+						animateTo =  Vec2f(0, (index -1)* (closeHeightMin) + openHeight);														
 				}
 
-				timeline().apply( &animatePosition, pos, time, eFunc)
-						.finishFn( bind( &IPhotoboothItem::animationFinish2, this, pos, height));
+				timeline().apply( &animatePosition, animateTo, time, eFunc)
+					.updateFn(bind( &IPhotoboothItem::posAnimationUpdate, this))
+						.finishFn( bind( &IPhotoboothItem::animationFinish2, this));
 			}
 
-			void animationFinish2(Vec2f pos, float height)
+			void openingLayout(EaseFn eFunc, float time)
 			{
-				if(state != OPEN)
-				{
-					mainTitleButton->setButtonArea(Rectf(pos, pos + Vec2f(itemWidth,height)));
-					activateListeners();
-				}
-				else
-				{
-					addSaveBtnListener();
-				}
+				state = OPEN;								
+				onOpenResetParams();
+				timeline().apply( &mainTitleY, openY, time, eFunc);
+				timeline().apply( &subTitleY,  openY + offsetBetweenTitles, time, eFunc);
+				timeline().apply( &animHeight,  openHeight, time, eFunc);	
+			}
 
-				IDispatcher::setPosition(pos);
+			void closingLayoutMaxState(EaseFn eFunc, float time)
+			{
+				state = CLOSE;		
+				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax));
+				timeline().apply( &mainTitleY, closeMaxY, time, eFunc);
+				timeline().apply( &subTitleY,  closeMaxY + offsetBetweenTitles, time, eFunc);
+				timeline().apply( &animHeight, closeHeightMax, time, eFunc);			
+			}
+
+			void closingLayoutMinState(EaseFn eFunc, float time)
+			{
+				state = CLOSE_MIN;	
+				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMin));
+				timeline().apply( &mainTitleY, closeMinY, time, eFunc);
+				timeline().apply( &subTitleY,  closeMinY + offsetBetweenTitles, time, eFunc);
+				timeline().apply( &animHeight, closeHeightMin, time, eFunc);
+			}
+
+			virtual void posAnimationUpdate()
+			{
+				setPosition(animatePosition.value());
+			}
+
+			void animationFinish2()
+			{
+				activateListeners();
+				if(state == OPEN)			
+					saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
 			}
 
 			virtual void onOpenResetParams()
@@ -209,8 +190,7 @@ namespace kubik
 			Font mainTextFont, subTextFont;
 			int itemWidth, index, openLayoutIndex;
 			int closeHeightMin, closeHeightMax, openHeight;
-			Vec2f initPosition;
-
+			
 			Texture mainTextTex, subTextTex;
 			PhotoboothSettingsRef settings;
 			MainTitleButtonRef mainTitleButton;	

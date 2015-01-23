@@ -7,7 +7,7 @@ namespace kubik
 {
 	namespace config
 	{
-		class OneSharingItem: public IDispatcher
+		class OneSharingItem: public CompositeDispatcher
 		{
 		public:
 			typedef PhotoboothSettings::SocialID SocialID;
@@ -20,24 +20,21 @@ namespace kubik
 				id(id)
 			{
 				IconPair icons(icon, settings->getEmptyIcon());
-				checker = CheckerSocialRef(new CheckerSocial(icons));				
+				checker = CheckerSocialRef(new CheckerSocial(Rectf(0.0f, 0.0f, 131.0f, 78.0f), icons));				
 				checker->setActive(settings->getSocialState(id));
+				addChild(checker);
 			}
 
 			void activateListeners()
 			{
 				checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
+				CompositeDispatcher::activateListeners();
 			}
 
-			void unActivateListeners()
-			{				
-				checker->removeMouseUpListener();				
-			}
-
-			void checkerClicked(shared_ptr<kubik::Event> event)
+			void checkerClicked(EventGUIRef event)
 			{
 				checker->swapActive();								
-				//mouseUpSignal(event);
+				mouseUpSignal(event);
 			}
 
 			void resetChecker()
@@ -45,16 +42,9 @@ namespace kubik
 				checker->setActive(settings->getSocialState(id));
 			}
 
-			virtual void draw()
+			virtual void drawLayout()
 			{
-				textTools().textFieldDraw(text, &font, Color::white(), position + Vec2f(159, 18));
-				checker->draw();			
-			}
-
-			virtual void setPosition(Vec2f position)
-			{				
-				checker->setButtonArea(Rectf(position, position + Vec2f(131, 78)));
-				IDispatcher::setPosition(position);
+				textTools().textFieldDraw(text, &font, Color::white(), Vec2f(159.0f, 18.0f));
 			}
 
 			void writeValue()
@@ -84,64 +74,37 @@ namespace kubik
 				typedef Pair<SocialID, Vec2f> PosPair;
 				vector<PosPair> pairs;
 
-				pairs.push_back(PosPair(SocialID::PRINTER,     position + Vec2f(300, 350)));
-				pairs.push_back(PosPair(SocialID::EMAIL,       position + Vec2f(300, 488)));
-				pairs.push_back(PosPair(SocialID::QRCODE,      position + Vec2f(300, 626)));
+				pairs.push_back(PosPair(SocialID::PRINTER,     Vec2f(134, 350)));
+				pairs.push_back(PosPair(SocialID::EMAIL,       Vec2f(134, 488)));
+				pairs.push_back(PosPair(SocialID::QRCODE,      Vec2f(134, 626)));
 
-				pairs.push_back(PosPair(SocialID::FACEBOOK,    position + Vec2f(687, 350)));
-				pairs.push_back(PosPair(SocialID::VKONTAKTE,   position + Vec2f(687, 488)));
-				pairs.push_back(PosPair(SocialID::TWITTER,     position + Vec2f(687, 626)));
+				pairs.push_back(PosPair(SocialID::FACEBOOK,    Vec2f(521, 350)));
+				pairs.push_back(PosPair(SocialID::VKONTAKTE,   Vec2f(521, 488)));
+				pairs.push_back(PosPair(SocialID::TWITTER,     Vec2f(521, 626)));
 
 				for (auto item : pairs)
 				{
 					OneSharingItemRef shareEl = OneSharingItemRef(new OneSharingItem(phbSettings, item.param1));
 					shareEl->setPosition(item.param2);
-					items.push_back(shareEl);
+					list.push_back(shareEl);
+					addChild(shareEl);
 				}
-			}
-
-			void activateListeners()
-			{
-				for (auto item : items)
-				{
-					item->activateListeners();
-				}
-				IPhotoboothItem::activateListeners();
-			}
-
-			void unActivateListeners()
-			{
-				for (auto item : items)
-				{
-					item->unActivateListeners();
-					item->removeMouseUpListener();
-				}
-				IPhotoboothItem::unActivateListeners();
-			}
+			}			
 
 			virtual void onOpenResetParams()
 			{
-				for (auto item : items)
+				for (auto item : list)
 					item->resetChecker();
-			}
-
-			virtual void drawContent()
-			{
-				//gl::pushMatrices();
-				//gl::translate(position);
-				for (auto item : items)				
-					item->draw();
-				//gl::popMatrices();
 			}
 
 			virtual void saveConfiguration()
 			{
-				for (auto item : items)
+				for (auto item : list)
 					item->writeValue();
 			};
 
 		protected:
-			list<OneSharingItemRef> items;
+			list<OneSharingItemRef> list;
 		};
 
 		typedef std::shared_ptr<Sharing> SharingRef;

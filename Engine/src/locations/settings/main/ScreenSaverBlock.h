@@ -1,11 +1,12 @@
 #pragma once
-#include "IDispatcher.h"
+#include "gui/Dispatcher.h"
+#include "TextTools.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class ScreenSaverBlock: public IDispatcher
+		class ScreenSaverBlock: public Dispatcher
 		{
 		public:	
 			ScreenSaverBlock(ConfigSettingsRef configSettings, Vec2i position)
@@ -19,41 +20,27 @@ namespace kubik
 						iconColor(Color::white())
 			{
 				setPosition(position);
-				showPathBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 405, position.y + 175)));	
-				displayList.push_back(showPathBtn);
+				//showPathBtn = ButtonRef(new Button(Rectf(position.x, position.y, position.x + 405, position.y + 175)));					
 			}
 
-			virtual void draw()
+			virtual void drawLayout()
 			{
-				gl::pushMatrices();
-					gl::translate(position);	
-					gl::color(iconColor);
-					gl::draw(icon, Vec2f(10, 48));
-					textTools().textFieldDraw(titleText, &titleFont, titleColor, Vec2f(82, 40));
-					textTools().textFieldDraw(subTitleText, &subTitleFont, subTitleColor, Vec2f(89, 100));
-				gl::popMatrices();
+				gl::color(iconColor);
+				gl::draw(icon, Vec2f(10.0f, 48.0f));
+				textTools().textFieldDraw(titleText, &titleFont, titleColor, Vec2f(82, 40));
+				textTools().textFieldDraw(subTitleText, &subTitleFont, subTitleColor, Vec2f(89, 100));			
 			}
 
 			void setAlpha(float  alpha)
 			{
-				titleColor = ColorA(titleColor.r, titleColor.g, titleColor.b, alpha);	
-				subTitleColor = ColorA(subTitleColor.r, subTitleColor.g, subTitleColor.b, alpha);	
-				iconColor = ColorA(iconColor.r, iconColor.g, iconColor.b, alpha);	
+				titleColor = Utils::colorAlpha(titleColor, alpha);	
+				subTitleColor = Utils::colorAlpha(subTitleColor, alpha);	
+				iconColor = Utils::colorAlpha(iconColor, alpha);	
 			}
 
 			void setIcon(Texture tex)
 			{
 				icon = tex;
-			}
-
-			void setTitleFont(Font font)
-			{
-				this->titleFont = font;
-			}
-
-			void setSubTitleFont(Font font)
-			{
-				this->subTitleFont = font;
 			}
 
 			void showPath(IButton& button)

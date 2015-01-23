@@ -1,40 +1,19 @@
 #pragma once
 
-#include "ButtonText.h"
+#include "gui/TextButton.h"
+#include "GameChoosedEvent.h"
 #include "Types.h"
-
-using namespace std;
-using namespace ci;
-using namespace ci::gl;
-using namespace ci::app;
 
 namespace kubik
 {
-	class MenuButton: public ButtonText
+	class MenuButton: public TextButton
 	{
 	public:
-		typedef boost::signals2::signal<void(MenuButton&)> ButtonSignal;	
-		ButtonSignal mouseUpSignal;
-
-		MenuButton(game::id gameId, Rectf rectf, string text, Font font):ButtonText(rectf, text, font)
-		{		
-			this->gameId = gameId;
+		MenuButton(Rectf rectf, string text, Font font, GameId gameID)
+			:TextButton(rectf, text, font)
+		{	
+			event = GameChoosedEventRef(new GameChoosedEvent(gameID));
 		}
-
-		game::id getGameId()
-		{
-			return gameId;
-		}
-
-		void mouseUpHandler(Vec2i vec)
-		{
-			if(buttonArea.contains(vec))
-				mouseUpSignal(*this);
-		}
-
-	private:
-
-		game::id gameId;	
 	};
 
 	typedef shared_ptr<MenuButton> MenuButtonRef;

@@ -1,7 +1,8 @@
 #pragma once
 #include "stdafx.h"
-#include "IDrawable.h"
-#include "IDispatcher.h"
+
+#include "gui/SimpleButton.h"
+
 #include "Button.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 
@@ -9,13 +10,17 @@ namespace kubik
 {
 	namespace config
 	{
-		class MainTitleButton: public Button
+		class MainTitleButton: public SimpleButton
 		{
 		public:	
-			MainTitleButton(int index):Button(Rectf(0,0,0,0))
+			MainTitleButton(Rectf rect, int index):SimpleButton(rect)
 			{
 				event = OpenPhotoBoothLayoutEventRef(new OpenPhotoBoothLayoutEvent(index));		
 			}	
+
+			virtual void draw()
+			{
+			}
 		};
 
 		typedef std::shared_ptr<MainTitleButton> MainTitleButtonRef;

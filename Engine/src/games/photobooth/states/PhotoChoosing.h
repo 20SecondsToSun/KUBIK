@@ -73,8 +73,8 @@ namespace kubik
 			fon  =  settings->getTexture("fon1");
 			font =  settings->getFont("helvetica40");				
 
-			nextButton = MenuButtonRef(new MenuButton((GameId)1, Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font));	
-			connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, placeholders::_1));
+			nextButton = MenuButtonRef(new MenuButton(Rectf(800.0f, 700.0f, 900.0f, 800.0f), "ÄÀËÅÅ", font, (GameId)1));	
+			//connect_once(nextButton->mouseUpSignal, bind(&PhotoChoosing::mouseUpNextListener, this, placeholders::_1));
 		}	
 
 		void mouseUpListener(PhotoButton& button)

@@ -1,9 +1,10 @@
 #pragma once
-#include "Event.h"
+#include "gui/EventGUI.h"
+
 
 namespace kubik
 {
-	class GameConfEvent: public Event
+	class GameConfEvent: public EventGUI
 	{			
 	public:
 		GameConfEvent(GameId gameId):gameId(gameId)

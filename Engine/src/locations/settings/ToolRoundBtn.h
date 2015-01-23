@@ -11,33 +11,28 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class ToolRoundBtn> ToolRoundBtnRef;
 
-		class ToolRoundBtn: public Button
+		class ToolRoundBtn: public SimpleButton
 		{
 		public:
-			ToolRoundBtn(string text, Font font, Color color = Color::white()):Button(Rectf(0,0,0,0)),
+			ToolRoundBtn(Rectf rect, string text, Font font, Color color = Color::white()):SimpleButton(rect),
 				text(text), font(font), color(color), bckColor(Color::white())
 			{
 				tex = textTools().getTextField(text, &font, color);
 			}
 
-			virtual void draw()
-			{				
+			virtual void drawLayout()
+			{					
 				gl::color(bckColor);	
 				gl::draw(tex, Vec2f(buttonArea.x1 + 0.5 * (getWidth() - tex.getWidth()), buttonArea.y1 + 8));
 				gl::color(color);
 				gl::drawStrokedRoundedRect(buttonArea, 8, 200);
-				gl::color(Color::white());				
+				gl::color(Color::white());		
 			}
 
 			void setAlpha(float  alpha)
 			{
-				color    = ColorA(color.r, color.g, color.b, alpha);
-				bckColor = ColorA(bckColor.r, bckColor.g, bckColor.b, alpha);
-			}
-
-			void setFont(Font font)
-			{
-				this->font = font;
+				color = Utils::colorAlpha(color, alpha);
+				bckColor = Utils::colorAlpha(bckColor, alpha);
 			}
 
 			void setText(string text)
@@ -55,6 +50,7 @@ namespace kubik
 			string text;
 			Font font;
 			ColorA color, bckColor;
+			Texture tex;
 		};	
 	}
 }

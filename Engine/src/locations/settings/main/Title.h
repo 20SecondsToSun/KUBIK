@@ -1,6 +1,5 @@
 #pragma once
-
-#include "IDispatcher.h"
+#include "gui/Dispatcher.h"
 
 using namespace std;
 using namespace ci;
@@ -9,44 +8,37 @@ namespace kubik
 {
 	namespace config
 	{
-		class Title:public IDispatcher
+		class Title:public Dispatcher
 		{
 		public:	
 			Title(ConfigSettingsRef configSettings, Vec2i position)				
-				 :activityName("Promo activity"),
-				 activityNameFont(configSettings->getFont("introLight44")),
-				 activityNameColor(Color::white())
+				 :Dispatcher(),
+				 name("Promo activity"),
+				 font(configSettings->getFont("introLight44")),
+				 color(Color::white())
 			{
-				IDrawable::setPosition(position);
+				setPosition(position);
 			}
 
-			virtual void draw()
+			virtual void drawLayout()
 			{
-				gl::pushMatrices();
-					gl::translate(position);	
-					textTools().textFieldDraw(activityName, &activityNameFont, activityNameColor, Vec2f(-12, 3));				
-				gl::popMatrices();
+				textTools().textFieldDraw(name, &font, color, Vec2f(-12, 3));				
 			}
 
-			void setAlpha(float  alpha)
+			void setAlpha(float alpha)
 			{
-				activityNameColor = ColorA(activityNameColor.r, activityNameColor.g, activityNameColor.b, alpha);	
+				color = Utils::colorAlpha(color, alpha);	
 			}
 
 			void setActivityName(string name)
 			{
-				activityName = name;
-			}
-
-			void setFont(Font font)
-			{
-				activityNameFont = font;
+				this->name = name;
 			}
 
 		private:
-			string activityName;				
-			ColorA  activityNameColor;
-			Font   activityNameFont;			
+			string name;				
+			ColorA  color;	
+			Font font;
 		};
 
 		typedef std::shared_ptr<Title> TitleRef;

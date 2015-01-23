@@ -1,12 +1,12 @@
 #pragma once
-#include "Event.h"
+#include "gui/EventGUI.h"
 
 namespace kubik
 {
-	class BackToMainConfigEvent: public Event
+	class BackToMainConfigEvent: public EventGUI
 	{			
 	public:
-		BackToMainConfigEvent( )
+		BackToMainConfigEvent()
 		{
 
 		}

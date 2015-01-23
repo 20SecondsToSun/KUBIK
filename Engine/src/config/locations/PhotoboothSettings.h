@@ -244,7 +244,7 @@ namespace kubik
 
 		string getSubTitle(SettingsPartID id)
 		{
-			return data.mainTitles[model->getLang()].get(id);
+			return data.subTitles[model->getLang()].get(id);
 		}		
 
 		string getText(TextID id)

@@ -1,9 +1,9 @@
 #pragma once
-#include "Event.h"
+#include "gui/EventGUI.h"
 
 namespace kubik
 {
-	class CloseConfigEvent: public Event
+	class CloseConfigEvent: public EventGUI
 	{			
 	public:
 		CloseConfigEvent( )

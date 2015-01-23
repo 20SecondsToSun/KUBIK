@@ -127,6 +127,15 @@
     <Filter Include="Source Files\locations\settings\main\gamesBlock">
       <UniqueIdentifier>{4702424b-1f7a-43e1-9ad1-160ad4dfe3f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{f6107996-eba6-4d26-9786-c072332960ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events\menu">
+      <UniqueIdentifier>{8be9098e-3ad8-4b8f-9675-4d92d2f35d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\popup">
+      <UniqueIdentifier>{bc240154-e4cb-4996-a75c-100023e59bb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -225,9 +234,6 @@
       <Filter>Source Files\buttons</Filter>
     </ClInclude>
     <ClInclude Include="..\src\buttons\Button.h">
-      <Filter>Source Files\buttons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\buttons\MenuButton.h">
       <Filter>Source Files\buttons</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\Preloader.h">
@@ -514,6 +520,42 @@
     </ClInclude>
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h">
       <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\CompositeDispatcher.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\Dispatcher.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\TextButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\EventGUI.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\SimpleButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\DecorateButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\buttons\MenuButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\menu\GameChoosedEvent.h">
+      <Filter>Source Files\events\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\ImageButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\popup\MainPopup.h">
+      <Filter>Source Files\locations\settings\main\popup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\popup\NewActivityPopup.h">
+      <Filter>Source Files\locations\settings\main\popup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\popup\ChangeCatridgePopup.h">
+      <Filter>Source Files\locations\settings\main\popup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
