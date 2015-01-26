@@ -1,7 +1,6 @@
 #include "ApplicationView.h"
 #include "Controller.h"
 #include "Types.h"
-//#include <vld.h>
 
 using namespace ci;
 using namespace ci::app;

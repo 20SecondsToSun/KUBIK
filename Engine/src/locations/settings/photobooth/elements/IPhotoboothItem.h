@@ -145,7 +145,7 @@ namespace kubik
 				onOpenResetParams();
 				timeline().apply( &mainTitleY, openY, time, eFunc);
 				timeline().apply( &subTitleY,  openY + offsetBetweenTitles, time, eFunc);
-				timeline().apply( &animHeight,  openHeight, time, eFunc);	
+				timeline().apply( &animHeight,  openHeight + 2, time, eFunc);	
 			}
 
 			void closingLayoutMaxState(EaseFn eFunc, float time)
@@ -154,7 +154,7 @@ namespace kubik
 				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax));
 				timeline().apply( &mainTitleY, closeMaxY, time, eFunc);
 				timeline().apply( &subTitleY,  closeMaxY + offsetBetweenTitles, time, eFunc);
-				timeline().apply( &animHeight, closeHeightMax, time, eFunc);			
+				timeline().apply( &animHeight, closeHeightMax + 2, time, eFunc);			
 			}
 
 			void closingLayoutMinState(EaseFn eFunc, float time)
@@ -163,7 +163,7 @@ namespace kubik
 				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMin));
 				timeline().apply( &mainTitleY, closeMinY, time, eFunc);
 				timeline().apply( &subTitleY,  closeMinY + offsetBetweenTitles, time, eFunc);
-				timeline().apply( &animHeight, closeHeightMin, time, eFunc);
+				timeline().apply( &animHeight, closeHeightMin + 2, time, eFunc);
 			}
 
 			virtual void posAnimationUpdate()

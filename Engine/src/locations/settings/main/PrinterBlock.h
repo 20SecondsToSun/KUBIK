@@ -27,13 +27,21 @@ namespace kubik
 						icon(configSettings->getTexture("catridgeIcon")),
 						maxPhotosToPrint(configSettings->getData().maxPhotosToPrint)						
 			{				
-				//btnRectf = Rectf(Vec2f(620, 66) + position, position + Vec2f(620 + 155, 66 + 35));
-				//resetBtn = ButtonRef(new Button(btnRectf));					
 				setPosition(position);
 
 				Texture img = textTools().getTextField(changeBtnText, &changeBtnFont, changeBtnColor);
 				changeBtn = ImageButtonRef(new ImageButton(img, Vec2f(670, 62.5)));
 				addChild(changeBtn);
+			}
+
+			virtual void activateListeners()
+			{
+				changeBtn->addMouseUpListener(&PrinterBlock::mouseUpFunction, this);
+			}
+
+			virtual void unActivateListeners()
+			{
+				changeBtn->removeMouseUpListener();
 			}
 
 			virtual void drawLayout()
@@ -59,7 +67,8 @@ namespace kubik
 				gl::translate(getGlobalPosition());
 					drawLayout();
 				gl::popMatrices();
-				CompositeDispatcher::draw();
+				changeBtn->draw();
+				//CompositeDispatcher::draw();
 			}
 
 			void setAlpha(float  alpha)
@@ -93,11 +102,6 @@ namespace kubik
 			{
 				currentPhotosPrinted = value;
 				curBarWidth = ((float)currentPhotosPrinted / maxPhotosToPrint) * maxBarWidth;
-			}
-
-			void showPath(IButton& button)
-			{			
-				console()<<"resetBtn---resetBtn"<<endl;
 			}			
 
 		private:

@@ -35,10 +35,9 @@ namespace kubik
 				printerBlock	 = PrinterBlockRef(new PrinterBlock(configSettings, Vec2i(0, getWindowHeight() - 170.0f)));			
 				logo			 = LogoRef(new Logo(configSettings, Vec2i(835, getWindowHeight() - 170.0f)));
 
-				newActPopup				 = NewActivityPopupRef(new NewActivityPopup(configSettings));
+				newActPopup		 = NewActivityPopupRef(new NewActivityPopup(configSettings));
 			//	changeCatridgePopup		 = ChangeCatridgePopupRef(new ChangeCatridgePopup(configSettings));
-				//newActPopup		 = NewActivityPopupRef(new NewActivityPopup(configSettings));
-
+		
 				addChild(closeBlock);
 				addChild(title);
 				addChild(startNewActivity);				
@@ -55,6 +54,7 @@ namespace kubik
 				closeBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);
 				gamesBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);	
 				startNewActivity->addMouseUpListener(&MainConfig::openPopupNewActivity, this);	
+				printerBlock->addMouseUpListener(&MainConfig::openPopupNewActivity, this);	
 				CompositeDispatcher::activateListeners();				
 			}
 
@@ -93,6 +93,7 @@ namespace kubik
 				gamesBlock->removeMouseUpListener();
 				gamesBlock->unActivateListeners();
 				startNewActivity->removeMouseUpListener();							
+				printerBlock->removeMouseUpListener();					
 			}
 
 			void setStartupData()

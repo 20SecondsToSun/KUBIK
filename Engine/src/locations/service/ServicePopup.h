@@ -17,8 +17,7 @@ namespace kubik
 		{	
 			string path = getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf";
 			DataSourceRef ref = loadFile(path);
-			font =  Font(ref, 30);
-			
+			font =  Font(ref, 30);		
 			
 			//setTextures();
 		}

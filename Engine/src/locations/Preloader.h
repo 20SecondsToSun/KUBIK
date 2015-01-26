@@ -31,7 +31,7 @@ namespace kubik
 			gl::translate(position);
 			gl::scale( 0.5f, 0.5f );
 			gl::rotate( 180.0f * float( getElapsedSeconds() ) );
-			gl::translate( -0.5f * Vec2f(151.0f, 151.0f ) );
+			gl::translate( -0.5f * Vec2f(151.0f, 151.0f ) );			
 			gl::draw(tex);
 			gl::popMatrices();
 		}
