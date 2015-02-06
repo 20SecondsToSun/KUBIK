@@ -136,6 +136,15 @@
     <Filter Include="Source Files\locations\settings\main\popup">
       <UniqueIdentifier>{bc240154-e4cb-4996-a75c-100023e59bb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\settings\main\designBlock">
+      <UniqueIdentifier>{223816e8-8379-4058-aa58-8d03ea9b7089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\elements">
+      <UniqueIdentifier>{e04be31e-5012-42f0-acbc-0ea0eee09093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\printerBlock">
+      <UniqueIdentifier>{986be9b1-d719-4a6e-adaa-382c04ff0342}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -455,9 +464,6 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h">
-      <Filter>Source Files\locations\settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\photobooth\elements\SaveBtn.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
@@ -467,9 +473,6 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\Checker.h">
-      <Filter>Source Files\locations\settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\CloseBlock.h">
       <Filter>Source Files\locations\settings\main</Filter>
     </ClInclude>
@@ -477,15 +480,6 @@
       <Filter>Source Files\locations\settings\main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\MainConfig.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\MenuBlock.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\PrinterBlock.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\ScreenSaverBlock.h">
       <Filter>Source Files\locations\settings\main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\StartNewActivity.h">
@@ -554,8 +548,80 @@
     <ClInclude Include="..\src\locations\settings\main\popup\NewActivityPopup.h">
       <Filter>Source Files\locations\settings\main\popup</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\popup\ChangeCatridgePopup.h">
-      <Filter>Source Files\locations\settings\main\popup</Filter>
+    <ClInclude Include="..\src\tools\Logger.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\ReturnButton.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\DesignBlock.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\DesignsLayout.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\CloseDesignLayoutEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverBlock.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\TextItem.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\SettingsFactory.h">
+      <Filter>Source Files\locations\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\LoadButton.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\Checker.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\DesignData.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\DesignChooser.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\ImageQuadroButton.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.h">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\ChangeDesignEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\printerBlock\PrinterControls.h">
+      <Filter>Source Files\locations\settings\main\printerBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\JsonTools.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\PrinterStatResetEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\PrinterControlsHideEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\CloseActivityEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\StartNewActivityEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\ConfigTexts.h">
+      <Filter>Source Files\config\locations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\printerBlock\PrinterBlock.h">
+      <Filter>Source Files\locations\settings\main\printerBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

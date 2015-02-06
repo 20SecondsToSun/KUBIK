@@ -57,12 +57,25 @@ namespace kubik
 
 			void draw()
 			{	
+				drawbg();
+
 				drawDecorationLine1();
 				CompositeDispatcher::draw();
 			
 				if(hasGamesInShop)				
 					drawDecorationLine2();	
 			}	
+
+			void drawbg()
+			{
+				float height = pGameblock->getHeight() + 27;
+				gl::color(Color::hex(0x0d0917));
+				gl::pushMatrices();
+					gl::translate(getGlobalPosition());					
+					gl::drawSolidRect(Rectf(0.0f, 0.0f, 880.0f, height));
+				gl::popMatrices();
+				gl::color(Color::white());
+			}
 
 			void drawDecorationLine1()
 			{
@@ -92,15 +105,40 @@ namespace kubik
 				CompositeDispatcher::setAlpha(alpha);	
 			}
 
-			//virtual void setPosition(ci::Vec2i position)		
-			//{				
-				/*if(hasGamesInShop)
-				{
-					float height = pGameblock->getHeight() + 27;
-					npGameblock->setPosition(position + Vec2f(0.0f, blockTopShiftY + height));
-				}*/
-				//IDrawable::setPosition(position);
-			//}
+			void hide(EaseFn eFunc, float time)
+			{
+				animatePosition = _localPosition;
+				Vec2f finPos = Vec2f(-getWindowWidth(), _localPosition.y);
+				timeline().apply( &animatePosition, finPos, time, eFunc)
+					.updateFn(bind( &GamesBlock::posAnimationUpdate, this))
+					.finishFn(bind( &GamesBlock::hideAnimationFinish, this));				
+			}
+
+			void hideAnimationFinish()
+			{
+				hideAnimCompleteSig();
+			}
+
+			void show(EaseFn eFunc, float time)
+			{
+				Vec2f finPos = Vec2f(100, _localPosition.y);
+				timeline().apply( &animatePosition, finPos, time, eFunc)
+					.updateFn(bind( &GamesBlock::posAnimationUpdate, this))
+					.finishFn(bind( &GamesBlock::showAnimationFinish, this));				
+			}
+
+			void showAnimationFinish()
+			{
+				showAnimCompleteSig();
+			}
+
+			void posAnimationUpdate()
+			{
+				setPosition(animatePosition.value());
+			}
+
+			SignalVoid hideAnimCompleteSig, showAnimCompleteSig;
+	
 
 		private:
 			PurchasedGamesBlockRef pGameblock;
@@ -115,6 +153,8 @@ namespace kubik
 			ColorA lineColor;
 
 			bool hasGamesInShop;
+
+			ci::Anim<ci::Vec2f> animatePosition;
 		};	
 	}
 }

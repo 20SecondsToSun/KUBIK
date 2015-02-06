@@ -10,10 +10,10 @@ namespace kubik
 		class OneSharingItem: public CompositeDispatcher
 		{
 		public:
-			typedef PhotoboothSettings::SocialID SocialID;
+			typedef PhotoboothSettings::PhtTextID PhtTextID;
 
-			OneSharingItem(PhotoboothSettingsRef settings, SocialID id)
-				:text(settings->getSocialTitle(id)),
+			OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id)
+				:text(settings->getTextItem(id)),
 				font(settings->getFont("introLight30")),
 				icon(settings->getIcon(id)),
 				settings(settings),
@@ -44,7 +44,7 @@ namespace kubik
 
 			virtual void drawLayout()
 			{
-				textTools().textFieldDraw(text, &font, Color::white(), Vec2f(159.0f, 18.0f));
+				textTools().textFieldDraw(text, Vec2f(159.0f, 18.0f));
 			}
 
 			void writeValue()
@@ -54,9 +54,9 @@ namespace kubik
 
 		private:
 			Font font;
-			string text;			
+			TextItem text;			
 			Texture icon;
-			SocialID id;
+			PhtTextID id;
 			CheckerSocialRef checker;
 			PhotoboothSettingsRef settings;			
 		};
@@ -66,25 +66,23 @@ namespace kubik
 		class Sharing: public IPhotoboothItem
 		{
 		public:	
-			typedef PhotoboothSettings::SocialID SocialID;
-
 			Sharing(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, SettingsPartID::SHARING, color, index)
+				:IPhotoboothItem(phbSettings, PhtTextID::PUBLISHING, color, index)
 			{				
-				typedef Pair<SocialID, Vec2f> PosPair;
+				typedef Pair<PhtTextID, Vec2f> PosPair;
 				vector<PosPair> pairs;
 
-				pairs.push_back(PosPair(SocialID::PRINTER,     Vec2f(134, 350)));
-				pairs.push_back(PosPair(SocialID::EMAIL,       Vec2f(134, 488)));
-				pairs.push_back(PosPair(SocialID::QRCODE,      Vec2f(134, 626)));
+				pairs.push_back(PosPair(PhtTextID::PRINTER,     Vec2f(134, 400)));
+				pairs.push_back(PosPair(PhtTextID::EMAIL,       Vec2f(134, 585)));
+				pairs.push_back(PosPair(PhtTextID::QRCODE,      Vec2f(134, 775)));
 
-				pairs.push_back(PosPair(SocialID::FACEBOOK,    Vec2f(521, 350)));
-				pairs.push_back(PosPair(SocialID::VKONTAKTE,   Vec2f(521, 488)));
-				pairs.push_back(PosPair(SocialID::TWITTER,     Vec2f(521, 626)));
+				pairs.push_back(PosPair(PhtTextID::FACEBOOK,    Vec2f(521, 400)));
+				pairs.push_back(PosPair(PhtTextID::VKONTAKTE,   Vec2f(521, 585)));
+				pairs.push_back(PosPair(PhtTextID::TWITTER,     Vec2f(521, 775)));
 
 				for (auto item : pairs)
 				{
-					OneSharingItemRef shareEl = OneSharingItemRef(new OneSharingItem(phbSettings, item.param1));
+					auto shareEl = OneSharingItemRef(new OneSharingItem(phbSettings, item.param1));
 					shareEl->setPosition(item.param2);
 					list.push_back(shareEl);
 					addChild(shareEl);
@@ -95,6 +93,14 @@ namespace kubik
 			{
 				for (auto item : list)
 					item->resetChecker();
+			}
+
+			virtual void draw()
+			{
+				IPhotoboothItem::draw();
+
+				gl::color(ColorA(1,1,1,0.5));
+				//gl::draw(settings->getTexture("_shareTemp"), Vec2f(166, 0));
 			}
 
 			virtual void saveConfiguration()

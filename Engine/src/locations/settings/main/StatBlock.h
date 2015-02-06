@@ -1,5 +1,6 @@
 #pragma once
 #include "gui/Dispatcher.h"
+#include "TextItem.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,23 +16,21 @@ namespace kubik
 
 			StatBlock(ConfigSettingsRef configSettings, Vec2i position)
 						:Dispatcher(),
-						title1("Сыграли"), 
-						title2("Напечатали фото"),
-						title3("Соц.сети и email"),
-						titleColor(Color::hex(0x939eb0)),
+						title1(configSettings->getTextItem(ConfigTextID::PLAYED_COUNT)),
+						title2(configSettings->getTextItem(ConfigTextID::PRINTED_COUNT)),
+						title3(configSettings->getTextItem(ConfigTextID::SOCIAL_COUNT)),						
 						numsColor(Color::hex(0xffffff)),
-						linesColor(Color::hex(0x233442))
-			{
-				titleFont = configSettings->getFont("helveticaLight22");
-				numsFont = configSettings->getFont("introBold110");
+						linesColor(Color::hex(0x233442)),
+						numsFont(configSettings->getFont("introBold110"))
+			{				
 				setPosition(position);
 			}
 
 			virtual void drawLayout()
 			{
-				textTools().textFieldDraw(title1, &titleFont, titleColor, Vec2f(-4, -4));
-				textTools().textFieldDraw(title2, &titleFont, titleColor, Vec2f(-4 + 350, -4));
-				textTools().textFieldDraw(title3, &titleFont, titleColor, Vec2f(-4 + 645, -4));	
+				textTools().textFieldDraw(title1, Vec2f(-4, -4));
+				textTools().textFieldDraw(title2, Vec2f(-4 + 350, -4));
+				textTools().textFieldDraw(title3, Vec2f(-4 + 645, -4));	
 				textTools().textFieldDraw(to_string(playedTimes), &numsFont, numsColor, Vec2f(-25, -4));	
 				textTools().textFieldDraw(to_string(printedPhotos), &numsFont, numsColor, Vec2f(325, -4));	
 				textTools().textFieldDraw(to_string(sharedAndEmail), &numsFont, numsColor, Vec2f(620, -4));	
@@ -46,9 +45,12 @@ namespace kubik
 
 			void setAlpha(float  alpha)
 			{
-				titleColor = Utils::colorAlpha(titleColor, alpha);	
-				numsColor = Utils::colorAlpha(numsColor, alpha);	
+				title1.setColor(Utils::colorAlpha(title1.getColor(), alpha));	
+				title2.setColor(Utils::colorAlpha(title2.getColor(), alpha));	
+				title3.setColor(Utils::colorAlpha(title3.getColor(), alpha));	
+			
 				linesColor = Utils::colorAlpha(linesColor, alpha);	
+				numsColor = Utils::colorAlpha(numsColor, alpha);	
 			}		
 
 			void setPlayedTimes(int num)
@@ -68,10 +70,9 @@ namespace kubik
 
 		private:			
 			Font numsFont;
-			Font titleFont;
 
-			string title1, title2, title3;
-			ColorA titleColor, numsColor, linesColor;
+			TextItem title1, title2, title3;
+			ColorA  linesColor, numsColor;
 
 			int playedTimes;
 			int printedPhotos;

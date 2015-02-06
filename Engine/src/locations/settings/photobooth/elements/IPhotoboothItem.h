@@ -12,48 +12,42 @@ namespace kubik
 		class IPhotoboothItem: public CompositeDispatcher
 		{
 		public:
-			typedef PhotoboothSettings::SettingsPartID SettingsPartID;
-			typedef PhotoboothSettings::TextID TextID;
-			IPhotoboothItem(PhotoboothSettingsRef phbSettings, SettingsPartID id, Color color, int index)
+			//typedef PhotoboothSettings::SettingsPartID SettingsPartID;
+			//typedef PhotoboothSettings::TextID TextID;
+			IPhotoboothItem(PhotoboothSettingsRef phbSettings, PhtTextID id, ci::Color color, int index)
 				:CompositeDispatcher(),
 				settings(phbSettings),
 				state(CLOSE),
 				index(index),
 				itemWidth(1080 - 166),
 				closeHeightMax(384),
-				closeHeightMin(213),
-				openHeight(1068),
+				closeHeightMin(199),
+				openHeight(1124),
 				color(color),
 				closeMinY(50),
 				closeMaxY(130),
 				openY(170),
-				offsetBetweenTitles(60),
-				animatePosition(Vec2f(0,0))
+				offsetBetweenTitles(60)
 			{
 				mainTitleY = closeMaxY;
 				subTitleY  = closeMaxY + offsetBetweenTitles;
 				animHeight = closeHeightMax;
-
-				mainTitleButton = MainTitleButtonRef(new MainTitleButton(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax), index));
-				
-				addChild(mainTitleButton);
-				setPosition(Vec2f(0.0f, closeHeightMax * index));
-
 				animatePosition = Vec2f(0.0f, closeHeightMax * index);
-			
-				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id),
-					&phbSettings->getFont("introLight44"), Color::white());
+				setPosition(animatePosition.value());
 
-				subTextTex		= textTools().getTextField(phbSettings->getSubTitle(id),
-					&phbSettings->getFont("helveticaLight24"), Color::hex(0xfff600));
+				mainTitleButton = MainTitleButtonRef(new MainTitleButton(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax), index));				
+				addChild(mainTitleButton);
+				
+			
+				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id));
+				subTextTexClose	= textTools().getTextField(phbSettings->getSubTitleClose(id));
+				subTextTexOpen	= textTools().getTextField(phbSettings->getSubTitleOpen(id));
 	
 
-				saveBtn = SaveBtnRef(new SaveBtn(Rectf(0.0f, 0.0f, 245.0f, 65.0f),
-											     phbSettings->getText(TextID::SAVE_TEXT),
-												 phbSettings->getFont("introLight30") )),	
+				////saveBtn = SaveBtnRef(new SaveBtn(Rectf(0.0f, 0.0f, 245.0f, 65.0f), phbSettings->getText(PhtTextID::SAVE_TEXT))),	
 
-				saveBtn->setPosition(Vec2f(0.5 * (itemWidth - 245.0f),  835.0f));
-				addChild(saveBtn);
+				//saveBtn->setPosition(Vec2f(0.5 * (itemWidth - 245.0f),  835.0f));
+				//addChild(saveBtn);
 			}
 
 			virtual void activateListeners()
@@ -65,7 +59,7 @@ namespace kubik
 			virtual void unActivateListeners()
 			{
 				mainTitleButton->removeMouseUpListener();
-				saveBtn->removeMouseUpListener();
+				//saveBtn->removeMouseUpListener();
 				//CompositeDispatcher::unActivateListeners();
 			}
 
@@ -90,8 +84,11 @@ namespace kubik
 				gl::draw(mainTextTex, Vec2f(0.5 * (itemWidth - mainTextTex.getWidth()), mainTitleY));
 				if (state == CLOSE || state == CLOSE_MIN)
 				{								
-					gl::draw(subTextTex, Vec2f(0.5  * (itemWidth - subTextTex.getWidth()), subTitleY));
+					gl::draw(subTextTexClose, Vec2f(0.5  * (itemWidth - subTextTexClose.getWidth()), subTitleY));
 				}
+				else
+					gl::draw(subTextTexOpen, Vec2f(0.5  * (itemWidth - subTextTexOpen.getWidth()), subTitleY));
+
 				//if (state == OPEN)
 				//	drawLayout();
 				//gl::drawStrokedRect(mainTitleButton->getButtonArea());
@@ -174,8 +171,8 @@ namespace kubik
 			void animationFinish2()
 			{
 				activateListeners();
-				if(state == OPEN)			
-					saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
+				//if(state == OPEN)			
+				//	saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
 			}
 
 			virtual void onOpenResetParams()
@@ -191,7 +188,9 @@ namespace kubik
 			int itemWidth, index, openLayoutIndex;
 			int closeHeightMin, closeHeightMax, openHeight;
 			
-			Texture mainTextTex, subTextTex;
+			Texture mainTextTex, subTextTexClose, subTextTexOpen;
+
+
 			PhotoboothSettingsRef settings;
 			MainTitleButtonRef mainTitleButton;	
 			SaveBtnRef saveBtn;

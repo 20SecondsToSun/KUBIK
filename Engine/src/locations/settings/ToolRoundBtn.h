@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDrawable.h"
-#include "Button.h"
 #include "TextTools.h"
 #include "settings/StatisticEvent.h"
 

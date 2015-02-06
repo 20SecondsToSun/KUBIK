@@ -11,36 +11,23 @@ namespace kubik
 		public:	
 			StartNewActivity(ConfigSettingsRef configSettings, Vec2i position)
 				:SimpleButton(Rectf(0, 0, 350.0f, 37.0f)),
-				icon(configSettings->getTexture("iconStartNew")),
-				 font(configSettings->getFont("helveticaLight24")),
-				 text("Завершить и начать новое"),
-				 textcolor(Color::hex(0x00f067))				 
+				icon(configSettings->getTexture("iconStartNew")),				
+				textItem(configSettings->getTextItem(ConfigTextID::FINANDSTART)),
+				color(configSettings->getTextItem(ConfigTextID::FINANDSTART).getColor())
 			{
 				setPosition(position);
-				//startNewBtn = SimpleButtonRef(new SimpleButton(Rectf(0, 0, 350.0f, 37.0f)));	
-				//addChild(startNewBtn);
 			}
 			
 			virtual void drawLayout()
 			{
-				gl::color(textcolor);
+				gl::color(color);
 				gl::draw(icon);					
-				textTools().textFieldDraw(text, &font, textcolor, Vec2f(42, -5));			
+				textTools().textFieldDraw(textItem, Vec2f(42, -5));			
 			}
 
 			void setAlpha(float  alpha)
 			{
-				textcolor = Utils::colorAlpha(textcolor, alpha);	
-			}
-
-			void setIcon(Texture tex)
-			{
-				icon = tex;
-			}
-
-			void setText(string text)
-			{
-				this->text = text;
+				color = Utils::colorAlpha(color, alpha);	
 			}
 
 			void tryToStartNewActivity(IButton& button)
@@ -49,14 +36,12 @@ namespace kubik
 				tryToStartNewActivitySignal(button);
 			}			
 
-			ButtonSignal startNewActivitySignal, cancelNewActivityTrySignal, tryToStartNewActivitySignal;
+			ButtonSignal tryToStartNewActivitySignal;
 
 		private:			
-			Texture icon;
-			string text;
-			ColorA textcolor;
-			Font font;
-			//SimpleButtonRef startNewBtn;			
+			ci::gl::Texture icon;
+			TextItem textItem;
+			ci::ColorA color;
 		};
 
 		typedef std::shared_ptr<StartNewActivity> StartNewActivityRef;

@@ -46,6 +46,11 @@ namespace kubik
 
 			return false;	
 		}	
+
+		void openSystemDirectory(std::string path )
+		{
+
+		}
 	};
 
 	// helper function(s) for easier access 

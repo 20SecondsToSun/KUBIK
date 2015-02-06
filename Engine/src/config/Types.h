@@ -8,6 +8,8 @@ using namespace ci::gl;
 
 namespace kubik
 {
+	
+
 	class ApplicationView;
 	class ApplicationModel;
 	class Controller;

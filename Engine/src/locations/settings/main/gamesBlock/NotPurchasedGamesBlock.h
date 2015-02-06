@@ -14,12 +14,8 @@ namespace kubik
 		{
 		public:
 			NotPurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
-				:titleColor(Color::hex(0x939eb0))
+				:titleText(configSett->getTextItem(ConfigTextID::NOTINSTALL))
 			{
-
-				titleText = configSett->getNotInstallGamesText();
-				titleFont = configSett->getFont("introLight36");
-
 				for (auto gameInfo : games)
 				{
 					OneGameNotPurchasedRef pGame  = OneGameNotPurchasedRef(new OneGameNotPurchased(configSett, gameInfo));						
@@ -42,13 +38,14 @@ namespace kubik
 			virtual void draw()
 			{
 				gl::color(Color::white());
-				textTools().textFieldDraw(titleText, &titleFont, titleColor, Vec2f(position.x - 8.0f, position.y + 56.0f));
+				textTools().textFieldDraw(titleText, Vec2f(position.x - 8.0f, position.y + 56.0f));
 				IDispatcher::draw();
 			}
 
 			void setAlpha(float alpha)
 			{
-				titleColor = ColorA(titleColor.r, titleColor.g, titleColor.b, alpha);
+				titleText.setColor(Utils::colorAlpha(titleText.getColor(), alpha));
+
 				for (auto game : displayList)
 					game->setAlpha(alpha);	
 			}
@@ -65,9 +62,7 @@ namespace kubik
 			}		
 
 		private:	
-			string titleText;
-			ColorA titleColor;
-			Font titleFont;
+			TextItem titleText;
 		};
 	}
 }

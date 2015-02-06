@@ -8,6 +8,7 @@
 using namespace std;
 using namespace ci;
 using namespace ci::app;
+using namespace kubik::config;
 
 namespace kubik
 {
@@ -127,7 +128,7 @@ namespace kubik
 
 			for (auto game: games)
 			{
-				if (!game.isOn || !game.isPurchased)
+				if (!game.isPurchased)
 					continue;
 
 				switch (game.id)
@@ -147,6 +148,25 @@ namespace kubik
 				try	
 				{	
 					gameSettingsMap[game.id]->load();
+				}
+				catch(...)
+				{
+					throw ExcConfigFileParsing();
+				}
+			}
+		}
+
+		void buildData()
+		{
+			vector<GamesInfo> games = model->getGames();
+			for (auto game: games)
+			{
+				if (!game.isPurchased)
+					continue;
+				try	
+				{	
+					if(GameId::PHOTOBOOTH == game.id)
+					gameSettingsMap[game.id]->buildData();
 				}
 				catch(...)
 				{

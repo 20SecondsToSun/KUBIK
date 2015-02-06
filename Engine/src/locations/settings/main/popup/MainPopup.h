@@ -73,7 +73,7 @@ namespace kubik
 
 			SignalVoid HideCompleteSignal;
 
-		private:
+		protected:
 			ColorA bgColor;
 			Anim<float> alpha;
 			CloseBlockRef closeBlock;			

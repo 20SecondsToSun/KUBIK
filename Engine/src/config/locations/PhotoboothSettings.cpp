@@ -1,5 +1,6 @@
 #include "PhotoboothSettings.h"
 
+using namespace kubik::config;
 using namespace kubik;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -10,7 +11,7 @@ using namespace kubik;
 
 PhotoboothSettings::PhotoboothSettings(shared_ptr<ApplicationModel> model) 
 {
-	this->model = model;
+	this->model     = model;
 	mainConfigPath  = model->getPhotoboothConfigPath();
 }
 
@@ -50,21 +51,19 @@ void PhotoboothSettings::setParams()
 
 void PhotoboothSettings::setPhotoParams(JsonTree config)
 {
-	data.seconds				= config.getChild("seconds").getValue<int>();
-	data.secondsBetweenShots	= config.getChild("secondsBetweenShots").getValue<int>();
-	data.photoNum				= config.getChild("photoNum").getValue<int>();
+	data.seconds				  = config.getChild("seconds").getValue<int>();
+	data.secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();
+	data.photoNum				  = config.getChild("photoNum").getValue<int>();
 }
 
 void PhotoboothSettings::setSocialParams(JsonTree config)
 {
-	//Sharing sharing;
-	setSocialState(SocialID::FACEBOOK, config.getChild("isFacebook").getValue<bool>());
-	setSocialState(SocialID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
-	setSocialState(SocialID::TWITTER, config.getChild("isTwitter").getValue<bool>());
-	setSocialState(SocialID::EMAIL, config.getChild("isEmail").getValue<bool>());
-	setSocialState(SocialID::QRCODE, config.getChild("isQrCode").getValue<bool>());
-	setSocialState(SocialID::PRINTER, config.getChild("isPrint").getValue<bool>());
-	//data.sharing = sharing;
+	setSocialState(PhtTextID::FACEBOOK,	config.getChild("isFacebook").getValue<bool>());
+	setSocialState(PhtTextID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
+	setSocialState(PhtTextID::TWITTER,	config.getChild("isTwitter").getValue<bool>());
+	setSocialState(PhtTextID::EMAIL,		config.getChild("isEmail").getValue<bool>());
+	setSocialState(PhtTextID::QRCODE,	config.getChild("isQrCode").getValue<bool>());
+	setSocialState(PhtTextID::PRINTER,	config.getChild("isPrint").getValue<bool>());
 }
 
 void PhotoboothSettings::setPhotoFilterParams(JsonTree config)
@@ -97,7 +96,6 @@ void PhotoboothSettings::setGameStickerParams(JsonTree config)
 	data.isSticker		  = config.getChild("isSticker").getValue<bool>();			
 	data.activeSticker.id = config.getChild("activeSticker").getChild("id").getValue<int>();			
 	findAllImagePrints(getBasePath().string() + configPaths.stickersPath,  data.stickers, true);
-
 }
 
 void PhotoboothSettings::setGameBgPrintParams(JsonTree config)
@@ -126,97 +124,84 @@ void PhotoboothSettings::findAllImagePrints(string path, vector<ImageElement> &p
 
 void PhotoboothSettings::setConfigData(JsonTree config)
 {
-	typedef Pair<SettingsPartID, string> JSONPairSet;
-	vector<JSONPairSet> setPairs;
-	setPairs.push_back(JSONPairSet(SettingsPartID::CARD_STYLE,	  "text1"));
-	setPairs.push_back(JSONPairSet(SettingsPartID::PRINT_COUNT,	  "text2"));
-	setPairs.push_back(JSONPairSet(SettingsPartID::PHOTO_OVER,	  "text3"));
-	setPairs.push_back(JSONPairSet(SettingsPartID::FILTERS,		  "text4"));
-	setPairs.push_back(JSONPairSet(SettingsPartID::SHARING,	      "text5"));
-
-	JsonTree mainTitles = JsonTree(config.getChild("mainTitles"));
-	for(auto it : mainTitles)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		ConfigTitles txts;
-		for(auto pair : setPairs)		
-			txts.set(pair.param1, it.getChild(pair.param2).getValue<string>());		
-		data.setMainTitles(lang, txts);
-	}
-
-	JsonTree subTitles = JsonTree(config.getChild("subTitles"));
-	for(auto it : subTitles)
-	{
-		string lang = it.getChild("lang").getValue<string>();
-		ConfigTitles txts;
-		for(auto pair : setPairs)		
-			txts.set(pair.param1, it.getChild(pair.param2).getValue<string>());
-		data.setSubTitles(lang, txts);
-	}
-
-	typedef Pair<TextID, string> JSONPairText;
-	vector<JSONPairText> textPairs;
-	textPairs.push_back(JSONPairText(TextID::YOUR_DESIGN_TEXT, "yourDesignText"));
-	textPairs.push_back(JSONPairText(TextID::SAVE_TEXT, "saveText"));
-
-	for(auto textOne : textPairs)
-	{
-		JsonTree yourDesign = JsonTree(config.getChild(textOne.param2));
-		for(auto it : yourDesign)
-		{
-			string lang = it.getChild("lang").getValue<string>();
-			string yd(it.getChild("text").getValue<string>());
-			data.setText(std::make_pair(textOne.param1, lang), yd);
-		}
-	}
-
-	typedef Pair<SocialID, string> JSONPair;
-	vector<JSONPair> sharePairs;
+	ConfigTexts<PhtTextID> txts;
 	
-	sharePairs.push_back(JSONPair(SocialID::EMAIL,	    "emailText"));
-	sharePairs.push_back(JSONPair(SocialID::PRINTER,    "printText"));
-	sharePairs.push_back(JSONPair(SocialID::QRCODE,	    "qrText"));
-	sharePairs.push_back(JSONPair(SocialID::TWITTER,    "twText"));
-	sharePairs.push_back(JSONPair(SocialID::VKONTAKTE,  "vkText"));
-	sharePairs.push_back(JSONPair(SocialID::FACEBOOK,   "fbText"));
-
-	for (auto item : sharePairs)
+	JsonTree jsonTexts = JsonTree(config.getChild("mainTitles"));
+	for(auto it : jsonTexts)
 	{
-		JsonTree tree = JsonTree(config.getChild(item.param2));
-		for(auto it : tree)
-		{
-			string lang = it.getChild("lang").getValue<string>();
-			StringVO st;
-			st.set(it.getChild("text").getValue<string>());
-			data.sharing.setSocialTitle(std::make_pair(item.param1, lang), st);
-		}
+		string lang	    = it.getChild("lang").getValue<string>();										
+		txts.insert(lang, PhtTextID::CARD_STYLE,  jtools().parseTextItem(it.getChild("photoCardDesign")));
+		txts.insert(lang, PhtTextID::PRINT_COUNT, jtools().parseTextItem(it.getChild("photoPrintCount")));
+		txts.insert(lang, PhtTextID::PHOTO_OVER,  jtools().parseTextItem(it.getChild("overElements")));
+		txts.insert(lang, PhtTextID::FILTERS,     jtools().parseTextItem(it.getChild("photoFilters")));
+		txts.insert(lang, PhtTextID::PUBLISHING,  jtools().parseTextItem(it.getChild("photoPublishing")));		
 	}
+
+	jsonTexts = JsonTree(config.getChild("subTitles"));
+	for(auto it : jsonTexts)
+	{
+		string lang	    = it.getChild("lang").getValue<string>();										
+		txts.insert(lang, PhtTextID::CARD_STYLE_SUB,  jtools().parseTextItem(it.getChild("photoCardDesign")));
+		txts.insert(lang, PhtTextID::PRINT_COUNT_SUB, jtools().parseTextItem(it.getChild("photoPrintCount")));
+		txts.insert(lang, PhtTextID::PHOTO_OVER_SUB,  jtools().parseTextItem(it.getChild("overElements")));
+		txts.insert(lang, PhtTextID::FILTERS_SUB,     jtools().parseTextItem(it.getChild("photoFilters")));
+		txts.insert(lang, PhtTextID::PUBLISHING_SUB,  jtools().parseTextItem(it.getChild("photoPublishing")));		
+	}
+
+	jsonTexts = JsonTree(config.getChild("social"));
+	for(auto it : jsonTexts)
+	{
+		string lang	    = it.getChild("lang").getValue<string>();										
+		txts.insert(lang, PhtTextID::EMAIL,     jtools().parseTextItem(it.getChild("email")));
+		txts.insert(lang, PhtTextID::PRINTER,   jtools().parseTextItem(it.getChild("printer")));
+		txts.insert(lang, PhtTextID::QRCODE,    jtools().parseTextItem(it.getChild("qr")));
+		txts.insert(lang, PhtTextID::TWITTER,   jtools().parseTextItem(it.getChild("tw")));
+		txts.insert(lang, PhtTextID::VKONTAKTE, jtools().parseTextItem(it.getChild("vk")));		
+		txts.insert(lang, PhtTextID::FACEBOOK,  jtools().parseTextItem(it.getChild("fb")));		
+	}
+
+	data.configTexts = txts;
 }
 
 void PhotoboothSettings::setSharingIcons(JsonTree config)
 {
 	Sharing sharing = data.sharing;
-	typedef Pair<SocialID, string> NamePair;
+	typedef Pair<PhtTextID, string> NamePair;
 	
 	vector<NamePair> pairs;
-	pairs.push_back(NamePair(SocialID::FACEBOOK,   "fbIcon" ));
-	pairs.push_back(NamePair(SocialID::PRINTER,    "printerIcon" ));	
-	pairs.push_back(NamePair(SocialID::VKONTAKTE,  "vkIcon" ));	
-	pairs.push_back(NamePair(SocialID::TWITTER,    "twIcon" ));	
-	pairs.push_back(NamePair(SocialID::QRCODE,     "qrIcon" ));	
-	pairs.push_back(NamePair(SocialID::EMAIL,      "emailIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::FACEBOOK,    "fbIcon" ));
+	pairs.push_back(NamePair(PhtTextID::PRINTER, "printerIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::VKONTAKTE,    "vkIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::TWITTER,    "twIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::QRCODE,    "qrIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::EMAIL,   "emailIcon" ));	
 
 	for (auto item : pairs)
 	{
 		string iconPath = config.getChild(item.param2).getValue<string>();
-		sharing.setIcon(loadImage(getInterfacePath("configDesign\\" + iconPath)), item.param1);
+		sharing.setIcon(loadImage(getInterfacePath("configDesign\\photobooth\\" + iconPath)), item.param1);
 	}
 	
 	string iconPath = config.getChild("ofIcon").getValue<string>();
-	sharing.setEmptyIcon(loadImage(getInterfacePath("configDesign\\" + iconPath)));
+	sharing.setEmptyIcon(loadImage(getInterfacePath("configDesign\\photobooth\\" + iconPath)));
 
 	data.sharing = sharing;
 }
+
+void PhotoboothSettings::buildData()
+{
+	logger().log("build photobooth");
+
+	auto texts = data.getTexts();
+	auto dic   = texts.getDic();
+
+	logger().log(to_string(dic.size()));		
+	for (auto it = dic.begin(); it != dic.end(); ++it)	
+		it->second.setFont(fonts);		
+			
+	texts.setDic(dic);		
+	data.setTexts(texts);
+};
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -274,16 +259,18 @@ void PhotoboothSettings::setTextures()
 {		
 	clearResources();
 
-	addToDictionary("closeImg",		createImageResource(getStaticDesignPath("close.png")));
-	addToDictionary("fon1",			createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));
-	addToDictionary("fon2",			createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
-	addToDictionary("fon3",			createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
-	addToDictionary("helvetica40",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
-	addToDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
-	addToDictionary("introLight44",  createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToDictionary("helveticaLight24",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
-	addToDictionary("introLight30",  createFontResource(getFontsPath("IntroLight.ttf"), 30));
-	addToDictionary("_temp",		createImageResource(getInterfacePath("configDesign\\_temp.png")));
+	addToDictionary("closeImg",		    createImageResource(getStaticDesignPath("close.png")));
+	addToDictionary("fon1",			    createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));
+	addToDictionary("fon2",			    createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
+	addToDictionary("fon3",			    createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
+	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
+	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
+	addToDictionary("introLight44",     createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToDictionary("helveticaLight24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
+	addToDictionary("_shareTemp",		createImageResource(getInterfacePath("configDesign\\photobooth\\_shareTemp.png")));
+
+
 
 	for (size_t i = 0; i < data.stickers.size(); i++)
 		addToDictionary(STICKER_NAME + to_string(i), createImageResource(data.stickers[i].path));
@@ -315,6 +302,7 @@ PhotoboothSettings::PhotoboothDataStruct PhotoboothSettings::getData()
 
 void PhotoboothSettings::setData(PhotoboothDataStruct value)
 {
+	logger().log("set data");
 	data = value;
 	saveConfig();
 }
@@ -325,20 +313,20 @@ void PhotoboothSettings::saveConfig()
 	JsonTree doc;
 	Sharing sharing = data.sharing;
 
-	doc.addChild(JsonTree("isFacebook", sharing.getSocialState(FACEBOOK)));		
-	doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(VKONTAKTE)));		
-	doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(TWITTER)));		
-	doc.addChild(JsonTree("isEmail",    sharing.getSocialState(EMAIL)));		
-	doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(QRCODE)));		
-	doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PRINTER)));
+	doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));		
+	doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));		
+	doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));		
+	doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));		
+	doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(PhtTextID::QRCODE)));		
+	doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
 
 	doc.addChild(JsonTree("photoNum",			  data.photoNum));		
 	doc.addChild(JsonTree("seconds",			  data.seconds));		
 	doc.addChild(JsonTree("secondsBetweenShots",  data.secondsBetweenShots));
 
-	doc.addChild(JsonTree("templateId",		  data.templateId));
-	doc.addChild(JsonTree("isCustomDesign",	  data.isCustomDesign));
-	doc.addChild(JsonTree("isSticker",		  data.isSticker));
+	doc.addChild(JsonTree("templateId",			  data.templateId));
+	doc.addChild(JsonTree("isCustomDesign",	      data.isCustomDesign));
+	doc.addChild(JsonTree("isSticker",		      data.isSticker));
 
 	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
 	JsonTree useIdsJ	 = JsonTree::makeArray("useIds");

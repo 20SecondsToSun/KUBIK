@@ -49,3 +49,6 @@ Debug/
 design/
 Engine/blocks/CanonSDK/lib/EDSDK/Library/
 Engine/blocks/CanonSDK/bin/
+
+ipch/
+Release/

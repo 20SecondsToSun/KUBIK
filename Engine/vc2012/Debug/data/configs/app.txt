@@ -5,6 +5,8 @@
    "menuConfigPath" : "data\\configs\\menu.txt",
    "photoboothConfigPath" : "data\\configs\\photobooth\\",
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
-   "tuneUpConfigPath" : "data\\configs\\tuneup.txt",
-   "userInfoPath" : "data\\configs\\userInfo.txt"
+   "tuneUpConfigPath" : "data\\configs\\config.txt",
+   "userInfoPath" : "data\\configs\\userInfo.txt",
+   "labelsPath" : "data\\configs\\labels.txt",
+   "designDataPath" : "data\\configs\\designs.txt"
 }

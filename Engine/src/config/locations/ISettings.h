@@ -75,7 +75,8 @@ namespace kubik
 		}
 
 		virtual void load() = 0;
-		virtual void setTextures() = 0;	
+		virtual void setTextures() = 0;
+		virtual void buildData(){};
 
 	protected:		
 		shared_ptr<ApplicationModel> model;	

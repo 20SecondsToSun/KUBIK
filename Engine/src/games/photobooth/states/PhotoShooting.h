@@ -111,7 +111,7 @@ namespace kubik
 			textTools().textFieldDraw("бпелъ ндмнцн ямхлйю(яей.) " + to_string(secBetweenShots), &font, Color::white(), Vec2f(100.0f, 300.0f));
 		}
 
-		void reset(shared_ptr<PhotoboothSettings> _settings) override
+		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings = _settings;
 			fon  = settings->getTexture("fon1");

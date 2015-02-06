@@ -20,7 +20,7 @@ namespace kubik
 				:leftMargin(165)				
 			{				
 				int index = 0;		
-				typedef PhotoboothSettings::SettingsPartID SettingsPartID;
+				//typedef PhotoboothSettings::SettingsPartID SettingsPartID;
 
 				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), index++));
 				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), index++));
@@ -123,7 +123,7 @@ namespace kubik
 			PhotoFiltersRef	     photoFilters;
 			SharingRef		     sharing;
 
-			Anim<Vec2f> animatePosition;
+			ci::Anim<ci::Vec2f> animatePosition;
 		};
 
 		typedef std::shared_ptr<PhotoboothConfig> PhotoboothConfigRef;

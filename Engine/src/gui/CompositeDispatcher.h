@@ -20,10 +20,10 @@ namespace kubik
 		}
 
 		void addChild(DispatcherRef child)
-		{
-			child->setChildPosition(_localPosition);
-			child->setAlpha(alpha);
+		{	
 			child->setParent(this);
+			child->setChildPosition(_localPosition);
+			child->setAlpha(alpha);			
 			displayList.push_back(child);
 		}	
 

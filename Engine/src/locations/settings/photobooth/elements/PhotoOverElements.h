@@ -9,7 +9,7 @@ namespace kubik
 		{
 		public:	
 			PhotoOverElements(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, SettingsPartID::PHOTO_OVER, color, index)
+				:IPhotoboothItem(phbSettings, PhtTextID::PHOTO_OVER, color, index)
 			{
 				
 			}	

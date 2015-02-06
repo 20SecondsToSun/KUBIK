@@ -3,6 +3,7 @@
 #include "PhotoboothSettings.h"
 
 using namespace std;
+using namespace kubik::config;
 
 namespace kubik
 {

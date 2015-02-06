@@ -10,7 +10,7 @@ namespace kubik
 		{
 		public:	
 			PhotoFilters(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, SettingsPartID::FILTERS, color, index)
+				:IPhotoboothItem(phbSettings, PhtTextID::FILTERS, color, index)
 			{
 				
 			}	

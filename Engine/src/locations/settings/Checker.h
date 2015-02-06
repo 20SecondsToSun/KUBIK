@@ -21,7 +21,7 @@ namespace kubik
 				radius(55),
 				startX(0),
 				finishX(77.0f),
-				sdvigX(startX),
+				sdvigX(0),
 				iconColor(Color::white())
 			{
 				

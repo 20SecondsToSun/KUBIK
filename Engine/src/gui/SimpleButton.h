@@ -14,17 +14,26 @@ namespace kubik
 	class SimpleButton : public Dispatcher
 	{
 	public:
-		SimpleButton(Rectf rect):Dispatcher(),color(Color::white()), bgVisible(true)
+		string name;
+		SimpleButton(Rectf rect, EventGUIRef _event = EventGUIRef(new EventGUI())):Dispatcher(),color(Color::white()), bgVisible(true)
 		{
 			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 
 			setPosition(Vec2f(rect.x1, rect.y1));
 		
-			event = EventGUIRef(new EventGUI());
+			event = _event;
 		}
 
-		SimpleButton(float width, float height, Vec2f position):Dispatcher(),color(Color::white()), bgVisible(true)
+		SimpleButton(float width, float height, Vec2f position, EventGUIRef _event = EventGUIRef(new EventGUI())):Dispatcher(), color(Color::white()), bgVisible(true)
 		{
 			buttonArea = Rectf(0, 0, width, height); 
+			setPosition(position);
+		
+			event = _event;
+		}
+
+		SimpleButton(Vec2f position0, Vec2f position):Dispatcher(), color(Color::white()), bgVisible(true)
+		{
+			buttonArea = Rectf(Vec2f::zero(), position0); 
 			setPosition(position);
 		
 			event = EventGUIRef(new EventGUI());
@@ -37,8 +46,8 @@ namespace kubik
 		}
 
 		bool inButtonField(Vec2i pos)
-		{
-			return (buttonArea + getGlobalPosition()).contains(pos);
+		{			
+			return (buttonArea + getGlobalPosition()).contains(pos);			
 		}
 
 		void drawLayout()
@@ -69,13 +78,13 @@ namespace kubik
 			return buttonArea;
 		}
 
-		virtual void mouseUpHandler( Vec2i vec)
+		virtual void mouseUpHandler(Vec2i vec)
 		{
 		}
 
 		void setButtonArea(Rectf rectf)
 		{
-			buttonArea =  rectf;
+			buttonArea = rectf;
 		}
 
 		void setColor(Color color)

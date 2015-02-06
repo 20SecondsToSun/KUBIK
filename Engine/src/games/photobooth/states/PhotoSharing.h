@@ -46,22 +46,22 @@ namespace kubik
 			fon  = settings->getTexture("fon1");
 			font = settings->getFont("helvetica40");
 
-			PhotoboothSettings::PhotoboothDataStruct data = settings->getData();
+			auto data = settings->getData();
 			
-			shareBtns.clear();
+		/*	shareBtns.clear();
 			int i = 0;
 			typedef PhotoboothSettings::SocialID SocialID;
-			if (data.sharing.getSocialState(SocialID::FACEBOOK))
+			if (data.sharing.getSocialState(SocialID::FB))
 				createShareButton(FACEBOOK, "FACEBOOK", i++);
 
-			if (data.sharing.getSocialState(SocialID::VKONTAKTE))
+			if (data.sharing.getSocialState(SocialID::VK))
 				createShareButton(VKONTAKTE, "VKONTAKTE", i++);
 
-			if (data.sharing.getSocialState(SocialID::TWITTER))
+			if (data.sharing.getSocialState(SocialID::TW))
 				createShareButton(TWITTER, "TWITTER", i++);
 
-			if (data.sharing.getSocialState(SocialID::EMAIL))
-				createShareButton(EMAIL, "EMAIL", i++);
+			if (data.sharing.getSocialState(SocialID::EML))
+				createShareButton(EMAIL, "EMAIL", i++);*/
 		}
 
 		void createShareButton(shareID id, string text, int i)
@@ -73,12 +73,11 @@ namespace kubik
 
 		Rectf getButtonArea(int i) 
 		{
-			float x      = 300.0f * i;
-			float y      = 300.0f;
-			float width  = 200.0f;
-			float height = 200.0f;
+			float btnSize = 300.0f;
+			Vec2f pos  = Vec2f(btnSize * i, btnSize);		
+			Vec2f size = Vec2f(300, 300); 	
 
-			return Rectf(x, y, x + width, y + height);
+			return Rectf(pos, pos + size);
 		}
 
 		void mouseUpListener(ShareButton& button)

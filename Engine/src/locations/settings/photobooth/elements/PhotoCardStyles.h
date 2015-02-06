@@ -9,7 +9,7 @@ namespace kubik
 		{
 		public:	
 			PhotoCardStyles(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, SettingsPartID::CARD_STYLE, color, index)
+				:IPhotoboothItem(phbSettings, PhtTextID::CARD_STYLE, color, index)
 			{
 			
 			}	

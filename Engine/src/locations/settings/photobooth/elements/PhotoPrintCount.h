@@ -9,7 +9,7 @@ namespace kubik
 		{
 		public:	
 			PhotoPrintCount(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, SettingsPartID::PRINT_COUNT, color, index)
+				:IPhotoboothItem(phbSettings, PhtTextID::PRINT_COUNT, color, index)
 			{
 				
 			}	

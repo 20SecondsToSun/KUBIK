@@ -1,7 +1,6 @@
 #pragma once
 #include "gui/Dispatcher.h"
 
-
 namespace kubik
 {
 	namespace config
@@ -28,7 +27,9 @@ namespace kubik
 			void setIcon(Texture tex)
 			{
 				icon = tex;
-				saveIconPosition = iconPosition =  Vec2f(0.5 * (blockWidth - icon.getWidth()), 0.5 * (blockHeight - icon.getHeight()));
+				saveIconPosition =
+				iconPosition	 =  Vec2f(0.5 * (blockWidth - icon.getWidth()),
+										  0.5 * (blockHeight - icon.getHeight()));
 			}
 
 			float getWidth()
@@ -36,23 +37,44 @@ namespace kubik
 				return blockWidth;
 			}
 
-			void animateToMiniState(EaseFn eFunc, float time)
+			void animateToMiniState(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
 			{
 				bckgrndColor = Color::hex(0x0d0917);
 				iconPosition = saveIconPosition + Vec2f(-37, 0);
 			}
 
-			void animateToMaxState(EaseFn eFunc, float time)
+			void animateToMaxState(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
 			{
 				bckgrndColor = Color::hex(0x242135);
 				iconPosition = saveIconPosition;
 			}
 
+			void animateToUpState(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
+			{
+				animatePosition = _localPosition;
+				timeline().apply( &animatePosition, _localPosition + Vec2f(0, -400), time, eFunc)
+					     .updateFn(bind( &Logo::posAnimationUpdate, this));
+			}
+
+			void animateToDownState(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
+			{
+				animatePosition = _localPosition;
+				timeline().apply( &animatePosition, _localPosition + Vec2f(0, 400), time, eFunc)
+					     .updateFn(bind( &Logo::posAnimationUpdate, this));
+			}		
+
+			void posAnimationUpdate()
+			{
+				setPosition(animatePosition.value());
+			}
+
 		private:
-			Vec2i iconPosition, saveIconPosition;
+			Vec2f iconPosition, saveIconPosition;
 			Texture icon;
 			Color bckgrndColor;
 			int blockWidth, blockHeight;
+
+			Anim<Vec2f> animatePosition;
 		};
 
 		typedef std::shared_ptr<Logo> LogoRef;

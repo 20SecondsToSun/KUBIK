@@ -2,6 +2,7 @@
 
 #include "KubikException.h"
 #include "Types.h"
+#include "DesignData.h"
 
 using namespace std;
 using namespace ci;
@@ -14,13 +15,17 @@ namespace kubik
 
 	public:
 		void load()
-		{
-			console()<<"parseConfigPaths"<<endl;
+		{		
 			parseConfigPaths();		
-			console()<<"parseUserData"<<endl;
-			parseUserData();	
-			console()<<"parseAppConfig done"<<endl;
+			parseUserData();				
+			parseDesignData();
 		}
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					CONFIG PATH
+		//
+		////////////////////////////////////////////////////////////////////////////
 
 		void parseConfigPaths()
 		{
@@ -33,7 +38,15 @@ namespace kubik
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
 			kotopozaConfigPath		= configJSON.getChild("kotopozaConfigPath").getValue<string>();
 			userDataPath			= configJSON.getChild("userInfoPath").getValue<string>();
+			labelsPath				= configJSON.getChild("labelsPath").getValue<string>();
+			designDataPath			= configJSON.getChild("designDataPath").getValue<string>();
 		}
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					USER DATA
+		//
+		////////////////////////////////////////////////////////////////////////////
 
 		void parseUserData()
 		{		
@@ -70,6 +83,41 @@ namespace kubik
 				games.push_back(game);				
 			}	
 		}
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					DESIGN DATA
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		void parseDesignData()
+		{
+			JsonTree designDataJSON	= JsonTree(loadFile(getDesignDataPath()));	
+
+			JsonTree designs = designDataJSON.getChild("designs");			
+			for(auto it : designs)
+			{
+				OneDesignItem item;
+				item.setID(it.getChild("id").getValue<int>());
+				item.setIconPath(it.getChild("iconPath").getValue<string>());
+				JsonTree text = it.getChild("text");
+			
+				item.setTextItem(text.getChild("name").getValue<string>(),
+								 text.getChild("font").getValue<string>(),
+								 text.getChild("size").getValue<int>(),
+								 text.getChild("color").getValue<string>());
+				designData.push_back(item);
+			}
+
+			userDesignID = designDataJSON.getChild("userDesignID").getValue<int>();		
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					SAVE
+		//
+		////////////////////////////////////////////////////////////////////////////
 
 		void saveUserData()
 		{
@@ -164,7 +212,7 @@ namespace kubik
 
 		////////////////////////////////////////////////////////////////////////////
 		//
-		//				SET PATH
+		//				SET
 		//
 		////////////////////////////////////////////////////////////////////////////
 
@@ -181,6 +229,17 @@ namespace kubik
 		void setScreenSaverPath(string path)
 		{
 			screenSaverConfigPath =  path;
+		}
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//				GET
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		string getLabelsPath()
+		{
+			return getFullPath(labelsPath);
 		}
 
 		string getMenuConfigPath()
@@ -217,10 +276,26 @@ namespace kubik
 		{
 			return getFullPath(kotopozaConfigPath);
 		}
+
 		string getUserDataPath()
 		{
 			return getFullPath(userDataPath);
 		}
+
+		string getDesignDataPath()
+		{
+			return getFullPath(designDataPath);
+		}
+
+		DesignData getDesignData()
+		{
+			return designData;
+		}
+
+		int getUserDesignID()
+		{
+			return userDesignID;
+		}		
 
 		string getFullPath(string path)
 		{
@@ -239,13 +314,18 @@ namespace kubik
 		GameId defaultGameID;	
 		string lang;		
 		string menuConfigPath;
+		string labelsPath;		
+		string designDataPath;		
 		string tuneUpConfigPath;
 		string screenSaverConfigPath;
 		string photoboothConfigPath;
 		string funcesConfigPath;
 		string instagramConfigPath;
 		string kotopozaConfigPath;
-		string userDataPath;		
+		string userDataPath;	
+
+		DesignData designData;
+		int userDesignID;
 
 		fs::path getConfigPath()
 		{		

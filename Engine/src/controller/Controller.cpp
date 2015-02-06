@@ -68,6 +68,11 @@ void Controller::loadSettings()
 	controlSettings		 = ConfigSettingsRef(new ConfigSettings(model));
 	screenSaverSettings	 = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
 
+	settingsFactory().inject(controlSettings);
+
+
+
+
 	list<ISettingsRef> configs;
 	configs.push_back(gameSettings);
 	configs.push_back(menuSettings);
@@ -122,6 +127,9 @@ void Controller::loadAllLocationsGraphics()
 
 void Controller::allGraphicsLoadingCompleteHandler()
 {
+	controlSettings->buildData();
+	gameSettings->buildData();
+
 	removeGraphicsLoadingConnections();
 	createLocations();
 }
@@ -148,8 +156,8 @@ void Controller::createLocations()
 {	
 	console()<<"create locations"<<endl;
 
-	screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
-	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
+	//screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
+	//menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
 
 	controlScreen = ConfigScreenRef(new ConfigScreen(controlSettings));
 	controlScreen->setScreenSaverSettings(screenSaverSettings);
@@ -157,11 +165,13 @@ void Controller::createLocations()
 	controlScreen->setGameSettings(gameSettings);
 	controlScreen->init();
 
-	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
-	createGame(model->getDefaultGameID());	
+	//gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
+	//gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
+	//createGame(model->getDefaultGameID());	
 
-	startup();
+	//startup();
+
+	startLocation(controlScreen);
 }
 
 ////////////////////////////////////////////////////////////////////////////
