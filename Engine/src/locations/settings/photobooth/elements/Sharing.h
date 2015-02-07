@@ -98,7 +98,6 @@ namespace kubik
 			virtual void draw()
 			{
 				IPhotoboothItem::draw();
-
 				gl::color(ColorA(1,1,1,0.5));
 				//gl::draw(settings->getTexture("_shareTemp"), Vec2f(166, 0));
 			}

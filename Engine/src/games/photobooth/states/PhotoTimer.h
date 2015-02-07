@@ -128,7 +128,7 @@ namespace kubik
 		}
 		void start()
 		{
-			seconds = settings->getData().seconds;
+			//seconds = settings->getData().seconds;
 			//cdTimer.start();
 			console()<<"start PhotoTimer"<<endl;	
 			shader->showParams();
@@ -137,7 +137,7 @@ namespace kubik
 
 		void update() override
 		{
-			seconds = (settings->getData().seconds - (int)cdTimer.getSeconds());
+			///seconds = (settings->getData().seconds - (int)cdTimer.getSeconds());
 
 			if(seconds < 0)
 			{

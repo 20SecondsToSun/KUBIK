@@ -74,6 +74,14 @@ namespace kubik
 		};	
 	}
 
+	namespace settings
+	{
+		enum id
+		{
+			PHOTOBOOTH
+		};
+	}
+
 	struct IconPair
 	{
 		IconPair(Texture activeIcon, Texture unActiveIcon):activeIcon(activeIcon),unActiveIcon(unActiveIcon){}

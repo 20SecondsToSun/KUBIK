@@ -31,16 +31,16 @@ namespace kubik
 			}		
 		};
 
-		MenuSettings(shared_ptr<ApplicationModel> model)
+		MenuSettings(ApplicationModelRef model):ISettings(model)
 		{
-			this->model = model;
 			mainConfigPath  = model->getMenuConfigPath();
-
 			//load();		
 		}
 
 		void load()
 		{
+			logger().log("menu settings load");
+
 			JsonTree configJSON					= JsonTree(loadFile(mainConfigPath));
 			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();
 			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();

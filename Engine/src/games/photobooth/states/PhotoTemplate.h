@@ -53,7 +53,7 @@ namespace kubik
 
 		bool skipScreen()
 		{
-			return !(settings->getData().photoNum == PHOTO_COUNT_FOR_CHOOSING_TEMPLATE && isPrint);
+			return false;//!(settings->getData().photoNum == PHOTO_COUNT_FOR_CHOOSING_TEMPLATE && isPrint);
 		}
 
 		void createChoosingTemplatesButtons()

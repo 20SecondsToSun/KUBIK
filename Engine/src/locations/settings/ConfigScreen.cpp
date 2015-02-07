@@ -36,7 +36,7 @@ void ConfigScreen::startUpParams()
 	changes.clear();
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	initPhData = phData = phbthSettings->getData();	
+	//initPhData = phData = phbthSettings->getData();	
 	initialMenuData = menuData = menuSettings->getData();
 	initialGamesData = gamesData = gameSettings->getData();
 	initialScreensaverData = screensaverData = screenSaverSettings->getData();
@@ -162,7 +162,7 @@ void ConfigScreen::checkPhotoBoothParamsForChanges()
 	Changes chng;
 	chng.id = changeSetting::id::PHOTOBOOTH;
 
-	if(phData.hasDesignChanges(initPhData))
+	/*if(phData.hasDesignChanges(initPhData))
 	{
 		chng.texReload = true;
 		changes.push_back(chng);
@@ -173,7 +173,7 @@ void ConfigScreen::checkPhotoBoothParamsForChanges()
 	{
 		changes.push_back(chng);
 		phbthSettings->setData(phData);	
-	}
+	}*/
 }
 
 void ConfigScreen::checkFuncesParamsForChanges()

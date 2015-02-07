@@ -93,9 +93,8 @@ namespace kubik
 		}data;
 
 	public:
-		ConfigSettings(ApplicationModelRef model)
+		ConfigSettings(ApplicationModelRef model):ISettings(model)
 		{
-			this->model = model;
 			mainConfigPath = model->getTuneUpConfigPath();
 			data.designData = model->getDesignData();
 			data.userDesignID = model->getUserDesignID();
@@ -103,6 +102,7 @@ namespace kubik
 
 		void load() override
 		{
+			logger().log("config settings load " + mainConfigPath);
 			try	
 			{
 				JsonTree configJSON		  = JsonTree(loadFile(mainConfigPath));
@@ -116,8 +116,7 @@ namespace kubik
 
 				data.activeDesign		  = configJSON.getChild("activeDesign").getValue<int>();
 				data.activeDesignColor	  = stringTools().stringToColor(configJSON.getChild("activeColor").getValue<string>());
-
-
+				
 				data.setLang(this->model->getLang());
 				
 				JsonTree labelJSON  = JsonTree(loadFile(model->getLabelsPath()));	
@@ -133,7 +132,7 @@ namespace kubik
 					txts.insert(lang, TextID::STAT,		jtools().parseTextItem(it.getChild("stat")));
 					txts.insert(lang, TextID::NOTINSTALL,	jtools().parseTextItem(it.getChild("notinstall")));				
 				}
-
+			
 				jsonTexts  = JsonTree(labelJSON.getChild("design"));
 				for(auto it : jsonTexts)
 				{
@@ -151,7 +150,7 @@ namespace kubik
 					txts.insert(lang, TextID::PRINTED_COUNT,   jtools().parseTextItem(it.getChild("printedCount")));
 					txts.insert(lang, TextID::SOCIAL_COUNT,	jtools().parseTextItem(it.getChild("socialCount")));						
 				}
-
+			
 				jsonTexts  = JsonTree(labelJSON.getChild("screensaver"));
 				for(auto it : jsonTexts)
 				{
@@ -173,7 +172,7 @@ namespace kubik
 					string lang	= it.getChild("lang").getValue<string>();	
 					txts.insert(lang, TextID::LOAD, jtools().parseTextItem(it.getChild("load")));
 				}
-
+				
 				jsonTexts = JsonTree(labelJSON.getChild("printer"));
 				for(auto it : jsonTexts)
 				{
@@ -185,7 +184,7 @@ namespace kubik
 					txts.insert(lang, TextID::PRINTER_CLOSE_TITLE, jtools().parseTextItem(it.getChild("closeTitle")));
 					txts.insert(lang, TextID::PRINTER_OK_TITLE, jtools().parseTextItem(it.getChild("okTitle")));
 				}
-
+			
 				jsonTexts = JsonTree(labelJSON.getChild("newParty"));
 				for(auto it : jsonTexts)
 				{
@@ -196,9 +195,8 @@ namespace kubik
 					txts.insert(lang, TextID::PARTY_BEGIN, jtools().parseTextItem(it.getChild("begin")));
 					txts.insert(lang, TextID::PARTY_CLOSE, jtools().parseTextItem(it.getChild("close")));		
 				}
-
+			
 				data.setTexts(txts);
-		
 				setTextures();
 			}
 			catch(...)

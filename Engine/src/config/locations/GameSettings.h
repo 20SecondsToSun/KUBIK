@@ -93,9 +93,8 @@ namespace kubik
 			friend GameSettings;
 		};
 
-		GameSettings(ApplicationModelRef model)
+		GameSettings(ApplicationModelRef model):ISettings(model)
 		{
-			this->model		   = model;
 			currentGame		   = model->getDefaultGameID();
 			data.games		   = model->getGames();
 			data.defaultGameID = model->getDefaultGameID();

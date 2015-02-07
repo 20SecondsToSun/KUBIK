@@ -151,6 +151,7 @@
     <ClInclude Include="..\src\buttons\IButton.h" />
     <ClInclude Include="..\src\buttons\MenuButton.h" />
     <ClInclude Include="..\src\config\ApplicationModel.h" />
+    <ClInclude Include="..\src\config\ConfigObject.h" />
     <ClInclude Include="..\src\config\DesignData.h" />
     <ClInclude Include="..\src\config\locations\FuncesSettings.h" />
     <ClInclude Include="..\src\config\locations\GameSettings.h" />

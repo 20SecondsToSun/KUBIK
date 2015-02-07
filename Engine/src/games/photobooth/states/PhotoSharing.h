@@ -46,7 +46,7 @@ namespace kubik
 			fon  = settings->getTexture("fon1");
 			font = settings->getFont("helvetica40");
 
-			auto data = settings->getData();
+			//auto data = settings->getData();
 			
 		/*	shareBtns.clear();
 			int i = 0;

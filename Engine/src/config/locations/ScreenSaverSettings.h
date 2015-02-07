@@ -30,9 +30,8 @@ namespace kubik
 			}
 		};
 
-		ScreenSaverSettings(ApplicationModelRef model)
+		ScreenSaverSettings(ApplicationModelRef model):ISettings(model)
 		{
-			this->model = model;
 			mainConfigPath = model->getScreenSaverConfigPath();				
 		}
 

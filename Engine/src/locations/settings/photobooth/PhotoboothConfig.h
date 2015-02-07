@@ -18,15 +18,12 @@ namespace kubik
 		public:	
 			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
 				:leftMargin(165)				
-			{				
-				int index = 0;		
-				//typedef PhotoboothSettings::SettingsPartID SettingsPartID;
-
-				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), index++));
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), index++));
-				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), index++));
-				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), index++));
-				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), index++));
+			{					
+				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 0));
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 1));
+				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), 2));
+				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), 3));
+				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), 4));
 
 				addChild(sharing);
 				addChild(photoOverElements);

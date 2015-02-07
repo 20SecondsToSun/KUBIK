@@ -11,7 +11,8 @@ namespace kubik
 		{
 		public:
 			CheckerSocial(Rectf rect, IconPair icons):
-				Checker(rect, icons, Color::hex(0xffff00), Color::hex(0x773591))				
+				Checker(rect, icons, Color::hex(0xffff00),
+				Color::hex(0x773591))				
 			{
 				setRadius(33);
 				setStartX(-6);

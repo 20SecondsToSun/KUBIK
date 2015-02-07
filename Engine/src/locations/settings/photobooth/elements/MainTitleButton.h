@@ -1,8 +1,7 @@
 #pragma once
+
 #include "stdafx.h"
-
 #include "gui/SimpleButton.h"
-
 #include "Button.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 
@@ -20,6 +19,7 @@ namespace kubik
 
 			virtual void draw()
 			{
+
 			}
 		};
 

@@ -41,7 +41,7 @@ namespace kubik
 		{
 			console()<<"start PhotoChoosing"<<endl;			
 
-			canSelectCount = settings->getData().photoNum;			
+			canSelectCount = 0;//settings->getData().photoNum;			
 			nowSelectCount = canSelectCount;			
 			thumbs = photoStorage->getChoosingThumbs();
 			

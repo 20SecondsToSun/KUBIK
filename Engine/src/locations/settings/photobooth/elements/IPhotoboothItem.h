@@ -111,18 +111,22 @@ namespace kubik
 				Vec2f animateTo;
 				float height = 0;
 
+				unActivateListeners();
+
 				if(openLayoutIndex == index)
-				{					
+				{						
 					openingLayout(eFunc, time);
 					animateTo = Vec2f(0, openLayoutIndex * closeHeightMin);						
 				}
 				else if (openLayoutIndex == -1)
 				{
+					//activateListeners();
 					closingLayoutMaxState(eFunc, time);						
 					animateTo = Vec2f(0, index * closeHeightMax);								
 				}	
 				else
 				{
+					//activateListeners();
 					closingLayoutMinState(eFunc, time);					
 
 					if (openLayoutIndex > index)					
@@ -169,9 +173,9 @@ namespace kubik
 			}
 
 			void animationFinish2()
-			{
-				activateListeners();
-				//if(state == OPEN)			
+			{				
+				if(state != OPEN)
+					activateListeners();
 				//	saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
 			}
 

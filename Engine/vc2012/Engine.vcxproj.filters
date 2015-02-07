@@ -145,6 +145,12 @@
     <Filter Include="Source Files\locations\settings\main\printerBlock">
       <UniqueIdentifier>{986be9b1-d719-4a6e-adaa-382c04ff0342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\config\games">
+      <UniqueIdentifier>{ea5fa052-5f07-490a-aa4b-fa8fe0b7b1f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\games\photobooth">
+      <UniqueIdentifier>{4e963074-0b4f-42c7-b108-ea24e016e527}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -186,9 +192,6 @@
     <ClCompile Include="..\src\buttons\ShareButton.h">
       <Filter>Source Files\buttons</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp">
-      <Filter>Source Files\config\locations</Filter>
-    </ClCompile>
     <ClCompile Include="..\blocks\CanonSDK\src\BaseCanon.cpp">
       <Filter>blocks\CanonSDK\src</Filter>
     </ClCompile>
@@ -212,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp">
       <Filter>Source Files\locations\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp">
+      <Filter>Source Files\config\games\photobooth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,9 +312,6 @@
       <Filter>Source Files\config\locations</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\locations\MenuSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\PhotoboothSettings.h">
       <Filter>Source Files\config\locations</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h">
@@ -622,6 +625,12 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\printerBlock\PrinterBlock.h">
       <Filter>Source Files\locations\settings\main\printerBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\PhotoboothSettings.h">
+      <Filter>Source Files\config\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ConfigObject.h">
+      <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

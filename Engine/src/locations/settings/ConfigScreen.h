@@ -66,7 +66,7 @@ namespace kubik
 	
 		vector<Changes> changes;
 
-		PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
+		//PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
 		MenuSettings::MenuDataStruct menuData, initialMenuData;		
 		GameSettings::GamesDataStruct gamesData, initialGamesData;	
 		ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	

@@ -12,11 +12,9 @@ namespace kubik
 	{
 	public:
 
-		FuncesSettings(ApplicationModelRef model) 
+		FuncesSettings(ApplicationModelRef model):ISettings(model)
 		{
-			this->model = model;
-			mainConfigPath = model->getFuncesConfigPath();
-			
+			mainConfigPath = model->getFuncesConfigPath();			
 		}
 
 		void load() override

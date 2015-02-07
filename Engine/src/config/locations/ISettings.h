@@ -9,6 +9,11 @@ namespace kubik
 	{
 	public:
 
+		ISettings(ApplicationModelRef model):model(model)
+		{
+
+		}
+
 		std::string getDesignPath()
 		{
 			return getBasePath().string() + designPath;
@@ -79,7 +84,7 @@ namespace kubik
 		virtual void buildData(){};
 
 	protected:		
-		shared_ptr<ApplicationModel> model;	
+		ApplicationModelRef model;	
 
 		std::string mainConfigPath;
 

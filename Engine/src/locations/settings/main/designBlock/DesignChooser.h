@@ -45,7 +45,7 @@ namespace kubik
 				userDesignID = configSettings->getUserDesignID();
 				loadButton = settingsFactory().createLoadButton(btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));
 			
-				selectActiveDesign(id);		
+				//selectActiveDesign(id);		
 			}	
 			
 			void selectActiveDesign(int id)

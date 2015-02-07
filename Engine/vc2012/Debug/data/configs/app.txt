@@ -3,7 +3,12 @@
    "instagramConfigPath" : "data\\configs\\instagram.txt",
    "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
    "menuConfigPath" : "data\\configs\\menu.txt",
-   "photoboothConfigPath" : "data\\configs\\photobooth\\",
+
+   "photoboothConfig" : {"path":"data\\configs\\photobooth\\path.txt",
+   "params" : "data\\configs\\photobooth\\params.txt",
+   "labels" : "data\\configs\\photobooth\\labels.txt",
+   "consts" : "data\\configs\\photobooth\\consts.txt"},
+
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
    "tuneUpConfigPath" : "data\\configs\\config.txt",
    "userInfoPath" : "data\\configs\\userInfo.txt",

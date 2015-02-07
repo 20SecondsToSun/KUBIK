@@ -3,21 +3,25 @@
 #include "KubikException.h"
 #include "Types.h"
 #include "DesignData.h"
+#include "ConfigObject.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
+using namespace kubik::config;
 
 namespace kubik
 {
 	class ApplicationModel 
 	{
-
 	public:
 		void load()
-		{		
-			parseConfigPaths();		
-			parseUserData();				
+		{	
+			logger().log("parse config data");
+			parseConfigPaths();	
+			logger().log("parse user data");
+			parseUserData();
+			logger().log("parse design data");
 			parseDesignData();
 		}
 
@@ -33,13 +37,19 @@ namespace kubik
 			screenSaverConfigPath	= configJSON.getChild("screenSaverConfigPath").getValue<string>();
 			menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();
 			tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();				
-			photoboothConfigPath	= configJSON.getChild("photoboothConfigPath").getValue<string>();
+			
 			funcesConfigPath		= configJSON.getChild("funcesConfigPath").getValue<string>();
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
 			kotopozaConfigPath		= configJSON.getChild("kotopozaConfigPath").getValue<string>();
 			userDataPath			= configJSON.getChild("userInfoPath").getValue<string>();
 			labelsPath				= configJSON.getChild("labelsPath").getValue<string>();
 			designDataPath			= configJSON.getChild("designDataPath").getValue<string>();
+			
+			JsonTree phtJSON = configJSON.getChild("photoboothConfig");
+			photoboothConfigObject.setPathsConfigPath(getFullPath(phtJSON.getChild("path").getValue<string>()));
+			photoboothConfigObject.setParamsConfigPath(getFullPath(phtJSON.getChild("params").getValue<string>()));
+			photoboothConfigObject.setLabelsConfigPath(getFullPath(phtJSON.getChild("labels").getValue<string>()));
+			photoboothConfigObject.setConstsConfigPath(getFullPath(phtJSON.getChild("consts").getValue<string>()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////
@@ -100,9 +110,9 @@ namespace kubik
 				OneDesignItem item;
 				item.setID(it.getChild("id").getValue<int>());
 				item.setIconPath(it.getChild("iconPath").getValue<string>());
-				JsonTree text = it.getChild("text");
+				JsonTree text = it.getChild("textObj");
 			
-				item.setTextItem(text.getChild("name").getValue<string>(),
+				item.setTextItem(text.getChild("text").getValue<string>(),
 								 text.getChild("font").getValue<string>(),
 								 text.getChild("size").getValue<int>(),
 								 text.getChild("color").getValue<string>());
@@ -167,7 +177,7 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		bool findGameId(int id, vector<int> gamesTurnOn)
+		bool findGameId(int id, std::vector<int> gamesTurnOn)
 		{
 			for (auto it:gamesTurnOn)			
 				if(it == id)
@@ -176,7 +186,7 @@ namespace kubik
 			return false;
 		}
 
-		vector<GamesInfo> getGames()
+		std::vector<GamesInfo> getGames()
 		{
 			return games;
 		}
@@ -216,17 +226,17 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		void setMenuConfigPath(string path)
+		void setMenuConfigPath(const std::string& path)
 		{
 			menuConfigPath = path;
 		}
 
-		void setTuneUpConfigPath(string path)
+		void setTuneUpConfigPath(const std::string& path)
 		{
 			tuneUpConfigPath = path;
 		}	
 
-		void setScreenSaverPath(string path)
+		void setScreenSaverPath(const std::string& path)
 		{
 			screenSaverConfigPath =  path;
 		}
@@ -236,53 +246,61 @@ namespace kubik
 		//				GET
 		//
 		////////////////////////////////////////////////////////////////////////////
+		ConfigObject photoboothConfigObject;
+		const ConfigObject& getConfigObject(settings::id id)
+		{
+			if (id == settings::id::PHOTOBOOTH)
+			{
+				return photoboothConfigObject;
+			}
+		}
 
-		string getLabelsPath()
+		std::string getLabelsPath()
 		{
 			return getFullPath(labelsPath);
 		}
 
-		string getMenuConfigPath()
+		std::string getMenuConfigPath()
 		{
 			return getFullPath(menuConfigPath);
 		}
 
-		string getTuneUpConfigPath()
+		std::string getTuneUpConfigPath()
 		{
 			return getFullPath(tuneUpConfigPath);
 		}
 
-		string getScreenSaverConfigPath()
+		std::string getScreenSaverConfigPath()
 		{
 			return getFullPath(screenSaverConfigPath);
 		}
 
-		string getPhotoboothConfigPath()
+		/*std::string getPhotoboothConfigPath()
 		{
 			return getFullPath(photoboothConfigPath);
-		}
+		}*/
 
-		string getFuncesConfigPath()
+		std::string getFuncesConfigPath()
 		{
 			return getFullPath(funcesConfigPath);
 		}
 
-		string getInstagramConfigPath()
+		std::string getInstagramConfigPath()
 		{
 			return getFullPath(instagramConfigPath);
 		}
 
-		string getKotopozaConfigPath()
+		std::string getKotopozaConfigPath()
 		{
 			return getFullPath(kotopozaConfigPath);
 		}
 
-		string getUserDataPath()
+		std::string getUserDataPath()
 		{
 			return getFullPath(userDataPath);
 		}
 
-		string getDesignDataPath()
+		std::string getDesignDataPath()
 		{
 			return getFullPath(designDataPath);
 		}
@@ -297,33 +315,33 @@ namespace kubik
 			return userDesignID;
 		}		
 
-		string getFullPath(string path)
+		std::string getFullPath(string path)
 		{
 			return  getAppPath().string() + path;
 		}
 
-		string getLang()
+		std::string getLang()
 		{
 			return lang;
 		}
 
 	private:		
 		int	   standID;
-		bool   netConnection;
-		string userID;
-		GameId defaultGameID;	
-		string lang;		
-		string menuConfigPath;
-		string labelsPath;		
-		string designDataPath;		
-		string tuneUpConfigPath;
-		string screenSaverConfigPath;
-		string photoboothConfigPath;
-		string funcesConfigPath;
-		string instagramConfigPath;
-		string kotopozaConfigPath;
-		string userDataPath;	
+		bool   netConnection;		
+		std::string userID;
+		std::string lang;		
+		std::string menuConfigPath;
+		std::string labelsPath;		
+		std::string designDataPath;		
+		std::string tuneUpConfigPath;
+		std::string screenSaverConfigPath;
+		std::string photoboothConfigPath;
+		std::string funcesConfigPath;
+		std::string instagramConfigPath;
+		std::string kotopozaConfigPath;
+		std::string userDataPath;
 
+		GameId defaultGameID;
 		DesignData designData;
 		int userDesignID;
 
@@ -332,8 +350,8 @@ namespace kubik
 			return getAppPath() / "data/configs/app.txt";
 		}
 
-		vector<GamesInfo> games;
+		std::vector<GamesInfo> games;
 	};
 
-	typedef shared_ptr<ApplicationModel> ApplicationModelRef;	
+	typedef std::shared_ptr<ApplicationModel> ApplicationModelRef;	
 }
