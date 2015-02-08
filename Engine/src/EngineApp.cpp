@@ -26,7 +26,7 @@ private:
 void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
 	settings->setFrameRate(60);
-	settings->setWindowSize(1080, 1120);//(1880, 1070);	
+	settings->setWindowSize(1080, 1070);//(1880, 1120);	
 	//settings->setBorderless(true);	
 }
 

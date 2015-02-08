@@ -632,6 +632,18 @@
     <ClInclude Include="..\src\config\ConfigObject.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\gui\Sprite.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\MultiSprite.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\SimpleSpriteButton.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\ImageButtonSprite.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

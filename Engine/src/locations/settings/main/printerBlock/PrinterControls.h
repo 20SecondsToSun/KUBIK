@@ -1,5 +1,5 @@
 #pragma once
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 #include "ConfigSettings.h"
 #include "PrinterControlsHideEvent.h"
 #include "PrinterStatResetEvent.h"
@@ -8,11 +8,11 @@ namespace kubik
 {
 	namespace config
 	{
-		class PrinterControls: public CompositeDispatcher
+		class PrinterControls: public Sprite
 		{
 		public:	
 			PrinterControls(ConfigSettingsRef configSettings, ci::Vec2i position)
-				:CompositeDispatcher(), configSettings(configSettings),
+				:Sprite(), configSettings(configSettings),
 				titleText1(configSettings->getTextItem(ConfigTextID::PRINTER_ASK_TITLE)),
 				titleText2(configSettings->getTextItem(ConfigTextID::PRINTER_ASK_SUB_TITLE)),		
 				iErrorText(configSettings->getTextItem(ConfigTextID::PRINTER_CLOSE_TITLE)),		
@@ -27,32 +27,32 @@ namespace kubik
 								   okButtonArea.y1 + 0.5 * (okButtonArea.getHeight() - tex.getHeight()) - 2);
 			
 				PrinterStatResetEventRef  eventReset = PrinterStatResetEventRef(new PrinterStatResetEvent());
-				okBtn = SimpleButtonRef(new SimpleButton(okButtonArea, eventReset));				
+				okBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(okButtonArea, eventReset));				
 				okBtn->setAlpha(0.5f);
 				addChild(okBtn);
 
 				PrinterControlsHideEventRef eventHide = PrinterControlsHideEventRef(new PrinterControlsHideEvent());
-				closeBtn = SimpleButtonRef(new SimpleButton(415, 40, Vec2f(160, 248), eventHide));				
+				closeBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(415, 40, Vec2f(160, 248), eventHide));				
 				closeBtn->setAlpha(0.5f);
 				addChild(closeBtn);	
 
-				closeBtnBig = SimpleButtonRef(new SimpleButton(getWindowWidth(), 1920 - 400 - 170, Vec2f(0, -(1920 - 400)), eventHide));				
+				closeBtnBig = SimpleSpriteButtonRef(new SimpleSpriteButton(getWindowWidth(), 1920 - 400 - 170, Vec2f(0, -(1920 - 400)), eventHide));				
 				closeBtnBig->setAlpha(0.5f);
 				addChild(closeBtnBig);	
 			}			
 
 			virtual void activateListeners()
 			{
-				closeBtnBig->addMouseUpListener(&PrinterControls::mouseUpFunction, this);				
-				closeBtn->addMouseUpListener(&PrinterControls::mouseUpFunction, this);				
-				okBtn->addMouseUpListener(&PrinterControls::mouseUpFunction, this);
+				okBtn->connectEventHandler(&PrinterControls::eventListener, this);
+				closeBtnBig->connectEventHandler(&PrinterControls::eventListener, this);
+				closeBtn->connectEventHandler(&PrinterControls::eventListener, this);
 			}
 
 			virtual void unActivateListeners()
 			{
-				closeBtnBig->removeMouseUpListener();
-				closeBtn->removeMouseUpListener();
-				okBtn->removeMouseUpListener();
+				closeBtnBig->disconnectEventHandler();
+				closeBtn->disconnectEventHandler();
+				okBtn->disconnectEventHandler();
 			}
 
 			virtual void draw()
@@ -86,7 +86,7 @@ namespace kubik
 			virtual void setAlpha(float alpha)
 			{
 
-			}
+			}		
 
 		private:
 			ConfigSettingsRef	configSettings;
@@ -96,7 +96,7 @@ namespace kubik
 			Rectf okButtonArea, closeButtonArea;
 			Vec2f okTextPos;
 
-			SimpleButtonRef closeBtn, closeBtnBig, okBtn;
+			SimpleSpriteButtonRef closeBtn, closeBtnBig, okBtn;
 		};
 
 		typedef std::shared_ptr<PrinterControls> PrinterControlsRef;

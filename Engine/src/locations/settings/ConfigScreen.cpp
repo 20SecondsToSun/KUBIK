@@ -49,13 +49,13 @@ void ConfigScreen::startUpParams()
 void ConfigScreen::start()
 {
 	startUpParams();	
-	mainConfig->addMouseUpListener(&ConfigScreen::gamesBlockHandler, this);
+	mainConfig->connectEventHandler(&ConfigScreen::gamesBlockHandler, this);
 	mainConfig->startAnimation();
 }
 
 void ConfigScreen::stop()
 {	
-	mainConfig->removeMouseUpListener();
+	mainConfig->disconnectEventHandler();
 	mainConfig->unActivateListeners();
 	photoboothConfig->unActivateListeners();
 }
@@ -73,7 +73,7 @@ void ConfigScreen::init(ISettingsRef settings)
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	photoboothConfig		= PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));	
-	addChild(photoboothConfig);
+	//addChild(photoboothConfig);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ void ConfigScreen::init(ISettingsRef settings)
 
 void ConfigScreen::draw()
 {
-	CompositeDispatcher::draw();
+	Sprite::draw();
 	//mainConfig->draw();
 	//photoboothConfig->draw();
 	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
@@ -105,6 +105,7 @@ void ConfigScreen::closeLocationHandler(EventRef& event)
 void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
+	if(!ev) return;
 	if(typeid(*ev) == typeid(CloseConfigEvent))
 	{
 		mainConfig->unActivateListeners();

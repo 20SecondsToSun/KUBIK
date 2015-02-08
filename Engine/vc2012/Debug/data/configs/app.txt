@@ -5,9 +5,10 @@
    "menuConfigPath" : "data\\configs\\menu.txt",
 
    "photoboothConfig" : {"path":"data\\configs\\photobooth\\path.txt",
-   "params" : "data\\configs\\photobooth\\params.txt",
-   "labels" : "data\\configs\\photobooth\\labels.txt",
-   "consts" : "data\\configs\\photobooth\\consts.txt"},
+			     "params":"data\\configs\\photobooth\\params.txt",
+			     "consts":"data\\configs\\photobooth\\consts.txt",
+			     "labels":"data\\configs\\photobooth\\labels.txt"},
+
 
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
    "tuneUpConfigPath" : "data\\configs\\config.txt",

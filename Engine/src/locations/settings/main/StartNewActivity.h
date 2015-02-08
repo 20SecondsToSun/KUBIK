@@ -1,16 +1,16 @@
 #pragma once
-#include "gui/Dispatcher.h"
+#include "gui/SimpleSpriteButton.h"
 #include "TextTools.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class StartNewActivity: public SimpleButton
+		class StartNewActivity: public SimpleSpriteButton
 		{
-		public:	
+		public:			
 			StartNewActivity(ConfigSettingsRef configSettings, Vec2i position)
-				:SimpleButton(Rectf(0, 0, 350.0f, 37.0f)),
+				:SimpleSpriteButton(Rectf(0, 0, 350.0f, 37.0f)),
 				icon(configSettings->getTexture("iconStartNew")),				
 				textItem(configSettings->getTextItem(ConfigTextID::FINANDSTART)),
 				color(configSettings->getTextItem(ConfigTextID::FINANDSTART).getColor())
@@ -30,13 +30,11 @@ namespace kubik
 				color = Utils::colorAlpha(color, alpha);	
 			}
 
-			void tryToStartNewActivity(IButton& button)
+			virtual void mouseUp(ci::app::MouseEvent &_event)
 			{
-				console()<<"start new activity"<<endl;
-				tryToStartNewActivitySignal(button);
-			}			
-
-			ButtonSignal tryToStartNewActivitySignal;
+				if(inButtonField(_event.getPos()))
+					mEventHandler(event);				
+			}
 
 		private:			
 			ci::gl::Texture icon;

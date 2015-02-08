@@ -14,7 +14,7 @@
 
 #include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 
 using namespace std;
 using namespace ci;
@@ -25,7 +25,7 @@ using namespace kubik::config;
 
 namespace kubik
 {
-	class ConfigScreen:public IScreen, public CompositeDispatcher
+	class ConfigScreen:public IScreen, public Sprite
 	{
 	public:
 		ConfigScreen(ISettingsRef config);

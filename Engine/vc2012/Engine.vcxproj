@@ -210,7 +210,11 @@
     <ClInclude Include="..\src\gui\Dispatcher.h" />
     <ClInclude Include="..\src\gui\EventGUI.h" />
     <ClInclude Include="..\src\gui\ImageButton.h" />
+    <ClInclude Include="..\src\gui\ImageButtonSprite.h" />
+    <ClInclude Include="..\src\gui\MultiSprite.h" />
     <ClInclude Include="..\src\gui\SimpleButton.h" />
+    <ClInclude Include="..\src\gui\SimpleSpriteButton.h" />
+    <ClInclude Include="..\src\gui\Sprite.h" />
     <ClInclude Include="..\src\gui\TextButton.h" />
     <ClInclude Include="..\src\loaders\ConfigLoader.h" />
     <ClInclude Include="..\src\loaders\GraphicsLoader.h" />

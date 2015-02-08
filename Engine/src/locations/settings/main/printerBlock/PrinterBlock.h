@@ -1,17 +1,23 @@
 #pragma once
-#include "gui/Dispatcher.h"
-#include "gui/ImageButton.h"
+#include "gui/Sprite.h"
+#include "gui/ImageButtonSprite.h"
 #include "PrinterControls.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class PrinterBlock: public CompositeDispatcher
+		class PrinterBlock: public Sprite
 		{
 		public:	
+			static const int OPEN_EVENT = 0;
+			static const int HIDE_EVENT = 1;
+			static const int STAT_RESET_EVENT = 2;
+			static const int OPENED = 3;
+			static const int HIDED = 4;
+
 			PrinterBlock(ConfigSettingsRef configSettings, Vec2i position)
-				:CompositeDispatcher(),
+				:Sprite(),
 				hintText(configSettings->getTextItem(ConfigTextID::PHOTO_LEFT)),
 				changeBtnText(configSettings->getTextItem(ConfigTextID::CATRINGE_CHANGED)),
 				iconColor(Color::hex(0xffffff)),
@@ -27,8 +33,8 @@ namespace kubik
 				setPosition(position);
 
 				Texture img = textTools().getTextField(changeBtnText);
-				changeBtn = ImageButtonRef(new ImageButton(img, Vec2f(670, 62.5)));
-				addChild(changeBtn);
+				openBtn = ImageButtonSpriteRef(new ImageButtonSprite(img, Vec2f(670, 62.5)));
+				addChild(openBtn);
 
 				controls = PrinterControlsRef(new PrinterControls(configSettings, Vec2f(0, 170)));
 				addChild(controls);	
@@ -36,12 +42,21 @@ namespace kubik
 
 			virtual void activateListeners()
 			{
-				changeBtn->addMouseUpListener(&PrinterBlock::mouseUpFunction, this);
+				openBtn->connectEventHandler(&PrinterBlock::openButtonHandler, this);
+			}
+
+			void openButtonHandler(EventGUIRef& event)
+			{
+				if(eventHandlerDic[OPEN_EVENT])
+				{
+					openBtn->disconnectEventHandler();
+					eventHandlerDic[OPEN_EVENT]();				
+				}
 			}
 
 			virtual void unActivateListeners()
 			{
-				changeBtn->removeMouseUpListener();
+				openBtn->disconnectEventHandler();
 			}
 
 			virtual void drawLayout()
@@ -67,7 +82,8 @@ namespace kubik
 				gl::translate(getGlobalPosition());
 					drawLayout();
 				gl::popMatrices();
-				changeBtn->draw();
+
+				openBtn->draw();
 				controls->draw();
 			}
 
@@ -76,7 +92,7 @@ namespace kubik
 				animatePosition = _localPosition;
 				timeline().apply( &animatePosition, _localPosition + Vec2f(0, -400), time, eFunc)
 					     .updateFn(bind( &PrinterBlock::posAnimationUpdate, this))
-				    .finishFn(bind( &PrinterBlock::openControlsAnimationFinish, this));
+						 .finishFn(bind( &PrinterBlock::openControlsAnimationFinish, this));
 			}
 
 			void closeControls(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
@@ -84,7 +100,7 @@ namespace kubik
 				animatePosition = _localPosition;
 				timeline().apply( &animatePosition, _localPosition + Vec2f(0, 400), time, eFunc)
 					     .updateFn(bind( &PrinterBlock::posAnimationUpdate, this))
-				    .finishFn(bind( &PrinterBlock::hideControlsAnimationFinish, this));
+						 .finishFn(bind( &PrinterBlock::hideControlsAnimationFinish, this));
 			}			
 
 			void posAnimationUpdate()
@@ -95,15 +111,34 @@ namespace kubik
 			void hideControlsAnimationFinish()
 			{				
 				controls->unActivateListeners();
-				controls->removeMouseUpListener();
-				HideCompleteSignal();
+				eventHandlerDic[HIDED]();
 			}
 
 			void openControlsAnimationFinish()
+			{	
+				if(eventHandlerDic[OPENED])
+				{
+					eventHandlerDic[OPENED]();
+					controls->activateListeners();
+					controls->connectEventHandler(&PrinterBlock::eventListener, this);
+				}
+			}
+			virtual void eventListener(EventGUIRef event)
 			{
-				console()<<"OPENED"<<endl;
-				controls->activateListeners();
-				controls->addMouseUpListener(&PrinterBlock::mouseUpFunction, this);
+				EventGUI *ev = event.get();		
+				if(!ev) return;	
+
+				if(typeid(*ev) == typeid(PrinterControlsHideEvent))
+				{
+					if(eventHandlerDic[HIDE_EVENT])					
+						eventHandlerDic[HIDE_EVENT]();					
+				}
+				else if(typeid(*ev) == typeid(PrinterStatResetEvent))
+				{
+					if(eventHandlerDic[STAT_RESET_EVENT])					
+						eventHandlerDic[STAT_RESET_EVENT]();					
+				}
+
 			}
 
 			void setAlpha(float  alpha)
@@ -114,7 +149,7 @@ namespace kubik
 				barColor1 = Utils::colorAlpha(barColor1, alpha);
 				barColor2 = Utils::colorAlpha(barColor2, alpha);
 				iconColor = Utils::colorAlpha(iconColor, alpha);
-				CompositeDispatcher::setAlpha(alpha);
+				Sprite::setAlpha(alpha);
 			}	
 			
 			void setMaxPhotosToPrint(int value)
@@ -127,9 +162,7 @@ namespace kubik
 				currentPhotosPrinted = value;
 				curBarWidth = ((float)currentPhotosPrinted / maxPhotosToPrint) * maxBarWidth;
 			}
-
-			SignalVoid HideCompleteSignal;
-
+		
 		private:
 			Vec2i position;
 			Texture icon;
@@ -138,18 +171,13 @@ namespace kubik
 			Font numsFont;
 			int maxPhotosToPrint;
 			int currentPhotosPrinted;
-
 			float maxBarWidth;
 			int curBarWidth;
 		
 			Rectf btnRectf;
-			ImageButtonRef changeBtn;
-
+			ImageButtonSpriteRef openBtn;
 			Anim<Vec2f> animatePosition;
-
-			PrinterControlsRef controls;	
-
-			
+			PrinterControlsRef controls;				
 		};
 
 		typedef std::shared_ptr<PrinterBlock> PrinterBlockRef;

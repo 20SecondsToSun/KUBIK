@@ -246,6 +246,14 @@ namespace kubik
 		F param1;
 		S param2;
 	};
+
+	template<typename F, typename S>
+	struct Line
+	{
+		Line(){};
+		F point1;
+		S point2;
+	};
 }
 
 template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 

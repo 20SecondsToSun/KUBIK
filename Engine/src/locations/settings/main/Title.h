@@ -1,28 +1,25 @@
 #pragma once
-#include "gui/Dispatcher.h"
-
-using namespace std;
-using namespace ci;
+#include "gui/Sprite.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class Title:public Dispatcher
+		class Title:public Sprite
 		{
 		public:	
 			Title(ConfigSettingsRef configSettings, Vec2i position)				
-				 :Dispatcher(),
+				 :Sprite(),
 				 name("Promo activity"),
 				 font(configSettings->getFont("introLight44")),
-				 color(Color::white())
+				 color(ci::Color::white())
 			{
 				setPosition(position);
 			}
 
 			virtual void drawLayout()
 			{
-				textTools().textFieldDraw(name, &font, color, Vec2f(-12, 3));				
+				textTools().textFieldDraw(name, &font, color, ci::Vec2f(-12, 3));				
 			}
 
 			void setAlpha(float alpha)
@@ -30,15 +27,15 @@ namespace kubik
 				color = Utils::colorAlpha(color, alpha);	
 			}
 
-			void setActivityName(string name)
+			void setActivityName(const std::string& name)
 			{
 				this->name = name;
 			}
 
 		private:
-			string name;				
-			ColorA  color;	
-			Font font;
+			std::string name;				
+			ci::ColorA  color;	
+			ci::Font font;
 		};
 
 		typedef std::shared_ptr<Title> TitleRef;

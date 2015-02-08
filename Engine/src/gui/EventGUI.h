@@ -9,8 +9,7 @@ namespace kubik
 {
 	enum KubikEvent 
 	{
-		NONE,
-		MENU_TOUCH
+		NONE
 	};
 
 	enum InteractEvent 
