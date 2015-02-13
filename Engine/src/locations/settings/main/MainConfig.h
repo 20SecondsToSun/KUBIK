@@ -29,40 +29,36 @@ namespace kubik
 				startNewActivity = StartNewActivityRef(new StartNewActivity(configSettings, ci::Vec2i(96, 137)));	
 				newActPopup		 = NewActivityPopupRef(new NewActivityPopup(configSettings));
 				statBlock		 = StatBlockRef(new StatBlock(configSettings, ci::Vec2i(100, 235)));
-
-
-
-				closeBlock		 = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));
-				title			 = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));				
-					
+				title			 = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));	
+				closeBlock		 = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));			
 				
-				designBlock		 = DesignBlockRef(new DesignBlock(configSettings, ci::Vec2i(100, 424)));	
-				gamesBlock		 = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));				
+				designBlock		 = DesignBlockRef(new DesignBlock(configSettings, ci::Vec2i(100, 0)));	
+				//gamesBlock		 = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));				
 				
-			//	changeCatridgePopup		 = ChangeCatridgePopupRef(new ChangeCatridgePopup(configSettings));
-		
 				//addChild(closeBlock);
-				addChild(title);
-				addChild(startNewActivity);				
-				addChild(statBlock);				
-				//addChild(designBlock);				
+				//addChild(title);
+				//addChild(startNewActivity);				
+				//addChild(statBlock);				
+				addChild(designBlock);				
+				
+				//addChild(printerBlock);	
+				//addChild(logo);
+
 				//addChild(gamesBlock);
-				addChild(printerBlock);	
-				addChild(logo);	
 			}
 
 			virtual void activateListeners()
 			{
 			/*	closeBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);
-				gamesBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);	
-				
-				
-				designBlock->addMouseUpListener(&MainConfig::designBlockEventHandler, this);	
-				CompositeDispatcher::activateListeners();		*/
+				gamesBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);	*/
 
-				startNewActivity->connectEventHandler(&MainConfig::openPopupNewActivity, this);	
-				printerBlock->connectEventHandler(&MainConfig::openPrinterControls, this, PrinterBlock::OPEN_EVENT);
-				printerBlock->activateListeners();
+				//startNewActivity->connectEventHandler(&MainConfig::openPopupNewActivity, this);	
+				//printerBlock->connectEventHandler(&MainConfig::openPrinterControls, this, PrinterBlock::OPEN_EVENT);				
+				//printerBlock->activateListeners();			
+				designBlock->connectEventHandler(&MainConfig::openingDesignLayout,	this, DesignBlock::OPEN_EVENT);	
+				designBlock->unlockListeners();
+				designBlock->activateListeners();
+				
 			}
 
 			virtual void unActivateListeners()
@@ -76,6 +72,8 @@ namespace kubik
 			//	startNewActivity->removeMouseUpListener();	
 				printerBlock->disconnectEventHandler(PrinterBlock::OPEN_EVENT);
 				startNewActivity->disconnectEventHandler();
+				designBlock->disconnectEventHandler(PrinterBlock::OPEN_EVENT);	
+				designBlock->lockListeners();
 			}
 
 			////////////////////////////////////////////////////////////////////////////
@@ -144,7 +142,7 @@ namespace kubik
 			{
 				console()<<"POPUP :: OPENED "<<endl;
 				newActPopup->disconnectEventHandler(NewActivityPopup::OPENED);
-				newActPopup->connectEventHandler(&MainConfig::popupHideHandler,      this, NewActivityPopup::HIDE_EVENT);
+				newActPopup->connectEventHandler(&MainConfig::popupHideHandler,this, NewActivityPopup::HIDE_EVENT);
 				newActPopup->connectEventHandler(&MainConfig::popupStartNewCompainHandler, this, NewActivityPopup::START_NEW_COMPAIN);
 			}
 
@@ -177,11 +175,72 @@ namespace kubik
 
 			////////////////////////////////////////////////////////////////////////////
 			//
-			//				
+			//				DESIGN BLOCK
 			//
 			////////////////////////////////////////////////////////////////////////////		
 
-		
+			void openingDesignLayout()
+			{
+				unActivateListeners();
+				designBlock->disconnectEventHandler(DesignBlock::OPEN_EVENT);
+				designBlock->connectEventHandler(&MainConfig::openedDesignLayout,		this, DesignBlock::OPENED);				
+				//gamesBlock->hide(EaseOutCubic(), 0.9f);
+				designBlock->showDesigns(EaseOutCubic(), 0.9f);				
+			}
+
+			void openedDesignLayout()
+			{
+				activateListeners();
+				designBlock->disconnectEventHandler(DesignBlock::OPENED);
+				designBlock->activateListeners();				
+
+				designBlock->connectEventHandler(&MainConfig::screenSaverStateChanged,  this, DesignBlock::SCREEN_SAVER_STATE);
+				designBlock->connectEventHandler(&MainConfig::screenSaverOpenFolder,	this, DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
+				designBlock->connectEventHandler(&MainConfig::changedKubikDesign,		this, DesignBlock::CHANGED_DESIGN);
+				designBlock->connectEventHandler(&MainConfig::openUserDesignFolder,		this, DesignBlock::OPEN_USE_DESIGN_FOLDER);
+				designBlock->connectEventHandler(&MainConfig::hidingDesignLayout,		this, DesignBlock::HIDE);
+			}
+
+			void screenSaverStateChanged()
+			{
+				console()<<"screen saver changed state------------------  "<< designBlock->getScreenSaverValue()<<endl;
+			}
+
+			void screenSaverOpenFolder()
+			{
+				console()<<"screen saver open folder------------------  "<<endl;
+			}
+
+			void changedKubikDesign()
+			{
+				console()<<"changed kubik design------------------  "<< designBlock->getDesignID()<<endl;
+			}
+	
+			void openUserDesignFolder()
+			{
+				console()<<"open user design folder------------------  "<<endl;
+			}
+
+			void hidingDesignLayout()
+			{
+				console()<<"hidingDesignLayout------------------  "<<endl;
+				unActivateListeners();
+
+				designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_STATE);
+				designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
+				designBlock->disconnectEventHandler(DesignBlock::CHANGED_DESIGN);
+				designBlock->disconnectEventHandler(DesignBlock::OPEN_USE_DESIGN_FOLDER);
+				designBlock->disconnectEventHandler(DesignBlock::HIDE);
+
+				designBlock->connectEventHandler(&MainConfig::hideDesignLayot,  this, DesignBlock::HIDED);
+			}
+
+			
+			void hideDesignLayot()
+			{			
+				designBlock->disconnectEventHandler(DesignBlock::HIDED);
+				activateListeners();
+			}		
 
 			////////////////////////////////////////////////////////////////////////////
 			//
@@ -292,7 +351,7 @@ namespace kubik
 
 			void showAnimate(EaseFn eFunc, float time)
 			{
-				closeBlock->removeMouseUpListener();
+				closeBlock->disconnectEventHandler();
 				
 				Vec2f finPos = Vec2f(0.0f, 0.0f);
 				timeline().apply( &animatePosition, finPos, time, eFunc)

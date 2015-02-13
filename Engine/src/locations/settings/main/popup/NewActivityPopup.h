@@ -109,7 +109,7 @@ namespace kubik
 				Sprite::setAlpha(alpha);
 			}
 
-			void show(EaseFn eFunc = EaseOutCubic(), float time = 0.7f)
+			void show(EaseFn eFunc = EaseOutCubic(), float time = 0.4f)
 			{
 				alpha = 0.0f;
 				timeline().apply(&alpha, 0.97f, time, eFunc)
@@ -117,7 +117,7 @@ namespace kubik
 					.finishFn( bind( &NewActivityPopup::showAnimationFinish, this));
 			}
 
-			void hide(EaseFn eFunc = EaseOutCubic(), float time = 0.7f)
+			void hide(EaseFn eFunc = EaseOutCubic(), float time = 0.3f)
 			{				
 				timeline().apply(&alpha, 0.0f, time, eFunc)
 					.updateFn(bind( &NewActivityPopup::alphAnimationUpdate, this))

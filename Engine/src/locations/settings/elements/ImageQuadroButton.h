@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TextTools.h"
-#include "gui/SimpleButton.h"
+#include "gui/SimpleSpriteButton.h"
 #include "DesignData.h"
 
 namespace kubik
@@ -10,11 +10,11 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class ImageQuadroButton> ImageQuadroButtonRef;
 
-		class ImageQuadroButton: public SimpleButton
+		class ImageQuadroButton: public SimpleSpriteButton
 		{
 		public:
 			ImageQuadroButton(OneDesignItem item, ci::Vec2f pos)
-				:SimpleButton(item.getIcon().getSize(), pos), item(item), selection(false)
+				:SimpleSpriteButton(item.getIcon().getSize(), pos), item(item), selection(false)
 			{
 				textTex = textTools().getTextField(item.getTextItem());				
 			}

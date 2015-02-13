@@ -21,13 +21,13 @@ namespace kubik
 			{
 				IconPair icons(icon, settings->getEmptyIcon());
 				checker = CheckerSocialRef(new CheckerSocial(Rectf(0.0f, 0.0f, 131.0f, 78.0f), icons));				
-				checker->setActive(settings->getSocialState(id));
-				addChild(checker);
+				//checker->setActive(settings->getSocialState(id));
+				//addChild(checker);
 			}
 
 			void activateListeners()
 			{
-				checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
+				//checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
 				CompositeDispatcher::activateListeners();
 			}
 

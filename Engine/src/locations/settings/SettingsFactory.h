@@ -4,6 +4,7 @@
 #include "ImageQuadroButton.h"
 #include "ChangeDesignButton.h"
 #include "main/DesignBlock/ScreenSaverChecker.h"
+#include "DecorLoadButton.h"
 
 using namespace ci;
 
@@ -24,6 +25,15 @@ namespace kubik
 			{
 				return LoadButtonRef(
 					new LoadButton(ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
+					settings->getTextItem(ConfigTextID::LOAD),					
+					settings->getTexture("loadIcon")					
+					));
+			}
+
+			LoadButtonRef createDecorLoadButton(ci::Vec2f pos)
+			{
+				return DecorLoadButtonRef(
+					new DecorLoadButton(ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon")					
 					));

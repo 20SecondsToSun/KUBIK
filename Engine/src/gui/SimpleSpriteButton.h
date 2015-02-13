@@ -44,7 +44,8 @@ namespace kubik
 			//console()<<"override"<<endl;
 			if(inButtonField(_event.getPos()))
 			{
-				console()<<"in button "<<endl;
+				//console()<<"in button "<<endl;
+				//console()<<"lock"<<lock<<endl;
 				//mEventHandler(event);
 				Sprite::mouseUp(_event);
 			}

@@ -231,6 +231,7 @@
     <ClInclude Include="..\src\locations\screensaver\ScreenSaver.h" />
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
     <ClInclude Include="..\src\config\Types.h" />
+    <ClInclude Include="..\src\locations\settings\elements\DecorLoadButton.h" />
     <ClInclude Include="..\src\locations\settings\elements\ImageQuadroButton.h" />
     <ClInclude Include="..\src\locations\settings\elements\LoadButton.h" />
     <ClInclude Include="..\src\locations\settings\main\CloseBlock.h" />

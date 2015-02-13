@@ -19,6 +19,7 @@ namespace kubik
 
 			virtual void drawLayout()
 			{
+				gl::color(Color::white());
 				textTools().textFieldDraw(name, &font, color, ci::Vec2f(-12, 3));				
 			}
 

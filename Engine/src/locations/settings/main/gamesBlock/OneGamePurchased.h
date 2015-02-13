@@ -26,8 +26,8 @@ namespace kubik
 				addChild(toolfield);
 
 				checker = CheckerRef(new Checker(checkerArea, info.getIcons()));					
-				checker->setActive(info.isGameOn());
-				addChild(checker);
+				//checker->setActive(info.isGameOn());
+			//	addChild(checker);
 			}
 
 			virtual void checkerClicked(EventGUIRef event)
@@ -53,14 +53,14 @@ namespace kubik
 			virtual void activateListeners()
 			{
 				toolfield->addMouseUpListener(&OneGamePurchased::mouseUpFunction, this);
-				checker->addMouseUpListener(&OneGamePurchased::checkerClicked, this);
+				//checker->addMouseUpListener(&OneGamePurchased::checkerClicked, this);
 				CompositeDispatcher::activateListeners();
 			}
 
 			virtual void unActivateListeners()
 			{
 				toolfield->removeMouseUpListener();
-				checker->removeMouseUpListener();
+				//checker->removeMouseUpListener();
 			}
 
 		private:

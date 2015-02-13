@@ -16,7 +16,8 @@ namespace kubik
 			 alpha(1),
 			 name("default"),
 			 parent(NULL),
-			 mEventHandler(nullptr)
+			 mEventHandler(nullptr),
+			 lock(false)
 		{
 		}
 
@@ -116,7 +117,7 @@ namespace kubik
 		{
 			connectEventHandler0( std::bind( eventHandler, obj),  event );			
 		}
-
+	
 		virtual void connectEventHandler0( const std::function<void()>& eventHandler, int event)
 		{
 			eventHandlerDic[event] = eventHandler;
@@ -155,8 +156,13 @@ namespace kubik
 
 		virtual void mouseUp(ci::app::MouseEvent &_event)
 		{	
+			
+			if(lock) return;
+
 			mEventHandler(event);
+
 			Sprite* _parent = parent;
+
 			/*while(_parent && !_parent->mEventHandler)
 			{
 				_parent = _parent->getParent();
@@ -190,11 +196,28 @@ namespace kubik
 		{			
 			return parent;			
 		}
+
+		Vec2f getLocalPosition()
+		{
+			return _localPosition;
+		}
 			
 		boost::signals2::signal<void(EventGUIRef &)> mouseUpSignal;		
 		connection mouseUpSignalListener;
 
+		void lockListeners()
+		{
+			lock = true;
+		}
+
+		void unlockListeners()
+		{
+			lock = false;
+		}
+
+
 	protected:
+		bool lock;
 		float alpha;
 		std::string name;
 		ci::signals::connection mouseUpListener;		

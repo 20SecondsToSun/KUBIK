@@ -1,5 +1,5 @@
 #pragma once
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 #include "TextTools.h"
 #include "ConfigSettings.h"
 #include "SettingsFactory.h"
@@ -9,14 +9,17 @@ namespace kubik
 {
 	namespace config
 	{
-		class ScreenSaverBlock: public CompositeDispatcher
+		class ScreenSaverBlock: public Sprite
 		{
 		public:	
+			static const int SCREEN_SAVER_STATE = 0;
+			static const int SCREEN_SAVER_OPEN_FOLDER = 1;
+
 			ScreenSaverBlock(ConfigSettingsRef configSettings, Vec2i position)
-				:CompositeDispatcher(), 
+				:Sprite(), 
 				configSettings(configSettings),
-				lineWidth(2),
 				lineColor(ci::Color::hex(0x233442)),
+				lineWidth(2),				
 				lineLength(707.0f)
 			{
 				setPosition(position);	
@@ -28,29 +31,35 @@ namespace kubik
 				addChild(checker);
 			}
 
-			void activateListeners()
+			bool getScreenSaverValue()
 			{
-				checker->addMouseUpListener(&ScreenSaverBlock::checkerClicked, this);
-				loadButton->addMouseUpListener(&ScreenSaverBlock::openDirectory, this);
-				console()<<"activate checkers"<<endl;
+				return checker->getValue();
 			}
 
-			void checkerClicked(EventGUIRef event)
+			void activateListeners()
 			{
-				checker->swapActive();								
-				//mouseUpSignal(event);
+				checker->connectEventHandler(&ScreenSaverBlock::checkerClicked, this);
+				loadButton->connectEventHandler(&ScreenSaverBlock::openDirectory, this);
 			}
 
 			void unActivateListeners()
 			{
-				checker->removeMouseUpListener();
-				loadButton->removeMouseUpListener();
-				console()<<"unactivate checkers"<<endl;
+				checker->disconnectEventHandler();
+				loadButton->disconnectEventHandler();
 			}
+
+			void checkerClicked(EventGUIRef event)
+			{
+				checker->swapActive();	
+				
+				if(eventHandlerDic[SCREEN_SAVER_STATE])
+					eventHandlerDic[SCREEN_SAVER_STATE]();	
+			}	
 
 			void openDirectory(EventGUIRef event)
 			{
-				console()<<"open directory"<<endl;
+				if(eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER])
+					eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER]();	
 			}
 			
 			virtual void drawLayout()
@@ -65,11 +74,11 @@ namespace kubik
 
 				textTools().textFieldDraw(
 					configSettings->getTextItem(ConfigTextID::LOADMAIN),				
-					ci::Vec2f(171.0f, 55.0f));
+					ci::Vec2f(171.0f, 57.0f));
 
 				textTools().textFieldDraw(
 					configSettings->getTextItem(ConfigTextID::LOADSUB),
-					ci::Vec2f(171.0f, 110.0f));			
+					ci::Vec2f(171.0f, 105.0f));			
 
 				gl::color(ci::Color::white());
 			}

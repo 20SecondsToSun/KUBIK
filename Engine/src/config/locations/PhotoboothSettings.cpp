@@ -21,14 +21,15 @@ PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model):ISettings(mode
 void PhotoboothSettings::load()
 {	
 	logger().log("PhotoboothSettings settings load");
-
 	mainConfigObj  = model->getConfigObject(settings::id::PHOTOBOOTH);
 
 	loadConfigPaths();
 	loadParams();
 	loadLabels();
 	loadConsts();
+	logger().log("------------");
 	loadDesignPath();
+	logger().log("------------");
 
 	setTextures();		
 }	

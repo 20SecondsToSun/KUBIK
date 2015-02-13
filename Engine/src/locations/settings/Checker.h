@@ -7,11 +7,11 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class Checker> CheckerRef;
 
-		class Checker: public SimpleButton
+		class Checker: public SimpleSpriteButton
 		{
 		public:
 			Checker(Rectf rect, IconPair icons, Color activeColor = Color::hex(0x00b6c4), Color unActiveColor = Color::hex(0x373049))
-				:SimpleButton(rect),
+				:SimpleSpriteButton(rect),
 				icons(icons),
 				icon(icons.unActiveIcon),
 				isActive(false),				

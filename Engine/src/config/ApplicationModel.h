@@ -102,9 +102,9 @@ namespace kubik
 
 		void parseDesignData()
 		{
-			JsonTree designDataJSON	= JsonTree(loadFile(getDesignDataPath()));	
-
+			JsonTree designDataJSON	= JsonTree(loadFile(getDesignDataPath()));			
 			JsonTree designs = designDataJSON.getChild("designs");			
+		
 			for(auto it : designs)
 			{
 				OneDesignItem item;
@@ -118,10 +118,8 @@ namespace kubik
 								 text.getChild("color").getValue<string>());
 				designData.push_back(item);
 			}
-
 			userDesignID = designDataJSON.getChild("userDesignID").getValue<int>();		
 		}
-
 
 		////////////////////////////////////////////////////////////////////////////
 		//

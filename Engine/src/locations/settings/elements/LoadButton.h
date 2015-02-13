@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TextTools.h"
-#include "gui/SimpleButton.h"
+#include "gui/SimpleSpriteButton.h"
 
 namespace kubik
 {
@@ -9,11 +9,11 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class LoadButton> LoadButtonRef;
 
-		class LoadButton: public SimpleButton
+		class LoadButton: public SimpleSpriteButton
 		{
 		public:
 			LoadButton(ci::Rectf rect, TextItem textItem, ci::gl::Texture icon)
-				:SimpleButton(rect), textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
+				:SimpleSpriteButton(rect), textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
 			{
 				tex = textTools().getTextField(textItem);
 				texPosX = 0.5 * (buttonArea.getWidth() - (tex.getWidth() + icon.getWidth() + 15.0f));
@@ -26,7 +26,7 @@ namespace kubik
 				gl::color(Color::white());				
 
 				gl::pushMatrices();
-				gl::translate(texPosX, 23);				
+				gl::translate(texPosX, 20);				
 				gl::draw(tex);
 				gl::translate(tex.getWidth() + 15.0f, 0);
 				gl::translate(0, -3);	

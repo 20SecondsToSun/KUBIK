@@ -8,11 +8,11 @@ namespace kubik
 {
 	namespace config
 	{
-		class CloseBlock: public ImageButton
+		class CloseBlock: public ImageButtonSprite
 		{
 		public:	
-			CloseBlock(ConfigSettingsRef configSettings, Vec2i position)
-				:ImageButton(configSettings->getTexture("iconClose"), position),
+			CloseBlock(ConfigSettingsRef configSettings, ci::Vec2i position)
+				:ImageButtonSprite(configSettings->getTexture("iconClose"), position),
 				iconClose(configSettings->getTexture("iconClose")),
 				iconBack(configSettings->getTexture("iconBack"))
 			{
@@ -23,7 +23,7 @@ namespace kubik
 
 			void animateToMiniState(EaseFn eFunc, float time, Vec2f finPos)
 			{			
-				setPosition(_localPosition - Vec2f(40,0));
+				setPosition(_localPosition - ci::Vec2f(40,0));
 				event = backEvent;
 
 				changeTexture(iconBack);

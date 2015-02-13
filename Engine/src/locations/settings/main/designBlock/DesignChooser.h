@@ -1,5 +1,5 @@
 #pragma once
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 #include "TextTools.h"
 #include "ConfigSettings.h"
 #include "ImageQuadroButton.h"
@@ -9,11 +9,14 @@ namespace kubik
 {
 	namespace config
 	{
-		class DesignChooser: public CompositeDispatcher
+		class DesignChooser: public Sprite
 		{
 		public:	
+			static const int CHANGED_DESIGN = 0;
+			static const int OPEN_USER_DESIGN_FOLDER = 1;
+
 			DesignChooser(ConfigSettingsRef configSettings, Vec2i position)
-				:CompositeDispatcher(), configSettings(configSettings)					 
+				:Sprite(), configSettings(configSettings)					 
 			{
 				setPosition(position);	
 
@@ -43,19 +46,21 @@ namespace kubik
 
 				int id = configSettings->getActiveDesignID();
 				userDesignID = configSettings->getUserDesignID();
-				loadButton = settingsFactory().createLoadButton(btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));
+				loadButton = settingsFactory().createDecorLoadButton(btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));
 			
-				//selectActiveDesign(id);		
+				selectActiveDesign(id);		
 			}	
 			
 			void selectActiveDesign(int id)
-			{	
+			{
+				activeID = id;
+
 				if(activeBtn)
 				{
 					if(activeBtn->getItem().getID() == userDesignID)
 					{
 						removeChild(loadButton);
-						loadButton->removeMouseUpListener();
+						loadButton->disconnectEventHandler();
 					}
 
 					activeBtn->setSelection(false);
@@ -67,20 +72,28 @@ namespace kubik
 				if(id == userDesignID)
 				{
 					addChild(loadButton);
-					loadButton->addMouseUpListener(&DesignChooser::openSystemDirectory, this);
+					loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
 				}
 			}
 
 			virtual void activateListeners()
 			{
 				for (auto it : btns)
-					it.second->addMouseUpListener(&DesignChooser::mouseUpFunction, this);
+					it.second->connectEventHandler(&DesignChooser::buttonClicked, this);
 
 				if(activeBtn->getItem().getID() == userDesignID)
-					loadButton->addMouseUpListener(&DesignChooser::openSystemDirectory, this);
+					loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
 			}
 
-			virtual void mouseUpFunction(EventGUIRef& event)
+			virtual void unActivateListeners()
+			{
+				for (auto it : btns)
+					it.second->disconnectEventHandler();	
+
+				loadButton->disconnectEventHandler();
+			}
+
+			virtual void buttonClicked(EventGUIRef& event)
 			{
 				EventGUI *ev = event.get();
 				if(typeid(*ev) == typeid(ChangeDesignEvent))
@@ -88,23 +101,23 @@ namespace kubik
 					ChangeDesignEventRef statEvent = static_pointer_cast<ChangeDesignEvent>(event);	
 					int id = statEvent->getItem().getID();
 					btns[id]->setSelection(true);
+					selectActiveDesign(id);	
 
-					selectActiveDesign(id);					
+					if(eventHandlerDic[CHANGED_DESIGN])
+						eventHandlerDic[CHANGED_DESIGN]();
 				}
+			}
+
+			int getDesignID()
+			{
+				return activeID;
 			}
 
 			void openSystemDirectory(EventGUIRef& event)
 			{
-				logger().log("open directory");
-			}
-
-			virtual void unActivateListeners()
-			{
-				for (auto it : btns)
-					it.second->removeMouseUpListener();	
-
-				loadButton->removeMouseUpListener();
-			}
+				if(eventHandlerDic[OPEN_USER_DESIGN_FOLDER])
+						eventHandlerDic[OPEN_USER_DESIGN_FOLDER]();
+			}		
 
 		private:			
 			ConfigSettingsRef configSettings;
@@ -114,6 +127,7 @@ namespace kubik
 			std::map<int, ImageQuadroButtonRef> btns;	
 
 			int userDesignID;
+			int activeID;
 		};
 
 		typedef std::shared_ptr<DesignChooser> DesignChooserRef;
