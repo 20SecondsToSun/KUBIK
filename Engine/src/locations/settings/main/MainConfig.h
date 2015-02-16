@@ -10,6 +10,7 @@
 #include "main/Logo.h"
 #include "main/CloseBlock.h"
 #include "main/popup/NewActivityPopup.h"
+#include "GameCheckerEvent.h"
 
 namespace kubik
 {
@@ -32,8 +33,8 @@ namespace kubik
 				title			 = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));	
 				closeBlock		 = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));			
 				
-				designBlock		 = DesignBlockRef(new DesignBlock(configSettings, ci::Vec2i(100, 0)));	
-				//gamesBlock		 = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));				
+				designBlock		 = DesignBlockRef(new DesignBlock(configSettings, ci::Vec2i(100, 0)));	//600.0f)));		
+				gamesBlock		 = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 0)));//600.0f)));				
 				
 				//addChild(closeBlock);
 				//addChild(title);
@@ -44,7 +45,7 @@ namespace kubik
 				//addChild(printerBlock);	
 				//addChild(logo);
 
-				//addChild(gamesBlock);
+				addChild(gamesBlock);
 			}
 
 			virtual void activateListeners()
@@ -58,7 +59,9 @@ namespace kubik
 				designBlock->connectEventHandler(&MainConfig::openingDesignLayout,	this, DesignBlock::OPEN_EVENT);	
 				designBlock->unlockListeners();
 				designBlock->activateListeners();
-				
+
+				gamesBlock->activateListeners();
+				gamesBlock->connectEventHandler(&MainConfig::gamesBlockEventsHandler, this);				
 			}
 
 			virtual void unActivateListeners()
@@ -72,6 +75,7 @@ namespace kubik
 			//	startNewActivity->removeMouseUpListener();	
 				printerBlock->disconnectEventHandler(PrinterBlock::OPEN_EVENT);
 				startNewActivity->disconnectEventHandler();
+
 				designBlock->disconnectEventHandler(PrinterBlock::OPEN_EVENT);	
 				designBlock->lockListeners();
 			}
@@ -104,7 +108,7 @@ namespace kubik
 			void printerStatResetHandler()
 			{
 				hidePrinterControls();
-				logger().log("reset printer data");
+				console()<<"reset printer data------------------  "<<endl;
 				// TODO: clean reset printer data
 			}
 
@@ -154,7 +158,7 @@ namespace kubik
 			void popupStartNewCompainHandler()
 			{
 				closingPopup();
-				logger().log("START NEW COMPAIN");
+				console()<<"start new compain------------------  "<<endl;
 				// TODO START NEW COMPAIN
 			}
 
@@ -231,23 +235,53 @@ namespace kubik
 				designBlock->disconnectEventHandler(DesignBlock::CHANGED_DESIGN);
 				designBlock->disconnectEventHandler(DesignBlock::OPEN_USE_DESIGN_FOLDER);
 				designBlock->disconnectEventHandler(DesignBlock::HIDE);
-
 				designBlock->connectEventHandler(&MainConfig::hideDesignLayot,  this, DesignBlock::HIDED);
+				designBlock->hideDesigns(EaseOutCubic(), 0.9f);
 			}
 
 			
 			void hideDesignLayot()
 			{			
-				designBlock->disconnectEventHandler(DesignBlock::HIDED);
-				activateListeners();
+				designBlock->disconnectEventHandler(DesignBlock::HIDED);				
+				activateListeners();		
 			}		
 
 			////////////////////////////////////////////////////////////////////////////
 			//
-			//				
+			//			GAMES BLOCK	
 			//
 			////////////////////////////////////////////////////////////////////////////
 
+
+			void gamesBlockEventsHandler(EventGUIRef& event)
+			{
+				EventGUI *ev = event.get();
+				if(!ev)
+					return;
+
+				if(typeid(*event.get()) == typeid(GameConfEvent))
+				{
+					GameConfEventRef eventref = static_pointer_cast<GameConfEvent>(event);
+					console()<<"go to config page------------------  "<<eventref->getGameId()<<endl;
+				}
+				else if(typeid(*ev) == typeid(StatisticEvent))
+				{
+					StatisticEventRef eventref = static_pointer_cast<StatisticEvent>(event);
+					console()<<"show statistic------------------  "<<eventref->getGameId()<<endl;
+				}
+				else if(typeid(*ev) == typeid(GameCheckerEvent))
+				{					
+					GameCheckerEventRef eventref = static_pointer_cast<GameCheckerEvent>(event);
+					console()<<"active checker changed value -------------------"<<eventref->getValue()<<"   "<<eventref->getGameId()<<endl;
+				}
+				else if(typeid(*ev) == typeid(GameShowUrlEvent))
+				{					
+					GameShowUrlEventRef eventref = static_pointer_cast<GameShowUrlEvent>(event);
+					console()<<"show  game url -------------------"<<eventref->getGameId()<<endl;
+				}
+
+				
+			}
 
 			//void designBlockEventHandler(EventGUIRef& event)
 			//{

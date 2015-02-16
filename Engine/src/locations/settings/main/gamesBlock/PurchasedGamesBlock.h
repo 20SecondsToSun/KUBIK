@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 #include "main/gamesBlock/OneGamePurchased.h"
 
 namespace kubik
@@ -9,7 +9,7 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class PurchasedGamesBlock> PurchasedGamesBlockRef;
 
-		class PurchasedGamesBlock: public CompositeDispatcher
+		class PurchasedGamesBlock: public Sprite
 		{
 		public:
 			PurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
@@ -28,9 +28,7 @@ namespace kubik
 			virtual void activateListeners()
 			{
 				for (auto game : displayList)				
-					game->addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);
-		
-				CompositeDispatcher::activateListeners();
+					game->activateListeners();//addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);						
 			}
 
 			float getHeight() const

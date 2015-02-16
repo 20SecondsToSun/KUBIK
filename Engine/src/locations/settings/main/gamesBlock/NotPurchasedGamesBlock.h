@@ -1,5 +1,5 @@
 #pragma once
-#include "IDispatcher.h"
+#include "gui/Sprite.h"
 #include "TextTools.h"
 #include "ConfigSettings.h"
 #include "main/gamesBlock/OneGameNotPurchased.h"
@@ -10,7 +10,7 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class NotPurchasedGamesBlock> NotPurchasedGamesBlockRef;
 
-		class NotPurchasedGamesBlock: public IDispatcher
+		class NotPurchasedGamesBlock: public Sprite
 		{
 		public:
 			NotPurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
@@ -24,28 +24,32 @@ namespace kubik
 			}
 
 			virtual void activateListeners()
-			{
+			{				
 				for (auto game : displayList)
-					game->addMouseUpListener(&OneGameNotPurchased::mouseUpFunction, this);	
+					game->connectEventHandler(&NotPurchasedGamesBlock::mouseUpFunction, this);
 			}
 
 			virtual void unActivateListeners()
 			{
 				for (auto game : displayList)
-					game->removeMouseUpListener();	
+					game->disconnectEventHandler();	
 			}
 
-			virtual void draw()
+			void mouseUpFunction(EventGUIRef& event)
+			{
+				console()<<"mouseUpFunction"<<endl;
+				mouseUpSignal(event);
+			}
+
+			virtual void drawLayout()
 			{
 				gl::color(Color::white());
-				textTools().textFieldDraw(titleText, Vec2f(position.x - 8.0f, position.y + 56.0f));
-				IDispatcher::draw();
+				textTools().textFieldDraw(titleText, Vec2f( -8.0f,  56.0f));
 			}
 
 			void setAlpha(float alpha)
 			{
 				titleText.setColor(Utils::colorAlpha(titleText.getColor(), alpha));
-
 				for (auto game : displayList)
 					game->setAlpha(alpha);	
 			}
@@ -53,12 +57,9 @@ namespace kubik
 			virtual void setPosition(ci::Vec2i position)		
 			{	
 				int i = 0;
-				for (auto game : displayList)
-				{
-					game->setPosition(position + Vec2f(445.0f * (i % 2), 56.0f + 86 + 120 * (i / 2)));
-					i++;
-				}
-				IDrawable::setPosition(position);
+				for (auto game : displayList)				
+					game->setPosition(Vec2f(445.0f * (i % 2), 56.0f + 86 + 120 * (i++ / 2)));				
+				Sprite::setPosition(position);
 			}		
 
 		private:	

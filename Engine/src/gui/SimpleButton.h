@@ -13,8 +13,7 @@ namespace kubik
 {
 	class SimpleButton : public Dispatcher
 	{
-	public:
-		string name;
+	public:		
 		SimpleButton(Rectf rect, EventGUIRef _event = EventGUIRef(new EventGUI())):Dispatcher(),color(Color::white()), bgVisible(true)
 		{
 			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 

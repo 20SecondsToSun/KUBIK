@@ -31,7 +31,7 @@ namespace kubik
 				designBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(ci::Vec2f::zero(), ci::Vec2f(880.0f, 175.0f))));	
 				addChild(designBtn);
 
-				designsLayoutPos = ci::Vec2f(89.0f, -222.0f);
+				designsLayoutPos = ci::Vec2f(89.0f, 222.0f);
 				designsLayout = DesignsLayoutRef(new DesignsLayout(configSettings, designsLayoutPos));								
 			}
 
@@ -117,9 +117,17 @@ namespace kubik
 
 			void hideDesigns(EaseFn eFunc, float time)
 			{
+				delayTimer = 0.0f;				
+				timeline().apply( &delayTimer, 1.0f, time, eFunc).finishFn(bind( &DesignBlock::animationHideFinish, this));
+			}
+
+			void animationHideFinish()
+			{				
 				designOpened = false;
-				designsLayout->disconnectEventHandler();		
 				removeChild(designsLayout);
+
+				if(eventHandlerDic[HIDED])
+					eventHandlerDic[HIDED]();	
 			}
 
 			virtual void drawLayout()

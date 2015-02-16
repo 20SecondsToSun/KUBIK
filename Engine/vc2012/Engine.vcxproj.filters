@@ -647,6 +647,15 @@
     <ClInclude Include="..\src\locations\settings\elements\DecorLoadButton.h">
       <Filter>Source Files\locations\settings\elements</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\events\CheckerEvent.h">
+      <Filter>Source Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

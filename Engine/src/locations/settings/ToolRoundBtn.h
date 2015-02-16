@@ -9,10 +9,10 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class ToolRoundBtn> ToolRoundBtnRef;
 
-		class ToolRoundBtn: public SimpleButton
+		class ToolRoundBtn: public SimpleSpriteButton
 		{
 		public:
-			ToolRoundBtn(Rectf rect, string text, Font font, Color color = Color::white()):SimpleButton(rect),
+			ToolRoundBtn(Rectf rect, string text, Font font, Color color = Color::white()):SimpleSpriteButton(rect),
 				text(text), font(font), color(color), bckColor(Color::white())
 			{
 				tex = textTools().getTextField(text, &font, color);

@@ -1,5 +1,6 @@
 #pragma once
-#include "gui/SimpleButton.h"
+#include "gui/SimpleSpriteButton.h"
+#include "CheckerEvent.h"
 
 namespace kubik
 {
@@ -10,7 +11,7 @@ namespace kubik
 		class Checker: public SimpleSpriteButton
 		{
 		public:
-			Checker(Rectf rect, IconPair icons, Color activeColor = Color::hex(0x00b6c4), Color unActiveColor = Color::hex(0x373049))
+			Checker(ci::Rectf rect, IconPair icons, ci::Color activeColor = ci::Color::hex(0x00b6c4), ci::Color unActiveColor = ci::Color::hex(0x373049))
 				:SimpleSpriteButton(rect),
 				icons(icons),
 				icon(icons.unActiveIcon),
@@ -22,15 +23,23 @@ namespace kubik
 				startX(0),
 				finishX(77.0f),
 				sdvigX(0),
-				iconColor(Color::white())
+				iconColor(ci::Color::white())
 			{
 				
 			}	
 
+			virtual void mouseUp(ci::app::MouseEvent &_event)
+			{
+				if(inButtonField(_event.getPos()))
+				{
+					swapActive();
+					event = CheckerEventRef(new CheckerEvent(isActive));
+					Sprite::mouseUp(_event);
+				}
+			}
+
 			virtual void drawLayout()
 			{
-				//gl::pushMatrices();
-				//gl::translate(getAbsolutePosition());
 				gl::color(color);
 				gl::drawSolidRoundedRect(buttonArea, radius, 200);
 				gl::color(Color::white());
@@ -39,8 +48,7 @@ namespace kubik
 				gl::translate(sdvigX + buttonArea.x1, buttonArea.y1 - 3);
 				gl::color(iconColor);
 				gl::draw(icon);
-				gl::popMatrices();				
-				//gl::popMatrices();				
+				gl::popMatrices();							
 			}
 
 			void setAlpha(float  alpha)
@@ -93,12 +101,13 @@ namespace kubik
 
 		protected:
 			float sdvigX;
+			float radius, startX, finishX;
+			bool isActive;
+			ci::ColorA color, iconColor;
+			ci::Color activeColor, unActiveColor;
+			
 			IconPair icons;
 			Texture icon;
-			bool isActive;
-			ColorA color, iconColor;
-			Color activeColor, unActiveColor;
-			float radius, startX, finishX;
 		};
 	}
 }

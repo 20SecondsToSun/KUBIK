@@ -165,6 +165,7 @@
     <ClInclude Include="..\src\config\TextItem.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
+    <ClInclude Include="..\src\events\CheckerEvent.h" />
     <ClInclude Include="..\src\events\Event.h" />
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h" />
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\src\events\settings\CloseActivityEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseDesignLayoutEvent.h" />
+    <ClInclude Include="..\src\events\settings\GameCheckerEvent.h" />
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
@@ -242,6 +244,7 @@
     <ClInclude Include="..\src\locations\settings\main\designBlock\ReturnButton.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.h" />
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\NotPurchasedGamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\OneGameNotPurchased.h" />

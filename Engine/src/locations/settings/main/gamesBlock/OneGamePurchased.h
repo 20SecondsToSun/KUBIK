@@ -1,9 +1,8 @@
 #pragma once
 
-#include "gui/CompositeDispatcher.h"
-
+#include "gui/Sprite.h"
 #include "main/gamesBlock/ToolField.h"
-#include "Checker.h"
+#include "GameChecker.h"
 
 namespace kubik
 {
@@ -11,7 +10,7 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class OneGamePurchased> OneGamePurchasedRef;
 
-		class OneGamePurchased: public CompositeDispatcher
+		class OneGamePurchased: public Sprite
 		{
 		public:
 			OneGamePurchased(ConfigSettingsRef config, GamesInfo info)
@@ -21,46 +20,41 @@ namespace kubik
 				 checkerArea(Rectf (20.0f, 4.0f, 214.0f, 126.0f)),
 				 namePosition(Vec2f(282.0f, -10.0f))
 			{			
-				toolfield = ToolFieldRef(new ToolField(config, info.getGameId()));	
-				toolfield->setActive(info.isGameOn());
+				toolfield = ToolFieldRef(new ToolField(config, info));					
 				addChild(toolfield);
 
-				checker = CheckerRef(new Checker(checkerArea, info.getIcons()));					
-				//checker->setActive(info.isGameOn());
-			//	addChild(checker);
-			}
-
-			virtual void checkerClicked(EventGUIRef event)
-			{
-				checker->swapActive();
-				toolfield->swapActive();				
-				mouseUpSignal(event);
-			}
+				checker = GameCheckerRef(new GameChecker(checkerArea, info));		
+				addChild(checker);
+			}			
 
 			virtual void drawLayout()
-			{				
-				textTools().textFieldDraw(nameText, &nameFont, nameColor, namePosition);
+			{
 				gl::color(Color::white());
-				CompositeDispatcher::drawLayout();
+				textTools().textFieldDraw(nameText, &nameFont, nameColor, namePosition);				
+				Sprite::drawLayout();
 			}
 
 			void setAlpha(float  alpha)
 			{
 				nameColor = Utils::colorAlpha(nameColor, alpha);
-				CompositeDispatcher::setAlpha(alpha);
+				Sprite::setAlpha(alpha);
 			}
 
 			virtual void activateListeners()
 			{
-				toolfield->addMouseUpListener(&OneGamePurchased::mouseUpFunction, this);
-				//checker->addMouseUpListener(&OneGamePurchased::checkerClicked, this);
-				CompositeDispatcher::activateListeners();
+				checker->connectEventHandler(&OneGamePurchased::checkerClicked, this);
 			}
 
 			virtual void unActivateListeners()
 			{
-				toolfield->removeMouseUpListener();
-				//checker->removeMouseUpListener();
+				toolfield->unActivateListeners();
+				checker->disconnectEventHandler();
+			}
+
+			void checkerClicked(EventGUIRef& event)
+			{
+				toolfield->swapActive();	
+				mouseUpSignal(event);
 			}
 
 		private:

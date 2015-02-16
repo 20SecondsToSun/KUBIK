@@ -163,10 +163,10 @@ namespace kubik
 
 			Sprite* _parent = parent;
 
-			/*while(_parent && !_parent->mEventHandler)
+			while(_parent && !_parent->mEventHandler)
 			{
 				_parent = _parent->getParent();
-			}*/
+			}
 
 			if(_parent )//&& !_parent->mEventHandler)
 			{
