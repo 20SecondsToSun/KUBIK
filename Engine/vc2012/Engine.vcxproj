@@ -170,6 +170,7 @@
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h" />
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\ChangeDesignEvent.h" />
+    <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseActivityEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseDesignLayoutEvent.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
+    <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterControlsHideEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterStatResetEvent.h" />
     <ClInclude Include="..\src\events\settings\SavePhotobootnConfigEvent.h" />
@@ -262,6 +264,7 @@
     <ClInclude Include="..\src\locations\settings\main\StatBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\Title.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCountTemplateButton.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h" />

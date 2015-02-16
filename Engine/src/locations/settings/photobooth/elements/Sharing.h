@@ -2,38 +2,44 @@
 #include "photobooth/elements/IPhotoboothItem.h"
 #include "PhotoboothSettings.h"
 #include "CheckerSocial.h"
+#include "gui/Sprite.h"
 
 namespace kubik
 {
 	namespace config
 	{
-		class OneSharingItem: public CompositeDispatcher
+		class OneSharingItem: public Sprite
 		{
 		public:
 			typedef PhotoboothSettings::PhtTextID PhtTextID;
 
 			OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id)
-				:text(settings->getTextItem(id)),
+				:Sprite(), text(settings->getTextItem(id)),
 				font(settings->getFont("introLight30")),
 				icon(settings->getIcon(id)),
 				settings(settings),
 				id(id)
 			{
 				IconPair icons(icon, settings->getEmptyIcon());
-				checker = CheckerSocialRef(new CheckerSocial(Rectf(0.0f, 0.0f, 131.0f, 78.0f), icons));				
-				//checker->setActive(settings->getSocialState(id));
-				//addChild(checker);
+				checker = CheckerSocialRef(new CheckerSocial(Rectf(0.0f, 0.0f, 131.0f, 78.0f), icons, id));				
+				checker->setActive(settings->getSocialState(id));
+				addChild(checker);
 			}
 
 			void activateListeners()
 			{
-				//checker->addMouseUpListener(&OneSharingItem::checkerClicked, this);
-				CompositeDispatcher::activateListeners();
+				checker->connectEventHandler(&OneSharingItem::checkerClicked, this);
+				Sprite::activateListeners();
+			}
+
+			void unActivateListeners()
+			{
+				checker->disconnectEventHandler();
+				Sprite::unActivateListeners();
 			}
 
 			void checkerClicked(EventGUIRef event)
 			{
-				checker->swapActive();								
 				mouseUpSignal(event);
 			}
 
@@ -44,7 +50,7 @@ namespace kubik
 
 			virtual void drawLayout()
 			{
-				textTools().textFieldDraw(text, Vec2f(159.0f, 18.0f));
+				textTools().textFieldDraw(text, ci::Vec2f(159.0f, 18.0f));
 			}
 
 			void writeValue()

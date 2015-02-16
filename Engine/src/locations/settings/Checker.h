@@ -19,13 +19,13 @@ namespace kubik
 				activeColor(activeColor),
 				unActiveColor(unActiveColor),
 				color(unActiveColor),
-				radius(55),
-				startX(0),
+				radius(55.0f),
+				startX(0.0f),
 				finishX(77.0f),
-				sdvigX(0),
+				sdvigX(0.0f),
 				iconColor(ci::Color::white())
 			{
-				
+				event = CheckerEventRef(new CheckerEvent(isActive));
 			}	
 
 			virtual void mouseUp(ci::app::MouseEvent &_event)
@@ -33,7 +33,8 @@ namespace kubik
 				if(inButtonField(_event.getPos()))
 				{
 					swapActive();
-					event = CheckerEventRef(new CheckerEvent(isActive));
+					CheckerEventRef eventref = static_pointer_cast<CheckerEvent>(event);
+					eventref->setActive(isActive);	
 					Sprite::mouseUp(_event);
 				}
 			}
@@ -41,11 +42,11 @@ namespace kubik
 			virtual void drawLayout()
 			{
 				gl::color(color);
-				gl::drawSolidRoundedRect(buttonArea, radius, 200);
+				gl::drawSolidRoundedRect(buttonArea, radius, 200.0f);
 				gl::color(Color::white());
 
 				gl::pushMatrices();		
-				gl::translate(sdvigX + buttonArea.x1, buttonArea.y1 - 3);
+				gl::translate(sdvigX + buttonArea.x1, buttonArea.y1 - 3.0f);
 				gl::color(iconColor);
 				gl::draw(icon);
 				gl::popMatrices();							
@@ -53,23 +54,24 @@ namespace kubik
 
 			void setAlpha(float  alpha)
 			{
-				color = Utils::colorAlpha(color, alpha);
+				color	  = Utils::colorAlpha(color, alpha);
 				iconColor = Utils::colorAlpha(iconColor, alpha);
 			}
 
 			void setActive(bool isActive)
 			{
 				this->isActive = isActive;
+
 				if(isActive)
 				{
-					color = activeColor;
-					icon = icons.activeIcon;
+					color  = activeColor;
+					icon   = icons.activeIcon;
 					sdvigX = finishX;
 				}
 				else
 				{
-					color = unActiveColor;
-					icon = icons.unActiveIcon;
+					color  = unActiveColor;
+					icon   = icons.unActiveIcon;
 					sdvigX = startX;
 				}
 			}		
@@ -107,7 +109,7 @@ namespace kubik
 			ci::Color activeColor, unActiveColor;
 			
 			IconPair icons;
-			Texture icon;
+			ci::gl::Texture icon;
 		};
 	}
 }

@@ -69,6 +69,14 @@
 		 "text" : {"text" : "Сохранить", "font" : "introLight", "size" : 30, "color" : "ffffff"}
 	 }],
 
+ "photos" : [
+      {
+     "lang"  : "ru",
+"template1" : {"text" : "фото", "font" : "introBook", "size" : 30, "color" : "ffffff"},
+"template2" : {"text" : "фото", "font" : "introBook", "size" : 30, "color" : "ffffff"}
+}
+],
+
 	"fbIcon" : "fbIcon.png",
 	"vkIcon" : "vkIcon.png",
 	"twIcon" : "twIcon.png",

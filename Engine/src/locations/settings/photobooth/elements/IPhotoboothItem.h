@@ -1,5 +1,5 @@
 #pragma once
-#include "gui/CompositeDispatcher.h"
+#include "gui/Sprite.h"
 
 #include "PhotoboothSettings.h"
 #include "photobooth/elements/MainTitleButton.h"
@@ -9,13 +9,13 @@ namespace kubik
 {
 	namespace config
 	{
-		class IPhotoboothItem: public CompositeDispatcher
+		class IPhotoboothItem: public Sprite
 		{
 		public:
 			//typedef PhotoboothSettings::SettingsPartID SettingsPartID;
 			//typedef PhotoboothSettings::TextID TextID;
 			IPhotoboothItem(PhotoboothSettingsRef phbSettings, PhtTextID id, ci::Color color, int index)
-				:CompositeDispatcher(),
+				:Sprite(),
 				settings(phbSettings),
 				state(CLOSE),
 				index(index),
@@ -26,7 +26,7 @@ namespace kubik
 				color(color),
 				closeMinY(50),
 				closeMaxY(130),
-				openY(170),
+				openY(135),
 				offsetBetweenTitles(60)
 			{
 				mainTitleY = closeMaxY;
@@ -52,15 +52,25 @@ namespace kubik
 
 			virtual void activateListeners()
 			{
-				mainTitleButton->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);	
-				CompositeDispatcher::activateListeners();
+				console()<<"activateListeners   "<<index<<endl;
+				mainTitleButton->connectEventHandler(&IPhotoboothItem::mainTitleClicked, this);	
+				Sprite::activateListeners();
+			}
+
+			virtual void mainTitleClicked(EventGUIRef& event)
+			{
+				if(state == OPEN) return;
+				console()<<"clicked titled button"<<endl;
+
+				//mouseUpSignal(event);
 			}
 
 			virtual void unActivateListeners()
 			{
-				mainTitleButton->removeMouseUpListener();
+				mainTitleButton->disconnectEventHandler();
+
 				//saveBtn->removeMouseUpListener();
-				//CompositeDispatcher::unActivateListeners();
+				Sprite::unActivateListeners();
 			}
 
 			virtual void mouseUpFunction(EventGUIRef event )
@@ -72,7 +82,9 @@ namespace kubik
 				mouseUpSignal(event);
 			}
 
-			virtual void saveConfiguration(){};
+			virtual void saveConfiguration()
+			{
+			};
 
 			virtual void draw()
 			{	
@@ -95,13 +107,19 @@ namespace kubik
 				gl::popMatrices();	
 
 				if (state == OPEN)	
-					CompositeDispatcher::draw();
+					Sprite::draw();
 				//	saveBtn->draw();							
 			}
 
 			virtual void drawContent()
 			{
 			}
+
+			int getIndex()
+			{
+				return index;
+			}
+
 			void setOpenLayoutIndex(int openLayoutIndex)
 			{
 				this->openLayoutIndex = openLayoutIndex;
@@ -111,7 +129,7 @@ namespace kubik
 				Vec2f animateTo;
 				float height = 0;
 
-				unActivateListeners();
+				//unActivateListeners();
 
 				if(openLayoutIndex == index)
 				{						
@@ -174,8 +192,11 @@ namespace kubik
 
 			void animationFinish2()
 			{				
-				if(state != OPEN)
-					activateListeners();
+				if(state == OPEN)
+					mainTitleButton->disconnectEventHandler();
+				else
+					mainTitleButton->connectEventHandler(&IPhotoboothItem::mainTitleClicked, this);	
+
 				//	saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
 			}
 
@@ -193,7 +214,6 @@ namespace kubik
 			int closeHeightMin, closeHeightMax, openHeight;
 			
 			Texture mainTextTex, subTextTexClose, subTextTexOpen;
-
 
 			PhotoboothSettingsRef settings;
 			MainTitleButtonRef mainTitleButton;	

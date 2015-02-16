@@ -33,7 +33,7 @@ namespace kubik
 				if(hasGamesInShop)	
 				{
 					npGameblock  = NotPurchasedGamesBlockRef(new NotPurchasedGamesBlock(configSett, gameSett->getData().getNotPurchasedGames()));
-					npGameblock->setPosition(Vec2f(0.0f, pGameblock->getHeight() + 27 + 30));
+					npGameblock->setPosition(Vec2f(0.0f, pGameblock->getHeight() + 27 + 30 + 47));
 					addChild(npGameblock);
 				}
 			}

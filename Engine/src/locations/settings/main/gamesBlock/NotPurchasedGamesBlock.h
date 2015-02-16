@@ -57,8 +57,13 @@ namespace kubik
 			virtual void setPosition(ci::Vec2i position)		
 			{	
 				int i = 0;
-				for (auto game : displayList)				
-					game->setPosition(Vec2f(445.0f * (i % 2), 56.0f + 86 + 120 * (i++ / 2)));				
+				for (auto game : displayList)
+				{
+					game->setPosition(Vec2f(445.0f * (i % 2), 56.0f + 86 + 120 * (i / 2)));	
+					i++;
+					console()<<"not purchased game:::    "<<i<<endl;
+				}
+
 				Sprite::setPosition(position);
 			}		
 

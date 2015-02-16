@@ -25,7 +25,8 @@ namespace kubik
 			gl::color(Color::white());	
 			gl::color(color);		
 			gl::draw(image);		
-			gl::color(Color::white());		
+			gl::color(Color::white());	
+			//gl::drawSolidRect(buttonArea);
 		}
 
 		void changeTexture(Texture image)

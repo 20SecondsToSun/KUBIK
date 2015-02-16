@@ -212,6 +212,7 @@ namespace kubik
 			addToDictionary("helvetica90",		 createFontResource(getFontsPath("Helvetica Neue.ttf"), 90));
 			addToDictionary("helvetica20",		 createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
 			addToDictionary("helveticaLight24",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+			addToDictionary("helveticaLight36",  createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
 
 			addToDictionary("introBold110",		 createFontResource(getFontsPath("introb.ttf"), 110));
 			addToDictionary("introBold72",		 createFontResource(getFontsPath("introb.ttf"), 72));
@@ -250,7 +251,7 @@ namespace kubik
 			addToDictionary("temp1",			createImageResource(getDesignPath() + "temp1.png"));
 			addToDictionary("temp2",			createImageResource(getDesignPath() + "temp2.png"));
 			addToDictionary("temp3",			createImageResource(getDesignPath() + "temp3.png"));
-			addToDictionary("partyTemp",		createImageResource(getDesignPath() + "PartyTemp.png"));
+			addToDictionary("partyTemp",		createImageResource(getDesignPath() + "PartyTemp.png"));			
 		}
 
 		void buildData()

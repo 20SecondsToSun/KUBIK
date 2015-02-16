@@ -656,6 +656,15 @@
     <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCountTemplateButton.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

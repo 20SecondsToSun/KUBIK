@@ -24,10 +24,12 @@
    "isSticker" : true,
    "isTwitter" : true,
    "isVkotakte" : false,
-   "photoNum" : 3,
    "seconds" : 3,
    "secondsBetweenShots" : 1,
    "templateId" : 1,
+	"photoNumMin" : 1,
+	"photoNumMax" : 5,
+	"currentNum":1,
    "useIds" : [
       {
          "id" : 1

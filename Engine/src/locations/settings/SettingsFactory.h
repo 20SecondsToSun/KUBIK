@@ -5,6 +5,7 @@
 #include "ChangeDesignButton.h"
 #include "main/DesignBlock/ScreenSaverChecker.h"
 #include "DecorLoadButton.h"
+#include "photobooth/elements/PhotoCountTemplateButton.h"
 
 using namespace ci;
 
@@ -57,15 +58,27 @@ namespace kubik
 			{				
 				ChangeDesignButtonRef iq = ChangeDesignButtonRef(new ChangeDesignButton(item, pos));	
 				return iq;				
-			}		
+			}
+
+			PhotoCountTemplateButtonRef createPhotoCountTemplateButton(ci::gl::Texture tex, PhtTextID item, int count, ci::Vec2f pos = Vec2f::zero())
+			{	
+				PhotoCountTemplateButtonRef iq = PhotoCountTemplateButtonRef(new PhotoCountTemplateButton(tex, phtSettings->getTextItem(item), phtSettings->getFont("introb210"), count, pos));	
+				return iq;				
+			}
 
 			void inject(ConfigSettingsRef configSettings)
 			{
 				settings = configSettings;
 			}
 
+			void inject(PhotoboothSettingsRef configSettings)
+			{
+				phtSettings = configSettings;
+			}
+
 		private:
 			ConfigSettingsRef settings;
+			PhotoboothSettingsRef phtSettings;
 
 		};
 		// helper function(s) for easier access 

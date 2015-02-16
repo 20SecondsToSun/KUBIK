@@ -70,9 +70,6 @@ void Controller::loadSettings()
 
 	settingsFactory().inject(controlSettings);
 
-
-
-
 	list<ISettingsRef> configs;
 	configs.push_back(gameSettings);
 	configs.push_back(menuSettings);
@@ -83,6 +80,10 @@ void Controller::loadSettings()
 	connect_once(configLoader->LoadingErrorSignal,	  bind(&Controller::configsLoadingErrorHandler, this, std::placeholders::_1));
 
 	configLoader->loadConfigs(configs);
+
+	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
+	settingsFactory().inject(phbthSettings);
+
 }
 
 void Controller::configsLoadingCompleteHandler()
@@ -210,7 +211,6 @@ void Controller::closeCurrentLocation()
 
 void Controller::setLocationHandlers(ScreenId type)
 {
-
 	if(gameSettings->isGameID(type))
 		addGameHandlers();
 	else

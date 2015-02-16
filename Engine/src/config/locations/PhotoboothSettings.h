@@ -25,7 +25,19 @@ namespace kubik
 				PUBLISHING,	PUBLISHING_SUB,
 				SAVE_TEXT, YOUR_DESIGN_TEXT,
 				VKONTAKTE, FACEBOOK, TWITTER,
-				QRCODE,	PRINTER,EMAIL
+				QRCODE,	PRINTER,EMAIL, PHOTO_TREMPLATE_1, PHOTO_TREMPLATE_2
+			};
+
+			class PhotoCountItem
+			{
+				gl::Texture texture;
+				bool isActive;
+
+			public:
+				bool getActive()
+				{
+					return isActive;
+				}
 			};
 
 			PhotoboothSettings(ApplicationModelRef model);
@@ -71,7 +83,18 @@ namespace kubik
 			ci::gl::Texture getActivePrintBgTex();
 			std::vector<int> getOnFilters();
 			int getPhotoShots();
-			bool findFilterId(int id, std::vector<int> filters);		
+			bool findFilterId(int id, std::vector<int> filters);	
+
+			int getPhotoCount(PhtTextID id);	
+
+			DesignData getPhotoOverDesignData()
+			{
+				return photoOverDesignData;
+			}
+			DesignData getPhotoCardStyles()
+			{
+				return photoCardStyles;
+			}
 
 		private:
 			class Filter
@@ -104,6 +127,8 @@ namespace kubik
 				std::string finalPath;
 				std::string stickersPath;		
 				std::string bgPrintsPath;
+				std::string photoOverDesignDataPath;
+				std::string photoCardsStylesDesignDataPath;
 
 			public:
 				friend PhotoboothSettings;
@@ -132,7 +157,7 @@ namespace kubik
 
 			int seconds;
 			int secondsBetweenShots;
-			int photoNum;
+			int photoNum, photoNumMax, photoNumMin;
 			int templateId;			
 			int minPhotosShots;
 			int maxPhotosShots;		
@@ -157,6 +182,9 @@ namespace kubik
 			void loadLabels();			
 			void loadConsts();			
 			void loadDesignPath();
+			
+			void parsePhotoOverDesigns();
+			void parsePhotoCardStyles();
 
 			void loadPhotoParams(JsonTree config);
 			void loadSocialParams(JsonTree config);
@@ -167,7 +195,13 @@ namespace kubik
 			void loadConfigTexts(JsonTree config);
 			void loadSharingIcons(JsonTree config);
 			void saveConfig();		
-			void findAllImagePrints(string path, std::vector<ImageElement> &prints, bool isCustom);			
+			void findAllImagePrints(string path, std::vector<ImageElement> &prints, bool isCustom);	
+
+			/////////////////////////////////
+
+			DesignData photoOverDesignData;		
+			DesignData photoCardStyles;
+						
 		};	
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;
 	}

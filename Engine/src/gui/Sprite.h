@@ -155,8 +155,7 @@ namespace kubik
 		}	
 
 		virtual void mouseUp(ci::app::MouseEvent &_event)
-		{	
-			
+		{			
 			if(lock) return;
 
 			mEventHandler(event);
@@ -207,11 +206,17 @@ namespace kubik
 
 		void lockListeners()
 		{
+			for (auto comp : displayList)
+				comp->lockListeners();
+
 			lock = true;
 		}
 
 		void unlockListeners()
 		{
+			for (auto comp : displayList)
+				comp->unlockListeners();
+
 			lock = false;
 		}
 

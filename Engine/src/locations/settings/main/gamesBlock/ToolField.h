@@ -51,7 +51,7 @@ namespace kubik
 			void setActive(bool isActive)
 			{
 				this->isActive = isActive;
-
+			
 				if(isActive)
 				{
 					toolBtn->connectEventHandler(&ToolField::mouseUpFunction, this);

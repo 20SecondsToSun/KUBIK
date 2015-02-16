@@ -110,11 +110,12 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	{
 		mainConfig->unActivateListeners();
 		CloseConfigEventRef statEvent = static_pointer_cast<CloseConfigEvent>(event);	
-		closeLocationSignal();		
+		//closeLocationSignal();		
 	}
 	else if(typeid(*ev) == typeid(GameConfEvent))
 	{
 		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);	
+		addChild(photoboothConfig);
 		mainConfig->hideAnimate(EaseOutCubic(), 0.7f);
 		photoboothConfig->showAnimate(EaseOutCubic(), 0.7f);
 		console()<<"config game ID:::::: "<<confEvent->getGameId()<<endl;
@@ -123,6 +124,7 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	{
 		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
 		photoboothConfig->hideAnimate(EaseOutCubic(), 0.7f);
+		removeChild(photoboothConfig);
 	}	
 	if(typeid(*ev) == typeid(StatisticEvent))
 	{

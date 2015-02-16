@@ -16,6 +16,11 @@ namespace kubik
 			return isActive;
 		}
 
+		void setActive(bool value)
+		{
+			isActive = value;
+		}
+
 	private:
 		bool isActive;
 	};

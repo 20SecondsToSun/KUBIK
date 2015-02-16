@@ -43,6 +43,7 @@ namespace kubik
 			virtual void activateListeners()
 			{
 				checker->connectEventHandler(&OneGamePurchased::checkerClicked, this);
+				toolfield->activateListeners();
 			}
 
 			virtual void unActivateListeners()

@@ -4,5 +4,7 @@
    "stickersPath" : "design_elements\\gameDesign\\photobooth\\stickers\\",
    "kubikTemplatePartDesignPath" : "kubik\\templates\\", 
    "staticPartDesignPath" : "data\\interface\\", 
-   "userTemplatePartDesignPath" : "user_design\\templates\\"
+   "userTemplatePartDesignPath" : "user_design\\templates\\",
+   "photoOverDesignDataPath" : "data\\configs\\photobooth\\photoOverDesigns.txt",
+   "photoCardsStylesPath" : "data\\configs\\photobooth\\photoCardStyles.txt"
 }

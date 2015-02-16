@@ -1,5 +1,6 @@
 #pragma once
 #include "photobooth/elements/IPhotoboothItem.h"
+#include "photobooth/elements/PhotoCountTemplateButton.h"
 
 namespace kubik
 {
@@ -8,14 +9,81 @@ namespace kubik
 		class PhotoPrintCount: public IPhotoboothItem
 		{
 		public:	
-			PhotoPrintCount(PhotoboothSettingsRef phbSettings, Color color, int index)
-				:IPhotoboothItem(phbSettings, PhtTextID::PRINT_COUNT, color, index)
+			PhotoPrintCount(PhotoboothSettingsRef settings, ci::Color color, int index)
+				:IPhotoboothItem(settings, PhtTextID::PRINT_COUNT, color, index)
 			{
-				
+				photoTemplate1 = settingsFactory()
+					.createPhotoCountTemplateButton(
+					settings->getTexture("photoTemplate1"),
+					PhtTextID::PHOTO_TREMPLATE_1,
+					settings->getPhotoCount(PhtTextID::PHOTO_TREMPLATE_1));
+
+				photoTemplate2 = settingsFactory()
+					.createPhotoCountTemplateButton(
+					settings->getTexture("photoTemplate2"),
+					PhtTextID::PHOTO_TREMPLATE_2, 
+					settings->getPhotoCount(PhtTextID::PHOTO_TREMPLATE_2));
+
+				photoTemplate1->setPosition(ci::Vec2f(148.0f, 388.0f));
+				photoTemplate2->setPosition(ci::Vec2f(490.0f, 388.0f));
+				photoTemplate1->setSelection(true);
+
+				addChild(photoTemplate1);
+				addChild(photoTemplate2);
 			}	
 
-		protected:
+			virtual void activateListeners()
+			{
+				console()<<"activate: listeners"<<endl;
+				photoTemplate1->connectEventHandler(&PhotoPrintCount::checkerClicked1, this);
+				photoTemplate2->connectEventHandler(&PhotoPrintCount::checkerClicked2, this);
+				IPhotoboothItem::activateListeners();
+			}
 
+			virtual void mainTitleClicked(EventGUIRef& event)
+			{
+				if(state == OPEN) 
+					return;
+			
+				//mouseUpSignal(event);
+			}
+
+			void checkerClicked1(EventGUIRef event)
+			{
+				if(!photoTemplate1->getSelection())
+				{
+					photoTemplate1->setSelection(true);
+					photoTemplate2->setSelection(false);
+					//mouseUpSignal(event);
+				}
+			}
+
+			void checkerClicked2(EventGUIRef event)
+			{
+				if(!photoTemplate2->getSelection())
+				{
+					photoTemplate2->setSelection(true);
+					photoTemplate1->setSelection(false);
+					//mouseUpSignal(event);
+				}
+			}
+
+			void unActivateListeners()
+			{
+				photoTemplate1->disconnectEventHandler();
+				photoTemplate2->disconnectEventHandler();
+				IPhotoboothItem::unActivateListeners();
+			}
+
+			virtual void drawLayout()
+			{
+				//gl::color(ColorA(1,1,1,0.3));
+				//gl::draw(settings->getTexture("_photocount"));
+				gl::color(Color::white());			
+			}
+
+		private:
+			PhotoCountTemplateButtonRef photoTemplate1, photoTemplate2;
 		};
 
 		typedef std::shared_ptr<PhotoPrintCount> PhotoPrintCountRef;
