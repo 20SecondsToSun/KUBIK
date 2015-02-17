@@ -5,17 +5,14 @@
    "activeSticker" : {
       "id" : 1
    },
-   "filtersIds" : [
-      {
-         "id" : 1
-      },
-      {
-         "id" : 2
-      },
-      {
-         "id" : 3
-      }
+   "filtersIds" : 
+   [
+      {"id" : 1},
+      {"id" : 3},
+      {"id" : 6}
    ],
+   "activeOverDesignID" : 1,
+   "activePhotoCardStyleDesignID" : 2,
    "isCustomDesign" : false,
    "isEmail" : false,
    "isFacebook" : false,
@@ -27,9 +24,7 @@
    "seconds" : 3,
    "secondsBetweenShots" : 1,
    "templateId" : 1,
-	"photoNumMin" : 1,
-	"photoNumMax" : 5,
-	"currentNum":1,
+   "currentPhotoNum": 3,
    "useIds" : [
       {
          "id" : 1

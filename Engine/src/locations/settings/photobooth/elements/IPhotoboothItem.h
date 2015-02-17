@@ -1,19 +1,17 @@
 #pragma once
 #include "gui/Sprite.h"
-
 #include "PhotoboothSettings.h"
 #include "photobooth/elements/MainTitleButton.h"
-#include "SaveBtn.h"
 
 namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class IPhotoboothItem> IPhotoboothItemRef;
+
 		class IPhotoboothItem: public Sprite
 		{
 		public:
-			//typedef PhotoboothSettings::SettingsPartID SettingsPartID;
-			//typedef PhotoboothSettings::TextID TextID;
 			IPhotoboothItem(PhotoboothSettingsRef phbSettings, PhtTextID id, ci::Color color, int index)
 				:Sprite(),
 				settings(phbSettings),
@@ -27,88 +25,65 @@ namespace kubik
 				closeMinY(50),
 				closeMaxY(130),
 				openY(135),
-				offsetBetweenTitles(60)
+				offsetBetweenTitles(60),
+				id(id)
 			{
 				mainTitleY = closeMaxY;
 				subTitleY  = closeMaxY + offsetBetweenTitles;
 				animHeight = closeHeightMax;
 				animatePosition = Vec2f(0.0f, closeHeightMax * index);
+
 				setPosition(animatePosition.value());
 
-				mainTitleButton = MainTitleButtonRef(new MainTitleButton(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax), index));				
-				addChild(mainTitleButton);
-				
+				mainTitleButton = MainTitleButtonRef(new MainTitleButton(ci::Rectf(ci::Vec2f::zero(), ci::Vec2f(itemWidth, closeHeightMax)), index));				
+				addChild(mainTitleButton);				
 			
-				mainTextTex		= textTools().getTextField(phbSettings->getMainTitle(id));
-				subTextTexClose	= textTools().getTextField(phbSettings->getSubTitleClose(id));
-				subTextTexOpen	= textTools().getTextField(phbSettings->getSubTitleOpen(id));
-	
+				setMainTextTitle(textTools().getTextField(phbSettings->getMainTitle(id)));
+				setSubTextTitle(textTools().getTextField(phbSettings->getSubTitleClose(id), true));				
+			}
 
-				////saveBtn = SaveBtnRef(new SaveBtn(Rectf(0.0f, 0.0f, 245.0f, 65.0f), phbSettings->getText(PhtTextID::SAVE_TEXT))),	
+			void setSubTextTitle(ci::gl::Texture tex)
+			{
+				subText			= tex;
+				subTextTexPosX  = 0.5f * (itemWidth - subText.getWidth());
+			}
 
-				//saveBtn->setPosition(Vec2f(0.5 * (itemWidth - 245.0f),  835.0f));
-				//addChild(saveBtn);
+			void setMainTextTitle(ci::gl::Texture tex)
+			{
+				mainTextTex		= tex;
+				mainTextTexPosX	= 0.5f * (itemWidth - mainTextTex.getWidth());
 			}
 
 			virtual void activateListeners()
 			{
-				console()<<"activateListeners   "<<index<<endl;
 				mainTitleButton->connectEventHandler(&IPhotoboothItem::mainTitleClicked, this);	
 				Sprite::activateListeners();
 			}
 
 			virtual void mainTitleClicked(EventGUIRef& event)
 			{
-				if(state == OPEN) return;
-				console()<<"clicked titled button"<<endl;
-
-				//mouseUpSignal(event);
+	
 			}
 
 			virtual void unActivateListeners()
 			{
 				mainTitleButton->disconnectEventHandler();
-
-				//saveBtn->removeMouseUpListener();
 				Sprite::unActivateListeners();
 			}
-
-			virtual void mouseUpFunction(EventGUIRef event )
-			{				
-				EventGUI *ev = event.get();
-				if(typeid(*ev) == typeid(SavePhotobootnConfigEvent))
-					saveConfiguration();						
-				
-				mouseUpSignal(event);
-			}
-
-			virtual void saveConfiguration()
-			{
-			};
 
 			virtual void draw()
 			{	
 				gl::pushMatrices();
-				gl::translate(getGlobalPosition());
-				gl::color(color);
-				gl::drawSolidRect(Rectf(0, 0, itemWidth, animHeight));
-				gl::color(Color::white());
-				gl::draw(mainTextTex, Vec2f(0.5 * (itemWidth - mainTextTex.getWidth()), mainTitleY));
-				if (state == CLOSE || state == CLOSE_MIN)
-				{								
-					gl::draw(subTextTexClose, Vec2f(0.5  * (itemWidth - subTextTexClose.getWidth()), subTitleY));
-				}
-				else
-					gl::draw(subTextTexOpen, Vec2f(0.5  * (itemWidth - subTextTexOpen.getWidth()), subTitleY));
-
-				//if (state == OPEN)
-				//	drawLayout();
-				//gl::drawStrokedRect(mainTitleButton->getButtonArea());
+					gl::translate(getGlobalPosition());
+					gl::color(color);
+					gl::drawSolidRect(ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(itemWidth, animHeight)));
+					gl::color(ci::Color::white());
+					gl::draw(mainTextTex, Vec2f(mainTextTexPosX, mainTitleY));
+					gl::draw(subText, Vec2f(subTextTexPosX, subTitleY));			
 				gl::popMatrices();	
 
 				if (state == OPEN)	
 					Sprite::draw();
-				//	saveBtn->draw();							
 			}
 
 			virtual void drawContent()
@@ -124,33 +99,27 @@ namespace kubik
 			{
 				this->openLayoutIndex = openLayoutIndex;
 			
-				float time =  0.7f;
-				EaseFn eFunc = EaseOutExpo();
-				Vec2f animateTo;
-				float height = 0;
-
-				//unActivateListeners();
+				float time = 0.7f, height = 0.0f;
+				ci::EaseFn eFunc = ci::EaseOutExpo();
+				ci::Vec2f animateTo;			
 
 				if(openLayoutIndex == index)
 				{						
 					openingLayout(eFunc, time);
-					animateTo = Vec2f(0, openLayoutIndex * closeHeightMin);						
+					animateTo = ci::Vec2f(0.0f, openLayoutIndex * closeHeightMin);						
 				}
 				else if (openLayoutIndex == -1)
 				{
-					//activateListeners();
 					closingLayoutMaxState(eFunc, time);						
-					animateTo = Vec2f(0, index * closeHeightMax);								
+					animateTo = ci::Vec2f(0.0f, index * closeHeightMax);								
 				}	
 				else
 				{
-					//activateListeners();
-					closingLayoutMinState(eFunc, time);					
-
+					closingLayoutMinState(eFunc, time);		
 					if (openLayoutIndex > index)					
-						animateTo =  Vec2f(0, index * closeHeightMin);					
+						animateTo =  ci::Vec2f(0.0f, index * closeHeightMin);					
 					else
-						animateTo =  Vec2f(0, (index -1)* (closeHeightMin) + openHeight);														
+						animateTo =  ci::Vec2f(0.0f, (index - 1) * (closeHeightMin) + openHeight);														
 				}
 
 				timeline().apply( &animatePosition, animateTo, time, eFunc)
@@ -158,28 +127,31 @@ namespace kubik
 						.finishFn( bind( &IPhotoboothItem::animationFinish2, this));
 			}
 
-			void openingLayout(EaseFn eFunc, float time)
+			void openingLayout(ci::EaseFn eFunc, float time)
 			{
-				state = OPEN;								
+				state = OPEN;	
+				setSubTextTitle(textTools().getTextField(settings->getSubTitleOpen(id), true));		
 				onOpenResetParams();
 				timeline().apply( &mainTitleY, openY, time, eFunc);
 				timeline().apply( &subTitleY,  openY + offsetBetweenTitles, time, eFunc);
-				timeline().apply( &animHeight,  openHeight + 2, time, eFunc);	
+				timeline().apply( &animHeight, openHeight + 2, time, eFunc);	
 			}
 
-			void closingLayoutMaxState(EaseFn eFunc, float time)
+			void closingLayoutMaxState(ci::EaseFn eFunc, float time)
 			{
-				state = CLOSE;		
-				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMax));
+				state = CLOSE;	
+				setSubTextTitle(textTools().getTextField(settings->getSubTitleClose(id), true));		
+				mainTitleButton->setButtonArea( ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(itemWidth, closeHeightMax)));
 				timeline().apply( &mainTitleY, closeMaxY, time, eFunc);
 				timeline().apply( &subTitleY,  closeMaxY + offsetBetweenTitles, time, eFunc);
 				timeline().apply( &animHeight, closeHeightMax + 2, time, eFunc);			
 			}
 
-			void closingLayoutMinState(EaseFn eFunc, float time)
+			void closingLayoutMinState(ci::EaseFn eFunc, float time)
 			{
 				state = CLOSE_MIN;	
-				mainTitleButton->setButtonArea(Rectf(0.0f, 0.0f, itemWidth, closeHeightMin));
+				setSubTextTitle(textTools().getTextField(settings->getSubTitleClose(id), true));		
+				mainTitleButton->setButtonArea(ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(itemWidth, closeHeightMin)));
 				timeline().apply( &mainTitleY, closeMinY, time, eFunc);
 				timeline().apply( &subTitleY,  closeMinY + offsetBetweenTitles, time, eFunc);
 				timeline().apply( &animHeight, closeHeightMin + 2, time, eFunc);
@@ -196,8 +168,6 @@ namespace kubik
 					mainTitleButton->disconnectEventHandler();
 				else
 					mainTitleButton->connectEventHandler(&IPhotoboothItem::mainTitleClicked, this);	
-
-				//	saveBtn->addMouseUpListener(&IPhotoboothItem::mouseUpFunction, this);				
 			}
 
 			virtual void onOpenResetParams()
@@ -207,26 +177,26 @@ namespace kubik
 
 		protected:
 			enum {CLOSE, OPEN, CLOSE_MIN} state;
-			Color color;
+			ci::Color color;
 	
-			Font mainTextFont, subTextFont;
+			ci::Font mainTextFont, subTextFont;
 			int itemWidth, index, openLayoutIndex;
 			int closeHeightMin, closeHeightMax, openHeight;
 			
-			Texture mainTextTex, subTextTexClose, subTextTexOpen;
+			ci::gl::Texture mainTextTex, subText;			
 
-			PhotoboothSettingsRef settings;
-			MainTitleButtonRef mainTitleButton;	
-			SaveBtnRef saveBtn;
+			ci::Anim<ci::Vec2f> animatePosition;
+			ci::Anim<float> mainTitleY, subTitleY;
+			ci::Anim<int> animHeight;
 
-			Anim<Vec2f> animatePosition;
-			Anim<float> mainTitleY, subTitleY;
-			Anim<int> animHeight;
+			float subTextTexPosX, mainTextTexPosX;
 
 			float closeMaxY, closeMinY, openY;
 			float offsetBetweenTitles;
-		};
 
-		typedef std::shared_ptr<IPhotoboothItem> IPhotoboothItemRef;
+			PhotoboothSettingsRef settings;
+			MainTitleButtonRef mainTitleButton;	
+			PhtTextID id;
+		};		
 	}
 }

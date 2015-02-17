@@ -170,6 +170,9 @@
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h" />
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\ChangeDesignEvent.h" />
+    <ClInclude Include="..\src\events\settings\ChangePhotoCardStyleDesignEvent.h" />
+    <ClInclude Include="..\src\events\settings\ChangePhotoFilterPreviewActiveEvent.h" />
+    <ClInclude Include="..\src\events\settings\ChangePhotoOverDesignEvent.h" />
     <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseActivityEvent.h" />
     <ClInclude Include="..\src\events\settings\CloseConfigEvent.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
+    <ClInclude Include="..\src\events\settings\OpenSystemDirectoryEvent.h" />
     <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterControlsHideEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterStatResetEvent.h" />
@@ -236,6 +240,7 @@
     <ClInclude Include="..\src\locations\screensaver\VideoScreenSaver.h" />
     <ClInclude Include="..\src\config\Types.h" />
     <ClInclude Include="..\src\locations\settings\elements\DecorLoadButton.h" />
+    <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h" />
     <ClInclude Include="..\src\locations\settings\elements\ImageQuadroButton.h" />
     <ClInclude Include="..\src\locations\settings\elements\LoadButton.h" />
     <ClInclude Include="..\src\locations\settings\main\CloseBlock.h" />

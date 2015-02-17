@@ -151,6 +151,9 @@
     <Filter Include="Source Files\config\games\photobooth">
       <UniqueIdentifier>{4e963074-0b4f-42c7-b108-ea24e016e527}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\locations\settings\instagram">
+      <UniqueIdentifier>{928073c5-b8e1-4836-ae4f-292539430614}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -664,6 +667,21 @@
     </ClInclude>
     <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h">
       <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\ChangePhotoOverDesignEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\ChangePhotoCardStyleDesignEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\OpenSystemDirectoryEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\ChangePhotoFilterPreviewActiveEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

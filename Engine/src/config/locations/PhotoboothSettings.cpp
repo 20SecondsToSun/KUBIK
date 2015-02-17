@@ -35,6 +35,9 @@ void PhotoboothSettings::load()
 	logger().log("parse photoCardStyles");
 	parsePhotoCardStyles();
 
+	logger().log("parse photoFilters");
+	parsePhotoFiltersPreview();
+
 	setTextures();		
 }	
 
@@ -50,6 +53,7 @@ void PhotoboothSettings::loadConfigPaths()
 
 	configPaths.photoOverDesignDataPath		    = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
 	configPaths.photoCardsStylesDesignDataPath  = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
+	configPaths.photoFiltersPreviewDesignDataPath = pathJSON.getChild("photoFiltersPreviewDesignDataPath").getValue<string>();	
 }
 
 void PhotoboothSettings::loadParams()
@@ -97,9 +101,7 @@ void PhotoboothSettings::loadPhotoParams(JsonTree config)
 {
 	seconds				  = config.getChild("seconds").getValue<int>();
 	secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();
-	photoNum			  = config.getChild("currentNum").getValue<int>();
-	photoNumMin			  = config.getChild("photoNumMin").getValue<int>();
-	photoNumMax			  = config.getChild("photoNumMax").getValue<int>();
+	photoNum			  = config.getChild("currentPhotoNum").getValue<int>();	
 }
 
 void PhotoboothSettings::loadSocialParams(JsonTree config)
@@ -128,6 +130,8 @@ void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
 		filter.id	= it.getChild("id").getValue<int>();
 		filter.isOn = findFilterId(filter.id, useIdsVec);
 		filters.push_back(filter);
+
+		activeFiltersIDs.push_back(filter.id);
 	}
 }		
 
@@ -139,6 +143,8 @@ void PhotoboothSettings::loadGameDesignParams(JsonTree config)
 
 void PhotoboothSettings::loadGameStickerParams(JsonTree config)
 {
+	activeOverDesignID = config.getChild("activeOverDesignID").getValue<int>();	
+
 	isSticker		  = config.getChild("isSticker").getValue<bool>();			
 	activeSticker.id  = config.getChild("activeSticker").getChild("id").getValue<int>();			
 	findAllImagePrints(getBasePath().string() + configPaths.stickersPath,  stickers, true);
@@ -146,6 +152,8 @@ void PhotoboothSettings::loadGameStickerParams(JsonTree config)
 
 void PhotoboothSettings::loadGameBgPrintParams(JsonTree config)
 {
+	activePhotoCardStyleDesignID = config.getChild("activePhotoCardStyleDesignID").getValue<int>();	
+
 	activeBgPrint.id = config.getChild("activeBgPrint").getChild("id").getValue<int>();
 	findAllImagePrints(getBasePath().string() + configPaths.bgPrintsPath,  bgPrint, true);
 }
@@ -257,7 +265,7 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 								 text.getChild("color").getValue<string>());
 		photoOverDesignData.push_back(item);
 	}
-	//userDesignID = designDataJSON.getChild("userDesignID").getValue<int>();	
+	userOverDesignID = designDataJSON.getChild("userDesignID").getValue<int>();	
 }
 
 void PhotoboothSettings::parsePhotoCardStyles()
@@ -278,6 +286,27 @@ void PhotoboothSettings::parsePhotoCardStyles()
 								 text.getChild("color").getValue<string>());
 		photoCardStyles.push_back(item);
 	}
+	userPhotoCardStyleDesignID = designDataJSON.getChild("userDesignID").getValue<int>();	
+}
+
+void PhotoboothSettings::parsePhotoFiltersPreview()
+{
+	JsonTree designDataJSON	= JsonTree(loadFile(getBasePath().string() + configPaths.photoFiltersPreviewDesignDataPath));			
+	JsonTree designs = designDataJSON.getChild("designs");			
+		
+	for(auto it : designs)
+	{
+		OneDesignItem item;
+		item.setID(it.getChild("id").getValue<int>());
+		item.setIconPath(it.getChild("iconPath").getValue<string>());
+		JsonTree text = it.getChild("textObj");
+			
+		item.setTextItem(text.getChild("text").getValue<string>(),
+								 text.getChild("font").getValue<string>(),
+								 text.getChild("size").getValue<int>(),
+								 text.getChild("color").getValue<string>());
+		photoFiltersPreview.push_back(item);
+	}	
 }
 
 void PhotoboothSettings::buildData()
@@ -291,11 +320,6 @@ void PhotoboothSettings::buildData()
 		it->second.setFont(fonts);		
 
 	configTexts.setDic(dic);
-
-
-
-
-
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -342,11 +366,16 @@ bool PhotoboothSettings::findFilterId(int id, vector<int> filters)
 int PhotoboothSettings::getPhotoCount(PhtTextID id)
 {
 	if(id == PhtTextID::PHOTO_TREMPLATE_1)
-		return photoNumMin;
+		return minPhotosShots;
 	if(id == PhtTextID::PHOTO_TREMPLATE_2)
-		return photoNumMax;
+		return maxPhotosShots;
 
 	return 0;
+}
+
+int PhotoboothSettings::getCurrentPhotoCount()
+{
+	return photoNum;
 }
 
 void PhotoboothSettings::setTextures()
@@ -363,22 +392,34 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("introLight44",     createFontResource(getFontsPath("IntroLight.ttf"), 44));
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
 	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
-	addToDictionary("introBook30",     createFontResource(getFontsPath("Intro-Book.ttf"), 30));
+	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
-
-
-	addToDictionary("_shareTemp",		createImageResource(getInterfacePath("configDesign\\photobooth\\_shareTemp.png")));
-	addToDictionary("_photocount",		createImageResource(getInterfacePath("configDesign\\photobooth\\_photocount.jpg")));
-
+	
 	addToDictionary("photoTemplate1",	createImageResource(getInterfacePath("configDesign\\photobooth\\1photo.png")));
 	addToDictionary("photoTemplate2",	createImageResource(getInterfacePath("configDesign\\photobooth\\3photo.png")));
 
 	for (auto item : photoOverDesignData)	
 	{
 		std::string path = "configDesign\\photobooth\\" + item.getIconPath();
-		console()<<"::::::::::::::::::::::::  path  ::::  "<<getInterfacePath(path)<<endl;
+		console()<<"photoOverDesignData ::::::::::::::::::::::::"<<item.getName()<<"   "<<getInterfacePath(path)<<endl;
 		addToDictionary(item.getName(),	createImageResource(getInterfacePath(path)));
 	}
+
+	for (auto item : photoCardStyles)	
+	{
+		std::string path = "configDesign\\photobooth\\" + item.getIconPath();
+		console()<<" photoCardStyles ::::::::::::::::::::::::"<<item.getName()<<"   "<<getInterfacePath(path)<<endl;
+		addToDictionary(item.getName(),	createImageResource(getInterfacePath(path)));
+	}
+
+	for (auto item : photoFiltersPreview)	
+	{
+		std::string path = "configDesign\\photobooth\\" + item.getIconPath();
+		console()<<"photoFiltersPreview :::::::::::::::::::::::"<<item.getName()<<"   "<<getInterfacePath(path)<<endl;
+		addToDictionary(item.getName(),	createImageResource(getInterfacePath(path)));
+	}
+
+	
 
 	//for (size_t i = 0; i < stickers.size(); i++)
 	//	addToDictionary(STICKER_NAME + to_string(i), createImageResource(stickers[i].path));
@@ -461,7 +502,87 @@ TextItem PhotoboothSettings::getMainTitle(PhtTextID id)
 
 TextItem PhotoboothSettings::getSubTitleClose(PhtTextID id)
 {
-	return configTexts.get(model->getLang(), static_cast<PhtTextID>(int(id) + 1));
+	PhtTextID subID = static_cast<PhtTextID>(int(id) + 1);
+	TextItem tItem = configTexts.get(model->getLang(), subID);
+
+	if (subID == PHOTO_OVER_SUB)
+		tItem.setText(getActiveOverDesignText());
+	else if (subID == CARD_STYLE_SUB)
+		tItem.setText(getActiveCardStyleText());
+	else if (subID == FILTERS_SUB)	
+		tItem.setText(getActiveFiltersTexts());
+	else if (subID == PUBLISHING_SUB)	
+		tItem.setText(getActivePublishingTexts());
+	else if (subID == PRINT_COUNT_SUB)
+	{
+		if (photoNum == minPhotosShots)
+			tItem.setText(to_string(photoNum) + " " + getTextItem(PhtTextID::PHOTO_TREMPLATE_1).getText());	
+		else
+			tItem.setText(to_string(photoNum) + " " + getTextItem(PhtTextID::PHOTO_TREMPLATE_1).getText());	
+	}	
+
+	return tItem;
+}
+
+std::string PhotoboothSettings::getActiveOverDesignText()
+{
+	for(auto item : photoOverDesignData)	
+		if (item.getID() == activeOverDesignID)
+			return item.getTextItem().getText();
+
+	return "";	
+}
+
+std::string PhotoboothSettings::getActiveCardStyleText()
+{
+	for( auto item : photoCardStyles)	
+		if (item.getID() == activePhotoCardStyleDesignID)
+			return item.getTextItem().getText();
+
+	return "";	
+}
+
+std::string PhotoboothSettings::getActiveFiltersTexts()
+{
+	std::string result = "";
+	for( auto item : photoFiltersPreview)	
+	{
+		for (auto id : activeFiltersIDs)
+		{
+			if (item.getID() == id)
+			{
+				if (result.size())	result += ", ";
+				result += item.getTextItem().getText();
+			}
+		}	
+	}
+
+	return result;	
+}
+
+std::string PhotoboothSettings::getActivePublishingTexts()
+{
+	std::string result = "";
+	vector<PhtTextID> temp;
+	temp.push_back(PhtTextID::PRINTER);
+	temp.push_back(PhtTextID::EMAIL);
+	temp.push_back(PhtTextID::QRCODE);
+	temp.push_back(PhtTextID::FACEBOOK);
+	temp.push_back(PhtTextID::VKONTAKTE);
+	temp.push_back(PhtTextID::TWITTER);
+
+	for (auto item : temp)
+	{
+		if (getSocialState(item))
+		{	
+			if (result.size())
+				result += ", ";
+			
+			result += getTextItem(item).getText();		
+		}
+	}
+
+	return result;
 }
 
 TextItem PhotoboothSettings::getSubTitleOpen(PhtTextID id)
@@ -523,3 +644,25 @@ ci::gl::Texture PhotoboothSettings::Sharing::getEmptyIcon()
 {
 	return emptyIcon;
 }
+
+int PhotoboothSettings::getActiveOverDesignID()
+{
+	return activeOverDesignID;
+}
+
+int PhotoboothSettings::getUserOverDesignID()
+{
+	return userOverDesignID;
+}
+
+int PhotoboothSettings::getActivePhotoCardStyleDesignID()
+{
+	return activePhotoCardStyleDesignID;
+}
+
+int PhotoboothSettings::getUserPhotoCardStyleDesignID()
+{
+	return userPhotoCardStyleDesignID;
+}
+
+

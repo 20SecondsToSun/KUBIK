@@ -46,6 +46,11 @@ namespace kubik
 				selection = value;
 			}
 
+			void swapSelection()
+			{
+				selection = !selection;
+			}
+
 			OneDesignItem getItem() const
 			{
 				return item;

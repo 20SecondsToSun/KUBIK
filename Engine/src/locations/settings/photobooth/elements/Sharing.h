@@ -21,7 +21,7 @@ namespace kubik
 				id(id)
 			{
 				IconPair icons(icon, settings->getEmptyIcon());
-				checker = CheckerSocialRef(new CheckerSocial(Rectf(0.0f, 0.0f, 131.0f, 78.0f), icons, id));				
+				checker = CheckerSocialRef(new CheckerSocial(ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(131.0f, 78.0f)), icons, id));				
 				checker->setActive(settings->getSocialState(id));
 				addChild(checker);
 			}
@@ -59,9 +59,9 @@ namespace kubik
 			}
 
 		private:
-			Font font;
+			ci::Font font;
 			TextItem text;			
-			Texture icon;
+			ci::gl::Texture icon;
 			PhtTextID id;
 			CheckerSocialRef checker;
 			PhotoboothSettingsRef settings;			
@@ -72,19 +72,19 @@ namespace kubik
 		class Sharing: public IPhotoboothItem
 		{
 		public:	
-			Sharing(PhotoboothSettingsRef phbSettings, Color color, int index)
+			Sharing(PhotoboothSettingsRef phbSettings, ci::Color color, int index)
 				:IPhotoboothItem(phbSettings, PhtTextID::PUBLISHING, color, index)
 			{				
-				typedef Pair<PhtTextID, Vec2f> PosPair;
-				vector<PosPair> pairs;
+				typedef Pair<PhtTextID, ci::Vec2f> PosPair;
+				std::vector<PosPair> pairs;
 
-				pairs.push_back(PosPair(PhtTextID::PRINTER,     Vec2f(134, 400)));
-				pairs.push_back(PosPair(PhtTextID::EMAIL,       Vec2f(134, 585)));
-				pairs.push_back(PosPair(PhtTextID::QRCODE,      Vec2f(134, 775)));
+				pairs.push_back(PosPair(PhtTextID::PRINTER,     ci::Vec2f(134.0f, 400.0f)));
+				pairs.push_back(PosPair(PhtTextID::EMAIL,       ci::Vec2f(134.0f, 585.0f)));
+				pairs.push_back(PosPair(PhtTextID::QRCODE,      ci::Vec2f(134.0f, 775.0f)));
 
-				pairs.push_back(PosPair(PhtTextID::FACEBOOK,    Vec2f(521, 400)));
-				pairs.push_back(PosPair(PhtTextID::VKONTAKTE,   Vec2f(521, 585)));
-				pairs.push_back(PosPair(PhtTextID::TWITTER,     Vec2f(521, 775)));
+				pairs.push_back(PosPair(PhtTextID::FACEBOOK,    ci::Vec2f(521.0f, 400.0f)));
+				pairs.push_back(PosPair(PhtTextID::VKONTAKTE,   ci::Vec2f(521.0f, 585.0f)));
+				pairs.push_back(PosPair(PhtTextID::TWITTER,     ci::Vec2f(521.0f, 775.0f)));
 
 				for (auto item : pairs)
 				{
@@ -104,18 +104,17 @@ namespace kubik
 			virtual void draw()
 			{
 				IPhotoboothItem::draw();
-				gl::color(ColorA(1,1,1,0.5));
-				//gl::draw(settings->getTexture("_shareTemp"), Vec2f(166, 0));
+				gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));
 			}
 
 			virtual void saveConfiguration()
 			{
 				for (auto item : list)
 					item->writeValue();
-			};
+			}
 
-		protected:
-			list<OneSharingItemRef> list;
+		private:
+			std::list<OneSharingItemRef> list;
 		};
 
 		typedef std::shared_ptr<Sharing> SharingRef;

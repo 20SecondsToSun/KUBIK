@@ -27,7 +27,7 @@
 	 "photoCardDesign": { "text" : "Выберите одну из тем или создайте свою",
 		   "font" : "helveticaLight", "size" : 24, "color" :  "ffff00"},
 
-	 "photoPrintCount": { "text" : "Сколько фотографий будет на листе при печати?\n Для трех фото Kubik предложит несколько шаблонов.",
+	 "photoPrintCount": { "text" : "Сколько фотографий будет на листе при печати?\nДля трех фото Kubik предложит несколько шаблонов.",
 		   "font" : "helveticaLight", "size" : 24, "color" :  "ffff00"},
 
 	 "overElements": { "text" : "Выберите одну из тем или создайте свою",

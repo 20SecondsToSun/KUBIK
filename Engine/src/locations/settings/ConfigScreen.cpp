@@ -41,15 +41,17 @@ void ConfigScreen::startUpParams()
 	initialGamesData = gamesData = gameSettings->getData();
 	initialScreensaverData = screensaverData = screenSaverSettings->getData();
 
-	console()<<"STARTUP!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 	mainConfig->setStartupData();
 	photoboothConfig->setPosition(Vec2f(1080, 0));
+
+	gameSettingsScreen = nullptr;
 }
 
 void ConfigScreen::start()
 {
 	startUpParams();	
 	mainConfig->connectEventHandler(&ConfigScreen::gamesBlockHandler, this);
+	mainConfig->connectEventHandler(&ConfigScreen::showingMainConfAnimationComplete,  this, MainConfig::SHOW_ANIM_COMPLETE);
 	mainConfig->startAnimation();
 }
 
@@ -114,17 +116,22 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	}
 	else if(typeid(*ev) == typeid(GameConfEvent))
 	{
-		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);	
-		addChild(photoboothConfig);
-		mainConfig->hideAnimate(EaseOutCubic(), 0.7f);
-		photoboothConfig->showAnimate(EaseOutCubic(), 0.7f);
+		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);		
+
+		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);
+
+		if (confEvent->getGameId() == GameId::PHOTOBOOTH)		
+			gameSettingsScreen = photoboothConfig;			
+
+		gameSettingsScreen->showAnimate(EaseOutCubic(), 0.7f);
+		addChild(gameSettingsScreen);		
+
 		console()<<"config game ID:::::: "<<confEvent->getGameId()<<endl;
 	}
 	else if(typeid(*ev) == typeid(BackToMainConfigEvent))
 	{
 		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
-		photoboothConfig->hideAnimate(EaseOutCubic(), 0.7f);
-		removeChild(photoboothConfig);
+		gameSettingsScreen->hideAnimate(EaseOutCubic(), 0.7f);
 	}	
 	if(typeid(*ev) == typeid(StatisticEvent))
 	{
@@ -138,6 +145,15 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	}	
 	
 	console()<<"EVENT:::::: "<<endl;	
+}
+
+void ConfigScreen::showingMainConfAnimationComplete()
+{
+	if(gameSettingsScreen)
+	{
+		removeChild(gameSettingsScreen);
+		gameSettingsScreen = nullptr;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////

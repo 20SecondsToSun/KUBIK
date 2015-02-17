@@ -25,8 +25,12 @@ namespace kubik
 					settings->getPhotoCount(PhtTextID::PHOTO_TREMPLATE_2));
 
 				photoTemplate1->setPosition(ci::Vec2f(148.0f, 388.0f));
-				photoTemplate2->setPosition(ci::Vec2f(490.0f, 388.0f));
-				photoTemplate1->setSelection(true);
+				photoTemplate2->setPosition(ci::Vec2f(490.0f, 388.0f));				
+
+				if (settings->getCurrentPhotoCount() == settings->getPhotoCount(PhtTextID::PHOTO_TREMPLATE_2))
+					photoTemplate2->setSelection(true);
+				else
+					photoTemplate1->setSelection(true);
 
 				addChild(photoTemplate1);
 				addChild(photoTemplate2);
@@ -34,7 +38,6 @@ namespace kubik
 
 			virtual void activateListeners()
 			{
-				console()<<"activate: listeners"<<endl;
 				photoTemplate1->connectEventHandler(&PhotoPrintCount::checkerClicked1, this);
 				photoTemplate2->connectEventHandler(&PhotoPrintCount::checkerClicked2, this);
 				IPhotoboothItem::activateListeners();
@@ -42,10 +45,7 @@ namespace kubik
 
 			virtual void mainTitleClicked(EventGUIRef& event)
 			{
-				if(state == OPEN) 
-					return;
-			
-				//mouseUpSignal(event);
+	
 			}
 
 			void checkerClicked1(EventGUIRef event)
@@ -54,7 +54,6 @@ namespace kubik
 				{
 					photoTemplate1->setSelection(true);
 					photoTemplate2->setSelection(false);
-					//mouseUpSignal(event);
 				}
 			}
 
@@ -64,7 +63,6 @@ namespace kubik
 				{
 					photoTemplate2->setSelection(true);
 					photoTemplate1->setSelection(false);
-					//mouseUpSignal(event);
 				}
 			}
 
@@ -77,8 +75,6 @@ namespace kubik
 
 			virtual void drawLayout()
 			{
-				//gl::color(ColorA(1,1,1,0.3));
-				//gl::draw(settings->getTexture("_photocount"));
 				gl::color(Color::white());			
 			}
 

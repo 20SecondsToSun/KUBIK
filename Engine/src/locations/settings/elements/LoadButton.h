@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextTools.h"
+#include "OpenSystemDirectoryEvent.h"
 #include "gui/SimpleSpriteButton.h"
 
 namespace kubik
@@ -13,7 +14,7 @@ namespace kubik
 		{
 		public:
 			LoadButton(ci::Rectf rect, TextItem textItem, ci::gl::Texture icon)
-				:SimpleSpriteButton(rect), textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
+				:SimpleSpriteButton(rect, OpenSystemDirectoryEventRef(new OpenSystemDirectoryEvent())), textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
 			{
 				tex = textTools().getTextField(textItem);
 				texPosX = 0.5 * (buttonArea.getWidth() - (tex.getWidth() + icon.getWidth() + 15.0f));

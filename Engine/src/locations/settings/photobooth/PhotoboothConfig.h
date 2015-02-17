@@ -8,59 +8,37 @@
 #include "elements/PhotoPrintCount.h"
 #include "elements/Sharing.h"
 #include "OpenPhotoBoothLayoutEvent.h"
+#include "GameSettingsSprite.h"
 
 namespace kubik 
 {
 	namespace config
 	{
-		class PhotoboothConfig: public Sprite
+		class PhotoboothConfig: public GameSettingsSprite
 		{
 		public:	
 			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
-				:Sprite(), leftMargin(165)				
+				:GameSettingsSprite(), leftMargin(165)				
 			{					
-				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 0));
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 1));
-				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x3e82df), 3));
-				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x5e6fd1), 2));
-				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x7e5cc2), 4));
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 0));
+				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x1f93e9), 1));
+				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x4976d2), 2));
+				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x6d5dbd), 3));
+				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 4));
 
-				addChild(sharing);
-				addChild(photoPrintCount);
 				addChild(photoOverElements);
-				addChild(photoCardStyles);				
-				addChild(photoFilters);		
-			}		
-
-			void activateListeners()
-			{
-				for (auto layout : displayList)	
-				{
-					layout->connectEventHandler(&PhotoboothConfig::mouseUpHandler, this);
-					layout->activateListeners();
-				}		
-
-				//fake
-				//setOpenItem(0);
-			}
-
-			void unActivateListeners()
-			{
-				for (auto layout : displayList)	
-				{
-					layout->disconnectEventHandler();
-					layout->unActivateListeners();
-				}
-			}
+				addChild(photoCardStyles);	
+				addChild(photoPrintCount);
+				addChild(photoFilters);
+				addChild(sharing);						
+			}			
 
 			void mouseUpHandler(EventGUIRef& _event)
 			{
 				EventGUI *ev = _event.get();
 				if(!ev)
 					return;
-
-				console()<<":::::::::::::::clicked::::::::::::::::::::"<<endl;
-
+		
 				if(typeid(*ev) == typeid(OpenPhotoBoothLayoutEvent))
 				{					
 					OpenPhotoBoothLayoutEventRef event = static_pointer_cast<OpenPhotoBoothLayoutEvent>(_event);	
@@ -75,19 +53,58 @@ namespace kubik
 				{
 					PhotoTemplateChooseEventRef event = static_pointer_cast<PhotoTemplateChooseEvent>(_event);	
 					console()<<"PhotoTemplateChooseEvent:::: "<<event->getCount()<<endl;
-				}		
+				}
+				else if(typeid(*ev) == typeid(ChangePhotoOverDesignEvent))
+				{
+					ChangePhotoOverDesignEventRef event = static_pointer_cast<ChangePhotoOverDesignEvent>(_event);	
+					console()<<"PhotoTemplateChooseEvent:::: "<<event->getItem().getID()<<endl;
+				}
+				else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
+				{
+					OpenSystemDirectoryEventRef event = static_pointer_cast<OpenSystemDirectoryEvent>(_event);	
+					console()<<"OpenSystemDirectoryEvent:::: "<<endl;
+				}
+				else if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
+				{
+					ChangePhotoCardStyleDesignEventRef event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(_event);	
+					console()<<"ChangePhotoCardStyleDesignEvent:::: "<<event->getItem().getID()<<endl;
+				}
+				else if(typeid(*ev) == typeid(ChangePhotoFilterPreviewActiveEvent))
+				{
+					ChangePhotoFilterPreviewActiveEventRef event = static_pointer_cast<ChangePhotoFilterPreviewActiveEvent>(_event);	
+					console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<endl;//event->getItem().getID()<<endl;
+				}				
+			}
+
+			void activateListeners()
+			{
+				for (auto layout : displayList)	
+				{
+					layout->connectEventHandler(&PhotoboothConfig::mouseUpHandler, this);
+					layout->activateListeners();
+				}	
+			}
+
+			void unActivateListeners()
+			{
+				for (auto layout : displayList)	
+				{
+					layout->disconnectEventHandler();
+					layout->unActivateListeners();
+				}
 			}
 
 			void setOpenItem(int index)
-			{	
+			{
 				for (auto layout : displayList)		
 				{
-					if (index == (static_pointer_cast<IPhotoboothItem>(layout))->getIndex())
-						(static_pointer_cast<IPhotoboothItem>(layout))->activateListeners();	
+					IPhotoboothItemRef ref = static_pointer_cast<IPhotoboothItem>(layout);
+					if (index == ref->getIndex())
+						ref->activateListeners();	
 					else
-						(static_pointer_cast<IPhotoboothItem>(layout))->unActivateListeners();
+						ref->unActivateListeners();
 			
-					(static_pointer_cast<IPhotoboothItem>(layout))->setOpenLayoutIndex(index);	
+					ref->setOpenLayoutIndex(index);	
 				}				
 			}	
 
@@ -95,7 +112,7 @@ namespace kubik
 			{	
 				animatePosition = getGlobalPosition();
 				unActivateListeners();
-				ci::Vec2f finPos = ci::Vec2f(166, 0.0f);
+				ci::Vec2f finPos = ci::Vec2f(166.0f, 0.0f);
 				timeline().apply( &animatePosition, finPos, time, eFunc)
 						.finishFn(bind( &PhotoboothConfig::showAnimationFinish, this))
 						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
@@ -114,7 +131,7 @@ namespace kubik
 			void hideAnimate(ci::EaseFn eFunc, float time)
 			{
 				unActivateListeners();
-				ci::Vec2f finPos = ci::Vec2f(1080, 0.0f);
+				ci::Vec2f finPos = ci::Vec2f(1080.0f, 0.0f);
 				timeline().apply( &animatePosition, finPos, time, eFunc)
 						.finishFn(bind( &PhotoboothConfig::hideAnimationFinish, this))
 						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));

@@ -15,6 +15,7 @@
 #include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
 #include "gui/Sprite.h"
+#include "GameSettingsSprite.h"
 
 using namespace std;
 using namespace ci;
@@ -63,6 +64,8 @@ namespace kubik
 
 		ButtonTextRef			saveChngBtn;
 		ButtonRef				closeBtn;
+
+		GameSettingsSpriteRef	gameSettingsScreen;
 	
 		vector<Changes> changes;
 
@@ -99,6 +102,8 @@ namespace kubik
 		
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
+
+		void showingMainConfAnimationComplete();
 		
 	};
 

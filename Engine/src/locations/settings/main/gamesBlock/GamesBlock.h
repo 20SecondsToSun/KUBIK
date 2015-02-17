@@ -47,7 +47,6 @@ namespace kubik
 			void draw()
 			{	
 				drawbg();
-
 				drawDecorationLine1();
 				Sprite::draw();
 			
@@ -57,11 +56,11 @@ namespace kubik
 
 			void drawbg()
 			{
-				float height = pGameblock->getHeight() + 27;
+				float height = pGameblock->getHeight() + 27.0f;
 				gl::color(ci::Color::hex(0x0d0917));
 				gl::pushMatrices();
 					gl::translate(getGlobalPosition());					
-					gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, 880.0f, height));
+					gl::drawSolidRect(ci::Rectf(ci::Vec2f::zero(), ci::Vec2f(880.0f, height)));
 				gl::popMatrices();
 				gl::color(ci::Color::white());
 			}
@@ -78,7 +77,7 @@ namespace kubik
 
 			void drawDecorationLine2()
 			{
-				float height = pGameblock->getHeight() + 27;
+				float height = pGameblock->getHeight() + 27.0f;
 				gl::pushMatrices();
 					gl::translate(getGlobalPosition());
 					gl::lineWidth(lineWidth);
@@ -112,7 +111,7 @@ namespace kubik
 			{
 				ci::Vec2f finPos = ci::Vec2f(100.0f, _localPosition.y);
 				timeline().apply( &animatePosition, finPos, time, eFunc)
-					.updateFn(bind( &GamesBlock::posAnimationUpdate, this))
+					.updateFn(bind( &GamesBlock::posAnimationUpdate,  this))
 					.finishFn(bind( &GamesBlock::showAnimationFinish, this));				
 			}
 
@@ -134,14 +133,12 @@ namespace kubik
 			GameSettingsRef gameSett;
 			ConfigSettingsRef configSett;
 
+			bool hasGamesInShop;
 			float lineWidth;
 			float lineLength;
 			float blockTopShiftY;
 
 			ci::ColorA lineColor;
-
-			bool hasGamesInShop;
-
 			ci::Anim<ci::Vec2f> animatePosition;
 		};	
 	}

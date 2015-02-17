@@ -6,5 +6,6 @@
    "staticPartDesignPath" : "data\\interface\\", 
    "userTemplatePartDesignPath" : "user_design\\templates\\",
    "photoOverDesignDataPath" : "data\\configs\\photobooth\\photoOverDesigns.txt",
-   "photoCardsStylesPath" : "data\\configs\\photobooth\\photoCardStyles.txt"
+   "photoCardsStylesPath" : "data\\configs\\photobooth\\photoCardStyles.txt",
+   "photoFiltersPreviewDesignDataPath" : "data\\configs\\photobooth\\filters.txt"
 }

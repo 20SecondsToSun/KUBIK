@@ -56,18 +56,7 @@ namespace kubik
 
 			bool hasAnyChanges(/*PhotoboothDataStruct val*/)
 			{
-				return false;/* (val.sharing.getSocialState(PhtTextID::EMAIL)	 != sharing.getSocialState(PhtTextID::EMAIL) ||
-							 val.sharing.getSocialState(PhtTextID::FACEBOOK)	 != sharing.getSocialState(PhtTextID::FACEBOOK) ||
-							 val.sharing.getSocialState(PhtTextID::PRINTER)	 != sharing.getSocialState(PhtTextID::PRINTER)||
-							 val.sharing.getSocialState(PhtTextID::QRCODE)	 != sharing.getSocialState(PhtTextID::QRCODE)||					
-							 val.sharing.getSocialState(PhtTextID::TWITTER)	 != sharing.getSocialState(PhtTextID::TWITTER)||
-							 val.sharing.getSocialState(PhtTextID::VKONTAKTE) != sharing.getSocialState(PhtTextID::VKONTAKTE)||
-							 val.isSticker			      != isSticker ||
-							 val.photoNum				  != photoNum ||
-							 val.seconds					  != seconds ||
-							 val.secondsBetweenShots		  != secondsBetweenShots ||
-							 val.activeSticker.id		  != activeSticker.id ||					
-							 val.activeBgPrint.id		  != activeBgPrint.id);	*/		
+				return false;	
 			}			
 
 			TextItem getMainTitle(PhtTextID id);
@@ -95,6 +84,24 @@ namespace kubik
 			{
 				return photoCardStyles;
 			}
+
+			DesignData getPhotoFiltersPreview()
+			{
+				return photoFiltersPreview;
+			}		
+
+			std::vector<int> getActiveFiltersIDs()
+			{
+				return activeFiltersIDs;
+			}
+
+			int getActiveOverDesignID();
+			int getUserOverDesignID();
+
+			int getActivePhotoCardStyleDesignID();
+			int getUserPhotoCardStyleDesignID();
+
+			int getCurrentPhotoCount();
 
 		private:
 			class Filter
@@ -129,6 +136,7 @@ namespace kubik
 				std::string bgPrintsPath;
 				std::string photoOverDesignDataPath;
 				std::string photoCardsStylesDesignDataPath;
+				std::string photoFiltersPreviewDesignDataPath;
 
 			public:
 				friend PhotoboothSettings;
@@ -157,7 +165,7 @@ namespace kubik
 
 			int seconds;
 			int secondsBetweenShots;
-			int photoNum, photoNumMax, photoNumMin;
+			int photoNum;
 			int templateId;			
 			int minPhotosShots;
 			int maxPhotosShots;		
@@ -167,6 +175,14 @@ namespace kubik
 			int maxCountTimer;
 			bool isCustomDesign;
 			bool isSticker;
+
+			int activeOverDesignID;
+			int userOverDesignID;
+
+			int activePhotoCardStyleDesignID;
+			int userPhotoCardStyleDesignID;
+
+			std::vector<int> activeFiltersIDs;
 	
 			ConfigPath					 configPaths;
 			Sharing						 sharing;
@@ -185,6 +201,7 @@ namespace kubik
 			
 			void parsePhotoOverDesigns();
 			void parsePhotoCardStyles();
+			void parsePhotoFiltersPreview();
 
 			void loadPhotoParams(JsonTree config);
 			void loadSocialParams(JsonTree config);
@@ -195,14 +212,20 @@ namespace kubik
 			void loadConfigTexts(JsonTree config);
 			void loadSharingIcons(JsonTree config);
 			void saveConfig();		
-			void findAllImagePrints(string path, std::vector<ImageElement> &prints, bool isCustom);	
+			void findAllImagePrints(std::string path, std::vector<ImageElement> &prints, bool isCustom);	
 
 			/////////////////////////////////
 
 			DesignData photoOverDesignData;		
 			DesignData photoCardStyles;
-						
+			DesignData photoFiltersPreview;
+
+			std::string getActiveOverDesignText();
+			std::string getActiveCardStyleText();		
+			std::string getActiveFiltersTexts();		
+			std::string getActivePublishingTexts();								
 		};	
+
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;
 	}
 }

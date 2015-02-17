@@ -19,8 +19,10 @@ namespace kubik
 		class MainConfig: public Sprite
 		{
 		public:
+			static const int SHOW_ANIM_COMPLETE = 0; 
+
 			MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSettings)
-				:Sprite(), configSettings(configSettings)
+				:Sprite(), configSettings(configSettings), gameSettings(gameSettings)
 			{			
 				setAlpha(1);
 
@@ -330,7 +332,7 @@ namespace kubik
 				activateListeners();
 			}
 
-			void hideAnimate(ci::EaseFn eFunc, float time)
+			void hideAnimate(GameId id, ci::EaseFn eFunc, float time)
 			{	
 				unActivateListeners();	
 
@@ -342,7 +344,9 @@ namespace kubik
 					.updateFn(bind( &MainConfig::alphAnimationUpdate, this))
 				.finishFn( bind( &MainConfig::hideAnimationFinish, this));
 
-				logo->animateToMiniState(eFunc, time);
+
+				Texture icon = gameSettings->getData().getPurchasedGameInfo(id).getIcons().activeIcon;
+				logo->animateToMiniState(icon, eFunc, time);
 				closeBlock->animateToMiniState(eFunc, time, finPos);
 			}
 
@@ -369,11 +373,14 @@ namespace kubik
 
 			void showAnimationFinish()
 			{
+				if(eventHandlerDic[SHOW_ANIM_COMPLETE])					
+						eventHandlerDic[SHOW_ANIM_COMPLETE]();					
 				activateListeners();
 			}			
 
 		private:
 			ConfigSettingsRef	configSettings;
+			GameSettingsRef		gameSettings;
 			CloseBlockRef		closeBlock;
 			TitleRef			title;
 			StartNewActivityRef startNewActivity;

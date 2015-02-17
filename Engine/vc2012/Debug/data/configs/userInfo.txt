@@ -3,7 +3,7 @@
    "lang" : "ru",
    "gamesAvailable" : [
       {
-         "id" : 1,
+         "id" : 2,
 		 "name": "Photobooth",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
@@ -17,7 +17,7 @@
 		 "miniIcon" : "miniIcon1.png"
       },
       {
-         "id" : 2,
+         "id" : 1,
 		 "name": "Funces",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",

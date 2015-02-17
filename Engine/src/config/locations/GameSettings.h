@@ -90,6 +90,19 @@ namespace kubik
 				return _gamesSelect;
 			}
 
+			GamesInfo getPurchasedGameInfo(GameId id)
+			{
+				for (auto game: games)
+				{
+					if(game.isPurchased && id == game.id)
+						return game;
+				}
+
+				GamesInfo null;
+
+				return null;
+			}
+
 			friend GameSettings;
 		};
 

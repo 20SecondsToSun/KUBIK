@@ -60,12 +60,29 @@ namespace kubik
 				return iq;				
 			}
 
+			PhotoOverButtonRef createPhotoOverButton(OneDesignItem item, ci::Vec2f pos)
+			{				
+				PhotoOverButtonRef iq = PhotoOverButtonRef(new PhotoOverButton(item, pos));	
+				return iq;				
+			}
+
+			PhotoCardStyleButtonRef createCardStyleButton(OneDesignItem item, ci::Vec2f pos)
+			{				
+				PhotoCardStyleButtonRef iq = PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, pos));	
+				return iq;				
+			}
+
+			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, ci::Vec2f pos)
+			{
+				PhotoFilterPreviewButtonRef iq = PhotoFilterPreviewButtonRef(new PhotoFilterPreviewButton(item, pos));	
+				return iq;	
+			}
+
 			PhotoCountTemplateButtonRef createPhotoCountTemplateButton(ci::gl::Texture tex, PhtTextID item, int count, ci::Vec2f pos = Vec2f::zero())
 			{	
 				PhotoCountTemplateButtonRef iq = PhotoCountTemplateButtonRef(new PhotoCountTemplateButton(tex, phtSettings->getTextItem(item), phtSettings->getFont("introb210"), count, pos));	
 				return iq;				
 			}
-
 			void inject(ConfigSettingsRef configSettings)
 			{
 				settings = configSettings;
