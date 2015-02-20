@@ -151,8 +151,17 @@
     <Filter Include="Source Files\config\games\photobooth">
       <UniqueIdentifier>{4e963074-0b4f-42c7-b108-ea24e016e527}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\locations\settings\instagram">
+    <Filter Include="Source Files\locations\settings\instakub">
       <UniqueIdentifier>{928073c5-b8e1-4836-ae4f-292539430614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\games\instakub">
+      <UniqueIdentifier>{6d937441-2e7f-43cc-b804-2c20189027dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\services">
+      <UniqueIdentifier>{95ef188d-0982-482b-991f-f55d64822582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\services\virtualKeyboard">
+      <UniqueIdentifier>{d314694c-f172-4f52-8a0b-c0a9aae775da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp">
       <Filter>Source Files\config\games\photobooth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp">
+      <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -682,6 +694,33 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h">
       <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\locations\InstakubSettings.h">
+      <Filter>Source Files\config\games\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\SearchBlock.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\PhotoCardStyle.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\HashChecker.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\HashCheckerEvent.h">
+      <Filter>Source Files\events\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.h">
+      <Filter>Source Files\services\virtualKeyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\virtualKeyboard\VirtualKeyboard.h">
+      <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

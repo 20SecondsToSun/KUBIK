@@ -42,8 +42,6 @@ void ConfigScreen::startUpParams()
 	initialScreensaverData = screensaverData = screenSaverSettings->getData();
 
 	mainConfig->setStartupData();
-	photoboothConfig->setPosition(Vec2f(1080, 0));
-
 	gameSettingsScreen = nullptr;
 }
 
@@ -60,6 +58,7 @@ void ConfigScreen::stop()
 	mainConfig->disconnectEventHandler();
 	mainConfig->unActivateListeners();
 	photoboothConfig->unActivateListeners();
+	instakubConfig->unActivateListeners();
 }
 
 void ConfigScreen::init()
@@ -75,7 +74,9 @@ void ConfigScreen::init(ISettingsRef settings)
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	photoboothConfig		= PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));	
-	//addChild(photoboothConfig);
+	
+	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
+	instakubConfig		= InstakubConfigRef(new InstakubConfig(instaSettings));	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -87,16 +88,6 @@ void ConfigScreen::init(ISettingsRef settings)
 void ConfigScreen::draw()
 {
 	Sprite::draw();
-	//mainConfig->draw();
-	//photoboothConfig->draw();
-	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
-	Texture tempBg = configSettings->getTexture("temp");
-	//gl::draw(tempBg, Vec2f(0.0f, getWindowHeight() - tempBg.getHeight()));
-	//tempBg = configSettings->getTexture("appsTemp");
-	//gl::draw(tempBg);//,  Vec2f(1080.0f, 10.0f - 500));
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.5f));	
-	
-	//gl::color(Color::white());	
 }
 
 void ConfigScreen::closeLocationHandler(EventRef& event)
@@ -121,8 +112,11 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);
 
 		if (confEvent->getGameId() == GameId::PHOTOBOOTH)		
-			gameSettingsScreen = photoboothConfig;			
+			gameSettingsScreen = photoboothConfig;	
+		if (confEvent->getGameId() == GameId::INSTAKUB)		
+			gameSettingsScreen = instakubConfig;	
 
+		gameSettingsScreen->setPosition(Vec2f(1080, 0));
 		gameSettingsScreen->showAnimate(EaseOutCubic(), 0.7f);
 		addChild(gameSettingsScreen);		
 

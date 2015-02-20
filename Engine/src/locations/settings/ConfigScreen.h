@@ -14,6 +14,8 @@
 
 #include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
+#include "InstakubConfig.h"
+
 #include "gui/Sprite.h"
 #include "GameSettingsSprite.h"
 
@@ -52,9 +54,6 @@ namespace kubik
 		void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
 		void setMenuSettings(MenuSettingsRef menuSettings);
 		void setGameSettings(GameSettingsRef gameSettings);
-
-		//void activateListeners();
-		//void unActivateListeners();
 	
 	private:
 		ConfigSettingsRef		configSettings;
@@ -67,7 +66,7 @@ namespace kubik
 
 		GameSettingsSpriteRef	gameSettingsScreen;
 	
-		vector<Changes> changes;
+		std::vector<Changes> changes;
 
 		//PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
 		MenuSettings::MenuDataStruct menuData, initialMenuData;		
@@ -76,6 +75,7 @@ namespace kubik
 
 		MainConfigRef mainConfig; 
 		PhotoboothConfigRef photoboothConfig;
+		InstakubConfigRef instakubConfig;
 
 		void update();
 		void closeLocationHandler(EventRef& event);
@@ -103,8 +103,7 @@ namespace kubik
 		void setDefaultGameIdInSwitchOnGames();
 		void setReloadGamePropertyIfNeedIt(Changes &chng);
 
-		void showingMainConfAnimationComplete();
-		
+		void showingMainConfAnimationComplete();		
 	};
 
 	typedef shared_ptr<ConfigScreen> ConfigScreenRef;	

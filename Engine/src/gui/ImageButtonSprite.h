@@ -24,7 +24,7 @@ namespace kubik
 		{
 			gl::color(Color::white());	
 			gl::color(color);		
-			gl::draw(image);		
+			gl::draw(image, Vec2f(0, 3));		
 			gl::color(Color::white());	
 			//gl::drawSolidRect(buttonArea);
 		}

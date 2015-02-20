@@ -8,12 +8,12 @@ namespace kubik
 	public:
 		GameCheckerEvent(bool isActive, int gameID):isActive(isActive), gameID(gameID)
 		{
-			console()<<"new checker event----------------"<<endl;
+			//console()<<"new checker event----------------"<<endl;
 		}
 
 		~GameCheckerEvent()
 		{
-			console()<<"delete checker event----------------"<<endl;
+			//console()<<"delete checker event----------------"<<endl;
 		}
 
 		bool getValue()

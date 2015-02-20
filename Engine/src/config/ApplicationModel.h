@@ -50,6 +50,12 @@ namespace kubik
 			photoboothConfigObject.setParamsConfigPath(getFullPath(phtJSON.getChild("params").getValue<string>()));
 			photoboothConfigObject.setLabelsConfigPath(getFullPath(phtJSON.getChild("labels").getValue<string>()));
 			photoboothConfigObject.setConstsConfigPath(getFullPath(phtJSON.getChild("consts").getValue<string>()));
+
+
+			JsonTree instaJSON = configJSON.getChild("instakubConfig");
+			instakubConfigObject.setPathsConfigPath(getFullPath(instaJSON.getChild("path").getValue<string>()));
+			instakubConfigObject.setParamsConfigPath(getFullPath(instaJSON.getChild("params").getValue<string>()));
+			instakubConfigObject.setLabelsConfigPath(getFullPath(instaJSON.getChild("labels").getValue<string>()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////
@@ -244,12 +250,17 @@ namespace kubik
 		//				GET
 		//
 		////////////////////////////////////////////////////////////////////////////
-		ConfigObject photoboothConfigObject;
+		ConfigObject photoboothConfigObject, instakubConfigObject;
+
 		const ConfigObject& getConfigObject(settings::id id)
 		{
 			if (id == settings::id::PHOTOBOOTH)
 			{
 				return photoboothConfigObject;
+			}
+			else if (id == settings::id::INSTAKUB)
+			{
+				return instakubConfigObject;
 			}
 		}
 

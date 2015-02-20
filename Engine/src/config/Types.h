@@ -37,7 +37,8 @@ namespace kubik
 			UNDEFINED = 0,
 			FUNCES = 1,
 			PHOTOBOOTH = 2,
-			KOTOPOZA = 3
+			INSTAKUB = 3,
+			KOTOPOZA = 4
 		};
 	}
 
@@ -78,7 +79,8 @@ namespace kubik
 	{
 		enum id
 		{
-			PHOTOBOOTH
+			PHOTOBOOTH,
+			INSTAKUB
 		};
 	}
 

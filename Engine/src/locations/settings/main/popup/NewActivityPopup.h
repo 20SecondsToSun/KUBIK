@@ -4,6 +4,7 @@
 #include "gui/CompositeDispatcher.h"
 #include "StartNewActivityEvent.h"
 #include "CloseActivityEvent.h"
+#include "VirtualKeyboard.h"
 #include "gui/SimpleSpriteButton.h"
 #include "gui/Sprite.h"
 
@@ -29,7 +30,8 @@ namespace kubik
 				titlesColor(ci::ColorA::white()),
 				inputFieldColor(ci::Color::hex(0xe5e9f2)),
 				btnStartColor(ci::Color::hex(0x6798ff)),
-				closeIcon(configSett->getTexture("closePrinterIcon"))	
+				closeIcon(configSett->getTexture("closePrinterIcon")),
+				inputField(configSett->getTexture("inputField"))	
 			{
 				mainTitle	= textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_ASK_TITLE), true, -10);
 				subTitle	= textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_DESQR), true, -8);
@@ -44,8 +46,11 @@ namespace kubik
 				CloseActivityEventRef  closeEvent = CloseActivityEventRef(new CloseActivityEvent());
 				closeBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(ci::Rectf(closeBtnPos, closeBtnPos + ci::Vec2f(allWidth, 40)), closeEvent));						
 			
+
+				yPositionInputField = 200;//932.0f;
+				inputFieldPos = Vec2f(0.5f * (1080.0f - inputField.getWidth()), yPositionInputField);
 				StartNewActivityEventRef  startEvent = StartNewActivityEventRef(new StartNewActivityEvent());
-				startBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(ci::Rectf(750, 932, 962 , 1072), startEvent));						
+				startBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(ci::Rectf(750, yPositionInputField, 962 , yPositionInputField + 140), startEvent));				
 			}			
 
 			virtual void draw()
@@ -53,9 +58,10 @@ namespace kubik
 				gl::pushMatrices();				
 				gl::translate(getGlobalPosition());			
 					drawBackgrounds();
-					drawTitles();
+					//drawTitles();
 					drawInputFieldBackground();
-					drawCloseBlock();				
+					drawCloseBlock();	
+					touchKeyboard().draw();
 				gl::popMatrices();
 				Sprite::draw();
 			}
@@ -82,21 +88,22 @@ namespace kubik
 
 			void drawInputFieldBackground()
 			{				
-				gl::color(inputFieldColor);
+				/*
 				gl::drawSolidRoundedRect(ci::Rectf(130, 932, 130 + 828, 932 + 140), 7);
 				gl::color(btnStartColor);
-				gl::drawSolidRoundedRect(ci::Rectf(752, 932, 962, 1072), 7);	
-				gl::drawSolidRect(ci::Rectf(750, 932, 760 , 1072), 7);	
-
+				gl::drawSolidRoundedRect(ci::Rectf(752.0, 932.0, 962.0, 1072.0), 7);	
+				gl::drawSolidRect(ci::Rectf(750.0f, 932.0, 760.0, 1072.0), 7);	*/
+				gl::color(inputFieldColor);
+				gl::draw(inputField, inputFieldPos);
 				gl::color(titlesColor);
-				gl::draw(begin, ci::Vec2f( 750 + 0.5 * (210 - begin.getWidth()), 932 + 0.5 * (142 - begin.getHeight())));	
+				gl::draw(begin, ci::Vec2f( 750.0 + 0.5 * (210 - begin.getWidth()), yPositionInputField + 0.5 * (142 - begin.getHeight())));	
 			}
 
 			void drawCloseBlock()
 			{	
 				gl::color(titlesColor);
 				gl::draw(closeIcon, closeBtnPos);
-				gl::draw(closeTitle, closeBtnPos + Vec2f(20 + closeIcon.getWidth(), - 5));		
+				gl::draw(closeTitle, closeBtnPos + Vec2f(20 + closeIcon.getWidth(), -1));		
 			}
 
 			virtual void setAlpha(float  alpha)
@@ -115,6 +122,8 @@ namespace kubik
 				timeline().apply(&alpha, 0.97f, time, eFunc)
 					.updateFn(bind( &NewActivityPopup::alphAnimationUpdate, this))
 					.finishFn( bind( &NewActivityPopup::showAnimationFinish, this));
+
+				touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 621, inputFieldPos.y + 139);
 			}
 
 			void hide(EaseFn eFunc = EaseOutCubic(), float time = 0.3f)
@@ -136,7 +145,20 @@ namespace kubik
 					eventHandlerDic[OPENED]();
 					closeBtn->connectEventHandler(&NewActivityPopup::closeHandler, this);
 					startBtn->connectEventHandler(&NewActivityPopup::newCompainHandler, this);
-				}		
+				}	
+
+				
+				//touchKeyboard().setEraseButtonVisible(false);
+				touchKeyboard().setOriginPoint(Vec2f(0, 0));
+				touchKeyboard().connectKeyboard();
+				touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
+				//touchKeyboard().connectEventHandler(&KeyboardApp::keyTouchHandler,	 this, VirtualKeyboard::KEY_TOUCH);	
+			}
+
+			void inputTouchHandler()
+			{
+				console()<<"inputTouchHandler"<<endl;
+				touchKeyboard().show(ci::Vec2f(30, 800), Vec2f(30, 460), 0.7);
 			}
 
 			void closeHandler(EventGUIRef& event)
@@ -160,23 +182,29 @@ namespace kubik
 			void disconnect()
 			{
 				closeBtn->disconnectEventHandler();
-				startBtn->disconnectEventHandler();
+				startBtn->disconnectEventHandler();	
+
+				touchKeyboard().disconnectEventHandler(VirtualKeyboard::INPUT_TOUCH);	
+				//touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::HIDED);
+				touchKeyboard().disconnectKeyboard();
+				touchKeyboard().hide(ci::Vec2f(30, 1200), 0.3);
 			}
 
 			void hideAnimationFinish()
 			{
-				if(eventHandlerDic[HIDED])
-					eventHandlerDic[HIDED]();
+				callback(HIDED);				
 			}
 	
 		protected:
 			ConfigSettingsRef configSett;
 			ci::ColorA bgColor, headColor, titlesColor, inputFieldColor, btnStartColor;
 			ci::Anim<float> alpha;
-			ci::gl::Texture subTitle, mainTitle, title, begin, closeIcon, closeTitle;			
+			ci::gl::Texture subTitle, mainTitle, title, begin, closeIcon, closeTitle, inputField;			
 
 			SimpleSpriteButtonRef closeBtn, startBtn;
-			ci::Vec2f closeBtnPos;
+			ci::Vec2f closeBtnPos, inputFieldPos;
+
+			float yPositionInputField;
 		};
 	}
 }

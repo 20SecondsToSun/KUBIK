@@ -22,7 +22,7 @@ namespace kubik
 			{
 				gl::color(color);
 				gl::draw(icon);					
-				textTools().textFieldDraw(textItem, Vec2f(42, -5));			
+				textTools().textFieldDraw(textItem, Vec2f(42, -1));			
 			}
 
 			void setAlpha(float  alpha)

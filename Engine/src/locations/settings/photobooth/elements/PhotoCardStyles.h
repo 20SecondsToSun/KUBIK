@@ -11,7 +11,7 @@ namespace kubik
 			PhotoCardStyles(PhotoboothSettingsRef phbSettings, ci::Color color, int index)
 				:IPhotoboothItem(phbSettings, PhtTextID::CARD_STYLE, color, index)
 			{
-				DesignData designdata = settings->getPhotoOverDesignData();				
+				DesignData designdata = settings->getPhotoCardStyles();				
 
 				ci::Vec2f pos = ci::Vec2f::zero();
 				int i = 0;

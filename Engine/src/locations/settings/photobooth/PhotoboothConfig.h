@@ -1,6 +1,4 @@
 #pragma once
-#include "gui/Sprite.h"
-
 #include "elements/IPhotoboothItem.h"
 #include "elements/PhotoFilters.h"
 #include "elements/PhotoOverElements.h"
@@ -20,11 +18,11 @@ namespace kubik
 			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
 				:GameSettingsSprite(), leftMargin(165)				
 			{					
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 0));
+				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 4));
 				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x1f93e9), 1));
 				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x4976d2), 2));
 				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x6d5dbd), 3));
-				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 4));
+				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 0));
 
 				addChild(photoOverElements);
 				addChild(photoCardStyles);	

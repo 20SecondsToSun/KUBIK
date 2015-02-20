@@ -121,7 +121,10 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
-	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameResources());	
+
+
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));	
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));	
 
 	graphicsLoader->load();
 }
@@ -156,6 +159,8 @@ void Controller::removeGraphicsLoadingConnections()
 void Controller::createLocations()
 {	
 	console()<<"create locations"<<endl;
+
+	touchKeyboard().setup();
 
 	//screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
 	//menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	

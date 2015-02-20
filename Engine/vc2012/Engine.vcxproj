@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -130,6 +130,7 @@
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
+    <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
     <ClCompile Include="..\src\srdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -155,6 +156,7 @@
     <ClInclude Include="..\src\config\DesignData.h" />
     <ClInclude Include="..\src\config\locations\FuncesSettings.h" />
     <ClInclude Include="..\src\config\locations\GameSettings.h" />
+    <ClInclude Include="..\src\config\locations\InstakubSettings.h" />
     <ClInclude Include="..\src\config\locations\ISettings.h" />
     <ClInclude Include="..\src\config\exception\KubikException.h" />
     <ClInclude Include="..\src\config\locations\MenuSettings.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="..\src\events\settings\GameCheckerEvent.h" />
     <ClInclude Include="..\src\events\settings\GameConfEvent.h" />
     <ClInclude Include="..\src\events\settings\GameShowUrlEvent.h" />
+    <ClInclude Include="..\src\events\settings\HashCheckerEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenSystemDirectoryEvent.h" />
     <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h" />
@@ -243,6 +246,11 @@
     <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h" />
     <ClInclude Include="..\src\locations\settings\elements\ImageQuadroButton.h" />
     <ClInclude Include="..\src\locations\settings\elements\LoadButton.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\HashChecker.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\PhotoCardStyle.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\SearchBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\CloseBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\DesignBlock.h" />
@@ -281,6 +289,8 @@
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
+    <ClInclude Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.h" />
+    <ClInclude Include="..\src\services\virtualKeyboard\VirtualKeyboard.h" />
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\tools\FileTools.h" />
     <ClInclude Include="..\src\tools\JsonTools.h" />

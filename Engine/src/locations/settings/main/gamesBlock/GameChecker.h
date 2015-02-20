@@ -12,10 +12,12 @@ namespace kubik
 		class GameChecker: public Checker
 		{
 		public:
-			GameChecker(ci::Rectf rect, GamesInfo info, ci::Color activeColor = ci::Color::hex(0x00b6c4), ci::Color unActiveColor = ci::Color::hex(0x373049))
-				:Checker(rect, info.getIcons()), info(info)
+			GameChecker(ci::Rectf rect, GamesInfo info, ci::Color activeColor = ci::Color::hex(0x00b6c4), ci::Color unActiveColor = ci::Color::hex(0x08060f))
+				:Checker(rect, info.getIcons(), activeColor, unActiveColor), info(info)
 			{
 				setActive(info.isGameOn());
+				setBorderColorUnActive(ci::Color::hex(0x191425));
+				setBorderColorActive(ci::Color::hex(0x242135));
 				event = GameCheckerEventRef(new GameCheckerEvent(isActive, info.getGameId()));
 			}	
 

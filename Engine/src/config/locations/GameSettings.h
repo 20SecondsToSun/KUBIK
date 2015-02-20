@@ -3,6 +3,7 @@
 #include "ISettings.h"
 #include "FuncesSettings.h"
 #include "PhotoboothSettings.h"
+#include "InstakubSettings.h"
 #include "Types.h"
 
 using namespace std;
@@ -153,10 +154,14 @@ namespace kubik
 					gameSettingsMap[game.id]  = FuncesSettingsRef(new FuncesSettings(model));	
 					break;
 
+				case  GameId::INSTAKUB:
+					gameSettingsMap[game.id]  = InstakubSettingsRef(new InstakubSettings(model));	
+					break;
+
 				default:
 					continue;
 				}
-
+			
 				try	
 				{	
 					gameSettingsMap[game.id]->load();
@@ -178,7 +183,9 @@ namespace kubik
 				try	
 				{	
 					if(GameId::PHOTOBOOTH == game.id)
-					gameSettingsMap[game.id]->buildData();
+						gameSettingsMap[game.id]->buildData();
+					if(GameId::INSTAKUB == game.id)
+						gameSettingsMap[game.id]->buildData();
 				}
 				catch(...)
 				{

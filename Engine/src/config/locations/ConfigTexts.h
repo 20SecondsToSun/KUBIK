@@ -24,7 +24,7 @@ namespace kubik
 				dic[key] = item;
 			}
 
-			const TextItem& get(const std::string& lang, EnumID id)
+			TextItem get(const std::string& lang, EnumID id)
 			{
 				auto key = std::make_pair(lang, id);
 				return dic[key];
@@ -37,7 +37,7 @@ namespace kubik
 
 			void setDic(DicType dic)
 			{
-				console()<<"set dictionary::  "<<dic.size()<<endl;
+				//console()<<"set dictionary::  "<<dic.size()<<endl;
 				this->dic = dic;
 			}
 

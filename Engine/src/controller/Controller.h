@@ -19,6 +19,8 @@
 #include "Photobooth.h"
 #include "Funces.h"
 
+#include "VirtualKeyboard.h"
+
 using namespace std;
 
 namespace kubik

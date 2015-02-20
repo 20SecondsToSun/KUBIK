@@ -93,6 +93,12 @@ namespace kubik
 			buttonArea = rectf;
 		}
 
+		void setButtonArea1(Rectf rect)
+		{
+			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 
+			setPosition(Vec2f(rect.x1, rect.y1));	
+		}
+
 		void setColor(Color color)
 		{
 			this->color = color;

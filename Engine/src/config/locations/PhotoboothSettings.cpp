@@ -315,7 +315,6 @@ void PhotoboothSettings::buildData()
 
 	auto dic = configTexts.getDic();
 
-	logger().log(to_string(dic.size()));		
 	for (auto it = dic.begin(); it != dic.end(); ++it)	
 		it->second.setFont(fonts);		
 
@@ -390,7 +389,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 
 	addToDictionary("introLight44",     createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToDictionary("helveticaLight24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
 	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));

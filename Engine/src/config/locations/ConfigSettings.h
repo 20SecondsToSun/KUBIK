@@ -129,7 +129,7 @@ namespace kubik
 					string lang	= it.getChild("lang").getValue<string>();	
 					txts.insert(lang, TextID::SWITCH_OFF,	jtools().parseTextItem(it.getChild("switchoff")));
 					txts.insert(lang, TextID::CONFIG,		jtools().parseTextItem(it.getChild("config")));
-					txts.insert(lang, TextID::STAT,		jtools().parseTextItem(it.getChild("stat")));
+					txts.insert(lang, TextID::STAT,			jtools().parseTextItem(it.getChild("stat")));
 					txts.insert(lang, TextID::NOTINSTALL,	jtools().parseTextItem(it.getChild("notinstall")));				
 				}
 			
@@ -211,7 +211,7 @@ namespace kubik
 			addToDictionary("helveticaLight20",  createFontResource(getFontsPath("HelveticaLight.ttf"), 20));
 			addToDictionary("helvetica90",		 createFontResource(getFontsPath("Helvetica Neue.ttf"), 90));
 			addToDictionary("helvetica20",		 createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
-			addToDictionary("helveticaLight24",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+			addToDictionary("helveticaLight24",  createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 			addToDictionary("helveticaLight36",  createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
 
 			addToDictionary("introBold110",		 createFontResource(getFontsPath("introb.ttf"), 110));
@@ -237,6 +237,8 @@ namespace kubik
 			addToDictionary("circles",			 createImageResource(getDesignPath() + "circles.png"));
 			addToDictionary("loadIcon",			 createImageResource(getDesignPath() + "loadIcon.png"));
 			addToDictionary("closePrinterIcon",	 createImageResource(getDesignPath() + "main/closePrinterIcon.png"));
+			addToDictionary("inputField",		 createImageResource(getDesignPath() + "main/inputField.png"));
+			
 			
 
 			addToDictionary("ssCheckerOn",		 createImageResource(getDesignPath() + "main/ssCheckerOn.png"));

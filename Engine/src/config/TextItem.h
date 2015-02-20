@@ -46,7 +46,7 @@ namespace kubik
 			this->size = size;
 		}
 
-		void setColor(string color)
+		void setColor(std::string color)
 		{			
 			this->color = ci::ColorA::hex(std::stoi(color, 0, 16));
 		}
@@ -74,8 +74,8 @@ namespace kubik
 
 	private:
 		std::string text;
-
 		std::string fontName;
+
 		int size;
 		ci::ColorA color;
 		ci::Font font;

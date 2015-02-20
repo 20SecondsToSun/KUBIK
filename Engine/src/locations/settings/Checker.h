@@ -13,6 +13,8 @@ namespace kubik
 		public:
 			Checker(ci::Rectf rect, IconPair icons, ci::Color activeColor = ci::Color::hex(0x00b6c4), ci::Color unActiveColor = ci::Color::hex(0x373049))
 				:SimpleSpriteButton(rect),
+				activeBordercolor(ci::Color::hex(0xbc6d10)),
+				unActiveBordercolor(ci::Color::hex(0xa05b09)),
 				icons(icons),
 				icon(icons.unActiveIcon),
 				isActive(false),				
@@ -44,7 +46,9 @@ namespace kubik
 				gl::color(color);
 				gl::drawSolidRoundedRect(buttonArea, radius, 200.0f);
 				gl::color(Color::white());
-
+				gl::color(borderColor);
+				gl::drawStrokedRoundedRect(buttonArea, radius, 200.0f);
+				gl::color(Color::white());
 				gl::pushMatrices();		
 				gl::translate(sdvigX + buttonArea.x1, buttonArea.y1 - 3.0f);
 				gl::color(iconColor);
@@ -65,12 +69,14 @@ namespace kubik
 				if(isActive)
 				{
 					color  = activeColor;
+					borderColor = activeBordercolor;
 					icon   = icons.activeIcon;
 					sdvigX = finishX;
 				}
 				else
 				{
 					color  = unActiveColor;
+					borderColor = unActiveBordercolor;
 					icon   = icons.unActiveIcon;
 					sdvigX = startX;
 				}
@@ -98,14 +104,27 @@ namespace kubik
 
 			void swapActive()
 			{
+				console()<<"active::::::::::::::::  "<<isActive<<endl;
 				setActive(!isActive);
 			}
+
+			void setBorderColorActive(ci::ColorA color)
+			{
+				activeBordercolor = color;
+				setActive(isActive);
+			}
+
+			void setBorderColorUnActive(ci::ColorA color)
+			{
+				unActiveBordercolor = color;
+				setActive(isActive);
+			}	
 
 		protected:
 			float sdvigX;
 			float radius, startX, finishX;
 			bool isActive;
-			ci::ColorA color, iconColor;
+			ci::ColorA color, borderColor, iconColor, activeBordercolor, unActiveBordercolor;
 			ci::Color activeColor, unActiveColor;
 			
 			IconPair icons;

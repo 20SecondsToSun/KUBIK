@@ -20,7 +20,7 @@ namespace kubik
 				settings(settings),
 				id(id)
 			{
-				IconPair icons(icon, settings->getEmptyIcon());
+				IconPair icons(icon, icon);
 				checker = CheckerSocialRef(new CheckerSocial(ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(131.0f, 78.0f)), icons, id));				
 				checker->setActive(settings->getSocialState(id));
 				addChild(checker);

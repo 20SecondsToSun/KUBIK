@@ -54,7 +54,6 @@ namespace kubik
 		{
 			ci::TextLayout simple;
 			simple.clear(ColorA(1,1,1,0));
-		
 			simple.setFont( item.getFont());
 			simple.setColor(item.getColor());
 			

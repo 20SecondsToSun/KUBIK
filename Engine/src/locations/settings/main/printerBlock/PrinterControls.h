@@ -68,18 +68,18 @@ namespace kubik
 
 			virtual void drawLayout()
 			{
-				gl::color(Color::hex(0x171521));
-				gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 400.0f));				
-				gl::color(Color::white());
-				textTools().textFieldDraw(titleText1, Vec2f(150, 95));
-				textTools().textFieldDraw(titleText2, Vec2f(157, 158));
+				gl::color(ci::Color::hex(0x171521));
+				gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, getWindowWidth(), 400.0f));				
+				gl::color(ci::Color::white());
+				textTools().textFieldDraw(titleText1, ci::Vec2f(150, 95));
+				textTools().textFieldDraw(titleText2, ci::Vec2f(157, 158));
 
-				textTools().textFieldDraw(iErrorText, Vec2f(202, 242));
-				gl::draw(closeIcon, Vec2f(160, 248));
+				textTools().textFieldDraw(iErrorText, ci::Vec2f(202, 246));
+				gl::draw(closeIcon, ci::Vec2f(160, 248));
 
-				gl::color(Color::hex(0x6798ff));
+				gl::color(ci::Color::hex(0x6798ff));
 				gl::drawSolidRoundedRect(okButtonArea, 7);	
-				gl::color(Color::white());
+				gl::color(ci::Color::white());
 				textTools().textFieldDraw(changedText, okTextPos);
 			}
 
@@ -91,10 +91,10 @@ namespace kubik
 		private:
 			ConfigSettingsRef	configSettings;
 			TextItem titleText1, titleText2, iErrorText, changedText;
-			Texture closeIcon;
+			ci::gl::Texture closeIcon;
 
-			Rectf okButtonArea, closeButtonArea;
-			Vec2f okTextPos;
+			ci::Rectf okButtonArea, closeButtonArea;
+			ci::Vec2f okTextPos;
 
 			SimpleSpriteButtonRef closeBtn, closeBtnBig, okBtn;
 		};

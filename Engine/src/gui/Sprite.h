@@ -220,6 +220,11 @@ namespace kubik
 			lock = false;
 		}
 
+		void callback(int id)
+		{
+			if(eventHandlerDic[id])
+				eventHandlerDic[id]();
+		}
 
 	protected:
 		bool lock;

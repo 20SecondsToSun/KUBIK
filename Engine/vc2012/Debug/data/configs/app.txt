@@ -9,6 +9,9 @@
 			     "consts":"data\\configs\\photobooth\\consts.txt",
 			     "labels":"data\\configs\\photobooth\\labels.txt"},
 
+   "instakubConfig" : {"path":"data\\configs\\instakub\\path.txt",
+			     "params":"data\\configs\\instakub\\params.txt",		
+			     "labels":"data\\configs\\instakub\\labels.txt"},
 
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
    "tuneUpConfigPath" : "data\\configs\\config.txt",
