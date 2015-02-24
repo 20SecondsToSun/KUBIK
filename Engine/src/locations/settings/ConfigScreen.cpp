@@ -145,6 +145,7 @@ void ConfigScreen::showingMainConfAnimationComplete()
 {
 	if(gameSettingsScreen)
 	{
+		gameSettingsScreen->writeConfig();
 		removeChild(gameSettingsScreen);
 		gameSettingsScreen = nullptr;
 	}

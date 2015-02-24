@@ -1,30 +1,34 @@
-{ 
+{
    "activeBgPrint" : {
       "id" : 0
    },
+   "activeOverDesignID" : 1,
+   "activePhotoCardStyleDesignID" : 2,
    "activeSticker" : {
       "id" : 1
    },
-   "filtersIds" : 
-   [
-      {"id" : 1},
-      {"id" : 3},
-      {"id" : 6}
+   "filtersIds" : [
+      {
+         "id" : 1
+      },
+      {
+         "id" : 3
+      },
+      {
+         "id" : 6
+      }
    ],
-   "activeOverDesignID" : 1,
-   "activePhotoCardStyleDesignID" : 2,
    "isCustomDesign" : false,
-   "isEmail" : false,
-   "isFacebook" : false,
+   "isEmail" : true,
+   "isFacebook" : true,
    "isPrint" : false,
-   "isQrCode" : true,
+   "isQrCode" : false,
    "isSticker" : true,
    "isTwitter" : true,
    "isVkotakte" : false,
    "seconds" : 3,
    "secondsBetweenShots" : 1,
    "templateId" : 1,
-   "currentPhotoNum": 3,
    "useIds" : [
       {
          "id" : 1

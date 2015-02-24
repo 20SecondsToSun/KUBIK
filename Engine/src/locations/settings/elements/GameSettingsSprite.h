@@ -10,8 +10,9 @@ namespace kubik
 		class GameSettingsSprite: public Sprite
 		{
 		public:
-			virtual void showAnimate(ci::EaseFn eFunc, float time) = 0;
-			virtual void hideAnimate(ci::EaseFn eFunc, float time) = 0;
+			virtual void showAnimate(const ci::EaseFn& eFunc, float time) = 0;
+			virtual void hideAnimate(const ci::EaseFn& eFunc, float time) = 0;
+			virtual void writeConfig() = 0;
 		};
 	}
 }

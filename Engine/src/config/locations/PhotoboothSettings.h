@@ -46,19 +46,6 @@ namespace kubik
 			void load()			override;
 			void setTextures()  override;			
 
-			bool hasDesignChanges()
-			{
-				//compare with memento
-				//return (val.isCustomDesign != isCustomDesign ||
-				//	val.templateId	   != templateId);
-				return false;
-			}
-
-			bool hasAnyChanges(/*PhotoboothDataStruct val*/)
-			{
-				return false;	
-			}			
-
 			TextItem getMainTitle(PhtTextID id);
 			TextItem getSubTitleClose(PhtTextID id);
 			TextItem getSubTitleOpen(PhtTextID id);
@@ -102,6 +89,9 @@ namespace kubik
 			int getUserPhotoCardStyleDesignID();
 
 			int getCurrentPhotoCount();
+
+			void createMemento();
+			void writeConfig();
 
 		private:
 			class Filter

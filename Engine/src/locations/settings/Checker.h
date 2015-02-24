@@ -104,7 +104,7 @@ namespace kubik
 
 			void swapActive()
 			{
-				console()<<"active::::::::::::::::  "<<isActive<<endl;
+				//console()<<"active::::::::::::::::  "<<isActive<<endl;
 				setActive(!isActive);
 			}
 

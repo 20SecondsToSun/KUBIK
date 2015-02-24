@@ -2,6 +2,8 @@
 #include "photobooth/elements/IPhotoboothItem.h"
 #include "ChangePhotoFilterPreviewActiveEvent.h"
 #include "ConfigSettings.h"
+#include "ImageQuadroButton.h"
+#include "SettingsFactory.h"
 
 namespace kubik
 {

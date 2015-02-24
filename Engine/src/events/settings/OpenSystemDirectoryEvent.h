@@ -3,14 +3,22 @@
 
 namespace kubik
 {
+	typedef std::shared_ptr<class OpenSystemDirectoryEvent> OpenSystemDirectoryEventRef;
+
 	class OpenSystemDirectoryEvent: public EventGUI
-	{			
+	{
 	public:
-		OpenSystemDirectoryEvent()
+		OpenSystemDirectoryEvent(std::string path = ""):path(path)
 		{
 
 		}
-	};
 
-	typedef std::shared_ptr<OpenSystemDirectoryEvent> OpenSystemDirectoryEventRef;
+		std::string getPath() const
+		{
+			return path;
+		}
+
+	private:
+		std::string path;
+	};	
 }

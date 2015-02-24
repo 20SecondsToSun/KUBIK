@@ -120,6 +120,7 @@
     <ClCompile Include="..\src\buttons\FilterButton.h" />
     <ClCompile Include="..\src\buttons\ShareButton.h" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
+    <ClCompile Include="..\src\config\locations\InstakubSettingscpp.cpp" />
     <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
@@ -130,6 +131,16 @@
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\HashChecker.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\HashTagBlock.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\PhotoCardStyle.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\SearchBlock.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\CheckerSocial.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\MainTitleButton.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
     <ClCompile Include="..\src\srdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -246,6 +257,7 @@
     <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h" />
     <ClInclude Include="..\src\locations\settings\elements\ImageQuadroButton.h" />
     <ClInclude Include="..\src\locations\settings\elements\LoadButton.h" />
+    <ClInclude Include="..\src\locations\settings\elements\SixButtonsLayer.h" />
     <ClInclude Include="..\src\locations\settings\instakub\HashChecker.h" />
     <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h" />
     <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h" />
@@ -277,14 +289,11 @@
     <ClInclude Include="..\src\locations\settings\main\StatBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\Title.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h" />
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCountTemplateButton.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h" />
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoPrintCount.h" />
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\SaveBtn.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />

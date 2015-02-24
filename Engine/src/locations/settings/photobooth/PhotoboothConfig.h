@@ -3,7 +3,7 @@
 #include "elements/PhotoFilters.h"
 #include "elements/PhotoOverElements.h"
 #include "elements/PhotoCardStyles.h"
-#include "elements/PhotoPrintCount.h"
+//#include "elements/PhotoPrintCount.h"
 #include "elements/Sharing.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 #include "GameSettingsSprite.h"
@@ -12,133 +12,24 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class PhotoboothConfig> PhotoboothConfigRef;
+
 		class PhotoboothConfig: public GameSettingsSprite
 		{
 		public:	
-			PhotoboothConfig(PhotoboothSettingsRef phbSettings)
-				:GameSettingsSprite(), leftMargin(165)				
-			{					
-				photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 4));
-				photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x1f93e9), 1));
-				photoPrintCount   = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x4976d2), 2));
-				photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x6d5dbd), 3));
-				sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x8e47aa), 0));
-
-				addChild(photoOverElements);
-				addChild(photoCardStyles);	
-				addChild(photoPrintCount);
-				addChild(photoFilters);
-				addChild(sharing);						
-			}			
-
-			void mouseUpHandler(EventGUIRef& _event)
-			{
-				EventGUI *ev = _event.get();
-				if(!ev)
-					return;
-		
-				if(typeid(*ev) == typeid(OpenPhotoBoothLayoutEvent))
-				{					
-					OpenPhotoBoothLayoutEventRef event = static_pointer_cast<OpenPhotoBoothLayoutEvent>(_event);	
-					setOpenItem(event->getlayoutIndex());
-				}
-				else if(typeid(*ev) == typeid(CheckerSocialEvent))
-				{	
-					CheckerSocialEventRef event = static_pointer_cast<CheckerSocialEvent>(_event);	
-					console()<<"CheckerSocialEvent:::: "<<event->getSocialID()<<" ....  "<<event->getValue()<<endl;
-				}
-				else if(typeid(*ev) == typeid(PhotoTemplateChooseEvent))
-				{
-					PhotoTemplateChooseEventRef event = static_pointer_cast<PhotoTemplateChooseEvent>(_event);	
-					console()<<"PhotoTemplateChooseEvent:::: "<<event->getCount()<<endl;
-				}
-				else if(typeid(*ev) == typeid(ChangePhotoOverDesignEvent))
-				{
-					ChangePhotoOverDesignEventRef event = static_pointer_cast<ChangePhotoOverDesignEvent>(_event);	
-					console()<<"PhotoTemplateChooseEvent:::: "<<event->getItem().getID()<<endl;
-				}
-				else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
-				{
-					OpenSystemDirectoryEventRef event = static_pointer_cast<OpenSystemDirectoryEvent>(_event);	
-					console()<<"OpenSystemDirectoryEvent:::: "<<endl;
-				}
-				else if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
-				{
-					ChangePhotoCardStyleDesignEventRef event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(_event);	
-					console()<<"ChangePhotoCardStyleDesignEvent:::: "<<event->getItem().getID()<<endl;
-				}
-				else if(typeid(*ev) == typeid(ChangePhotoFilterPreviewActiveEvent))
-				{
-					ChangePhotoFilterPreviewActiveEventRef event = static_pointer_cast<ChangePhotoFilterPreviewActiveEvent>(_event);	
-					console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<endl;//event->getItem().getID()<<endl;
-				}				
-			}
-
-			void activateListeners()
-			{
-				for (auto layout : displayList)	
-				{
-					layout->connectEventHandler(&PhotoboothConfig::mouseUpHandler, this);
-					layout->activateListeners();
-				}	
-			}
-
-			void unActivateListeners()
-			{
-				for (auto layout : displayList)	
-				{
-					layout->disconnectEventHandler();
-					layout->unActivateListeners();
-				}
-			}
-
-			void setOpenItem(int index)
-			{
-				for (auto layout : displayList)		
-				{
-					IPhotoboothItemRef ref = static_pointer_cast<IPhotoboothItem>(layout);
-					if (index == ref->getIndex())
-						ref->activateListeners();	
-					else
-						ref->unActivateListeners();
+			PhotoboothConfig(PhotoboothSettingsRef phbSettings);
 			
-					ref->setOpenLayoutIndex(index);	
-				}				
-			}	
+			virtual void activateListeners();
+			virtual void unActivateListeners();
+			virtual void showAnimate(const ci::EaseFn& eFunc, float time);
+			virtual void hideAnimate(const ci::EaseFn& eFunc, float time);
+			virtual void writeConfig();
 
-			void showAnimate(EaseFn eFunc, float time)
-			{	
-				animatePosition = getGlobalPosition();
-				unActivateListeners();
-				ci::Vec2f finPos = ci::Vec2f(166.0f, 0.0f);
-				timeline().apply( &animatePosition, finPos, time, eFunc)
-						.finishFn(bind( &PhotoboothConfig::showAnimationFinish, this))
-						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
-			}
-
-			void animationPosUpdate()
-			{
-				setPosition(animatePosition.value());					
-			}
-
-			void showAnimationFinish()
-			{
-				activateListeners();
-			}
-
-			void hideAnimate(ci::EaseFn eFunc, float time)
-			{
-				unActivateListeners();
-				ci::Vec2f finPos = ci::Vec2f(1080.0f, 0.0f);
-				timeline().apply( &animatePosition, finPos, time, eFunc)
-						.finishFn(bind( &PhotoboothConfig::hideAnimationFinish, this))
-						.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
-			}		
-
-			void hideAnimationFinish()
-			{		
-				setOpenItem(-1);
-			}			
+			void mouseUpHandler(EventGUIRef& event);
+			void setOpenItem(int index);			
+			void animationPosUpdate();
+			void showAnimationFinish();			
+			void hideAnimationFinish();
 
 		private:
 			int leftMargin;
@@ -146,15 +37,14 @@ namespace kubik
 			int oneItemCloseHeightMax, oneItemCloseHeightMin, oneItemOpenHeight;
 			int openItemIndex;
 
-			PhotoOverElementsRef photoOverElements;
-			PhotoCardStylesRef   photoCardStyles;
-			PhotoPrintCountRef   photoPrintCount;
-			PhotoFiltersRef	     photoFilters;
-			SharingRef		     sharing;
+			PhotoboothSettingsRef phbSettings;
+			PhotoOverElementsRef  photoOverElements;
+			PhotoCardStylesRef    photoCardStyles;
+			//PhotoPrintCountRef    photoPrintCount;
+			PhotoFiltersRef	      photoFilters;
+			SharingRef		      sharing;
 
-			ci::Anim<ci::Vec2f> animatePosition;
+			ci::Anim<ci::Vec2f>	  animatePosition;
 		};
-
-		typedef std::shared_ptr<PhotoboothConfig> PhotoboothConfigRef;
 	}
 }

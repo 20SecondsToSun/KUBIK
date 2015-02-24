@@ -1,6 +1,9 @@
 #pragma once
 #include "photobooth/elements/IPhotoboothItem.h"
 #include "ChangePhotoOverDesignEvent.h"
+#include "ImageQuadroButton.h"
+#include "LoadButton.h"
+#include "SettingsFactory.h"
 
 namespace kubik
 {
@@ -37,7 +40,7 @@ namespace kubik
 
 				int id = settings->getActiveOverDesignID();
 				userDesignID = settings->getUserOverDesignID();
-				loadButton = settingsFactory().createDecorLoadButton(btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));			
+				loadButton = settingsFactory().createDecorLoadButton("  ", btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));			
 				selectActiveDesign(id);	
 			}	
 

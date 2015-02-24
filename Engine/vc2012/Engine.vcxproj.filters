@@ -234,6 +234,39 @@
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp">
       <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\PhotoCardStyle.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\SearchBlock.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\HashTagBlock.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\HashChecker.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp">
+      <Filter>Source Files\locations\settings\photobooth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\locations\InstakubSettingscpp.cpp">
+      <Filter>Source Files\config\games\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\CheckerSocial.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\MainTitleButton.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -467,9 +500,6 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoPrintCount.h">
-      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
@@ -480,9 +510,6 @@
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h">
-      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\SaveBtn.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\settings\SavePhotobootnConfigEvent.h">
@@ -674,9 +701,6 @@
     <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCountTemplateButton.h">
-      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
@@ -721,6 +745,9 @@
     </ClInclude>
     <ClInclude Include="..\src\services\virtualKeyboard\VirtualKeyboard.h">
       <Filter>Source Files\services\virtualKeyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\elements\SixButtonsLayer.h">
+      <Filter>Source Files\locations\settings\elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
 #pragma once
+#include <shellapi.h>
+#pragma comment(lib, "shell32")
 
 using namespace ci;
 
@@ -25,7 +27,7 @@ namespace kubik
 			return in.tellg(); 
 		}
 
-		bool isVideoExtension(string ext)
+		bool isVideoExtension(const std::string& ext)
 		{
 			for (auto it: VIDEO_SUPPORT_EXTENSIONS)
 			{
@@ -36,7 +38,7 @@ namespace kubik
 			return false;
 		}
 
-		bool isImageExtension(string ext)
+		bool isImageExtension(const std::string& ext)
 		{
 			for (auto it: IMAGE_SUPPORT_EXTENSIONS)
 			{
@@ -47,9 +49,11 @@ namespace kubik
 			return false;	
 		}	
 
-		void openSystemDirectory(std::string path )
+		void openSystemDirectory(const std::string& path )
 		{
-
+			std::wstring stemp = std::wstring(path.begin(), path.end());
+			ShellExecute(NULL, L"open", stemp.c_str(), NULL, NULL, SW_SHOWMAXIMIZED);
+			console()<<"OpenSystemDirectoryEvent  "<<path<<endl;
 		}
 	};
 

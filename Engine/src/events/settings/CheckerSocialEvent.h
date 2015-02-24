@@ -1,12 +1,13 @@
 #pragma once
 #include "gui/EventGUI.h"
+#include "PhotoboothSettings.h"
 
 namespace kubik
 {
 	class CheckerSocialEvent: public EventGUI
 	{			
 	public:
-		CheckerSocialEvent(bool isActive, int socialID):isActive(isActive), socialID(socialID)
+		CheckerSocialEvent(bool isActive, PhotoboothSettings::PhtTextID socialID):isActive(isActive), socialID(socialID)
 		{
 			//console()<<"new checker event----------------"<<endl;
 		}
@@ -16,12 +17,12 @@ namespace kubik
 			//console()<<"delete checker event----------------"<<endl;
 		}
 
-		bool getValue()
+		bool getValue() const
 		{
 			return isActive;
 		}
 
-		int getSocialID()
+		PhotoboothSettings::PhtTextID getSocialID() const
 		{
 			return socialID;
 		}
@@ -33,7 +34,7 @@ namespace kubik
 
 	private:
 		bool isActive;
-		int socialID;
+		PhotoboothSettings::PhtTextID socialID;
 
 	};
 

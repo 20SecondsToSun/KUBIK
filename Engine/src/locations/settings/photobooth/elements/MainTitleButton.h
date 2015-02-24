@@ -1,28 +1,20 @@
 #pragma once
 
-#include "stdafx.h"
 #include "gui/SimpleSpriteButton.h"
-#include "Button.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 
 namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class MainTitleButton> MainTitleButtonRef;
+
 		class MainTitleButton: public SimpleSpriteButton
 		{
+
 		public:	
-			MainTitleButton(Rectf rect, int index):SimpleSpriteButton(rect)
-			{
-				event = OpenPhotoBoothLayoutEventRef(new OpenPhotoBoothLayoutEvent(index));		
-			}	
-
-			virtual void draw()
-			{
-
-			}
-		};
-
-		typedef std::shared_ptr<MainTitleButton> MainTitleButtonRef;
+			MainTitleButton(const ci::Rectf& rect, int index);
+			virtual void draw();
+		};		
 	}
 }

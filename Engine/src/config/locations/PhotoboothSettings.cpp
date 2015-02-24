@@ -43,16 +43,15 @@ void PhotoboothSettings::load()
 
 void PhotoboothSettings::loadConfigPaths()
 {
-	JsonTree pathJSON							= JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
-	configPaths.staticPartDesignPath			= pathJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
-	configPaths.kubikTemplatePartDesignPath		= pathJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
-	configPaths.userTemplatePartDesignPath		= pathJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
-	configPaths.finalPath						= pathJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
-	configPaths.stickersPath					= pathJSON.getChild("stickersPath").getValue<string>();
-	configPaths.bgPrintsPath					= pathJSON.getChild("bgPrintsPath").getValue<string>();
-
-	configPaths.photoOverDesignDataPath		    = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
-	configPaths.photoCardsStylesDesignDataPath  = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
+	JsonTree pathJSON							  = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
+	configPaths.staticPartDesignPath			  = pathJSON.getChild("staticPartDesignPath").getValue<string>();//"data\\interface\\"
+	configPaths.kubikTemplatePartDesignPath		  = pathJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();//"kubik\\templates\\"
+	configPaths.userTemplatePartDesignPath		  = pathJSON.getChild("userTemplatePartDesignPath").getValue<string>();//"user_design\\templates\\"
+	configPaths.finalPath						  = pathJSON.getChild("finalPath").getValue<string>();//"gameDesign\\photobooth\\"
+	configPaths.stickersPath					  = pathJSON.getChild("stickersPath").getValue<string>();
+	configPaths.bgPrintsPath					  = pathJSON.getChild("bgPrintsPath").getValue<string>();
+	configPaths.photoOverDesignDataPath			  = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
+	configPaths.photoCardsStylesDesignDataPath	  = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
 	configPaths.photoFiltersPreviewDesignDataPath = pathJSON.getChild("photoFiltersPreviewDesignDataPath").getValue<string>();	
 }
 
@@ -101,7 +100,7 @@ void PhotoboothSettings::loadPhotoParams(JsonTree config)
 {
 	seconds				  = config.getChild("seconds").getValue<int>();
 	secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();
-	photoNum			  = config.getChild("currentPhotoNum").getValue<int>();	
+	photoNum			  = 3;//config.getChild("currentPhotoNum").getValue<int>();	
 }
 
 void PhotoboothSettings::loadSocialParams(JsonTree config)
@@ -443,57 +442,6 @@ int PhotoboothSettings::getPhotoShots()
 	return photoNum + 2;// only 1 or 3 photo makes
 }
 
-void PhotoboothSettings::saveConfig()
-{
-	fs::path basePath(mainConfigObj.getParamsConfigPath());
-	JsonTree doc;
-	Sharing sharing = sharing;
-
-	doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));		
-	doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));		
-	doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));		
-	doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));		
-	doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(PhtTextID::QRCODE)));		
-	doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
-
-	doc.addChild(JsonTree("photoNum",			  photoNum));		
-	doc.addChild(JsonTree("seconds",			  seconds));		
-	doc.addChild(JsonTree("secondsBetweenShots",  secondsBetweenShots));
-
-	doc.addChild(JsonTree("templateId",			  templateId));
-	doc.addChild(JsonTree("isCustomDesign",	      isCustomDesign));
-	doc.addChild(JsonTree("isSticker",		      isSticker));
-
-	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
-	JsonTree useIdsJ	 = JsonTree::makeArray("useIds");
-
-	for (auto it: filters)
-	{
-		JsonTree id;
-		id.addChild(JsonTree("id", it.id));
-		filtersIdsJ.pushBack( id);
-
-		if(it.isOn)
-		{
-			JsonTree id1;
-			id1.addChild(JsonTree("id", it.id));
-			useIdsJ.pushBack( id1);
-		}
-	}	
-
-	JsonTree sticker = JsonTree::makeObject("activeSticker");
-	sticker.addChild(JsonTree("id", activeSticker.id));
-	doc.addChild(sticker);		
-
-	JsonTree bgPrint = JsonTree::makeObject("activeBgPrint");
-	bgPrint.addChild(JsonTree("id", activeBgPrint.id));
-	doc.addChild(bgPrint);	
-
-	doc.addChild(filtersIdsJ);
-	doc.addChild(useIdsJ);
-	doc.write( writeFile(basePath), JsonTree::WriteOptions() );
-}
-
 TextItem PhotoboothSettings::getMainTitle(PhtTextID id)
 {
 	return configTexts.get(model->getLang(), id);//data.getTexts().get(model->getLang(), id);
@@ -616,7 +564,7 @@ ci::gl::Texture PhotoboothSettings::getEmptyIcon()
 
 void PhotoboothSettings::Sharing::setSocialState(PhtTextID id, bool state)
 {
-	states[id] = state;				
+	states[id] = state;		
 }
 
 bool PhotoboothSettings::Sharing::getSocialState(PhtTextID id)
@@ -664,4 +612,60 @@ int PhotoboothSettings::getUserPhotoCardStyleDesignID()
 	return userPhotoCardStyleDesignID;
 }
 
+void PhotoboothSettings::createMemento()
+{
 
+}
+
+void PhotoboothSettings::writeConfig()
+{
+	fs::path basePath(mainConfigObj.getParamsConfigPath());
+	JsonTree doc;	
+
+	doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));		
+	doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));		
+	doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));		
+	doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));		
+	doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(PhtTextID::QRCODE)));		
+	doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
+
+	doc.addChild(JsonTree("seconds",			  seconds));		
+	doc.addChild(JsonTree("secondsBetweenShots",  secondsBetweenShots));
+
+	doc.addChild(JsonTree("templateId",			  templateId));
+	doc.addChild(JsonTree("isCustomDesign",	      isCustomDesign));
+	doc.addChild(JsonTree("isSticker",		      isSticker));
+	doc.addChild(JsonTree("activeOverDesignID",		      activeOverDesignID));
+	doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
+
+	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
+	JsonTree useIdsJ	 = JsonTree::makeArray("useIds");
+
+	for (auto it: filters)
+	{
+		JsonTree id;
+		id.addChild(JsonTree("id", it.id));
+		filtersIdsJ.pushBack( id);
+
+		if(it.isOn)
+		{
+			JsonTree id1;
+			id1.addChild(JsonTree("id", it.id));
+			useIdsJ.pushBack( id1);
+		}
+	}	
+
+	JsonTree sticker = JsonTree::makeObject("activeSticker");
+	sticker.addChild(JsonTree("id", activeSticker.id));
+	doc.addChild(sticker);		
+
+	JsonTree bgPrint = JsonTree::makeObject("activeBgPrint");
+	bgPrint.addChild(JsonTree("id", activeBgPrint.id));
+	doc.addChild(bgPrint);	
+
+	doc.addChild(filtersIdsJ);
+	doc.addChild(useIdsJ);
+	doc.write( writeFile(basePath), JsonTree::WriteOptions());
+	
+	console()<<" WRITE PHOTOBOOTH CONFIG"<<endl;	
+}

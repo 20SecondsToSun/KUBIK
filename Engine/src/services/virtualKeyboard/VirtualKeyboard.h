@@ -125,21 +125,26 @@ namespace kubik
 			erase->setPosition(touchInputZonePos + Vec2f(touchInputZone->getWidth() - 50, 0.5f*(touchInputZone->getHeight() - 30)));
 		}
 
-		void setInputFont(ci::Font font)
+		void setInputFont(const ci::Font& font)
 		{
 			inputFont = font;
 		}
 
-		void setInputColor(ci::Color color)
+		void setInputColor(const ci::Color& color)
 		{
 			inputColor = color;
 		}
 
-		void setInputFieldText(std::string text)
+		void setInputFieldText(const std::string& text)
 		{
 			inputField = text;
 			inputFieldTexture = textTools().getTextField(text, &inputFont, inputColor);		
 		}
+
+		std::string getInputFieldText()
+		{
+			return inputField;
+		}		
 	};
 
 	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance();};

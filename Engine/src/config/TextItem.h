@@ -1,5 +1,5 @@
 #pragma once
-//#include "TextTools.h"
+#include "Types.h"
 //#include "ConfigSettings.h"
 
 namespace kubik

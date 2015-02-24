@@ -5,6 +5,7 @@
 #include "ChangeDesignButton.h"
 #include "main/DesignBlock/ScreenSaverChecker.h"
 #include "DecorLoadButton.h"
+#include "PhotoboothSettings.h"
 #include "photobooth/elements/PhotoCountTemplateButton.h"
 
 using namespace ci;
@@ -22,25 +23,26 @@ namespace kubik
 				return tt; 
 			};
 
-			LoadButtonRef createLoadButton(ci::Vec2f pos)
+			LoadButtonRef createLoadButton(const ci::Vec2f& pos)
 			{
 				return LoadButtonRef(
-					new LoadButton(ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
+					new LoadButton(" ", ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon")					
 					));
 			}
 
-			LoadButtonRef createDecorLoadButton(ci::Vec2f pos)
+			LoadButtonRef createDecorLoadButton(const std::string &path, const ci::Vec2f& pos)
 			{
 				return DecorLoadButtonRef(
-					new DecorLoadButton(ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
+					new DecorLoadButton(path,
+					ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),					
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon")					
 					));
 			}
 
-			ScreenSaverCheckerRef createScreenSaverChecker(ci::Vec2f pos)
+			ScreenSaverCheckerRef createScreenSaverChecker(const ci::Vec2f& pos)
 			{
 				IconPair icons(settings->getTexture("ssCheckerOn"), settings->getTexture("ssCheckerOff"));
 				ScreenSaverCheckerRef ch = ScreenSaverCheckerRef(new ScreenSaverChecker(Rectf(pos, pos + Vec2f(135, 83)), icons));				
@@ -48,31 +50,31 @@ namespace kubik
 				return ch;
 			}
 
-			ImageQuadroButtonRef createImageQuadroButton(OneDesignItem item, ci::Vec2f pos)
+			ImageQuadroButtonRef createImageQuadroButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
 				ImageQuadroButtonRef iq = ImageQuadroButtonRef(new ImageQuadroButton(item, pos));	
 				return iq;				
 			}
 
-			ChangeDesignButtonRef createChangeDesignButton(OneDesignItem item, ci::Vec2f pos)
+			ChangeDesignButtonRef createChangeDesignButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
 				ChangeDesignButtonRef iq = ChangeDesignButtonRef(new ChangeDesignButton(item, pos));	
 				return iq;				
 			}
 
-			PhotoOverButtonRef createPhotoOverButton(OneDesignItem item, ci::Vec2f pos)
+			PhotoOverButtonRef createPhotoOverButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
 				PhotoOverButtonRef iq = PhotoOverButtonRef(new PhotoOverButton(item, pos));	
 				return iq;				
 			}
 
-			PhotoCardStyleButtonRef createCardStyleButton(OneDesignItem item, ci::Vec2f pos)
+			PhotoCardStyleButtonRef createCardStyleButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
 				PhotoCardStyleButtonRef iq = PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, pos));	
 				return iq;				
 			}
 
-			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, ci::Vec2f pos)
+			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, const ci::Vec2f& pos)
 			{
 				PhotoFilterPreviewButtonRef iq = PhotoFilterPreviewButtonRef(new PhotoFilterPreviewButton(item, pos));	
 				return iq;	
@@ -96,9 +98,8 @@ namespace kubik
 		private:
 			ConfigSettingsRef settings;
 			PhotoboothSettingsRef phtSettings;
-
 		};
-		// helper function(s) for easier access 
+	
 		inline SettingsFactory&	settingsFactory() { return SettingsFactory::getInstance();};
 	}
 }

@@ -13,8 +13,9 @@ namespace kubik
 		class LoadButton: public SimpleSpriteButton
 		{
 		public:
-			LoadButton(ci::Rectf rect, TextItem textItem, ci::gl::Texture icon)
-				:SimpleSpriteButton(rect, OpenSystemDirectoryEventRef(new OpenSystemDirectoryEvent())), textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
+			LoadButton(const std::string &path, ci::Rectf rect, TextItem textItem, ci::gl::Texture icon)
+				:SimpleSpriteButton(rect, OpenSystemDirectoryEventRef(new OpenSystemDirectoryEvent(path))),
+				 textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
 			{
 				tex = textTools().getTextField(textItem);
 				texPosX = 0.5 * (buttonArea.getWidth() - (tex.getWidth() + icon.getWidth() + 15.0f));
@@ -61,7 +62,7 @@ namespace kubik
 			TextItem textItem;			
 			ColorA bckColor;
 			Texture tex, icon;
-			float texPosX;
+			float texPosX;			
 		};	
 	}
 }
