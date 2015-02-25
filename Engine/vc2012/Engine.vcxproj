@@ -131,6 +131,12 @@
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\Checker.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\DecorLoadButton.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\ImageQuadroButton.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\LoadButton.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\SixButtonsLayer.cpp" />
+    <ClCompile Include="..\src\locations\settings\elements\ToolRoundBtn.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\HashChecker.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\HashTagBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp" />

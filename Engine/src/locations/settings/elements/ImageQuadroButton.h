@@ -13,48 +13,13 @@ namespace kubik
 		class ImageQuadroButton: public SimpleSpriteButton
 		{
 		public:
-			ImageQuadroButton(OneDesignItem item, ci::Vec2f pos)
-				:SimpleSpriteButton(item.getIcon().getSize(), pos), item(item), selection(false)
-			{
-				textTex = textTools().getTextField(item.getTextItem());				
-			}
+			ImageQuadroButton(OneDesignItem item, const ci::Vec2f& pos);
 
-			virtual void drawLayout()
-			{
-				gl::Texture icon = item.getIcon();
-
-				gl::draw(icon);			
-				
-				if(selection)
-				{
-					gl::color(Color::hex(0xffff00));
-					gl::lineWidth(7);
-					gl::drawStrokedRoundedRect(ci::Rectf(ci::Vec2f::zero(), icon.getSize()), 6);
-					gl::lineWidth(1);					
-				}
-
-				gl::draw(textTex, Vec2f((icon.getWidth() - textTex.getWidth()) * 0.5, icon.getHeight() + 10));
-				gl::color(Color::white());			
-			}		
-
-			void setAlpha(float  alpha)
-			{
-			}	
-
-			void setSelection(bool value)
-			{
-				selection = value;
-			}
-
-			void swapSelection()
-			{
-				selection = !selection;
-			}
-
-			OneDesignItem getItem() const
-			{
-				return item;
-			}
+			virtual void drawLayout();
+			void setAlpha(float alpha);
+			void setSelection(bool value);
+			void swapSelection();
+			OneDesignItem getItem() const;
 
 		private:
 			OneDesignItem item;

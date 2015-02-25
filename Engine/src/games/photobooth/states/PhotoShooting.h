@@ -37,7 +37,7 @@ namespace kubik
 		{
 			console()<<"start PhotoShooting"<<endl;
 			currentShot = 1;
-			shotsNum = settings->getPhotoShots();
+			//shotsNum = settings->getPhotoShots();
 			secBetweenShots = 0;//settings->getData().secondsBetweenShots;
 
 			photoStorage->prepare(shotsNum);

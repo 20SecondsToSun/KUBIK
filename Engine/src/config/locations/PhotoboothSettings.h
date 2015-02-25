@@ -19,8 +19,7 @@ namespace kubik
 			enum PhtTextID
 			{
 				PHOTO_OVER,	PHOTO_OVER_SUB,
-				CARD_STYLE,	CARD_STYLE_SUB,
-				PRINT_COUNT, PRINT_COUNT_SUB,
+				CARD_STYLE,	CARD_STYLE_SUB,				
 				FILTERS, FILTERS_SUB,
 				PUBLISHING,	PUBLISHING_SUB,
 				SAVE_TEXT, YOUR_DESIGN_TEXT,
@@ -59,8 +58,7 @@ namespace kubik
 			ci::gl::Texture getActivePrintBgTex();
 			std::vector<int> getOnFilters();
 			void swapFilter(int id);
-
-			int getPhotoShots();
+			
 			bool findFilterId(int id, std::vector<int> filters);	
 
 			int getPhotoCount(PhtTextID id);	
@@ -174,8 +172,7 @@ namespace kubik
 			ConfigObject mainConfigObj;
 
 			int seconds;
-			int secondsBetweenShots;
-			int photoNum;
+			int secondsBetweenShots;			
 			int templateId;			
 			int minPhotosShots;
 			int maxPhotosShots;		

@@ -276,6 +276,24 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoFilters.cpp">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\LoadButton.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\DecorLoadButton.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\ImageQuadroButton.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\Checker.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\ToolRoundBtn.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\elements\SixButtonsLayer.cpp">
+      <Filter>Source Files\locations\settings\elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

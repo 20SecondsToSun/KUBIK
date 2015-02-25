@@ -1,6 +1,7 @@
 #pragma once
 
 using namespace ci;
+using namespace std;
 
 class StringTools
 {

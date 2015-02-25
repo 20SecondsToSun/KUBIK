@@ -99,8 +99,7 @@ void PhotoboothSettings::loadDesignPath()
 void PhotoboothSettings::loadPhotoParams(JsonTree config)
 {
 	seconds				  = config.getChild("seconds").getValue<int>();
-	secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();
-	photoNum			  = 3;//config.getChild("currentPhotoNum").getValue<int>();	
+	secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();	
 }
 
 void PhotoboothSettings::loadSocialParams(JsonTree config)
@@ -136,7 +135,7 @@ void PhotoboothSettings::loadGameStickerParams(JsonTree config)
 	activeOverDesignID = config.getChild("activeOverDesignID").getValue<int>();	
 
 	isSticker		  = config.getChild("isSticker").getValue<bool>();			
-	activeSticker.id  = config.getChild("activeSticker").getChild("id").getValue<int>();			
+	activeSticker.id  = config.getChild("activeSticker").getValue<int>();			
 	findAllImagePrints(getBasePath().string() + configPaths.stickersPath,  stickers, true);
 }
 
@@ -144,7 +143,7 @@ void PhotoboothSettings::loadGameBgPrintParams(JsonTree config)
 {
 	activePhotoCardStyleDesignID = config.getChild("activePhotoCardStyleDesignID").getValue<int>();	
 
-	activeBgPrint.id = config.getChild("activeBgPrint").getChild("id").getValue<int>();
+	activeBgPrint.id = config.getChild("activeBgPrint").getValue<int>();
 	findAllImagePrints(getBasePath().string() + configPaths.bgPrintsPath,  bgPrint, true);
 }
 
@@ -175,7 +174,6 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 	{
 		string lang	    = it.getChild("lang").getValue<string>();										
 		txts.insert(lang, PhtTextID::CARD_STYLE,  jtools().parseTextItem(it.getChild("photoCardDesign")));
-		txts.insert(lang, PhtTextID::PRINT_COUNT, jtools().parseTextItem(it.getChild("photoPrintCount")));
 		txts.insert(lang, PhtTextID::PHOTO_OVER,  jtools().parseTextItem(it.getChild("overElements")));
 		txts.insert(lang, PhtTextID::FILTERS,     jtools().parseTextItem(it.getChild("photoFilters")));
 		txts.insert(lang, PhtTextID::PUBLISHING,  jtools().parseTextItem(it.getChild("photoPublishing")));		
@@ -186,7 +184,6 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 	{
 		string lang	    = it.getChild("lang").getValue<string>();										
 		txts.insert(lang, PhtTextID::CARD_STYLE_SUB,  jtools().parseTextItem(it.getChild("photoCardDesign")));
-		txts.insert(lang, PhtTextID::PRINT_COUNT_SUB, jtools().parseTextItem(it.getChild("photoPrintCount")));
 		txts.insert(lang, PhtTextID::PHOTO_OVER_SUB,  jtools().parseTextItem(it.getChild("overElements")));
 		txts.insert(lang, PhtTextID::FILTERS_SUB,     jtools().parseTextItem(it.getChild("photoFilters")));
 		txts.insert(lang, PhtTextID::PUBLISHING_SUB,  jtools().parseTextItem(it.getChild("photoPublishing")));		
@@ -364,7 +361,7 @@ int PhotoboothSettings::getPhotoCount(PhtTextID id)
 
 int PhotoboothSettings::getCurrentPhotoCount()
 {
-	return photoNum;
+	return 5;
 }
 
 void PhotoboothSettings::setTextures()
@@ -435,11 +432,6 @@ void PhotoboothSettings::swapFilter(int id)
 			filter->isOn = !filter->isOn;		
 }
 
-int PhotoboothSettings::getPhotoShots()
-{
-	return photoNum + 2;// only 1 or 3 photo makes
-}
-
 TextItem PhotoboothSettings::getMainTitle(PhtTextID id)
 {
 	return configTexts.get(model->getLang(), id);//data.getTexts().get(model->getLang(), id);
@@ -457,14 +449,7 @@ TextItem PhotoboothSettings::getSubTitleClose(PhtTextID id)
 	else if (subID == FILTERS_SUB)	
 		tItem.setText(getActiveFiltersTexts());
 	else if (subID == PUBLISHING_SUB)	
-		tItem.setText(getActivePublishingTexts());
-	else if (subID == PRINT_COUNT_SUB)
-	{
-		if (photoNum == minPhotosShots)
-			tItem.setText(to_string(photoNum) + " " + getTextItem(PhtTextID::PHOTO_TREMPLATE_1).getText());	
-		else
-			tItem.setText(to_string(photoNum) + " " + getTextItem(PhtTextID::PHOTO_TREMPLATE_1).getText());	
-	}	
+		tItem.setText(getActivePublishingTexts());	
 
 	return tItem;
 }
@@ -655,6 +640,8 @@ void PhotoboothSettings::writeConfig()
 	doc.addChild(JsonTree("isSticker",		      isSticker));
 	doc.addChild(JsonTree("activeOverDesignID",		      activeOverDesignID));
 	doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
+	doc.addChild(JsonTree("activeSticker",			  activeSticker.id));
+	doc.addChild(JsonTree("activeBgPrint",			  activeBgPrint.id));
 
 	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
 
@@ -666,19 +653,11 @@ void PhotoboothSettings::writeConfig()
 		filtersIdsJ.pushBack( id);		
 	}	
 
-	JsonTree sticker = JsonTree::makeObject("activeSticker");
-	sticker.addChild(JsonTree("id", activeSticker.id));
-	doc.addChild(sticker);		
-
-	JsonTree bgPrint = JsonTree::makeObject("activeBgPrint");
-	bgPrint.addChild(JsonTree("id", activeBgPrint.id));
-	doc.addChild(bgPrint);	
+	
 
 	doc.addChild(filtersIdsJ);
 	doc.write( writeFile(basePath), JsonTree::WriteOptions());
 
-	for (auto filter: filters)	
-		console()<<" filter.id"<<filter.id<<"  +++  "<<filter.isOn<<endl;			
 
 	console()<<" WRITE PHOTOBOOTH CONFIG"<<endl;	
 }

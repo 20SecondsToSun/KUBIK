@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextTools.h"
+#include "gui/SimpleSpriteButton.h"
 #include "settings/StatisticEvent.h"
 
 namespace kubik
@@ -12,43 +13,18 @@ namespace kubik
 		class ToolRoundBtn: public SimpleSpriteButton
 		{
 		public:
-			ToolRoundBtn(Rectf rect, string text, Font font, Color color = Color::white()):SimpleSpriteButton(rect),
-				text(text), font(font), color(color), bckColor(Color::white())
-			{
-				tex = textTools().getTextField(text, &font, color);
-			}
-
-			virtual void drawLayout()
-			{					
-				gl::color(bckColor);	
-				gl::draw(tex, Vec2f(buttonArea.x1 + 0.5 * (getWidth() - tex.getWidth()), buttonArea.y1 + 8));
-				gl::color(color);
-				gl::drawStrokedRoundedRect(buttonArea, 8, 200);
-				gl::color(Color::white());		
-			}
-
-			void setAlpha(float  alpha)
-			{
-				color = Utils::colorAlpha(color, alpha);
-				bckColor = Utils::colorAlpha(bckColor, alpha);
-			}
-
-			void setText(string text)
-			{
-				this->text = text;
-			}
-
-			void setColor(Color color)
-			{
-				this->color = color;
-				tex = textTools().getTextField(text, &font, color);
-			}
+			ToolRoundBtn(const ci::Rectf& rect, const std::string& text, ci::Font font, ci::Color color = ci::Color::white());
+			
+			virtual void drawLayout();
+			void setAlpha(float alpha);
+			void setText(const std::string& text);
+			void setColor(const ci::Color& color);
 
 		private:
-			string text;
-			Font font;
-			ColorA color, bckColor;
-			Texture tex;
+			std::string text;
+			ci::Font font;
+			ci::ColorA color, bckColor;
+			ci::gl::Texture tex;
 		};	
 	}
 }
