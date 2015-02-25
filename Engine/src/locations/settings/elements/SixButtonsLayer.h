@@ -10,18 +10,13 @@ namespace kubik
 {
 	namespace config
 	{
-		typedef std::shared_ptr<class SixButtonsLayer> SixButtonsLayerRef;
-
-		class SixButtonsLayer: public Sprite
+		template <class Type> class SixButtonsLayer: public Sprite
 		{
 		public:
-			SixButtonsLayer(InstakubSettingsRef settings)
+			SixButtonsLayer(ISettingsRef settings, const DesignData& designdata, int activeID, int userDesignID, const std::string& path)
+				:userDesignID(userDesignID)
 			{
-				using namespace ci;
-
-				DesignData designdata = settings->getPhotoCardStyles();				
-				int activeID = settings->getActivePhotoCardStyleDesignID();
-				userDesignID = settings->getUserPhotoCardStyleDesignID();
+				using namespace ci;				
 
 				Vec2f pos = Vec2f::zero();
 				int i = 0;
@@ -37,14 +32,18 @@ namespace kubik
 					pos.x = startX + (icon.getWidth() + shiftX) * (i % 3);
 					pos.y = startY + (icon.getWidth() + shiftY) * (i / 3);
 
-					ImageQuadroButtonRef imageQuadroButton = settingsFactory().createCardStyleButton(it, pos);
+					ImageQuadroButtonRef imageQuadroButton;
+					if(typeid(ChangePhotoOverDesignEvent) == typeid(Type))
+						imageQuadroButton = settingsFactory().createPhotoOverButton(it, pos);				
+					else if(typeid(ChangePhotoCardStyleDesignEvent) == typeid(Type))
+						imageQuadroButton = settingsFactory().createCardStyleButton(it, pos);	
 
 					btns[it.getID()] = imageQuadroButton;
 					addChild(imageQuadroButton);	
 					i++;					
 				}			
 
-				loadButton = settingsFactory().createDecorLoadButton(settings->getUserPhotoCardStylePath(), btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));			
+				loadButton = settingsFactory().createDecorLoadButton(path, btns[userDesignID]->getLocalPosition() + Vec2f(0.0f, btns[userDesignID]->getHeight()));			
 				selectActiveDesign(activeID);	
 			}
 			
@@ -77,10 +76,10 @@ namespace kubik
 			{
 				EventGUI *ev = event.get();
 
-				if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
+				if(typeid(*ev) == typeid(Type))
 				{		
-					ChangePhotoCardStyleDesignEventRef statEvent = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
-					int id = statEvent->getItem().getID();
+					//ChangePhotoCardStyleDesignEventRef statEvent = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
+					int id = static_pointer_cast<Type>(event)->getItem().getID();
 					btns[id]->setSelection(true);
 					selectActiveDesign(id);	
 				}
@@ -112,7 +111,8 @@ namespace kubik
 			std::map<int, ImageQuadroButtonRef> btns;	
 			int userDesignID, activeID;			
 			ImageQuadroButtonRef activeBtn;
-			LoadButtonRef loadButton;
+			LoadButtonRef loadButton;			
 		};
+		
 	}
 }

@@ -7,7 +7,7 @@ InstakubConfig::InstakubConfig(InstakubSettingsRef instSettings):GameSettingsSpr
 {					
 	searchBlock	   = SearchBlockRef(new SearchBlock(instSettings, Vec2i(0.0f, 0.0f)));
 	hashTagBlock   = HashTagBlockRef(new HashTagBlock(instSettings, Vec2i(0.0f, 435.0f)));
-	photoCardStyle = PhotoCardStyleRef(new PhotoCardStyle(instSettings, Vec2i(0.0f, 920.0f)));//920
+	photoCardStyle = InstaPhotoCardStyleRef(new InstaPhotoCardStyle(instSettings, Vec2i(0.0f, 920.0f)));//920
 
 	addChild(searchBlock);
 	addChild(hashTagBlock);

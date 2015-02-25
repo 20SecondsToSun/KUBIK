@@ -234,9 +234,6 @@
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp">
       <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\locations\settings\instakub\PhotoCardStyle.cpp">
-      <Filter>Source Files\locations\settings\instakub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp">
       <Filter>Source Files\locations\settings\instakub</Filter>
     </ClCompile>
@@ -265,6 +262,18 @@
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClCompile>
     <ClCompile Include="..\src\locations\settings\photobooth\elements\MainTitleButton.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoCardStyle.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoFilters.cpp">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClCompile>
   </ItemGroup>
@@ -497,9 +506,6 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h">
-      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
@@ -701,9 +707,6 @@
     <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h">
-      <Filter>Source Files\events\settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\ChangePhotoOverDesignEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
@@ -731,9 +734,6 @@
     <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\instakub\PhotoCardStyle.h">
-      <Filter>Source Files\locations\settings\instakub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\instakub\HashChecker.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
     </ClInclude>
@@ -748,6 +748,12 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\elements\SixButtonsLayer.h">
       <Filter>Source Files\locations\settings\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyle.h">
+      <Filter>Source Files\locations\settings\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

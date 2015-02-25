@@ -8,14 +8,12 @@ PhotoboothConfig::PhotoboothConfig(PhotoboothSettingsRef phbSettings)
 	:GameSettingsSprite(), leftMargin(165), phbSettings(phbSettings)			
 {					
 	photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 0));
-	photoCardStyles   = PhotoCardStylesRef(new PhotoCardStyles(phbSettings, Color::hex(0x1f93e9), 1));
-	//photoPrintCount = PhotoPrintCountRef(new PhotoPrintCount(phbSettings, Color::hex(0x4976d2), 2));
+	photoCardStyles   = PhotoCardStyleRef(new PhotoCardStyle(phbSettings, Color::hex(0x1f93e9), 1));
 	photoFilters	  = PhotoFiltersRef(new PhotoFilters(phbSettings, Color::hex(0x4976d2), 2));
 	sharing			  = SharingRef(new Sharing(phbSettings, Color::hex(0x6d5dbd), 3));
 
 	addChild(photoOverElements);
 	addChild(photoCardStyles);	
-	//addChild(photoPrintCount);
 	addChild(photoFilters);
 	addChild(sharing);						
 }	
@@ -36,31 +34,30 @@ void PhotoboothConfig::mouseUpHandler(EventGUIRef& mEvent)
 		console()<<"CheckerSocialEvent:::: "<<event->getSocialID()<<" ....  "<<event->getValue()<<endl;
 		phbSettings->setSocialState(event->getSocialID(), event->getValue());
 	}
-	else if(typeid(*ev) == typeid(PhotoTemplateChooseEvent))
-	{
-		PhotoTemplateChooseEventRef event = static_pointer_cast<PhotoTemplateChooseEvent>(mEvent);	
-		console()<<"PhotoTemplateChooseEvent:::: "<<event->getCount()<<endl;
-	}
 	else if(typeid(*ev) == typeid(ChangePhotoOverDesignEvent))
 	{
 		ChangePhotoOverDesignEventRef event = static_pointer_cast<ChangePhotoOverDesignEvent>(mEvent);	
 		console()<<"PhotoTemplateChooseEvent:::: "<<event->getItem().getID()<<endl;
-	}
-	else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
-	{
-		OpenSystemDirectoryEventRef event = static_pointer_cast<OpenSystemDirectoryEvent>(mEvent);	
-		console()<<"OpenSystemDirectoryEvent:::: "<<endl;
-	}
+		phbSettings->setActiveOverDesignID(event->getItem().getID());
+	}	
 	else if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
 	{
 		ChangePhotoCardStyleDesignEventRef event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(mEvent);	
 		console()<<"ChangePhotoCardStyleDesignEvent:::: "<<event->getItem().getID()<<endl;
+		phbSettings->setActivePhotoCardStyleDesignID(event->getItem().getID());
 	}
 	else if(typeid(*ev) == typeid(ChangePhotoFilterPreviewActiveEvent))
 	{
 		ChangePhotoFilterPreviewActiveEventRef event = static_pointer_cast<ChangePhotoFilterPreviewActiveEvent>(mEvent);	
-		console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<endl;
-	}				
+		console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<event->getItem().getID()<<endl;
+		phbSettings->swapFilter(event->getItem().getID());
+	}	
+	else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
+	{
+		OpenSystemDirectoryEventRef event = static_pointer_cast<OpenSystemDirectoryEvent>(mEvent);	
+		console()<<"OpenSystemDirectoryEvent:::: "<<event->getPath()<<endl;
+		fileTools().openSystemDirectory(event->getPath());			
+	}
 }
 
 void PhotoboothConfig::activateListeners()

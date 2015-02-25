@@ -116,21 +116,12 @@ void PhotoboothSettings::loadSocialParams(JsonTree config)
 void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
 {
 	JsonTree datas  = JsonTree(config.getChild("filtersIds"));
-	JsonTree useIds	= JsonTree(config.getChild("useIds"));
-
-	vector<int> useIdsVec;
-
-	for(auto it : useIds)
-		useIdsVec.push_back(it.getChild("id").getValue<int>());
-
 	for( auto it : datas)
 	{
 		Filter filter;
 		filter.id	= it.getChild("id").getValue<int>();
-		filter.isOn = findFilterId(filter.id, useIdsVec);
-		filters.push_back(filter);
-
-		activeFiltersIDs.push_back(filter.id);
+		filter.isOn = it.getChild("isOn").getValue<bool>();
+		filters.push_back(filter);		
 	}
 }		
 
@@ -437,6 +428,13 @@ std::vector<int> PhotoboothSettings::getOnFilters()
 	return onFilters;
 }
 
+void PhotoboothSettings::swapFilter(int id)
+{
+	for (auto filter = filters.begin(); filter != filters.end(); ++filter)		
+		if(filter->id == id)		
+			filter->isOn = !filter->isOn;		
+}
+
 int PhotoboothSettings::getPhotoShots()
 {
 	return photoNum + 2;// only 1 or 3 photo makes
@@ -494,9 +492,9 @@ std::string PhotoboothSettings::getActiveFiltersTexts()
 	std::string result = "";
 	for( auto item : photoFiltersPreview)	
 	{
-		for (auto id : activeFiltersIDs)
+		for (auto filter : filters)
 		{
-			if (item.getID() == id)
+			if (item.getID() == filter.id && filter.isOn)
 			{
 				if (result.size())	result += ", ";
 				result += item.getTextItem().getText();
@@ -597,6 +595,11 @@ int PhotoboothSettings::getActiveOverDesignID()
 	return activeOverDesignID;
 }
 
+void PhotoboothSettings::setActiveOverDesignID(int id)
+{
+	activeOverDesignID = id;
+}
+
 int PhotoboothSettings::getUserOverDesignID()
 {
 	return userOverDesignID;
@@ -607,9 +610,24 @@ int PhotoboothSettings::getActivePhotoCardStyleDesignID()
 	return activePhotoCardStyleDesignID;
 }
 
+void PhotoboothSettings::setActivePhotoCardStyleDesignID(int id)
+{
+	activePhotoCardStyleDesignID = id;
+}
+
 int PhotoboothSettings::getUserPhotoCardStyleDesignID()
 {
 	return userPhotoCardStyleDesignID;
+}
+
+std::string PhotoboothSettings::getUserPhotoOverDesignPath()
+{
+	return getBasePath().string() + configPaths.stickersPath;
+}
+
+std::string PhotoboothSettings::getUserPhotoCardStylePath()
+{
+	return getBasePath().string() + configPaths.bgPrintsPath;
 }
 
 void PhotoboothSettings::createMemento()
@@ -639,20 +657,13 @@ void PhotoboothSettings::writeConfig()
 	doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
 
 	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
-	JsonTree useIdsJ	 = JsonTree::makeArray("useIds");
 
 	for (auto it: filters)
-	{
+	{  
 		JsonTree id;
 		id.addChild(JsonTree("id", it.id));
-		filtersIdsJ.pushBack( id);
-
-		if(it.isOn)
-		{
-			JsonTree id1;
-			id1.addChild(JsonTree("id", it.id));
-			useIdsJ.pushBack( id1);
-		}
+		id.addChild(JsonTree("isOn", it.isOn));
+		filtersIdsJ.pushBack( id);		
 	}	
 
 	JsonTree sticker = JsonTree::makeObject("activeSticker");
@@ -664,8 +675,10 @@ void PhotoboothSettings::writeConfig()
 	doc.addChild(bgPrint);	
 
 	doc.addChild(filtersIdsJ);
-	doc.addChild(useIdsJ);
 	doc.write( writeFile(basePath), JsonTree::WriteOptions());
-	
+
+	for (auto filter: filters)	
+		console()<<" filter.id"<<filter.id<<"  +++  "<<filter.isOn<<endl;			
+
 	console()<<" WRITE PHOTOBOOTH CONFIG"<<endl;	
 }

@@ -58,6 +58,8 @@ namespace kubik
 			ci::gl::Texture getActiveStickerTex();
 			ci::gl::Texture getActivePrintBgTex();
 			std::vector<int> getOnFilters();
+			void swapFilter(int id);
+
 			int getPhotoShots();
 			bool findFilterId(int id, std::vector<int> filters);	
 
@@ -75,20 +77,21 @@ namespace kubik
 			DesignData getPhotoFiltersPreview()
 			{
 				return photoFiltersPreview;
-			}		
-
-			std::vector<int> getActiveFiltersIDs()
-			{
-				return activeFiltersIDs;
-			}
-
+			}	
+			
+			void setActiveOverDesignID(int id);
 			int getActiveOverDesignID();
+
 			int getUserOverDesignID();
 
 			int getActivePhotoCardStyleDesignID();
-			int getUserPhotoCardStyleDesignID();
+			void setActivePhotoCardStyleDesignID(int id);
 
+			int getUserPhotoCardStyleDesignID();
 			int getCurrentPhotoCount();
+
+			std::string getUserPhotoOverDesignPath();
+			std::string getUserPhotoCardStylePath();
 
 			void createMemento();
 			void writeConfig();
@@ -101,7 +104,24 @@ namespace kubik
 
 			public:
 				friend PhotoboothSettings;
+
+				bool isActive()
+				{
+					return isOn;
+				}
+
+				int getID()
+				{
+					return id;
+				}
 			};
+
+		public:
+			std::vector<Filter> getFilters()
+			{
+				return filters;
+			}
+		private:
 
 			class ImageElement
 			{
@@ -172,7 +192,7 @@ namespace kubik
 			int activePhotoCardStyleDesignID;
 			int userPhotoCardStyleDesignID;
 
-			std::vector<int> activeFiltersIDs;
+			//std::vector<int> activeFiltersIDs;
 	
 			ConfigPath					 configPaths;
 			Sharing						 sharing;

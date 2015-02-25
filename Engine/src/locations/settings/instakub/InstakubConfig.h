@@ -3,7 +3,7 @@
 #include "InstakubSettings.h"
 #include "SearchBlock.h"
 #include "HashTagBlock.h"
-#include "PhotoCardStyle.h"
+#include "InstaPhotoCardStyle.h"
 #include "VirtualKeyboard.h"
 
 namespace kubik 
@@ -35,7 +35,7 @@ namespace kubik
 			ci::Anim<ci::Vec2f> animatePosition;
 			SearchBlockRef searchBlock;
 			HashTagBlockRef hashTagBlock;
-			PhotoCardStyleRef photoCardStyle;
+			InstaPhotoCardStyleRef photoCardStyle;
 			InstakubSettingsRef instSettings;
 		};		
 	}

@@ -1,9 +1,10 @@
-#include "PhotoCardStyle.h"
+#include "InstaPhotoCardStyle.h"
+
 using namespace kubik::config;
 using namespace kubik;
 using namespace ci;
 
-PhotoCardStyle::PhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position):Sprite()
+InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position):Sprite()
 {
 	setPosition(position);	
 
@@ -13,43 +14,48 @@ PhotoCardStyle::PhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& po
 	subTitleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB));
 	subTitleTextPos = Vec2f(0.5f * (914.0f - subTitleTextTex.getWidth()), 166.0f);	
 
-	sixBtnLayer = SixButtonsLayerRef( new SixButtonsLayer(settings));
+	DesignData designdata = settings->getPhotoCardStyles();				
+	int activeID = settings->getActivePhotoCardStyleDesignID();
+	int userDesignID = settings->getUserPhotoCardStyleDesignID();
+	std::string syspath = settings->getUserPhotoCardStylePath();
+
+	sixBtnLayer = SixButtonsLayerInstaRef( new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(settings, designdata, activeID, userDesignID, syspath));
 	addChild(sixBtnLayer);
 }
 
-void PhotoCardStyle::drawLayout()
+void InstaPhotoCardStyle::drawLayout()
 {
 	drawBackground();
 	drawTitles();
 	Sprite::drawLayout();
 }	
 
-void PhotoCardStyle::drawBackground()
+void InstaPhotoCardStyle::drawBackground()
 {
 	gl::color(Color::hex(0x578d24));
 	gl::drawSolidRect(Rectf(Vec2f::zero(), Vec2f(914.0f, 1000.0f)));
 	gl::color(Color::white());
 }
 
-void PhotoCardStyle::drawTitles()
+void InstaPhotoCardStyle::drawTitles()
 {
 	gl::draw(titleTextTex, titleTextPos);
 	gl::draw(subTitleTextTex, subTitleTextPos);	
 }
 
-void PhotoCardStyle::activateListeners()
+void InstaPhotoCardStyle::activateListeners()
 {
-	sixBtnLayer->connectEventHandler(&PhotoCardStyle::buttonClicked, this);
+	sixBtnLayer->connectEventHandler(&InstaPhotoCardStyle::buttonClicked, this);
 	Sprite::activateListeners();
 }	
 
-void PhotoCardStyle::unActivateListeners()
+void InstaPhotoCardStyle::unActivateListeners()
 {
 	sixBtnLayer->disconnectEventHandler();
 	Sprite::unActivateListeners();
 }	
 
-void PhotoCardStyle::buttonClicked(EventGUIRef& event)
+void InstaPhotoCardStyle::buttonClicked(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
 	if(ev) mouseUpSignal(event);

@@ -131,6 +131,7 @@ namespace kubik
 		template<typename T, typename Y>
 		inline void	 connectEventHandler( T eventHandler, Y* obj, InteractEvent event = InteractEvent::TOUCH_UP)
 		{
+			if(mEventHandler != nullptr) return;
 			connectEventHandler1( std::bind( eventHandler, obj, std::placeholders::_1 ), event );
 			mouseUpSignalListener = mouseUpSignal.connect(std::bind( eventHandler, obj, std::placeholders::_1 ));
 		}

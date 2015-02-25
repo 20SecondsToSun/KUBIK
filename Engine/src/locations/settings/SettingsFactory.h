@@ -6,7 +6,6 @@
 #include "main/DesignBlock/ScreenSaverChecker.h"
 #include "DecorLoadButton.h"
 #include "PhotoboothSettings.h"
-#include "photobooth/elements/PhotoCountTemplateButton.h"
 
 using namespace ci;
 
@@ -60,18 +59,16 @@ namespace kubik
 			{				
 				ChangeDesignButtonRef iq = ChangeDesignButtonRef(new ChangeDesignButton(item, pos));	
 				return iq;				
+			}		
+
+			ImageQuadroButtonRef createPhotoOverButton(OneDesignItem item, const ci::Vec2f& pos)
+			{				
+				return PhotoOverButtonRef(new PhotoOverButton(item, pos));						
 			}
 
-			PhotoOverButtonRef createPhotoOverButton(OneDesignItem item, const ci::Vec2f& pos)
+			ImageQuadroButtonRef createCardStyleButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
-				PhotoOverButtonRef iq = PhotoOverButtonRef(new PhotoOverButton(item, pos));	
-				return iq;				
-			}
-
-			PhotoCardStyleButtonRef createCardStyleButton(OneDesignItem item, const ci::Vec2f& pos)
-			{				
-				PhotoCardStyleButtonRef iq = PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, pos));	
-				return iq;				
+				return PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, pos));							
 			}
 
 			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, const ci::Vec2f& pos)
@@ -80,11 +77,6 @@ namespace kubik
 				return iq;	
 			}
 
-			PhotoCountTemplateButtonRef createPhotoCountTemplateButton(ci::gl::Texture tex, PhtTextID item, int count, ci::Vec2f pos = Vec2f::zero())
-			{	
-				PhotoCountTemplateButtonRef iq = PhotoCountTemplateButtonRef(new PhotoCountTemplateButton(tex, phtSettings->getTextItem(item), phtSettings->getFont("introb210"), count, pos));	
-				return iq;				
-			}
 			void inject(ConfigSettingsRef configSettings)
 			{
 				settings = configSettings;

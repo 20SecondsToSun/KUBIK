@@ -2,8 +2,7 @@
 #include "elements/IPhotoboothItem.h"
 #include "elements/PhotoFilters.h"
 #include "elements/PhotoOverElements.h"
-#include "elements/PhotoCardStyles.h"
-//#include "elements/PhotoPrintCount.h"
+#include "elements/PhotoCardStyle.h"
 #include "elements/Sharing.h"
 #include "OpenPhotoBoothLayoutEvent.h"
 #include "GameSettingsSprite.h"
@@ -39,8 +38,7 @@ namespace kubik
 
 			PhotoboothSettingsRef phbSettings;
 			PhotoOverElementsRef  photoOverElements;
-			PhotoCardStylesRef    photoCardStyles;
-			//PhotoPrintCountRef    photoPrintCount;
+			PhotoCardStyleRef     photoCardStyles;
 			PhotoFiltersRef	      photoFilters;
 			SharingRef		      sharing;
 

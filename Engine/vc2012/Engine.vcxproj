@@ -134,11 +134,14 @@
     <ClCompile Include="..\src\locations\settings\instakub\HashChecker.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\HashTagBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp" />
-    <ClCompile Include="..\src\locations\settings\instakub\PhotoCardStyle.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\SearchBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\CheckerSocial.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\MainTitleButton.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoCardStyle.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoFilters.cpp" />
+    <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
@@ -196,7 +199,6 @@
     <ClInclude Include="..\src\events\settings\HashCheckerEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenPhotoBoothLayoutEvent.h" />
     <ClInclude Include="..\src\events\settings\OpenSystemDirectoryEvent.h" />
-    <ClInclude Include="..\src\events\settings\PhotoTemplateChooseEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterControlsHideEvent.h" />
     <ClInclude Include="..\src\events\settings\PrinterStatResetEvent.h" />
     <ClInclude Include="..\src\events\settings\SavePhotobootnConfigEvent.h" />
@@ -261,7 +263,7 @@
     <ClInclude Include="..\src\locations\settings\instakub\HashChecker.h" />
     <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h" />
     <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h" />
-    <ClInclude Include="..\src\locations\settings\instakub\PhotoCardStyle.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.h" />
     <ClInclude Include="..\src\locations\settings\instakub\SearchBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\CloseBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.h" />
@@ -292,7 +294,7 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoFilters.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\MainTitleButton.h" />
-    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyles.h" />
+    <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoCardStyle.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\elements\Sharing.h" />
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />

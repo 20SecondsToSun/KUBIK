@@ -2,20 +2,35 @@
    "activeBgPrint" : {
       "id" : 0
    },
-   "activeOverDesignID" : 1,
-   "activePhotoCardStyleDesignID" : 2,
+   "activeOverDesignID" : 4,
+   "activePhotoCardStyleDesignID" : 3,
    "activeSticker" : {
       "id" : 1
    },
    "filtersIds" : [
       {
-         "id" : 1
+         "id" : 1,
+         "isOn" : false
       },
       {
-         "id" : 3
+         "id" : 2,
+         "isOn" : false
       },
       {
-         "id" : 6
+         "id" : 3,
+         "isOn" : true
+      },
+      {
+         "id" : 4,
+         "isOn" : true
+      },
+      {
+         "id" : 5,
+         "isOn" : false
+      },
+      {
+         "id" : 6,
+         "isOn" : true
       }
    ],
    "isCustomDesign" : false,
@@ -28,13 +43,5 @@
    "isVkotakte" : false,
    "seconds" : 3,
    "secondsBetweenShots" : 1,
-   "templateId" : 1,
-   "useIds" : [
-      {
-         "id" : 1
-      },
-      {
-         "id" : 3
-      }
-   ]
+   "templateId" : 1
 }

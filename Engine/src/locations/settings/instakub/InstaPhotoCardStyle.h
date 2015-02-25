@@ -10,13 +10,14 @@ namespace kubik
 {
 	namespace config
 	{
-		typedef std::shared_ptr<class PhotoCardStyle> PhotoCardStyleRef;
+		typedef std::shared_ptr<class InstaPhotoCardStyle> InstaPhotoCardStyleRef;
+		typedef std::shared_ptr<class SixButtonsLayer<ChangePhotoCardStyleDesignEvent>> SixButtonsLayerInstaRef;
 
-		class PhotoCardStyle: public Sprite
+		class InstaPhotoCardStyle: public Sprite
 		{
 
 		public:			
-			PhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position);
+			InstaPhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position);
 
 			virtual void drawLayout();
 			virtual void activateListeners();
@@ -31,7 +32,7 @@ namespace kubik
 			ci::Vec2f titleTextPos, subTitleTextPos;
 
 			InstakubSettingsRef settings;				
-			SixButtonsLayerRef sixBtnLayer;
-		};
+			SixButtonsLayerInstaRef sixBtnLayer;
+		};		
 	}
 }

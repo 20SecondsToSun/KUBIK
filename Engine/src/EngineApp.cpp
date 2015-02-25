@@ -26,22 +26,38 @@ private:
 void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
 	settings->setFrameRate(60);
-	settings->setWindowSize(1080, 1070);//(1880, 1120);	
+	settings->setWindowSize(1080, 1920);//(1880, 1120);	
+	//settings->setFullScreen(true);
 	//settings->setBorderless(true);	
 }
 
 void EngineApp::setup()
 {	
+	
+	//setWindowSize(1080, 1920);
+	//setFrameRate(60);
+	FullScreenOptions fo;
+	DisplayRef d = fo.getDisplay();
+	fo.secondaryDisplayBlanking(true);
+	
+	
+	fo.display(d->getDisplays()[0]);
+	//setFullScreen(true, fo);
+	// [864,1536]
+	console()<<"GET WINDOWS SIZE------------------------::  "<<getWindowSize()<<endl;
+
 	model		= AppModelRef(new ApplicationModel());
 	view		= AppViewRef(new ApplicationView());
 	controller  = ControllerRef(new Controller(model, view));
 
 	gl::enableAlphaBlending();
+	
 }
 
 void EngineApp::mouseDown( MouseEvent event )
 {
-
+	//setFullScreen(!isFullScreen());
+	//console()<<"GET WINDOWS SIZE------------------------::  "<<getWindowSize()<<endl;
 }
 
 void EngineApp::keyDown( KeyEvent event )
