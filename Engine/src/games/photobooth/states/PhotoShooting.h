@@ -17,10 +17,12 @@ namespace kubik
 		int		currentShot, shotsNum;
 		int		secBetweenShots;
 		bool	checkTimerInUpdate;
-		Texture fon;
-		Font	font;		
+				
 		Timer	shTimer;	
 		PhotoStorageRef photoStorage;
+
+		Texture countsTex, seekTex;				
+		ci::Vec2f countsTexPos, seekTexPos;
 
 	public:
 		PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
@@ -37,6 +39,7 @@ namespace kubik
 		{
 			console()<<"start PhotoShooting"<<endl;
 			currentShot = 1;
+			return;
 			//shotsNum = settings->getPhotoShots();
 			secBetweenShots = 0;//settings->getData().secondsBetweenShots;
 
@@ -94,35 +97,33 @@ namespace kubik
 
 		void update() override
 		{
-			cameraCanon().update();
+			//cameraCanon().update();
 
-			if(checkTimerInUpdate && isTimerComplete())
-				shooting();			
+			//if(checkTimerInUpdate && isTimerComplete())
+			//	shooting();			
 		}
 
 		void draw() override
 		{
-			gl::draw(fon, getWindowBounds());
-			cameraCanon().draw();
+			fillBg();
+			float pos = (currentShot - 1) * 202;
+			seekTexPos = Vec2f(countsTexPos.x - seekTex.getWidth()*0.5f + 23 + pos, countsTexPos.y + (countsTex.getHeight() - seekTex.getHeight()) * 0.5f);
+			gl::draw(seekTex, seekTexPos);
+			gl::draw(countsTex, countsTexPos);
+			//cameraCanon().draw();
 
-			gl::color(Color::white());
-			textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Color::white(), Vec2f(100.0f, 100.0f));
-			textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(shotsNum), &font, Color::white(), Vec2f(100.0f, 200.0f));
-			textTools().textFieldDraw("ÂÐÅÌß ÎÄÍÎÃÎ ÑÍÈÌÊÀ(ÑÅÊ.) " + to_string(secBetweenShots), &font, Color::white(), Vec2f(100.0f, 300.0f));
+			//gl::color(Color::white());
+			//textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Color::white(), Vec2f(100.0f, 100.0f));
+			//textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(shotsNum), &font, Color::white(), Vec2f(100.0f, 200.0f));
+			//textTools().textFieldDraw("ÂÐÅÌß ÎÄÍÎÃÎ ÑÍÈÌÊÀ(ÑÅÊ.) " + to_string(secBetweenShots), &font, Color::white(), Vec2f(100.0f, 300.0f));
 		}
 
 		void reset(PhotoboothSettingsRef _settings) override
 		{
 			settings = _settings;
-			fon  = settings->getTexture("fon1");
-			font = settings->getFont("helvetica40");
-		}
-
-		void mouseUpHandler(Vec2i vec) override
-		{
-			shTimer.stop();
-			cameraCanon().photoDownloadedEvent.disconnect_all_slots();
-			nextLocationSignal();
+			countsTex   = settings->getTexture("counts");
+			seekTex		=  settings->getTexture("seek");
+			countsTexPos = Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 200);
 		}
 	};
 	typedef shared_ptr<PhotoShooting>	 PhotoShootingRef;

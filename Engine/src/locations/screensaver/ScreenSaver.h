@@ -5,14 +5,14 @@
 #include "IResourceScreenSaver.h"
 #include "VideoScreenSaver.h"
 #include "ImageScreenSaver.h"
-#include "IDispatcher.h"
+#include "gui/Sprite.h"
 
 using namespace std;
 using namespace ci;
 
 namespace kubik
 {
-	class ScreenSaver: public IScreen, public IDispatcher
+	class ScreenSaver: public IScreen, public Sprite
 	{
 	public:
 		ScreenSaver(ISettingsRef config);
@@ -27,7 +27,7 @@ namespace kubik
 		void setTextures();
 
 	private:
-		void mouseUp(MouseEvent &event);
+		void mouseUp(EventGUIRef& event);
 		connection mouseUpListener;
 
 		IResourceScreenSaverRef screenSaverResource;

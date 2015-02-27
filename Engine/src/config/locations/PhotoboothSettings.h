@@ -24,7 +24,8 @@ namespace kubik
 				PUBLISHING,	PUBLISHING_SUB,
 				SAVE_TEXT, YOUR_DESIGN_TEXT,
 				VKONTAKTE, FACEBOOK, TWITTER,
-				QRCODE,	PRINTER,EMAIL, PHOTO_TREMPLATE_1, PHOTO_TREMPLATE_2
+				QRCODE,	PRINTER,EMAIL, FILTER_TEXT1, FILTER_TEXT2,
+				TIMER_TEXT1, TIMER_TEXT2
 			};
 
 			class PhotoCountItem
@@ -59,9 +60,7 @@ namespace kubik
 			std::vector<int> getOnFilters();
 			void swapFilter(int id);
 			
-			bool findFilterId(int id, std::vector<int> filters);	
-
-			int getPhotoCount(PhtTextID id);	
+			bool findFilterId(int id, std::vector<int> filters);			
 
 			DesignData getPhotoOverDesignData()
 			{
@@ -93,6 +92,8 @@ namespace kubik
 
 			void createMemento();
 			void writeConfig();
+
+			int getBeReadySeconds(){return seconds;};
 
 		private:
 			class Filter

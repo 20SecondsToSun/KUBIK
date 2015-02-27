@@ -6,6 +6,7 @@
 #include "DesignData.h"
 #include "JsonTools.h"
 #include "ConfigTexts.h"
+#include "StringTools.h"
 
 using namespace std;
 using namespace ci;
@@ -294,6 +295,11 @@ namespace kubik
 		{
 			return data.getTexts().get(model->getLang(), id);
 		}	
+
+		std::string getActionName() const
+		{
+			return data.actionName;
+		}
 
 		DesignData getDesignData()
 		{

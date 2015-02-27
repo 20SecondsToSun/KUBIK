@@ -21,9 +21,9 @@ namespace kubik
 		Font font;		
 		bool isPrint;
 
-		vector<PhotoButtonRef> choosingTemplatesBtns;
-		PhotoButton *lastSelectedPhotoButton;
-		MenuButtonRef nextButton;
+		//vector<PhotoButtonRef> choosingTemplatesBtns;
+		//PhotoButton *lastSelectedPhotoButton;
+	//	MenuButtonRef nextButton;
 
 	public:
 		PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage):photoStorage(photoStorage)
@@ -58,7 +58,7 @@ namespace kubik
 
 		void createChoosingTemplatesButtons()
 		{
-			vector<Surface> printTemplates = photoStorage->getPrintTemplates();
+			/*vector<Surface> printTemplates = photoStorage->getPrintTemplates();
 			float shift = 0.0f;
 			int i = 0;
 			choosingTemplatesBtns.clear();
@@ -74,16 +74,16 @@ namespace kubik
 			{
 				lastSelectedPhotoButton = choosingTemplatesBtns[0].get();	
 				lastSelectedPhotoButton->setSelection(true);
-			}
+			}*/
 		}
 
-		void mouseUpListener(PhotoButton& button)
+	/*	void mouseUpListener(PhotoButton& button)
 		{
 			lastSelectedPhotoButton->setSelection(false);
 			lastSelectedPhotoButton = &button;
 			lastSelectedPhotoButton->setSelection(true);
 		}
-
+*/
 		void reset(PhotoboothSettingsRef _settings) override
 		{
 			//typedef PhotoboothSettings::SocialID SocialID;
@@ -99,10 +99,10 @@ namespace kubik
 			////connect_once(nextButton->mouseUpSignal, bind(&PhotoTemplate::mouseUpNextListener, this, placeholders::_1));	
 		}
 
-		void mouseUpNextListener(MenuButton& button)
+		/*void mouseUpNextListener(MenuButton& button)
 		{
 			nextLocationSignal();
-		}
+		}*/
 
 		void update() override
 		{
@@ -111,23 +111,23 @@ namespace kubik
 
 		void draw() override
 		{
-			gl::draw(fon, getWindowBounds());
+		/*	gl::draw(fon, getWindowBounds());
 			gl::color(Color::white());
 			textTools().textFieldDraw("ÂÛÁÅÐÈÒÅ ØÀÁËÎÍ", &font, Color::white(), Vec2f(50.0f, 50.0f));
 
 			for (auto temp : choosingTemplatesBtns)			
-				temp->draw();
+				temp->draw();*/
 
-			nextButton->draw();
+			//nextButton->draw();
 		}
 
-		void mouseUpHandler(Vec2i vec) override
-		{
-			for (auto temp : choosingTemplatesBtns)		
-				temp->mouseUpHandler(vec);
+		//void mouseUpHandler(Vec2i vec) override
+		//{
+		//	for (auto temp : choosingTemplatesBtns)		
+		//		temp->mouseUpHandler(vec);
 
-			nextButton->mouseUpHandler(vec);
-		}
+		//	//nextButton->mouseUpHandler(vec);
+		//}
 	};
 
 	typedef	shared_ptr<PhotoTemplate> PhotoTemplateRef;

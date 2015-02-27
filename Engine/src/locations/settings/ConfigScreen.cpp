@@ -1,7 +1,11 @@
 #include "ConfigScreen.h"
-#include <shellapi.h>
-//#pragma comment(lib, "shell32")
 
+using namespace std;
+using namespace params;
+using namespace ci;
+using namespace ci::app;
+using namespace ci::signals;
+using namespace kubik::config;
 using namespace kubik;
 
 ConfigScreen::ConfigScreen(ISettingsRef config):IScreen(ScreenId::CONFIG)
@@ -90,7 +94,7 @@ void ConfigScreen::draw()
 	Sprite::draw();
 }
 
-void ConfigScreen::closeLocationHandler(EventRef& event)
+void ConfigScreen::closeLocationHandler(EventGUIRef& event)
 {	
 	closeLocationSignal();
 }
@@ -102,8 +106,8 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	if(typeid(*ev) == typeid(CloseConfigEvent))
 	{
 		mainConfig->unActivateListeners();
-		CloseConfigEventRef statEvent = static_pointer_cast<CloseConfigEvent>(event);	
-		//closeLocationSignal();		
+		//CloseConfigEventRef statEvent = static_pointer_cast<CloseConfigEvent>(event);	
+		closeLocationSignal();		
 	}
 	else if(typeid(*ev) == typeid(GameConfEvent))
 	{
@@ -157,18 +161,18 @@ void ConfigScreen::showingMainConfAnimationComplete()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void ConfigScreen::appSettingsChgHandler(ButtonText& button )
-{
-	checkPhotoBoothParamsForChanges();
-	checkMenuParamsForChanges();
-	checkGamesParamsForChanges();
-	checkScreenSaverParamsForChanges();
-
-	if(changes.size())
-		appSettingsChangedSignal(changes);
-	else 
-		closeLocationSignal();
-}
+//void ConfigScreen::appSettingsChgHandler(ButtonText& button )
+//{
+//	checkPhotoBoothParamsForChanges();
+//	checkMenuParamsForChanges();
+//	checkGamesParamsForChanges();
+//	checkScreenSaverParamsForChanges();
+//
+//	if(changes.size())
+//		appSettingsChangedSignal(changes);
+//	else 
+//		closeLocationSignal();
+//}
 
 void ConfigScreen::checkPhotoBoothParamsForChanges()
 {

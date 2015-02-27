@@ -72,10 +72,10 @@ namespace kubik
 			font = settings->getFont("helvetica40");
 		}
 
-		void mouseUpHandler(Vec2i vec) override
-		{
-			//nextLocationSignal();
-		}
+		//void mouseUpHandler(Vec2i vec) override
+		//{
+		//	//nextLocationSignal();
+		//}
 	};
 
 	typedef	shared_ptr<PhotoProcessing> PhotoProcessingRef;

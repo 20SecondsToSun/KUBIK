@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-#include "gui/ImageButton.h"
+#include "gui/ImageButtonSprite.h"
 #include "BackToMainConfigEvent.h"
 
 namespace kubik
@@ -21,17 +21,17 @@ namespace kubik
 				setPosition(position);
 			}	
 
-			void animateToMiniState(EaseFn eFunc, float time, Vec2f finPos)
+			void animateToMiniState(const ci::EaseFn& eFunc, float time, Vec2f finPos)
 			{			
-				setPosition(_localPosition - ci::Vec2f(40,0));
+				setPosition(_localPosition - ci::Vec2f(40.0f, 0.0f));
 				event = backEvent;
 
 				changeTexture(iconBack);
 			}
 
-			void animateToMaxState(EaseFn eFunc, float time)
+			void animateToMaxState(const ci::EaseFn& eFunc, float time)
 			{
-				setPosition(_localPosition + Vec2f(40,0));
+				setPosition(_localPosition + ci::Vec2f(40.0f, 0.0f));
 				event = closeEvent;
 				changeTexture(iconClose);
 			}

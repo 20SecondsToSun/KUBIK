@@ -390,8 +390,7 @@ namespace kubik
 			PrinterBlockRef		printerBlock;
 			LogoRef				logo;
 			NewActivityPopupRef	popup, newActPopup;
-
-			list<IDispatcherRef> components;
+			
 			ci::Anim<ci::Vec2f> animatePosition;
 			ci::Anim<float> alpha;
 		};

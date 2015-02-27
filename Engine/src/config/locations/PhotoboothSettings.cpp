@@ -201,13 +201,24 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		txts.insert(lang, PhtTextID::FACEBOOK,  jtools().parseTextItem(it.getChild("fb")));		
 	}
 
-	jsonTexts = JsonTree(config.getChild("photos"));
+	jsonTexts = JsonTree(config.getChild("filters_loc"));
 	for(auto it : jsonTexts)
 	{
 		string lang	    = it.getChild("lang").getValue<string>();
-		txts.insert(lang, PhtTextID::PHOTO_TREMPLATE_1,     jtools().parseTextItem(it.getChild("template1")));
-		txts.insert(lang, PhtTextID::PHOTO_TREMPLATE_2,     jtools().parseTextItem(it.getChild("template2")));
+		txts.insert(lang, PhtTextID::FILTER_TEXT1,     jtools().parseTextItem(it.getChild("title1")));
+		txts.insert(lang, PhtTextID::FILTER_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
 	}
+
+	
+	jsonTexts = JsonTree(config.getChild("timer_loc"));
+	for(auto it : jsonTexts)
+	{
+		string lang	    = it.getChild("lang").getValue<string>();
+		txts.insert(lang, PhtTextID::TIMER_TEXT1,     jtools().parseTextItem(it.getChild("title1")));
+		txts.insert(lang, PhtTextID::TIMER_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
+	}
+
+	
 
 	configTexts = txts;
 }
@@ -349,16 +360,6 @@ bool PhotoboothSettings::findFilterId(int id, vector<int> filters)
 	return false;
 }
 
-int PhotoboothSettings::getPhotoCount(PhtTextID id)
-{
-	if(id == PhtTextID::PHOTO_TREMPLATE_1)
-		return minPhotosShots;
-	if(id == PhtTextID::PHOTO_TREMPLATE_2)
-		return maxPhotosShots;
-
-	return 0;
-}
-
 int PhotoboothSettings::getCurrentPhotoCount()
 {
 	return 5;
@@ -367,18 +368,37 @@ int PhotoboothSettings::getCurrentPhotoCount()
 void PhotoboothSettings::setTextures()
 {		
 	clearResources();
+	
+	addToDictionary("instrFon",			createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
+	addToDictionary("instrTitle",		createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\text1.png")));
+
+
+	addToDictionary("timer1",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer1.png")));
+	addToDictionary("timer2",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer2.png")));
+
+	addToDictionary("counts",			createImageResource(getTemplateDesignPath("PhotoShooting\\counts.png")));
+	addToDictionary("seek",			createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));
+
+
+
+
 
 	addToDictionary("closeImg",		    createImageResource(getStaticDesignPath("close.png")));
-	addToDictionary("fon1",			    createImageResource(getTemplateDesignPath("PhotoInstruction\\1.jpg")));
-	addToDictionary("fon2",			    createImageResource(getTemplateDesignPath("PhotoFilter\\1.jpg")));
-	addToDictionary("fon3",			    createImageResource(getTemplateDesignPath("PhotoTimer\\1.jpg")));
+
+	
+
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 
 	addToDictionary("introLight44",     createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToDictionary("introLight60",     createFontResource(getFontsPath("IntroLight.ttf"), 60));
+	addToDictionary("introLight36",     createFontResource(getFontsPath("IntroLight.ttf"), 36));
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
+	addToDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
+
 	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
 	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
+	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
 	
 	addToDictionary("photoTemplate1",	createImageResource(getInterfacePath("configDesign\\photobooth\\1photo.png")));

@@ -83,6 +83,7 @@ namespace kubik
 		{		
 			clearResources();
 			addToDictionary("background",	createImageResource(getTemplateDesignPath("bg.jpg")));
+			addToDictionary("menuButton",	createImageResource(getTemplateDesignPath("menulayer.png")));
 			addToDictionary("helvetica30",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 		}
 

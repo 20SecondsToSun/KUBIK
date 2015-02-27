@@ -66,13 +66,17 @@
 		 "text" : {"text" : "Сохранить", "font" : "introLight", "size" : 30, "color" : "ffffff"}
 	 }],
 
- "photos" : [
+ "filters_loc" : [ {
+     	"lang"  : "ru",
+	"title1" : {"text" : "В Ы Б Е Р И Т Е", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+	"title2" : {"text" : "стиль фотографии", "font" : "introLight", "size" : 36, "color" : "ffffff"}
+	}],
+ "timer_loc" : [
       {
      "lang"  : "ru",
-"template1" : {"text" : "фото", "font" : "introBook", "size" : 30, "color" : "ffffff"},
-"template2" : {"text" : "фото", "font" : "introBook", "size" : 30, "color" : "ffffff"}
-}
-],
+"title1" : {"text" : "П Р И Г О Т О В Ь Т Е С Ь", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+"title2" : {"text" : "Сейчас я сделаю серию из 5 фотографий", "font" : "helveticaNeueLight", "size" : 26, "color" : "d2cfc5"}
+}],
 
 	"fbIcon" : "fbIcon.png",
 	"vkIcon" : "vkIcon.png",

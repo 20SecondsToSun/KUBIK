@@ -15,13 +15,13 @@ void ScreenSaver::init(ISettingsRef config)
 
 void ScreenSaver::start()
 {
-	addMouseUpListener(&ScreenSaver::mouseUpFunction, this);
+	connectEventHandler(&ScreenSaver::mouseUp, this);
 	screenSaverResource->start();
 }
 
 void ScreenSaver::stop()
 {	
-	removeMouseUpListener();
+	disconnectEventHandler();
 	screenSaverResource->stop();
 }
 
@@ -30,7 +30,7 @@ void ScreenSaver::draw()
 	screenSaverResource->draw();
 }
 
-void ScreenSaver::mouseUp(MouseEvent &event)
+void ScreenSaver::mouseUp(EventGUIRef& event)
 {
 	closeLocationSignal();
 }

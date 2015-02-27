@@ -1,110 +1,96 @@
 #pragma once
 #include "ApplicationModel.h"
-#include "MenuButton.h"
 #include "IScreen.h"
 #include "ConfigSettings.h"
 #include "MenuSettings.h"
-#include "Button.h"
-#include "ButtonText.h"
 #include "GameSettings.h"
 #include "ScreenSaverSettings.h"
 #include "Types.h"
-#include "IDispatcher.h"
 #include "CloseConfigEvent.h"
-
 #include "main/MainConfig.h"
 #include "photobooth/PhotoboothConfig.h"
 #include "InstakubConfig.h"
-
 #include "gui/Sprite.h"
 #include "GameSettingsSprite.h"
 
-using namespace std;
-using namespace ci;
-using namespace ci::app;
-using namespace ci::signals;
-using namespace params;
-using namespace kubik::config;
-
 namespace kubik
 {
-	class ConfigScreen:public IScreen, public Sprite
+	namespace config
 	{
-	public:
-		ConfigScreen(ISettingsRef config);
-		~ConfigScreen();
+		class ConfigScreen:public IScreen, public Sprite
+		{
+		public:
+			ConfigScreen(ISettingsRef config);
+			~ConfigScreen();
 
-		void start();
-		void stop();
-		void draw();	
-		void init();
-		void init(ISettingsRef settings) override;
+			void start();
+			void stop();
+			void draw();	
+			void init();
+			void init(ISettingsRef settings) override;
 
-		void reset() override{};
-		void startUpParams();
-		void savePhtbtn();
-		
-		SignalVoid closeSettingsSignal;
-		signal<void(vector<Changes>)> appSettingsChangedSignal;
+			void reset() override{};
+			void startUpParams();
+			void savePhtbtn();
 
-		connection mouseUpListener;
-		connection closeBtnListener;
-		connection appSettingsChgListener;
+			SignalVoid closeSettingsSignal;
+			signal<void(vector<Changes>)> appSettingsChangedSignal;
 
-		void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
-		void setMenuSettings(MenuSettingsRef menuSettings);
-		void setGameSettings(GameSettingsRef gameSettings);
-	
-	private:
-		ConfigSettingsRef		configSettings;
-		ScreenSaverSettingsRef  screenSaverSettings;
-		MenuSettingsRef			menuSettings;
-		GameSettingsRef			gameSettings;
+			connection mouseUpListener;
+			connection closeBtnListener;
+			connection appSettingsChgListener;
 
-		ButtonTextRef			saveChngBtn;
-		ButtonRef				closeBtn;
+			void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
+			void setMenuSettings(MenuSettingsRef menuSettings);
+			void setGameSettings(GameSettingsRef gameSettings);
 
-		GameSettingsSpriteRef	gameSettingsScreen;
-	
-		std::vector<Changes> changes;
+		private:
+			ConfigSettingsRef		configSettings;
+			ScreenSaverSettingsRef  screenSaverSettings;
+			MenuSettingsRef			menuSettings;
+			GameSettingsRef			gameSettings;		
+			GameSettingsSpriteRef	gameSettingsScreen;
 
-		//PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
-		MenuSettings::MenuDataStruct menuData, initialMenuData;		
-		GameSettings::GamesDataStruct gamesData, initialGamesData;	
-		ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	
+			std::vector<Changes> changes;
 
-		MainConfigRef mainConfig; 
-		PhotoboothConfigRef photoboothConfig;
-		InstakubConfigRef instakubConfig;
+			//PhotoboothSettings::PhotoboothDataStruct phData, initPhData;
+			MenuSettings::MenuDataStruct menuData, initialMenuData;		
+			GameSettings::GamesDataStruct gamesData, initialGamesData;	
+			ScreenSaverSettings::ScreenSaverDataStruct screensaverData, initialScreensaverData;	
 
-		void update();
-		void closeLocationHandler(EventRef& event);
-		void gamesBlockHandler(EventGUIRef& event);
+			MainConfigRef mainConfig; 
+			PhotoboothConfigRef photoboothConfig;
+			InstakubConfigRef instakubConfig;
 
-		void appSettingsChgHandler(ButtonText& button);		
-		
-		void savePhotoboothParams();
+			void update();
+			void closeLocationHandler(EventGUIRef& event);
+			void gamesBlockHandler(EventGUIRef& event);
 
-		void createPhotoboothParams();
-		void createMenuParams();	
-		void createFuncesParams();	
+			//void appSettingsChgHandler(ButtonText& button);		
 
-		void checkPhotoBoothParamsForChanges();
-		void checkFuncesParamsForChanges();
-		void checkMenuParamsForChanges();
-		void checkGamesParamsForChanges();
-		void checkScreenSaverParamsForChanges();
-		void createGamesParams();		
-		void createScreensaverParams();
+			void savePhotoboothParams();
 
-		void showInExplorer(string path);
-		void showInExplorerMenuDesignPath();
-		
-		void setDefaultGameIdInSwitchOnGames();
-		void setReloadGamePropertyIfNeedIt(Changes &chng);
+			void createPhotoboothParams();
+			void createMenuParams();	
+			void createFuncesParams();	
 
-		void showingMainConfAnimationComplete();		
-	};
+			void checkPhotoBoothParamsForChanges();
+			void checkFuncesParamsForChanges();
+			void checkMenuParamsForChanges();
+			void checkGamesParamsForChanges();
+			void checkScreenSaverParamsForChanges();
+			void createGamesParams();		
+			void createScreensaverParams();
 
-	typedef shared_ptr<ConfigScreen> ConfigScreenRef;	
+			void showInExplorer(string path);
+			void showInExplorerMenuDesignPath();
+
+			void setDefaultGameIdInSwitchOnGames();
+			void setReloadGamePropertyIfNeedIt(Changes &chng);
+
+			void showingMainConfAnimationComplete();		
+		};
+
+		typedef shared_ptr<ConfigScreen> ConfigScreenRef;	
+	}
 }

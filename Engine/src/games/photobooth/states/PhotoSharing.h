@@ -2,7 +2,6 @@
 
 #include "IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
-#include "ShareButton.h"
 #include "model/PhotoStorage.h"
 
 using namespace std;
@@ -26,7 +25,7 @@ namespace kubik
 			EMAIL
 		};
 
-		vector<ShareButtonRef> shareBtns;
+	//	vector<ShareButtonRef> shareBtns;
 		
 		public:
 
@@ -66,9 +65,9 @@ namespace kubik
 
 		void createShareButton(shareID id, string text, int i)
 		{
-			ShareButtonRef button = ShareButtonRef(new ShareButton(id, getButtonArea(i), text, font));	
-			connect_once(button->mouseUpSignal, bind(&PhotoSharing::mouseUpListener, this, placeholders::_1));
-			shareBtns.push_back(button);
+			//ShareButtonRef button = ShareButtonRef(new ShareButton(id, getButtonArea(i), text, font));	
+			//connect_once(button->mouseUpSignal, bind(&PhotoSharing::mouseUpListener, this, placeholders::_1));
+			//shareBtns.push_back(button);
 		}
 
 		Rectf getButtonArea(int i) 
@@ -80,10 +79,10 @@ namespace kubik
 			return Rectf(pos, pos + size);
 		}
 
-		void mouseUpListener(ShareButton& button)
-		{
-			nextLocationSignal();
-		}
+		//void mouseUpListener(ShareButton& button)
+		//{
+		//	nextLocationSignal();
+		//}
 
 		void start() override
 		{
@@ -101,15 +100,15 @@ namespace kubik
 			gl::color(Color::white());
 			textTools().textFieldDraw("SHARING", &font, Color::white(), Vec2f(100.0f, 100.0f));
 
-			for (auto btn: shareBtns)
-				btn->draw();
+			//for (auto btn: shareBtns)
+			//	btn->draw();
 		}
 
-		void mouseUpHandler(Vec2i vec) override
+		/*void mouseUpHandler(Vec2i vec) override
 		{
 			for (auto btn: shareBtns)		
 				btn->mouseUpHandler(vec);
-		}
+		}*/
 	};
 
 	typedef	shared_ptr<PhotoSharing> PhotoSharingRef;

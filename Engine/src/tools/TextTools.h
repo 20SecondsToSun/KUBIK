@@ -31,8 +31,8 @@ namespace kubik
 		}
 
 		gl::Texture  getTextField(std::string text,ci::Font* font, ColorA color)
-		{		
-			ci::TextLayout simple;
+		{	
+			ci::TextLayout simple;			
 			simple.clear(ColorA(1,1,1,0));
 			simple.setFont( *font );
 			simple.setColor(color );

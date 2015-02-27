@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include "gui/SimpleSpriteButton.h"
 #include "TextTools.h"

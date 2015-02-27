@@ -1,12 +1,10 @@
 #pragma once
 
 #include "ApplicationModel.h"
-#include "MenuButton.h"
 #include "IGame.h"
-#include "Button.h"
 #include "ISettings.h"
 #include "FuncesSettings.h"
-#include "IDispatcher.h"
+#include "gui/Sprite.h"
 
 using namespace std;
 using namespace ci;
@@ -14,7 +12,7 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class Funces:public IGame, public IDispatcher
+	class Funces:public IGame, public Sprite
 	{
 	public:
 		Funces(ISettingsRef setRef);
@@ -29,7 +27,7 @@ namespace kubik
 
 	private:
 		Texture closeImg;
-		ButtonRef closeBtn;
+		//ButtonRef closeBtn;
 		connection mouseUpListener, closeBtnListener;	
 		FuncesSettingsRef settings;
 

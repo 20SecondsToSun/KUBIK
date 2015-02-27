@@ -64,9 +64,6 @@
     <Filter Include="Source Files\locations\settings">
       <UniqueIdentifier>{28a76c3c-24c8-4fe1-b75d-d293b3346020}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\buttons">
-      <UniqueIdentifier>{bc8848ac-328e-4e56-841c-d46d9ff8fb72}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\locations\service">
       <UniqueIdentifier>{1d08bf38-0793-4149-8935-080445b43aca}</UniqueIdentifier>
     </Filter>
@@ -163,6 +160,15 @@
     <Filter Include="Source Files\services\virtualKeyboard">
       <UniqueIdentifier>{d314694c-f172-4f52-8a0b-c0a9aae775da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\photobooth\elements">
+      <UniqueIdentifier>{f13dc13c-304e-49b6-8491-a4d8042f989c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events\games">
+      <UniqueIdentifier>{a46d9042-2dd0-4d39-8238-f3f6fcf6bdd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\events\games\photobooth">
+      <UniqueIdentifier>{8216b7f3-f817-4a13-87e4-ce0d7c2fede8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -195,14 +201,8 @@
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp">
       <Filter>Source Files\locations\screensaver</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\buttons\FilterButton.h">
-      <Filter>Source Files\buttons</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp">
       <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\buttons\ShareButton.h">
-      <Filter>Source Files\buttons</Filter>
     </ClCompile>
     <ClCompile Include="..\blocks\CanonSDK\src\BaseCanon.cpp">
       <Filter>blocks\CanonSDK\src</Filter>
@@ -294,6 +294,18 @@
     <ClCompile Include="..\src\locations\settings\elements\SixButtonsLayer.cpp">
       <Filter>Source Files\locations\settings\elements</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoInstruction.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoFilter.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoTimer.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gui\Sprite.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -320,12 +332,6 @@
     <ClInclude Include="..\src\games\photobooth\Photobooth.h">
       <Filter>Source Files\games\photobooth</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\buttons\IButton.h">
-      <Filter>Source Files\buttons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\buttons\Button.h">
-      <Filter>Source Files\buttons</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\Preloader.h">
       <Filter>Source Files\locations</Filter>
     </ClInclude>
@@ -337,9 +343,6 @@
     </ClInclude>
     <ClInclude Include="..\src\tools\Utils.h">
       <Filter>Source Files\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\buttons\ButtonText.h">
-      <Filter>Source Files\buttons</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tools\TextTools.h">
       <Filter>Source Files\tools</Filter>
@@ -419,9 +422,6 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoShooting.h">
       <Filter>Source Files\games\photobooth\states</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\buttons\PhotoButton.h">
-      <Filter>Source Files\buttons</Filter>
-    </ClInclude>
     <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h">
       <Filter>blocks\CanonSDK\include</Filter>
     </ClInclude>
@@ -496,9 +496,6 @@
     </ClInclude>
     <ClInclude Include="..\src\config\locations\ConfigSettings.h">
       <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\IDispatcher.h">
-      <Filter>Source Files\locations</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\Event.h">
       <Filter>Source Files\events</Filter>
@@ -584,32 +581,11 @@
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gui\CompositeDispatcher.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\Dispatcher.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\TextButton.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gui\EventGUI.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\SimpleButton.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\DecorateButton.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\buttons\MenuButton.h">
       <Filter>Source Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h">
       <Filter>Source Files\events\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gui\ImageButton.h">
-      <Filter>Source Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\popup\MainPopup.h">
       <Filter>Source Files\locations\settings\main\popup</Filter>
@@ -701,9 +677,6 @@
     <ClInclude Include="..\src\gui\Sprite.h">
       <Filter>Source Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gui\MultiSprite.h">
-      <Filter>Source Files\gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gui\SimpleSpriteButton.h">
       <Filter>Source Files\gui</Filter>
     </ClInclude>
@@ -772,6 +745,18 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\elements\FilterButton.h">
+      <Filter>Source Files\games\photobooth\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\games\photobooth\PhotoFilterEvent.h">
+      <Filter>Source Files\events\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\menu\ControlLayer.h">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\DrawTools.h">
+      <Filter>Source Files\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

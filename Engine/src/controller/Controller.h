@@ -6,6 +6,7 @@
 #include "MenuScreen.h"
 #include "ConfigScreen.h"
 #include "ScreenSaver.h"
+#include "ControlLayer.h"
 
 #include "Types.h"
 
@@ -43,8 +44,9 @@ namespace kubik
 		GameSettingsRef			gameSettings; 	
 		MenuSettingsRef			menuSettings; 
 
-		MenuScreenRef			menuScreen;
-		ConfigScreenRef			controlScreen;		
+		menu::MenuScreenRef		menuScreen;
+		menu::ControlLayerRef	controlLayer;
+		ConfigScreenRef			controlScreen;
 		ScreenSaverRef			screenSaver;
 
 		GamesFactory<IGame>				gamesFactory;

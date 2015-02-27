@@ -1,5 +1,7 @@
 #pragma once
 #include "gui/Sprite.h"
+#include "TextTools.h"
+#include "Utils.h"
 
 namespace kubik
 {
@@ -10,7 +12,7 @@ namespace kubik
 		public:	
 			Title(ConfigSettingsRef configSettings, Vec2i position)				
 				 :Sprite(),
-				 name("Promo activity"),
+				 name(configSettings->getActionName()),
 				 font(configSettings->getFont("introLight44")),
 				 color(ci::Color::white())
 			{

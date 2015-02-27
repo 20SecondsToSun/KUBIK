@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ConfigSettings.h"
-#include "gui/CompositeDispatcher.h"
 #include "StartNewActivityEvent.h"
 #include "CloseActivityEvent.h"
 #include "VirtualKeyboard.h"

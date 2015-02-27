@@ -1,6 +1,8 @@
 #include "Controller.h"
 
 using namespace kubik;
+using namespace kubik::menu;
+using namespace kubik::games;
 using namespace std;
 
 Controller::Controller(AppModelRef model, AppViewRef view)
@@ -30,7 +32,7 @@ void Controller::loadKubikConfig()
 	configLoader = ConfigLoaderRef(new ConfigLoader(model));
 
 	connect_once(configLoader->LoadingCompleteSignal, bind(&Controller::kubikConfigLoadingCompleteHandler, this));
-	connect_once(configLoader->LoadingErrorSignal, bind(&Controller::kubikConfigLoadingErrorHandler, this, std::placeholders::_1));
+	connect_once(configLoader->LoadingErrorSignal,	  bind(&Controller::kubikConfigLoadingErrorHandler, this, std::placeholders::_1));
 
 	configLoader->load();	
 }
@@ -83,7 +85,6 @@ void Controller::loadSettings()
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	settingsFactory().inject(phbthSettings);
-
 }
 
 void Controller::configsLoadingCompleteHandler()
@@ -121,7 +122,6 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
-
 
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));	
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));	
@@ -163,7 +163,8 @@ void Controller::createLocations()
 	touchKeyboard().setup();
 
 	//screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
-	//menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
+	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
+	controlLayer  = ControlLayerRef(new ControlLayer(menuSettings));	
 
 	controlScreen = ConfigScreenRef(new ConfigScreen(controlSettings));
 	controlScreen->setScreenSaverSettings(screenSaverSettings);
@@ -171,13 +172,13 @@ void Controller::createLocations()
 	controlScreen->setGameSettings(gameSettings);
 	controlScreen->init();
 
-	//gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
+	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
 	//gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
-	//createGame(model->getDefaultGameID());	
+	createGame(model->getDefaultGameID());	
 
 	//startup();
 
-	startLocation(controlScreen);
+	startLocation(menuScreen);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -348,12 +349,21 @@ void Controller::createGame(GameId id)
 
 void Controller::addGameHandlers()
 {
-	connect_once(game->closeLocationSignal,	bind(&Controller::startLocation, this, menuScreen));	
+	view->addLayer(controlLayer);	
+	controlLayer->activateListeners();
+	controlLayer->connectEventHandler(&Controller::closeGameHandler, this, ControlLayer::CLOSE_GAME);		
+}
+
+void Controller::closeGameHandler()
+{
+	startLocation(menuScreen);
 }
 
 void Controller::removeGameHandlers()
 {
-	game->closeLocationSignal.disconnect_all_slots();
+	controlLayer->disconnectEventHandler();
+	controlLayer->unActivateListeners();
+	view->removeLayer(controlLayer);	
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@
 #include "IGame.h"
 #include "ServicePopup.h"
 #include "Preloader.h"
+#include "gui/Sprite.h"
 
 using namespace std;
 using namespace ci;
@@ -21,13 +22,26 @@ namespace kubik
 		}
 
 		void startLocation(shared_ptr<IScreen> screen)
-		{	
+		{				
 			location = screen;
 		}
 
 		void draw()
 		{
 			location->draw();
+
+			for (auto layer : layers)
+				layer->draw();
+		}
+
+		void addLayer(SpriteRef layer)
+		{
+			layers.push_back(layer);
+		}
+
+		void removeLayer(SpriteRef layer)
+		{
+			layers.remove(layer);
 		}
 
 		////////////////////////////////////////////////////////////////////////////
@@ -57,5 +71,7 @@ namespace kubik
 		IScreenRef location;
 		ServicePopupRef servicePopup;
 		PreloaderRef	 preloader;	
+
+		std::list<SpriteRef> layers;
 	};
 }

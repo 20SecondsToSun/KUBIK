@@ -9,223 +9,60 @@ namespace kubik
 	{
 
 	public:
-		Sprite()
-			:_globalPosition(ci::Vec2f::zero()),
-			 _localPosition(ci::Vec2f::zero()),
-			 _parentPosition(ci::Vec2f::zero()),
-			 alpha(1),
-			 name("default"),
-			 parent(NULL),
-			 mEventHandler(nullptr),
-			 lock(false)
-		{
-		}
+		Sprite();
+		~Sprite(){};
 
-		void addChild(SpriteRef child)
-		{	
-			child->setParent(this);
-			child->setChildPosition(_localPosition);
-			child->setAlpha(alpha);			
-			displayList.push_back(child);
-		}	
+		virtual void setParent(Sprite* parent);
+		virtual void draw();
+		virtual void drawLayout();
+		virtual void setChildPosition(ci::Vec2i position);
+		virtual void setPosition(ci::Vec2i position);		
+		virtual void updateGlobalPosition();		
+		virtual void setAlpha(float alpha);
+		virtual ci::Vec2f getFullPosition();
+		virtual ci::Vec2f getPosition();
 
-		void removeChild(SpriteRef child)
-		{
-			displayList.remove(child);
-		}
+		virtual void unActivateListeners();
+		virtual void activateListeners();
 
-
-		virtual void setParent(Sprite* parent)
-		{
-			this->parent = parent;
-		}
-
-		virtual void draw()
-		{			
-			gl::pushMatrices();				
-			gl::translate(getGlobalPosition());
-				drawLayout();
-			gl::popMatrices();
-
-			for (auto comp : displayList)
-				comp->draw();
-		}
-
-		virtual void drawLayout()
-		{
-
-		}
-
-		virtual void setChildPosition(ci::Vec2i position)
-		{
-			_parentPosition = getFullPosition();
+		void addChild(SpriteRef child);
+		void removeChild(SpriteRef child);
+		void removeAllChildren();
 		
-			updateGlobalPosition();
-			for (auto comp : displayList)			
-				comp->setChildPosition(position);
-		}
-
-		virtual void setPosition(ci::Vec2i position)		
-		{
-			_localPosition = position;		
-			_parentPosition = getFullPosition();
+		ci::Vec2f getGlobalPosition();
+		ci::Vec2f getParentPosition();
 		
-			updateGlobalPosition();
-			for (auto comp : displayList)			
-				comp->setChildPosition(position);		
-		}
-
-		virtual ci::Vec2f getFullPosition()		
-		{
-			ci::Vec2f _position (ci::Vec2f::zero());
-			
-			if(parent)
-				_position = parent->getGlobalPosition();
-
-			return _position;
-		}
-
-		virtual void updateGlobalPosition()
-		{
-			_globalPosition = _localPosition + _parentPosition;
-		}
-
-		ci::Vec2f getGlobalPosition()
-		{
-			return _globalPosition;
-		}
-
-		ci::Vec2f getParentPosition()
-		{
-			return _parentPosition;
-		}
-
-		virtual ci::Vec2f getPosition()		
-		{
-			return _localPosition;			
-		}
-
-		virtual void setAlpha(float alpha)
-		{
-			this->alpha = alpha;
-			for (auto comp : displayList)			
-				comp->setAlpha(alpha);
-		}
-
 		template<typename T, typename Y>
 		inline void	 connectEventHandler( T eventHandler, Y* obj, int event)
 		{
 			connectEventHandler0( std::bind( eventHandler, obj),  event );			
 		}
-	
-		virtual void connectEventHandler0( const std::function<void()>& eventHandler, int event)
-		{
-			eventHandlerDic[event] = eventHandler;
-		}
-
-		void disconnectEventHandler(int event)
-		{
-			eventHandlerDic[event] = nullptr;
-		}	
-
 		template<typename T, typename Y>
-		inline void	 connectEventHandler( T eventHandler, Y* obj, InteractEvent event = InteractEvent::TOUCH_UP)
+		void connectEventHandler( T eventHandler, Y* obj,  InteractEvent event = InteractEvent::TOUCH_UP)
 		{
 			if(mEventHandler != nullptr) return;
 			connectEventHandler1( std::bind( eventHandler, obj, std::placeholders::_1 ), event );
 			mouseUpSignalListener = mouseUpSignal.connect(std::bind( eventHandler, obj, std::placeholders::_1 ));
 		}
+	
+		virtual void connectEventHandler0( const std::function<void()>& eventHandler, int event);
+		void disconnectEventHandler(int event);
+	
+		virtual void connectEventHandler1( const std::function<void (EventGUIRef& )>& eventHandler, InteractEvent event);
+		void disconnectEventHandler();
 
-		virtual void connectEventHandler1( const std::function<void (EventGUIRef& )>& eventHandler, InteractEvent event)
-		{
-			if(mEventHandler == nullptr)
-			{
-				mEventHandler = eventHandler;
-				mouseUpListener = getWindow()->connectMouseUp(&Sprite::mouseUp, this);							
-			}		
-		}
+		virtual void mouseUp(ci::app::MouseEvent &_event);
+		virtual void eventListener(EventGUIRef event);
+	
+		Sprite* getParent();
+		Vec2f getLocalPosition();
 
-		void disconnectEventHandler( )
-		{
-			if(mEventHandler != nullptr)
-			{
-				mEventHandler = nullptr;
-				mouseUpListener.disconnect();
-				mouseUpSignalListener.disconnect();
-			}
-		}	
-
-		virtual void mouseUp(ci::app::MouseEvent &_event)
-		{			
-			if(lock) return;
-
-			mEventHandler(event);
-
-			Sprite* _parent = parent;
-
-			while(_parent && !_parent->mEventHandler)
-			{
-				_parent = _parent->getParent();
-			}
-
-			if(_parent )//&& !_parent->mEventHandler)
-			{
-				_parent->mouseUpSignal(event);
-				//			
-			}
-		}
-
-		virtual void eventListener(EventGUIRef event)
-		{
-			
-		}					
-
-		virtual void unActivateListeners()
-		{
-			for (auto comp : displayList)
-				comp->unActivateListeners();			
-		}
-
-		virtual void activateListeners()
-		{			
-			for (auto comp : displayList)
-				comp->activateListeners();			
-		}
-
-		Sprite* getParent()
-		{			
-			return parent;			
-		}
-
-		Vec2f getLocalPosition()
-		{
-			return _localPosition;
-		}
-			
 		boost::signals2::signal<void(EventGUIRef &)> mouseUpSignal;		
 		connection mouseUpSignalListener;
 
-		void lockListeners()
-		{
-			for (auto comp : displayList)
-				comp->lockListeners();
-
-			lock = true;
-		}
-
-		void unlockListeners()
-		{
-			for (auto comp : displayList)
-				comp->unlockListeners();
-
-			lock = false;
-		}
-
-		void callback(int id)
-		{
-			if(eventHandlerDic[id])
-				eventHandlerDic[id]();
-		}
+		void lockListeners();
+		void unlockListeners();
+		void callback(int id);
 
 	protected:
 		bool lock;
