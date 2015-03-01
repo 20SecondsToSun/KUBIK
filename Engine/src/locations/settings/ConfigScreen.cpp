@@ -38,13 +38,7 @@ void ConfigScreen::setGameSettings(GameSettingsRef gameSettings)
 void ConfigScreen::startUpParams()
 {
 	changes.clear();
-
-	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	//initPhData = phData = phbthSettings->getData();	
-	initialMenuData = menuData = menuSettings->getData();
-	initialGamesData = gamesData = gameSettings->getData();
-	initialScreensaverData = screensaverData = screenSaverSettings->getData();
-
+	configSettings->createMemento();
 	mainConfig->setStartupData();
 	gameSettingsScreen = nullptr;
 }
@@ -94,11 +88,6 @@ void ConfigScreen::draw()
 	Sprite::draw();
 }
 
-void ConfigScreen::closeLocationHandler(EventGUIRef& event)
-{	
-	closeLocationSignal();
-}
-
 void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
@@ -106,13 +95,11 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	if(typeid(*ev) == typeid(CloseConfigEvent))
 	{
 		mainConfig->unActivateListeners();
-		//CloseConfigEventRef statEvent = static_pointer_cast<CloseConfigEvent>(event);	
-		closeLocationSignal();		
+		closeLocationHandler();		
 	}
 	else if(typeid(*ev) == typeid(GameConfEvent))
 	{
-		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);		
-
+		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);
 		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);
 
 		if (confEvent->getGameId() == GameId::PHOTOBOOTH)		
@@ -120,8 +107,9 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 		if (confEvent->getGameId() == GameId::INSTAKUB)		
 			gameSettingsScreen = instakubConfig;	
 
-		gameSettingsScreen->setPosition(Vec2f(1080, 0));
-		gameSettingsScreen->showAnimate(EaseOutCubic(), 0.7f);
+		//gameSettingsScreen = gameSettings->get(confEvent->getGameId());
+		gameSettingsScreen->setPosition(ci::Vec2f(1080.0f, 0.0f));
+		gameSettingsScreen->showAnimate(ci::EaseOutCubic(), 0.7f);
 		addChild(gameSettingsScreen);		
 
 		console()<<"config game ID:::::: "<<confEvent->getGameId()<<endl;
@@ -161,18 +149,13 @@ void ConfigScreen::showingMainConfAnimationComplete()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-//void ConfigScreen::appSettingsChgHandler(ButtonText& button )
-//{
-//	checkPhotoBoothParamsForChanges();
-//	checkMenuParamsForChanges();
-//	checkGamesParamsForChanges();
-//	checkScreenSaverParamsForChanges();
-//
-//	if(changes.size())
-//		appSettingsChangedSignal(changes);
-//	else 
-//		closeLocationSignal();
-//}
+void ConfigScreen::closeLocationHandler()
+{	
+	checkPhotoBoothParamsForChanges();
+	checkMenuParamsForChanges();
+
+	closeLocationSignal();
+}
 
 void ConfigScreen::checkPhotoBoothParamsForChanges()
 {
@@ -180,18 +163,15 @@ void ConfigScreen::checkPhotoBoothParamsForChanges()
 	Changes chng;
 	chng.id = changeSetting::id::PHOTOBOOTH;
 
-	/*if(phData.hasDesignChanges(initPhData))
+	if(configSettings->designChanged())
 	{
 		chng.texReload = true;
 		changes.push_back(chng);
-		phbthSettings->setData(phData);	
-		phbthSettings->setDesignPath();
 	}
-	else if(phData.hasAnyChanges(initPhData))	
+	else if(phbthSettings->wasChanged())	
 	{
 		changes.push_back(chng);
-		phbthSettings->setData(phData);	
-	}*/
+	}
 }
 
 void ConfigScreen::checkFuncesParamsForChanges()
@@ -202,20 +182,23 @@ void ConfigScreen::checkFuncesParamsForChanges()
 
 void ConfigScreen::checkMenuParamsForChanges()
 {	
-	if (menuData.hasDesignChanges(initialMenuData))
+	Changes chng;
+	chng.id = changeSetting::id::MENU;
+
+	if(configSettings->designChanged())
 	{
-		Changes chng;
-		chng.id = changeSetting::id::MENU;
 		chng.texReload = true;
 		changes.push_back(chng);
-		menuSettings->setData(menuData);	
-		menuSettings->setDesignPath();	
-	}	
+	}
+	else if(configSettings->gamesChanged())	
+	{
+		changes.push_back(chng);
+	}
 }
 
 void ConfigScreen::checkGamesParamsForChanges()
 {
-	if(gamesData.getCountSwitchOnGames())
+	/*if(gamesData.getCountSwitchOnGames())
 	{
 		Changes chng;
 		chng.id = changeSetting::id::GAMES;	
@@ -228,23 +211,23 @@ void ConfigScreen::checkGamesParamsForChanges()
 			changes.push_back(chng);
 			gameSettings->setData(gamesData);
 		}
-	}	
+	}	*/
 }
 
 void ConfigScreen::checkScreenSaverParamsForChanges()
 {
-	if (screensaverData.hasChanges(initialScreensaverData))
+	/*if (screensaverData.hasChanges(initialScreensaverData))
 	{
 		Changes chng;
 		chng.id = changeSetting::id::SCREENSAVER;	
 		changes.push_back(chng);
 		screenSaverSettings->setData(screensaverData);
-	}
+	}*/
 }
 
 void ConfigScreen::setDefaultGameIdInSwitchOnGames()
 {
-	size_t len = gamesData.getGames().size();
+	/*size_t len = gamesData.getGames().size();
 
 	if(!gamesData.isIdInSwitchOnGames((GameId)gamesData.getDefaultGameID()))
 	{
@@ -256,12 +239,12 @@ void ConfigScreen::setDefaultGameIdInSwitchOnGames()
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
 {
-	size_t len = gamesData.getGames().size();
+	/*size_t len = gamesData.getGames().size();
 
 	for (size_t i = 0; i < len; i++)
 	{
@@ -272,5 +255,5 @@ void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
 			chng.gamesReload = true;
 			break;			
 		}	
-	}
+	}*/
 }

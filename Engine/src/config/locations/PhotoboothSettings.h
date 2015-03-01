@@ -95,6 +95,8 @@ namespace kubik
 
 			int getBeReadySeconds(){return seconds;};
 
+			bool wasChanged(){ return false;};
+
 		private:
 			class Filter
 			{
@@ -236,4 +238,4 @@ namespace kubik
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;
 	}
-}
+ }

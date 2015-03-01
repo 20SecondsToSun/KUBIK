@@ -2,6 +2,9 @@
 #include "IPhotoboothLocation.h"
 #include "CameraAdapter.h"
 #include "TextTools.h"
+#include "DrawTools.h"
+#include "shaders/ShaderTool.h"
+#include "shaders/MaskShader.h"
 
 namespace kubik
 {
@@ -19,7 +22,9 @@ namespace kubik
 			ci::Vec2f title1Pos, title2Pos, timerTexPos;
 			ci::Font timerFont;		
 
-			float startAngle, endAngle, changeAngle, RADIUS, rotor; 
+			float startAngle, endAngle, changeAngle, RADIUS, rotor;
+
+			shaders::imagefilters::MaskShaderRef maskShader;
 
 		public:
 			void clear();

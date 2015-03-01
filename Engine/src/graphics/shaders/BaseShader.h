@@ -1,31 +1,31 @@
 #pragma once
-//#include "stdafx.h"
-
-using namespace ci;
-using namespace ci::app;
-using namespace ci::gl;
-using namespace std;
-using namespace params;
+#include "cinder/app/AppNative.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/params/Params.h"
+#include "cinder/gl/GlslProg.h"
 
 #define STRINGIFY(s) #s
 
-namespace kubik
-{
-	namespace shaders
-	{	
-	
+namespace shaders
+{	
+	namespace imagefilters
+	{
 		class BaseShader
 		{
-
-		protected:
-			InterfaceGlRef	params;
-			GlslProg shader;
+		protected:			
+			ci::gl::GlslProg shader;
 
 		public:
+			BaseShader(std::string title = "default"):title(title)
+			{
+								
+			}
+
 			// The GOL vertex shader is a simple pass-through:
 			const char *GET_PASSTHROUGH_VERTEX() const
 			{	
-				static const string shdr = STRINGIFY(
+				static const std::string shdr = STRINGIFY(
 					void main() {
 						gl_FrontColor  = gl_Color;
 						gl_TexCoord[0] = gl_MultiTexCoord0;
@@ -36,23 +36,16 @@ namespace kubik
 				return shdr.c_str();
 			}
 
-			virtual const char * GET_FRAG() = 0;
-			virtual void render(Surface surf) = 0;
+			virtual const char * GET_FRAG() = 0;//{return NULL;};
+			virtual void render(ci::Surface surf) = 0;	
+			virtual void createParams(ci::params::InterfaceGlRef params) = 0;	
 
-			void drawParams()
-			{
-				params->draw();
-			}
+			virtual std::string getTitle() {return title;};
 
-			void hideParams()
-			{
-				params->hide();
-			}
-
-			void showParams()
-			{
-				params->show();
-			}
+		protected:
+			std::string title;
 		};
+
+		typedef std::shared_ptr<BaseShader> BaseShaderRef;
 	}
 }

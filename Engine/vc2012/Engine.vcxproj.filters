@@ -449,31 +449,7 @@
     <ClInclude Include="..\src\stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\BleachShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\ContrastShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\PixelateShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\KaleidoscopeShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\BloomShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\BrcosaShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\FishEyeShader.h">
-      <Filter>Source Files\graphics\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\shaders\LutShader.h">
       <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\src\loaders\ConfigLoader.h">
@@ -490,9 +466,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\IScreen.h">
       <Filter>Source Files\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graphics\IDrawable.h">
-      <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\locations\ConfigSettings.h">
       <Filter>Source Files\config\locations</Filter>
@@ -757,6 +730,21 @@
     </ClInclude>
     <ClInclude Include="..\src\tools\DrawTools.h">
       <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\HueSaturation.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Pixelate.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Sepia.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\ShaderTool.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\MaskShader.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

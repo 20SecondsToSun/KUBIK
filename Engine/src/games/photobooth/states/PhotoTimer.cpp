@@ -1,10 +1,10 @@
 #include "PhotoTimer.h"
-#include "DrawTools.h"
 
 using namespace std;
 using namespace ci;
 using namespace kubik;
 using namespace kubik::games;
+using namespace shaders::imagefilters;
 
 void PhotoTimer::clear()
 {
@@ -23,6 +23,7 @@ PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings):
 	RADIUS(500)
 {		
 	reset(settings);
+	maskShader = shadertool().getMaskShader();
 }
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
@@ -78,9 +79,7 @@ void PhotoTimer::draw()
 {
 	fillBg();
 	gl::draw(tex1, title1Pos);
-	gl::draw(tex2, title2Pos);
-
-	gl::draw(timerTex1, timerTexPos);
+	gl::draw(tex2, title2Pos);	
 
 	Texture tex = textTools().getTextField(to_string(seconds), &timerFont, ci::Color::white());
 	
@@ -89,7 +88,9 @@ void PhotoTimer::draw()
 	float y1 = timerTexPos.y + 0.5 * timerTex1.getHeight();
 
 	gl::draw(tex, Vec2f(x, y));
-	drawtool().circleSlice(getWindowCenter().x, y1, RADIUS, startAngle, endAngle + changeAngle, true);	
+	gl::draw(timerTex1, timerTexPos);		
+	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y1, RADIUS, startAngle, endAngle + changeAngle, true);	
+	maskShader->render(timerTex2, texMask, timerTexPos);
 
 	Sprite::draw();
 }

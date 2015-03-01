@@ -22,5 +22,4 @@
 
 #include <stdint.h>
 
-#include "IDrawable.h"
 #include "Logger.h"

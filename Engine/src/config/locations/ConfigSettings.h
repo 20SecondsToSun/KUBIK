@@ -206,6 +206,21 @@ namespace kubik
 			}
 		}
 
+		void createMemento()
+		{
+
+		}
+
+		bool designChanged()
+		{
+			return false;
+		}
+
+		bool gamesChanged()
+		{
+			return false;
+		}		
+		
 		void setTextures()
 		{
 			addToDictionary("helveticaLight22",  createFontResource(getFontsPath("HelveticaLight.ttf"), 22));

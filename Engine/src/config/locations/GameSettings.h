@@ -6,7 +6,6 @@
 #include "InstakubSettings.h"
 #include "Types.h"
 
-using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace kubik::config;
@@ -19,7 +18,7 @@ namespace kubik
 
 		class GamesDataStruct
 		{
-			vector<GamesInfo> games;
+			std::vector<GamesInfo> games;
 			int defaultGameID;	
 			
 		public:
@@ -38,7 +37,7 @@ namespace kubik
 				defaultGameID = value;
 			}
 
-			vector<GamesInfo> getGames()
+			std::vector<GamesInfo> getGames()
 			{
 				return games;	
 			}
@@ -69,9 +68,9 @@ namespace kubik
 				return false;
 			}
 
-			vector<GamesInfo> getNotPurchasedGames()
+			std::vector<GamesInfo> getNotPurchasedGames()
 			{
-				vector<GamesInfo> _gamesSelect;
+				std::vector<GamesInfo> _gamesSelect;
 				for (auto game: games)
 				{
 					if(!game.isPurchased)
@@ -80,9 +79,9 @@ namespace kubik
 				return _gamesSelect;
 			}
 
-			vector<GamesInfo> getPurchasedGames()
+			std::vector<GamesInfo> getPurchasedGames()
 			{
-				vector<GamesInfo> _gamesSelect;
+				std::vector<GamesInfo> _gamesSelect;
 				for (auto game: games)
 				{
 					if(game.isPurchased)
@@ -137,7 +136,7 @@ namespace kubik
 
 		void load() override
 		{
-			vector<GamesInfo> games = model->getGames();
+			std::vector<GamesInfo> games = model->getGames();
 
 			for (auto game: games)
 			{
@@ -175,7 +174,7 @@ namespace kubik
 
 		void buildData()
 		{
-			vector<GamesInfo> games = model->getGames();
+			std::vector<GamesInfo> games = model->getGames();
 			for (auto game: games)
 			{
 				if (!game.isPurchased)
@@ -196,7 +195,7 @@ namespace kubik
 		
 		bool isGameID(int id)
 		{
-			vector<GamesInfo> games = model->getGames();
+			std::vector<GamesInfo> games = model->getGames();
 
 			for (auto game: games)
 			{
@@ -212,7 +211,7 @@ namespace kubik
 			return currentGame == (GameId)id;
 		}
 
-		game::id getCurrentGame()
+		GameId getCurrentGame()
 		{
 			return currentGame;
 		}
@@ -253,7 +252,7 @@ namespace kubik
 
 	private:
 		GameId currentGame, nextGameId;	
-		map<GameId, ISettingsRef> gameSettingsMap;
+		std::map<GameId, ISettingsRef> gameSettingsMap;
 		GamesDataStruct data;
 	};
 

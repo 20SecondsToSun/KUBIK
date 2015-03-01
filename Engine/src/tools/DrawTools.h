@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cinder/CinderMath.h"
+#include "Utils.h"
 
 namespace kubik
 {	
@@ -48,7 +49,7 @@ namespace kubik
 			// we draw the circle points ourself (vs. glDrawArrays) because it allows us to draw the center point, and have the triangles fan around it  
 			k = 0;  
 			//glBegin((drawMode == OF_FILLED) ? GL_TRIANGLE_FAN : (closed?GL_LINE_LOOP:GL_LINE_STRIP));  
-			glBegin(GL_TRIANGLE_FAN);
+			glBegin(GL_TRIANGLE_FAN);			
 			glVertex2f(x, y); // center vertex  
 
 			// now all the points around the circumference  
@@ -58,8 +59,23 @@ namespace kubik
 				k+=2; 
 			}
 			glEnd();
-		} 
+		}
 
+		gl::Texture circleSliceTexture(float x,float y, float radius, float lowAngle, float highAngle, bool closed, bool radians = false)
+		{
+			gl::Fbo mFbo = gl::Fbo(radius * 2, radius * 2);
+			Utils::drawGraphicsToFBO(mFbo, [ & ]()
+			{
+				gl::pushMatrices();
+				gl::clear(Color::black());
+				gl::enableAlphaBlending();  
+				circleSlice(radius, radius, radius, lowAngle, highAngle, closed, radians);
+				gl::popMatrices();
+			});	
+			gl::Texture tex = mFbo.getTexture();
+			Utils::clearFBO(mFbo);
+			return tex;
+		}
 
 	};
 	// helper function(s) for easier access 
