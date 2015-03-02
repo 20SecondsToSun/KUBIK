@@ -38,8 +38,12 @@ void ConfigScreen::setGameSettings(GameSettingsRef gameSettings)
 void ConfigScreen::startUpParams()
 {
 	changes.clear();
-	configSettings->createMemento();
+
+	for (auto setting : settingsList)
+		setting->createMemento();
+
 	mainConfig->setStartupData();
+
 	gameSettingsScreen = nullptr;
 }
 
@@ -75,6 +79,10 @@ void ConfigScreen::init(ISettingsRef settings)
 	
 	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
 	instakubConfig		= InstakubConfigRef(new InstakubConfig(instaSettings));	
+
+	settingsList.push_back(configSettings);
+	settingsList.push_back(phbthSettings);
+	settingsList.push_back(instaSettings);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -91,7 +99,9 @@ void ConfigScreen::draw()
 void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
+
 	if(!ev) return;
+
 	if(typeid(*ev) == typeid(CloseConfigEvent))
 	{
 		mainConfig->unActivateListeners();
@@ -137,7 +147,6 @@ void ConfigScreen::showingMainConfAnimationComplete()
 {
 	if(gameSettingsScreen)
 	{
-		gameSettingsScreen->writeConfig();
 		removeChild(gameSettingsScreen);
 		gameSettingsScreen = nullptr;
 	}
@@ -154,23 +163,22 @@ void ConfigScreen::closeLocationHandler()
 	checkPhotoBoothParamsForChanges();
 	checkMenuParamsForChanges();
 
+	for (auto setting : settingsList)
+		setting->writeConfig();	
+
+	mainConfig->closeDesignBlock();
 	closeLocationSignal();
 }
 
 void ConfigScreen::checkPhotoBoothParamsForChanges()
 {
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	Changes chng;
-	chng.id = changeSetting::id::PHOTOBOOTH;
 
-	if(configSettings->designChanged())
+	if(phbthSettings->settingsChanged())		
 	{
-		chng.texReload = true;
-		changes.push_back(chng);
-	}
-	else if(phbthSettings->wasChanged())	
-	{
-		changes.push_back(chng);
+		Changes chng;
+		chng.id = changeSetting::id::PHOTOBOOTH;
+		changes.push_back(chng);	
 	}
 }
 
@@ -185,15 +193,8 @@ void ConfigScreen::checkMenuParamsForChanges()
 	Changes chng;
 	chng.id = changeSetting::id::MENU;
 
-	if(configSettings->designChanged())
-	{
-		chng.texReload = true;
-		changes.push_back(chng);
-	}
-	else if(configSettings->gamesChanged())	
-	{
-		changes.push_back(chng);
-	}
+	//if(configSettings->settingsChanged())	
+	//	changes.push_back(chng);	
 }
 
 void ConfigScreen::checkGamesParamsForChanges()
@@ -211,7 +212,8 @@ void ConfigScreen::checkGamesParamsForChanges()
 			changes.push_back(chng);
 			gameSettings->setData(gamesData);
 		}
-	}	*/
+	}	
+	*/
 }
 
 void ConfigScreen::checkScreenSaverParamsForChanges()

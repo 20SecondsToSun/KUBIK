@@ -22,8 +22,7 @@ namespace kubik
 			virtual void draw();
 			virtual void showAnimate(const ci::EaseFn& eFunc, float time);
 			virtual void hideAnimate(const ci::EaseFn& eFunc, float time);
-			virtual void writeConfig();
-
+		
 			void mouseUpHandler(EventGUIRef& event);			
 			void animationPosUpdate();
 			void showAnimationFinish();			

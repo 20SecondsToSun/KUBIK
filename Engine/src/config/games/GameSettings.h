@@ -88,7 +88,7 @@ namespace kubik
 						_gamesSelect.push_back(game);
 				}
 				return _gamesSelect;
-			}
+			}		
 
 			GamesInfo getPurchasedGameInfo(GameId id)
 			{
@@ -127,7 +127,10 @@ namespace kubik
 		{
 			IResourceDictionary rd = gameSettingsMap[id]->getResources();
 			return rd;		
-		}		
+		}
+
+		virtual void createMemento(){};
+		virtual void writeConfig(){};
 
 		void setTextures() override
 		{
@@ -248,6 +251,15 @@ namespace kubik
 		bool isCurrentGameInSwitchOnGames()
 		{
 			return data.isIdInSwitchOnGames(currentGame);
+		}
+
+		void setGameActive(GameId id, bool value)
+		{
+			for (auto game = data.games.begin(); game != data.games.end(); ++game)				
+			{
+				if(game->isPurchased && game->id == id)
+						game->isOn = value;
+			}				
 		}
 
 	private:

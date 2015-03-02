@@ -82,9 +82,6 @@
     <Filter Include="Source Files\config\exception">
       <UniqueIdentifier>{15c01e21-71b4-43f0-916a-184096d3e464}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\config\locations">
-      <UniqueIdentifier>{9f2b8059-ff48-49ec-8992-b0b5588d3f17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="blocks\CanonSDK">
       <UniqueIdentifier>{57cb7e94-492a-45d0-8fa3-6b0341daa89e}</UniqueIdentifier>
     </Filter>
@@ -169,6 +166,18 @@
     <Filter Include="Source Files\events\games\photobooth">
       <UniqueIdentifier>{8216b7f3-f817-4a13-87e4-ce0d7c2fede8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\config\games\funces">
+      <UniqueIdentifier>{95df96d4-5466-4914-bddf-0ed54f23c6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\screensaver">
+      <UniqueIdentifier>{d75bb8d2-8603-4fe8-9891-14e23f6bb370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\menu">
+      <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\elements">
+      <UniqueIdentifier>{627a7039-2a64-4151-af8d-c0174e2d31aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -228,9 +237,6 @@
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp">
       <Filter>Source Files\locations\settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config\locations\PhotoboothSettings.cpp">
-      <Filter>Source Files\config\games\photobooth</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp">
       <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClCompile>
@@ -248,9 +254,6 @@
     </ClCompile>
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp">
       <Filter>Source Files\locations\settings\photobooth</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\config\locations\InstakubSettingscpp.cpp">
-      <Filter>Source Files\config\games\instakub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\locations\settings\photobooth\elements\IPhotoboothItem.cpp">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
@@ -305,6 +308,12 @@
     </ClCompile>
     <ClCompile Include="..\src\gui\Sprite.cpp">
       <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\games\instakub\InstakubSettingscpp.cpp">
+      <Filter>Source Files\config\games\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp">
+      <Filter>Source Files\config\games\photobooth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,21 +389,6 @@
     <ClInclude Include="..\src\config\ApplicationModel.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\locations\GameSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\FuncesSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\ISettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\MenuSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\ScreenSaverSettings.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\Types.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
@@ -466,9 +460,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\IScreen.h">
       <Filter>Source Files\locations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\ConfigSettings.h">
-      <Filter>Source Files\config\locations</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\Event.h">
       <Filter>Source Files\events</Filter>
@@ -584,9 +575,6 @@
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverBlock.h">
       <Filter>Source Files\locations\settings\main\designBlock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\TextItem.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h">
       <Filter>Source Files\locations\settings</Filter>
     </ClInclude>
@@ -601,9 +589,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.h">
       <Filter>Source Files\locations\settings\main\designBlock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\DesignData.h">
-      <Filter>Source Files\config</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\designBlock\DesignChooser.h">
       <Filter>Source Files\locations\settings\main\designBlock</Filter>
@@ -635,17 +620,8 @@
     <ClInclude Include="..\src\events\settings\StartNewActivityEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\locations\ConfigTexts.h">
-      <Filter>Source Files\config\locations</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\printerBlock\PrinterBlock.h">
       <Filter>Source Files\locations\settings\main\printerBlock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\PhotoboothSettings.h">
-      <Filter>Source Files\config\games\photobooth</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\ConfigObject.h">
-      <Filter>Source Files\config</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gui\Sprite.h">
       <Filter>Source Files\gui</Filter>
@@ -685,9 +661,6 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\elements\GameSettingsSprite.h">
       <Filter>Source Files\locations\settings\elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config\locations\InstakubSettings.h">
-      <Filter>Source Files\config\games\instakub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
@@ -745,6 +718,42 @@
     </ClInclude>
     <ClInclude Include="..\src\graphics\shaders\MaskShader.h">
       <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\elements\ConfigObject.h">
+      <Filter>Source Files\config\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\elements\ConfigTexts.h">
+      <Filter>Source Files\config\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\elements\DesignData.h">
+      <Filter>Source Files\config\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\elements\TextItem.h">
+      <Filter>Source Files\config\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\menu\MenuSettings.h">
+      <Filter>Source Files\config\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h">
+      <Filter>Source Files\config\screensaver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\games\instakub\InstakubSettings.h">
+      <Filter>Source Files\config\games\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\games\funces\FuncesSettings.h">
+      <Filter>Source Files\config\games\funces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\games\photobooth\PhotoboothSettings.h">
+      <Filter>Source Files\config\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\games\GameSettings.h">
+      <Filter>Source Files\config\games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ConfigSettings.h">
+      <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\ISettings.h">
+      <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

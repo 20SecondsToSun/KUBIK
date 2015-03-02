@@ -126,8 +126,3 @@ void PhotoboothConfig::hideAnimationFinish()
 {		
 	setOpenItem(-1);
 }
-
-void PhotoboothConfig::writeConfig()
-{
-	phbSettings->writeConfig();
-}

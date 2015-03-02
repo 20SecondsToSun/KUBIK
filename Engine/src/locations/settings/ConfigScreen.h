@@ -56,6 +56,7 @@ namespace kubik
 			InstakubConfigRef instakubConfig;
 
 			std::vector<Changes> changes;
+			std::list<ISettingsRef> settingsList;			
 
 			void update();
 			void closeLocationHandler();

@@ -244,20 +244,20 @@ void Controller::removeLocationHandlers(ScreenId type)
 		removeGameHandlers();
 	else
 	{
-	switch(type)
-	{
-	case ScreenId::SCREENSAVER:
-		removeScreenSaverHandlers();
-		break;
+		switch(type)
+		{
+		case ScreenId::SCREENSAVER:
+			removeScreenSaverHandlers();
+			break;
 
-	case ScreenId::MENU:
-		removeMenuScreenHandlers();
-		break;
+		case ScreenId::MENU:
+			removeMenuScreenHandlers();
+			break;
 
-	case ScreenId::CONFIG:
-		removeConfigScreenHandlers();
-		break;
-	}
+		case ScreenId::CONFIG:
+			removeConfigScreenHandlers();
+			break;
+		}
 	}
 }
 
@@ -378,7 +378,7 @@ void Controller::setConfigScreenHandlers()
 	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));	
 }
 
-void Controller::appSettingsChangedHandler(vector<Changes> changes)
+void Controller::appSettingsChangedHandler(std::vector<Changes> changes)
 {
 	if(changes.empty())
 		startLocation(menuScreen);
@@ -398,7 +398,7 @@ void Controller::removeConfigScreenHandlers()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::reloadScreens(vector<Changes> changes)
+void Controller::reloadScreens(std::vector<Changes> changes)
 {
 	bool toReload = false;
 

@@ -72,6 +72,13 @@ namespace kubik
 				sharedAndEmail = num;				
 			}
 
+			void nullValues()
+			{
+				playedTimes = 0;
+				printedPhotos = 0;
+				sharedAndEmail = 0;
+			}
+
 		private:			
 			ci::Font numsFont;
 

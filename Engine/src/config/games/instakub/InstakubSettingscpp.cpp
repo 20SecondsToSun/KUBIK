@@ -181,6 +181,7 @@ void InstakubSettings::writeConfig()
 			console()<<"WRITE INSTAKUB"<<basePath<<endl;						
 			console()<<"activePhotoCardStyleDesignID"<<activePhotoCardStyleDesignID<<endl;						
 		}
+
 		memento = false;
 	}				
 }

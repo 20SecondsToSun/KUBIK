@@ -12,11 +12,6 @@ InstakubConfig::InstakubConfig(InstakubSettingsRef instSettings):GameSettingsSpr
 	addChild(searchBlock);
 	addChild(hashTagBlock);
 	addChild(photoCardStyle);	
-}	
-
-void InstakubConfig::writeConfig()
-{
-	instSettings->writeConfig();
 }
 
 void InstakubConfig::mouseUpHandler(EventGUIRef& event)
@@ -79,8 +74,7 @@ void InstakubConfig::animationPosUpdate()
 }
 
 void InstakubConfig::showAnimationFinish()
-{
-	instSettings->createMemento();
+{	
 	activateListeners();
 }
 

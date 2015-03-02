@@ -16,15 +16,15 @@ namespace kubik
 			static const int OPENED = 3;
 			static const int HIDED = 4;
 
-			PrinterBlock(ConfigSettingsRef configSettings, Vec2i position)
+			PrinterBlock(ConfigSettingsRef configSettings, ci::Vec2i position)
 				:Sprite(),
 				hintText(configSettings->getTextItem(ConfigTextID::PHOTO_LEFT)),
 				changeBtnText(configSettings->getTextItem(ConfigTextID::CATRINGE_CHANGED)),
-				iconColor(Color::hex(0xffffff)),
-				numsColor(Color::hex(0xffffff)),
-				bckgrndColor(Color::hex(0x1a1827)),
-				barColor1(Color::hex(0x233442)),
-				barColor2(Color::hex(0x00f067)),
+				iconColor(ci::Color::hex(0xffffff)),
+				numsColor(ci::Color::hex(0xffffff)),
+				bckgrndColor(ci::Color::hex(0x1a1827)),
+				barColor1(ci::Color::hex(0x233442)),
+				barColor2(ci::Color::hex(0x00f067)),
 				maxBarWidth(312.0f),
 				numsFont(configSettings->getFont("introBold72")),
 				icon(configSettings->getTexture("catridgeIcon")),
@@ -32,7 +32,7 @@ namespace kubik
 			{				
 				setPosition(position);
 
-				Texture img = textTools().getTextField(changeBtnText);
+				ci::gl::Texture img = textTools().getTextField(changeBtnText);
 				openBtn = ImageButtonSpriteRef(new ImageButtonSprite(img, Vec2f(670, 62.5)));
 				addChild(openBtn);
 
@@ -72,7 +72,8 @@ namespace kubik
 				gl::color(barColor1);
 				gl::drawSolidRoundedRect(Rectf(245, 90, 245 + maxBarWidth, 103), 8, 200);
 				gl::color(barColor2);
-				gl::drawSolidRoundedRect(Rectf(245, 90, 245 + curBarWidth, 103), 8, 200);
+				if(curBarWidth > 20)// good parametr for rounded rectangle
+					gl::drawSolidRoundedRect(Rectf(245, 90, 245 + curBarWidth, 103), 8, 200);
 				gl::color(Color::white());		
 			}
 
@@ -87,7 +88,7 @@ namespace kubik
 				controls->draw();
 			}
 
-			void openControls(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
+			void openControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
 			{
 				animatePosition = _localPosition;
 				timeline().apply( &animatePosition, _localPosition + Vec2f(0, -400), time, eFunc)
@@ -95,7 +96,7 @@ namespace kubik
 						 .finishFn(bind( &PrinterBlock::openControlsAnimationFinish, this));
 			}
 
-			void closeControls(EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
+			void closeControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
 			{
 				animatePosition = _localPosition;
 				timeline().apply( &animatePosition, _localPosition + Vec2f(0, 400), time, eFunc)
@@ -164,19 +165,19 @@ namespace kubik
 			}
 		
 		private:
-			Vec2i position;
-			Texture icon;
+			ci::Vec2i position;
+			ci::gl::Texture icon;
 			TextItem hintText, changeBtnText;
-			ColorA numsColor, bckgrndColor, barColor2, barColor1, iconColor;
-			Font numsFont;
+			ci::ColorA numsColor, bckgrndColor, barColor2, barColor1, iconColor;
+			ci::Font numsFont;
 			int maxPhotosToPrint;
 			int currentPhotosPrinted;
 			float maxBarWidth;
 			int curBarWidth;
 		
-			Rectf btnRectf;
+			ci::Rectf btnRectf;
 			ImageButtonSpriteRef openBtn;
-			Anim<Vec2f> animatePosition;
+			ci::Anim<ci::Vec2f> animatePosition;
 			PrinterControlsRef controls;				
 		};
 

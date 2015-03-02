@@ -14,28 +14,29 @@ namespace kubik
 	{
 	public:	
 
-		ImageButtonSprite(Texture image, Vec2f pos)
-			:SimpleSpriteButton(image.getWidth(), image.getHeight(), pos), image(image)
+		ImageButtonSprite(ci::gl::Texture image, ci::Vec2f pos)
+			:SimpleSpriteButton(image.getWidth(), image.getHeight(), pos),
+			image(image)
 		{
 		}
 
 		void drawLayout()
 		{
-			gl::color(Color::white());	
+			gl::color(ci::Color::white());	
 			gl::color(color);		
-			gl::draw(image, Vec2f(0, 3));		
-			gl::color(Color::white());	
+			gl::draw(image, ci::Vec2f(0.0f, 3.0f));		
+			gl::color(ci::Color::white());	
 			//gl::drawSolidRect(buttonArea);
 		}
 
-		void changeTexture(Texture image)
+		void changeTexture(ci::gl::Texture image)
 		{
 			this->image = image;
 		}
 
 	private:
-		Texture image;	
+		ci::gl::Texture image;	
 	};
 
-	typedef shared_ptr<ImageButtonSprite> ImageButtonSpriteRef;
+	typedef std::shared_ptr<ImageButtonSprite> ImageButtonSpriteRef;
 }

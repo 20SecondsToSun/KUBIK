@@ -82,6 +82,8 @@ namespace kubik
 		virtual void load() = 0;
 		virtual void setTextures() = 0;
 		virtual void buildData(){};
+		virtual void createMemento() = 0;
+		virtual void writeConfig() = 0;
 
 	protected:		
 		ApplicationModelRef model;	

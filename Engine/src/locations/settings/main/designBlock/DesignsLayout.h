@@ -19,18 +19,17 @@ namespace kubik
 			static const int OPEN_USER_DESIGN_FOLDER = 3;	
 			static const int HIDE = 4;	
 
-			DesignsLayout(ConfigSettingsRef configSettings, Vec2i position)
-				:Sprite(), configSettings(configSettings)					 
+			DesignsLayout(ConfigSettingsRef configSettings, ci::Vec2i position):Sprite(), configSettings(configSettings)					 
 			{
 				setPosition(position);	
 
-				returnButton = ReturnButtonRef(new ReturnButton(configSettings, ci::Vec2f(0, 690 + 201)));	
+				returnButton = ReturnButtonRef(new ReturnButton(configSettings, ci::Vec2f(0.0f, 891.0f)));	
 				addChild(returnButton);	
 
-				screenSaver = ScreenSaverBlockRef(new ScreenSaverBlock(configSettings, ci::Vec2f(0, 690)));	
+				screenSaver = ScreenSaverBlockRef(new ScreenSaverBlock(configSettings, ci::Vec2f(0.0f, 690.0f)));	
 				addChild(screenSaver);	
 
-				designChooser = DesignChooserRef(new DesignChooser(configSettings, ci::Vec2f(0, 2)));	
+				designChooser = DesignChooserRef(new DesignChooser(configSettings, ci::Vec2f(0.0f, 2.0f)));	
 				addChild(designChooser);
 			}	
 			
@@ -61,40 +60,35 @@ namespace kubik
 
 			void checkerChanged()
 			{
-				if(eventHandlerDic[SCREEN_SAVER_STATE])
-					eventHandlerDic[SCREEN_SAVER_STATE]();	
+				callback(SCREEN_SAVER_STATE);
 			}
 
 			void openScreenSaverFolder()
 			{
-				if(eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER])
-					eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER]();	
+				callback(SCREEN_SAVER_OPEN_FOLDER);	
 			}
 
 			void returnHandler(EventGUIRef& event)
 			{
-				if(eventHandlerDic[HIDE])
-					eventHandlerDic[HIDE]();	
+				callback(HIDE);
 			}			
 
 			void designChanged()
 			{
-				if(eventHandlerDic[CHANGED_DESIGN])
-					eventHandlerDic[CHANGED_DESIGN]();	
+				callback(CHANGED_DESIGN);
 			}
 
 			void openUserDesignFolder()
 			{
-				if(eventHandlerDic[OPEN_USER_DESIGN_FOLDER])
-					eventHandlerDic[OPEN_USER_DESIGN_FOLDER]();	
+				callback(OPEN_USER_DESIGN_FOLDER);
 			}
 
-			bool getScreenSaverValue()
+			bool getScreenSaverValue() const
 			{
 				return screenSaver->getScreenSaverValue();
 			}
 
-			int getDesignID()
+			int getDesignID() const
 			{
 				return designChooser->getDesignID();
 			}

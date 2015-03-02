@@ -53,6 +53,7 @@ namespace kubik
 			
 			void selectActiveDesign(int id)
 			{
+				if(activeID == id) return;
 				activeID = id;
 
 				if(activeBtn)
@@ -72,7 +73,7 @@ namespace kubik
 				if(id == userDesignID)
 				{
 					addChild(loadButton);
-					loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
+					//loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
 				}
 			}
 
@@ -100,23 +101,25 @@ namespace kubik
 				{		
 					ChangeDesignEventRef statEvent = static_pointer_cast<ChangeDesignEvent>(event);	
 					int id = statEvent->getItem().getID();
-					btns[id]->setSelection(true);
-					selectActiveDesign(id);	
+					btns[id]->setSelection(true);					
 
-					if(eventHandlerDic[CHANGED_DESIGN])
-						eventHandlerDic[CHANGED_DESIGN]();
+					if(activeID != id && id == userDesignID)
+						loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
+
+					selectActiveDesign(id);
+
+					callback(CHANGED_DESIGN);
 				}
 			}
 
-			int getDesignID()
+			int getDesignID() const
 			{
 				return activeID;
 			}
 
 			void openSystemDirectory(EventGUIRef& event)
-			{
-				if(eventHandlerDic[OPEN_USER_DESIGN_FOLDER])
-						eventHandlerDic[OPEN_USER_DESIGN_FOLDER]();
+			{			
+				callback(OPEN_USER_DESIGN_FOLDER);
 			}		
 
 		private:			

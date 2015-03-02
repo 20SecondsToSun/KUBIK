@@ -96,6 +96,7 @@ namespace kubik
 			int getBeReadySeconds(){return seconds;};
 
 			bool wasChanged(){ return false;};
+			bool settingsChanged();	
 
 		private:
 			class Filter
@@ -186,17 +187,20 @@ namespace kubik
 			bool isCustomDesign;
 			bool isSticker;
 
-			int activeOverDesignID;
+			int activeOverDesignID, activeOverDesignIDMemento;
 			int userOverDesignID;
 
-			int activePhotoCardStyleDesignID;
+			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
 
 			//std::vector<int> activeFiltersIDs;
 	
 			ConfigPath					 configPaths;
-			Sharing						 sharing;
-			std::vector<Filter>			 filters;		
+			Sharing						 sharing, sharingMemento;
+
+			bool						 memento;
+
+			std::vector<Filter>			 filters, filtersMemento;		
 			std::vector<Sticker>		 stickers;
 			std::vector<BackgroundPrint> bgPrint;
 			ConfigTexts<PhtTextID>		 configTexts;
@@ -233,7 +237,10 @@ namespace kubik
 			std::string getActiveOverDesignText();
 			std::string getActiveCardStyleText();		
 			std::string getActiveFiltersTexts();		
-			std::string getActivePublishingTexts();								
+			std::string getActivePublishingTexts();		
+					
+			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
+			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
 		};	
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;

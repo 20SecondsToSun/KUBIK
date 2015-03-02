@@ -1,21 +1,11 @@
 #pragma once
 #include "Types.h"
-//#include "ConfigSettings.h"
 
 namespace kubik
 {
 	class TextItem
 	{
 	public:
-		/*TextItem(std::string text, std::string font, float size, ci::ColorA color)
-			:text(text),
-			font(font),
-			size(size), 
-			color(color)
-		{
-
-		}*/
-
 		TextItem()
 		{
 
@@ -31,7 +21,7 @@ namespace kubik
 			return text;
 		}
 
-		void setFontName(std::string fontName)
+		void setFontName(const std::string& fontName)
 		{
 			this->fontName = fontName;
 		}
@@ -46,18 +36,18 @@ namespace kubik
 			this->size = size;
 		}
 
-		void setColor(std::string color)
+		void setColor(const std::string& color)
 		{			
 			this->color = ci::ColorA::hex(std::stoi(color, 0, 16));
 		}
 
-		void setColor(ci::ColorA color)
+		void setColor(const ci::ColorA& color)
 		{			
 			this->color = color;
 		}
 
 
-		ci::ColorA getColor()
+		ci::ColorA getColor() const
 		{
 			return color;
 		}

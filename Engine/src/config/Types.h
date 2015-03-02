@@ -80,7 +80,8 @@ namespace kubik
 		enum id
 		{
 			PHOTOBOOTH,
-			INSTAKUB
+			INSTAKUB,
+			MAINCONFIG
 		};
 	}
 

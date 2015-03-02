@@ -24,7 +24,8 @@ namespace kubik
 						subTitleText(configSettings->getTextItem(ConfigTextID::DESIGNSUB)),				
 						icon(configSettings->getTexture("designIcon")),
 						iconColor(Color::white()),
-						designOpened(false)
+						designOpened(false),
+						opened(false)
 			{
 				setPosition(position);
 
@@ -72,32 +73,27 @@ namespace kubik
 
 			void screenSaverStateChanged()
 			{
-				if(eventHandlerDic[SCREEN_SAVER_STATE])
-					eventHandlerDic[SCREEN_SAVER_STATE]();	
+				callback(SCREEN_SAVER_STATE);	
 			}
 
 			void screenSaverOpenFolder()
 			{
-				if(eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER])
-					eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER]();	
+				callback(SCREEN_SAVER_OPEN_FOLDER);	
 			}
 
 			void changedKubikDesign()
 			{
-				if(eventHandlerDic[CHANGED_DESIGN])
-					eventHandlerDic[CHANGED_DESIGN]();	
+				callback(CHANGED_DESIGN);	
 			}
 
 			void openUserDesignFolder()
 			{
-				if(eventHandlerDic[OPEN_USE_DESIGN_FOLDER])
-					eventHandlerDic[OPEN_USE_DESIGN_FOLDER]();	
+				callback(OPEN_USE_DESIGN_FOLDER);	
 			}
 
 			void hideHandler()
 			{
-				if(eventHandlerDic[HIDE])
-					eventHandlerDic[HIDE]();	
+				callback(HIDE);	
 			}
 
 			void showDesigns(EaseFn eFunc, float time)
@@ -111,11 +107,10 @@ namespace kubik
 
 			void animationFinish()
 			{
-				if(eventHandlerDic[OPENED])
-					eventHandlerDic[OPENED]();					
+				callback(OPENED);					
 			}
 
-			void hideDesigns(EaseFn eFunc, float time)
+			void hideDesigns(const ci::EaseFn& eFunc, float time)
 			{
 				delayTimer = 0.0f;				
 				timeline().apply( &delayTimer, 1.0f, time, eFunc).finishFn(bind( &DesignBlock::animationHideFinish, this));
@@ -126,8 +121,7 @@ namespace kubik
 				designOpened = false;
 				removeChild(designsLayout);
 
-				if(eventHandlerDic[HIDED])
-					eventHandlerDic[HIDED]();	
+				callback(HIDED);	
 			}
 
 			virtual void drawLayout()
@@ -139,7 +133,7 @@ namespace kubik
 				Sprite::drawLayout();
 			}	
 
-			void setAlpha(float  alpha)
+			void setAlpha(float alpha)
 			{
 				titleText.setColor(Utils::colorAlpha(titleText.getColor(), alpha));	
 				subTitleText.setColor(Utils::colorAlpha(subTitleText.getColor(), alpha));	
@@ -159,18 +153,29 @@ namespace kubik
 				return designsLayout->getDesignID();
 			}
 
+			void setOpened(bool value)
+			{
+				opened = value;
+			}
+
+			bool getOpened() const
+			{
+				return opened;
+			}
+
 		private:
 			ci::gl::Texture icon;
-			ci::ColorA  iconColor;
+			ci::ColorA iconColor;
 			ci::Vec2f designsLayoutPos;
 			ci::Anim<ci::Vec2f> animatePosition;
 			bool designOpened;
 
-			TextItem				titleText, subTitleText;			
+			TextItem			  titleText, subTitleText;			
 			SimpleSpriteButtonRef designBtn;
 			DesignsLayoutRef	  designsLayout;
 
 			ci::Anim<float> delayTimer;
+			bool opened;
 		};
 
 		typedef std::shared_ptr<DesignBlock> DesignBlockRef;

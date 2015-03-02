@@ -119,6 +119,9 @@ namespace kubik
 			saveConfig();
 		}
 
+		virtual void createMemento(){};
+		virtual void writeConfig(){};
+
 	private:
 
 		enum {IMAGE_SS, VIDEO_SS, NONE_SS};

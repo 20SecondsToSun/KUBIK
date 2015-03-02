@@ -14,7 +14,7 @@ namespace kubik
 		{
 		public:
 			SixButtonsLayer(ISettingsRef settings, const DesignData& designdata, int activeID, int userDesignID, const std::string& path)
-				:userDesignID(userDesignID)
+				:userDesignID(userDesignID), activeID(-1)
 			{
 				using namespace ci;				
 
@@ -49,6 +49,8 @@ namespace kubik
 			
 			void selectActiveDesign(int id)
 			{
+				if (activeID == id) return;
+
 				activeID = id;
 
 				if(activeBtn)
@@ -65,10 +67,11 @@ namespace kubik
 				btns[id]->setSelection(true);
 				activeBtn = btns[id];
 
-				if(id == userDesignID)
+				if(id == userDesignID)// && !hasChild(loadButton))
 				{
+					console()<<"add------------------  "<<endl;
 					addChild(loadButton);
-					loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
+					//loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
 				}
 			}
 
@@ -81,6 +84,10 @@ namespace kubik
 					//ChangePhotoCardStyleDesignEventRef statEvent = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
 					int id = static_pointer_cast<Type>(event)->getItem().getID();
 					btns[id]->setSelection(true);
+					
+					if(activeID != id && id == userDesignID)
+						loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
+
 					selectActiveDesign(id);	
 				}
 			}
@@ -94,7 +101,7 @@ namespace kubik
 			{
 				for (auto it : btns)
 					it.second->connectEventHandler(&SixButtonsLayer::buttonClicked, this);
-
+			
 				if(activeBtn->getItem().getID() == userDesignID)
 					loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
 			}
@@ -112,7 +119,6 @@ namespace kubik
 			int userDesignID, activeID;			
 			ImageQuadroButtonRef activeBtn;
 			LoadButtonRef loadButton;			
-		};
-		
+		};		
 	}
 }

@@ -69,6 +69,9 @@ namespace kubik
 			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
 		}
 
+		virtual void createMemento(){};
+		virtual void writeConfig(){};
+
 		void setDesignPath()
 		{
 			if(data.isCustomDesign)

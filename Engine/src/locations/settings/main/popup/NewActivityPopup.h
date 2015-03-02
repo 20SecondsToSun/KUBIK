@@ -114,21 +114,27 @@ namespace kubik
 				Sprite::setAlpha(alpha);
 			}
 
-			void show(EaseFn eFunc = EaseOutCubic(), float time = 0.4f)
+			void show(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.4f)
 			{
 				alpha = 0.0f;
 				timeline().apply(&alpha, 0.97f, time, eFunc)
 					.updateFn(bind( &NewActivityPopup::alphAnimationUpdate, this))
 					.finishFn( bind( &NewActivityPopup::showAnimationFinish, this));
 
+				touchKeyboard().setInputFieldText(configSett->getActionName());
 				touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 621, inputFieldPos.y + 139);
 			}
 
-			void hide(EaseFn eFunc = EaseOutCubic(), float time = 0.3f)
+			void hide(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.3f)
 			{				
 				timeline().apply(&alpha, 0.0f, time, eFunc)
 					.updateFn(bind( &NewActivityPopup::alphAnimationUpdate, this))
 					.finishFn( bind( &NewActivityPopup::hideAnimationFinish, this));
+			}
+
+			std::string getCompainName()
+			{
+				return touchKeyboard().getInputFieldText();
 			}
 
 			void alphAnimationUpdate()

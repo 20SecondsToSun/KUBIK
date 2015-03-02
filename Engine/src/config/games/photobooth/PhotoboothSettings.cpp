@@ -13,9 +13,9 @@ using namespace ci::app;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model):ISettings(model)
+PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model):ISettings(model), memento(false)
 {
-		
+
 }
 
 void PhotoboothSettings::load()
@@ -57,7 +57,7 @@ void PhotoboothSettings::loadConfigPaths()
 
 void PhotoboothSettings::loadParams()
 {
-	JsonTree paramsJSON = JsonTree(loadFile(mainConfigObj.getParamsConfigPath()));	
+	JsonTree paramsJSON = JsonTree(loadFile(mainConfigObj.getParamsConfigPath()));		
 	loadPhotoParams(paramsJSON);
 	loadSocialParams(paramsJSON);
 	loadPhotoFilterParams(paramsJSON);
@@ -116,9 +116,9 @@ void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
 {
 	JsonTree datas  = JsonTree(config.getChild("filtersIds"));
 	for( auto it : datas)
-	{
+	{		
 		Filter filter;
-		filter.id	= it.getChild("id").getValue<int>();
+		filter.id	= it.getChild("id").getValue<int>();		
 		filter.isOn = it.getChild("isOn").getValue<bool>();
 		filters.push_back(filter);		
 	}
@@ -209,7 +209,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		txts.insert(lang, PhtTextID::FILTER_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
 	}
 
-	
+
 	jsonTexts = JsonTree(config.getChild("timer_loc"));
 	for(auto it : jsonTexts)
 	{
@@ -218,7 +218,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		txts.insert(lang, PhtTextID::TIMER_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
 	}
 
-	
+
 
 	configTexts = txts;
 }
@@ -249,18 +249,18 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 {
 	JsonTree designDataJSON	= JsonTree(loadFile(getBasePath().string() + configPaths.photoOverDesignDataPath));			
 	JsonTree designs = designDataJSON.getChild("designs");			
-		
+
 	for(auto it : designs)
 	{
 		OneDesignItem item;
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
 		JsonTree text = it.getChild("textObj");
-			
+
 		item.setTextItem(text.getChild("text").getValue<string>(),
-								 text.getChild("font").getValue<string>(),
-								 text.getChild("size").getValue<int>(),
-								 text.getChild("color").getValue<string>());
+			text.getChild("font").getValue<string>(),
+			text.getChild("size").getValue<int>(),
+			text.getChild("color").getValue<string>());
 		photoOverDesignData.push_back(item);
 	}
 	userOverDesignID = designDataJSON.getChild("userDesignID").getValue<int>();	
@@ -270,18 +270,18 @@ void PhotoboothSettings::parsePhotoCardStyles()
 {
 	JsonTree designDataJSON	= JsonTree(loadFile(getBasePath().string() + configPaths.photoCardsStylesDesignDataPath));			
 	JsonTree designs = designDataJSON.getChild("designs");			
-		
+
 	for(auto it : designs)
 	{
 		OneDesignItem item;
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
 		JsonTree text = it.getChild("textObj");
-			
+
 		item.setTextItem(text.getChild("text").getValue<string>(),
-								 text.getChild("font").getValue<string>(),
-								 text.getChild("size").getValue<int>(),
-								 text.getChild("color").getValue<string>());
+			text.getChild("font").getValue<string>(),
+			text.getChild("size").getValue<int>(),
+			text.getChild("color").getValue<string>());
 		photoCardStyles.push_back(item);
 	}
 	userPhotoCardStyleDesignID = designDataJSON.getChild("userDesignID").getValue<int>();	
@@ -291,18 +291,18 @@ void PhotoboothSettings::parsePhotoFiltersPreview()
 {
 	JsonTree designDataJSON	= JsonTree(loadFile(getBasePath().string() + configPaths.photoFiltersPreviewDesignDataPath));			
 	JsonTree designs = designDataJSON.getChild("designs");			
-		
+
 	for(auto it : designs)
 	{
 		OneDesignItem item;
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
 		JsonTree text = it.getChild("textObj");
-			
+
 		item.setTextItem(text.getChild("text").getValue<string>(),
-								 text.getChild("font").getValue<string>(),
-								 text.getChild("size").getValue<int>(),
-								 text.getChild("color").getValue<string>());
+			text.getChild("font").getValue<string>(),
+			text.getChild("size").getValue<int>(),
+			text.getChild("color").getValue<string>());
 		photoFiltersPreview.push_back(item);
 	}	
 }
@@ -333,7 +333,7 @@ Texture PhotoboothSettings::getActiveStickerTex()
 	/*auto it = textures.find(name);
 
 	if(it != textures.end())
-		tex = textures[name]->get();*/
+	tex = textures[name]->get();*/
 
 	return tex;
 }
@@ -368,7 +368,7 @@ int PhotoboothSettings::getCurrentPhotoCount()
 void PhotoboothSettings::setTextures()
 {		
 	clearResources();
-	
+
 	addToDictionary("instrFon",			createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
 	addToDictionary("instrTitle",		createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\text1.png")));
 
@@ -385,7 +385,7 @@ void PhotoboothSettings::setTextures()
 
 	addToDictionary("closeImg",		    createImageResource(getStaticDesignPath("close.png")));
 
-	
+
 
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
@@ -400,7 +400,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
 	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
-	
+
 	addToDictionary("photoTemplate1",	createImageResource(getInterfacePath("configDesign\\photobooth\\1photo.png")));
 	addToDictionary("photoTemplate2",	createImageResource(getInterfacePath("configDesign\\photobooth\\3photo.png")));
 
@@ -425,7 +425,7 @@ void PhotoboothSettings::setTextures()
 		addToDictionary(item.getName(),	createImageResource(getInterfacePath(path)));
 	}
 
-	
+
 
 	//for (size_t i = 0; i < stickers.size(); i++)
 	//	addToDictionary(STICKER_NAME + to_string(i), createImageResource(stickers[i].path));
@@ -527,7 +527,7 @@ std::string PhotoboothSettings::getActivePublishingTexts()
 		{	
 			if (result.size())
 				result += ", ";
-			
+
 			result += getTextItem(item).getText();		
 		}
 	}
@@ -637,47 +637,92 @@ std::string PhotoboothSettings::getUserPhotoCardStylePath()
 
 void PhotoboothSettings::createMemento()
 {
-
+	memento								= true;
+	sharingMemento						= sharing;
+	filtersMemento						= filters;
+	activeOverDesignIDMemento			= activeOverDesignID;
+	activePhotoCardStyleDesignIDMemento = activePhotoCardStyleDesignID;
 }
 
 void PhotoboothSettings::writeConfig()
 {
-	fs::path basePath(mainConfigObj.getParamsConfigPath());
-	JsonTree doc;	
+	if (memento)
+	{			
+		if (settingsChanged())
+		{
+			fs::path basePath(mainConfigObj.getParamsConfigPath());
+			JsonTree doc;	
 
-	doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));		
-	doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));		
-	doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));		
-	doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));		
-	doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(PhtTextID::QRCODE)));		
-	doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
+			doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));		
+			doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));		
+			doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));		
+			doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));		
+			doc.addChild(JsonTree("isQrCode",	sharing.getSocialState(PhtTextID::QRCODE)));		
+			doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
 
-	doc.addChild(JsonTree("seconds",			  seconds));		
-	doc.addChild(JsonTree("secondsBetweenShots",  secondsBetweenShots));
+			doc.addChild(JsonTree("seconds",			          seconds));		
+			doc.addChild(JsonTree("secondsBetweenShots",          secondsBetweenShots));
 
-	doc.addChild(JsonTree("templateId",			  templateId));
-	doc.addChild(JsonTree("isCustomDesign",	      isCustomDesign));
-	doc.addChild(JsonTree("isSticker",		      isSticker));
-	doc.addChild(JsonTree("activeOverDesignID",		      activeOverDesignID));
-	doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
-	doc.addChild(JsonTree("activeSticker",			  activeSticker.id));
-	doc.addChild(JsonTree("activeBgPrint",			  activeBgPrint.id));
+			doc.addChild(JsonTree("templateId",					  templateId));
+			doc.addChild(JsonTree("isCustomDesign",				  isCustomDesign));
+			doc.addChild(JsonTree("isSticker",					  isSticker));
+			doc.addChild(JsonTree("activeOverDesignID",		      activeOverDesignID));
+			doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
+			doc.addChild(JsonTree("activeSticker",				  activeSticker.id));
+			doc.addChild(JsonTree("activeBgPrint",			      activeBgPrint.id));
 
-	JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
+			JsonTree filtersIdsJ = JsonTree::makeArray("filtersIds");
 
-	for (auto it: filters)
-	{  
-		JsonTree id;
-		id.addChild(JsonTree("id", it.id));
-		id.addChild(JsonTree("isOn", it.isOn));
-		filtersIdsJ.pushBack( id);		
+			for (auto it: filters)
+			{  				
+				JsonTree id;
+				id.addChild(JsonTree("id", it.id));
+				id.addChild(JsonTree("isOn", it.isOn));
+				filtersIdsJ.pushBack( id);		
+			}	
+
+			doc.addChild(filtersIdsJ);
+			doc.write( writeFile(basePath), JsonTree::WriteOptions());
+			logger().log("PHOTOBOOTH CONFIG CHANGED!!!!");
+		}
+		else
+			logger().log("PHOTOBOOTH CONFIG DOESNT CHANGED");
+
+		memento = false;
 	}	
+}
+bool PhotoboothSettings::settingsChanged()
+{
+	return (activeOverDesignID  != activeOverDesignIDMemento ||
+			activePhotoCardStyleDesignID != activePhotoCardStyleDesignIDMemento ||
+			sharingNotEqual(sharing, sharingMemento) ||
+			filtersNotEqual(filters, filtersMemento));					
+}
 
-	
+bool PhotoboothSettings::sharingNotEqual(Sharing sharing1, Sharing sharing2)
+{
+	return (sharing2.getSocialState(PhtTextID::FACEBOOK)  != sharing1.getSocialState(PhtTextID::FACEBOOK) ||	
+			sharing2.getSocialState(PhtTextID::VKONTAKTE) != sharing1.getSocialState(PhtTextID::VKONTAKTE) ||		
+			sharing2.getSocialState(PhtTextID::TWITTER)   != sharing1.getSocialState(PhtTextID::TWITTER)||	
+			sharing2.getSocialState(PhtTextID::EMAIL)     != sharing1.getSocialState(PhtTextID::EMAIL)||		
+			sharing2.getSocialState(PhtTextID::QRCODE)    != sharing1.getSocialState(PhtTextID::QRCODE)||		
+			sharing2.getSocialState(PhtTextID::PRINTER)   != sharing1.getSocialState(PhtTextID::PRINTER));
+}
 
-	doc.addChild(filtersIdsJ);
-	doc.write( writeFile(basePath), JsonTree::WriteOptions());
+bool PhotoboothSettings::filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2)
+{	
+	std::vector<int> f1, f2;
 
+	for (auto filter : filter1)
+		if(filter.isOn)
+			f1.push_back(filter.id);
 
-	console()<<" WRITE PHOTOBOOTH CONFIG"<<endl;	
+	for (auto filter : filter2)
+		if(filter.isOn)
+			f2.push_back(filter.id);
+
+	std::sort(f1.begin(), f1.end());
+    std::sort(f2.begin(), f2.end());
+
+    return (f2 != f1);
 }

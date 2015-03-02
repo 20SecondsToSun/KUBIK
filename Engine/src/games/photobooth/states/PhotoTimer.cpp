@@ -28,7 +28,7 @@ PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings):
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
 {
-	settings =  sett;	
+	settings = sett;	
 
 	timerFont = settings->getFont("introThin120");
 	MAX_SEC = settings->getBeReadySeconds();
@@ -45,7 +45,7 @@ void PhotoTimer::reset(PhotoboothSettingsRef sett)
 	timerTex1 = settings->getTexture("timer1");
 	timerTex2 = settings->getTexture("timer2");
 
-	timerTexPos = Vec2f(0.5 * (getWindowWidth() - timerTex1.getWidth()), 706);//806
+	timerTexPos = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), 706.0f);//806
 }
 
 void PhotoTimer::start()

@@ -67,7 +67,7 @@ namespace kubik
 
 			virtual void unActivateListeners()
 			{
-				//closeBlock->disconnectEventHandler();
+				closeBlock->disconnectEventHandler();
 
 				gamesBlock->disconnectEventHandler();
 				gamesBlock->unActivateListeners();									
@@ -111,9 +111,10 @@ namespace kubik
 
 			void printerStatResetHandler()
 			{
-				hidePrinterControls();
 				console()<<"reset printer data------------------  "<<endl;
-				// TODO: clean reset printer data
+				hidePrinterControls();				
+				printerBlock->setÑurrentPhotosPrinted(0);
+				configSettings->setCurrentPhotosPrinted(0);			
 			}
 
 			void hidePrinterControls()
@@ -162,8 +163,28 @@ namespace kubik
 			void popupStartNewCompainHandler()
 			{
 				closingPopup();
-				console()<<"start new compain------------------  "<<endl;
+				
+				if (configSettings->getActionName() != newActPopup->getCompainName())
+				{
+					startNewCampain();					
+				}
+				else
+				{
+					console()<<"nothing changed------------------  "<<endl;
+				}				
+			}
+
+			void startNewCampain()
+			{
 				// TODO START NEW COMPAIN
+				console()<<"start new compain------------------  "<<endl;
+				title->setActivityName(newActPopup->getCompainName());
+				configSettings->setActionName(newActPopup->getCompainName());
+
+				statBlock->nullValues();
+				configSettings->setPlayedCount(0);
+				configSettings->setPrintedCount(0);
+				configSettings->setPuplishedCount(0);			
 			}
 
 			void closingPopup()
@@ -199,6 +220,7 @@ namespace kubik
 			void openedDesignLayout()
 			{
 				activateListeners();
+				designBlock->setOpened(true);
 				designBlock->disconnectEventHandler(DesignBlock::OPENED);
 				designBlock->activateListeners();				
 
@@ -222,6 +244,7 @@ namespace kubik
 			void changedKubikDesign()
 			{
 				console()<<"changed kubik design------------------  "<< designBlock->getDesignID()<<endl;
+				configSettings->setActiveDesignID(designBlock->getDesignID());
 			}
 	
 			void openUserDesignFolder()
@@ -241,20 +264,35 @@ namespace kubik
 				designBlock->disconnectEventHandler(DesignBlock::HIDE);
 				designBlock->connectEventHandler(&MainConfig::hideDesignLayot,  this, DesignBlock::HIDED);
 				designBlock->hideDesigns(EaseOutCubic(), 0.9f);
+				gamesBlock->show(EaseOutCubic(), 0.9f);
 			}
 			
 			void hideDesignLayot()
-			{			
+			{	
+				designBlock->setOpened(false);
 				designBlock->disconnectEventHandler(DesignBlock::HIDED);				
 				activateListeners();		
-			}		
+			}
+
+			void closeDesignBlock()
+			{
+				if(designBlock->getOpened())
+				{
+					designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_STATE);
+					designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
+					designBlock->disconnectEventHandler(DesignBlock::CHANGED_DESIGN);
+					designBlock->disconnectEventHandler(DesignBlock::OPEN_USE_DESIGN_FOLDER);
+					designBlock->disconnectEventHandler(DesignBlock::HIDE);
+					designBlock->hideDesigns(EaseOutCubic(), 0.2f);
+					gamesBlock->show(EaseOutCubic(), 0.9f);
+				}
+			}			
 
 			////////////////////////////////////////////////////////////////////////////
 			//
 			//			GAMES BLOCK	
 			//
 			////////////////////////////////////////////////////////////////////////////
-
 
 			void gamesBlockEventsHandler(EventGUIRef& event)
 			{
@@ -276,6 +314,7 @@ namespace kubik
 				else if(typeid(*ev) == typeid(GameCheckerEvent))
 				{					
 					GameCheckerEventRef eventref = static_pointer_cast<GameCheckerEvent>(event);
+					gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
 					console()<<"active checker changed value -------------------"<<eventref->getValue()<<"   "<<eventref->getGameId()<<endl;
 				}
 				else if(typeid(*ev) == typeid(GameShowUrlEvent))
@@ -287,10 +326,10 @@ namespace kubik
 
 			void setStartupData()
 			{
-				statBlock->setPlayedTimes(configSettings->getData().playedCount);
-				statBlock->setPrintedPhotos(configSettings->getData().printedCount);
-				statBlock->setSharedAndEmail(configSettings->getData().puplishedCount);
-				printerBlock->setÑurrentPhotosPrinted(configSettings->getData().currentPhotosPrinted);	
+				statBlock->setPlayedTimes(configSettings->getPlayedCount());
+				statBlock->setPrintedPhotos(configSettings->getPrintedCount());
+				statBlock->setSharedAndEmail(configSettings->getPublishedCount());
+				printerBlock->setÑurrentPhotosPrinted(configSettings->getCurrentPhotosPrinted());	
 			}
 
 			virtual void draw()
@@ -352,7 +391,7 @@ namespace kubik
 
 			void hideAnimationFinish()
 			{
-				//closeBlock->addMouseUpListener(&MainConfig::mouseUpFunction, this);				
+				closeBlock->connectEventHandler(&MainConfig::closeHandler, this);				
 			}			
 
 			void showAnimate(ci::EaseFn eFunc, float time)
@@ -373,8 +412,7 @@ namespace kubik
 
 			void showAnimationFinish()
 			{
-				if(eventHandlerDic[SHOW_ANIM_COMPLETE])					
-						eventHandlerDic[SHOW_ANIM_COMPLETE]();					
+				callback(SHOW_ANIM_COMPLETE);				
 				activateListeners();
 			}			
 

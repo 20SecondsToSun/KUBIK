@@ -36,7 +36,7 @@ namespace kubik
 			JsonTree configJSON		= JsonTree(loadFile(getConfigPath()));
 			screenSaverConfigPath	= configJSON.getChild("screenSaverConfigPath").getValue<string>();
 			menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();
-			tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();				
+		//	tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();				
 			
 			funcesConfigPath		= configJSON.getChild("funcesConfigPath").getValue<string>();
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
@@ -56,6 +56,13 @@ namespace kubik
 			instakubConfigObject.setPathsConfigPath(getFullPath(instaJSON.getChild("path").getValue<string>()));
 			instakubConfigObject.setParamsConfigPath(getFullPath(instaJSON.getChild("params").getValue<string>()));
 			instakubConfigObject.setLabelsConfigPath(getFullPath(instaJSON.getChild("labels").getValue<string>()));
+
+
+			JsonTree mainJSON = configJSON.getChild("mainConfig");
+			mainConfigObject.setPathsConfigPath(getFullPath(mainJSON.getChild("path").getValue<string>()));
+			mainConfigObject.setParamsConfigPath(getFullPath(mainJSON.getChild("params").getValue<string>()));
+			mainConfigObject.setLabelsConfigPath(getFullPath(mainJSON.getChild("labels").getValue<string>()));
+			mainConfigObject.setConstsConfigPath(getFullPath(mainJSON.getChild("consts").getValue<string>()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////
@@ -235,10 +242,10 @@ namespace kubik
 			menuConfigPath = path;
 		}
 
-		void setTuneUpConfigPath(const std::string& path)
+		/*void setTuneUpConfigPath(const std::string& path)
 		{
 			tuneUpConfigPath = path;
-		}	
+		}	*/
 
 		void setScreenSaverPath(const std::string& path)
 		{
@@ -250,7 +257,7 @@ namespace kubik
 		//				GET
 		//
 		////////////////////////////////////////////////////////////////////////////
-		ConfigObject photoboothConfigObject, instakubConfigObject;
+		ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject;
 
 		const ConfigObject& getConfigObject(settings::id id)
 		{
@@ -261,6 +268,10 @@ namespace kubik
 			else if (id == settings::id::INSTAKUB)
 			{
 				return instakubConfigObject;
+			}
+			else if (id == settings::id::MAINCONFIG)
+			{
+				return mainConfigObject;
 			}
 		}
 
@@ -274,10 +285,10 @@ namespace kubik
 			return getFullPath(menuConfigPath);
 		}
 
-		std::string getTuneUpConfigPath()
+		/*std::string getTuneUpConfigPath()
 		{
 			return getFullPath(tuneUpConfigPath);
-		}
+		}*/
 
 		std::string getScreenSaverConfigPath()
 		{
@@ -342,7 +353,7 @@ namespace kubik
 		std::string menuConfigPath;
 		std::string labelsPath;		
 		std::string designDataPath;		
-		std::string tuneUpConfigPath;
+		//std::string tuneUpConfigPath;
 		std::string screenSaverConfigPath;
 		std::string photoboothConfigPath;
 		std::string funcesConfigPath;

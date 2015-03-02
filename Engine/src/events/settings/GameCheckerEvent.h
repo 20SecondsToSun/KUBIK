@@ -6,7 +6,7 @@ namespace kubik
 	class GameCheckerEvent: public EventGUI
 	{			
 	public:
-		GameCheckerEvent(bool isActive, int gameID):isActive(isActive), gameID(gameID)
+		GameCheckerEvent(bool isActive, GameId gameID):isActive(isActive), gameID(gameID)
 		{
 			//console()<<"new checker event----------------"<<endl;
 		}
@@ -21,7 +21,7 @@ namespace kubik
 			return isActive;
 		}
 
-		int getGameId()
+		GameId getGameId()
 		{
 			return gameID;
 		}
@@ -33,7 +33,7 @@ namespace kubik
 
 	private:
 		bool isActive;
-		int gameID;
+		GameId gameID;
 
 	};
 

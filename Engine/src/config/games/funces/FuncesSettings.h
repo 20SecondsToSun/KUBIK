@@ -29,6 +29,9 @@ namespace kubik
 			clearResources();
 			addToDictionary("closeImg", createImageResource(getDesignPath() + "close.png"));
 		}
+
+		virtual void createMemento(){};
+		virtual void writeConfig(){};
 	};
 
 	typedef shared_ptr<FuncesSettings> FuncesSettingsRef;

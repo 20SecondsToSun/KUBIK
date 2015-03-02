@@ -13,8 +13,12 @@
 			     "params":"data\\configs\\instakub\\params.txt",		
 			     "labels":"data\\configs\\instakub\\labels.txt"},
 
-   "screenSaverConfigPath" : "data\\configs\\screensaver.txt",
-   "tuneUpConfigPath" : "data\\configs\\config.txt",
+ "mainConfig" : {"path":"data\\configs\\mainconf\\path.txt",
+			     "params":"data\\configs\\mainconf\\params.txt",	
+			     "consts":"data\\configs\\mainconf\\consts.txt",	
+			     "labels":"data\\configs\\mainconf\\labels.txt"},
+
+   "screenSaverConfigPath" : "data\\configs\\screensaver.txt", 
    "userInfoPath" : "data\\configs\\userInfo.txt",
    "labelsPath" : "data\\configs\\labels.txt",
    "designDataPath" : "data\\configs\\designs.txt"
