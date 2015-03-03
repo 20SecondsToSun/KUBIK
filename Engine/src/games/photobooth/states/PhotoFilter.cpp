@@ -16,7 +16,7 @@ PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings)
 void PhotoFilter::start()
 {
 	console()<<"start PhotoFilter "<<getCountFiltersOn()<<endl;
-	cameraCanon().startLiveView();
+	//cameraCanon().startLiveView();
 
 	if (getCountFiltersOn() <= 1)
 		nextLocationSignal();

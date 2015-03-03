@@ -83,7 +83,7 @@ void Photobooth::initLocations()
 	locations.clear();
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
-	locations.push_back(photoTimer);
+	//locations.push_back(photoTimer);
 	locations.push_back(photoShooting);
 	/*locations.push_back(photoProcessing);	
 	locations.push_back(photoChoosing);
@@ -105,12 +105,6 @@ void Photobooth::nextLocationHandler()
 
 	(*currentLocation)->start();
 }
-
-//void Photobooth::mouseUpHandler(IButton& button)
-//{	
-//	updateSignal.disconnect();
-//	closeLocationSignal();
-//}
 
 void Photobooth::update()
 {

@@ -13,7 +13,7 @@ namespace kubik
 		template <class Type> class SixButtonsLayer: public Sprite
 		{
 		public:
-			SixButtonsLayer(ISettingsRef settings, const DesignData& designdata, int activeID, int userDesignID, const std::string& path)
+			SixButtonsLayer(const DesignData& designdata, int activeID, int userDesignID, const std::string& path, float startX = 106, float startY = 354)
 				:userDesignID(userDesignID), activeID(-1)
 			{
 				using namespace ci;				
@@ -21,23 +21,13 @@ namespace kubik
 				Vec2f pos = Vec2f::zero();
 				int i = 0;
 				float shiftX = 53, shiftY = 130;
-				float startX = 106, startY= 354;
-
+			
 				for (auto it : designdata)
-				{				 
-					gl::Texture icon = settings->getTexture(it.getName());
-					it.setIcon(icon);
-					it.setFont(settings->getFonts());
+				{					
+					pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
+					pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);
 
-					pos.x = startX + (icon.getWidth() + shiftX) * (i % 3);
-					pos.y = startY + (icon.getWidth() + shiftY) * (i / 3);
-
-					ImageQuadroButtonRef imageQuadroButton;
-					if(typeid(ChangePhotoOverDesignEvent) == typeid(Type))
-						imageQuadroButton = settingsFactory().createPhotoOverButton(it, pos);				
-					else if(typeid(ChangePhotoCardStyleDesignEvent) == typeid(Type))
-						imageQuadroButton = settingsFactory().createCardStyleButton(it, pos);	
-
+					ImageQuadroButtonRef imageQuadroButton = std::shared_ptr<SixItemButton<Type>>(new SixItemButton<Type>(it, pos));			
 					btns[it.getID()] = imageQuadroButton;
 					addChild(imageQuadroButton);	
 					i++;					
@@ -69,7 +59,6 @@ namespace kubik
 
 				if(id == userDesignID)// && !hasChild(loadButton))
 				{
-					console()<<"add------------------  "<<endl;
 					addChild(loadButton);
 					//loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
 				}

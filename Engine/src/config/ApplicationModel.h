@@ -35,9 +35,7 @@ namespace kubik
 		{
 			JsonTree configJSON		= JsonTree(loadFile(getConfigPath()));
 			screenSaverConfigPath	= configJSON.getChild("screenSaverConfigPath").getValue<string>();
-			menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();
-		//	tuneUpConfigPath		= configJSON.getChild("tuneUpConfigPath").getValue<string>();				
-			
+			menuConfigPath			= configJSON.getChild("menuConfigPath").getValue<string>();			
 			funcesConfigPath		= configJSON.getChild("funcesConfigPath").getValue<string>();
 			instagramConfigPath		= configJSON.getChild("instagramConfigPath").getValue<string>();
 			kotopozaConfigPath		= configJSON.getChild("kotopozaConfigPath").getValue<string>();
@@ -51,12 +49,10 @@ namespace kubik
 			photoboothConfigObject.setLabelsConfigPath(getFullPath(phtJSON.getChild("labels").getValue<string>()));
 			photoboothConfigObject.setConstsConfigPath(getFullPath(phtJSON.getChild("consts").getValue<string>()));
 
-
 			JsonTree instaJSON = configJSON.getChild("instakubConfig");
 			instakubConfigObject.setPathsConfigPath(getFullPath(instaJSON.getChild("path").getValue<string>()));
 			instakubConfigObject.setParamsConfigPath(getFullPath(instaJSON.getChild("params").getValue<string>()));
 			instakubConfigObject.setLabelsConfigPath(getFullPath(instaJSON.getChild("labels").getValue<string>()));
-
 
 			JsonTree mainJSON = configJSON.getChild("mainConfig");
 			mainConfigObject.setPathsConfigPath(getFullPath(mainJSON.getChild("path").getValue<string>()));
@@ -123,6 +119,7 @@ namespace kubik
 				OneDesignItem item;
 				item.setID(it.getChild("id").getValue<int>());
 				item.setIconPath(it.getChild("iconPath").getValue<string>());
+				item.setIconTexName("design" + item.getID());
 				JsonTree text = it.getChild("textObj");
 			
 				item.setTextItem(text.getChild("text").getValue<string>(),

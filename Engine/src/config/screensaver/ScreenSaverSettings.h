@@ -22,7 +22,7 @@ namespace kubik
 		struct ScreenSaverDataStruct
 		{
 			bool isActive;		
-			string path;
+			std::string path;
 
 			bool hasChanges(ScreenSaverDataStruct ss)
 			{
@@ -36,12 +36,20 @@ namespace kubik
 		}
 
 		void load() override
-		{			
-			JsonTree configJSON	= JsonTree(loadFile(mainConfigPath));
-			data.path			= configJSON.getChild("path").getValue<string>();
-			data.isActive		= configJSON.getChild("isActive").getValue<bool>();	
+		{
+			try	
+			{
+				JsonTree configJSON	= JsonTree(loadFile(mainConfigPath));
+				data.path			= configJSON.getChild("path").getValue<string>();
+				data.isActive		= configJSON.getChild("isActive").getValue<bool>();	
 
-			findScreenSaver();
+				findScreenSaver();
+			}
+			catch(...)
+			{
+				throw ExcConfigFileParsing();
+			}
+
 			setTextures();
 		};
 
@@ -121,6 +129,8 @@ namespace kubik
 
 		virtual void createMemento(){};
 		virtual void writeConfig(){};
+		bool settingsChanged(){return false;};	
+		changeSetting::id getChangeID(){ return changeSetting::id::SCREENSAVER;};	
 
 	private:
 

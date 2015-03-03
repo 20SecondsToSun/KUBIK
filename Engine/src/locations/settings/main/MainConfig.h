@@ -243,8 +243,8 @@ namespace kubik
 
 			void changedKubikDesign()
 			{
-				console()<<"changed kubik design------------------  "<< designBlock->getDesignID()<<endl;
-				configSettings->setActiveDesignID(designBlock->getDesignID());
+				console()<<"changed kubik design------------------  "<<endl;// designBlock->getDesignID()<<endl;
+				//configSettings->setActiveDesignID(designBlock->getDesignID());
 			}
 	
 			void openUserDesignFolder()

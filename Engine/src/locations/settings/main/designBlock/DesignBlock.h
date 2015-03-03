@@ -148,10 +148,10 @@ namespace kubik
 				return designsLayout->getScreenSaverValue();
 			}
 
-			int getDesignID()
+			/*int getDesignID()
 			{
 				return designsLayout->getDesignID();
-			}
+			}*/
 
 			void setOpened(bool value)
 			{

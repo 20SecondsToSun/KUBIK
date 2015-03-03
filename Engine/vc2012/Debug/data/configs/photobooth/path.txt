@@ -1,10 +1,13 @@
 {
-   "finalPath" : "gamesDesign\\photobooth\\",
-   "bgPrintsPath" : "design_elements\\gameDesign\\photobooth\\backgrounds\\",
-   "stickersPath" : "design_elements\\gameDesign\\photobooth\\stickers\\",
+   "finalPath"         : "gamesDesign\\photobooth\\",
+
+   "userCardStylePath" : "user_design\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\",
+   "userStickerPath"   : "user_design\\design_elements\\gameDesign\\photobooth\\photoStickers\\",
+
    "kubikTemplatePartDesignPath" : "kubik\\templates\\", 
    "staticPartDesignPath" : "data\\interface\\", 
    "userTemplatePartDesignPath" : "user_design\\templates\\",
+
    "photoOverDesignDataPath" : "data\\configs\\photobooth\\photoOverDesigns.txt",
    "photoCardsStylesPath" : "data\\configs\\photobooth\\photoCardStyles.txt",
    "photoFiltersPreviewDesignDataPath" : "data\\configs\\photobooth\\filters.txt"

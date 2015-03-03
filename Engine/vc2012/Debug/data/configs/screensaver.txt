@@ -1,4 +1,4 @@
 {
    "isActive" : false,
-   "path" : "design_elements\\screensaver\\"
+   "path" : "user_design\\screensaver\\"
 }

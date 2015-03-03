@@ -50,27 +50,66 @@ namespace kubik
 			return iconPath;
 		}
 
-		std::string getName()
+		std::string getIconTexName()
 		{
-			return text.getText() + to_string(id);
+			return iconTextName;//text.getText() + to_string(id);
 		}
 
-		void setIcon(ci::gl::Texture icon)
+		void setIconTexName(const std::string& name)
+		{
+			iconTextName = name;
+		}
+
+		///
+
+		std::string getDesignTexName()
+		{
+			return designTexName;//text.getText() + to_string(id);
+		}
+
+		void setDesignTexName(const std::string& name)
+		{
+			designTexName = name;
+		}
+
+		///
+
+		void setIcon(const ci::gl::Texture& icon)
 		{
 			this->icon = icon;
-		}	
+		}
+
+		void setDesignTexture(const ci::gl::Texture& icon)
+		{
+			this->designTexture = designTexture;
+		}
+
+		ci::gl::Texture getDesignTexture()
+		{
+			return this->designTexture;
+		}		
 
 		void setFont(FontResourceDictionary fontDic)
 		{
 			text.setFont(fontDic);
 		}
 
+		void setDesignPath(const std::string& path)
+		{
+			designPath = path;
+		}	
+
+		const std::string& getDesignPath()
+		{
+			return designPath;
+		}			
+
 	private:
 		int id;
 		TextItem text;
-		ci::gl::Texture icon;	
-		std::string iconPath;	
-
+		ci::gl::Texture icon, designTexture;	
+		std::string iconPath, designPath;	
+		std::string iconTextName, designTexName;
 	};
 
 	typedef std::list<OneDesignItem> DesignData;

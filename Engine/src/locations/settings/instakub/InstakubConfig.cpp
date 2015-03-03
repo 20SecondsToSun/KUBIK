@@ -5,7 +5,7 @@ using namespace ci;
 
 InstakubConfig::InstakubConfig(InstakubSettingsRef instSettings):GameSettingsSprite(), instSettings(instSettings)			
 {					
-	searchBlock	   = SearchBlockRef(new SearchBlock(instSettings, Vec2i(0.0f, 0.0f)));
+	searchBlock	   = SearchBlockRef(new SearchBlock(instSettings, Vec2i::zero()));
 	hashTagBlock   = HashTagBlockRef(new HashTagBlock(instSettings, Vec2i(0.0f, 435.0f)));
 	photoCardStyle = InstaPhotoCardStyleRef(new InstaPhotoCardStyle(instSettings, Vec2i(0.0f, 920.0f)));//920
 
@@ -85,7 +85,6 @@ void InstakubConfig::hideAnimate(const EaseFn& eFunc, float time)
 	timeline().apply( &animatePosition, Vec2f(1080.0f, 0.0f), time, eFunc)
 		.finishFn(bind( &InstakubConfig::hideAnimationFinish, this))
 		.updateFn(bind( &InstakubConfig::animationPosUpdate, this));
-
 	
 	instSettings->setHashtag(touchKeyboard().getInputFieldText());
 

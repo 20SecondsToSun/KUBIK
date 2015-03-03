@@ -84,7 +84,7 @@ void Controller::loadSettings()
 	configLoader->loadConfigs(configs);
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	settingsFactory().inject(phbthSettings);
+	settingsFactory().inject(phbthSettings);	
 }
 
 void Controller::configsLoadingCompleteHandler()
@@ -131,6 +131,8 @@ void Controller::loadAllLocationsGraphics()
 
 void Controller::allGraphicsLoadingCompleteHandler()
 {
+	console()<<"buildData"<<endl;
+
 	controlSettings->buildData();
 	gameSettings->buildData();
 

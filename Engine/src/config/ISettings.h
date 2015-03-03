@@ -84,6 +84,8 @@ namespace kubik
 		virtual void buildData(){};
 		virtual void createMemento() = 0;
 		virtual void writeConfig() = 0;
+		virtual bool settingsChanged() = 0;
+		virtual changeSetting::id getChangeID() = 0;		
 
 	protected:		
 		ApplicationModelRef model;	

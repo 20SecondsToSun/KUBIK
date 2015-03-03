@@ -57,8 +57,7 @@ namespace kubik
 
 			ChangeDesignButtonRef createChangeDesignButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
-				ChangeDesignButtonRef iq = ChangeDesignButtonRef(new ChangeDesignButton(item, pos));	
-				return iq;				
+				return ChangeDesignButtonRef(new ChangeDesignButton(item, pos));							
 			}		
 
 			ImageQuadroButtonRef createPhotoOverButton(OneDesignItem item, const ci::Vec2f& pos)
@@ -69,7 +68,7 @@ namespace kubik
 			ImageQuadroButtonRef createCardStyleButton(OneDesignItem item, const ci::Vec2f& pos)
 			{				
 				return PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, pos));							
-			}
+			}			
 
 			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, const ci::Vec2f& pos)
 			{

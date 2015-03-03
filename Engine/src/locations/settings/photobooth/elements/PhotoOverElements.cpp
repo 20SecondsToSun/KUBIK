@@ -11,7 +11,7 @@ PhotoOverElements::PhotoOverElements(PhotoboothSettingsRef settings, const ci::C
 	int userDesignID	  = settings->getUserOverDesignID();
 	std::string syspath	  = settings->getUserPhotoOverDesignPath();
 
-	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(settings, designdata, activeID, userDesignID, syspath));
+	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(designdata, activeID, userDesignID, syspath));
 	addChild(sixBtnLayer);	
 }
 

@@ -95,12 +95,8 @@ void InstakubSettings::setTextures()
 	addToDictionary("checkerw",				createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToDictionary("searchfield",			createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
 
-	for (auto item : photoCardStyles)	
-	{
-		std::string path = item.getIconPath();
-		console()<<" photoCardStyles ::::::::::::::::::::::::"<<item.getName()<<"   "<<getInterfacePath(path)<<endl;
-		addToDictionary(item.getName(),	createImageResource(getInterfacePath(path)));
-	}
+	for (auto item : photoCardStyles)		
+		addToDictionary(item.getIconTexName(),	createImageResource(getInterfacePath(item.getIconPath())));	
 }
 
 void InstakubSettings::buildData()
@@ -108,7 +104,15 @@ void InstakubSettings::buildData()
 	auto dic = configTexts.getDic();				
 
 	for (auto it = dic.begin(); it != dic.end(); ++it)	
-		it->second.setFont(fonts);		
+	{
+		it->second.setFont(fonts);	
+	}
+
+	for (auto it = photoCardStyles.begin();		it != photoCardStyles.end(); ++it)	
+	{
+		it->setIcon(getTexture(it->getIconTexName()));
+		it->setFont(fonts);
+	}
 
 	configTexts.setDic(dic);	
 };

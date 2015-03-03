@@ -14,13 +14,9 @@ PhotoFilters::PhotoFilters(PhotoboothSettingsRef phbSettings, const ci::Color& c
 	float startX = 106, startY= 354;
 
 	for (auto it : designdata)
-	{				 
-		Texture icon = settings->getTexture(it.getName());
-		it.setIcon(icon);
-		it.setFont(settings->getFonts());
-
-		pos.x = startX + (icon.getWidth() + shiftX) * (i % 3);
-		pos.y = startY + (icon.getWidth() + shiftY) * (i / 3);
+	{
+		pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
+		pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);
 
 		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(it, pos);
 

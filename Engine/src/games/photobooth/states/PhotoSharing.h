@@ -13,8 +13,8 @@ namespace kubik
 {
 	class PhotoSharing:public IPhotoboothLocation
 	{
-		gl::Texture fon;
-		Font font;
+		ci::gl::Texture fon;
+		ci::Font font;
 		PhotoStorageRef  photoStorage;
 
 		enum shareID
@@ -63,7 +63,7 @@ namespace kubik
 				createShareButton(EMAIL, "EMAIL", i++);*/
 		}
 
-		void createShareButton(shareID id, string text, int i)
+		void createShareButton(shareID id, const std::string& text, int i)
 		{
 			//ShareButtonRef button = ShareButtonRef(new ShareButton(id, getButtonArea(i), text, font));	
 			//connect_once(button->mouseUpSignal, bind(&PhotoSharing::mouseUpListener, this, placeholders::_1));

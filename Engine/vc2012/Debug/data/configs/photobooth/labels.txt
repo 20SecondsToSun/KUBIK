@@ -76,13 +76,5 @@
      "lang"  : "ru",
 "title1" : {"text" : "П Р И Г О Т О В Ь Т Е С Ь", "font" : "introLight", "size" : 60, "color" : "ffffff"},
 "title2" : {"text" : "Сейчас я сделаю серию из 5 фотографий", "font" : "helveticaNeueLight", "size" : 26, "color" : "d2cfc5"}
-}],
-
-	"fbIcon" : "fbIcon.png",
-	"vkIcon" : "vkIcon.png",
-	"twIcon" : "twIcon.png",
-	"qrIcon" : "qrIcon.png",	
-	"printerIcon" : "printerIcon.png",
-	"emailIcon" : "emailIcon.png",
-	"ofIcon" : "offIcon.png"
+}]
 }

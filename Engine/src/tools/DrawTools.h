@@ -77,6 +77,23 @@ namespace kubik
 			return tex;
 		}
 
+		//glLineStipple(1, 0x0101);		// точечный	
+		//glLineStipple(1, 0x00F0);		// штриховой	
+		//glLineStipple(1, 0x1C47);		// штрихпунктир
+		//glLineStipple(1, 0x1C47);		// тире, точка, тире
+
+		void drawDashedLine(float x1, float y1, float x2, float y2, float width, float space)
+		{
+			glLineStipple(space, 0x0101);// точечный
+			glLineWidth(width);			// === толщина 5
+			glEnable(GL_LINE_STIPPLE);
+			glBegin(GL_LINES);
+				glVertex2f ( x1, y1 ); 
+				glVertex2f ( x2, y2 ); 
+			glEnd();			
+			glDisable(GL_LINE_STIPPLE);
+		}
+
 	};
 	// helper function(s) for easier access 
 	inline DrawTools& drawtool() {return DrawTools::getInstance();};

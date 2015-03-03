@@ -58,6 +58,17 @@ namespace kubik
 			}	
 		};	
 
+
+		//typedef std::shared_ptr<class SixItemButton<Type>> SixItemButtonRef;
+		template <class Type> class SixItemButton: public ImageQuadroButton
+		{
+		public:
+			SixItemButton(OneDesignItem item, ci::Vec2f pos):ImageQuadroButton(item, pos)
+			{
+				event = std::shared_ptr<Type>(new Type(item));
+			}	
+		};	
+
 		
 		
 	}

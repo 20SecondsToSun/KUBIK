@@ -88,10 +88,10 @@ namespace kubik
 				return screenSaver->getScreenSaverValue();
 			}
 
-			int getDesignID() const
+			/*int getDesignID() const
 			{
 				return designChooser->getDesignID();
-			}
+			}*/
 
 		private:			
 			ConfigSettingsRef	configSettings;

@@ -55,6 +55,7 @@ namespace kubik
 			FUNCES = game::FUNCES,
 			PHOTOBOOTH = game::PHOTOBOOTH,
 			KOTOPOZA = game::KOTOPOZA,
+			INSTAKUB = game::INSTAKUB
 		};	
 	}
 
@@ -81,7 +82,11 @@ namespace kubik
 		{
 			PHOTOBOOTH,
 			INSTAKUB,
-			MAINCONFIG
+			FUNCES,
+			MAINCONFIG,
+			GAMES,
+			MENU,
+			SCREENSAVER
 		};
 	}
 

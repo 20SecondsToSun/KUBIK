@@ -60,7 +60,7 @@ namespace kubik
 			std::vector<int> getOnFilters();
 			void swapFilter(int id);
 			
-			bool findFilterId(int id, std::vector<int> filters);			
+			//bool findFilterId(int id, std::vector<int> filters);			
 
 			DesignData getPhotoOverDesignData()
 			{
@@ -97,6 +97,7 @@ namespace kubik
 
 			bool wasChanged(){ return false;};
 			bool settingsChanged();	
+			changeSetting::id getChangeID(){ return changeSetting::id::PHOTOBOOTH;};	
 
 		private:
 			class Filter
@@ -144,8 +145,8 @@ namespace kubik
 				std::string kubikTemplatePartDesignPath;
 				std::string userTemplatePartDesignPath;
 				std::string finalPath;
-				std::string stickersPath;		
-				std::string bgPrintsPath;
+				std::string userStickerPath;		
+				std::string userCardStylePath;
 				std::string photoOverDesignDataPath;
 				std::string photoCardsStylesDesignDataPath;
 				std::string photoFiltersPreviewDesignDataPath;
@@ -192,8 +193,6 @@ namespace kubik
 
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
-
-			//std::vector<int> activeFiltersIDs;
 	
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;
@@ -207,7 +206,7 @@ namespace kubik
 			BackgroundPrint				 activeBgPrint;
 			Sticker						 activeSticker;
 
-			void loadConfigPaths();
+			void loadPaths();
 			void loadParams();
 			void loadLabels();			
 			void loadConsts();			
@@ -222,7 +221,7 @@ namespace kubik
 			void loadPhotoFilterParams(JsonTree config);
 			void loadGameDesignParams(JsonTree config);
 			void loadGameStickerParams(JsonTree config);
-			void loadGameBgPrintParams(JsonTree config);
+			//void loadGameBgPrintParams(JsonTree config);
 			void loadConfigTexts(JsonTree config);
 			void loadSharingIcons(JsonTree config);
 			void saveConfig();		

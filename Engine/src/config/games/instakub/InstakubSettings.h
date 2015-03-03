@@ -51,6 +51,8 @@ namespace kubik
 
 			void writeConfig();
 			void createMemento();
+			bool settingsChanged(){return false;};
+			changeSetting::id getChangeID(){ return changeSetting::id::INSTAKUB;};	
 
 		private:
 			bool memento;

@@ -106,16 +106,45 @@ namespace kubik
 		void draw() override
 		{
 			fillBg();
-			float pos = (currentShot - 1) * 202;
-			seekTexPos = Vec2f(countsTexPos.x - seekTex.getWidth()*0.5f + 23 + pos, countsTexPos.y + (countsTex.getHeight() - seekTex.getHeight()) * 0.5f);
-			gl::draw(seekTex, seekTexPos);
-			gl::draw(countsTex, countsTexPos);
+		
 			//cameraCanon().draw();
 
 			//gl::color(Color::white());
 			//textTools().textFieldDraw("ÔÎÒÎÃÐÀÔÈÐÓÅÌ", &font, Color::white(), Vec2f(100.0f, 100.0f));
 			//textTools().textFieldDraw("ÊÎËÈ×ÅÑÒÂÎ ÑÍÈÌÊÎÂ " + to_string(shotsNum), &font, Color::white(), Vec2f(100.0f, 200.0f));
 			//textTools().textFieldDraw("ÂÐÅÌß ÎÄÍÎÃÎ ÑÍÈÌÊÀ(ÑÅÊ.) " + to_string(secBetweenShots), &font, Color::white(), Vec2f(100.0f, 300.0f));
+
+			drawProgressBlock();
+			drawDashedFrame();
+		}
+
+		void drawProgressBlock()
+		{
+			gl::pushMatrices();
+			gl::translate(0.0f, 0.0f);
+			gl::color(Color::hex(0xD60e0d0a));
+			gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 232.0f));
+			gl::color(Color::white());
+			gl::translate(0.0f, 69.0f);
+			float pos = (currentShot - 1) * 202.0f;
+			seekTexPos = Vec2f(countsTexPos.x - seekTex.getWidth()*0.5f + 23 + pos, 0);//countsTexPos.y + (countsTex.getHeight() - seekTex.getHeight()) * 0.5f);
+			//gl::draw(seekTex, seekTexPos);
+			gl::draw(countsTex, countsTexPos);
+			gl::popMatrices();
+
+		}
+
+		void drawDashedFrame()
+		{	
+			gl::color(Color::hex(0xbcbdbd));
+			float lineWidth = 4, space = 8;
+			float frameHeight = 980;
+			
+			drawtool().drawDashedLine(50, 252, getWindowWidth() - 50, 252, lineWidth, space);
+			drawtool().drawDashedLine(50, 252 + frameHeight, getWindowWidth() - 50, 252 + frameHeight, lineWidth, space);
+			drawtool().drawDashedLine(50, 252, 50, 252 + frameHeight, lineWidth, space);
+			drawtool().drawDashedLine(getWindowWidth() - 50, 252, getWindowWidth() - 50, 252 + frameHeight, lineWidth, space);
+			gl::color(Color::white());
 		}
 
 		void reset(PhotoboothSettingsRef _settings) override
@@ -123,7 +152,7 @@ namespace kubik
 			settings = _settings;
 			countsTex   = settings->getTexture("counts");
 			seekTex		=  settings->getTexture("seek");
-			countsTexPos = Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 200);
+			countsTexPos = Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 0);
 		}
 	};
 	typedef shared_ptr<PhotoShooting>	 PhotoShootingRef;

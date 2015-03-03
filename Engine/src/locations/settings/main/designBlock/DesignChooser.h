@@ -4,135 +4,61 @@
 #include "ConfigSettings.h"
 #include "ImageQuadroButton.h"
 #include "SettingsFactory.h"
+#include "SixButtonsLayer.h"
 
 namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class SixButtonsLayer<ChangeDesignEvent>> SixButtonsLayerDesignRef;
+		typedef std::shared_ptr<class DesignChooser> DesignChooserRef;
+
 		class DesignChooser: public Sprite
 		{
 		public:	
 			static const int CHANGED_DESIGN = 0;
 			static const int OPEN_USER_DESIGN_FOLDER = 1;
 
-			DesignChooser(ConfigSettingsRef configSettings, Vec2i position)
+			DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& position)
 				:Sprite(), configSettings(configSettings)					 
 			{
-				setPosition(position);	
+				setPosition(position);
 
-				DesignData designdata = configSettings->getDesignData();				
-				
-				Vec2f pos = Vec2f::zero();
-				int index = 0;
-				float shiftX = 53, shiftY = 130;
-
-				for (auto it : designdata)
-				{				 
-					Texture icon = configSettings->getTexture(it.getName());
-					it.setIcon(icon);
-					it.setFont(configSettings->getFonts());
-
-					pos.x = (icon.getWidth() + shiftX) * (index % 3);
-					pos.y = (icon.getWidth() + shiftY) * (index / 3);
-
-					ImageQuadroButtonRef imageQuadroButton 
-						= settingsFactory().createChangeDesignButton(it, pos);
-
-					btns[it.getID()] = imageQuadroButton;
-					addChild(imageQuadroButton);	
-
-					index++;					
-				}
-
-				int id = configSettings->getActiveDesignID();
-				userDesignID = configSettings->getUserDesignID();
-				loadButton = settingsFactory().createDecorLoadButton("  ",btns[userDesignID]->getLocalPosition() + Vec2f(0, btns[userDesignID]->getHeight()));
-			
-				selectActiveDesign(id);		
-			}	
-			
-			void selectActiveDesign(int id)
-			{
-				if(activeID == id) return;
-				activeID = id;
-
-				if(activeBtn)
-				{
-					if(activeBtn->getItem().getID() == userDesignID)
-					{
-						removeChild(loadButton);
-						loadButton->disconnectEventHandler();
-					}
-
-					activeBtn->setSelection(false);
-				}
-
-				btns[id]->setSelection(true);
-				activeBtn = btns[id];
-
-				if(id == userDesignID)
-				{
-					addChild(loadButton);
-					//loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
-				}
+				DesignData designdata = configSettings->getDesignData();	
+				int activeID		  = configSettings->getActiveDesignID();
+				int userDesignID	  = configSettings->getUserDesignID();
+				std::string syspath	  = configSettings->getUserDesignPath();
+	
+				sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, 0.0f, 0.0f));
+				addChild(sixBtnLayer);				
 			}
 
-			virtual void activateListeners()
+			void activateListeners()
 			{
-				for (auto it : btns)
-					it.second->connectEventHandler(&DesignChooser::buttonClicked, this);
-
-				if(activeBtn->getItem().getID() == userDesignID)
-					loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
+				sixBtnLayer->connectEventHandler(&DesignChooser::buttonClicked, this);
+				Sprite::activateListeners();
 			}
 
-			virtual void unActivateListeners()
+			void unActivateListeners()
 			{
-				for (auto it : btns)
-					it.second->disconnectEventHandler();	
-
-				loadButton->disconnectEventHandler();
-			}
-
-			virtual void buttonClicked(EventGUIRef& event)
-			{
-				EventGUI *ev = event.get();
-				if(typeid(*ev) == typeid(ChangeDesignEvent))
-				{		
-					ChangeDesignEventRef statEvent = static_pointer_cast<ChangeDesignEvent>(event);	
-					int id = statEvent->getItem().getID();
-					btns[id]->setSelection(true);					
-
-					if(activeID != id && id == userDesignID)
-						loadButton->connectEventHandler(&DesignChooser::openSystemDirectory, this);
-
-					selectActiveDesign(id);
-
-					callback(CHANGED_DESIGN);
-				}
-			}
-
-			int getDesignID() const
-			{
-				return activeID;
-			}
-
-			void openSystemDirectory(EventGUIRef& event)
-			{			
-				callback(OPEN_USER_DESIGN_FOLDER);
+				sixBtnLayer->disconnectEventHandler();
+				Sprite::unActivateListeners();
 			}		
 
-		private:			
-			ConfigSettingsRef configSettings;
-			ImageQuadroButtonRef activeBtn;
-			LoadButtonRef loadButton;
+			void buttonClicked(EventGUIRef& event)
+			{
+				EventGUI *ev = event.get();
+				if(ev)
+				{
+					console()<<"buttonClicked design changed"<<endl;
+					callback(CHANGED_DESIGN);
+					//mouseUpSignal(event);
+				}
+			}
 
-			std::map<int, ImageQuadroButtonRef> btns;	
-
-			int userDesignID;
-			int activeID;
-		};
-
-		typedef std::shared_ptr<DesignChooser> DesignChooserRef;
+			private:			
+				ConfigSettingsRef configSettings;
+				SixButtonsLayerDesignRef sixBtnLayer;
+		};		
 	}
 }

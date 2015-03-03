@@ -71,6 +71,8 @@ namespace kubik
 
 		virtual void createMemento(){};
 		virtual void writeConfig(){};
+		bool settingsChanged(){return false;};	
+		changeSetting::id getChangeID(){ return changeSetting::id::MENU;};	
 
 		void setDesignPath()
 		{

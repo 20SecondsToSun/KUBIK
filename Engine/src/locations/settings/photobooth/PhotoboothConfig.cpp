@@ -92,12 +92,12 @@ void PhotoboothConfig::setOpenItem(int index)
 	}				
 }	
 
-void PhotoboothConfig::showAnimate(const EaseFn& eFunc, float time)
+void PhotoboothConfig::showAnimate(const ci::EaseFn& eFunc, float time)
 {	
 	animatePosition = getGlobalPosition();
 	unActivateListeners();
 
-	timeline().apply( &animatePosition, Vec2f(166.0f, 0.0f), time, eFunc)
+	timeline().apply( &animatePosition, ci::Vec2f(166.0f, 0.0f), time, eFunc)
 		.finishFn(bind( &PhotoboothConfig::showAnimationFinish, this))
 		.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
 }
@@ -113,11 +113,11 @@ void PhotoboothConfig::showAnimationFinish()
 	activateListeners();
 }
 
-void PhotoboothConfig::hideAnimate(const EaseFn& eFunc, float time)
+void PhotoboothConfig::hideAnimate(const ci::EaseFn& eFunc, float time)
 {
 	unActivateListeners();
 
-	timeline().apply( &animatePosition, Vec2f(1080.0f, 0.0f), time, eFunc)
+	timeline().apply( &animatePosition, ci::Vec2f(1080.0f, 0.0f), time, eFunc)
 		.finishFn(bind( &PhotoboothConfig::hideAnimationFinish, this))
 		.updateFn(bind( &PhotoboothConfig::animationPosUpdate, this));
 }		

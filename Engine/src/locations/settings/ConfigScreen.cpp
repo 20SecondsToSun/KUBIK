@@ -160,32 +160,23 @@ void ConfigScreen::showingMainConfAnimationComplete()
 
 void ConfigScreen::closeLocationHandler()
 {	
-	checkPhotoBoothParamsForChanges();
-	checkMenuParamsForChanges();
-
 	for (auto setting : settingsList)
-		setting->writeConfig();	
+	{
+		if(setting->settingsChanged())
+		{
+			setting->writeConfig();	
+			Changes chng;
+			chng.id = setting->getChangeID();
+			changes.push_back(chng);	
+		}
+	}
+	checkMenuParamsForChanges();
+	checkScreenSaverParamsForChanges();
+	checkGamesParamsForChanges();
+	//check if design switched
 
 	mainConfig->closeDesignBlock();
 	closeLocationSignal();
-}
-
-void ConfigScreen::checkPhotoBoothParamsForChanges()
-{
-	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-
-	if(phbthSettings->settingsChanged())		
-	{
-		Changes chng;
-		chng.id = changeSetting::id::PHOTOBOOTH;
-		changes.push_back(chng);	
-	}
-}
-
-void ConfigScreen::checkFuncesParamsForChanges()
-{
-	//Changes chng;
-	//chng.id = ChangeSettingID::FUNCES;
 }
 
 void ConfigScreen::checkMenuParamsForChanges()

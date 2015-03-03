@@ -67,9 +67,7 @@ namespace kubik
 			void createPhotoboothParams();
 			void createMenuParams();	
 			void createFuncesParams();	
-
-			void checkPhotoBoothParamsForChanges();
-			void checkFuncesParamsForChanges();
+			
 			void checkMenuParamsForChanges();
 			void checkGamesParamsForChanges();
 			void checkScreenSaverParamsForChanges();

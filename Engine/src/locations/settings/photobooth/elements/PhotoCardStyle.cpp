@@ -11,7 +11,7 @@ PhotoCardStyle::PhotoCardStyle(PhotoboothSettingsRef phbSettings, const ci::Colo
 	int userDesignID	  = settings->getUserPhotoCardStyleDesignID();
 	std::string syspath	  = settings->getUserPhotoCardStylePath();
 	
-	sixBtnLayer = SixButtonsLayerPhotoCardRef( new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(settings, designdata, activeID, userDesignID, syspath));
+	sixBtnLayer = SixButtonsLayerPhotoCardRef( new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath));
 	addChild(sixBtnLayer);			
 }
 

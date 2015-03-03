@@ -32,6 +32,8 @@ namespace kubik
 
 		virtual void createMemento(){};
 		virtual void writeConfig(){};
+		bool settingsChanged(){return false;};	
+		changeSetting::id getChangeID(){ return changeSetting::id::FUNCES;};	
 	};
 
 	typedef shared_ptr<FuncesSettings> FuncesSettingsRef;
