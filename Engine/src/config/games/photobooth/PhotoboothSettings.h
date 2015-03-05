@@ -25,7 +25,10 @@ namespace kubik
 				SAVE_TEXT, YOUR_DESIGN_TEXT,
 				VKONTAKTE, FACEBOOK, TWITTER,
 				QRCODE,	PRINTER,EMAIL, FILTER_TEXT1, FILTER_TEXT2,
-				TIMER_TEXT1, TIMER_TEXT2
+				TIMER_TEXT1, TIMER_TEXT2,
+				TEMPLATE_TEXT1, TEMPLATE_TEXT2,
+				PRELOAD_TEXT1, PRELOAD_TEXT2,
+				CHOOSE_TEXT1, CHOOSE_TEXT2
 			};
 
 			class PhotoCountItem
@@ -55,7 +58,10 @@ namespace kubik
 
 			ci::gl::Texture getIcon(PhtTextID id);
 			ci::gl::Texture getEmptyIcon();
-			ci::gl::Texture getActiveStickerTex();
+
+			std::vector<ci::gl::Texture> getPhotoCardStylesActiveTemplate();
+			std::vector<ci::gl::Texture> getPhotoOverActiveTemplate();
+
 			ci::gl::Texture getActivePrintBgTex();
 			std::vector<int> getOnFilters();
 			void swapFilter(int id);
@@ -193,6 +199,8 @@ namespace kubik
 
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
+
+			vector<ci::RectT<int>> photoCardStylesCoordRects, photoOverCoordRects;
 	
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;

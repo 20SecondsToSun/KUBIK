@@ -22,10 +22,13 @@ namespace kubik
 		PhotoStorageRef photoStorage;
 
 		Texture countsTex, seekTex;				
-		ci::Vec2f countsTexPos, seekTexPos;
+		ci::Vec2f countsTexPos, seekTexPos, seekTexPos0;
+		float progressBlockStartY;
 
 	public:
-		PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage)
+		PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
+			:photoStorage(photoStorage),
+			 progressBlockStartY(0.0f)
 		{	
 			reset(settings);		
 		};
@@ -38,7 +41,7 @@ namespace kubik
 		void start() override
 		{
 			console()<<"start PhotoShooting"<<endl;
-			currentShot = 1;
+			currentShot = 5;
 			return;
 			//shotsNum = settings->getPhotoShots();
 			secBetweenShots = 0;//settings->getData().secondsBetweenShots;
@@ -121,14 +124,13 @@ namespace kubik
 		void drawProgressBlock()
 		{
 			gl::pushMatrices();
-			gl::translate(0.0f, 0.0f);
+			gl::translate(0.0f, progressBlockStartY);
 			gl::color(Color::hex(0xD60e0d0a));
 			gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 232.0f));
 			gl::color(Color::white());
 			gl::translate(0.0f, 69.0f);
-			float pos = (currentShot - 1) * 202.0f;
-			seekTexPos = Vec2f(countsTexPos.x - seekTex.getWidth()*0.5f + 23 + pos, 0);//countsTexPos.y + (countsTex.getHeight() - seekTex.getHeight()) * 0.5f);
-			//gl::draw(seekTex, seekTexPos);
+			seekTexPos = seekTexPos0 + Vec2f((currentShot - 1) * 197.0f, 0.0f);
+			gl::draw(seekTex, seekTexPos);
 			gl::draw(countsTex, countsTexPos);
 			gl::popMatrices();
 
@@ -152,7 +154,9 @@ namespace kubik
 			settings = _settings;
 			countsTex   = settings->getTexture("counts");
 			seekTex		=  settings->getTexture("seek");
-			countsTexPos = Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 0);
+			countsTexPos= Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 0);
+			seekTexPos0 = Vec2f(146.0f - seekTex.getWidth()*0.5f, 0.5f*(countsTex.getHeight() - seekTex.getHeight()));
+
 		}
 	};
 	typedef shared_ptr<PhotoShooting>	 PhotoShootingRef;

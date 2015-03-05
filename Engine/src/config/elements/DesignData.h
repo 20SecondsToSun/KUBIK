@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextItem.h"
+#include "Utils.h"
 
 namespace kubik
 {
@@ -79,14 +80,36 @@ namespace kubik
 			this->icon = icon;
 		}
 
-		void setDesignTexture(const ci::gl::Texture& icon)
+		void setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect)
 		{
-			this->designTexture = designTexture;
+			//this->designTexture = designTexture;
+			for (size_t i = 0; i < coordRect.size(); i++)
+			{
+				designData.push_back(sliceMappedTexture(designTexture, coordRect[i]));
+			}		
 		}
 
-		ci::gl::Texture getDesignTexture()
+		ci::gl::Texture sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
 		{
-			return this->designTexture;
+			gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
+
+			Utils::drawGraphicsToFBO(fbo, [&]()
+			{
+				gl::pushMatrices();			
+				gl::translate(-rect.x1, -rect.y1);				
+				gl::draw(tex);
+				gl::popMatrices();
+			});
+
+			gl::Texture retTex = fbo.getTexture();
+			Utils::clearFBO(fbo);
+
+			return retTex;
+		}
+
+		std::vector<ci::gl::Texture> getMappedTextures()
+		{
+			return this->designData;
 		}		
 
 		void setFont(FontResourceDictionary fontDic)
@@ -107,9 +130,11 @@ namespace kubik
 	private:
 		int id;
 		TextItem text;
-		ci::gl::Texture icon, designTexture;	
+		ci::gl::Texture icon;	
 		std::string iconPath, designPath;	
 		std::string iconTextName, designTexName;
+
+		std::vector<ci::gl::Texture> designData;
 	};
 
 	typedef std::list<OneDesignItem> DesignData;

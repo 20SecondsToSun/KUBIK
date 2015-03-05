@@ -38,10 +38,12 @@ void Photobooth::create()
 	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings));
 	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings));
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
-	/*photoProcessing	 = PhotoProcessingRef(new PhotoProcessing(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));
-	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
+	/*photoProcessing	 = PhotoProcessingRef(new PhotoProcessing(settings, photoStorage));
+	
+	
 	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));*/
+	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
 	initLocations();
 	
 	cameraCanon().setup();
@@ -84,9 +86,12 @@ void Photobooth::initLocations()
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
 	//locations.push_back(photoTimer);
-	locations.push_back(photoShooting);
-	/*locations.push_back(photoProcessing);	
+	//locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
+	locations.push_back(photoTemplate);
+
+	/*locations.push_back(photoProcessing);	
+	
 	locations.push_back(photoTemplate);
 	locations.push_back(photoSharing);*/
 

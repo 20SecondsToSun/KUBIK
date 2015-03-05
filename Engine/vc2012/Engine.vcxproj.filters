@@ -178,6 +178,9 @@
     <Filter Include="Source Files\config\elements">
       <UniqueIdentifier>{627a7039-2a64-4151-af8d-c0174e2d31aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\photobooth\states\templateButtons">
+      <UniqueIdentifier>{b9b7e4ec-17ed-4aab-80ab-2b7fe9936869}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -314,6 +317,15 @@
     </ClCompile>
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp">
       <Filter>Source Files\config\games\photobooth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoTemplate.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.cpp">
+      <Filter>Source Files\games\photobooth\states\templateButtons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoChoosing.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -754,6 +766,15 @@
     </ClInclude>
     <ClInclude Include="..\src\config\ISettings.h">
       <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.h">
+      <Filter>Source Files\games\photobooth\states\templateButtons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\games\photobooth\PhotoTemplateChooseEvent.h">
+      <Filter>Source Files\events\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\games\photobooth\SubPhotoTemplateChooseEvent.h">
+      <Filter>Source Files\events\games\photobooth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

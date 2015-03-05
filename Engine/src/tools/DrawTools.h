@@ -92,6 +92,17 @@ namespace kubik
 				glVertex2f ( x2, y2 ); 
 			glEnd();			
 			glDisable(GL_LINE_STIPPLE);
+			//glLineStipple(space, 0x1111);
+		}
+
+		void drawStrokedRect(const Rectf& rect, float lineWidth)
+		{
+			gl::lineWidth(lineWidth);
+			gl::drawLine(Vec2f(rect.x1 - lineWidth, rect.y1 - lineWidth*0.5), Vec2f(rect.x2 + lineWidth, rect.y1 - lineWidth*0.5));
+			gl::drawLine(Vec2f(rect.x1 - lineWidth*0.5, rect.y1), Vec2f(rect.x1 - lineWidth*0.5, rect.y2));
+			gl::drawLine(Vec2f(rect.x2 + lineWidth*0.5, rect.y1), Vec2f(rect.x2 + lineWidth*0.5, rect.y2));
+			gl::drawLine(Vec2f(rect.x1 - lineWidth, rect.y2 + lineWidth*0.5), Vec2f(rect.x2 + lineWidth, rect.y2 + lineWidth*0.5));
+			gl::lineWidth(1);
 		}
 
 	};

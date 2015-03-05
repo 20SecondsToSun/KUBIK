@@ -76,5 +76,23 @@
      "lang"  : "ru",
 "title1" : {"text" : "П Р И Г О Т О В Ь Т Е С Ь", "font" : "introLight", "size" : 60, "color" : "ffffff"},
 "title2" : {"text" : "Сейчас я сделаю серию из 5 фотографий", "font" : "helveticaNeueLight", "size" : 26, "color" : "d2cfc5"}
+}],
+ "template" : [
+      {
+     "lang"  : "ru",
+"title1" : {"text" : "Н А  П Е Ч А Т Ь !", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+"title2" : {"text" : "Выберите подходящий фото-шаблон!", "font" : "introLight", "size" : 36, "color" : "ffffff"}
+}],
+ "preload" : [
+      {
+     "lang"  : "ru",
+"title1" : {"text" : "П А Р А   М Г Н О В Е Н И Й", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+"title2" : {"text" : "Обрабатываю и сохраняю фото", "font" : "introLight", "size" : 36, "color" : "ffffff"}
+}],
+ "choose" : [
+      {
+     "lang"  : "ru",
+"title1" : {"text" : "В Ы Б Е Р И Т Е  3  Ф О Т О", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+"title2" : {"text" : "которые вам больше всего нравятся", "font" : "introLight", "size" : 36, "color" : "ffffff"}
 }]
 }

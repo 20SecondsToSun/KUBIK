@@ -126,9 +126,12 @@
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\PhotoChoosing.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoFilter.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoInstruction.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\PhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoTimer.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
@@ -187,6 +190,8 @@
     <ClInclude Include="..\src\events\CheckerEvent.h" />
     <ClInclude Include="..\src\events\Event.h" />
     <ClInclude Include="..\src\events\games\photobooth\PhotoFilterEvent.h" />
+    <ClInclude Include="..\src\events\games\photobooth\PhotoTemplateChooseEvent.h" />
+    <ClInclude Include="..\src\events\games\photobooth\SubPhotoTemplateChooseEvent.h" />
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h" />
     <ClInclude Include="..\src\events\settings\BackToMainConfigEvent.h" />
     <ClInclude Include="..\src\events\settings\ChangeDesignEvent.h" />
@@ -224,6 +229,7 @@
     <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h" />
+    <ClInclude Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\HueSaturation.h" />
     <ClInclude Include="..\src\graphics\shaders\MaskShader.h" />
