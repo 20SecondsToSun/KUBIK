@@ -217,6 +217,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		string lang	    = it.getChild("lang").getValue<string>();
 		configTexts.insert(lang, PhtTextID::TEMPLATE_TEXT1,     jtools().parseTextItem(it.getChild("title1")));
 		configTexts.insert(lang, PhtTextID::TEMPLATE_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
+		configTexts.insert(lang, PhtTextID::TEMPLATE_PRINT,     jtools().parseTextItem(it.getChild("print")));
 	}
 
 	jsonTexts = JsonTree(config.getChild("preload"));
@@ -233,7 +234,9 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		string lang	    = it.getChild("lang").getValue<string>();
 		configTexts.insert(lang, PhtTextID::CHOOSE_TEXT1,     jtools().parseTextItem(it.getChild("title1")));
 		configTexts.insert(lang, PhtTextID::CHOOSE_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
+		configTexts.insert(lang, PhtTextID::PHOTO_FILTERS,    jtools().parseTextItem(it.getChild("filters")));		
 	}
+	
 }
 
 void PhotoboothSettings::loadSharingIcons(JsonTree config)
@@ -241,12 +244,12 @@ void PhotoboothSettings::loadSharingIcons(JsonTree config)
 	typedef Pair<PhtTextID, string> NamePair;
 
 	vector<NamePair> pairs;
-	pairs.push_back(NamePair(PhtTextID::FACEBOOK,    "fbIcon" ));
-	pairs.push_back(NamePair(PhtTextID::PRINTER,	 "printerIcon" ));	
-	pairs.push_back(NamePair(PhtTextID::VKONTAKTE,   "vkIcon" ));	
-	pairs.push_back(NamePair(PhtTextID::TWITTER,     "twIcon" ));	
-	pairs.push_back(NamePair(PhtTextID::QRCODE,		 "qrIcon" ));	
-	pairs.push_back(NamePair(PhtTextID::EMAIL,		 "emailIcon" ));	
+	pairs.push_back(NamePair(PhtTextID::FACEBOOK,    "fbIcon"));
+	pairs.push_back(NamePair(PhtTextID::PRINTER,	 "printerIcon"));	
+	pairs.push_back(NamePair(PhtTextID::VKONTAKTE,   "vkIcon"));	
+	pairs.push_back(NamePair(PhtTextID::TWITTER,     "twIcon"));	
+	pairs.push_back(NamePair(PhtTextID::QRCODE,		 "qrIcon"));	
+	pairs.push_back(NamePair(PhtTextID::EMAIL,		 "emailIcon"));	
 
 	for (auto item : pairs)
 	{
@@ -269,10 +272,9 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
 		item.setDesignPath(it.getChild("designPath").getValue<string>());
-		item.setIconTexName("overElement"+item.getID());
+		item.setIconTexName("overElement" + item.getID());
 		item.setDesignTexName("overDesignElement" + item.getID());
-		console()<<"------------------------  it.getChild(designPath).getValue<string>() --------- "<<it.getChild("designPath").getValue<string>()<<endl;
-
+	
 		JsonTree text = it.getChild("textObj");
 
 		item.setTextItem(text.getChild("text").getValue<string>(),
@@ -347,10 +349,7 @@ std::vector<ci::gl::Texture> PhotoboothSettings::getPhotoCardStylesActiveTemplat
 std::vector<ci::gl::Texture> PhotoboothSettings::getPhotoOverActiveTemplate()
 {	
 	auto iter = photoOverDesignData.begin();
-	std::advance(iter, activeOverDesignID - 1);
-
-	console()<<"activeOverDesignID:::::::::::::::::::::  "<<photoOverDesignData.size()<<endl;
-	
+	std::advance(iter, activeOverDesignID - 1);	
 	return iter->getMappedTextures();
 }
 
@@ -365,34 +364,30 @@ void PhotoboothSettings::setTextures()
 
 	addToDictionary("instrFon",			createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
 	addToDictionary("instrTitle",		createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\text1.png")));
-
-
 	addToDictionary("timer1",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer1.png")));
 	addToDictionary("timer2",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer2.png")));
-
 	addToDictionary("counts",			createImageResource(getTemplateDesignPath("PhotoShooting\\counts.png")));
-	addToDictionary("seek",				createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));
-
-
-
-
-
-	addToDictionary("closeImg",		    createImageResource(getStaticDesignPath("close.png")));
-
+	addToDictionary("seek",				createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));	
+	addToDictionary("print",			createImageResource(getTemplateDesignPath("PhotoTemplate\\print.png")));
+	addToDictionary("preloader",		createImageResource(getTemplateDesignPath("PhotoTemplate\\preloader.png")));
+	addToDictionary("galka",			createImageResource(getTemplateDesignPath("PhotoChoosing\\galka.png")));
+	addToDictionary("ramka",			createImageResource(getTemplateDesignPath("PhotoChoosing\\ramka.png")));
+	addToDictionary("okBtn",			createImageResource(getTemplateDesignPath("PhotoChoosing\\okBtn.png")));
 
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
+	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
+	addToDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
 
 	addToDictionary("introLight44",     createFontResource(getFontsPath("IntroLight.ttf"), 44));
 	addToDictionary("introLight60",     createFontResource(getFontsPath("IntroLight.ttf"), 60));
 	addToDictionary("introLight36",     createFontResource(getFontsPath("IntroLight.ttf"), 36));
-	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
-
+	addToDictionary("introLight18",     createFontResource(getFontsPath("IntroLight.ttf"), 18));
 	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
 	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
 	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
+	addToDictionary("introb18",			createFontResource(getFontsPath("introb.ttf"), 18));
 	
 	for (auto item : photoOverDesignData)	
 	{

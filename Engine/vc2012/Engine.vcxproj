@@ -123,8 +123,11 @@
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
+    <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoChoosing.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoFilter.cpp" />
@@ -189,6 +192,7 @@
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\CheckerEvent.h" />
     <ClInclude Include="..\src\events\Event.h" />
+    <ClInclude Include="..\src\events\games\photobooth\FilterChangedEvent.h" />
     <ClInclude Include="..\src\events\games\photobooth\PhotoFilterEvent.h" />
     <ClInclude Include="..\src\events\games\photobooth\PhotoTemplateChooseEvent.h" />
     <ClInclude Include="..\src\events\games\photobooth\SubPhotoTemplateChooseEvent.h" />
@@ -220,6 +224,8 @@
     <ClInclude Include="..\src\games\photobooth\elements\FilterButton.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
+    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.h" />
+    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.h" />
     <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h" />
     <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h" />

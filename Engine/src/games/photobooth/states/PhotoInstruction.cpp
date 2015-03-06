@@ -39,4 +39,4 @@ void PhotoInstruction::draw()
 {
 	gl::draw(fonTex);
 	gl::draw(titleTex, titleTexPos);
-}	
+}

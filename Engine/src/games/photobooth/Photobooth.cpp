@@ -38,12 +38,9 @@ void Photobooth::create()
 	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings));
 	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings));
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
-	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));
-	/*photoProcessing	 = PhotoProcessingRef(new PhotoProcessing(settings, photoStorage));
-	
-	
-	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));*/
+	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
+	//photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));
 	initLocations();
 	
 	cameraCanon().setup();
@@ -88,12 +85,8 @@ void Photobooth::initLocations()
 	//locations.push_back(photoTimer);
 	//locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
-	locations.push_back(photoTemplate);
-
-	/*locations.push_back(photoProcessing);	
-	
-	locations.push_back(photoTemplate);
-	locations.push_back(photoSharing);*/
+	locations.push_back(photoTemplate);	
+	//locations.push_back(photoSharing);
 
 	for (auto loc: locations)	
 		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);

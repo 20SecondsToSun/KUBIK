@@ -28,10 +28,19 @@ void TemplateButton::drawLayout()
 {
 	if(isSelected)	
 	{
-		gl::color(Color::hex(0xe4cf97));		
-		drawtool().drawStrokedRect(Rectf(0, 0, getWidth(), getHeight()), 4);
+		gl::color(ColorA(0.0f, 0.0f, 0.0f, 0.75f));//::hex(0xe4cf97));		
+		//drawtool().drawStrokedRect(Rectf(0, 0, getWidth(), getHeight()), 4);
+		gl::drawSolidRect(Rectf(0, 0, getWidth(), getHeight()));
 		gl::color(Color::white());
+		gl::draw(btnOver, Vec2f((getWidth() - btnOver.getWidth()) * 0.5f, (getHeight() - btnOver.getHeight()) * 0.5f));
+		gl::draw(btnOverText, Vec2f((getWidth() - btnOverText.getWidth()) * 0.5f, (getHeight() - btnOverText.getHeight()) * 0.5f));
 	}
+}
+
+void TemplateButton::setSelectDesign(const gl::Texture& btn, const gl::Texture& btntext)
+{
+	btnOver = btn;
+	btnOverText = btntext;
 }
 
 ////////////////////////////////////////////////////////////////////////////

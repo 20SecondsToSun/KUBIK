@@ -38,13 +38,15 @@ namespace kubik
 		std::vector<ci::gl::Texture> templates, stickers;
 		bool isSelected;
 		templateID id;
+		ci::gl::Texture btnOver, btnOverText;
 
 	public:
 		TemplateButton(const ci::Rectf& rect, templateID id, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
 		virtual void setSelected(bool value);
-		virtual void drawLayout();
-		templateID getID();
+		virtual void drawLayout();		
 		virtual void init(){};
+		void setSelectDesign(const ci::gl::Texture& btn, const ci::gl::Texture& btntext);
+		templateID getID();
 	};
 
 	class TemplateButton1: public TemplateButton

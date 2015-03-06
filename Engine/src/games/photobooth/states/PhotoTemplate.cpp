@@ -72,7 +72,7 @@ void PhotoTemplate::setChoosingTemplate()
 void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 {
 	templates = settings->getPhotoCardStylesActiveTemplate();
-	stickers = settings->getPhotoOverActiveTemplate();
+	stickers  = settings->getPhotoOverActiveTemplate();
 
 	auto title1   = settings->getTextItem(PhtTextID::TEMPLATE_TEXT1);
 	auto title2   = settings->getTextItem(PhtTextID::TEMPLATE_TEXT2);
@@ -87,7 +87,7 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 	templatebtns.clear();
 
 	position = Vec2f(220.0f, 420.0f);
-	size = Vec2f(218.0f, 652.0f);
+	size = Vec2f(218.0f, 655.0f);
 	templatebtns.push_back(TemplateButton1Ref(new TemplateButton1(Rectf(position, position + size), templates, stickers)));	
 
 	position = Vec2f(560.0f, 420.0f);
@@ -105,6 +105,12 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 	position = Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 455.0f);
 	//templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
+	
+	for (auto templ : templatebtns)	
+	{
+		auto title = settings->getTextItem(PhtTextID::TEMPLATE_PRINT);		
+		templ->setSelectDesign(settings->getTexture("print"), textTools().getTextField(title));
+	}
 }
 
 void PhotoTemplate::update()
