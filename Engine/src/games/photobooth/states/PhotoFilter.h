@@ -4,6 +4,7 @@
 #include "FilterButton.h"
 #include "CameraAdapter.h"
 #include "TextTools.h"
+#include "Filter.h"
 
 namespace kubik
 {
@@ -16,7 +17,7 @@ namespace kubik
 			std::vector<FilterButtonRef> filterBtns;	
 			ci::gl::Texture tex1, tex2;
 			ci::Vec2f title1Pos, title2Pos;
-			std::vector<int> filters;
+			std::vector<config::PhotoboothSettings::Filter> filters;
 
 		public:	
 			PhotoFilter(PhotoboothSettingsRef settings);

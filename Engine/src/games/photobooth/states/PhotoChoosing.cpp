@@ -166,8 +166,10 @@ void PhotoChoosing::reset(PhotoboothSettingsRef _settings)
 {
 	settings = _settings;		
 	preloader = settings->getTexture("preloader");	
+
 	filterBtns.clear();
-	auto filters = settings->getOnFilters();
+
+	auto filters = settings->getOnFilters();	
 
 	float fwidth = 109.0f;
 	float shiftX = 15.0f;
@@ -175,8 +177,13 @@ void PhotoChoosing::reset(PhotoboothSettingsRef _settings)
 
 	Vec2f startVec = Vec2f( 0.5f * (getWindowWidth() - fullSize), photoFiltersStartY + 167.0f);
 
-	for (int i = 0; i < filters.size(); i++)	
-		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(startVec + Vec2f((shiftX + fwidth) * i, 0.0f), i)));		
+	DesignData designdata = settings->getPhotoFiltersPreview();		
+
+	for (int i = 0; i < filters.size(); i++)
+	{	
+		auto position = startVec + Vec2f((shiftX + fwidth) * i, 0.0f);
+		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(position, i, filters[i].getText(), settings->getFont("introBook12"), settings->getFont("introBook14"))));
+	}
 }	
 
 void PhotoChoosing::update()

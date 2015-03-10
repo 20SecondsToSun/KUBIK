@@ -1,6 +1,7 @@
 #pragma once
 #include "gui/SimpleSpriteButton.h"
 #include "FilterChangedEvent.h"
+#include "TextTools.h"
 
 namespace kubik
 {
@@ -11,6 +12,11 @@ namespace kubik
 		//ci::gl::Texture galka, ramka;		
 		bool isSelected;
 		int id;
+		std::string text;
+		ci::Font fontC, fontO;
+
+		gl::Texture titleSmall, titleBig;
+		Vec2f titleSmallPos, titleBigPos;
 
 		enum stateID
 		{
@@ -19,7 +25,7 @@ namespace kubik
 		}state;
 
 	public:
-		FilterSmallButton(const ci::Vec2f& vec, int id);
+		FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO);
 		void setSelected(bool value);
 		bool selected();
 		virtual void drawLayout();

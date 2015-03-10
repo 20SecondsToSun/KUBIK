@@ -63,7 +63,7 @@ namespace kubik
 			std::vector<ci::gl::Texture> getPhotoOverActiveTemplate();
 
 			ci::gl::Texture getActivePrintBgTex();
-			std::vector<int> getOnFilters();
+			
 			void swapFilter(int id);
 			
 			//bool findFilterId(int id, std::vector<int> filters);			
@@ -105,11 +105,12 @@ namespace kubik
 			bool settingsChanged();	
 			changeSetting::id getChangeID(){ return changeSetting::id::PHOTOBOOTH;};	
 
-		private:
+		public:
 			class Filter
 			{
 				int id;
 				bool isOn;
+				std::string text;
 
 			public:
 				friend PhotoboothSettings;
@@ -123,13 +124,19 @@ namespace kubik
 				{
 					return id;
 				}
-			};
 
-		public:
+				std::string getText()
+				{
+					return text;
+				}
+			};
+		
 			std::vector<Filter> getFilters()
 			{
 				return filters;
 			}
+			std::vector<Filter> getOnFilters();
+
 		private:
 
 			class ImageElement

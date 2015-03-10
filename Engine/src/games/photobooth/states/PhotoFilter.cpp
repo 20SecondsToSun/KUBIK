@@ -93,11 +93,11 @@ void PhotoFilter::createfilters2()
 	float x = 9, y = 520;
 	float width = 528, height = 938;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 }
 
 void PhotoFilter::createfilters3()
@@ -105,16 +105,16 @@ void PhotoFilter::createfilters3()
 	float x = 9, y = 467;
 	float width = 705, height = 1255;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
 	x = 720;
 	width = 360, height = 625;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 
 	y = 1097;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 }
 
 void PhotoFilter::createfilters4()
@@ -122,19 +122,19 @@ void PhotoFilter::createfilters4()
 	float x = 9, y = 467;
 	float width = 528, height = 633;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 
 	x = 9; y = 1106;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
 }
 
 void PhotoFilter::createfilters5()
@@ -142,24 +142,24 @@ void PhotoFilter::createfilters5()
 	float x = 9, y = 467;
 	float width = 528, height = 633;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 	///
 	x = 9; y = 1106;
 	width = 351, height = 625;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
 
 	x += width + 4;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
 }
 
 void PhotoFilter::createfilters6()
@@ -167,27 +167,27 @@ void PhotoFilter::createfilters6()
 	float x = 9, y = 467;
 	float width = 351, height = 625;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1], buttonArea)));		
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));		
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 
 	x = 9 ; y = 1097;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4], buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
 }
 
 void PhotoFilter::update()

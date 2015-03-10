@@ -4,13 +4,22 @@ using namespace kubik;
 using namespace ci;
 using namespace std;
 
-FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, int id)
+FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO)
 	:SimpleSpriteButton(ci::Rectf(vec, vec + ci::Vec2f(109.0f, 228.0f)), FilterChangedEventRef(new FilterChangedEvent(id))),
 	isSelected(false),
 	id(id),
+	text(text),
+	fontC(fontC),
+	fontO(fontO),
 	state(CLOSE)
 {
+	boost::to_upper(this->text);
 
+	titleSmall = textTools().getTextField(this->text, &fontC, Color::white()); 
+	titleSmallPos = Vec2f((109 - titleSmall.getWidth()) * 0.5, 191);
+
+	titleBig = textTools().getTextField(this->text, &fontO, Color::white()); 
+	titleBigPos = Vec2f((137.0f - titleBig.getWidth()) * 0.5f, 211.0f);
 }
 
 void FilterSmallButton::setSelected(bool value)
@@ -31,13 +40,16 @@ void FilterSmallButton::drawLayout()
 		gl::drawSolidRect(buttonArea);
 		gl::color(Color::white());
 		gl::drawSolidRect(Rectf(0.0f, 0.0f, getWidth(), 140.0f));	
+		gl::draw(titleSmall, titleSmallPos);
+		
 	}
 	else
 	{
 		gl::color(Color::hex(0x191b1c));
 		gl::drawSolidRect(buttonArea);
 		gl::color(Color::white());
-		gl::drawSolidRect(Rectf(0.0f, -30.0f, getWidth(), 153.0f));	
+		gl::drawSolidRect(Rectf(0.0f, -30.0f, getWidth(), 147.0f));	
+		gl::draw(titleBig, titleBigPos);
 	}
 }
 
@@ -49,7 +61,7 @@ int FilterSmallButton::getID() const
 void FilterSmallButton::setOpenState()
 {
 	state = OPEN;
-	buttonArea = Rectf(Vec2f(0, -30), Vec2f(137.0f, 256.0f));
+	buttonArea = Rectf(Vec2f(0.0f, -30.0f), Vec2f(137.0f, 256.0f));
 }
 
 void FilterSmallButton::setCloseState()

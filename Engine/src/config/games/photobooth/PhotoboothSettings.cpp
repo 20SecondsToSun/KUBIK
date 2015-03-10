@@ -385,6 +385,8 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("introLight18",     createFontResource(getFontsPath("IntroLight.ttf"), 18));
 	addToDictionary("introLight30",     createFontResource(getFontsPath("IntroLight.ttf"), 30));
 	addToDictionary("introBook30",      createFontResource(getFontsPath("Intro-Book.ttf"), 30));
+	addToDictionary("introBook12",      createFontResource(getFontsPath("Intro-Book.ttf"), 12));
+	addToDictionary("introBook14",      createFontResource(getFontsPath("Intro-Book.ttf"), 14));
 	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
 	addToDictionary("introb18",			createFontResource(getFontsPath("introb.ttf"), 18));
@@ -416,10 +418,12 @@ void PhotoboothSettings::buildData()
 	for (auto it = dic.begin(); it != dic.end(); ++it)	
 		it->second.setFont(fonts);
 	
+	int i = 0;
 	for (auto it = photoFiltersPreview.begin(); it != photoFiltersPreview.end(); ++it)
 	{
 		it->setIcon(getTexture(it->getIconTexName()));
-		it->setFont(fonts);
+		it->setFont(fonts);	
+		filters[i++].text = it->getTextItem().getText();
 	}
 
 	for (auto it = photoCardStyles.begin(); it != photoCardStyles.end(); ++it)	
@@ -439,13 +443,13 @@ void PhotoboothSettings::buildData()
 	configTexts.setDic(dic);
 };
 
-std::vector<int> PhotoboothSettings::getOnFilters()
+std::vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 {
-	std::vector<int> onFilters;
+	std::vector<Filter> onFilters;
 
 	for (auto filter: filters)			
 		if(filter.isOn)				
-			onFilters.push_back(filter.id);				
+			onFilters.push_back(filter);				
 
 	return onFilters;
 }
