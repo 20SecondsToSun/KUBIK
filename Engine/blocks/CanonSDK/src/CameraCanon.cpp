@@ -228,6 +228,42 @@ void CameraCanon::draw(Rectf drawingRect)
 		gl::draw(liveSurface);
 }
 
+ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int offsety, float scale)
+{
+	auto tex = gl::Texture(getLiveSurface());
+	if(!tex) return 0;
+
+	gl::Fbo fbo = gl::Fbo(sizex, sizey);
+
+	Utils::drawGraphicsToFBO(fbo, [&]()
+	{
+		gl::pushMatrices();		
+		gl::scale(scale, scale);
+		gl::translate(canon::resolution::CAMERA_HEIGHT, offsety);
+		gl::rotate(90);	
+		gl::draw(tex);
+		gl::popMatrices();
+	});
+
+	gl::Texture retTex = fbo.getTexture();
+	Utils::clearFBO(fbo);
+
+	gl::Fbo fbo1 = gl::Fbo(sizex, sizey);
+	Utils::drawGraphicsToFBO(fbo1, [&]()
+	{
+		gl::pushMatrices();
+		gl::translate(sizex, 0);
+		gl::scale(-1, 1);					
+		gl::draw(retTex);
+		gl::popMatrices();
+	});
+
+	gl::Texture retTex1 = fbo1.getTexture();
+	Utils::clearFBO(fbo1);
+
+	return retTex1;
+}
+
 // ----------------------------------------------------------------------------
 
 void CameraCanon::photoCameraError( EdsError err)

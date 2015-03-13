@@ -8,7 +8,8 @@ using namespace ci;
 using namespace kubik;
 using namespace kubik::games;
 
-PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings)
+PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
+	:photoStorage(photoStorage)
 {
 	reset(settings);				
 }
@@ -16,7 +17,7 @@ PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings)
 void PhotoFilter::start()
 {
 	console()<<"start PhotoFilter "<<getCountFiltersOn()<<endl;
-	//cameraCanon().startLiveView();
+	cameraCanon().startLiveView();
 
 	if (getCountFiltersOn() <= 1)
 		nextLocationSignal();
@@ -36,23 +37,20 @@ void PhotoFilter::stop()
 
 void PhotoFilter::photoFilterSelect(EventGUIRef& event)
 { 
-	auto eventref = static_pointer_cast<PhotoFilterEvent>(event);				
-	console()<<"filter id"<<eventref->getFilterId()<<endl;
+	auto eventref = static_pointer_cast<PhotoFilterEvent>(event);
+	auto filterID = eventref->getFilterId();
+	photoStorage->setSelectedFilter(filterID);
+
+	console()<<"filter id"<<filterID<<endl;
 	nextLocationSignal();
 };
 
-void PhotoFilter::reset(PhotoboothSettingsRef set)
-{		
-	settings = set;							
+void PhotoFilter::reset(PhotoboothSettingsRef settings)
+{
+	IPhotoboothLocation::reset(settings);	
 
-	auto title1   = settings->getTextItem(PhtTextID::FILTER_TEXT1);
-	auto title2   = settings->getTextItem(PhtTextID::FILTER_TEXT2);
-
-	tex1 = textTools().getTextField(title1);
-	tex2 = textTools().getTextField(title2);
-
-	title1Pos = Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), 172.0f);
-	title2Pos = Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), 258.0f);				
+	title =  settings->getTexture("filterTitle");
+	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 238.0f - title.getHeight() * 0.5f);
 
 	filters = settings->getOnFilters();
 	filterBtns.clear();
@@ -98,6 +96,9 @@ void PhotoFilter::createfilters2()
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
+
+	for (auto filter: filterBtns)	
+		filter->setSizeID(filter_2);
 }
 
 void PhotoFilter::createfilters3()
@@ -105,16 +106,17 @@ void PhotoFilter::createfilters3()
 	float x = 9, y = 467;
 	float width = 705, height = 1255;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea, filter_3_1)));
 
 	x = 720;
 	width = 360, height = 625;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea, filter_3_2)));
 
 	y = 1097;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea, filter_3_2)));
+
 }
 
 void PhotoFilter::createfilters4()
@@ -128,13 +130,16 @@ void PhotoFilter::createfilters4()
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 
-	x = 9; y = 1106;
+	x = 9; y = 1104;
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
+
+	for (auto filter: filterBtns)	
+		filter->setSizeID(filter_4);
 }
 
 void PhotoFilter::createfilters5()
@@ -142,30 +147,30 @@ void PhotoFilter::createfilters5()
 	float x = 9, y = 467;
 	float width = 528, height = 633;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea, filter_5_1)));
 
 	x = 542;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea, filter_5_1)));
 	///
-	x = 9; y = 1106;
+	x = 9; y = 1104;
 	width = 351, height = 625;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea, filter_5_2)));
 
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea, filter_5_2)));
 
 	x += width + 4;
 	buttonArea = Rectf(x, y, x + width, y + height);				
-	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
+	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea, filter_5_2)));
 }
 
 void PhotoFilter::createfilters6()
 {	
 	float x = 9, y = 467;
-	float width = 351, height = 625;
+	float width = 351, height = 621;
 	Rectf buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[0].getID(), buttonArea)));
 
@@ -177,7 +182,7 @@ void PhotoFilter::createfilters6()
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[2].getID(), buttonArea)));
 
-	x = 9 ; y = 1097;
+	x = 9 ; y = 1093;
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
 
@@ -188,21 +193,55 @@ void PhotoFilter::createfilters6()
 	x += width + 5;
 	buttonArea = Rectf(x, y, x + width, y + height);				
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
+
+	for (auto filter: filterBtns)	
+		filter->setSizeID(filter_6);
 }
 
 void PhotoFilter::update()
 {
-	//cameraCanon().update();
+	cameraCanon().update();
+
+	std::map<sizeID, gl::Texture> textures;
+	float scale;
+
+	switch (filters.size())
+	{	
+	case 2:
+		 scale = 528.0f / 596.0f;
+		 textures[filter_2] = cameraCanon().getTexture(596.0f * scale, 1056.0f * scale, 0.0f, 0.0f, scale);
+	break;
+	case 3:
+		 scale = 705.0f / 596.0f;
+		 textures[filter_3_1] = cameraCanon().getTexture(596.0f * scale, 1056.0f * scale, 0.0f, 0.0f, scale);
+		 scale = 351.0f / 596.0f;
+		 textures[filter_3_2] = cameraCanon().getTexture(596.0f * scale, 1056.0f * scale, 0.0f, 0.0f, scale);
+	break;
+	case 4:
+		 scale = 528.0f / 596.0f;
+		 textures[filter_4] = cameraCanon().getTexture(596 * scale, 714.0f * scale, 0, -113, scale);
+		break;
+	case 5:
+		 scale = 528.0f / 596.0f;
+		 textures[filter_5_1] = cameraCanon().getTexture(596 * scale, 714.0f * scale, 0, -113, scale);
+		 scale = 351.0f / 596.0f;
+		 textures[filter_5_2] = cameraCanon().getTexture(596.0f * scale, 1056.0f * scale, 0.0f, 0.0f, scale);		
+		break;
+	case 6:
+		 scale = 351.0f / 596.0f;
+		 textures[filter_6] = cameraCanon().getTexture(596 * scale, 1056 * scale, 0, 0, scale);
+		break;
+	default:
+		break;
+	}	
+
+	for (auto filter: filterBtns)	
+		filter->setTexture(textures[(sizeID)filter->getSizeID()]);
 }
 
 void PhotoFilter::draw()
 {
-	gl::color(ci::Color::hex(0x060a0e));
-	gl::drawSolidRect(getWindowBounds());
-	gl::color(ci::Color::white());
-
-	gl::draw(tex1, title1Pos);
-	gl::draw(tex2, title2Pos);
-
+	fillBg();
+	gl::draw(title, titlePos);
 	Sprite::draw();
 }		

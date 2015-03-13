@@ -14,7 +14,7 @@ namespace kubik
 	{
 	public:	
 
-		ImageButtonSprite(ci::gl::Texture image, ci::Vec2f pos)
+		ImageButtonSprite(ci::gl::Texture image, ci::Vec2f pos = Vec2f::zero())
 			:SimpleSpriteButton(image.getWidth(), image.getHeight(), pos),
 			image(image)
 		{

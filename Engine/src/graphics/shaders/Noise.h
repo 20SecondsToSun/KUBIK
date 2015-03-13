@@ -5,16 +5,16 @@ namespace shaders
 {	
 	namespace imagefilters
 	{
-		class Sepia : public BaseShader
+		class Noise : public BaseShader
 		{	    
 			float amount;	
 		
 		public:
-			Sepia(float amount)
-				:BaseShader("Sepia filter"), amount(amount)
+			Noise(float amount)
+				:BaseShader("Noise filter"), amount(amount)
 			{
 				using namespace ci;
-				shader = gl::GlslProg(GET_PASSTHROUGH_VERTEX(), GET_FRAG());	
+				shader = ci::gl::GlslProg(GET_PASSTHROUGH_VERTEX(), GET_FRAG());		
 			}
 
 			void createParams(ci::params::InterfaceGlRef params)
@@ -23,26 +23,27 @@ namespace shaders
 				params->addParam("amount", &this->amount).min(0.0f).max(1.0f).step(.1f);
 			}
 
-			const char *GET_FRAG() override
+			const char *GET_FRAG()
 			{
 				static const std::string shdr = STRINGIFY(
 					  uniform sampler2D texture;
 					  uniform float amount;
 
+					  float rand(vec2 co) 
+					  {
+						 return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+					  }
+
 					  void main()
 					  {
 						vec2 vUv = gl_TexCoord[0].st;							
-						vec4 color = texture2D(texture, vUv);		
-				
-						float r = color.r;
-						float g = color.g;
-						float b = color.b;
-           
-					   color.r = min(1.0, (r * (1.0 - (0.607 * amount))) + (g * (0.769 * amount)) + (b * (0.189 * amount)));
-					   color.g = min(1.0, (r * 0.349 * amount) + (g * (1.0 - (0.314 * amount))) + (b * 0.168 * amount));
-					   color.b = min(1.0, (r * 0.272 * amount) + (g * 0.534 * amount) + (b * (1.0 - (0.869 * amount))));   
+						vec4 color = texture2D(texture, vUv);		       
       
-							
+						float diff = (rand(vUv) - 0.5) * amount;
+						color.r += diff;
+						color.g += diff;
+						color.b += diff;
+
 						gl_FragColor = color;
 					});
 
@@ -50,7 +51,7 @@ namespace shaders
 			}
 
 			void render(const ci::gl::Texture& tex)
-			{
+			{				
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("texture", 0);				
@@ -60,6 +61,6 @@ namespace shaders
 				tex.unbind();
 			}
 		};
-		typedef std::shared_ptr<Sepia> SepiaRef;
+		typedef std::shared_ptr<Noise> NoiseRef;
 	}
 }

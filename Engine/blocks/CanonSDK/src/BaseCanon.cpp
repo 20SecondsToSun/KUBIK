@@ -253,7 +253,7 @@ void BaseCanon::setImageQuality(EdsImageQuality quality)
 	//EdsImageQuality_S2JF 1920-1080
 	//EdsImageQuality_S3JF 720-480
 
-	quality = EdsImageQuality_S2JF;
+	quality = EdsImageQuality_S1JF;
 	EdsError err = EdsSetPropertyData(camera, kEdsPropID_ImageQuality, 0, sizeof(quality), &quality);
 	console()<<"image quality set: "<<quality<<"  "<<CanonErrorToString(err)<<"    "<<endl;
 }

@@ -5,7 +5,10 @@
 #include "shaders/HueSaturation.h"
 #include "shaders/MaskShader.h"
 #include "shaders/Sepia.h"
-//#include "Noise.h"
+#include "shaders/Noise.h"
+#include "shaders/ColorHalftone.h"
+#include "shaders/DotScreen.h"
+#include "shaders/Kaleidoscope.h"
 //#include "Vibrance.h"
 //#include "DotScreen.h"
 //#include "ColorHalftone.h"
@@ -28,15 +31,17 @@ namespace shaders
 		public:
 			enum FilterType
 			{
+				_start,
+				KALEIDOSCOPE,
 				PIXELATE,
+				DOT_SCREEN,
 				HUE_SATURATION,
 				SEPIA,
-				NOISE,
-				VIBRANCE,
-				DOT_SCREEN,
+				NOISE,				
 				COLOR_HALF_TONE,
+				VIBRANCE,					
 				//LUT,
-				KALEIDOSCOPE,
+				
 				//BLOOM,
 				//BLEACH,
 				BRCOSA,
@@ -60,7 +65,7 @@ namespace shaders
 				return MaskShaderRef(new MaskShader());
 			}
 
-			BaseShaderRef get(FilterType id, ci::params::InterfaceGlRef params)
+			BaseShaderRef get(FilterType id)
 			{
 				using namespace shaders::imagefilters;
 				using namespace ci;
@@ -73,12 +78,12 @@ namespace shaders
 					case PIXELATE:				shader = PixelateRef(new Pixelate(Vec2f(100.0f, 100.0f))); break;
 					case HUE_SATURATION:		shader = HueSaturationRef(new HueSaturation(0.5f, 0.5f)); break;
 					case SEPIA:					shader = SepiaRef(new Sepia(0.5f)); break;
-					//case NOISE:					shader = NoiseRef(new Noise(0.5f)); break;
+					case NOISE:					shader = NoiseRef(new Noise(0.5f)); break;
 					//case VIBRANCE:				shader = VibranceRef(new Vibrance(0.5f)); break;
-					//case DOT_SCREEN:			shader = DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1)); break;
-					//case COLOR_HALF_TONE:		shader = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1, 1)); break;
+					case DOT_SCREEN:			shader = DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1)); break;
+					case COLOR_HALF_TONE:		shader = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1, 1)); break;
 					//case LUT:					shader = LutRef(new Lut(0.3f)); break;
-					//case KALEIDOSCOPE:			shader = KaleidoscopeRef(new Kaleidoscope(2.0f)); break;
+					case KALEIDOSCOPE:			shader = KaleidoscopeRef(new Kaleidoscope(4.0f)); break;
 					//case BLOOM:				shader = BloomRef(new Bloom(0.4f)); break;
 					//case BLEACH:				shader = BleachRef(new Bleach(0.5f)); break;
 					//case BRCOSA:				shader = BrcosaRef(new Brcosa(0.5f, 0.5f, 0.5f, 1.0f)); break;
@@ -88,9 +93,13 @@ namespace shaders
 					//case GLITCH:				shader = GlitchRef(new Glitch()); break;						
 					//case COLOR_MATRIX:		shader = ColorMatrixRef(new ColorMatrix()); break;						
 				}
+				return shader;
+			}
 
+			BaseShaderRef get(FilterType id, ci::params::InterfaceGlRef params)
+			{				
+				auto shader = get(id);
 				shader->createParams(params);
-
 				return shader;
 			}
 

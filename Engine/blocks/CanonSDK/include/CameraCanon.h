@@ -4,6 +4,7 @@
 //#include "cinder/gl/gl.h"
 //#include "cinder/gl/Texture.h"
 #include "BaseCanon.h"
+#include "Utils.h"
 
 using namespace ci;
 using namespace ci::gl;
@@ -58,6 +59,8 @@ namespace canon
 
 		void setDownloadDirectory(fs::path dir);
 		bool isConnected();
+
+		ci::gl::Texture getTexture(int sizex, int sizey, int offsetx, int offsety, float scale);
 
 	protected:
 		CameraController* controller;

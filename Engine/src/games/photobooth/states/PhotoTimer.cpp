@@ -28,24 +28,24 @@ PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings):
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
 {
-	settings = sett;	
+	IPhotoboothLocation::reset(settings);	
 
-	timerFont = settings->getFont("introThin120");
 	MAX_SEC = settings->getBeReadySeconds();
 
-	auto title1   = settings->getTextItem(PhtTextID::TIMER_TEXT1);
-	auto title2   = settings->getTextItem(PhtTextID::TIMER_TEXT2);
-
-	tex1 = textTools().getTextField(title1);
-	tex2 = textTools().getTextField(title2);
-
-	title1Pos = Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), 340.0f);
-	title2Pos = Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), 468.0f);
+	title = settings->getTexture("timertitle");
+	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 432.0f - title.getHeight() * 0.5f);
 
 	timerTex1 = settings->getTexture("timer1");
 	timerTex2 = settings->getTexture("timer2");
 
-	timerTexPos = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), 706.0f);//806
+	digits.clear();
+	digits.push_back(settings->getTexture("digit4"));
+	digits.push_back(settings->getTexture("digit3"));
+	digits.push_back(settings->getTexture("digit2"));
+	digits.push_back(settings->getTexture("digit1"));
+
+	centerY = 1123.0f;
+	timerTexPos = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), centerY - timerTex1.getHeight() * 0.5f);//806
 }
 
 void PhotoTimer::start()
@@ -54,7 +54,7 @@ void PhotoTimer::start()
 	cdTimer.start();
 	changeAngle = 0;
 	rotor = - (startAngle - endAngle) / MAX_SEC;
-	console()<<"start PhotoTimer"<<endl;	
+	console()<<"start PhotoTimer"<< MAX_SEC<<endl;	
 }	
 
 void PhotoTimer::stop()
@@ -70,27 +70,29 @@ void PhotoTimer::update()
 	{
 		cdTimer.stop();
 		nextLocationSignal();
-	}
-
-	//cameraCanon().update();
+	}	
 }	
 
 void PhotoTimer::draw()
 {
 	fillBg();
-	gl::draw(tex1, title1Pos);
-	gl::draw(tex2, title2Pos);	
 
-	Texture tex = textTools().getTextField(to_string(seconds), &timerFont, ci::Color::white());
-	
-	float x  = 0.5 * (getWindowWidth() - tex.getWidth());
-	float y  = timerTexPos.y + 0.5 * (timerTex1.getHeight() - tex.getHeight());
-	float y1 = timerTexPos.y + 0.5 * timerTex1.getHeight();
+	gl::draw(title, titlePos);
 
-	gl::draw(tex, Vec2f(x, y));
-	gl::draw(timerTex1, timerTexPos);		
-	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y1, RADIUS, startAngle, endAngle + changeAngle, true);	
-	maskShader->render(timerTex2, texMask, timerTexPos);
+	drawAnimationCircle();	
+
+	int index = MAX_SEC - seconds;
+	if(index >= MAX_SEC) index = MAX_SEC - 1;
+	auto digit = digits[index];
+	gl::draw(digit, Vec2f(0.5f*(getWindowWidth() - digit.getWidth()), centerY - 0.5f * digit.getHeight()));
 
 	Sprite::draw();
+}
+
+void PhotoTimer::drawAnimationCircle()
+{
+	float y = timerTexPos.y + 0.5 * timerTex1.getHeight();
+	gl::draw(timerTex1, timerTexPos);		
+	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y, RADIUS, startAngle, endAngle + changeAngle, true);	
+	maskShader->render(timerTex2, texMask, timerTexPos);	
 }

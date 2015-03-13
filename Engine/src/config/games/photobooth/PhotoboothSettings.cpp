@@ -123,7 +123,6 @@ void PhotoboothSettings::loadDesignPath()
 void PhotoboothSettings::loadPhotoParams(JsonTree config)
 {
 	seconds				  = config.getChild("seconds").getValue<int>();
-	secondsBetweenShots	  = config.getChild("secondsBetweenShots").getValue<int>();	
 }
 
 void PhotoboothSettings::loadSocialParams(JsonTree config)
@@ -234,7 +233,22 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		string lang	    = it.getChild("lang").getValue<string>();
 		configTexts.insert(lang, PhtTextID::CHOOSE_TEXT1,     jtools().parseTextItem(it.getChild("title1")));
 		configTexts.insert(lang, PhtTextID::CHOOSE_TEXT2,     jtools().parseTextItem(it.getChild("title2")));
-		configTexts.insert(lang, PhtTextID::PHOTO_FILTERS,    jtools().parseTextItem(it.getChild("filters")));		
+		configTexts.insert(lang, PhtTextID::PHOTO_FILTERS,    jtools().parseTextItem(it.getChild("filters")));	
+		configTexts.insert(lang, PhtTextID::RESHOT,			  jtools().parseTextItem(it.getChild("reshot")));		
+	}
+
+	jsonTexts = JsonTree(config.getChild("share"));
+	for(auto it : jsonTexts)
+	{
+		string lang	    = it.getChild("lang").getValue<string>();
+		configTexts.insert(lang, PhtTextID::SHARE_TITLE,		  jtools().parseTextItem(it.getChild("title")));
+		configTexts.insert(lang, PhtTextID::QR_TEXT,			  jtools().parseTextItem(it.getChild("qr")));
+		configTexts.insert(lang, PhtTextID::EMAIL_TEXT,		      jtools().parseTextItem(it.getChild("email")));	
+		configTexts.insert(lang, PhtTextID::FB_TEXT,			  jtools().parseTextItem(it.getChild("fb")));		
+		configTexts.insert(lang, PhtTextID::TW_TEXT,			  jtools().parseTextItem(it.getChild("tw")));		
+		configTexts.insert(lang, PhtTextID::VK_TEXT,			  jtools().parseTextItem(it.getChild("vk")));		
+		configTexts.insert(lang, PhtTextID::PLAY_AGAIN,			  jtools().parseTextItem(it.getChild("again")));		
+		configTexts.insert(lang, PhtTextID::ANOTHER_GAMES,		  jtools().parseTextItem(it.getChild("anotherGames")));		
 	}
 	
 }
@@ -363,16 +377,48 @@ void PhotoboothSettings::setTextures()
 	clearResources();
 
 	addToDictionary("instrFon",			createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
-	addToDictionary("instrTitle",		createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\text1.png")));
+	addToDictionary("instrTitle",		createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\title.png")));
+
+	addToDictionary("filterTitle",		createImageResource(getTemplateDesignPath("PhotoFilter\\title.png")));	
+
 	addToDictionary("timer1",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer1.png")));
 	addToDictionary("timer2",			createImageResource(getTemplateDesignPath("PhotoTimer\\timer2.png")));
+	addToDictionary("timertitle",		createImageResource(getTemplateDesignPath("PhotoTimer\\title.png")));
+	addToDictionary("digit1",			createImageResource(getTemplateDesignPath("PhotoTimer\\digit1.png")));
+	addToDictionary("digit2",			createImageResource(getTemplateDesignPath("PhotoTimer\\digit2.png")));
+	addToDictionary("digit3",			createImageResource(getTemplateDesignPath("PhotoTimer\\digit3.png")));
+	addToDictionary("digit4",			createImageResource(getTemplateDesignPath("PhotoTimer\\digit4.png")));	
+
 	addToDictionary("counts",			createImageResource(getTemplateDesignPath("PhotoShooting\\counts.png")));
 	addToDictionary("seek",				createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));	
+	addToDictionary("smile",			createImageResource(getTemplateDesignPath("PhotoShooting\\smile.png")));	
+	addToDictionary("shootline",		createImageResource(getTemplateDesignPath("PhotoShooting\\line.png")));	
+	addToDictionary("frame",			createImageResource(getTemplateDesignPath("PhotoShooting\\frame.png")));	
+
 	addToDictionary("print",			createImageResource(getTemplateDesignPath("PhotoTemplate\\print.png")));
-	addToDictionary("preloader",		createImageResource(getTemplateDesignPath("PhotoTemplate\\preloader.png")));
+	addToDictionary("printtitle",		createImageResource(getTemplateDesignPath("PhotoTemplate\\title.png")));
+	addToDictionary("printline",		createImageResource(getTemplateDesignPath("PhotoTemplate\\line.png")));
+	addToDictionary("printramka",		createImageResource(getTemplateDesignPath("PhotoTemplate\\ramka.png")));
+
+	
 	addToDictionary("galka",			createImageResource(getTemplateDesignPath("PhotoChoosing\\galka.png")));
 	addToDictionary("ramka",			createImageResource(getTemplateDesignPath("PhotoChoosing\\ramka.png")));
 	addToDictionary("okBtn",			createImageResource(getTemplateDesignPath("PhotoChoosing\\okBtn.png")));
+	addToDictionary("reshotBtn",		createImageResource(getTemplateDesignPath("PhotoChoosing\\reshotBtn.png")));
+	addToDictionary("choosetitle",		createImageResource(getTemplateDesignPath("PhotoChoosing\\title.png")));
+	addToDictionary("chooseTitleFilter",createImageResource(getTemplateDesignPath("PhotoChoosing\\titleFilter.png")));
+	addToDictionary("choosefon",		createImageResource(getTemplateDesignPath("PhotoChoosing\\fon.png")));
+
+	addToDictionary("again",			createImageResource(getTemplateDesignPath("PhotoShare\\again.png")));
+	addToDictionary("allApp",			createImageResource(getTemplateDesignPath("PhotoShare\\allApp.png")));
+	addToDictionary("email",			createImageResource(getTemplateDesignPath("PhotoShare\\email.png")));
+	addToDictionary("facebook",			createImageResource(getTemplateDesignPath("PhotoShare\\facebook.png")));
+	addToDictionary("twitter",			createImageResource(getTemplateDesignPath("PhotoShare\\twitter.png")));
+	addToDictionary("vkontakte",		createImageResource(getTemplateDesignPath("PhotoShare\\vkontakte.png")));
+	addToDictionary("sharetitle",		createImageResource(getTemplateDesignPath("PhotoShare\\title.png")));
+	addToDictionary("sharefon",			createImageResource(getTemplateDesignPath("PhotoShare\\fon.png")));
+	addToDictionary("qrtitle",			createImageResource(getTemplateDesignPath("PhotoShare\\qrtitle.png")));
+	addToDictionary("bg",				createImageResource(getTemplateDesignPath("bg.jpg")));	
 
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
@@ -390,6 +436,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
 	addToDictionary("introb18",			createFontResource(getFontsPath("introb.ttf"), 18));
+	addToDictionary("introb21",			createFontResource(getFontsPath("introb.ttf"), 21));
 	
 	for (auto item : photoOverDesignData)	
 	{
@@ -670,8 +717,7 @@ void PhotoboothSettings::writeConfig()
 			doc.addChild(JsonTree("isPrint",	sharing.getSocialState(PhtTextID::PRINTER)));
 
 			doc.addChild(JsonTree("seconds",			          seconds));		
-			doc.addChild(JsonTree("secondsBetweenShots",          secondsBetweenShots));
-
+			
 			doc.addChild(JsonTree("templateId",					  templateId));
 			doc.addChild(JsonTree("isCustomDesign",				  isCustomDesign));
 			doc.addChild(JsonTree("isSticker",					  isSticker));

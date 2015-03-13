@@ -5,6 +5,7 @@
 #include "cinder/gl/Texture.h"
 #include "model/PhotoStorage.h"
 #include "states/templateButtons/TemplateButtons.h"
+#include "shaders/ShaderTool.h"
 
 namespace kubik
 {
@@ -15,8 +16,8 @@ namespace kubik
 		class PhotoTemplate: public IPhotoboothLocation
 		{
 			PhotoStorageRef photoStorage;
-			ci::gl::Texture tex1, tex2;
-			ci::Vec2f title1Pos, title2Pos;
+			ci::gl::Texture title;
+			ci::Vec2f titlePos;
 			std::vector<ci::gl::Texture> templates, stickers;
 			std::vector<TemplateButtonRef> templatebtns;
 

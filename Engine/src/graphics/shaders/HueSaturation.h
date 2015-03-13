@@ -21,8 +21,8 @@ namespace shaders
 			void createParams(ci::params::InterfaceGlRef params)
 			{
 				params->clear();
-				params->addParam("hue", &this->hue).min(0).max(1).step(.1);
-				params->addParam("saturation", &this->saturation).min(0).max(1).step(0.1);
+				params->addParam("hue", &this->hue).min(0.0f).max(1.0f).step(.1f);
+				params->addParam("saturation", &this->saturation).min(0.0f).max(1.0f).step(0.1f);
 			}
 
 			const char *GET_FRAG() override
@@ -67,17 +67,16 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(ci::Surface surf)
+			void render(const ci::gl::Texture& tex)
 			{
 				using namespace ci;
 				
-				gl::Texture tex = gl::Texture(surf);
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("texture", 0);				
 				shader.uniform("hue", hue);
 				shader.uniform("saturation", saturation);			
-				gl::draw(surf);
+				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();
 			}

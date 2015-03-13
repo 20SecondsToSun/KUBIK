@@ -10,7 +10,6 @@
 #include "states/PhotoSharing.h"
 #include "states/PhotoChoosing.h"
 #include "states/PhotoTemplate.h"
-#include "states/PhotoProcessing.h"
 #include "model/PhotoStorage.h"
 #include "CameraAdapter.h"
 
@@ -33,18 +32,14 @@ namespace kubik
 			void reset() override;		
 			void init(ISettingsRef config) override;	
 			connection updateSignal;
-			//virtual void mouseUp(MouseEvent &event) override;		
-
+	
 		private:			
 			void setTextures();
-			//void mouseUpHandler(IButton& button);
-			//connection mouseUpListener, closeBtnListener;	
 
 			PhotoInstructionRef photoInstruction;
 			PhotoFilterRef		photoFilter;
 			PhotoTimerRef		photoTimer;
-			PhotoShootingRef	photoShooting;
-			PhotoProcessingRef	photoProcessing;		
+			PhotoShootingRef	photoShooting;			
 			PhotoChoosingRef	photoChoosing;
 			PhotoTemplateRef	photoTemplate;
 			PhotoSharingRef		photoSharing;
@@ -54,6 +49,8 @@ namespace kubik
 
 			void nextLocationHandler();
 			void initLocations();
+			void removeListeners();
+			void reshotHandler();
 
 			PhotoboothSettingsRef settings;
 			PhotoStorageRef photoStorage;

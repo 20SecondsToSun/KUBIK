@@ -12,14 +12,15 @@ namespace kubik
 	{	
 	protected:
 		static PhotoboothSettingsRef settings;
+		static ci::gl::Texture bckgrnd;
 
 	public:	
-		static const int NEXT_LOC = 0;
+		static const int NEXT_LOC = 0;	
 
 		virtual void update() = 0;
 		virtual void start() = 0;
 		virtual void stop(){};
-		virtual void reset(PhotoboothSettingsRef config) = 0;	
+		virtual void reset(PhotoboothSettingsRef config);	
 	
 		void nextLocationSignal(EventGUIRef& event = EventGUIRef(new EventGUI()));
 		void fillBg();

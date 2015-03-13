@@ -3,6 +3,7 @@
 #include "PhotoTemplateChooseEvent.h"
 #include "SubPhotoTemplateChooseEvent.h"
 #include "DrawTools.h"
+#include "shaders/ShaderTool.h"
 
 namespace kubik
 {
@@ -39,14 +40,18 @@ namespace kubik
 		bool isSelected;
 		templateID id;
 		ci::gl::Texture btnOver, btnOverText;
+		vector<std::map<FormatID, ci::gl::Texture>> photoTemplates;
+
+		static shaders::imagefilters::BaseShaderRef shader;
 
 	public:
 		TemplateButton(const ci::Rectf& rect, templateID id, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
 		virtual void setSelected(bool value);
 		virtual void drawLayout();		
 		virtual void init(){};
-		void setSelectDesign(const ci::gl::Texture& btn, const ci::gl::Texture& btntext);
+		void setSelectDesign(const ci::gl::Texture& btn);
 		templateID getID();
+		void setPhotoTemplates(const vector<std::map<FormatID, ci::gl::Texture>>& photoTemplates, shaders::imagefilters::BaseShaderRef shader);
 	};
 
 	class TemplateButton1: public TemplateButton
@@ -63,6 +68,8 @@ namespace kubik
 		std::vector<SubButtonRef> subBtns;
 		void photoTemplateChoose(EventGUIRef& event);
 		SubButtonRef selectedTemplate;
+		int activeIndex;
+		ci::gl::Texture selectRamkaTexture, lineTexture;
 
 	public:
 		TemplateButton2(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
@@ -71,6 +78,9 @@ namespace kubik
 		virtual void unActivateListeners();
 		virtual void setSelected(bool value);
 		virtual void init();
+
+		void setSelectRamkaTexture(const ci::gl::Texture& texture);
+		void setLineTexture(const ci::gl::Texture& texture);
 	};
 
 	class TemplateButton3: public TemplateButton
@@ -103,9 +113,13 @@ namespace kubik
 	class SubButton: public SimpleSpriteButton
 	{
 		bool selected;
+		ci::gl::Texture photo, ramka;
+
 	public:
 		SubButton(const ci::Rectf& rect, subID id);	
 		virtual void drawLayout();
 		void setSelected(bool value);
+		void setPhoto(const ci::gl::Texture& tex, shaders::imagefilters::BaseShaderRef shader);
+		void setSelectRamkaTexture(const ci::gl::Texture& texture);
 	};
 }	

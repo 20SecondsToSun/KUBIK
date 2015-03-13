@@ -20,8 +20,8 @@ namespace shaders
 			void createParams(ci::params::InterfaceGlRef params)
 			{
 				params->clear();
-				params->addParam("resolution.x", &this->resolution.x).min(0).max(1000).step(1);
-				params->addParam("resolution.y", &this->resolution.y).min(0).max(1000).step(1);				
+				params->addParam("resolution.x", &this->resolution.x).min(0.0f).max(1000.0f).step(1.0f);
+				params->addParam("resolution.y", &this->resolution.y).min(0.0f).max(1000.0f).step(1.0f);				
 			}
 
 			const char *GET_FRAG() override
@@ -41,15 +41,14 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(ci::Surface surf)
+			void render(const ci::gl::Texture& tex)
 			{
-				ci::gl::Texture tex = ci::gl::Texture(surf);
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("tex", 0);	
 				shader.uniform("xPixels", resolution.x);
 				shader.uniform("yPixels", resolution.y);			
-				ci::gl::draw(surf);
+				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();
 			}

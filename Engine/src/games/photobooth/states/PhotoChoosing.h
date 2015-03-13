@@ -7,6 +7,7 @@
 #include "TextTools.h"
 #include "FilterChangedEvent.h"
 #include "gui/ImageButtonSprite.h"
+#include "shaders/ShaderTool.h"
 
 namespace kubik
 {
@@ -19,10 +20,11 @@ namespace kubik
 			static const int PHOTOS_NUM = 5;
 			static const int MAX_SELECT = 3;
 
-			ci::gl::Texture tex1, tex2, tex3, preloader;
-			ci::Anim<ci::Vec2f> title1Pos, title2Pos, title3Pos, preloaderPos;
-			ci::Anim<float> preloaderAlpha;
-			ImageButtonSpriteRef okBtn;
+			ci::gl::Texture title, titleFilter, choosefon;
+			ci::Anim<ci::Vec2f> titlePos, titleFilterPos, choosefonPos;
+		
+			ImageButtonSpriteRef okBtn, reShotBtn;
+			shaders::imagefilters::BaseShaderRef shader;
 
 			int canSelectCount;
 			int nowSelectCount;
@@ -41,10 +43,14 @@ namespace kubik
 			void drawPhotoFilters();
 			void photoChoosed(EventGUIRef& event);
 			void filterChanged(EventGUIRef& event);
+			void backToReshot(EventGUIRef& event);
 			void filterSelected(int id);
 			void okBtnClicked(EventGUIRef& event);
+			void setShaderForPreviews();
 
 		public:
+			static const int RESHOT_LOC = 1;
+
 			PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 
 			void start();

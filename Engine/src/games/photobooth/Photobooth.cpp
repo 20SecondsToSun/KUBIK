@@ -17,11 +17,8 @@ Photobooth::Photobooth(ISettingsRef config)
 Photobooth::~Photobooth()
 {	
 	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor ~~~~~~~~~~~~~~~"<<endl;
-	updateSignal.disconnect();
-	
-	for (auto loc: locations)	
-		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
-
+	updateSignal.disconnect();	
+	removeListeners();
 	locations.clear();
 }
 
@@ -35,16 +32,18 @@ void Photobooth::create()
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
-	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings));
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings, photoStorage));
 	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings));
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
-	//photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));
+	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,	photoStorage));
 	initLocations();
 	
 	cameraCanon().setup();
 	cameraCanon().startLiveView();
+	cameraCanon().setDownloadDirectory(getAppPath()/ "data" / "photoDir");
+	cameraCanon().setImageQuality();	
 }
 
 void Photobooth::start()
@@ -61,6 +60,7 @@ void Photobooth::start()
 void Photobooth::stop()
 {
 	console()<<"STOP PHOTOBOOOOOOTH!"<<endl;
+	updateSignal.disconnect();
 	for (auto it: locations)
 		it->stop();
 }
@@ -68,7 +68,6 @@ void Photobooth::stop()
 void Photobooth::reset()
 {
 	console()<<"RESET PHOTOBOOOOOOTH!"<<endl;
-	//initLocations();
 
 	for (auto it: locations)
 		it->reset(settings);
@@ -76,20 +75,21 @@ void Photobooth::reset()
 
 void Photobooth::initLocations()
 {
-	for (auto loc: locations)	
-		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
+	removeListeners();
 
 	locations.clear();
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
-	//locations.push_back(photoTimer);
-	//locations.push_back(photoShooting);
+	locations.push_back(photoTimer);
+	locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
-	//locations.push_back(photoSharing);
+	locations.push_back(photoSharing);
 
 	for (auto loc: locations)	
 		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
+
+	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
 	
 	currentLocation = locations.begin();
 }	
@@ -104,6 +104,14 @@ void Photobooth::nextLocationHandler()
 	(*currentLocation)->start();
 }
 
+void Photobooth::reshotHandler()
+{
+	(*currentLocation)->stop();	
+	currentLocation = locations.begin();
+	std::advance(currentLocation, 1);
+	(*currentLocation)->start();
+}
+
 void Photobooth::update()
 {
 	(*currentLocation)->update();
@@ -113,3 +121,12 @@ void Photobooth::draw()
 {	
 	(*currentLocation)->draw();	
 }
+
+void Photobooth::removeListeners()
+{
+	for (auto loc: locations)	
+		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
+
+	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
+}
+

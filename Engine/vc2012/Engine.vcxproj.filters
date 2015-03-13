@@ -184,6 +184,9 @@
     <Filter Include="Source Files\games\photobooth\states\choosingButtons">
       <UniqueIdentifier>{9a20742e-a6ec-4148-a577-997943aad854}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\photobooth\states\sharing">
+      <UniqueIdentifier>{3518a3eb-26ce-4591-bb60-8edcaaf916e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -339,6 +342,15 @@
     <ClCompile Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.cpp">
       <Filter>Source Files\games\photobooth\states\choosingButtons</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoShooting.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp">
+      <Filter>Source Files\games\photobooth\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\PhotoSharing.cpp">
+      <Filter>Source Files\games\photobooth\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -402,9 +414,6 @@
       <Filter>Source Files\games\photobooth\states</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoProcessing.h">
       <Filter>Source Files\games\photobooth\states</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h">
@@ -796,6 +805,24 @@
     </ClInclude>
     <ClInclude Include="..\src\events\games\photobooth\FilterChangedEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Bloom.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\ColorHalftone.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\DotScreen.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Kaleidoscope.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Noise.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.h">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

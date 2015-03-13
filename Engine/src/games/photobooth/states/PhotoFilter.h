@@ -5,6 +5,7 @@
 #include "CameraAdapter.h"
 #include "TextTools.h"
 #include "Filter.h"
+#include "model/PhotoStorage.h"
 
 namespace kubik
 {
@@ -15,12 +16,24 @@ namespace kubik
 		class PhotoFilter : public IPhotoboothLocation
 		{			
 			std::vector<FilterButtonRef> filterBtns;	
-			ci::gl::Texture tex1, tex2;
-			ci::Vec2f title1Pos, title2Pos;
+			ci::gl::Texture title;
+			ci::Vec2f titlePos;
 			std::vector<config::PhotoboothSettings::Filter> filters;
+			PhotoStorageRef photoStorage;
 
+			enum sizeID
+			{
+				filter_2,
+				filter_3_1,
+				filter_3_2,
+				filter_4,				
+				filter_5_1,				
+				filter_5_2,				
+				filter_6
+			};
+			
 		public:	
-			PhotoFilter(PhotoboothSettingsRef settings);
+			PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 
 			virtual void start();
 			virtual void stop();			

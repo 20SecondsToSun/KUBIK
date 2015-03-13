@@ -16,13 +16,19 @@ PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef pho
 void PhotoTemplate::start()
 {
 	console()<<"start PhotoTemplate--------------------------"<<endl;
+	photoStorage->createPhotoTemplates();
+
+	using namespace shaders::imagefilters;
+	auto fID = photoStorage->getSelectedFilter();
+	auto shader = shadertool().get((ShaderTool::FilterType)fID);
 
 	for (auto templ : templatebtns)	
 	{
 		templ->connectEventHandler(&PhotoTemplate::photoTemplateChoose, this);		
 		templ->activateListeners();
 		templ->setSelected(false);
-		templ->init();//photoarray
+		templ->setPhotoTemplates(photoStorage->getPhotoTemplates(), shader);
+		templ->init();//photoarray		
 	}
 }
 
@@ -47,7 +53,15 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 			selectedTemplate->setSelected(false);
 	}
 	
-	selectedTemplate = templatebtns[id];
+	for (int i = 0; i < templatebtns.size(); i++)
+	{
+		if(templatebtns[i]->getID() == id)
+		{
+			selectedTemplate = templatebtns[i];
+			break;
+		}
+	}
+	
 	selectedTemplate->setSelected(true);	
 }
 
@@ -71,18 +85,14 @@ void PhotoTemplate::setChoosingTemplate()
 
 void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 {
+	IPhotoboothLocation::reset(settings);
+
 	templates = settings->getPhotoCardStylesActiveTemplate();
 	stickers  = settings->getPhotoOverActiveTemplate();
 
-	auto title1   = settings->getTextItem(PhtTextID::TEMPLATE_TEXT1);
-	auto title2   = settings->getTextItem(PhtTextID::TEMPLATE_TEXT2);
+	title    = settings->getTexture("printtitle");
+	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 238.0f - 0.5f * title.getHeight());	
 
-	tex1 = textTools().getTextField(title1);
-	tex2 = textTools().getTextField(title2);
-
-	title1Pos = Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), 172.0f);
-	title2Pos = Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), 258.0f);
-	
 	Vec2f position, size;
 	templatebtns.clear();
 
@@ -92,25 +102,26 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 
 	position = Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 455.0f);
-	templatebtns.push_back(TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), templates, stickers)));
+	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), templates, stickers));
+	templatebtns.push_back(templ2);
 
 	position = Vec2f(560.0f, 420.0f);
-	size = Vec2f(303.0f, 455.0f);
+	size = Vec2f(303.0f, 202.0f);
 	//templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
 
 	position = Vec2f(560.0f, 420.0f);
-	size = Vec2f(303.0f, 455.0f);
+	size = Vec2f(202.0f, 304.0f);
 	//templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
 
 	position = Vec2f(560.0f, 420.0f);
-	size = Vec2f(303.0f, 455.0f);
+	size = Vec2f(303.0f, 202.0f);
 	//templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
 	
-	for (auto templ : templatebtns)	
-	{
-		auto title = settings->getTextItem(PhtTextID::TEMPLATE_PRINT);		
-		templ->setSelectDesign(settings->getTexture("print"), textTools().getTextField(title));
-	}
+	for (auto templ : templatebtns)		
+		templ->setSelectDesign(settings->getTexture("print"));	
+
+	templ2->setLineTexture(settings->getTexture("printline"));
+	templ2->setSelectRamkaTexture(settings->getTexture("printramka"));
 }
 
 void PhotoTemplate::update()
@@ -120,8 +131,8 @@ void PhotoTemplate::update()
 
 void PhotoTemplate::draw()
 {	
-	gl::draw(tex1, title1Pos);
-	gl::draw(tex2, title2Pos);
+	fillBg();
+	gl::draw(title, titlePos);	
 
 	for (auto templ : templatebtns)	
 		templ->draw();	

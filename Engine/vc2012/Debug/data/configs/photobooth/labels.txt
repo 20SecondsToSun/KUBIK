@@ -95,6 +95,19 @@
      "lang"  : "ru",
 "title1" : {"text" : "В Ы Б Е Р И Т Е  3  Ф О Т О", "font" : "introLight", "size" : 60, "color" : "ffffff"},
 "title2" : {"text" : "которые вам больше всего нравятся", "font" : "introLight", "size" : 36, "color" : "ffffff"},
+"reshot" : {"text" : "Переснять\nфото", "font" : "introLight", "size" : 18, "color" : "ffffff"},
 "filters" : {"text" : "Ф О Т О Ф И Л Ь Т Р Ы", "font" : "introLight", "size" : 18, "color" : "e4cf97"}
+}],
+ "share" : [
+      {
+     "lang"  : "ru",
+	 "title" : {"text" : "ДЕЛИТЕСЬ\nФОТО", "font" : "introLight", "size" : 60, "color" : "ffffff"},
+	 "qr" : {"text" : "Скачайте на телефон", "font" : "introb", "size" : 21, "color" : "ffffff"},
+	 "email" : {"text" : "ОТПРАВИТЬ\nНА E-MAIL", "font" : "introb", "size" : 21, "color" : "ffffff"},
+	 "fb" : {"text" : "FACECBOOK", "font" : "introb", "size" : 21, "color" : "ffffff"},
+	 "tw" : {"text" : "TWITTER", "font" : "introb", "size" : 21, "color" : "ffffff"},
+	 "vk" : {"text" : "VKONTAKTE", "font" : "introLight", "size" : 18, "color" : "ffffff"},
+	 "again" : {"text" : "Начать сначала", "font" : "introLight", "size" : 36, "color" : "ffffff"},
+	 "anotherGames" : {"text" : "Другие игры", "font" : "introLight", "size" : 36, "color" : "ffffff"}
 }]
 }

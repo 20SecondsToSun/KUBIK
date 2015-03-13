@@ -37,7 +37,7 @@ namespace shaders
 			}
 
 			virtual const char * GET_FRAG() = 0;//{return NULL;};
-			virtual void render(ci::Surface surf) = 0;	
+			virtual void render(const ci::gl::Texture& tex) = 0;	
 			virtual void createParams(ci::params::InterfaceGlRef params) = 0;	
 
 			virtual std::string getTitle() {return title;};

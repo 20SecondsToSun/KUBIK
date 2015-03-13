@@ -5,13 +5,13 @@ namespace shaders
 {	
 	namespace imagefilters
 	{
-		class Sepia : public BaseShader
+		class Swirl : public BaseShader
 		{	    
 			float amount;	
 		
 		public:
-			Sepia(float amount)
-				:BaseShader("Sepia filter"), amount(amount)
+			Swirl(float amount)
+				:BaseShader("Swirl filter"), amount(amount)
 			{
 				using namespace ci;
 				shader = gl::GlslProg(GET_PASSTHROUGH_VERTEX(), GET_FRAG());	
@@ -20,7 +20,7 @@ namespace shaders
 			void createParams(ci::params::InterfaceGlRef params)
 			{
 				params->clear();
-				params->addParam("amount", &this->amount).min(0.0f).max(1.0f).step(.1f);
+				params->addParam("amount", &this->amount).min(0).max(1).step(.1);
 			}
 
 			const char *GET_FRAG() override
@@ -49,17 +49,18 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(const ci::gl::Texture& tex)
+			void render(ci::Surface surf)
 			{
+				ci::gl::Texture tex = ci::gl::Texture(surf);
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("texture", 0);				
 				shader.uniform("amount", amount);			
-				ci::gl::drawSolidRect(tex.getBounds());
+				ci::gl::draw(surf);
 				shader.unbind();
 				tex.unbind();
 			}
 		};
-		typedef std::shared_ptr<Sepia> SepiaRef;
+		typedef std::shared_ptr<Swirl> SwirlRef;
 	}
 }

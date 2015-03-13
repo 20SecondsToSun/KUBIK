@@ -1,6 +1,7 @@
 #pragma once
 #include "gui/SimpleSpriteButton.h"
 #include "PhotoChoosedEvent.h"
+#include "shaders/ShaderTool.h"
 
 namespace kubik
 {
@@ -8,7 +9,8 @@ namespace kubik
 
 	class PhotoContainer: public SimpleSpriteButton
 	{	
-		ci::gl::Texture galka, ramka;		
+		ci::gl::Texture galka, ramka, photo, originphoto;			
+		static shaders::imagefilters::BaseShaderRef shader;
 		bool isSelected;
 
 	public:
@@ -16,5 +18,7 @@ namespace kubik
 		void setSelected(bool value);
 		bool selected();
 		virtual void drawLayout();
+		void setPhoto(const ci::gl::Texture& tex);
+		void setShader(shaders::imagefilters::BaseShaderRef shader);
 	};
 }

@@ -8,59 +8,53 @@ using namespace kubik::games;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
 	:photoStorage(photoStorage),
-	photoFiltersStartY(350.0f)
-{	
-	Vec2f pos[PHOTOS_NUM] = 
-	   {Vec2f(96.0f, 439.0f),
-		Vec2f(404.0f, 439.0f),
-		Vec2f(711.0f, 439.0f), 
-		Vec2f(96.0f, 864.0f),
-		Vec2f(404.0f, 864.0f)};
-
-	for (int i = 0; i < PHOTOS_NUM; i++)	
-		photoBtns.push_back(PhotoContainerRef(new PhotoContainer(i, settings->getTexture("galka"), settings->getTexture("ramka"), pos[i])));		
-	
-	okBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("okBtn"), Vec2f(780.0f, 960.0f)));	
-
+	photoFiltersStartY(100.0f)
+{
 	reset(settings);
 }		
 
 void PhotoChoosing::start()
 {
-	drawLocation = false;
-
 	for (auto btn : photoBtns)		
 		btn->setSelected(false);
 
 	selectedNum = 0;
 
-	float startY = 521;//321.0f;
-	float shiftY = 363.0f;
+	filterSelected(photoStorage->getSelectedFilter());	
 
-	preloaderPos = Vec2f(0.5f * (getWindowWidth() - preloader.getWidth()), startY + 381.0f);
-	preloaderAlpha = 1.0f;
+	//debug
+	//photoStorage->clear();
+	//for (int i = 1; i < 6; i++)
+	//{
+	//	photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000"+to_string(i)+".JPG");
+	//}
+	//
 
-	filterSelected(4);
+	photoStorage->createChoosingPreview();
+	auto texs = photoStorage->getChoosingPreview();
 
-	auto title1   = settings->getTextItem(PhtTextID::PRELOAD_TEXT1);
-	auto title2   = settings->getTextItem(PhtTextID::PRELOAD_TEXT2);
-	auto title3   = settings->getTextItem(PhtTextID::PHOTO_FILTERS);
-	
+	assert(texs.size() == photoBtns.size());
 
-	tex1 = textTools().getTextField(title1);
-	tex2 = textTools().getTextField(title2);
-	tex3 = textTools().getTextField(title3);
+	for (int i = 0; i < photoBtns.size(); i++)		
+		photoBtns[i]->setPhoto(texs[i]);
 
-	title1Pos = Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), startY);
-	title2Pos = Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), startY + 124.0f);
-	title3Pos = Vec2f(108.0f, photoFiltersStartY + 74.0f);
+	for (int i = 0; i < filterBtns.size(); i++)		
+		filterBtns[i]->setPhoto(texs[0]);	
 
-	timeline().apply( &title1Pos, ci::Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), startY - shiftY), 0.7f, ci::EaseOutCubic()).delay(2.0f);
-	timeline().apply( &title2Pos, ci::Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), startY + 124.0f - shiftY), 0.7f, ci::EaseOutCubic()).delay(2.0f);
+	setShaderForPreviews();
 
-	timeline().apply( &preloaderPos, ci::Vec2f(0.5f * (getWindowWidth() - preloader.getWidth()), startY + 481.0f), 0.7f, ci::EaseOutCubic())
-		.finishFn(bind( &PhotoChoosing::hidePreloaderComplete, this)).delay(2.0f);
-	timeline().apply( &preloaderAlpha, 0.0f, 0.7f, ci::EaseOutCubic()).delay(2.0f);
+	hidePreloaderComplete();
+}
+
+void PhotoChoosing::setShaderForPreviews()
+{	
+	using namespace shaders::imagefilters;
+
+	auto fID = photoStorage->getSelectedFilter();
+	shader = shadertool().get((ShaderTool::FilterType)fID);
+
+	for (int i = 0; i < photoBtns.size(); i++)		
+		photoBtns[i]->setShader(shader);
 }
 
 void PhotoChoosing::stop()
@@ -72,20 +66,13 @@ void PhotoChoosing::stop()
 		fbtn->disconnectEventHandler();	
 
 	okBtn->disconnectEventHandler();
+	reShotBtn->disconnectEventHandler();
 }
 
 void PhotoChoosing::hidePreloaderComplete()
 {
-	auto title1   = settings->getTextItem(PhtTextID::CHOOSE_TEXT1);
-	auto title2   = settings->getTextItem(PhtTextID::CHOOSE_TEXT2);
-
-	tex1 = textTools().getTextField(title1);
-	tex2 = textTools().getTextField(title2);
-
-	float shiftY = 363.0f;
-	float startY = 521.0f - shiftY;
-	title1Pos = Vec2f(0.5f * (getWindowWidth() - tex1.getWidth()), startY);
-	title2Pos = Vec2f(0.5f * (getWindowWidth() - tex2.getWidth()), startY + 124.0f - 45.0f);
+	title = settings->getTexture("choosetitle");
+	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 238.0f - title.getHeight()*0.5f);
 
 	drawLocation = true;
 
@@ -94,6 +81,8 @@ void PhotoChoosing::hidePreloaderComplete()
 
 	for (auto fbtn : filterBtns)		
 		fbtn->connectEventHandler(&PhotoChoosing::filterChanged, this);	
+
+	reShotBtn->connectEventHandler(&PhotoChoosing::backToReshot, this);	
 }
 
 void PhotoChoosing::photoChoosed(EventGUIRef& event)
@@ -127,7 +116,15 @@ void PhotoChoosing::filterChanged(EventGUIRef& event)
 	auto eventref = static_pointer_cast<FilterChangedEvent>(event);	
 	auto id = eventref->getID();
 	console()<<"filter choosed:::  "<<id<<endl;
+
+	photoStorage->setSelectedFilter(id);
+	setShaderForPreviews();
 	filterSelected(id);
+}
+
+void PhotoChoosing::backToReshot(EventGUIRef& event)
+{
+	callback(RESHOT_LOC);
 }
 
 void PhotoChoosing::filterSelected(int id)
@@ -159,31 +156,54 @@ void PhotoChoosing::filterSelected(int id)
 
 void PhotoChoosing::okBtnClicked(EventGUIRef& event)
 {
+	for (int i = 0; i < photoBtns.size(); i++)	
+		if(photoBtns[i]->selected())
+			photoStorage->setSelectedID(i);	
+
 	nextLocationSignal();
 }
 
-void PhotoChoosing::reset(PhotoboothSettingsRef _settings) 
+void PhotoChoosing::reset(PhotoboothSettingsRef settings) 
 {
-	settings = _settings;		
-	preloader = settings->getTexture("preloader");	
+	Vec2f pos[PHOTOS_NUM] = 
+	   {Vec2f(96.0f, 439.0f),
+		Vec2f(404.0f, 439.0f),
+		Vec2f(711.0f, 439.0f), 
+		Vec2f(96.0f, 864.0f),
+		Vec2f(404.0f, 864.0f)};
 
+	IPhotoboothLocation::reset(settings);	
+
+	photoBtns.clear();
+	for (int i = 0; i < PHOTOS_NUM; i++)	
+		photoBtns.push_back(PhotoContainerRef(new PhotoContainer(i, settings->getTexture("galka"), settings->getTexture("ramka"), pos[i])));		
+	
+	okBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("okBtn")));
+	okBtn->setPosition(Vec2f(pos[2].x + 0.5f * ( 272.0f - okBtn->getWidth()), 990.0f - 0.5f * okBtn->getHeight()));
+
+	reShotBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("reshotBtn")));
+	reShotBtn->setPosition(Vec2f(pos[2].x + 0.5f * ( 272.0f - reShotBtn->getWidth()), 1066.0f - 0.5f * reShotBtn->getHeight()));//1166
+	
 	filterBtns.clear();
-
-	auto filters = settings->getOnFilters();	
-
-	float fwidth = 109.0f;
-	float shiftX = 15.0f;
+	auto filters   = settings->getOnFilters();	
+	float fwidth   = 109.0f, shiftX = 15.0f;
 	float fullSize = filters.size() * fwidth + (filters.size() - 1.0f) * shiftX;
 
-	Vec2f startVec = Vec2f( 0.5f * (getWindowWidth() - fullSize), photoFiltersStartY + 167.0f);
+	Vec2f startVec = Vec2f(0.5f * (getWindowWidth() - fullSize), photoFiltersStartY + 167.0f);
 
 	DesignData designdata = settings->getPhotoFiltersPreview();		
 
 	for (int i = 0; i < filters.size(); i++)
 	{	
 		auto position = startVec + Vec2f((shiftX + fwidth) * i, 0.0f);
-		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(position, i, filters[i].getText(), settings->getFont("introBook12"), settings->getFont("introBook14"))));
+		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(position, i+1, filters[i].getText(), settings->getFont("introBook12"), settings->getFont("introBook14"))));
 	}
+
+	titleFilter		  = settings->getTexture("chooseTitleFilter");
+	titleFilterPos	  = Vec2f(pos[0].x, photoFiltersStartY - 0.5f * titleFilter.getHeight());
+
+	choosefon		  = settings->getTexture("choosefon");
+	choosefonPos	  = Vec2f(0.0f, getWindowHeight() - choosefon.getHeight());
 }	
 
 void PhotoChoosing::update()
@@ -193,16 +213,14 @@ void PhotoChoosing::update()
 
 void PhotoChoosing::draw()
 {
-	gl::draw(tex1, title1Pos);
-	gl::draw(tex2, title2Pos);
+	fillBg();
+	gl::draw(choosefon, choosefonPos);
 
-	gl::color(ColorA(1,1,1,preloaderAlpha));
-	gl::draw(preloader, preloaderPos);
-	gl::color(Color::white());
+	gl::draw(title, titlePos);
 
 	if(drawLocation)
 	{
-		//drawPhotoPreview();
+		drawPhotoPreview();
 		drawPhotoFilters();
 	}
 }
@@ -214,15 +232,13 @@ void PhotoChoosing::drawPhotoPreview()
 
 	if (selectedNum == MAX_SELECT)
 		okBtn->draw();
+
+	reShotBtn->draw();
 }
 
 void PhotoChoosing::drawPhotoFilters()
 {
-	gl::color(ColorA::hexA(0x26e4cf97));
-	gl::drawLine(Vec2f(0.0f, photoFiltersStartY), Vec2f(getWindowWidth(), photoFiltersStartY));
-
-	gl::color(Color::hex(0xe4cf97));
-	gl::draw(tex3, title3Pos);
+	gl::draw(titleFilter, titleFilterPos);
 
 	gl::color(Color::white());
 	for (auto filter : filterBtns)

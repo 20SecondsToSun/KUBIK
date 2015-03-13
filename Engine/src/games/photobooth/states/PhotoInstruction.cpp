@@ -15,7 +15,7 @@ void PhotoInstruction::reset(PhotoboothSettingsRef set)
 	settings = set;
 	fonTex   = settings->getTexture("instrFon");
 	titleTex =  settings->getTexture("instrTitle");
-	titleTexPos = Vec2f(0.5 * (getWindowWidth() - titleTex.getWidth()), 565);				
+	titleTexPos = Vec2f(0.5 * (getWindowWidth() - titleTex.getWidth()), 492 - titleTex.getHeight() * 0.5f);				
 }
 
 void PhotoInstruction::start()

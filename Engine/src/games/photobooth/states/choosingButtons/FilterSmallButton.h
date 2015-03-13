@@ -2,6 +2,7 @@
 #include "gui/SimpleSpriteButton.h"
 #include "FilterChangedEvent.h"
 #include "TextTools.h"
+#include "shaders/ShaderTool.h"
 
 namespace kubik
 {
@@ -9,20 +10,22 @@ namespace kubik
 
 	class FilterSmallButton: public SimpleSpriteButton
 	{	
-		//ci::gl::Texture galka, ramka;		
 		bool isSelected;
 		int id;
 		std::string text;
 		ci::Font fontC, fontO;
 
-		gl::Texture titleSmall, titleBig;
+		gl::Texture titleSmall, titleBig, photo;
 		Vec2f titleSmallPos, titleBigPos;
+
+		shaders::imagefilters::BaseShaderRef shader;
 
 		enum stateID
 		{
-			OPEN,
-			CLOSE
-		}state;
+		  OPEN,
+		  CLOSE
+		}
+		state;
 
 	public:
 		FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO);
@@ -33,5 +36,7 @@ namespace kubik
 
 		void setOpenState();
 		void setCloseState();
+
+		void setPhoto(const ci::gl::Texture& tex);
 	};
 }

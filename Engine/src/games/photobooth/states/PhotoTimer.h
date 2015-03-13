@@ -17,14 +17,18 @@ namespace kubik
 			int MAX_SEC;
 			int seconds;
 			ci::Timer cdTimer;
-			ci::gl::Texture tex1, tex2;
+			ci::gl::Texture title;
 			ci::gl::Texture timerTex1, timerTex2;
-			ci::Vec2f title1Pos, title2Pos, timerTexPos;
-			ci::Font timerFont;		
+			ci::Vec2f titlePos, timerTexPos;
 
-			float startAngle, endAngle, changeAngle, RADIUS, rotor;
+			std::vector<ci::gl::Texture> digits;
+		
+
+			float startAngle, endAngle, changeAngle, RADIUS, rotor, centerY;
 
 			shaders::imagefilters::MaskShaderRef maskShader;
+
+			void drawAnimationCircle();
 
 		public:
 			void clear();

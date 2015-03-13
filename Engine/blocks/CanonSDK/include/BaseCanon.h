@@ -22,8 +22,8 @@ namespace canon
 {
 	namespace resolution
 	{
-		static const int CAMERA_WIDTH = 1024;
-		static const int CAMERA_HEIGHT = 680;
+		static const int CAMERA_WIDTH = 1056;
+		static const int CAMERA_HEIGHT = 704;
 	}
 
 	class BaseCanon 
