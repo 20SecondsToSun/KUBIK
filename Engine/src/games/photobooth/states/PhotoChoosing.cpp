@@ -8,7 +8,7 @@ using namespace kubik::games::photobooth;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
 	:photoStorage(photoStorage),
-	photoFiltersStartY(100.0f)
+	photoFiltersStartY(1386.0f)//100.0f)
 {
 	reset(settings);
 }		
@@ -17,10 +17,10 @@ void PhotoChoosing::start()
 {
 	//debug
 	//photoStorage->setSelectedFilter(1);
-	photoStorage->clear();
+	//photoStorage->clear();
 	for (int i = 1; i < 6; i++)
 	{
-		photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000"+to_string(i)+".JPG");
+		//photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000"+to_string(i)+".JPG");
 	}
 	//
 
@@ -39,10 +39,10 @@ void PhotoChoosing::start()
 
 	assert(texs.size() == photoBtns.size());
 
-	for (int i = 0; i < photoBtns.size(); i++)		
+	for (unsigned int i = 0; i < photoBtns.size(); i++)		
 		photoBtns[i]->setPhoto(texs[i]);
 
-	for (int i = 0; i < filterBtns.size(); i++)		
+	for (unsigned int i = 0; i < filterBtns.size(); i++)
 		filterBtns[i]->setPhoto(texs[0]);	
 
 	setShaderForPreviews();
@@ -82,7 +82,7 @@ void PhotoChoosing::reset(PhotoboothSettingsRef settings)
 	okBtn->setPosition(Vec2f(pos[2].x + 0.5f * ( 272.0f - okBtn->getWidth()), 990.0f - 0.5f * okBtn->getHeight()));
 
 	reShotBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("reshotBtn")));
-	reShotBtn->setPosition(Vec2f(pos[2].x + 0.5f * ( 272.0f - reShotBtn->getWidth()), 1066.0f - 0.5f * reShotBtn->getHeight()));//1166
+	reShotBtn->setPosition(Vec2f(pos[2].x + 0.5f * ( 272.0f - reShotBtn->getWidth()), 1166.0f - 0.5f * reShotBtn->getHeight()));//1066
 	
 	filterBtns.clear();
 	auto filters   = settings->getOnFilters();	
@@ -93,7 +93,7 @@ void PhotoChoosing::reset(PhotoboothSettingsRef settings)
 
 	DesignData designdata = settings->getPhotoFiltersPreview();		
 
-	for (int i = 0; i < filters.size(); i++)
+	for (unsigned int i = 0; i < filters.size(); i++)
 	{	
 		auto position = startVec + Vec2f((shiftX + fwidth) * i, 0.0f);
 		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(position, filters[i].getID(), filters[i].getText(), settings->getFont("introBook12"), settings->getFont("introBook14"))));
@@ -125,7 +125,7 @@ void PhotoChoosing::setShaderForPreviews()
 	auto fID = photoStorage->getSelectedFilter();
 	shader = shadertool().get((ShaderTool::FilterType)fID);
 
-	for (int i = 0; i < photoBtns.size(); i++)		
+	for (unsigned int i = 0; i < photoBtns.size(); i++)
 		photoBtns[i]->setShader(shader);
 }
 

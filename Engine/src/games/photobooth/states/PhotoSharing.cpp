@@ -79,9 +79,9 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	againBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
 	allAppBtn= ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
 
-	startServiceButtonY = 1100;//1588
+	startServiceButtonY = 1588;//1100;//
 	againBtn->setPosition(Vec2f(127, startServiceButtonY - againBtn->getHeight() * 0.5f));
-	startServiceButtonY = 1100;//1588
+	startServiceButtonY = 1588;//1100;//
 	allAppBtn->setPosition(Vec2f(581, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
 }		
 

@@ -10,11 +10,11 @@
       },
       {
          "id" : 2,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 3,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 4,
@@ -36,7 +36,7 @@
    "isQrCode" : true,
    "isSticker" : true,
    "isTwitter" : true,
-   "isVkotakte" : true,
+   "isVkotakte" : false,
    "seconds" : 4,
    "templateId" : 1
 }

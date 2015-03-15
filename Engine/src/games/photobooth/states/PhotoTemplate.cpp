@@ -53,17 +53,17 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), templates, stickers));
 	templatebtns.push_back(templ2);
 
-	position = Vec2f(560.0f, 420.0f);
+	position = Vec2f(220.0f, 1191.0f);//Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 202.0f);
-	//templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
 
-	position = Vec2f(560.0f, 420.0f);
+	position = Vec2f(220.0f, 1461.0f); //Vec2f(560.0f, 420.0f);
 	size = Vec2f(202.0f, 304.0f);
-	//templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
 
-	position = Vec2f(560.0f, 420.0f);
+	position = Vec2f(611.0f, 1191.0f); //position = Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 202.0f);
-	//templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
 	
 	for (auto templ : templatebtns)		
 		templ->setSelectDesign(settings->getTexture("print"));	

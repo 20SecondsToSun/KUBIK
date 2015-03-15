@@ -8,7 +8,7 @@ using namespace ci::app;
 
 PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
 	:photoStorage(photoStorage), 
-	progressBlockStartY(100.0f), 
+	progressBlockStartY(1688.0f),//100.0f),
 	delayShootingTime(3.0f),
 	liveViewPrepareTime(2.0f),
 	previewShowingTime(1.1f),
@@ -72,7 +72,7 @@ void PhotoShooting::draw()
 {
 	fillBg();
 
-	float _scale, _scale1, startY = 10.0f;
+	float _scale, _scale1, startY = 294.0f;// 10.0f;
 
 	switch (state)
 	{
