@@ -4,6 +4,7 @@ using namespace kubik;
 using namespace ci;
 using namespace std;
 using namespace shaders::imagefilters;
+using namespace kubik::games::photobooth;
 
 FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO)
 	:SimpleSpriteButton(ci::Rectf(vec, vec + ci::Vec2f(109.0f, 228.0f)), FilterChangedEventRef(new FilterChangedEvent(id))),
@@ -15,7 +16,6 @@ FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, int id, const std::st
 	state(CLOSE)
 {
 	boost::to_upper(this->text);
-
 
 	titleSmall = textTools().getTextField(this->text, &fontC, Color::white()); 
 	titleSmallPos = Vec2f((109 - titleSmall.getWidth()) * 0.5, 191);
@@ -87,13 +87,8 @@ void FilterSmallButton::setCloseState()
 
 void FilterSmallButton::setPhoto(const ci::gl::Texture& tex)
 {
-	gl::Fbo fbo = gl::Fbo(tex.getWidth(), tex.getHeight());
-
-	Utils::drawGraphicsToFBO(fbo, [&]()
+	photo = Utils::drawGraphicsToFBO(tex.getSize(), [&]()
 	{
 		shader->render(tex);
 	});
-
-	photo = fbo.getTexture();
-	Utils::clearFBO(fbo);
 }

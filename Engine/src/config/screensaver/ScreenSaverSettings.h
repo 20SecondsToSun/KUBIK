@@ -212,7 +212,7 @@ namespace kubik
 		bool fileSizeNotTooBig(fs::path filePath, string ext)
 		{
 			int filesizeInbytes  = (int)fileTools().filesize(filePath.string().c_str());
-			int sizeLimit;
+			int sizeLimit = 100;
 
 			if (fileTools().isVideoExtension(ext))	
 				sizeLimit = MAX_VIDEO_FILE_SIZE;

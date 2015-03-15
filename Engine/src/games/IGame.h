@@ -16,6 +16,6 @@ namespace kubik
 		virtual void draw() = 0;		
 		virtual void start() = 0;		
 		virtual void clean(){};
-		SignalVoid closeLocationSignal;
+		//SignalVoid closeLocationSignal;
 	};
 }

@@ -411,6 +411,32 @@ void  Utils::drawGraphicsToFBO(Fbo fbo, const function<void ()>& graphicsFunc )
 	gl::setViewport(saveView);
 }
 
+ci::gl::Texture Utils::drawGraphicsToFBO(ci::Vec2f size, const function<void ()>& graphicsFunc )
+{
+	return drawGraphicsToFBO(size.x, size.y, graphicsFunc);
+}
+
+ci::gl::Texture Utils::drawGraphicsToFBO(int width, int height, const function<void ()>& graphicsFunc )
+{
+	Fbo fbo = gl::Fbo(width, height);
+
+	gl::SaveFramebufferBinding bindingSaver;
+	fbo.bindFramebuffer();
+
+	Area saveView = getViewport();
+	gl::setViewport(fbo.getBounds());
+
+	gl::pushMatrices();
+	gl::setMatricesWindow(fbo.getSize(), false);
+	graphicsFunc();
+	gl::popMatrices();
+	gl::setViewport(saveView);
+
+	auto retTex = fbo.getTexture();
+	clearFBO(fbo);	
+	return retTex;
+}
+
 void Utils::clearFBO(Fbo fbo)
 {		
 	if(!fbo || !fbo.getTexture())

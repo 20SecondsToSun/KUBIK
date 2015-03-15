@@ -3,72 +3,78 @@
 
 namespace kubik
 {
-	enum FormatID
+	namespace games
 	{
-		FORMAT1_SMALL,
-		FORMAT2_SMALL,
-		FORMAT2_MIDDLE,
-		FORMAT2_BIG,
-		FORMAT3_SMALL,
-		FORMAT3_BIG,		
-		FORMAT4_SMALL,
-		FORMAT4_BIG
-	};
+		namespace photobooth
+		{
+			enum FormatID
+			{
+				FORMAT1_SMALL,
+				FORMAT2_SMALL,
+				FORMAT2_MIDDLE,
+				FORMAT2_BIG,
+				FORMAT3_SMALL,
+				FORMAT3_BIG,		
+				FORMAT4_SMALL,
+				FORMAT4_BIG
+			};
 
-	class Format
-	{
-		float width;
-		float height;
-		float top;
-		
-	public:	
-			friend class PhotoStorage;
-	};
+			class Format
+			{
+				float width;
+				float height;
+				float top;
 
-	class PhotoItem
-	{
-		ci::gl::Texture mainPhoto;
-		ci::gl::Texture choosingPreview;
+			public:	
+				friend class PhotoStorage;
+			};
 
-		ci::gl::Texture format1, format2, format3, format4;
-		ci::gl::Texture format2Preview;
+			class PhotoItem
+			{
+				ci::gl::Texture mainPhoto;
+				ci::gl::Texture choosingPreview;
 
-		bool screenshot;
-		bool selected;
+				ci::gl::Texture format1, format2, format3, format4;
+				ci::gl::Texture format2Preview;
 
-	public:
-		PhotoItem():screenshot(false), selected(false){};
-		friend class PhotoStorage;
-	};
+				bool screenshot;
+				bool selected;
 
-	typedef std::map<FormatID, ci::gl::Texture> PhotoTemplates;
-	class PhotoStorage
-	{
-		std::vector<PhotoItem> loadedPhotoTexVec;
-		Format format1, format2, format3, format4;
-		PhotoTemplates photoTemplates;
-		std::vector<PhotoTemplates> photoTemplatesVec;
-		int selectedFilterID;
-		gl::Texture getScaledTex(int width, int height, float scale, const gl::Texture& tex);
+			public:
+				PhotoItem():screenshot(false), selected(false){};
+				friend class PhotoStorage;
+			};
 
-	public:
-		PhotoStorage();
-		void clear();
-		void createChoosingPreview();
-		std::vector<ci::gl::Texture> getChoosingPreview();
-		void setNextPhoto(const ci::gl::Texture& tex);
+			typedef std::map<FormatID, ci::gl::Texture> PhotoTemplates;
+			class PhotoStorage
+			{
+				std::vector<PhotoItem> loadedPhotoTexVec;
+				Format format1, format2, format3, format4;
+				PhotoTemplates photoTemplates;
+				std::vector<PhotoTemplates> photoTemplatesVec;
+				int selectedFilterID;
+				gl::Texture getScaledTex(int width, int height, float scale, const gl::Texture& tex);
 
-		ci::gl::Texture loadDownloadedPhoto(const string& path);
-		
-		void createPhotoTemplates();
-		vector<PhotoTemplates> getPhotoTemplates();
+			public:
+				PhotoStorage();
+				void clear();
+				void createChoosingPreview();
+				std::vector<ci::gl::Texture> getChoosingPreview();
+				void setNextPhoto(const ci::gl::Texture& tex);
 
-		void setSelectedID(int i);
-		ci::gl::Texture createFormatTemplate(const Format& format, const PhotoItem& tex);
+				ci::gl::Texture loadDownloadedPhoto(const string& path);
 
-		void setSelectedFilter(int id);
-		int getSelectedFilter();
-	};
+				void createPhotoTemplates();
+				vector<PhotoTemplates> getPhotoTemplates();
 
-	typedef std::shared_ptr<PhotoStorage> PhotoStorageRef;
+				void setSelectedID(int i);
+				ci::gl::Texture createFormatTemplate(const Format& format, const PhotoItem& tex);
+
+				void setSelectedFilter(int id);
+				int getSelectedFilter();
+			};
+
+			typedef std::shared_ptr<PhotoStorage> PhotoStorageRef;
+		}
+	}
 }

@@ -11,44 +11,57 @@ namespace kubik
 {
 	namespace games
 	{
-		typedef shared_ptr<class PhotoFilter> PhotoFilterRef;
+		namespace photobooth
+		{
+			typedef shared_ptr<class PhotoFilter> PhotoFilterRef;
 
-		class PhotoFilter : public IPhotoboothLocation
-		{			
-			std::vector<FilterButtonRef> filterBtns;	
-			ci::gl::Texture title;
-			ci::Vec2f titlePos;
-			std::vector<config::PhotoboothSettings::Filter> filters;
-			PhotoStorageRef photoStorage;
+			class PhotoFilter : public IPhotoboothLocation
+			{			
+				std::vector<FilterButtonRef> filterBtns;	
+				ci::gl::Texture title;
+				ci::Vec2f titlePos;
+				std::vector<config::PhotoboothSettings::Filter> filters;
+				PhotoStorageRef photoStorage;				
 
-			enum sizeID
-			{
-				filter_2,
-				filter_3_1,
-				filter_3_2,
-				filter_4,				
-				filter_5_1,				
-				filter_5_2,				
-				filter_6
-			};
-			
-		public:	
-			PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				enum sizeID
+				{
+					filter_2,
+					filter_3_1,
+					filter_3_2,
+					filter_4,				
+					filter_5_1,				
+					filter_5_2,				
+					filter_6
+				};
 
-			virtual void start();
-			virtual void stop();			
-			virtual void reset(PhotoboothSettingsRef set);
-			virtual void update();
-			virtual void draw();
+				std::map<sizeID, gl::Texture> updateTextures;
 
-			void photoFilterSelect(EventGUIRef& event);
-			int  getCountFiltersOn();
+				void createfilters2();
+				void createfilters3();
+				void createfilters4();
+				void createfilters5();
+				void createfilters6();	
 
-			void createfilters2();
-			void createfilters3();
-			void createfilters4();
-			void createfilters5();
-			void createfilters6();	
-		};		
+				void (PhotoFilter::* filterUpdate)();	
+				void filterUpdate2();
+				void filterUpdate3();
+				void filterUpdate4();
+				void filterUpdate5();
+				void filterUpdate6();
+
+				void showAnimationComplete();
+			public:	
+				PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+
+				virtual void start();
+				virtual void stop();			
+				virtual void reset(PhotoboothSettingsRef set);
+				virtual void update();
+				virtual void draw();
+
+				void photoFilterSelect(EventGUIRef& event);
+				int  getCountFiltersOn();				
+			};		
+		}
 	}
 }

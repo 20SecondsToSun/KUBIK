@@ -79,6 +79,11 @@ namespace kubik
 			return buttonArea.y2 - buttonArea.y1;
 		}
 
+		ci::Vec2f getSize()
+		{
+			return ci::Vec2f( getWidth(), getHeight());
+		}
+
 		Rectf getButtonArea()
 		{
 			return buttonArea;

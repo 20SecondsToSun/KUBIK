@@ -11,28 +11,31 @@ namespace kubik
 {
 	namespace games
 	{
-		typedef	shared_ptr<class PhotoTemplate> PhotoTemplateRef;
-
-		class PhotoTemplate: public IPhotoboothLocation
+		namespace photobooth
 		{
-			PhotoStorageRef photoStorage;
-			ci::gl::Texture title;
-			ci::Vec2f titlePos;
-			std::vector<ci::gl::Texture> templates, stickers;
-			std::vector<TemplateButtonRef> templatebtns;
+			typedef	shared_ptr<class PhotoTemplate> PhotoTemplateRef;
 
-			void photoTemplateChoose(EventGUIRef& event);
-			void setChoosingTemplate();
-			TemplateButtonRef selectedTemplate;
+			class PhotoTemplate: public IPhotoboothLocation
+			{
+				PhotoStorageRef photoStorage;
+				ci::gl::Texture title;
+				ci::Vec2f titlePos;
+				std::vector<ci::gl::Texture> templates, stickers;
+				std::vector<TemplateButtonRef> templatebtns;
 
-		public:
-			PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				void photoTemplateChoose(EventGUIRef& event);
+				void setChoosingTemplate();
+				TemplateButtonRef selectedTemplate;
 
-			void start();
-			void stop();		
-			void reset(PhotoboothSettingsRef settings);	
-			void update();
-			void draw();
-		};
+			public:
+				PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+
+				void start();
+				void stop();		
+				void reset(PhotoboothSettingsRef settings);	
+				void update();
+				void draw();
+			};
+		}
 	}
 }

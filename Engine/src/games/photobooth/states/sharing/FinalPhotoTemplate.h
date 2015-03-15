@@ -1,51 +1,37 @@
 #pragma once
 #include "shaders/ShaderTool.h"
-
-using namespace shaders::imagefilters;
+#include "model/PhotoStorage.h"
 
 namespace kubik
-{	
-	class FinalPhotoTemplate
+{
+	namespace games
 	{
-		ci::gl::Texture photoTemplate, photo;
-		float photoTemplateScale;
-
-	public:
-		
-		void setData(PhotoStorageRef photoStorage)
+		namespace photobooth
 		{
-			/*using namespace shaders::imagefilters;
-
-			auto fID = photoStorage->getSelectedFilter();
-			auto shader = shadertool().get((ShaderTool::FilterType)fID);
-			auto templates = photoStorage->getPhotoTemplates();
-			auto tex = templates[0][FormatID::FORMAT2_BIG];
-
-			gl::Fbo fbo = gl::Fbo(tex.getWidth(), tex.getHeight());
-
-			Utils::drawGraphicsToFBO(fbo, [&]()
+			class FinalPhotoTemplate
 			{
-				shader->render(tex);
-			});
+				static const int MAX_PHOTOS = 3;				
+				float photoTemplateScale, photoScale, templateWidth;
+				float animTime;
+				int index;
 
-			photo = fbo.getTexture();
-			Utils::clearFBO(fbo);	*/
-		}
+				ci::gl::Texture photoTemplate, photo;
+				ci::Anim<float> _time;				
+				shaders::imagefilters::BaseShaderRef shader;
+				std::vector<PhotoTemplates> templates;
 
-		void setTemplate(const ci::gl::Texture& texture)
-		{
-			photoTemplate = texture;
-			photoTemplateScale = 424.0f / photoTemplate.getWidth();	
-		}
+				void renderTexture();
+				void chnagePhoto();
 
-		void draw()
-		{
-			gl::pushMatrices();
-			gl::scale(photoTemplateScale, photoTemplateScale);				
-			gl::draw(photoTemplate);	
-			if(photo)
-				gl::draw(photo);
-			gl::popMatrices();
+			public:	
+				FinalPhotoTemplate();
+				void setData(PhotoStorageRef photoStorage);
+
+				void startAnimate();
+				void stopAnimate();
+				void setTemplate(const ci::gl::Texture& texture);
+				void draw();
+			};
 		}
-	};
+	}
 }

@@ -79,7 +79,7 @@ namespace shaders
 					case HUE_SATURATION:		shader = HueSaturationRef(new HueSaturation(0.5f, 0.5f)); break;
 					case SEPIA:					shader = SepiaRef(new Sepia(0.5f)); break;
 					case NOISE:					shader = NoiseRef(new Noise(0.5f)); break;
-					//case VIBRANCE:				shader = VibranceRef(new Vibrance(0.5f)); break;
+					//case VIBRANCE:			shader = VibranceRef(new Vibrance(0.5f)); break;
 					case DOT_SCREEN:			shader = DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1)); break;
 					case COLOR_HALF_TONE:		shader = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1, 1)); break;
 					//case LUT:					shader = LutRef(new Lut(0.3f)); break;

@@ -13,51 +13,53 @@ namespace kubik
 {
 	namespace games
 	{
-		typedef	shared_ptr<class PhotoChoosing> PhotoChoosingRef;
-
-		class PhotoChoosing: public IPhotoboothLocation
+		namespace photobooth
 		{
-			static const int PHOTOS_NUM = 5;
-			static const int MAX_SELECT = 3;
+			typedef	shared_ptr<class PhotoChoosing> PhotoChoosingRef;
 
-			ci::gl::Texture title, titleFilter, choosefon;
-			ci::Anim<ci::Vec2f> titlePos, titleFilterPos, choosefonPos;
-		
-			ImageButtonSpriteRef okBtn, reShotBtn;
-			shaders::imagefilters::BaseShaderRef shader;
+			class PhotoChoosing: public IPhotoboothLocation
+			{
+				static const int PHOTOS_NUM = 5;
+				static const int MAX_SELECT = 3;
 
-			int canSelectCount;
-			int nowSelectCount;
-			int selectedNum;
-			float photoFiltersStartY;	
-			bool drawLocation;
+				ci::gl::Texture title, titleFilter, choosefon;
+				ci::Anim<ci::Vec2f> titlePos, titleFilterPos, choosefonPos;
 
-			PhotoStorageRef photoStorage;
-			std::vector<Surface> thumbs;
-			std::vector<PhotoContainerRef> photoBtns;
-			std::vector<FilterSmallButtonRef> filterBtns;			
-			PhotoContainerRef lastSelected;
+				ImageButtonSpriteRef okBtn, reShotBtn;
+				shaders::imagefilters::BaseShaderRef shader;
 
-			void hidePreloaderComplete();
-			void drawPhotoPreview();
-			void drawPhotoFilters();
-			void photoChoosed(EventGUIRef& event);
-			void filterChanged(EventGUIRef& event);
-			void backToReshot(EventGUIRef& event);
-			void filterSelected(int id);
-			void okBtnClicked(EventGUIRef& event);
-			void setShaderForPreviews();
+				int canSelectCount;
+				int nowSelectCount;
+				int selectedNum;
+				float photoFiltersStartY;	
 
-		public:
-			static const int RESHOT_LOC = 1;
+				PhotoStorageRef photoStorage;
+				std::vector<Surface> thumbs;
+				std::vector<PhotoContainerRef> photoBtns;
+				std::vector<FilterSmallButtonRef> filterBtns;			
+				PhotoContainerRef lastSelected;
 
-			PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				void hidePreloaderComplete();
+				void drawPhotoPreview();
+				void drawPhotoFilters();
+				void photoChoosed(EventGUIRef& event);
+				void filterChanged(EventGUIRef& event);
+				void backToReshot(EventGUIRef& event);
+				void filterSelected(int id);
+				void okBtnClicked(EventGUIRef& event);
+				void setShaderForPreviews();
 
-			void start();
-			void stop();
-			void reset(PhotoboothSettingsRef settings);		
-			void draw();			
-			void update();	
-		};	
+			public:
+				static const int RESHOT_LOC = 1;
+
+				PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+
+				void start();
+				void stop();
+				void reset(PhotoboothSettingsRef settings);		
+				void draw();			
+				void update();	
+			};	
+		}
 	}
 }

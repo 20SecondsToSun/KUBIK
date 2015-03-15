@@ -17,43 +17,46 @@ namespace kubik
 {
 	namespace games
 	{
-		class Photobooth:public IGame, public Sprite
+		namespace photobooth
 		{
-		public:	
-			Photobooth(ISettingsRef config);
-			~Photobooth();
+			class Photobooth:public IGame, public Sprite
+			{
+			public:	
+				Photobooth(ISettingsRef config);
+				~Photobooth();
 
-			void start();
-			void stop() override;
+				void start();
+				void stop() override;
 
-			void update();	
-			void draw();	
-			void create();
-			void reset() override;		
-			void init(ISettingsRef config) override;	
-			connection updateSignal;
-	
-		private:			
-			void setTextures();
+				void update();	
+				void draw();	
+				void create();
+				void reset() override;		
+				void init(ISettingsRef config) override;	
+				connection updateSignal;
 
-			PhotoInstructionRef photoInstruction;
-			PhotoFilterRef		photoFilter;
-			PhotoTimerRef		photoTimer;
-			PhotoShootingRef	photoShooting;			
-			PhotoChoosingRef	photoChoosing;
-			PhotoTemplateRef	photoTemplate;
-			PhotoSharingRef		photoSharing;
+			private:			
+				void setTextures();
 
-			std::list<IPhotoboothLocationRef>  locations;
-			std::list<IPhotoboothLocationRef>::iterator currentLocation;
+				PhotoInstructionRef photoInstruction;
+				PhotoFilterRef		photoFilter;
+				PhotoTimerRef		photoTimer;
+				PhotoShootingRef	photoShooting;			
+				PhotoChoosingRef	photoChoosing;
+				PhotoTemplateRef	photoTemplate;
+				PhotoSharingRef		photoSharing;
 
-			void nextLocationHandler();
-			void initLocations();
-			void removeListeners();
-			void reshotHandler();
+				std::list<IPhotoboothLocationRef>  locations;
+				std::list<IPhotoboothLocationRef>::iterator currentLocation;
 
-			PhotoboothSettingsRef settings;
-			PhotoStorageRef photoStorage;
-		};
+				void nextLocationHandler();
+				void initLocations();
+				void removeListeners();
+				void reshotHandler();
+
+				PhotoboothSettingsRef settings;
+				PhotoStorageRef photoStorage;
+			};
+		}
 	}
 }

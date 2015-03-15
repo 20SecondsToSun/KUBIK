@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace kubik;
+using namespace kubik::games::photobooth;
 
 PhotoStorage::PhotoStorage()
 {
@@ -229,4 +230,3 @@ int PhotoStorage::getSelectedFilter()
 {
 	return selectedFilterID;
 }
-

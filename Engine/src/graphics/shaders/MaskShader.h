@@ -23,12 +23,12 @@ namespace shaders
 				void main()
 				{
 					 vec4 color = texture2D(tex, gl_TexCoord[0].st);                                             
-                    // color.a = 1;
-					 vec4 maskcolor = texture2D(mask, gl_TexCoord[0].st); 
-					 if (maskcolor.rgb == vec3(1, 1, 1))
+                 	 vec4 maskcolor = texture2D(mask, gl_TexCoord[0].st); 
+
+					 if (maskcolor.a == 0)//vec3(1, 1, 1))
+					// if (maskcolor.rgb == vec3(1, 1, 1))
 						 color.a = 0;
-					//vec2 texCoords = vec2(floor(gl_TexCoord[0].s * xPixels) / xPixels, floor(gl_TexCoord[0].t * yPixels) / yPixels);
-					gl_FragColor = color;
+						gl_FragColor = color;
 				}
 				);
 
@@ -49,8 +49,9 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(ci::gl::Texture tex, ci::gl::Texture mask, ci::Vec2f position)
+			void render(ci::gl::Texture tex, ci::gl::Texture mask, ci::Vec2f position = ci::Vec2f::zero())
 			{
+				using namespace ci;
 				gl::pushMatrices();
 				gl::translate(position);
 				tex.bind(0);

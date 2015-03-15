@@ -1,6 +1,7 @@
 #include "PhotoShooting.h"
 
 using namespace kubik;
+using namespace kubik::games::photobooth;
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
@@ -41,6 +42,21 @@ void PhotoShooting::start()
 	callDelayShotTimer();	
 }
 
+void PhotoShooting::reset(PhotoboothSettingsRef _settings)
+{
+	IPhotoboothLocation::reset(settings);
+	countsTex   = settings->getTexture("counts");
+	seekTex		= settings->getTexture("seek");
+	smileTex	= settings->getTexture("smile");
+	line		= settings->getTexture("shootline");
+	frame		= settings->getTexture("frame");
+
+	framePosition	= Vec2f((getWindowWidth() -  frame.getWidth()) * 0.5f, 252.0f);
+	countsTexPos	= Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 0.0f);
+	seekTexPos0		= Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));	
+	photoTemplate	= settings->getPhotoCardStylesActiveTemplate()[1];
+}
+
 void PhotoShooting::update() 
 {
 	cameraCanon().update();	
@@ -60,7 +76,7 @@ void PhotoShooting::draw()
 
 	switch (state)
 	{
-	case kubik::PhotoShooting::LIVE_VIEW:
+	case PhotoShooting::LIVE_VIEW:
 		cameraTexture = cameraCanon().getTexture(cameraHeight, cameraWidth, 0, 0, cameraScale);
 		gl::pushMatrices();
 		gl::translate(cameraPosition);
@@ -70,12 +86,12 @@ void PhotoShooting::draw()
 		drawDashedFrame();
 		break;
 
-	case kubik::PhotoShooting::SHOOTING:
-	case kubik::PhotoShooting::PEPARE_FOR_SHOOTING:
+	case PhotoShooting::SHOOTING:
+	case PhotoShooting::PEPARE_FOR_SHOOTING:
 		gl::draw(smileTex, Vec2f(0.5f * (getWindowWidth() - smileTex.getWidth()), startY));
 		break;
 
-	case kubik::PhotoShooting::PREVIEW:
+	case PhotoShooting::PREVIEW:
 		_scale  = 748.0f / photoTemplate.getWidth();
 		_scale1 = 748.0f / photo.getWidth();
 
@@ -127,21 +143,6 @@ void PhotoShooting::drawProgressBlock()
 void PhotoShooting::drawDashedFrame()
 {
 	gl::draw(frame, framePosition);
-}
-
-void PhotoShooting::reset(PhotoboothSettingsRef _settings)
-{
-	settings	= _settings;
-	countsTex   = settings->getTexture("counts");
-	seekTex		= settings->getTexture("seek");
-	smileTex	= settings->getTexture("smile");
-	line		= settings->getTexture("shootline");
-	frame		= settings->getTexture("frame");
-
-	framePosition	= Vec2f((getWindowWidth() -  frame.getWidth()) * 0.5f, 252.0f);
-	countsTexPos	= Vec2f(0.5 * (getWindowWidth() - countsTex.getWidth()), 0.0f);
-	seekTexPos0		= Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));	
-	photoTemplate	= settings->getPhotoCardStylesActiveTemplate()[1];
 }
 
 void PhotoShooting::photoTakenHandler()
@@ -198,5 +199,5 @@ void PhotoShooting::callPreviewShowingTimer()
 {
 	state = PREVIEW;
 	timeline().apply( &_time, 10.0f, previewShowingTime).finishFn(bind( &PhotoShooting::previewdelay, this));	
-	timeline().apply(&alphaPreview, 0.0f, 1.0f, 1.1);//, EaseOutCubic());
+	timeline().apply(&alphaPreview, 0.0f, 1.0f, 1.1f);//, EaseOutCubic());
 }

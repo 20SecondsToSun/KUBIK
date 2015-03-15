@@ -351,6 +351,12 @@
     <ClCompile Include="..\src\games\photobooth\states\PhotoSharing.cpp">
       <Filter>Source Files\games\photobooth\states</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\elements\FilterButton.cpp">
+      <Filter>Source Files\games\photobooth\elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

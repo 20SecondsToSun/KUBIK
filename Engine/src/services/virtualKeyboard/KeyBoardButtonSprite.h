@@ -13,18 +13,19 @@ namespace kubik
 	{
 	public:	
 
-		KeyBoardButtonSprite(ci::gl::Texture image, ci::Font _font, std::string _label)
+		KeyBoardButtonSprite(const ci::gl::Texture& image, ci::Font _font, const std::string& _label)
 			:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), image(image),
-			overColor(Color::white()), code(_label), font(_font), isTextField(true), alpha(1)
+			overColor(Color::white()), code(_label), font(_font), isTextField(true)
 		{
 			createTextField();
+			alpha = 1;
 		}
 
 		KeyBoardButtonSprite(ci::gl::Texture image, std::string _label)
 			:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), image(image),
-			overColor(Color::white()), code(_label),  isTextField(false), alpha(1)
+			overColor(Color::white()), code(_label),  isTextField(false)
 		{
-		
+			alpha = 1;
 		}
 
 		void drawLayout()
@@ -42,17 +43,17 @@ namespace kubik
 			//gl::drawSolidRect(buttonArea);
 		}
 
-		void changeTexture(Texture image)
+		void changeTexture(const Texture& image)
 		{
 			this->image = image;
 		}
 
-		std::string getBtnId()
+		std::string getBtnId() const
 		{
 			return code;
 		}
 
-		void  setBtnId(std::string value)
+		void  setBtnId(const std::string& value)
 		{
 			if (isTextField) 
 			{
@@ -68,7 +69,7 @@ namespace kubik
 			simple.setColor( Color::black());
 			simple.addLine(Utils::cp1251_to_utf8(code.c_str()));		
 			textTexture = gl::Texture( simple.render( true, false ) );	
-		}
+		}	
 
 		void down()
 		{	
@@ -89,7 +90,7 @@ namespace kubik
 		std::string code;
 		ci::Font font;
 		bool isTextField;
-		float alpha;
+	//	float alpha;
 	};
 
 	typedef shared_ptr<KeyBoardButtonSprite> KeyBoardButtonSpriteRef;

@@ -1,7 +1,7 @@
 #include "Photobooth.h"
 
 using namespace kubik;
-using namespace kubik::games;
+using namespace kubik::games::photobooth;
 using namespace std;
 using namespace ci;
 using namespace ci::app;
@@ -80,8 +80,9 @@ void Photobooth::initLocations()
 	locations.clear();
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
-	locations.push_back(photoTimer);
-	locations.push_back(photoShooting);
+	//locations.push_back(photoTimer);
+	//locations.push_back
+		(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);

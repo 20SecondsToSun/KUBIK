@@ -1,9 +1,9 @@
 #include "PhotoSharing.h"
 
-using namespace std;
-using namespace ci::signals;
-using namespace ci;
+using namespace kubik::games::photobooth;
 using namespace kubik;
+using namespace std;
+using namespace ci;
 using namespace ci::app;
 
 PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage):photoStorage(photoStorage),
@@ -12,29 +12,21 @@ PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  phot
 	reset(settings);		
 };
 
-void PhotoSharing::reset(PhotoboothSettingsRef _settings)
+void PhotoSharing::reset(PhotoboothSettingsRef settings)
 {
 	removeAllChildren();
-
-	settings = _settings;
-
-	bckgrnd  = settings->getTexture("bg");
-
-	auto photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
-	
-	finalPhotoTemplate.setData(photoStorage);
-	finalPhotoTemplate.setTemplate(photoTemplate);
+	IPhotoboothLocation::reset(settings);
 	
 	float rightBlockX = 652.0f;
 	texTitle	 = settings->getTexture("sharetitle");
-	texTitlePos	 = Vec2f(rightBlockX, 203.0f) - Vec2f(0.0f, texTitle.getHeight() * 0.5);	
+	texTitlePos	 = Vec2f(rightBlockX, 203.0f - texTitle.getHeight() * 0.5);	
 
 	leftBlockX = 126.0f;
 	qrCodeFlag = settings->getSocialState(PhtTextID::QRCODE);
 	if(qrCodeFlag)
 	{
 		qrTitle	 = settings->getTexture("qrtitle");
-		qrTitlePos = Vec2f(leftBlockX, 880.0f) - Vec2f(0.0f, qrTitle.getHeight() * 0.5);
+		qrTitlePos = Vec2f(leftBlockX, 880.0f - qrTitle.getHeight() * 0.5);
 	}	
 
 	emailBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("email")));
@@ -96,6 +88,14 @@ void PhotoSharing::reset(PhotoboothSettingsRef _settings)
 void PhotoSharing::start()
 {
 	console()<<"start PhotoSharing"<<endl;
+
+	auto photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
+	
+	finalPhotoTemplate.setData(photoStorage);
+	finalPhotoTemplate.setTemplate(photoTemplate);
+	finalPhotoTemplate.startAnimate();
+
+
 	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);	
 	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);	
 
@@ -142,7 +142,6 @@ void PhotoSharing::twBtnHandler(EventGUIRef& _event)
 	console()<<"twBtnHandler"<<endl;
 }
 
-
 void PhotoSharing::stop()
 {
 	console()<<"stop PhotoSharing"<<endl;
@@ -153,6 +152,7 @@ void PhotoSharing::stop()
 	fbBtn->disconnectEventHandler();
 	vkBtn->disconnectEventHandler();	
 	twBtn->disconnectEventHandler();
+	finalPhotoTemplate.stopAnimate();
 }
 
 void PhotoSharing::update() 
@@ -162,32 +162,29 @@ void PhotoSharing::update()
 
 void PhotoSharing::draw() 
 {
-	gl::draw(bckgrnd);
+	fillBg();
 	gl::draw(sharefon, sharefonPos);
+	drawFinalPhoto();
 
+	if(qrCodeFlag)	
+		gl::draw(qrTitle, qrTitlePos);	
+
+	gl::draw(texTitle, texTitlePos);
+	drawServiceButtons();
+	IPhotoboothLocation::draw();
+}
+
+void PhotoSharing::drawFinalPhoto() 
+{
 	gl::pushMatrices();	
 	gl::translate(leftBlockX, 132.0f);	
 	finalPhotoTemplate.draw();		
 	gl::popMatrices();
-
-	if(qrCodeFlag)
-	{
-		gl::draw(qrTitle, qrTitlePos);
-	}
-
-	gl::draw(texTitle, texTitlePos);
-
-	drawServiceButtons();
-
-	IPhotoboothLocation::draw();
 }
 
 void PhotoSharing::drawServiceButtons() 
 {
-	//gl::color(ColorA::hexA(0x26e4cf97));
-	//gl::drawLine(Vec2f(0, startServiceButtonY), Vec2f(getWindowWidth(), startServiceButtonY));
-	//gl::color(Color::white());
-
+	
 	againBtn->draw();
 	allAppBtn->draw();
 }

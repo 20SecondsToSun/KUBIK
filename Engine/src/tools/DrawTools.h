@@ -3,8 +3,10 @@
 #include "cinder/CinderMath.h"
 #include "Utils.h"
 
+#define RED Color(1.0f, 0.0f, 0.0)
+
 namespace kubik
-{	
+{		
 	class DrawTools
 	{
 

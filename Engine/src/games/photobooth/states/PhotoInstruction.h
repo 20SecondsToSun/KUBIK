@@ -6,19 +6,27 @@ namespace kubik
 {
 	namespace games
 	{
-		class PhotoInstruction:public IPhotoboothLocation
+		namespace photobooth
 		{
-			ci::gl::Texture fonTex, titleTex;		
-			ci::Vec2f titleTexPos;
+			class PhotoInstruction:public IPhotoboothLocation
+			{
+				ci::gl::Texture fonTex, titleTex;		
+				ci::Vec2f titleTexPos;
 
-		public:	
-			PhotoInstruction(PhotoboothSettingsRef settings);
-			virtual void reset(PhotoboothSettingsRef set);
-			virtual void start();
-			virtual void stop();
-			void update();
-			void draw();
-		};
-		typedef shared_ptr<PhotoInstruction> PhotoInstructionRef;
+				ci::Anim<float> alphaAnim;
+				float animTime;
+				//float titlePositionY;
+				void hideAnimation(EventGUIRef& event);				
+				
+			public:	
+				PhotoInstruction(PhotoboothSettingsRef settings);
+				virtual void reset(PhotoboothSettingsRef set);
+				virtual void start();
+				virtual void stop();
+				void update();
+				void draw();
+			};
+			typedef shared_ptr<PhotoInstruction> PhotoInstructionRef;
+		}
 	}
 }

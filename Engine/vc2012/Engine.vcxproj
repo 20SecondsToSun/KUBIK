@@ -125,6 +125,7 @@
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
+    <ClCompile Include="..\src\games\photobooth\elements\FilterButton.cpp" />
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="..\src\games\photobooth\states\PhotoShooting.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\PhotoTimer.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />

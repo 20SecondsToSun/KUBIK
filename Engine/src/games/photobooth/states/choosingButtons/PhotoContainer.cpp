@@ -1,6 +1,7 @@
 #include "states/choosingButtons/PhotoContainer.h"
 
 using namespace kubik;
+using namespace kubik::games::photobooth;
 using namespace ci;
 using namespace std;
 using namespace shaders::imagefilters;

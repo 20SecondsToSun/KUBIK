@@ -8,23 +8,37 @@ using namespace kubik::config;
 
 namespace kubik
 {
-	class IPhotoboothLocation : public Sprite
-	{	
-	protected:
-		static PhotoboothSettingsRef settings;
-		static ci::gl::Texture bckgrnd;
+	namespace games
+	{
+		namespace photobooth
+		{
+			class IPhotoboothLocation : public Sprite
+			{	
+			protected:
+				static PhotoboothSettingsRef settings;
+				static ci::gl::Texture bckgrnd;
+				float titlePositionY;
 
-	public:	
-		static const int NEXT_LOC = 0;	
+				float animShowTitleTime;
+				ci::Anim<float> titleAlpha;
+				ci::Anim<ci::Vec2f> titleAnimPosition;
 
-		virtual void update() = 0;
-		virtual void start() = 0;
-		virtual void stop(){};
-		virtual void reset(PhotoboothSettingsRef config);	
-	
-		void nextLocationSignal(EventGUIRef& event = EventGUIRef(new EventGUI()));
-		void fillBg();
-	};
+			public:	
+				static const int NEXT_LOC = 0;	
 
-	typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;
+				IPhotoboothLocation();
+
+				virtual void update() = 0;
+				virtual void start() = 0;
+				virtual void stop(){};
+				virtual void reset(PhotoboothSettingsRef config);	
+
+				void nextLocationSignal(EventGUIRef& event = EventGUIRef(new EventGUI()));				
+				void hideAnimationComplete();				
+				void fillBg();
+			};
+
+			typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;
+		}
+	}
 }
