@@ -38,8 +38,8 @@ namespace kubik
 				begin		= textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_BEGIN));
 				closeTitle  = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_CLOSE));	
 
-				float allWidth = closeIcon.getWidth() + 20 + closeTitle.getWidth();
-				float startX = 0.5 * (getWindowWidth() - allWidth);
+				float allWidth = closeIcon.getWidth() + 20.0f + closeTitle.getWidth();
+				float startX = 0.5f * (getWindowWidth() - allWidth);
 
 				closeBtnPos = ci::Vec2f(startX, 100.0f);
 				CloseActivityEventRef  closeEvent = CloseActivityEventRef(new CloseActivityEvent());
@@ -79,9 +79,9 @@ namespace kubik
 			void drawTitles()
 			{
 				gl::color(titlesColor);
-				gl::draw(mainTitle, ci::Vec2f(0.5*(getWindowWidth() - mainTitle.getWidth()), 200.0f));
-				gl::draw(subTitle, ci::Vec2f(0.5*(getWindowWidth() - subTitle.getWidth()), 435.0f));
-				gl::draw(title, ci::Vec2f(0.5*(getWindowWidth() - title.getWidth()), 843.0f));
+				gl::draw(mainTitle, ci::Vec2f(0.5f*(getWindowWidth() - mainTitle.getWidth()), 200.0f));
+				gl::draw(subTitle, ci::Vec2f(0.5f*(getWindowWidth() - subTitle.getWidth()), 435.0f));
+				gl::draw(title, ci::Vec2f(0.5f*(getWindowWidth() - title.getWidth()), 843.0f));
 			}
 
 			void drawInputFieldBackground()
@@ -94,7 +94,7 @@ namespace kubik
 				gl::color(inputFieldColor);
 				gl::draw(inputField, inputFieldPos);
 				gl::color(titlesColor);
-				gl::draw(begin, ci::Vec2f( 750.0f + 0.5f * (210.0f - begin.getWidth()), yPositionInputField + 0.5 * (142.0f - begin.getHeight())));	
+				gl::draw(begin, ci::Vec2f( 750.0f + 0.5f * (210.0f - begin.getWidth()), yPositionInputField + 0.5f * (142.0f - begin.getHeight())));	
 			}
 
 			void drawCloseBlock()

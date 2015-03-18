@@ -28,6 +28,7 @@ namespace shaders
 				static const std::string shdr = STRINGIFY(
 					  uniform sampler2D texture;
 					  uniform float amount;
+					  uniform float alpha;
 
 					  void main()
 					  {
@@ -41,7 +42,7 @@ namespace shaders
 					   color.r = min(1.0, (r * (1.0 - (0.607 * amount))) + (g * (0.769 * amount)) + (b * (0.189 * amount)));
 					   color.g = min(1.0, (r * 0.349 * amount) + (g * (1.0 - (0.314 * amount))) + (b * 0.168 * amount));
 					   color.b = min(1.0, (r * 0.272 * amount) + (g * 0.534 * amount) + (b * (1.0 - (0.869 * amount))));   
-      
+					   color.a = alpha;
 							
 						gl_FragColor = color;
 					});
@@ -54,7 +55,8 @@ namespace shaders
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("texture", 0);				
-				shader.uniform("amount", amount);			
+				shader.uniform("amount", amount);
+				shader.uniform("alpha", alpha);
 				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();

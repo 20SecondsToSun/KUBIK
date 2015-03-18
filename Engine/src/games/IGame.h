@@ -14,7 +14,8 @@ namespace kubik
 	public:	
 		~IGame(){};
 		virtual void draw() = 0;		
-		virtual void start() = 0;		
+		virtual void start() = 0;
+		virtual void update() = 0;
 		virtual void clean(){};
 		//SignalVoid closeLocationSignal;
 	};

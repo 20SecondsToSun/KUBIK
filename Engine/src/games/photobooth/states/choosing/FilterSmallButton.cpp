@@ -1,4 +1,4 @@
-#include "states/choosingButtons/FilterSmallButton.h"
+#include "states/choosing/FilterSmallButton.h"
 
 using namespace kubik;
 using namespace ci;
@@ -39,22 +39,24 @@ bool FilterSmallButton::selected()
 void FilterSmallButton::drawLayout()
 {
 	float translY = 0.0f;
+
+	gl::translate(animPosition);
+
 	if (state == CLOSE)
 	{
-		gl::color(Color::hex(0x191b1c));
-		gl::drawSolidRect(buttonArea);
-		gl::color(Color::white());
-		//gl::drawSolidRect(Rectf(0.0f, 0.0f, getWidth(), 140.0f));	
-		gl::draw(titleSmall, titleSmallPos);		
+		gl::color(Utils::colorAlpha(Color::hex(0x191b1c), alpha));
+		gl::drawSolidRect(buttonArea);	
+		gl::color(Utils::colorAlpha(Color::white(), alpha));
+		gl::draw(titleSmall, titleSmallPos);
 	}
 	else
 	{
 		translY = -30.0f;
-		gl::color(Color::hex(0x191b1c));
+		gl::color(Utils::colorAlpha(Color::hex(0x191b1c), alpha));
 		gl::drawSolidRect(buttonArea);
-		gl::color(Color::white());
-		//gl::drawSolidRect(Rectf(0.0f, translY, getWidth(), 147.0f));	
-		gl::draw(titleBig, titleBigPos);		
+
+		gl::color(Utils::colorAlpha(Color::white(), alpha));
+		gl::draw(titleBig, titleBigPos);
 	}
 
 	if(photo)

@@ -1,6 +1,6 @@
 #pragma once
-
 #include "PhotoboothSettings.h"
+#include "model/PhotoStorage.h"
 #include "gui/Sprite.h"
 
 using namespace std;
@@ -20,8 +20,10 @@ namespace kubik
 				float titlePositionY;
 
 				float animShowTitleTime;
-				ci::Anim<float> titleAlpha;
+				ci::Anim<float> titleAlpha, titleScale, titleFilterAlpha;
 				ci::Anim<ci::Vec2f> titleAnimPosition;
+				ci::gl::Texture title, screenshot;
+				void setLastScreenShot();				
 
 			public:	
 				static const int NEXT_LOC = 0;	
@@ -32,10 +34,12 @@ namespace kubik
 				virtual void start() = 0;
 				virtual void stop(){};
 				virtual void reset(PhotoboothSettingsRef config);	
+				virtual void stopAllTweens();
 
 				void nextLocationSignal(EventGUIRef& event = EventGUIRef(new EventGUI()));				
 				void hideAnimationComplete();				
 				void fillBg();
+				void drawTitle();
 			};
 
 			typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;

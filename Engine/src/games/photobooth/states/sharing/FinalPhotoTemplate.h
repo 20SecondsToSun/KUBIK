@@ -1,6 +1,7 @@
 #pragma once
 #include "shaders/ShaderTool.h"
 #include "model/PhotoStorage.h"
+#include "TimerTools.h"
 
 namespace kubik
 {
@@ -21,7 +22,7 @@ namespace kubik
 				std::vector<PhotoTemplates> templates;
 
 				void renderTexture();
-				void chnagePhoto();
+				void changePhoto();				
 
 			public:	
 				FinalPhotoTemplate();

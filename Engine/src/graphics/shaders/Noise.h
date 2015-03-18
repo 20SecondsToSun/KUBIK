@@ -28,7 +28,7 @@ namespace shaders
 				static const std::string shdr = STRINGIFY(
 					  uniform sampler2D texture;
 					  uniform float amount;
-
+					  uniform float alpha;
 					  float rand(vec2 co) 
 					  {
 						 return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -43,7 +43,8 @@ namespace shaders
 						color.r += diff;
 						color.g += diff;
 						color.b += diff;
-
+						color.a = alpha;
+						
 						gl_FragColor = color;
 					});
 
@@ -55,7 +56,8 @@ namespace shaders
 				tex.bind(0);
 				shader.bind();
 				shader.uniform("texture", 0);				
-				shader.uniform("amount", amount);			
+				shader.uniform("amount", amount);
+				shader.uniform("alpha", alpha);
 				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();

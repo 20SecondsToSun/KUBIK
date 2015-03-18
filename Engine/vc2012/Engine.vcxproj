@@ -88,6 +88,7 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src;..\src\config;..\src\graphics;..\src\buttons;..\src\config\exception;..\src\config\locations;..\src\controller;..\src\devices\canon;..\src\events;..\src\events\menu;..\src\events\settings;..\src\games;..\src\games\funces;..\src\games\photobooth;..\src\games\kotopoza;..\src\gui;..\src\loaders;..\src\tools;..\src\app;..\src\locations;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header\;..\src\locations\settings\main\popup;..\src\locations\screensaver;..\src\locations\service;..\src\locations\menu;..\src\locations\settings;..\src\config\elements;..\src\events\games\photobooth;..\src\config\menu;..\src\config\games\photobooth;..\src\config\games\;..\src\config\games\funces;..\src\config\games\instakub;..\src\games\photobooth\elements;..\src\config\screensaver;..\src\locations\settings\elements;..\src\services\virtualKeyboard;..\src\locations\settings\instakub;..\src\locations\settings\main\designblock;..\src\locations\settings\main\gamesblock;..\src\locations\settings\main\printerblock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/Zm156 %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4996;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -125,21 +126,22 @@
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
-    <ClCompile Include="..\src\games\photobooth\elements\FilterButton.cpp" />
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\choosing\FilterSmallButton.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\choosing\PhotoChoosing.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\choosing\PhotoContainer.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\filter\FilterButton.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\filter\PhotoFilter.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\instruction\PhotoInstruction.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoChoosing.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoFilter.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoInstruction.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoSharing.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoShooting.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoTemplate.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\PhotoTimer.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\PhotoSharing.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\QrCode.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\shooting\PhotoShooting.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\template\PhotoTemplate.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
@@ -226,21 +228,22 @@
     <ClInclude Include="..\src\games\GamesFactory.h" />
     <ClInclude Include="..\src\games\IGame.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
-    <ClInclude Include="..\src\games\photobooth\elements\FilterButton.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
-    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.h" />
-    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.h" />
+    <ClInclude Include="..\src\games\photobooth\states\choosing\FilterSmallButton.h" />
+    <ClInclude Include="..\src\games\photobooth\states\choosing\PhotoChoosing.h" />
+    <ClInclude Include="..\src\games\photobooth\states\choosing\PhotoContainer.h" />
+    <ClInclude Include="..\src\games\photobooth\states\filter\FilterButton.h" />
+    <ClInclude Include="..\src\games\photobooth\states\filter\PhotoFilter.h" />
+    <ClInclude Include="..\src\games\photobooth\states\instruction\PhotoInstruction.h" />
     <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoInstruction.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoShooting.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h" />
-    <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.h" />
-    <ClInclude Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\PhotoSharing.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\QrCode.h" />
+    <ClInclude Include="..\src\games\photobooth\states\shooting\PhotoShooting.h" />
+    <ClInclude Include="..\src\games\photobooth\states\template\PhotoTemplate.h" />
+    <ClInclude Include="..\src\games\photobooth\states\template\TemplateButtons.h" />
+    <ClInclude Include="..\src\games\photobooth\states\timer\PhotoTimer.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\Bloom.h" />
     <ClInclude Include="..\src\graphics\shaders\ColorHalftone.h" />
@@ -326,6 +329,7 @@
     <ClInclude Include="..\src\tools\MathTools.h" />
     <ClInclude Include="..\src\tools\StringTools.h" />
     <ClInclude Include="..\src\tools\TextTools.h" />
+    <ClInclude Include="..\src\tools\TimerTools.h" />
     <ClInclude Include="..\src\tools\Utils.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

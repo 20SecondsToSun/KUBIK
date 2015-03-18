@@ -17,7 +17,7 @@ namespace shaders
 			ci::gl::GlslProg shader;
 
 		public:
-			BaseShader(std::string title = "default"):title(title)
+			BaseShader(std::string title = "default") :title(title), alpha(1.0f)
 			{
 								
 			}
@@ -37,13 +37,16 @@ namespace shaders
 			}
 
 			virtual const char * GET_FRAG() = 0;//{return NULL;};
-			virtual void render(const ci::gl::Texture& tex) = 0;	
+			virtual void render(const ci::gl::Texture& tex) = 0;
+			virtual void render(const ci::gl::Texture& tex, float alpha){};
+			virtual void setAlpha(float alpha){ this->alpha = alpha; };
 			virtual void createParams(ci::params::InterfaceGlRef params) = 0;	
 
 			virtual std::string getTitle() {return title;};
 
 		protected:
 			std::string title;
+			float alpha;
 		};
 
 		typedef std::shared_ptr<BaseShader> BaseShaderRef;

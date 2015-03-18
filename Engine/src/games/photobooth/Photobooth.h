@@ -3,13 +3,13 @@
 #include "gui/Sprite.h"
 #include "IGame.h"
 #include "PhotoboothSettings.h"
-#include "states/PhotoInstruction.h"
-#include "states/PhotoFilter.h"
-#include "states/PhotoTimer.h"
-#include "states/PhotoShooting.h"
-#include "states/PhotoSharing.h"
-#include "states/PhotoChoosing.h"
-#include "states/PhotoTemplate.h"
+#include "states/instruction/PhotoInstruction.h"
+#include "states/filter/PhotoFilter.h"
+#include "states/timer/PhotoTimer.h"
+#include "states/shooting/PhotoShooting.h"
+#include "states/sharing/PhotoSharing.h"
+#include "states/choosing/PhotoChoosing.h"
+#include "states/template/PhotoTemplate.h"
 #include "model/PhotoStorage.h"
 #include "CameraAdapter.h"
 
@@ -19,43 +19,44 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			class Photobooth:public IGame, public Sprite
+			class Photobooth :public IGame, public Sprite
 			{
-			public:	
+			public:
 				Photobooth(ISettingsRef config);
 				~Photobooth();
 
-				void start();
+				void start() override;
 				void stop() override;
-
-				void update();	
-				void draw();	
+				void update() override;
+				void draw() override;
+				void reset() override;
+				void init(ISettingsRef config) override;
 				void create();
-				void reset() override;		
-				void init(ISettingsRef config) override;	
+
 				connection updateSignal;
+				size_t index;
 
-			private:			
-				void setTextures();
-
+			private:
 				PhotoInstructionRef photoInstruction;
 				PhotoFilterRef		photoFilter;
 				PhotoTimerRef		photoTimer;
-				PhotoShootingRef	photoShooting;			
+				PhotoShootingRef	photoShooting;
 				PhotoChoosingRef	photoChoosing;
 				PhotoTemplateRef	photoTemplate;
 				PhotoSharingRef		photoSharing;
 
-				std::list<IPhotoboothLocationRef>  locations;
-				std::list<IPhotoboothLocationRef>::iterator currentLocation;
+				std::vector<IPhotoboothLocationRef>  locations;
+				IPhotoboothLocationRef	currentLocation;
+
+				PhotoboothSettingsRef settings;
+				PhotoStorageRef photoStorage;
 
 				void nextLocationHandler();
 				void initLocations();
 				void removeListeners();
 				void reshotHandler();
-
-				PhotoboothSettingsRef settings;
-				PhotoStorageRef photoStorage;
+				void cameraSetup();
+				void gotoFirstlocation();
 			};
 		}
 	}

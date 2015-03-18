@@ -18,16 +18,25 @@ namespace shaders
 			{
 				static const std::string shdr = STRINGIFY(
 					uniform sampler2D tex;
-					uniform sampler2D mask;				
+					uniform sampler2D mask;		
+					uniform int inverse;
 
 				void main()
 				{
 					 vec4 color = texture2D(tex, gl_TexCoord[0].st);                                             
                  	 vec4 maskcolor = texture2D(mask, gl_TexCoord[0].st); 
 
-					 if (maskcolor.a == 0)//vec3(1, 1, 1))
-					// if (maskcolor.rgb == vec3(1, 1, 1))
+					 if (maskcolor.rgb == vec3(0, 0, 0) && inverse == 0)
 						 color.a = 0;
+					 else if (maskcolor.rgb == vec3(1, 1, 1)  && inverse == 1)
+						 color.a = 0;
+					// if (maskcolor.a == 0 && inverse == 0)
+					//	 color.a = 0;
+					// else if (maskcolor.a == 1 && inverse == 1)
+					//	 color.a = 0;
+
+					 
+
 						gl_FragColor = color;
 				}
 				);
@@ -49,7 +58,7 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(ci::gl::Texture tex, ci::gl::Texture mask, ci::Vec2f position = ci::Vec2f::zero())
+			void render(ci::gl::Texture tex, ci::gl::Texture mask, ci::Vec2f position = ci::Vec2f::zero(), int inverse = 0)
 			{
 				using namespace ci;
 				gl::pushMatrices();
@@ -57,7 +66,8 @@ namespace shaders
 				tex.bind(0);
 				mask.bind(1);
 				shader.bind();
-				shader.uniform("tex", 0);	
+				shader.uniform("inverse", inverse);
+				shader.uniform("tex", 0);
 				shader.uniform("mask", 1);	
 				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();

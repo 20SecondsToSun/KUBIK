@@ -157,9 +157,6 @@
     <Filter Include="Source Files\services\virtualKeyboard">
       <UniqueIdentifier>{d314694c-f172-4f52-8a0b-c0a9aae775da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\games\photobooth\elements">
-      <UniqueIdentifier>{f13dc13c-304e-49b6-8491-a4d8042f989c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\events\games">
       <UniqueIdentifier>{a46d9042-2dd0-4d39-8238-f3f6fcf6bdd6}</UniqueIdentifier>
     </Filter>
@@ -178,14 +175,26 @@
     <Filter Include="Source Files\config\elements">
       <UniqueIdentifier>{627a7039-2a64-4151-af8d-c0174e2d31aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\games\photobooth\states\templateButtons">
-      <UniqueIdentifier>{b9b7e4ec-17ed-4aab-80ab-2b7fe9936869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\games\photobooth\states\choosingButtons">
-      <UniqueIdentifier>{9a20742e-a6ec-4148-a577-997943aad854}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\games\photobooth\states\sharing">
       <UniqueIdentifier>{3518a3eb-26ce-4591-bb60-8edcaaf916e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\filter">
+      <UniqueIdentifier>{9f192c41-fc1b-4275-b523-049b065c6fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\choosing">
+      <UniqueIdentifier>{9a20742e-a6ec-4148-a577-997943aad854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\template">
+      <UniqueIdentifier>{b9b7e4ec-17ed-4aab-80ab-2b7fe9936869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\instruction">
+      <UniqueIdentifier>{3e699b75-707e-4c1d-a202-23ad904188c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\timer">
+      <UniqueIdentifier>{ae084b2e-581b-4256-b06e-f5fb877b44ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\photobooth\states\shooting">
+      <UniqueIdentifier>{e22d9b22-7cf1-435b-98e2-4404e738189f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -306,15 +315,6 @@
     <ClCompile Include="..\src\locations\settings\elements\SixButtonsLayer.cpp">
       <Filter>Source Files\locations\settings\elements</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoInstruction.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoFilter.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoTimer.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\gui\Sprite.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
@@ -324,38 +324,50 @@
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp">
       <Filter>Source Files\config\games\photobooth</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoTemplate.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.cpp">
-      <Filter>Source Files\games\photobooth\states\templateButtons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoChoosing.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.cpp">
-      <Filter>Source Files\games\photobooth\states\choosingButtons</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.cpp">
-      <Filter>Source Files\games\photobooth\states\choosingButtons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoShooting.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
     </ClCompile>
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp">
       <Filter>Source Files\games\photobooth\model</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\PhotoSharing.cpp">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.cpp">
       <Filter>Source Files\games\photobooth\states\sharing</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\elements\FilterButton.cpp">
-      <Filter>Source Files\games\photobooth\elements</Filter>
+    <ClCompile Include="..\src\games\photobooth\states\filter\FilterButton.cpp">
+      <Filter>Source Files\games\photobooth\states\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\filter\PhotoFilter.cpp">
+      <Filter>Source Files\games\photobooth\states\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\PhotoSharing.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\choosing\FilterSmallButton.cpp">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\choosing\PhotoChoosing.cpp">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\choosing\PhotoContainer.cpp">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\template\PhotoTemplate.cpp">
+      <Filter>Source Files\games\photobooth\states\template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp">
+      <Filter>Source Files\games\photobooth\states\template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\QrCode.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\shooting\PhotoShooting.cpp">
+      <Filter>Source Files\games\photobooth\states\shooting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp">
+      <Filter>Source Files\games\photobooth\states\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\instruction\PhotoInstruction.cpp">
+      <Filter>Source Files\games\photobooth\states\instruction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,24 +419,6 @@
     <ClInclude Include="..\src\tools\StringTools.h">
       <Filter>Source Files\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoTimer.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoTemplate.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoInstruction.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoFilter.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoChoosing.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoSharing.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\ApplicationModel.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
@@ -450,9 +444,6 @@
       <Filter>Source Files\games</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h">
-      <Filter>Source Files\games\photobooth\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\PhotoShooting.h">
       <Filter>Source Files\games\photobooth\states</Filter>
     </ClInclude>
     <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h">
@@ -731,9 +722,6 @@
     <ClInclude Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\elements\FilterButton.h">
-      <Filter>Source Files\games\photobooth\elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\games\photobooth\PhotoFilterEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
     </ClInclude>
@@ -794,20 +782,11 @@
     <ClInclude Include="..\src\config\ISettings.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\templateButtons\TemplateButtons.h">
-      <Filter>Source Files\games\photobooth\states\templateButtons</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\games\photobooth\PhotoTemplateChooseEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\games\photobooth\SubPhotoTemplateChooseEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\PhotoContainer.h">
-      <Filter>Source Files\games\photobooth\states\choosingButtons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\choosingButtons\FilterSmallButton.h">
-      <Filter>Source Files\games\photobooth\states\choosingButtons</Filter>
     </ClInclude>
     <ClInclude Include="..\src\events\games\photobooth\FilterChangedEvent.h">
       <Filter>Source Files\events\games\photobooth</Filter>
@@ -829,6 +808,45 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.h">
       <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\filter\FilterButton.h">
+      <Filter>Source Files\games\photobooth\states\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\filter\PhotoFilter.h">
+      <Filter>Source Files\games\photobooth\states\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\PhotoSharing.h">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\choosing\FilterSmallButton.h">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\choosing\PhotoChoosing.h">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\choosing\PhotoContainer.h">
+      <Filter>Source Files\games\photobooth\states\choosing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\template\PhotoTemplate.h">
+      <Filter>Source Files\games\photobooth\states\template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\template\TemplateButtons.h">
+      <Filter>Source Files\games\photobooth\states\template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\QrCode.h">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\shooting\PhotoShooting.h">
+      <Filter>Source Files\games\photobooth\states\shooting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\timer\PhotoTimer.h">
+      <Filter>Source Files\games\photobooth\states\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\instruction\PhotoInstruction.h">
+      <Filter>Source Files\games\photobooth\states\instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\TimerTools.h">
+      <Filter>Source Files\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

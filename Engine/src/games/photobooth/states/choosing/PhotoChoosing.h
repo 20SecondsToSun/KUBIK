@@ -1,10 +1,10 @@
 #pragma once
-#include "IPhotoboothLocation.h"
+#include "states/IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
-#include "model/PhotoStorage.h"
-#include "states/choosingButtons/PhotoContainer.h"
-#include "states/choosingButtons/FilterSmallButton.h"
+#include "states/choosing/PhotoContainer.h"
+#include "states/choosing/FilterSmallButton.h"
 #include "TextTools.h"
+#include "TimerTools.h"
 #include "FilterChangedEvent.h"
 #include "gui/ImageButtonSprite.h"
 #include "shaders/ShaderTool.h"
@@ -17,13 +17,23 @@ namespace kubik
 		{
 			typedef	shared_ptr<class PhotoChoosing> PhotoChoosingRef;
 
-			class PhotoChoosing: public IPhotoboothLocation
+			class PhotoChoosing : public IPhotoboothLocation
 			{
 				static const int PHOTOS_NUM = 5;
 				static const int MAX_SELECT = 3;
 
-				ci::gl::Texture title, titleFilter, choosefon;
-				ci::Anim<ci::Vec2f> titlePos, titleFilterPos, choosefonPos;
+				enum locationState
+				{
+					ANIM_HIDE,
+					CHOOSING
+				}
+				state;
+
+				ci::Vec2f photoPositions[PHOTOS_NUM];
+				ci::Vec2f titlePos, choosefonPos;
+				ci::gl::Texture titleFilter, choosefon;
+				ci::Anim<ci::Vec2f> titleFilterPos, choosefonPosAnim;				
+				ci::Anim<float> alphaAnim;
 
 				ImageButtonSpriteRef okBtn, reShotBtn;
 				shaders::imagefilters::BaseShaderRef shader;
@@ -31,15 +41,16 @@ namespace kubik
 				int canSelectCount;
 				int nowSelectCount;
 				int selectedNum;
-				float photoFiltersStartY;	
+				float photoFiltersStartY;
 
 				PhotoStorageRef photoStorage;
 				std::vector<Surface> thumbs;
 				std::vector<PhotoContainerRef> photoBtns;
-				std::vector<FilterSmallButtonRef> filterBtns;			
+				std::vector<FilterSmallButtonRef> filterBtns;
 				PhotoContainerRef lastSelected;
 
-				void hidePreloaderComplete();
+				void initShowAnimationParams();
+				void showAnimationComplete();
 				void drawPhotoPreview();
 				void drawPhotoFilters();
 				void photoChoosed(EventGUIRef& event);
@@ -53,13 +64,21 @@ namespace kubik
 				static const int RESHOT_LOC = 1;
 
 				PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				virtual void reset(PhotoboothSettingsRef settings) override;
+				virtual void start() override;
+				virtual void stop() override;
+				virtual void draw() override;
+				virtual void update() override;
+				virtual void stopAllTweens() override;
 
-				void start();
-				void stop();
-				void reset(PhotoboothSettingsRef settings);		
-				void draw();			
-				void update();	
-			};	
+				void setTitle();
+				void setPhotoButtonsDesign();
+				void setOkButtonDesign();
+				void setReshotButtonDesign();
+				void setFiltersData();
+				void setFiltersTitleDesign();
+				void setAdditionaBackgroung();
+			};
 		}
 	}
 }

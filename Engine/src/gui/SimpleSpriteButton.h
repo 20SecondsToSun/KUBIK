@@ -15,7 +15,10 @@ namespace kubik
 	{
 	public:
 		string name;
-		SimpleSpriteButton(Rectf rect, EventGUIRef _event = EventGUIRef(new EventGUI())):Sprite(),color(Color::white()), bgVisible(true)
+		SimpleSpriteButton(Rectf rect, EventGUIRef _event = EventGUIRef(new EventGUI()))
+			:Sprite(),
+			color(Color::white()),
+			bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 
 			setPosition(Vec2f(rect.x1, rect.y1));
@@ -23,7 +26,8 @@ namespace kubik
 			event = _event;
 		}
 
-		SimpleSpriteButton(float width, float height, Vec2f position, EventGUIRef _event = EventGUIRef(new EventGUI())):Sprite(), color(Color::white()), bgVisible(true)
+		SimpleSpriteButton(float width, float height, Vec2f position, EventGUIRef _event = EventGUIRef(new EventGUI()))
+			:Sprite(), color(Color::white()), bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(0, 0, width, height); 
 			setPosition(position);
@@ -31,7 +35,7 @@ namespace kubik
 			event = _event;
 		}
 
-		SimpleSpriteButton(Vec2f position0, Vec2f position):Sprite(), color(Color::white()), bgVisible(true)
+		SimpleSpriteButton(Vec2f position0, Vec2f position) :Sprite(), color(Color::white()), bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(Vec2f::zero(), position0); 
 			setPosition(position);
@@ -58,7 +62,7 @@ namespace kubik
 
 		void drawLayout()
 		{
-			gl::color(color);
+			gl::color(ColorA(color.r, color.g, color.b, alpha));
 			gl::drawSolidRect(buttonArea);
 			gl::color(Color::white());
 			Sprite::drawLayout();
@@ -116,15 +120,35 @@ namespace kubik
 
 		void setAlpha(float alpha)
 		{
+			this->alpha = alpha;
 			color = Utils::colorAlpha(color, alpha);
 			Sprite::setAlpha(alpha);
+		}
+
+		void showAnimate(float startA, float endA, float time, float delay)
+		{
+			alpha = 0.0f;
+			timeline().apply(&alpha, startA, endA, time, EaseInOutCubic()).delay(delay);
+		}
+
+		void showPositionAnimate(const ci::Vec2f& endA, float time, float delay)
+		{
+			animPosition = endA;
+			timeline().apply(&animPosition, Vec2f::zero(), time, EaseOutCubic()).delay(delay);
+		}
+
+		void stopAllTweens()
+		{
+			animPosition.stop();
+			alpha.stop();
 		}
 
 	protected:
 		Rectf buttonArea;
 		bool bgVisible;	
 		ColorA color;	
-		
+		ci::Anim<float> alpha;
+		ci::Anim<ci::Vec2f> animPosition;
 	};
 
 	typedef shared_ptr<SimpleSpriteButton> SimpleSpriteButtonRef;

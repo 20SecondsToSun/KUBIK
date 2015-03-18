@@ -111,6 +111,7 @@ void CameraCanon::takePicture()
 	catch(canon::ExcTakenPhoto ex)
 	{
 		console()<<" error message :::::  "<<ex.what()<<endl;
+		photoErrorEvent();
 	}
 }
 

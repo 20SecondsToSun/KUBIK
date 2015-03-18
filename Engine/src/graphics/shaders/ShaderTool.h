@@ -32,7 +32,7 @@ namespace shaders
 			enum FilterType
 			{
 				_start,
-				KALEIDOSCOPE,
+				//KALEIDOSCOPE,
 				PIXELATE,
 				DOT_SCREEN,
 				HUE_SATURATION,
@@ -47,6 +47,7 @@ namespace shaders
 				BRCOSA,
 				//FISH_EYE,
 				BRIGHTNESS_CONTRAST,
+				MASK,
 				//COLOR_MATRIX,
 				//GLITCH,
 				_NULL
@@ -58,46 +59,45 @@ namespace shaders
 				return sht; 
 			};
 
-			//ShaderTool():currentID(PIXELATE){	}
+			ShaderTool()
+			{
+				using namespace ci;
+			
+				//shadermap[KALEIDOSCOPE]		= KaleidoscopeRef(new Kaleidoscope(4.0f));
+				shadermap[HUE_SATURATION]	= HueSaturationRef(new HueSaturation(0.5f, 0.5f));
+				shadermap[PIXELATE]			= PixelateRef(new Pixelate(Vec2f(100.0f, 100.0f)));
+				shadermap[SEPIA]			= SepiaRef(new Sepia(0.5f));
+				shadermap[NOISE]			= NoiseRef(new Noise(0.5f));
+				shadermap[DOT_SCREEN] = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1.0f, 1.0f)); //= DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1));
+				shadermap[COLOR_HALF_TONE]	= ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1.0f, 0.3f));
+
+				maskShader					= MaskShaderRef(new MaskShader());
+				//case VIBRANCE:			shader = VibranceRef(new Vibrance(0.5f)); break;
+				//case LUT:					shader = LutRef(new Lut(0.3f)); break;
+				//case BLOOM:				shader = BloomRef(new Bloom(0.4f)); break;
+				//case BLEACH:				shader = BleachRef(new Bleach(0.5f)); break;
+				//case BRCOSA:				shader = BrcosaRef(new Brcosa(0.5f, 0.5f, 0.5f, 1.0f)); break;
+				//case FISH_EYE:			shader = FishEyeRef(new FishEye(0.0f, 0.0f)); break;						
+				//case SWIRL:				shader = ; break;						
+				//case BRIGHTNESS_CONTRAST:	shader = BrightnessContrastRef(new BrightnessContrast(0.6f, 0.6f)); break;						
+				//case GLITCH:				shader = GlitchRef(new Glitch()); break;						
+				//case COLOR_MATRIX:		shader = ColorMatrixRef(new ColorMatrix()); break;	
+			}
 
 			MaskShaderRef getMaskShader()
 			{
-				return MaskShaderRef(new MaskShader());
+				return maskShader;
 			}
 
 			BaseShaderRef get(FilterType id)
-			{
-				using namespace shaders::imagefilters;
-				using namespace ci;
-
-				BaseShaderRef shader;
-				currentID = id;
-
-				switch(id)
-				{
-					case PIXELATE:				shader = PixelateRef(new Pixelate(Vec2f(100.0f, 100.0f))); break;
-					case HUE_SATURATION:		shader = HueSaturationRef(new HueSaturation(0.5f, 0.5f)); break;
-					case SEPIA:					shader = SepiaRef(new Sepia(0.5f)); break;
-					case NOISE:					shader = NoiseRef(new Noise(0.5f)); break;
-					//case VIBRANCE:			shader = VibranceRef(new Vibrance(0.5f)); break;
-					case DOT_SCREEN:			shader = DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1)); break;
-					case COLOR_HALF_TONE:		shader = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1, 1)); break;
-					//case LUT:					shader = LutRef(new Lut(0.3f)); break;
-					case KALEIDOSCOPE:			shader = KaleidoscopeRef(new Kaleidoscope(4.0f)); break;
-					//case BLOOM:				shader = BloomRef(new Bloom(0.4f)); break;
-					//case BLEACH:				shader = BleachRef(new Bleach(0.5f)); break;
-					//case BRCOSA:				shader = BrcosaRef(new Brcosa(0.5f, 0.5f, 0.5f, 1.0f)); break;
-					//case FISH_EYE:			shader = FishEyeRef(new FishEye(0.0f, 0.0f)); break;						
-					//case SWIRL:				shader = ; break;						
-					//case BRIGHTNESS_CONTRAST:	shader = BrightnessContrastRef(new BrightnessContrast(0.6f, 0.6f)); break;						
-					//case GLITCH:				shader = GlitchRef(new Glitch()); break;						
-					//case COLOR_MATRIX:		shader = ColorMatrixRef(new ColorMatrix()); break;						
-				}
-				return shader;
+			{	
+				currentID = id;	
+				return shadermap[id];
 			}
 
 			BaseShaderRef get(FilterType id, ci::params::InterfaceGlRef params)
-			{				
+			{
+
 				auto shader = get(id);
 				shader->createParams(params);
 				return shader;
@@ -123,6 +123,8 @@ namespace shaders
 
 		private:
 			FilterType currentID;
+			std::map<FilterType, BaseShaderRef> shadermap;
+			MaskShaderRef maskShader;
 		};
 		// helper function(s) for easier access 
 		inline ShaderTool&	shadertool() { return ShaderTool::getInstance(); };

@@ -20,7 +20,7 @@ void FinalPhotoTemplate::setData(PhotoStorageRef photoStorage)
 }
 
 void FinalPhotoTemplate::renderTexture()
-{
+{	
 	auto texture = templates[index][FormatID::FORMAT2_BIG];
 	
 	photo = Utils::drawGraphicsToFBO(texture.getSize(), [&]()
@@ -33,15 +33,17 @@ void FinalPhotoTemplate::renderTexture()
 
 void FinalPhotoTemplate::startAnimate()
 {
-	timeline().apply( &_time, 10.0f, animTime).finishFn(bind( &FinalPhotoTemplate::chnagePhoto, this));	
+	//timeline().apply( &_time, 10.0f, animTime).finishFn(bind( &FinalPhotoTemplate::changePhoto, this));	
+	delaycall(bind(&FinalPhotoTemplate::changePhoto, this), animTime);
 }
 
 void FinalPhotoTemplate::stopAnimate()
 {
-	timeline().clear();
+	//timeline().clear();
+	clearDelaycall();
 }
 
-void FinalPhotoTemplate::chnagePhoto()
+void FinalPhotoTemplate::changePhoto()
 {			
 	if (++index >= MAX_PHOTOS) index = 0;
 	renderTexture();	

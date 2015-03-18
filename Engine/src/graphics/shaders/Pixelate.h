@@ -30,24 +30,29 @@ namespace shaders
 					uniform sampler2D tex;
 					uniform float xPixels;
 					uniform float yPixels;
+					uniform float alpha;
 
 				void main()
 				{
 					vec2 texCoords = vec2(floor(gl_TexCoord[0].s * xPixels) / xPixels, floor(gl_TexCoord[0].t * yPixels) / yPixels);
-					gl_FragColor = texture2D(tex, texCoords);
+					
+					vec4 color = texture2D(tex, texCoords);
+					color.a = alpha;
+					gl_FragColor = color;
 				}
 				);
 
 				return shdr.c_str();
 			}
-
+		
 			void render(const ci::gl::Texture& tex)
 			{
 				tex.bind(0);
 				shader.bind();
-				shader.uniform("tex", 0);	
+				shader.uniform("tex", 0);
+				shader.uniform("alpha", alpha);
 				shader.uniform("xPixels", resolution.x);
-				shader.uniform("yPixels", resolution.y);			
+				shader.uniform("yPixels", resolution.y);
 				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();

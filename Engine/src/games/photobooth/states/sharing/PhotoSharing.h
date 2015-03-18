@@ -1,11 +1,12 @@
 #pragma once
 
-#include "IPhotoboothLocation.h"
+#include "states/IPhotoboothLocation.h"
 #include "PhotoboothSettings.h"
 #include "TextTools.h"
 #include "model/PhotoStorage.h"
 #include "gui/ImageButtonSprite.h"
 #include "states/sharing/FinalPhotoTemplate.h"
+#include "states/sharing/QrCode.h"
 
 namespace kubik
 {
@@ -17,14 +18,30 @@ namespace kubik
 
 			class PhotoSharing:public IPhotoboothLocation
 			{
-				PhotoStorageRef  photoStorage;		
 				float startServiceButtonY, leftBlockX;
 				bool qrCodeFlag;
-				ci::gl::Texture texTitle, sharefon, qrTitle;	
-				ci::Vec2f texTitlePos, sharefonPos, qrTitlePos;	
 
+				enum locationState
+				{
+					ANIM_HIDE,
+					TEMPLATE_CHOOSE
+				}state;
+
+				PhotoStorageRef  photoStorage;
+				ci::gl::Texture sharefon;
+				ci::Vec2f sharefonPos, qrTitlePos, titlePos;
+				ci::Anim<float> alphaAnim, leftBlockAnimateX;
+				ci::Anim<ci::Vec2f> sharefonPosAnim;
+
+				std::vector<ImageButtonSpriteRef> serviceBtns;
+				
 				FinalPhotoTemplate finalPhotoTemplate;
 				ImageButtonSpriteRef emailBtn,fbBtn, vkBtn, twBtn, againBtn, allAppBtn;
+
+				QrCodeRef qrcode, qrCodeObject;
+				QrCodeNullRef qrCodeNullObject;
+
+				void hideAnimComplete();
 
 				void drawServiceButtons();		
 				void drawFinalPhoto() ;
@@ -33,16 +50,18 @@ namespace kubik
 				void emailBtnHandler(EventGUIRef& event);		
 				void fbBtnHandler(EventGUIRef& event);
 				void vkBtnHandler(EventGUIRef& event);
-				void twBtnHandler(EventGUIRef& event);
+				void twBtnHandler(EventGUIRef& event);				
+				void initShowAnim();
 
 			public:
 				PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);		
-				void reset(PhotoboothSettingsRef settings);
-				void start();
-				void stop();
-				void update();
-				void draw();
-			};	
+				virtual void reset(PhotoboothSettingsRef settings) override;				
+				virtual void start() override;
+				virtual void stop() override;
+				virtual void update() override;
+				virtual void draw() override;
+				virtual void stopAllTweens() override;				
+			};
 		}
 	}
 }

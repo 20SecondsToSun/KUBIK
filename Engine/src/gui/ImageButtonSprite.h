@@ -23,7 +23,8 @@ namespace kubik
 		void drawLayout()
 		{
 			gl::color(ci::Color::white());	
-			gl::color(color);		
+			gl::color(ColorA(color.r, color.g, color.b, alpha));
+			gl::translate(animPosition);
 			gl::draw(image, ci::Vec2f(0.0f, 3.0f));		
 			gl::color(ci::Color::white());	
 			//gl::drawSolidRect(buttonArea);
@@ -34,8 +35,12 @@ namespace kubik
 			this->image = image;
 		}
 
+		
+
 	private:
 		ci::gl::Texture image;	
+		
+		
 	};
 
 	typedef std::shared_ptr<ImageButtonSprite> ImageButtonSpriteRef;

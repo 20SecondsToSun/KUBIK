@@ -21,6 +21,8 @@ PhotoStorage::PhotoStorage()
 	format4.width	=	1270; 
 	format4.height	=	2226;
 	format4.top		=	0;
+
+	selectedFilterID = 1;
 }
 
 void PhotoStorage::clear()
@@ -81,7 +83,7 @@ void PhotoStorage::createChoosingPreview()
 {
 	float prWidth = 272.0f, prHeight = 351.0f;
 
-	for (int i = 0; i < loadedPhotoTexVec.size(); i++)	
+	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)	
 	{
 		auto tex = loadedPhotoTexVec[i];
 		tex.format2 = createFormatTemplate(format2, tex);
@@ -125,7 +127,7 @@ std::vector<ci::gl::Texture> PhotoStorage::getChoosingPreview()
 {
 	std::vector<ci::gl::Texture> texs;
 
-	for (int i = 0; i < loadedPhotoTexVec.size(); i++)	
+	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
 		texs.push_back(loadedPhotoTexVec[i].format2Preview);	
 
 	return texs;
@@ -133,7 +135,7 @@ std::vector<ci::gl::Texture> PhotoStorage::getChoosingPreview()
 
 void PhotoStorage::createPhotoTemplates()
 {
-	for (int i = 0; i < loadedPhotoTexVec.size(); i++)	
+	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
 	{
 		auto tex = loadedPhotoTexVec[i];
 		tex.format1 = createFormatTemplate(format1, tex);
@@ -144,7 +146,7 @@ void PhotoStorage::createPhotoTemplates()
 
 	photoTemplatesVec.clear();
 
-	for (int i = 0; i < loadedPhotoTexVec.size(); i++)
+	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
 	{
 		if(!loadedPhotoTexVec[i].selected) continue;
 
@@ -229,4 +231,14 @@ void PhotoStorage::setSelectedFilter(int id)
 int PhotoStorage::getSelectedFilter()
 {
 	return selectedFilterID;
+}
+
+void PhotoStorage::setLastScreenShot(const gl::Texture& tex)
+{
+	lastScreenshot = tex;
+}
+
+gl::Texture PhotoStorage::getLastScreenShot()
+{
+	return lastScreenshot;
 }

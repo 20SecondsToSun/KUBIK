@@ -48,7 +48,8 @@ namespace kubik
 
 			void buildData()    override;
 			void load()			override;
-			void setTextures()  override;			
+			void setTextures()  override;
+			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };
 
 			TextItem getMainTitle(PhtTextID id);
 			TextItem getSubTitleClose(PhtTextID id);

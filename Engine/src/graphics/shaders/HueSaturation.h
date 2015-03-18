@@ -31,6 +31,7 @@ namespace shaders
 					uniform sampler2D texture;
 					uniform float hue;
 					uniform float saturation;
+					uniform float alpha;
 					//varying vec2 texCoord;
 						void main()
 						{
@@ -60,7 +61,7 @@ namespace shaders
 							{
 								color.rgb += (average - color.rgb) * (-saturation);
 							}
-							
+							color.a = alpha;
 							gl_FragColor = color;
 						});
 
@@ -75,6 +76,7 @@ namespace shaders
 				shader.bind();
 				shader.uniform("texture", 0);				
 				shader.uniform("hue", hue);
+				shader.uniform("alpha", alpha);
 				shader.uniform("saturation", saturation);			
 				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();

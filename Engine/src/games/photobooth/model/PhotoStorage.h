@@ -55,6 +55,8 @@ namespace kubik
 				int selectedFilterID;
 				gl::Texture getScaledTex(int width, int height, float scale, const gl::Texture& tex);
 
+				gl::Texture lastScreenshot;
+
 			public:
 				PhotoStorage();
 				void clear();
@@ -72,6 +74,9 @@ namespace kubik
 
 				void setSelectedFilter(int id);
 				int getSelectedFilter();
+
+				void setLastScreenShot(const gl::Texture& tex);
+				gl::Texture getLastScreenShot();
 			};
 
 			typedef std::shared_ptr<PhotoStorage> PhotoStorageRef;
