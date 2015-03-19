@@ -8,7 +8,7 @@ using namespace kubik;
 using namespace kubik::games::photobooth;
 
 PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
-	:photoStorage(photoStorage)
+	:IPhotoboothLocation(), photoStorage(photoStorage)
 {
 	setImageSizeParams();
 	reset(settings);

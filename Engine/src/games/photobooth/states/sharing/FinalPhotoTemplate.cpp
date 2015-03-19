@@ -33,13 +33,11 @@ void FinalPhotoTemplate::renderTexture()
 
 void FinalPhotoTemplate::startAnimate()
 {
-	//timeline().apply( &_time, 10.0f, animTime).finishFn(bind( &FinalPhotoTemplate::changePhoto, this));	
 	delaycall(bind(&FinalPhotoTemplate::changePhoto, this), animTime);
 }
 
 void FinalPhotoTemplate::stopAnimate()
 {
-	//timeline().clear();
 	clearDelaycall();
 }
 

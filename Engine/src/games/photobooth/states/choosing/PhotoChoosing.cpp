@@ -21,7 +21,7 @@ PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef pho
 
 void PhotoChoosing::start()
 {
-//#define debug
+#define debug
 #ifdef debug
 	photoStorage->clear();
 	for (int i = 1; i < 6; i++)

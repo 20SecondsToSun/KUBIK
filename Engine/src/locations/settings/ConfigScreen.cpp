@@ -8,16 +8,16 @@ using namespace ci::signals;
 using namespace kubik::config;
 using namespace kubik;
 
-ConfigScreen::ConfigScreen(ISettingsRef config):IScreen(ScreenId::CONFIG)
+ConfigScreen::ConfigScreen(ISettingsRef config) :IScreen(ScreenId::CONFIG)
 {
-	configSettings	= static_pointer_cast<ConfigSettings>(config);
+	configSettings = static_pointer_cast<ConfigSettings>(config);
 }
 
 ConfigScreen::~ConfigScreen()
-{	
-	console()<<"~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~"<<endl;
-	closeBtnListener.disconnect();	
-	appSettingsChgListener.disconnect();	
+{
+	console() << "~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~" << endl;
+	closeBtnListener.disconnect();
+	appSettingsChgListener.disconnect();
 }
 
 void ConfigScreen::setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings)
@@ -33,7 +33,7 @@ void ConfigScreen::setMenuSettings(MenuSettingsRef menuSettings)
 void ConfigScreen::setGameSettings(GameSettingsRef gameSettings)
 {
 	this->gameSettings = gameSettings;
-}	
+}
 
 void ConfigScreen::startUpParams()
 {
@@ -49,14 +49,14 @@ void ConfigScreen::startUpParams()
 
 void ConfigScreen::start()
 {
-	startUpParams();	
+	startUpParams();
 	mainConfig->connectEventHandler(&ConfigScreen::gamesBlockHandler, this);
-	mainConfig->connectEventHandler(&ConfigScreen::showingMainConfAnimationComplete,  this, MainConfig::SHOW_ANIM_COMPLETE);
+	mainConfig->connectEventHandler(&ConfigScreen::showingMainConfAnimationComplete, this, MainConfig::SHOW_ANIM_COMPLETE);
 	mainConfig->startAnimation();
 }
 
 void ConfigScreen::stop()
-{	
+{
 	mainConfig->disconnectEventHandler();
 	mainConfig->unActivateListeners();
 	photoboothConfig->unActivateListeners();
@@ -70,15 +70,15 @@ void ConfigScreen::init()
 
 void ConfigScreen::init(ISettingsRef settings)
 {
-	configSettings			= static_pointer_cast<ConfigSettings>(settings);
-	mainConfig				= MainConfigRef(new MainConfig(configSettings, gameSettings));
+	configSettings = static_pointer_cast<ConfigSettings>(settings);
+	mainConfig = MainConfigRef(new MainConfig(configSettings, gameSettings));
 	addChild(mainConfig);
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	photoboothConfig		= PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));	
-	
+	photoboothConfig = PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));
+
 	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
-	instakubConfig		= InstakubConfigRef(new InstakubConfig(instaSettings));	
+	instakubConfig = InstakubConfigRef(new InstakubConfig(instaSettings));
 
 	settingsList.push_back(configSettings);
 	settingsList.push_back(phbthSettings);
@@ -100,52 +100,52 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
 
-	if(!ev) return;
+	if (!ev) return;
 
-	if(typeid(*ev) == typeid(CloseConfigEvent))
+	if (typeid(*ev) == typeid(CloseConfigEvent))
 	{
 		mainConfig->unActivateListeners();
-		closeLocationHandler();		
+		closeLocationHandler();
 	}
-	else if(typeid(*ev) == typeid(GameConfEvent))
+	else if (typeid(*ev) == typeid(GameConfEvent))
 	{
 		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);
 		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);
 
-		if (confEvent->getGameId() == GameId::PHOTOBOOTH)		
-			gameSettingsScreen = photoboothConfig;	
-		if (confEvent->getGameId() == GameId::INSTAKUB)		
-			gameSettingsScreen = instakubConfig;	
+		if (confEvent->getGameId() == GameId::PHOTOBOOTH)
+			gameSettingsScreen = photoboothConfig;
+		if (confEvent->getGameId() == GameId::INSTAKUB)
+			gameSettingsScreen = instakubConfig;
 
 		//gameSettingsScreen = gameSettings->get(confEvent->getGameId());
 		gameSettingsScreen->setPosition(ci::Vec2f(1080.0f, 0.0f));
 		gameSettingsScreen->showAnimate(ci::EaseOutCubic(), 0.7f);
-		addChild(gameSettingsScreen);		
+		addChild(gameSettingsScreen);
 
-		console()<<"config game ID:::::: "<<confEvent->getGameId()<<endl;
+		console() << "config game ID:::::: " << confEvent->getGameId() << endl;
 	}
-	else if(typeid(*ev) == typeid(BackToMainConfigEvent))
+	else if (typeid(*ev) == typeid(BackToMainConfigEvent))
 	{
 		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
 		gameSettingsScreen->hideAnimate(EaseOutCubic(), 0.7f);
-	}	
-	if(typeid(*ev) == typeid(StatisticEvent))
-	{
-		StatisticEventRef statEvent = static_pointer_cast<StatisticEvent>(event);	
-		console()<<"Statistic game ID:::::: "<<statEvent->getGameId()<<endl;
 	}
-	else if(typeid(*ev) == typeid(GameShowUrlEvent))
+	if (typeid(*ev) == typeid(StatisticEvent))
 	{
-		GameShowUrlEventRef urlEvent = static_pointer_cast<GameShowUrlEvent>(event);	
-		console()<<"show url game ID:::::: "<<urlEvent->getGameId()<<endl;
-	}	
-	
-	console()<<"EVENT:::::: "<<endl;	
+		StatisticEventRef statEvent = static_pointer_cast<StatisticEvent>(event);
+		console() << "Statistic game ID:::::: " << statEvent->getGameId() << endl;
+	}
+	else if (typeid(*ev) == typeid(GameShowUrlEvent))
+	{
+		GameShowUrlEventRef urlEvent = static_pointer_cast<GameShowUrlEvent>(event);
+		console() << "show url game ID:::::: " << urlEvent->getGameId() << endl;
+	}
+
+	console() << "EVENT:::::: " << endl;
 }
 
 void ConfigScreen::showingMainConfAnimationComplete()
 {
-	if(gameSettingsScreen)
+	if (gameSettingsScreen)
 	{
 		removeChild(gameSettingsScreen);
 		gameSettingsScreen = nullptr;
@@ -159,15 +159,15 @@ void ConfigScreen::showingMainConfAnimationComplete()
 ////////////////////////////////////////////////////////////////////////////
 
 void ConfigScreen::closeLocationHandler()
-{	
+{
 	for (auto setting : settingsList)
 	{
-		if(setting->settingsChanged())
+		if (setting->settingsChanged())
 		{
-			setting->writeConfig();	
+			setting->writeConfig();
 			Changes chng;
 			chng.id = setting->getChangeID();
-			changes.push_back(chng);	
+			changes.push_back(chng);
 		}
 	}
 	checkMenuParamsForChanges();
@@ -180,7 +180,7 @@ void ConfigScreen::closeLocationHandler()
 }
 
 void ConfigScreen::checkMenuParamsForChanges()
-{	
+{
 	Changes chng;
 	chng.id = changeSetting::id::MENU;
 
@@ -192,18 +192,18 @@ void ConfigScreen::checkGamesParamsForChanges()
 {
 	/*if(gamesData.getCountSwitchOnGames())
 	{
-		Changes chng;
-		chng.id = changeSetting::id::GAMES;	
+	Changes chng;
+	chng.id = changeSetting::id::GAMES;
 
-		setDefaultGameIdInSwitchOnGames();
-		setReloadGamePropertyIfNeedIt(chng);
+	setDefaultGameIdInSwitchOnGames();
+	setReloadGamePropertyIfNeedIt(chng);
 
-		if (initialGamesData.getDefaultGameID() != gamesData.getDefaultGameID() || chng.gamesReload)
-		{
-			changes.push_back(chng);
-			gameSettings->setData(gamesData);
-		}
-	}	
+	if (initialGamesData.getDefaultGameID() != gamesData.getDefaultGameID() || chng.gamesReload)
+	{
+	changes.push_back(chng);
+	gameSettings->setData(gamesData);
+	}
+	}
 	*/
 }
 
@@ -211,10 +211,10 @@ void ConfigScreen::checkScreenSaverParamsForChanges()
 {
 	/*if (screensaverData.hasChanges(initialScreensaverData))
 	{
-		Changes chng;
-		chng.id = changeSetting::id::SCREENSAVER;	
-		changes.push_back(chng);
-		screenSaverSettings->setData(screensaverData);
+	Changes chng;
+	chng.id = changeSetting::id::SCREENSAVER;
+	changes.push_back(chng);
+	screenSaverSettings->setData(screensaverData);
 	}*/
 }
 
@@ -224,14 +224,14 @@ void ConfigScreen::setDefaultGameIdInSwitchOnGames()
 
 	if(!gamesData.isIdInSwitchOnGames((GameId)gamesData.getDefaultGameID()))
 	{
-		for (size_t i = 0; i < len; i++)
-		{
-			if(gamesData.getGames()[i].isOn)
-			{
-				gamesData.setDefaultGameID(gamesData.getGameID(i));
-				break;
-			}
-		}
+	for (size_t i = 0; i < len; i++)
+	{
+	if(gamesData.getGames()[i].isOn)
+	{
+	gamesData.setDefaultGameID(gamesData.getGameID(i));
+	break;
+	}
+	}
 	}*/
 }
 
@@ -241,12 +241,12 @@ void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
 
 	for (size_t i = 0; i < len; i++)
 	{
-		GamesInfo game = gamesData.getGames()[i];
+	GamesInfo game = gamesData.getGames()[i];
 
-		if( game.isPurchased && game.isOn != initialGamesData.getGames()[i].isOn)	
-		{
-			chng.gamesReload = true;
-			break;			
-		}	
+	if( game.isPurchased && game.isOn != initialGamesData.getGames()[i].isOn)
+	{
+	chng.gamesReload = true;
+	break;
+	}
 	}*/
 }

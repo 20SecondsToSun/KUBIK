@@ -6,8 +6,11 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
+#define debug
+
 PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
-	:photoStorage(photoStorage),
+	:IPhotoboothLocation(),
+	photoStorage(photoStorage),
 	startServiceButtonY(850.0f),
 	leftBlockX(126.0f)
 {
@@ -25,16 +28,15 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 	serviceBtns.clear();
 
-	emailBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("email")));
-	fbBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("facebook")));
-	vkBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("vkontakte")));
-	twBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("twitter")));
-
-	againBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
-	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
-
+	emailBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("email")));
+	fbBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("facebook")));
+	vkBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("vkontakte")));
+	twBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("twitter")));
+	againBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
+	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));	
+	
 	float shiftY = 238.0f;
-	float posArrayWithEmail[] = { 468.0f, 776.0f, 776.0f + shiftY, 776.0f + 2.0f * shiftY };
+	float posArrayWithEmail[]	 = { 468.0f, 776.0f, 776.0f + shiftY, 776.0f + 2.0f * shiftY };
 	float posArrayWithoutEmail[] = { 468.0f, 468.0f + shiftY, 468.0f + 2.0f * shiftY };
 	float *currentY;
 
@@ -79,7 +81,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 		qrcode = QrCodeRef(new QrCode());
 		auto qrTitle = settings->getTexture("qrtitle");
 		qrcode->setTtile(qrTitle);
-		qrcode->setPosition(Vec2f(leftBlockX, 880.0f - qrTitle.getHeight() * 0.5));
+		qrcode->setPosition(Vec2f(leftBlockX, 880.0f - qrTitle.getHeight() * 0.5f));
 	}
 	else
 	{
@@ -87,15 +89,14 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 		qrcode = qrCodeNullObject;
 	}
 
-
 	////////////////////////////////////////////
 
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
 	startServiceButtonY = 1588.0f;
 
-	againBtn->setPosition(Vec2f(127, startServiceButtonY - againBtn->getHeight() * 0.5f));
-	allAppBtn->setPosition(Vec2f(581, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
+	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY  - againBtn->getHeight()  * 0.5f));
+	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
 }
 
 void PhotoSharing::start()
@@ -104,14 +105,21 @@ void PhotoSharing::start()
 
 	auto photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
 
+	#ifndef debug
 	finalPhotoTemplate.setData(photoStorage);
 	finalPhotoTemplate.setTemplate(photoTemplate);
 	finalPhotoTemplate.startAnimate();
+	#endif
 
+	qrcode->initLink();
+	initShowAnim();
+}
+void PhotoSharing::connectHandlers()
+{
 	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
 	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
 
-	if (settings->getSocialState(PhtTextID::EMAIL))
+	if (settings->getSocialState(PhtTextID::EMAIL))	
 		emailBtn->connectEventHandler(&PhotoSharing::emailBtnHandler, this);
 
 	if (settings->getSocialState(PhtTextID::FACEBOOK))
@@ -122,10 +130,6 @@ void PhotoSharing::start()
 
 	if (settings->getSocialState(PhtTextID::TWITTER))
 		twBtn->connectEventHandler(&PhotoSharing::twBtnHandler, this);
-
-	qrcode->initLink();
-
-	initShowAnim();
 }
 
 void PhotoSharing::initShowAnim()
@@ -141,11 +145,11 @@ void PhotoSharing::initShowAnim()
 	timeline().apply(&titleAlpha, 1.0f, 0.4f, EaseOutCubic());
 	timeline().apply(&sharefonPosAnim, Vec2f::zero(), 0.4f, EaseOutCubic());
 
-	float delay = 0.0f;
+	float delay = 0.0f, showingTime = 0.8f;
 	for (size_t i = 0; i < serviceBtns.size(); i++, delay += 0.1f)
 	{
 		serviceBtns[i]->showAnimate(0.0f, 1.0f, 0.8f, delay);
-		serviceBtns[i]->showPositionAnimate(Vec2f(100, 0.0f), 0.7f, delay);
+		serviceBtns[i]->showPositionAnimate(Vec2f(100, 0.0f), 0.8f, delay);
 	}
 
 	titleAnimPosition = titlePos + Vec2f(200.0f, 0.0f);
@@ -159,9 +163,11 @@ void PhotoSharing::initShowAnim()
 
 	allAppBtn->showAnimate(0.0f, 1.0f, 0.8f, 0.4f);
 	allAppBtn->showPositionAnimate(Vec2f(0.0f, 100.0f), 0.7f, 0.4f);
+
+	delaycall(bind(&PhotoSharing::connectHandlers, this), showingTime + delay);
 }
 
-void PhotoSharing::againBtnHandler(EventGUIRef& _event)
+void PhotoSharing::againBtnHandler(EventGUIRef& event)
 {
 	console() << "againBtnHandler" << endl;
 	setLastScreenShot();
@@ -183,34 +189,61 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& _event)
 void PhotoSharing::emailBtnHandler(EventGUIRef& _event)
 {
 	console() << "emailBtnHandler" << endl;
+	showPopup();
 }
 
 void PhotoSharing::fbBtnHandler(EventGUIRef& _event)
 {
 	console() << "fbBtnHandler" << endl;
+	showPopup();
 }
 
 void PhotoSharing::vkBtnHandler(EventGUIRef& _event)
 {
 	console() << "vkBtnHandler" << endl;
+	showPopup();
 }
 
 void PhotoSharing::twBtnHandler(EventGUIRef& _event)
 {
 	console() << "twBtnHandler" << endl;
+	showPopup();
 }
 
 void PhotoSharing::stop()
 {
 	console() << "stop PhotoSharing" << endl;
 	stopAllTweens();
+	disconnectEventHandlers();
+	finalPhotoTemplate.stopAnimate();
+	clearDelaycall();
+}
+
+void PhotoSharing::showPopup()
+{
+	clearDelaycall();
+	disconnectEventHandlers();
+	finalPhotoTemplate.stopAnimate();
+	setLastScreenShot();
+	popup.connectEventHandler(&PhotoSharing::popupClosed, this, Popup::POPUP_CLOSED);
+	popup.show();	
+	state = POPUP;
+}
+
+void PhotoSharing::popupClosed()
+{
+	connectHandlers();
+	state = TEMPLATE_CHOOSE;
+}
+
+void PhotoSharing::disconnectEventHandlers()
+{
 	againBtn->disconnectEventHandler();
 	allAppBtn->disconnectEventHandler();
 	emailBtn->disconnectEventHandler();
 	fbBtn->disconnectEventHandler();
 	vkBtn->disconnectEventHandler();
 	twBtn->disconnectEventHandler();
-	finalPhotoTemplate.stopAnimate();
 }
 
 void PhotoSharing::update()
@@ -221,12 +254,14 @@ void PhotoSharing::update()
 void PhotoSharing::draw()
 {
 	fillBg();
-
+	
 	switch (state)
 	{
 	case PhotoSharing::TEMPLATE_CHOOSE:
 		gl::draw(sharefon, sharefonPos + sharefonPosAnim);
+#ifndef debug
 		drawFinalPhoto();
+#endif
 		qrcode->draw();
 		drawTitle();
 		drawServiceButtons();
@@ -237,6 +272,11 @@ void PhotoSharing::draw()
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 		gl::draw(screenshot);
 		gl::color(Color::white());
+		break;
+
+	case PhotoSharing::POPUP:
+		gl::draw(screenshot);
+		popup.draw();
 		break;
 	}
 }

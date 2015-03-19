@@ -139,6 +139,7 @@ void Sprite::mouseUp(ci::app::MouseEvent &_event)
 {			
 	if(lock) return;
 
+	if (mEventHandler)
 	mEventHandler(event);
 
 	Sprite* _parent = parent;

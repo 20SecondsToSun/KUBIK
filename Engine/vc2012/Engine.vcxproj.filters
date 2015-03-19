@@ -369,6 +369,9 @@
     <ClCompile Include="..\src\games\photobooth\states\instruction\PhotoInstruction.cpp">
       <Filter>Source Files\games\photobooth\states\instruction</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\Popup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -847,6 +850,9 @@
     </ClInclude>
     <ClInclude Include="..\src\tools\TimerTools.h">
       <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\Popup.h">
+      <Filter>Source Files\games\photobooth\states\sharing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

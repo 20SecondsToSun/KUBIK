@@ -96,6 +96,7 @@ void Photobooth::cameraSetup()
 void Photobooth::nextLocationHandler()
 {
 	//currentLocation->stop();
+	console() << "-----------------------next location----------------------------" << endl;
 
 	if (++index >= locations.size())
 		gotoFirstlocation();
