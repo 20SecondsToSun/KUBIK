@@ -104,6 +104,30 @@ void TemplateButton1::drawStickers()
 	gl::popMatrices();
 }
 
+ci::gl::Texture TemplateButton1::getPrintTemplate()
+{
+	return Utils::drawGraphicsToFBO(templates[0].getSize(), [&]()
+	{
+		float shiftY = 5.0f;
+		float _height = photoTemplates[0][FormatID::FORMAT1_PRINT].getHeight();
+		gl::draw(templates[0]);
+		gl::pushMatrices();		
+		shader->render(photoTemplates[0][FormatID::FORMAT1_PRINT]);
+		gl::translate(0, _height + 5);
+		shader->render(photoTemplates[1][FormatID::FORMAT1_PRINT]);
+		gl::translate(0, _height + 5);
+		shader->render(photoTemplates[2][FormatID::FORMAT1_PRINT]);
+		gl::popMatrices();		
+		gl::scale(_scale1, _scale1);
+		gl::draw(stickers[2]);
+		gl::translate(0.0f, stickers[2].getHeight() + shiftY);
+		gl::draw(stickers[2]);
+		shiftY = 5.0f;
+		gl::translate(0.0f, stickers[2].getHeight() + shiftY);
+		gl::draw(stickers[2]);
+	});
+}
+
 ////////////////////////////////////////////////////////////////////////////
 //
 //					TemplateButton2
@@ -128,8 +152,6 @@ TemplateButton2::TemplateButton2(const Rectf& rect, const vector<Texture>& templ
 		subBtns[i]->setChildPosition(_localPosition);
 		subBtns[i]->setAlpha(alpha);
 	}
-
-	//subBtns[0]->setPosition(Vec2f(16.0f, startY));
 }
 
 void TemplateButton2::init()
@@ -232,6 +254,20 @@ void TemplateButton2::setLineTexture(const Texture& texture)
 	lineTexture = texture;
 }
 
+ci::gl::Texture TemplateButton2::getPrintTemplate()
+{
+	return Utils::drawGraphicsToFBO(templates[1].getSize(), [&]()
+	{
+		gl::draw(templates[1]);
+		gl::pushMatrices();
+		shader->render(photoTemplates[activeIndex][FormatID::FORMAT2_PRINT]);
+		//gl::scale(_scale, _scale);
+		gl::scale(_scale1, _scale1);
+		gl::draw(stickers[0]);
+		gl::popMatrices();
+	});
+}
+
 ////////////////////////////////////////////////////////////////////////////
 //
 //					TemplateButton3
@@ -278,6 +314,31 @@ void TemplateButton3::drawStickers()
 	gl::popMatrices();
 }
 
+ci::gl::Texture TemplateButton3::getPrintTemplate()
+{
+	return Utils::drawGraphicsToFBO(templates[3].getSize(), [&]()
+	{
+		gl::draw(templates[3]);
+		gl::pushMatrices();
+		float _width = photoTemplates[0][FormatID::FORMAT4_PRINT].getWidth();
+		shader->render(photoTemplates[0][FormatID::FORMAT4_PRINT]);
+		gl::translate(_width + 4, 0);
+		shader->render(photoTemplates[1][FormatID::FORMAT4_PRINT]);
+		gl::translate(_width + 4, 0);
+		shader->render(photoTemplates[2][FormatID::FORMAT4_PRINT]);
+		gl::popMatrices();
+
+		gl::pushMatrices();		
+		gl::scale(_scale1, _scale1);
+		gl::draw(stickers[1]);
+		gl::translate(stickers[1].getWidth() + shiftX, 0.0f);
+		gl::draw(stickers[1]);
+		gl::translate(stickers[1].getWidth() + shiftX, 0.0f);
+		gl::draw(stickers[1]);
+		gl::popMatrices();
+	});
+}
+
 ////////////////////////////////////////////////////////////////////////////
 //
 //					TemplateButton4
@@ -322,6 +383,31 @@ void TemplateButton4::drawStickers()
 	gl::popMatrices();
 }
 
+ci::gl::Texture TemplateButton4::getPrintTemplate()
+{
+	return Utils::drawGraphicsToFBO(templates[2].getSize(), [&]()
+	{
+		gl::pushMatrices();
+		gl::draw(templates[2]);
+		gl::popMatrices();
+		shader->render(photoTemplates[0][FormatID::FORMAT3_PRINT_1]);
+		gl::pushMatrices();
+		gl::translate(Vec2f(0.0f, photoTemplates[0][FormatID::FORMAT3_PRINT_1].getHeight() + 4));
+		shader->render(photoTemplates[1][FormatID::FORMAT3_PRINT_2]);
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		//gl::scale(_scale, _scale);
+		gl::scale(_scale1, _scale1);
+		gl::translate(0.0f, -1.0f);
+		gl::draw(stickers[3]);
+		gl::translate(0.0f, stickers[3].getHeight() + shiftY + 1);
+		gl::scale(_scale2, _scale2);
+		gl::draw(stickers[3]);
+		gl::popMatrices();
+	});
+}
+
 ////////////////////////////////////////////////////////////////////////////
 //
 //					TemplateButton5
@@ -349,12 +435,9 @@ void TemplateButton5::drawPhotos()
 	shader->render(photoTemplates[0][FormatID::FORMAT2_MIDDLE]);
 
 	gl::pushMatrices();
-	gl::translate(Vec2f(158, 0.0f));
-	shader->render(photoTemplates[0][FormatID::FORMAT3_SMALL]);
-	gl::popMatrices();
-
-	gl::pushMatrices();
-	gl::translate(Vec2f(158, 102.0f));
+	gl::translate(Vec2f(158.0f, 0.0f));
+	shader->render(photoTemplates[0][FormatID::FORMAT3_SMALL]);	
+	gl::translate(Vec2f(0.0f, 102.0f));
 	shader->render(photoTemplates[1][FormatID::FORMAT3_SMALL]);
 	gl::popMatrices();
 }
@@ -374,6 +457,42 @@ void TemplateButton5::drawStickers()
 	gl::translate(0.0f, stickers[3].getHeight());
 	gl::draw(stickers[3]);
 	gl::popMatrices();
+}
+
+ci::gl::Texture TemplateButton5::getPrintTemplate()
+{
+	return Utils::drawGraphicsToFBO(templates[4].getSize(), [&]()
+	{
+		gl::pushMatrices();
+		gl::draw(templates[4]);
+		gl::popMatrices();
+		shader->render(photoTemplates[0][FormatID::FORMAT5_PRINT_1]);
+		gl::pushMatrices();
+		gl::translate(Vec2f(photoTemplates[0][FormatID::FORMAT5_PRINT_1].getWidth() + 5, 0.0f));
+		shader->render(photoTemplates[0][FormatID::FORMAT5_PRINT_2]);
+		gl::translate(Vec2f(0.0f, 593.0f));
+		shader->render(photoTemplates[1][FormatID::FORMAT5_PRINT_2]);
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		gl::scale(_scale1, _scale1);
+		gl::draw(stickers[0]);
+		gl::popMatrices();
+
+		float _scale2 = 588.0f / stickers[3].getWidth();
+		gl::pushMatrices();
+		gl::translate(922.0f, 0.0f);
+		gl::scale(_scale2, _scale2);
+		gl::draw(stickers[3]);
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		gl::translate(922.0f, 4.0f);
+		gl::scale(_scale2, _scale2);		
+		gl::translate(0.0f, stickers[3].getHeight());
+		gl::draw(stickers[3]);
+		gl::popMatrices();
+	});
 }
 
 ////////////////////////////////////////////////////////////////////////////

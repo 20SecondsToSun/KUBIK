@@ -165,12 +165,26 @@ void PhotoStorage::createPhotoTemplates()
 		_scale = _width / tex.getWidth();			
 		photoTemplates[FORMAT2_MIDDLE] = getScaledTex(_width, _scale * format2.height, _scale, tex);
 
+		_width = 1181.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT2_PRINT] = getScaledTex(_width, _scale * format2.height, _scale, tex);
+
+		_width = 917.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT5_PRINT_1] = getScaledTex(_width, _scale * format2.height, _scale, tex);	
+	
+
 		/////////////////////////////////////////////////////////////////////	
 		//format1
 		tex	   = loadedPhotoTexVec[i].format1;
 		_width = 218.0f;
 		_scale = _width / tex.getWidth();			
 		photoTemplates[FORMAT1_SMALL] = getScaledTex(_width, _scale * format1.height, _scale, tex);
+
+		_width = 590.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT1_PRINT] = getScaledTex(_width, _scale * format1.height, _scale, tex);
+		
 		
 		/////////////////////////////////////////////////////////////////////
 		//format3
@@ -184,12 +198,31 @@ void PhotoStorage::createPhotoTemplates()
 		_scale = _width / tex.getWidth();	
 		photoTemplates[FORMAT3_SMALL]   = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
+		_width = 1181.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT3_PRINT_1] = getScaledTex(_width, _scale * format3.height, _scale, tex);
+
+		_width = 587.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT3_PRINT_2] = getScaledTex(_width, _scale * format3.height, _scale, tex);
+
+		_width = 587.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT5_PRINT_2] = getScaledTex(_width, _scale * format3.height, _scale, tex);
+
+
 		/////////////////////////////////////////////////////////////////////
 		//format4
 		tex	   = loadedPhotoTexVec[i].format4;
 		_width = 100.0f;
 		_scale = _width / tex.getWidth();	
-		photoTemplates[FORMAT4_BIG] = getScaledTex(_width, _scale * format4.height, _scale, tex);		
+		photoTemplates[FORMAT4_BIG] = getScaledTex(_width, _scale * format4.height, _scale, tex);
+
+		_width = 588.0f;
+		_scale = _width / tex.getWidth();
+		photoTemplates[FORMAT4_PRINT] = getScaledTex(_width, _scale * format4.height, _scale, tex);
+
+		
 
 		photoTemplatesVec.push_back(photoTemplates);
 	}

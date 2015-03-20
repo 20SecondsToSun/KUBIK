@@ -32,9 +32,9 @@ bool PhotoContainer::selected()
 void PhotoContainer::drawLayout()
 {
 	gl::translate(animPosition);
-
 	if (photo)
 	{
+		
 		gl::color(ColorA(1, 1, 1, alpha));
 		gl::draw(photo);
 		gl::color(Color::white());
@@ -60,5 +60,5 @@ void PhotoContainer::setShader(BaseShaderRef shader)
 	{
 		shader->setAlpha(1.0f);
 		shader->render(originphoto);
-	});	
+	});		
 }

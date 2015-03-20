@@ -60,6 +60,7 @@ namespace kubik
 				void setSelectDesign(const ci::gl::Texture& btn);
 				templateID getID();
 				void setPhotoTemplates(const vector<std::map<FormatID, ci::gl::Texture>>& photoTemplates, shaders::imagefilters::BaseShaderRef shader);
+				virtual ci::gl::Texture getPrintTemplate(){ return ci::gl::Texture(); };
 			};
 
 			class TemplateButton1: public TemplateButton
@@ -69,7 +70,8 @@ namespace kubik
 				virtual void drawPhotos();
 				virtual void drawStickers();
 			public:
-				TemplateButton1(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);		
+				TemplateButton1(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);	
+				virtual ci::gl::Texture getPrintTemplate();
 			};
 
 			class TemplateButton2: public TemplateButton
@@ -91,6 +93,7 @@ namespace kubik
 				virtual void init();
 				void setSelectRamkaTexture(const ci::gl::Texture& texture);
 				void setLineTexture(const ci::gl::Texture& texture);
+				virtual ci::gl::Texture getPrintTemplate();				
 			};
 
 			class TemplateButton3: public TemplateButton
@@ -101,6 +104,7 @@ namespace kubik
 				virtual void drawStickers();
 			public:
 				TemplateButton3(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
+				ci::gl::Texture getPrintTemplate();
 			};
 
 			class TemplateButton4: public TemplateButton
@@ -111,6 +115,7 @@ namespace kubik
 				virtual void drawStickers();
 			public:
 				TemplateButton4(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
+				ci::gl::Texture getPrintTemplate();
 			};
 
 			class TemplateButton5: public TemplateButton
@@ -121,6 +126,7 @@ namespace kubik
 				virtual void drawStickers();
 			public:
 				TemplateButton5(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
+				ci::gl::Texture getPrintTemplate();
 			};
 
 			class SubButton: public SimpleSpriteButton

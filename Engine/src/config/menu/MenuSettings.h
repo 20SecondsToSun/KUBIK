@@ -4,123 +4,91 @@
 #include "ApplicationModel.h"
 #include "KubikException.h"
 
-using namespace std;
-using namespace ci;
-using namespace ci::app;
-
 namespace kubik
 {
-	class MenuSettings:public ISettings
+	namespace menu
 	{
+		typedef std::shared_ptr<class MenuSettings> MenuSettingsRef;
 
-	public:
-		struct MenuDataStruct
+		class GameData
 		{
-			bool isCustomDesign;
-			int  templateId;
+			ci::gl::Texture texture;		
+			ci::Vec2f position;
+			GameId id;
+			
+		public:
+			ci::gl::Texture getTexture() const 
+			{ 
+				return texture; 
+			}
 
-			string staticPartDesignPath;
-			string kubikTemplatePartDesignPath;
-			string userTemplatePartDesignPath;
-			string finalPath;
-
-			bool hasDesignChanges(MenuDataStruct menu)
+			/*void setTexture(const ci::gl::Texture& val)
 			{
-				return (isCustomDesign != menu.isCustomDesign ||
-						    templateId != menu.templateId);
-			}		
+			texture = val;
+			}*/
+
+			ci::Vec2f getPosition() const
+			{
+				return position;
+			}
+
+			/*void setPosition(const ci::Vec2f& val)
+			{
+			position = val;
+			}*/
+
+			GameId getID()
+			{
+				return id;
+			}
+
+			friend class MenuSettings;
 		};
 
-		MenuSettings(ApplicationModelRef model):ISettings(model)
+		class MenuSettings :public ISettings
 		{
-			mainConfigPath  = model->getMenuConfigPath();
-			//load();		
-		}
+		public:
+			struct MenuDataStruct
+			{
+				bool isCustomDesign;
+				int  templateId;
 
-		void load()
-		{
-			logger().log("menu settings load");
+				std::string staticPartDesignPath;
+				std::string kubikTemplatePartDesignPath;
+				std::string userTemplatePartDesignPath;
+				std::string finalPath;
 
-			JsonTree configJSON					= JsonTree(loadFile(mainConfigPath));
-			data.staticPartDesignPath			= configJSON.getChild("staticPartDesignPath").getValue<string>();
-			data.kubikTemplatePartDesignPath	= configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();
-			data.userTemplatePartDesignPath		= configJSON.getChild("userTemplatePartDesignPath").getValue<string>();
-			data.finalPath						= configJSON.getChild("finalPath").getValue<string>();
-			data.templateId						= configJSON.getChild("templateId").getValue<int>();
-			data.isCustomDesign					= configJSON.getChild("isCustomDesign").getValue<bool>();
-			
-			setDesignPath();
-			setTextures();
-		}
+				bool hasDesignChanges(const MenuDataStruct& menu)
+				{
+					return (isCustomDesign != menu.isCustomDesign ||
+						templateId != menu.templateId);
+				}
+			};
 
-		void saveConfig()
-		{
-			console()<<"SAVE MENU CONFIG"<<endl;
+			MenuSettings(ApplicationModelRef model);
+			virtual void createMemento(){};
+			virtual void writeConfig(){};
 
-			fs::path basePath(mainConfigPath);
+			void load();
+			void saveConfig();
 
-			JsonTree doc;		
-			doc.addChild( JsonTree("staticPartDesignPath", data.staticPartDesignPath));
-			doc.addChild( JsonTree("kubikTemplatePartDesignPath", data.kubikTemplatePartDesignPath));
-			doc.addChild( JsonTree("userTemplatePartDesignPath", data.userTemplatePartDesignPath));
-			doc.addChild( JsonTree("finalPath", data.finalPath));
-			doc.addChild( JsonTree("templateId", data.templateId));
-			doc.addChild( JsonTree("isCustomDesign", data.isCustomDesign));	
-			doc.write( writeFile(basePath), JsonTree::WriteOptions() );
-		}
+			bool settingsChanged();
+			changeSetting::id getChangeID() const;
+			void setDesignPath();
+			void setTextures();
+			void setData(MenuDataStruct value);
 
-		virtual void createMemento(){};
-		virtual void writeConfig(){};
-		bool settingsChanged(){return false;};	
-		changeSetting::id getChangeID(){ return changeSetting::id::MENU;};	
+			MenuDataStruct getData();
 
-		void setDesignPath()
-		{
-			if(data.isCustomDesign)
-				templateDesignPath = data.userTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
-			else
-				templateDesignPath = data.kubikTemplatePartDesignPath + to_string(data.templateId)+"\\" + data.finalPath;
+			std::vector<GamesInfo> getGames();
+			std::vector<GameData> getEnabledGamesData();
 
-			staticDesignPath = data.staticPartDesignPath + data.finalPath;
-		}			
-		
-		void setTextures()
-		{		
-			clearResources();
-			addToDictionary("background",	createImageResource(getTemplateDesignPath("bg.jpg")));
-			addToDictionary("menuButton",	createImageResource(getTemplateDesignPath("menulayer.png")));
-			addToDictionary("helvetica30",  createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
-		}
-
-		void setData(MenuDataStruct value)
-		{
-			data = value;
-			saveConfig();
-		}
-
-		MenuDataStruct getData()
-		{
-			return data;
-		}
-
-		vector<GamesInfo> getGames()
-		{
-			return model->getGames();
-		}
-
-		string getUserDesighFullPath()
-		{
-			return getBasePath().string() + data.userTemplatePartDesignPath + to_string(data.templateId)+ "\\" + data.finalPath;			
-		}
-
-		string getKubikDesighFullPath()
-		{
-			return getBasePath().string() + data.kubikTemplatePartDesignPath + to_string(data.templateId)+ "\\" + data.finalPath;			
-		}		
+			std::string getUserDesighFullPath();
+			std::string getKubikDesighFullPath();
 
 		private:
-			MenuDataStruct data;	
-	};
-
-	typedef shared_ptr<MenuSettings> MenuSettingsRef;
+			MenuDataStruct data;
+			GameData gamesdata;
+		};
+	}
 }

@@ -130,7 +130,7 @@ namespace kubik
 		virtual void createMemento(){};
 		virtual void writeConfig(){};
 		bool settingsChanged(){return false;};	
-		changeSetting::id getChangeID(){ return changeSetting::id::SCREENSAVER;};	
+		changeSetting::id getChangeID() const { return changeSetting::id::SCREENSAVER;};	
 
 	private:
 

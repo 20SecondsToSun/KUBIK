@@ -4,16 +4,17 @@ using namespace std;
 using namespace kubik;
 using namespace ci::signals;
 using namespace ci::app;
+using namespace ci;
 using namespace kubik::games::photobooth;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
 	:photoStorage(photoStorage),
 	photoFiltersStartY(1386.0f)
 {
-	photoPositions[0] = Vec2f(96.0f, 439.0f);
+	photoPositions[0] = Vec2f(96.0f,  439.0f);
 	photoPositions[1] = Vec2f(404.0f, 439.0f);
 	photoPositions[2] = Vec2f(711.0f, 439.0f);
-	photoPositions[3] = Vec2f(96.0f, 864.0f);
+	photoPositions[3] = Vec2f(96.0f,  864.0f);
 	photoPositions[4] = Vec2f(404.0f, 864.0f);
 
 	reset(settings);
@@ -56,7 +57,7 @@ void PhotoChoosing::start()
 	okBtn->setAlpha(0.0f);
 	reShotBtn->setAlpha(0.0f);
 
-	for (int i = 0; i < PHOTOS_NUM; i++)
+	for (unsigned int i = 0; i < photoBtns.size(); i++)
 	photoBtns[i]->setAlpha(0.0f);
 
 	for (unsigned int i = 0; i < filterBtns.size(); i++)

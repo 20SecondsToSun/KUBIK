@@ -104,7 +104,7 @@ namespace kubik
 		bool isOn, isPurchased;
 		string name;
 		IconPair iconPair;
-		Texture miniIcon;
+		Texture miniIcon, texture;
 
 		bool isGameOn()
 		{
@@ -144,7 +144,17 @@ namespace kubik
 		Texture getMiniIcon()
 		{
 			return miniIcon;
-		}		
+		}
+
+		void setTexture(const ci::gl::Texture& tex)
+		{
+			texture = tex;
+		}
+
+		Texture getTexture()
+		{
+			return texture;
+		}
 	};
 
 	enum resourceType

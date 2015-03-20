@@ -462,7 +462,7 @@ namespace kubik
 				return data.activeDesign != mementoData.activeDesign;
 			}
 
-			changeSetting::id getChangeID()
+			changeSetting::id getChangeID() const
 			{
 				return changeSetting::id::CONFIG;
 			}

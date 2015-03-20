@@ -8,7 +8,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 
-MenuScreen::MenuScreen(ISettingsRef config):IScreen(ScreenId::MENU)
+MenuScreen::MenuScreen(ISettingsRef config)
+	:IScreen(ScreenId::MENU)
 {
 	init(config);
 }
@@ -19,52 +20,37 @@ MenuScreen::~MenuScreen()
 	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
 }
 
-void MenuScreen::init(ISettingsRef  _settings)
+void MenuScreen::init(ISettingsRef _settings)
 {	
 	settings	   =  static_pointer_cast<MenuSettings>(_settings);
 	font		   =  settings->getFont("helvetica30");
 	bckgnd         =  settings->getTexture("background");
 
-	createMenuBtns(settings->getGames());
+	createMenuBtns(settings->getEnabledGamesData());
 	createControlsButtons();
 }
 
 void MenuScreen::resetMenuBtnGames()
 {
 	clearGamesButtonVector();
-	createMenuBtns(settings->getGames());
+	createMenuBtns(settings->getEnabledGamesData());
 }
 
-void MenuScreen::createMenuBtns(const std::vector<GamesInfo>& games)
-{		
-	int i = 0;
+void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
+{	
 	for(auto it : games)
-	{
-		if(it.isOn && it.isPurchased)
-		{
-			SimpleSpriteButtonRef button = SimpleSpriteButtonRef(new SimpleSpriteButton(getMenuBtuttonArea(i++)));//, it.name, font, it.id));		
-			//button->addMouseUpListener(&MenuScreen::gameMouseUpListener, this);
-			addChild(button);
-			gamesBtns.push_back(button);
-		}
+	{			
+		GameButtonRef button = GameButtonRef(new GameButton(it));
+		addChild(button);
+		gamesBtns.push_back(button);		
 	}
 }
 
 void MenuScreen::createControlsButtons()
 {
 	Rectf setButtonArea = Rectf(50.0f, 50.0f, 350.0f, 150.0f);
-	settingsButton = SimpleSpriteButtonRef(new SimpleSpriteButton(setButtonArea));//, settingsName, font));	
-	//settingsButton->addMouseUpListener(&MenuScreen::settingsMouseUpListener, this);
+	settingsButton = SimpleSpriteButtonRef(new SimpleSpriteButton(setButtonArea));
 	addChild(settingsButton);
-
-
-	/*Rectf videoButtonArea = Rectf(400.0f, 50.0f, 700.0f, 150.0f);
-	videoButton = TextButtonRef(new TextButton(videoButtonArea, screenSaverName, font));	
-	videoButton->addMouseUpListener(&MenuScreen::videoMouseUpListener, this);
-	addChild(videoButton);*/
-
-	//videoButton->setPosition(Vec2f(800,800));
-	//setPosition(Vec2f(-400,0));
 }
 
 Rectf MenuScreen::getMenuBtuttonArea(int i)
@@ -78,8 +64,13 @@ Rectf MenuScreen::getMenuBtuttonArea(int i)
 
 void MenuScreen::clearGamesButtonVector()
 {
+	removeAllChildren();
+
+	settingsButton->disconnectEventHandler();
+
 	for(auto btn : gamesBtns)	
 		btn->disconnectEventHandler();	
+
 	gamesBtns.clear();
 }
 
@@ -103,6 +94,7 @@ void MenuScreen::startGameHandler(EventGUIRef& evt )
 {	
 	console()<<"startGameHandler!!!!!!!!!!!!"<<endl;
 	//GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);	
+	setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); }));
 	startGameSignal(GameId::PHOTOBOOTH);//event->getGameID());
 }
 

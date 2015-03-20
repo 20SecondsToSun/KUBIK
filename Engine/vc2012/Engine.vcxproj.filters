@@ -372,6 +372,12 @@
     <ClCompile Include="..\src\games\photobooth\states\sharing\Popup.cpp">
       <Filter>Source Files\games\photobooth\states\sharing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\config\menu\MenuSettings.cpp">
+      <Filter>Source Files\config\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\menu\GameButton.cpp">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -853,6 +859,12 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\states\sharing\Popup.h">
       <Filter>Source Files\games\photobooth\states\sharing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\menu\GameButton.h">
+      <Filter>Source Files\locations\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\menu\ScreenStorage.h">
+      <Filter>Source Files\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

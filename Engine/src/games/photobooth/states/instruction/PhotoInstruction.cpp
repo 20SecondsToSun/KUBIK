@@ -6,7 +6,7 @@ using namespace kubik::games::photobooth;
 using namespace kubik;
 
 PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings)
-	:animTime(0.8f)
+	:animTime(0.8f), alphaAnim(1.0f)
 {
 	titlePositionY = 492.0f;
 	reset(settings);

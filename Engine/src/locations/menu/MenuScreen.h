@@ -4,6 +4,8 @@
 #include "gui/EventGUI.h"
 #include "gui/Sprite.h"
 #include "gui/SimpleSpriteButton.h"
+#include "GameButton.h"
+#include "ScreenStorage.h"
 
 namespace kubik
 {
@@ -35,7 +37,7 @@ namespace kubik
 			void startSettingsHandler(EventGUIRef& button);
 			void videoMouseUpListener(EventGUIRef& button);
 
-			void createMenuBtns(const std::vector<GamesInfo>& gameIDs);
+			void createMenuBtns(const std::vector<GameData>& gameIDs);
 			void clearGamesButtonVector();
 			void createControlsButtons();
 			void update();

@@ -6,6 +6,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 using namespace kubik::config;
+using namespace kubik::menu;
 using namespace kubik;
 
 ConfigScreen::ConfigScreen(ISettingsRef config) :IScreen(ScreenId::CONFIG)

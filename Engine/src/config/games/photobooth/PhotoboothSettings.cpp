@@ -250,7 +250,6 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		configTexts.insert(lang, PhtTextID::PLAY_AGAIN,			  jtools().parseTextItem(it.getChild("again")));		
 		configTexts.insert(lang, PhtTextID::ANOTHER_GAMES,		  jtools().parseTextItem(it.getChild("anotherGames")));		
 	}
-	
 }
 
 void PhotoboothSettings::loadSharingIcons(JsonTree config)

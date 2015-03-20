@@ -10,21 +10,21 @@
 namespace kubik
 {
 	namespace config
-	{		
+	{
 		typedef std::shared_ptr<class PhotoboothSettings> PhotoboothSettingsRef;
-	
-		class PhotoboothSettings: public ISettings
+
+		class PhotoboothSettings : public ISettings
 		{
-		public:	
+		public:
 			enum PhtTextID
 			{
-				PHOTO_OVER,	PHOTO_OVER_SUB,
-				CARD_STYLE,	CARD_STYLE_SUB,				
+				PHOTO_OVER, PHOTO_OVER_SUB,
+				CARD_STYLE, CARD_STYLE_SUB,
 				FILTERS, FILTERS_SUB,
-				PUBLISHING,	PUBLISHING_SUB,
+				PUBLISHING, PUBLISHING_SUB,
 				SAVE_TEXT, YOUR_DESIGN_TEXT,
 				VKONTAKTE, FACEBOOK, TWITTER,
-				QRCODE,	PRINTER,EMAIL, FILTER_TEXT1, FILTER_TEXT2,
+				QRCODE, PRINTER, EMAIL, FILTER_TEXT1, FILTER_TEXT2,
 				TIMER_TEXT1, TIMER_TEXT2,
 				TEMPLATE_TEXT1, TEMPLATE_TEXT2, TEMPLATE_PRINT,
 				PRELOAD_TEXT1, PRELOAD_TEXT2,
@@ -65,9 +65,9 @@ namespace kubik
 			std::vector<ci::gl::Texture> getPhotoOverActiveTemplate();
 
 			ci::gl::Texture getActivePrintBgTex();
-			
+
 			void swapFilter(int id);
-			
+
 			//bool findFilterId(int id, std::vector<int> filters);			
 
 			DesignData getPhotoOverDesignData()
@@ -82,8 +82,8 @@ namespace kubik
 			DesignData getPhotoFiltersPreview()
 			{
 				return photoFiltersPreview;
-			}	
-			
+			}
+
 			void setActiveOverDesignID(int id);
 			int getActiveOverDesignID();
 
@@ -101,11 +101,11 @@ namespace kubik
 			void createMemento();
 			void writeConfig();
 
-			int getBeReadySeconds(){return seconds;};
+			int getBeReadySeconds(){ return seconds; };
 
-			bool wasChanged(){ return false;};
-			bool settingsChanged();	
-			changeSetting::id getChangeID(){ return changeSetting::id::PHOTOBOOTH;};	
+			bool wasChanged(){ return false; };
+			bool settingsChanged();
+			changeSetting::id getChangeID() const { return changeSetting::id::PHOTOBOOTH; };
 
 		public:
 			class Filter
@@ -132,7 +132,7 @@ namespace kubik
 					return text;
 				}
 			};
-		
+
 			std::vector<Filter> getFilters()
 			{
 				return filters;
@@ -149,7 +149,7 @@ namespace kubik
 
 			public:
 				friend PhotoboothSettings;
-			};	
+			};
 
 			typedef ImageElement Sticker;
 			typedef ImageElement BackgroundPrint;
@@ -160,7 +160,7 @@ namespace kubik
 				std::string kubikTemplatePartDesignPath;
 				std::string userTemplatePartDesignPath;
 				std::string finalPath;
-				std::string userStickerPath;		
+				std::string userStickerPath;
 				std::string userCardStylePath;
 				std::string photoOverDesignDataPath;
 				std::string photoCardsStylesDesignDataPath;
@@ -168,7 +168,7 @@ namespace kubik
 
 			public:
 				friend PhotoboothSettings;
-			};		
+			};
 
 			class Sharing
 			{
@@ -192,12 +192,12 @@ namespace kubik
 			ConfigObject mainConfigObj;
 
 			int seconds;
-			int secondsBetweenShots;			
-			int templateId;			
+			int secondsBetweenShots;
+			int templateId;
 			int minPhotosShots;
-			int maxPhotosShots;		
+			int maxPhotosShots;
 			int minSecBetweenShots;
-			int maxSecBetweenShots;			
+			int maxSecBetweenShots;
 			int minCountTimer;
 			int maxCountTimer;
 			bool isCustomDesign;
@@ -210,13 +210,13 @@ namespace kubik
 			int userPhotoCardStyleDesignID;
 
 			vector<ci::RectT<int>> photoCardStylesCoordRects, photoOverCoordRects;
-	
+
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;
 
 			bool						 memento;
 
-			std::vector<Filter>			 filters, filtersMemento;		
+			std::vector<Filter>			 filters, filtersMemento;
 			std::vector<Sticker>		 stickers;
 			std::vector<BackgroundPrint> bgPrint;
 			ConfigTexts<PhtTextID>		 configTexts;
@@ -225,10 +225,10 @@ namespace kubik
 
 			void loadPaths();
 			void loadParams();
-			void loadLabels();			
-			void loadConsts();			
+			void loadLabels();
+			void loadConsts();
 			void loadDesignPath();
-			
+
 			void parsePhotoOverDesigns();
 			void parsePhotoCardStyles();
 			void parsePhotoFiltersPreview();
@@ -241,24 +241,24 @@ namespace kubik
 			//void loadGameBgPrintParams(JsonTree config);
 			void loadConfigTexts(JsonTree config);
 			void loadSharingIcons(JsonTree config);
-			void saveConfig();		
-			void findAllImagePrints(std::string path, std::vector<ImageElement> &prints, bool isCustom);	
+			void saveConfig();
+			void findAllImagePrints(std::string path, std::vector<ImageElement> &prints, bool isCustom);
 
 			/////////////////////////////////
 
-			DesignData photoOverDesignData;		
+			DesignData photoOverDesignData;
 			DesignData photoCardStyles;
 			DesignData photoFiltersPreview;
 
 			std::string getActiveOverDesignText();
-			std::string getActiveCardStyleText();		
-			std::string getActiveFiltersTexts();		
-			std::string getActivePublishingTexts();		
-					
+			std::string getActiveCardStyleText();
+			std::string getActiveFiltersTexts();
+			std::string getActivePublishingTexts();
+
 			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
 			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
-		};	
+		};
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;
 	}
- }
+}

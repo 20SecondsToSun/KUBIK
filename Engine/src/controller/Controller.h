@@ -42,7 +42,7 @@ namespace kubik
 		ScreenSaverSettingsRef	screenSaverSettings; 
 		ConfigSettingsRef		controlSettings; 
 		GameSettingsRef			gameSettings; 	
-		MenuSettingsRef			menuSettings; 
+		menu::MenuSettingsRef	menuSettings;
 
 		menu::MenuScreenRef		menuScreen;
 		menu::ControlLayerRef	controlLayer;

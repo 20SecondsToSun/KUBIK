@@ -7,6 +7,7 @@
 		 "name": "Photobooth",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon1.png"
       },
       {
@@ -14,6 +15,7 @@
 		 "name": "Instakub",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon1.png"
       },
       {
@@ -21,6 +23,7 @@
 		 "name": "Funces",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon1.png",
 		 "miniIcon" : "miniIcon2.png"
       },
       {
@@ -28,6 +31,7 @@
 		 "name": "MiniMi",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon1.png"
       },
       {
@@ -35,6 +39,7 @@
 		 "name": "Cool Pose",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon1.png"
       },
       {
@@ -42,6 +47,7 @@
 		 "name": "OneTwoDrink",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon2.png"
       },
       {
@@ -49,6 +55,7 @@
 		 "name": "Cool Pose",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon2.png",
 		 "miniIcon" : "miniIcon2.png"
       }
    ],
@@ -77,5 +84,5 @@
    "netConnection" : true,
    "standID" : 1,
    "userID" : "1fggh",
-   "iconPath": "data\\interface\\configDesign\\"
+   "iconPath": "data\\interface\\gamesDesign\\icons\\"
 }

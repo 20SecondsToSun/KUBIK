@@ -96,9 +96,10 @@ namespace kubik
 				game.isPurchased = findGameId(game.id, purchasedGames);
 				game.name = it.getChild("name").getValue<string>();	
 				
-				game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
+				game.setActiveIcon(loadImage(getFullPath(iconUrl   + it.getChild("iconOn").getValue<string>())));
 				game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
-				game.setMiniIcon(loadImage(getFullPath(iconUrl + it.getChild("miniIcon").getValue<string>())));
+				game.setMiniIcon(loadImage(getFullPath(iconUrl     + it.getChild("miniIcon").getValue<string>())));
+				game.setTexture(loadImage(getFullPath(iconUrl	   + it.getChild("icon").getValue<string>())));
 				games.push_back(game);				
 			}	
 		}

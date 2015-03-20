@@ -132,7 +132,7 @@ namespace kubik
 		virtual void createMemento(){};
 		virtual void writeConfig(){};
 		bool settingsChanged(){return false;};	
-		changeSetting::id getChangeID(){ return changeSetting::id::GAMES;};	
+		changeSetting::id getChangeID() const { return changeSetting::id::GAMES; };
 
 		void setTextures() override
 		{

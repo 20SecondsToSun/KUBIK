@@ -46,9 +46,36 @@ void Photobooth::create()
 void Photobooth::start()
 {
 	console()<<"START PHOTOBOOOOOOTH!"<<endl;
-	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));	
-	gotoFirstlocation();
+	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
+
+	index = 0;
+	currentLocation = locations[index];
+
 	reset();
+
+	initShowAnimation();
+}
+
+void Photobooth::initShowAnimation()
+{
+	screenshot = getScreenShot();
+	state = SHOW_ANIM;
+	timeline().apply(&animX, 1080.0f, 0.0f, 0.9f, EaseOutCubic()).finishFn(bind(&Photobooth::showAnimationComplete, this));
+	timeline().apply(&animX1, 0.0f, -500.0f, 0.9f, EaseOutCubic());
+	timeline().apply(&alpha, 1.0f, 0.2f, 0.9f, EaseOutCubic());	
+}
+
+void Photobooth::showAnimationComplete()
+{
+	console() << "showAnimationComplete" << endl;
+	state = DRAW;
+
+	for (auto loc : locations)
+		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
+
+	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
+
+	currentLocation->start();
 }
 
 void Photobooth::stop()
@@ -57,6 +84,10 @@ void Photobooth::stop()
 	updateSignal.disconnect();
 	for (auto it: locations)
 		it->stop();
+
+	animX.stop();
+	animX1.stop();
+	alpha.stop();
 }
 
 void Photobooth::reset()
@@ -72,17 +103,12 @@ void Photobooth::initLocations()
 
 	locations.clear();
 	locations.push_back(photoInstruction);
-	locations.push_back(photoFilter);
-	locations.push_back(photoTimer);
-	locations.push_back(photoShooting);
+	//locations.push_back(photoFilter);
+	//locations.push_back(photoTimer);
+	//locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
-
-	for (auto loc: locations)	
-		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
-
-	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
 }
 
 void Photobooth::cameraSetup()
@@ -96,8 +122,7 @@ void Photobooth::cameraSetup()
 void Photobooth::nextLocationHandler()
 {
 	//currentLocation->stop();
-	console() << "-----------------------next location----------------------------" << endl;
-
+	  
 	if (++index >= locations.size())
 		gotoFirstlocation();
 	else
@@ -126,7 +151,26 @@ void Photobooth::update()
 
 void Photobooth::draw()
 {	
-	currentLocation->draw();	
+	switch (state)
+	{
+	case SHOW_ANIM:
+		gl::pushMatrices();
+		gl::translate(animX1, 0.0f);
+		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
+		gl::draw(screenshot);
+		gl::color(Color::white());
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		gl::translate(animX, 0.0f);
+		currentLocation->draw();
+		gl::popMatrices();
+		break;
+
+	case DRAW:
+		currentLocation->draw();
+		break;
+	}	
 }
 
 void Photobooth::removeListeners()

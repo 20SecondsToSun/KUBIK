@@ -41,13 +41,13 @@ namespace kubik
 			connection appSettingsChgListener;
 
 			void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
-			void setMenuSettings(MenuSettingsRef menuSettings);
+			void setMenuSettings(menu::MenuSettingsRef menuSettings);
 			void setGameSettings(GameSettingsRef gameSettings);
 
 		private:
 			ConfigSettingsRef		configSettings;
 			ScreenSaverSettingsRef  screenSaverSettings;
-			MenuSettingsRef			menuSettings;
+			menu::MenuSettingsRef	menuSettings;
 			GameSettingsRef			gameSettings;		
 			GameSettingsSpriteRef	gameSettingsScreen;
 					

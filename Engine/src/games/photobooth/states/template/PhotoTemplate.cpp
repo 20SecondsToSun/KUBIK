@@ -7,7 +7,7 @@ using namespace std;
 using namespace ci::app;
 using namespace ci;
 
-PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage) :photoStorage(photoStorage)
+PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage) : photoStorage(photoStorage)
 {
 	reset(settings);
 }
@@ -124,8 +124,8 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 
 void PhotoTemplate::startHideAnimation()
 {
-	stop();
 	setChoosingTemplate();
+	stop();	
 	setLastScreenShot();
 	state = ANIM_HIDE;
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.8f, EaseOutCubic())
@@ -133,8 +133,8 @@ void PhotoTemplate::startHideAnimation()
 }
 
 void PhotoTemplate::setChoosingTemplate()
-{
-
+{	
+	ci::writeImage(getAppPath() / "//template.png", selectedTemplate->getPrintTemplate());
 }
 
 void PhotoTemplate::update()
@@ -162,7 +162,7 @@ void PhotoTemplate::draw()
 	}
 }
 
-void kubik::games::photobooth::PhotoTemplate::resetTemplateButtons()
+void PhotoTemplate::resetTemplateButtons()
 {
 	Vec2f position, size;
 	templatebtns.clear();
@@ -174,17 +174,17 @@ void kubik::games::photobooth::PhotoTemplate::resetTemplateButtons()
 	position = Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 455.0f);
 	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), templates, stickers));
-	templatebtns.push_back(templ2);
+	//templatebtns.push_back(templ2);
 
-	position = Vec2f(220.0f, 1191.0f);
+	position = Vec2f(560.0f, 420.0f);// Vec2f(220.0f, 1191.0f);
 	size = Vec2f(303.0f, 202.0f);
-	templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
+	//templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
 
-	position = Vec2f(611.0f, 1191.0f);
+	position = Vec2f(560.0f, 420.0f); //Vec2f(611.0f, 1191.0f);
 	size = Vec2f(202.0f, 304.0f);
-	templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
+	//templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
 
-	position = Vec2f(220.0f, 1461.0f);
+	position = Vec2f(560.0f, 420.0f); //Vec2f(220.0f, 1461.0f);
 	size = Vec2f(303.0f, 202.0f);
 	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
 
@@ -195,7 +195,7 @@ void kubik::games::photobooth::PhotoTemplate::resetTemplateButtons()
 	templ2->setSelectRamkaTexture(settings->getTexture("printramka"));
 }
 
-void kubik::games::photobooth::PhotoTemplate::stopAllTweens()
+void PhotoTemplate::stopAllTweens()
 {
 	alphaAnim.stop();
 	for (auto templ : templatebtns)

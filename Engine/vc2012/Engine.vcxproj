@@ -121,6 +121,7 @@
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\config\games\instakub\InstakubSettingscpp.cpp" />
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp" />
+    <ClCompile Include="..\src\config\menu\MenuSettings.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
+    <ClCompile Include="..\src\locations\menu\GameButton.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
@@ -266,7 +268,9 @@
     <ClInclude Include="..\src\loaders\Iloader.h" />
     <ClInclude Include="..\src\locations\IScreen.h" />
     <ClInclude Include="..\src\locations\menu\ControlLayer.h" />
+    <ClInclude Include="..\src\locations\menu\GameButton.h" />
     <ClInclude Include="..\src\locations\menu\MenuScreen.h" />
+    <ClInclude Include="..\src\locations\menu\ScreenStorage.h" />
     <ClInclude Include="..\src\locations\Preloader.h" />
     <ClInclude Include="..\src\locations\service\ServicePopup.h" />
     <ClInclude Include="..\src\locations\settings\Checker.h" />

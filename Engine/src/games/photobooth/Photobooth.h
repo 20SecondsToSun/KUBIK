@@ -12,6 +12,7 @@
 #include "states/template/PhotoTemplate.h"
 #include "model/PhotoStorage.h"
 #include "CameraAdapter.h"
+#include "ScreenStorage.h"
 
 namespace kubik
 {
@@ -36,7 +37,17 @@ namespace kubik
 				connection updateSignal;
 				size_t index;
 
+				enum locationStates
+				{
+					SHOW_ANIM,
+					DRAW
+				} 
+				state;
+				ci::Anim<float> animX, animX1, alpha;
+
 			private:
+				ci::gl::Texture		screenshot;
+
 				PhotoInstructionRef photoInstruction;
 				PhotoFilterRef		photoFilter;
 				PhotoTimerRef		photoTimer;
@@ -57,6 +68,8 @@ namespace kubik
 				void reshotHandler();
 				void cameraSetup();
 				void gotoFirstlocation();
+				void initShowAnimation();
+				void showAnimationComplete();
 			};
 		}
 	}
