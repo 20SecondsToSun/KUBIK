@@ -20,9 +20,11 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			class Photobooth :public IGame, public Sprite
+			class Photobooth :public IGame 
 			{
 			public:
+				static const int ENABLE_GAME_CLOSE = 1;
+				static const int DISABLE_GAME_CLOSE = 2;
 				Photobooth(ISettingsRef config);
 				~Photobooth();
 
@@ -70,6 +72,8 @@ namespace kubik
 				void gotoFirstlocation();
 				void initShowAnimation();
 				void showAnimationComplete();
+				void beginAnimHandler();
+				void completeAnimHandler();
 			};
 		}
 	}

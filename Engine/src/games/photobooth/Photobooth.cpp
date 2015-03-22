@@ -71,11 +71,27 @@ void Photobooth::showAnimationComplete()
 	state = DRAW;
 
 	for (auto loc : locations)
+	{
 		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
+		loc->connectEventHandler(&Photobooth::beginAnimHandler, this, IPhotoboothLocation::BEGIN_ANIM);
+		loc->connectEventHandler(&Photobooth::completeAnimHandler, this, IPhotoboothLocation::COMPLETE_ANIM);
+	}		
 
 	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
-
 	currentLocation->start();
+	callback(ENABLE_GAME_CLOSE);
+}
+
+void Photobooth::beginAnimHandler()
+{
+	console() << "DISABLE_GAME_CLOSE!" << endl;
+	callback(DISABLE_GAME_CLOSE);
+}
+
+void Photobooth::completeAnimHandler()
+{	
+	console() << "ENABLE_GAME_CLOSE!" << endl;
+	callback(ENABLE_GAME_CLOSE);
 }
 
 void Photobooth::stop()
@@ -103,8 +119,8 @@ void Photobooth::initLocations()
 
 	locations.clear();
 	locations.push_back(photoInstruction);
-	//locations.push_back(photoFilter);
-	//locations.push_back(photoTimer);
+	locations.push_back(photoFilter);
+	locations.push_back(photoTimer);
 	//locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
@@ -175,8 +191,12 @@ void Photobooth::draw()
 
 void Photobooth::removeListeners()
 {
-	for (auto loc: locations)	
+	for (auto loc : locations)
+	{
 		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
-
+		loc->disconnectEventHandler(IPhotoboothLocation::BEGIN_ANIM);
+		loc->disconnectEventHandler(IPhotoboothLocation::COMPLETE_ANIM);
+	}
+		
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 }

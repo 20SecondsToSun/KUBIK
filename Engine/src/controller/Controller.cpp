@@ -200,6 +200,9 @@ void Controller::startup()
 
 void Controller::startLocation(IScreenRef location)
 {
+	if (currentLocation)
+		currentLocation->setScrenshot();
+
 	closeCurrentLocation();
 
 	currentLocation = location;
@@ -318,7 +321,7 @@ void Controller::removeMenuScreenHandlers()
 ////////////////////////////////////////////////////////////////////////////	
 
 void Controller::startGameHandler(GameId id)
-{	
+{
 	if(gameSettings->isGameCurrent(id))	
 		startLocation(game);	
 	else	
@@ -352,20 +355,33 @@ void Controller::createGame(GameId id)
 
 void Controller::addGameHandlers()
 {
-	view->addLayer(controlLayer);	
+	view->addLayer(controlLayer);		
+	game->connectEventHandler(&Controller::enableGameHandler, this, Photobooth::ENABLE_GAME_CLOSE);
+	game->connectEventHandler(&Controller::disableGameHandler, this, Photobooth::DISABLE_GAME_CLOSE);
+}
+
+void Controller::enableGameHandler()
+{
 	controlLayer->activateListeners();
-	controlLayer->connectEventHandler(&Controller::closeGameHandler, this, ControlLayer::CLOSE_GAME);		
+	controlLayer->connectEventHandler(&Controller::closeGameHandler, this, ControlLayer::CLOSE_GAME);
+}
+
+void Controller::disableGameHandler()
+{
+	controlLayer->disconnectEventHandler(ControlLayer::CLOSE_GAME);
+	controlLayer->unActivateListeners();
 }
 
 void Controller::closeGameHandler()
-{
+{	
 	startLocation(menuScreen);
 }
 
 void Controller::removeGameHandlers()
 {
-	controlLayer->disconnectEventHandler();
-	controlLayer->unActivateListeners();
+	disableGameHandler();
+	game->disconnectEventHandler(Photobooth::ENABLE_GAME_CLOSE);
+	game->disconnectEventHandler(Photobooth::DISABLE_GAME_CLOSE);
 	view->removeLayer(controlLayer);	
 }
 

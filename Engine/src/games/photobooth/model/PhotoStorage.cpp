@@ -222,8 +222,6 @@ void PhotoStorage::createPhotoTemplates()
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT4_PRINT] = getScaledTex(_width, _scale * format4.height, _scale, tex);
 
-		
-
 		photoTemplatesVec.push_back(photoTemplates);
 	}
 }

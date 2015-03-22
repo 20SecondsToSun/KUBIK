@@ -26,7 +26,10 @@ namespace kubik
 				void setLastScreenShot();				
 
 			public:	
-				static const int NEXT_LOC = 0;	
+				static const int NEXT_LOC = 100;
+				static const int BEGIN_ANIM = 101;
+				static const int COMPLETE_ANIM = 102;
+				
 
 				IPhotoboothLocation();
 

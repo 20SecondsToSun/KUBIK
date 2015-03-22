@@ -51,9 +51,27 @@ void ConfigScreen::startUpParams()
 void ConfigScreen::start()
 {
 	startUpParams();
+
 	mainConfig->connectEventHandler(&ConfigScreen::gamesBlockHandler, this);
 	mainConfig->connectEventHandler(&ConfigScreen::showingMainConfAnimationComplete, this, MainConfig::SHOW_ANIM_COMPLETE);
 	mainConfig->startAnimation();
+
+	initShowAnimation();
+}
+
+void ConfigScreen::initShowAnimation()
+{
+	screenshot = getScreenShot();
+	state = SHOW_ANIM;
+	timeline().apply(&animX, 1080.0f, 0.0f, 0.9f, EaseOutCubic()).finishFn(bind(&ConfigScreen::showAnimationComplete, this));
+	timeline().apply(&animX1, 0.0f, -500.0f, 0.9f, EaseOutCubic());
+	timeline().apply(&alpha, 1.0f, 0.2f, 0.9f, EaseOutCubic());
+}
+
+void ConfigScreen::showAnimationComplete()
+{
+	console() << "showAnimationComplete" << endl;
+	state = DRAW;
 }
 
 void ConfigScreen::stop()
@@ -94,7 +112,26 @@ void ConfigScreen::init(ISettingsRef settings)
 
 void ConfigScreen::draw()
 {
-	Sprite::draw();
+	switch (state)
+	{
+	case SHOW_ANIM:
+		gl::pushMatrices();
+		gl::translate(animX1, 0.0f);
+		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
+		gl::draw(screenshot);
+		gl::color(Color::white());
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		gl::translate(animX, 0.0f);
+		Sprite::draw();
+		gl::popMatrices();
+		break;
+
+	case DRAW:
+		Sprite::draw();
+		break;
+	}	
 }
 
 void ConfigScreen::gamesBlockHandler(EventGUIRef& event)

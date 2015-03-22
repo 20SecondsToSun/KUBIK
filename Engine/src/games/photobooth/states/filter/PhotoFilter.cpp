@@ -61,6 +61,8 @@ void PhotoFilter::titleAnimComplete()
 
 void PhotoFilter::showAnimationComplete()
 {
+	callback(COMPLETE_ANIM);
+
 	for (auto filter : filterBtns)
 		filter->connectEventHandler(&PhotoFilter::photoFilterSelect, this);
 }
@@ -80,6 +82,7 @@ void PhotoFilter::photoFilterSelect(EventGUIRef& event)
 	photoStorage->setSelectedFilter(filterID);
 
 	console() << "filter id" << filterID << endl;
+	callback(BEGIN_ANIM);
 	nextLocationSignal();
 };
 

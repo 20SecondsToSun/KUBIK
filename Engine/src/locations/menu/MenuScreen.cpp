@@ -76,9 +76,28 @@ void MenuScreen::clearGamesButtonVector()
 
 void MenuScreen::start()
 {	
+	screenshot = getScreenShot();
+	if (screenshot)
+	{
+		state = SHOW_ANIM;
+		timeline().apply(&animX, 0.0f, 1080.0f, 0.9f, EaseOutCubic()).finishFn(bind(&MenuScreen::showAnimationComplete, this));
+		timeline().apply(&animX1, -500.0f, -0.0f, 0.9f, EaseOutCubic());
+		timeline().apply(&alpha, 0.0f, 1.0f, 0.9f, EaseOutCubic());
+	}		
+	else
+	{
+		state = INIT_ANIM;
+		timeline().apply(&alpha, 0.0f, 1.0f, 0.9f, EaseOutCubic()).finishFn(bind(&MenuScreen::showAnimationComplete, this));
+	}	
+}
+
+void MenuScreen::showAnimationComplete()
+{
+	state = DRAW;
+
 	settingsButton->connectEventHandler(&MenuScreen::startSettingsHandler, this);
 
-	for(auto btn : gamesBtns)	
+	for (auto btn : gamesBtns)
 		btn->connectEventHandler(&MenuScreen::startGameHandler, this);
 }
 
@@ -93,8 +112,7 @@ void MenuScreen::stop()
 void MenuScreen::startGameHandler(EventGUIRef& evt )
 {	
 	console()<<"startGameHandler!!!!!!!!!!!!"<<endl;
-	//GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);	
-	setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); }));
+	//GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);		
 	startGameSignal(GameId::PHOTOBOOTH);//event->getGameID());
 }
 
@@ -111,5 +129,37 @@ void MenuScreen::videoMouseUpListener(EventGUIRef& evt )
 void MenuScreen::draw()
 {
 	gl::draw(bckgnd, getWindowBounds());
+	switch (state)
+	{
+	case MenuScreen::SHOW_ANIM:
+		drawShowAnim();
+		break;
+	case MenuScreen::INIT_ANIM:
+		drawInitAnim();
+		break;
+	case MenuScreen::DRAW:
+		Sprite::draw();
+		break;
+	}	
+}
+
+void MenuScreen::drawShowAnim()
+{
+	gl::pushMatrices();
+	gl::translate(animX, 0.0f);	
+	gl::draw(screenshot);	
+	gl::popMatrices();
+
+	gl::pushMatrices();
+	gl::translate(animX1, 0.0f);
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
+	Sprite::draw();
+	gl::color(Color::white());
+	gl::popMatrices();	
+}
+
+void MenuScreen::drawInitAnim()
+{
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
 	Sprite::draw();	
 }

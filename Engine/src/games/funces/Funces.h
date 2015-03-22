@@ -12,7 +12,7 @@ using namespace ci::app;
 
 namespace kubik
 {
-	class Funces:public IGame, public Sprite
+	class Funces:public IGame 
 	{
 	public:
 		Funces(ISettingsRef setRef);

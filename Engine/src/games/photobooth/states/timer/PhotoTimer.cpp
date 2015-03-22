@@ -76,12 +76,13 @@ void PhotoTimer::showAnimationComplete()
 {
 	cdTimer.start();
 	state = COUNTING;
+	callback(COMPLETE_ANIM);
 }
 
 void PhotoTimer::stop()
 {
 	cdTimer.stop();
-	stopAllTweens();
+	stopAllTweens();	
 }
 
 void PhotoTimer::update()
@@ -128,6 +129,7 @@ void PhotoTimer::calculateDigit()
 
 void PhotoTimer::initHideAnimationParams()
 {
+	callback(BEGIN_ANIM);
 	timeline().apply(&circleScale, 1.0f, 0.5f, 0.5f, EaseInBack(2.70158f)).delay(0.15f)
 		.finishFn(bind(&PhotoTimer::hideAnimationComplete, this));
 	timeline().apply(&digitScale, 0.0f, 0.5f, EaseInBack(2.70158f));
@@ -136,7 +138,7 @@ void PhotoTimer::initHideAnimationParams()
 void PhotoTimer::hideAnimationComplete()
 {
 	auto photo = Utils::drawGraphicsToFBO(1080, 1920, [&](){ draw(); });
-	photoStorage->setLastScreenShot(photo);
+	photoStorage->setLastScreenShot(photo);	
 	nextLocationSignal();
 }
 

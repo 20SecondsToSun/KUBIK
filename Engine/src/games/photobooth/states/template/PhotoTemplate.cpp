@@ -61,6 +61,7 @@ void PhotoTemplate::showAnimationComplete()
 		templ->connectEventHandler(&PhotoTemplate::photoTemplateChoose, this);
 		templ->activateListeners();
 	}
+	callback(COMPLETE_ANIM);
 }
 
 void PhotoTemplate::reset(PhotoboothSettingsRef settings)
@@ -124,6 +125,7 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 
 void PhotoTemplate::startHideAnimation()
 {
+	callback(BEGIN_ANIM);
 	setChoosingTemplate();
 	stop();	
 	setLastScreenShot();

@@ -44,7 +44,14 @@ namespace kubik
 			void setMenuSettings(menu::MenuSettingsRef menuSettings);
 			void setGameSettings(GameSettingsRef gameSettings);
 
-		private:
+		private:			
+			enum locationStates
+			{
+				SHOW_ANIM,
+				DRAW
+			}
+			state;			
+
 			ConfigSettingsRef		configSettings;
 			ScreenSaverSettingsRef  screenSaverSettings;
 			menu::MenuSettingsRef	menuSettings;
@@ -56,7 +63,10 @@ namespace kubik
 			InstakubConfigRef instakubConfig;
 
 			std::vector<Changes> changes;
-			std::list<ISettingsRef> settingsList;			
+			std::list<ISettingsRef> settingsList;
+
+			ci::gl::Texture screenshot;
+			ci::Anim<float> animX1, animX, alpha;
 
 			void update();
 			void closeLocationHandler();
@@ -77,7 +87,9 @@ namespace kubik
 			void setDefaultGameIdInSwitchOnGames();
 			void setReloadGamePropertyIfNeedIt(Changes &chng);
 
-			void showingMainConfAnimationComplete();		
+			void showingMainConfAnimationComplete();
+			void initShowAnimation();
+			void showAnimationComplete();
 		};
 
 		typedef std::shared_ptr<ConfigScreen> ConfigScreenRef;	

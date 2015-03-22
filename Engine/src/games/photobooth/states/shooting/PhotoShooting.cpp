@@ -58,6 +58,7 @@ void PhotoShooting::start()
 
 void PhotoShooting::showAnimationComplete()
 {
+	callback(COMPLETE_ANIM);
 	callDelayShotTimer();
 }
 
@@ -230,6 +231,7 @@ void PhotoShooting::liveviewdelay()
 		callDelayShotTimer();
 	else
 	{
+		callback(BEGIN_ANIM);
 		timeline().apply(&progressBlockAnimateY, 300.0f, 0.4f, EaseOutCubic())
 			.finishFn(bind(&IPhotoboothLocation::hideAnimationComplete, this));
 	}

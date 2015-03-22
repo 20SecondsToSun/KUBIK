@@ -133,7 +133,9 @@ namespace kubik
 		void resetGame();
 		void reloadGame(GameId id);
 
-		void addGameHandlers();
+		void addGameHandlers(); 
+		void enableGameHandler();
+		void disableGameHandler();
 		void removeGameHandlers();
 		void startGameHandler(GameId id);		
 

@@ -3,13 +3,14 @@
 #include "IScreen.h"
 #include "ISettings.h"
 #include "Types.h"
+#include "gui/Sprite.h"
 
 using namespace std;
 using namespace ci::signals;
 
 namespace kubik
 {
-	class IGame:public IScreen
+	class IGame:public IScreen, public Sprite
 	{
 	public:	
 		~IGame(){};

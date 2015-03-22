@@ -130,6 +130,8 @@ void PhotoSharing::connectHandlers()
 
 	if (settings->getSocialState(PhtTextID::TWITTER))
 		twBtn->connectEventHandler(&PhotoSharing::twBtnHandler, this);
+
+	callback(COMPLETE_ANIM);
 }
 
 void PhotoSharing::initShowAnim()
@@ -174,6 +176,7 @@ void PhotoSharing::againBtnHandler(EventGUIRef& event)
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.6f, EaseOutCubic())
 		.finishFn(bind(&PhotoSharing::hideAnimComplete, this));
 	state = ANIM_HIDE;
+	callback(BEGIN_ANIM);
 }
 
 void PhotoSharing::hideAnimComplete()

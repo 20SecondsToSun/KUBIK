@@ -139,6 +139,8 @@ void PhotoChoosing::showAnimationComplete()
 		fbtn->connectEventHandler(&PhotoChoosing::filterChanged, this);
 
 	reShotBtn->connectEventHandler(&PhotoChoosing::backToReshot, this);
+
+	callback(COMPLETE_ANIM);
 }
 
 void PhotoChoosing::reset(PhotoboothSettingsRef settings)
@@ -275,6 +277,7 @@ void PhotoChoosing::okBtnClicked(EventGUIRef& event)
 		.finishFn(bind(&PhotoChoosing::callback, this, NEXT_LOC));
 
 	state = ANIM_HIDE;
+	callback(BEGIN_ANIM);
 }
 
 void PhotoChoosing::update()
