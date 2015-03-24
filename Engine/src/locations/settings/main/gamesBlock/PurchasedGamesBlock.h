@@ -12,29 +12,10 @@ namespace kubik
 		class PurchasedGamesBlock: public Sprite
 		{
 		public:
-			PurchasedGamesBlock(ConfigSettingsRef configSett, vector<GamesInfo> games)
-				:oneGamePurchasedHeight(186),
-				purchasedGamesSize(games.size())
-			{	
-				int i = 0;
-				for (auto gameInfo : games)
-				{
-					OneGamePurchasedRef game = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));	
-					game->setPosition(Vec2f(0.0f, oneGamePurchasedHeight * i++));
-					addChild(game);				
-				}
-			}
+			PurchasedGamesBlock(ConfigSettingsRef configSett, const std::vector<GamesInfo>& games);
 
-			virtual void activateListeners()
-			{
-				for (auto game : displayList)				
-					game->activateListeners();//addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);						
-			}
-
-			float getHeight() const
-			{
-				return oneGamePurchasedHeight * purchasedGamesSize;
-			}
+			virtual void activateListeners() override;
+			float getHeight() const;
 
 		private:
 			int oneGamePurchasedHeight;

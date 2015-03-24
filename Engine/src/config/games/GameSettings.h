@@ -5,270 +5,74 @@
 #include "PhotoboothSettings.h"
 #include "InstakubSettings.h"
 #include "Types.h"
-
-using namespace ci;
-using namespace ci::app;
-using namespace kubik::config;
+#include "ApplicationModel.h"
 
 namespace kubik
 {
-	class GameSettings:public ISettings
+	namespace config
 	{
-	public:
+		typedef std::shared_ptr<class GameSettings> GameSettingsRef;
 
-		class GamesDataStruct
+		class GameSettings :public ISettings
 		{
-			std::vector<GamesInfo> games;
-			int defaultGameID;	
-			
 		public:
-			int getDefaultGameID()
+			class GamesDataStruct
 			{
-				return defaultGameID;	
-			}
+				std::vector<GamesInfo> games;
+				int defaultGameID;
 
-			int getGameID(int i)
-			{
-				return games[i].id;	
-			}
+			public:
+				int getDefaultGameID();
+				int getGameID(int i);
+				void setDefaultGameID(int value);
 
-			void setDefaultGameID(int value)
-			{
-				defaultGameID = value;
-			}
+				std::vector<GamesInfo> getGames();
+				int getCountSwitchOnGames();
+				bool isIdInSwitchOnGames(GameId id);
 
-			std::vector<GamesInfo> getGames()
-			{
-				return games;	
-			}
+				std::vector<GamesInfo> getNotPurchasedGames();
+				std::vector<GamesInfo> getPurchasedGames();
+				GamesInfo getPurchasedGameInfo(GameId id);
 
-			int getCountSwitchOnGames()
-			{
-				int count = 0;
+				friend GameSettings;
+			};
 
-				for (auto game: games)
-				{
-					if(game.isOn)
-						count++;
-				}
+			GameSettings(ApplicationModelRef model);
 
-				return count;
-			}
+			virtual void createMemento();
+			virtual void writeConfig();
 
-			bool isIdInSwitchOnGames(GameId id)
-			{
-				for (auto game: games)
-				{
-					if(game.isOn)
-					{
-						if(game.id == id)
-							return true;
-					}
-				}
-				return false;
-			}
+			ISettingsRef get(GameId id);
+			IResourceDictionary getActiveGameResources();
+			IResourceDictionary getGameTexturesById(GameId id);			
 
-			std::vector<GamesInfo> getNotPurchasedGames()
-			{
-				std::vector<GamesInfo> _gamesSelect;
-				for (auto game: games)
-				{
-					if(!game.isPurchased)
-						_gamesSelect.push_back(game);
-				}
-				return _gamesSelect;
-			}
+			bool settingsChanged();
+			changeSetting::id getChangeID() const;
 
-			std::vector<GamesInfo> getPurchasedGames()
-			{
-				std::vector<GamesInfo> _gamesSelect;
-				for (auto game: games)
-				{
-					if(game.isPurchased)
-						_gamesSelect.push_back(game);
-				}
-				return _gamesSelect;
-			}		
+			void setTextures() override;
+			void load() override;
+			void buildData();
 
-			GamesInfo getPurchasedGameInfo(GameId id)
-			{
-				for (auto game: games)
-				{
-					if(game.isPurchased && id == game.id)
-						return game;
-				}
+			bool isGameID(int id);
+			bool isGameCurrent(int id);
 
-				GamesInfo null;
+			GameId getCurrentGame();
+			void setCurrentGame(GameId id);
 
-				return null;
-			}
+			void setNextGameId(GameId id);
+			GameId getNextGameId();
 
-			friend GameSettings;
+			GamesDataStruct getData();
+			void setData(GamesDataStruct data);
+
+			bool isCurrentGameInSwitchOnGames();
+			void setGameActive(GameId id, bool value);
+
+		private:
+			bool memento;
+			GameId currentGame, nextGameId;
+			std::map<GameId, ISettingsRef> gameSettingsMap;
+			GamesDataStruct data, dataMemento;
 		};
-
-		GameSettings(ApplicationModelRef model):ISettings(model)
-		{
-			currentGame		   = model->getDefaultGameID();
-			data.games		   = model->getGames();
-			data.defaultGameID = model->getDefaultGameID();
-		}
-
-		ISettingsRef get(GameId id)
-		{
-			return gameSettingsMap[id];
-		}		
-
-		IResourceDictionary getActiveGameResources()
-		{
-			return getGameTexturesById(currentGame);
-		}
-
-		IResourceDictionary getGameTexturesById(GameId id)
-		{
-			IResourceDictionary rd = gameSettingsMap[id]->getResources();
-			return rd;		
-		}
-
-		virtual void createMemento(){};
-		virtual void writeConfig(){};
-		bool settingsChanged(){return false;};	
-		changeSetting::id getChangeID() const { return changeSetting::id::GAMES; };
-
-		void setTextures() override
-		{
-			gameSettingsMap[currentGame]->setTextures();	
-		}
-
-		void load() override
-		{
-			std::vector<GamesInfo> games = model->getGames();
-
-			for (auto game: games)
-			{
-				if (!game.isPurchased)
-					continue;
-
-				switch (game.id)
-				{
-				case  GameId::PHOTOBOOTH:
-					gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model));
-					break;
-
-				case  GameId::FUNCES:
-					gameSettingsMap[game.id]  = FuncesSettingsRef(new FuncesSettings(model));	
-					break;
-
-				case  GameId::INSTAKUB:
-					gameSettingsMap[game.id]  = InstakubSettingsRef(new InstakubSettings(model));	
-					break;
-
-				default:
-					continue;
-				}
-			
-				try	
-				{	
-					gameSettingsMap[game.id]->load();
-				}
-				catch(...)
-				{
-					throw ExcConfigFileParsing();
-				}
-			}
-		}
-
-		void buildData()
-		{
-			std::vector<GamesInfo> games = model->getGames();
-			for (auto game: games)
-			{
-				if (!game.isPurchased)
-					continue;
-				try	
-				{	
-					if(GameId::PHOTOBOOTH == game.id)
-						gameSettingsMap[game.id]->buildData();
-					if(GameId::INSTAKUB == game.id)
-						gameSettingsMap[game.id]->buildData();
-				}
-				catch(...)
-				{
-					throw ExcConfigFileParsing();
-				}
-			}
-		}
-		
-		bool isGameID(int id)
-		{
-			std::vector<GamesInfo> games = model->getGames();
-
-			for (auto game: games)
-			{
-				if(game.id == id)
-					return true;
-			}
-		
-			return false;
-		}
-
-		bool isGameCurrent(int id)
-		{
-			return currentGame == (GameId)id;
-		}
-
-		GameId getCurrentGame()
-		{
-			return currentGame;
-		}
-
-		void setCurrentGame(GameId id)
-		{
-			currentGame =  id;
-		}
-
-		void setNextGameId(GameId id)
-		{
-			nextGameId = id;
-		}
-
-		GameId getNextGameId()
-		{
-			return nextGameId;
-		}
-
-		GamesDataStruct getData()
-		{
-			return data;
-		}
-
-		void setData(GamesDataStruct _data)
-		{
-			data = _data;
-
-			model->setGames(data.games);
-			model->setDefaultGameID((GameId)data.defaultGameID);
-			model->saveUserData();
-		}
-
-		bool isCurrentGameInSwitchOnGames()
-		{
-			return data.isIdInSwitchOnGames(currentGame);
-		}
-
-		void setGameActive(GameId id, bool value)
-		{
-			for (auto game = data.games.begin(); game != data.games.end(); ++game)				
-			{
-				if(game->isPurchased && game->id == id)
-						game->isOn = value;
-			}				
-		}
-
-	private:
-		GameId currentGame, nextGameId;	
-		std::map<GameId, ISettingsRef> gameSettingsMap;
-		GamesDataStruct data;
-	};
-
-	typedef shared_ptr<GameSettings> GameSettingsRef;
+	}
 }

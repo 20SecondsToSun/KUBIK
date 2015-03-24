@@ -22,9 +22,7 @@ namespace kubik
 		{
 			class Photobooth :public IGame 
 			{
-			public:
-				static const int ENABLE_GAME_CLOSE = 1;
-				static const int DISABLE_GAME_CLOSE = 2;
+			public:				
 				Photobooth(ISettingsRef config);
 				~Photobooth();
 
@@ -37,19 +35,9 @@ namespace kubik
 				void create();
 
 				connection updateSignal;
-				size_t index;
-
-				enum locationStates
-				{
-					SHOW_ANIM,
-					DRAW
-				} 
-				state;
-				ci::Anim<float> animX, animX1, alpha;
+				size_t index;					
 
 			private:
-				ci::gl::Texture		screenshot;
-
 				PhotoInstructionRef photoInstruction;
 				PhotoFilterRef		photoFilter;
 				PhotoTimerRef		photoTimer;
@@ -64,14 +52,14 @@ namespace kubik
 				PhotoboothSettingsRef settings;
 				PhotoStorageRef photoStorage;
 
+				virtual void showAnimationComplete() override;
+
 				void nextLocationHandler();
 				void initLocations();
 				void removeListeners();
 				void reshotHandler();
 				void cameraSetup();
 				void gotoFirstlocation();
-				void initShowAnimation();
-				void showAnimationComplete();
 				void beginAnimHandler();
 				void completeAnimHandler();
 			};

@@ -19,11 +19,13 @@ namespace kubik
 		~Funces();
 
 		void start();
-		void stop() override;
+		virtual void stop() override;
 
-		void draw();	
-		void reset() override;
-		void init(ISettingsRef config) override;
+		void draw();
+		void update(){};
+		virtual void reset() override;
+		virtual void init(ISettingsRef config) override;
+		virtual void showAnimationComplete() override;
 
 	private:
 		Texture closeImg;

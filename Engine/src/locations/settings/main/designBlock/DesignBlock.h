@@ -6,6 +6,8 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class DesignBlock> DesignBlockRef;
+
 		class DesignBlock: public Sprite
 		{
 		public:	
@@ -18,150 +20,30 @@ namespace kubik
 			static const int HIDE = 6;		
 			static const int HIDED = 7;
 
-			DesignBlock(ConfigSettingsRef configSettings, Vec2i position)
-						:Sprite(),
-						titleText(configSettings->getTextItem(ConfigTextID::DESIGNMAIN)), 
-						subTitleText(configSettings->getTextItem(ConfigTextID::DESIGNSUB)),				
-						icon(configSettings->getTexture("designIcon")),
-						iconColor(Color::white()),
-						designOpened(false),
-						opened(false)
-			{
-				setPosition(position);
+			DesignBlock(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
-				designBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(ci::Vec2f::zero(), ci::Vec2f(880.0f, 175.0f))));	
-				addChild(designBtn);
-
-				designsLayoutPos = ci::Vec2f(89.0f, 222.0f);
-				designsLayout = DesignsLayoutRef(new DesignsLayout(configSettings, designsLayoutPos));								
-			}
-
-			void openButtonHandler(EventGUIRef& event)
-			{
-				if(eventHandlerDic[OPEN_EVENT])
-				{
-					designBtn->disconnectEventHandler();
-					eventHandlerDic[OPEN_EVENT]();				
-				}
-			}
-
-			void activateListeners()
-			{
-				if(designOpened)
-				{					
-					designBtn->disconnectEventHandler();	
-
-					designsLayout->activateListeners();			
-					designsLayout->connectEventHandler(&DesignBlock::screenSaverStateChanged,	this, DesignsLayout::SCREEN_SAVER_STATE);
-					designsLayout->connectEventHandler(&DesignBlock::screenSaverOpenFolder,		this, DesignsLayout::SCREEN_SAVER_OPEN_FOLDER);
-					designsLayout->connectEventHandler(&DesignBlock::changedKubikDesign,		this, DesignsLayout::CHANGED_DESIGN);
-					designsLayout->connectEventHandler(&DesignBlock::openUserDesignFolder,		this, DesignsLayout::OPEN_USER_DESIGN_FOLDER);
-					designsLayout->connectEventHandler(&DesignBlock::hideHandler,				this, DesignsLayout::HIDE);
-				}
-				else
-				{
-					designsLayout->unActivateListeners();
-					designsLayout->disconnectEventHandler(DesignsLayout::SCREEN_SAVER_STATE);
-					designsLayout->disconnectEventHandler(DesignsLayout::SCREEN_SAVER_OPEN_FOLDER);
-					designsLayout->disconnectEventHandler(DesignsLayout::CHANGED_DESIGN);
-					designsLayout->disconnectEventHandler(DesignsLayout::OPEN_USER_DESIGN_FOLDER);
-					designsLayout->disconnectEventHandler(DesignsLayout::HIDE);
-
-					designBtn->connectEventHandler(&DesignBlock::openButtonHandler, this);
-				}
-			}		
-
-			void screenSaverStateChanged()
-			{
-				callback(SCREEN_SAVER_STATE);	
-			}
-
-			void screenSaverOpenFolder()
-			{
-				callback(SCREEN_SAVER_OPEN_FOLDER);	
-			}
-
-			void changedKubikDesign()
-			{
-				callback(CHANGED_DESIGN);	
-			}
-
-			void openUserDesignFolder()
-			{
-				callback(OPEN_USE_DESIGN_FOLDER);	
-			}
-
-			void hideHandler()
-			{
-				callback(HIDE);	
-			}
-
-			void showDesigns(EaseFn eFunc, float time)
-			{
-				designOpened = true;
-				addChild(designsLayout);	
-				
-				delayTimer = 0.0f;
-				timeline().apply( &delayTimer, 1.0f, time, eFunc).finishFn(bind( &DesignBlock::animationFinish, this));
-			}
-
-			void animationFinish()
-			{
-				callback(OPENED);					
-			}
-
-			void hideDesigns(const ci::EaseFn& eFunc, float time)
-			{
-				delayTimer = 0.0f;				
-				timeline().apply( &delayTimer, 1.0f, time, eFunc).finishFn(bind( &DesignBlock::animationHideFinish, this));
-			}
-
-			void animationHideFinish()
-			{				
-				designOpened = false;
-				removeChild(designsLayout);
-
-				callback(HIDED);	
-			}
-
-			virtual void drawLayout()
-			{
-				gl::color(iconColor);
-				gl::draw(icon, ci::Vec2i(10, 48));
-				textTools().textFieldDraw(titleText, ci::Vec2f(82, 40));
-				textTools().textFieldDraw(subTitleText, ci::Vec2f(89, 100));
-				Sprite::drawLayout();
-			}	
-
-			void setAlpha(float alpha)
-			{
-				titleText.setColor(Utils::colorAlpha(titleText.getColor(), alpha));	
-				subTitleText.setColor(Utils::colorAlpha(subTitleText.getColor(), alpha));	
-				iconColor = Utils::colorAlpha(iconColor, alpha);	
-				designBtn->setAlpha(0);
-			}
+			void openButtonHandler(EventGUIRef& event);
+			void activateListeners();
+			void unActivateListeners();
+			void screenSaverStateChanged();
+			void screenSaverOpenFolder();
+			void changedKubikDesign();
+			void openUserDesignFolder();
+			void hideHandler();
+			void showDesigns(const ci::EaseFn& eFunc, float time);
+			void animationFinish();
+			void hideDesigns(const ci::EaseFn& eFunc, float time);
+			void animationHideFinish();
+			virtual void drawLayout();
+			void setAlpha(float alpha);
 
 			/////////////////////
 
-			bool getScreenSaverValue()
-			{
-				return designsLayout->getScreenSaverValue();
-			}
+			bool getScreenSaverValue() const;
+			int getDesignID() const;
 
-			/*int getDesignID()
-			{
-				return designsLayout->getDesignID();
-			}*/
-
-			void setOpened(bool value)
-			{
-				opened = value;
-			}
-
-			bool getOpened() const
-			{
-				return opened;
-			}
+			void setOpened(bool value);
+			bool getOpened() const;
 
 		private:
 			ci::gl::Texture icon;
@@ -176,8 +58,6 @@ namespace kubik
 
 			ci::Anim<float> delayTimer;
 			bool opened;
-		};
-
-		typedef std::shared_ptr<DesignBlock> DesignBlockRef;
+		};		
 	}
 }

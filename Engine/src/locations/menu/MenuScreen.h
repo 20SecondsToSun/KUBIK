@@ -6,6 +6,7 @@
 #include "gui/SimpleSpriteButton.h"
 #include "GameButton.h"
 #include "ScreenStorage.h"
+#include "GameChoosedEvent.h"
 
 namespace kubik
 {
@@ -30,7 +31,6 @@ namespace kubik
 			void reset() override{};
 
 			signal<void(GameId)>  startGameSignal;
-			SignalVoid startSettingsSignal;
 			SignalVoid startVideoSignal;
 
 			void start();			
@@ -43,12 +43,10 @@ namespace kubik
 			connection mouseListener;	
 
 			void startGameHandler(EventGUIRef& button);
-			void startSettingsHandler(EventGUIRef& button);
 			void videoMouseUpListener(EventGUIRef& button);
 
 			void createMenuBtns(const std::vector<GameData>& gameIDs);
 			void clearGamesButtonVector();
-			void createControlsButtons();
 			void update();
 
 			void showAnimationComplete();

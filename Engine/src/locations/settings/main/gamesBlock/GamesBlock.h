@@ -3,6 +3,8 @@
 #include "gui/Sprite.h"
 #include "main/gamesBlock/PurchasedGamesBlock.h"
 #include "main/gamesBlock/NotPurchasedGamesBlock.h"
+#include "ConfigSettings.h"
+#include "GameSettings.h"
 
 namespace kubik
 {
@@ -13,117 +15,22 @@ namespace kubik
 		class GamesBlock: public Sprite
 		{
 		public:	
-			GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, Vec2f position)
-				:Sprite(),
-				lineWidth(2),
-				lineLength(880.0f),
-				blockTopShiftY(79.0f),
-				lineColor(Color::hex(0x233442)),
-				configSett(configSett),
-				gameSett(gameSett)
-			{
-				setPosition(position);	
-
-				pGameblock  = PurchasedGamesBlockRef(new PurchasedGamesBlock(configSett, gameSett->getData().getPurchasedGames()));		
-				pGameblock->setPosition(Vec2f(0.0f, blockTopShiftY));
-				addChild(pGameblock);
+			GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, const ci::Vec2f& position);
 			
-				hasGamesInShop = gameSett->getData().getNotPurchasedGames().size() != 0;
+			virtual void activateListeners() override;
+			void draw();
+			void drawbg();
+			void drawDecorationLine1();
+			void drawDecorationLine2();
+			void setAlpha(float alpha);
 
-				if(hasGamesInShop)	
-				{
-					npGameblock  = NotPurchasedGamesBlockRef(new NotPurchasedGamesBlock(configSett, gameSett->getData().getNotPurchasedGames()));
-					npGameblock->setPosition(Vec2f(0.0f, pGameblock->getHeight() + 27 + 30 + 47));
-					addChild(npGameblock);
-				}
-			}
+			void hide(const ci::EaseFn& eFunc, float time);
+			void hideAnimationFinish();
 
-			virtual void activateListeners()
-			{
-				if(hasGamesInShop) npGameblock->activateListeners();				
-				pGameblock->activateListeners();				
-			}
+			void show(const ci::EaseFn& eFunc, float time);
 
-			void draw()
-			{	
-				drawbg();
-				drawDecorationLine1();
-				Sprite::draw();
-			
-				if(hasGamesInShop)				
-					drawDecorationLine2();	
-			}	
-
-			void drawbg()
-			{
-				float height = pGameblock->getHeight() + 27.0f;
-				gl::color(ci::Color::hex(0x0d0917));
-				gl::pushMatrices();
-					gl::translate(getGlobalPosition());					
-					gl::drawSolidRect(ci::Rectf(ci::Vec2f::zero(), ci::Vec2f(880.0f, height)));
-				gl::popMatrices();
-				gl::color(ci::Color::white());
-			}
-
-			void drawDecorationLine1()
-			{
-				gl::pushMatrices();
-					gl::translate(getGlobalPosition());					
-					gl::lineWidth(lineWidth);
-					gl::color(lineColor);
-					gl::drawLine(ci::Vec2f::zero(), ci::Vec2f(lineLength, 0.0f));				
-				gl::popMatrices();
-			}
-
-			void drawDecorationLine2()
-			{
-				float height = pGameblock->getHeight() + 27.0f;
-				gl::pushMatrices();
-					gl::translate(getGlobalPosition());
-					gl::lineWidth(lineWidth);
-					gl::color(lineColor);
-					gl::translate(0.0f, blockTopShiftY);
-					gl::drawLine(ci::Vec2f(0.0f, height), ci::Vec2f(lineLength, height));
-				gl::popMatrices();
-			}
-
-			void setAlpha(float alpha)
-			{
-				lineColor = Utils::colorAlpha(lineColor, alpha);
-				Sprite::setAlpha(alpha);	
-			}
-
-			void hide(ci::EaseFn eFunc, float time)
-			{
-				animatePosition = _localPosition;
-				ci::Vec2f finPos = ci::Vec2f(-getWindowWidth(), _localPosition.y);
-				timeline().apply( &animatePosition, finPos, time, eFunc)
-					.updateFn(bind( &GamesBlock::posAnimationUpdate, this))
-					.finishFn(bind( &GamesBlock::hideAnimationFinish, this));				
-			}
-
-			void hideAnimationFinish()
-			{
-				hideAnimCompleteSig();
-			}
-
-			void show(ci::EaseFn eFunc, float time)
-			{
-				ci::Vec2f finPos = ci::Vec2f(100.0f, _localPosition.y);
-				timeline().apply( &animatePosition, finPos, time, eFunc)
-					.updateFn(bind( &GamesBlock::posAnimationUpdate,  this))
-					.finishFn(bind( &GamesBlock::showAnimationFinish, this));				
-			}
-
-			void showAnimationFinish()
-			{
-				showAnimCompleteSig();
-			}
-
-			void posAnimationUpdate()
-			{
-				setPosition(animatePosition.value());
-			}
+			void showAnimationFinish();
+			void posAnimationUpdate();
 
 			SignalVoid hideAnimCompleteSig, showAnimCompleteSig;	
 

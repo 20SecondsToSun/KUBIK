@@ -6,7 +6,7 @@ namespace kubik
 	class GameChoosedEvent: public EventGUI
 	{			
 	public:
-		GameChoosedEvent(GameId gameID):gameID(gameID)
+		GameChoosedEvent(const GameId& gameID):gameID(gameID)
 		{
 
 		}

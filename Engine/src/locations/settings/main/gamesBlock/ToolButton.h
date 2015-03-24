@@ -8,27 +8,19 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class StatToolButton> StatToolButtonRef;
+		typedef std::shared_ptr<class ConfToolButton> ConfToolButtonRef;
+
 		class StatToolButton : public ToolRoundBtn
 		{
-		public:			
-			StatToolButton(Rectf rect, GameId gameId, TextItem texti)
-				:ToolRoundBtn(rect, texti.getText(), texti.getFont(), Color::hex(0xffff00))
-			{
-				event = StatisticEventRef(new StatisticEvent(gameId));
-			}	
+		public:
+			StatToolButton(const Rectf& rect, const GameId& gameId, const TextItem& text);
 		};
 
 		class ConfToolButton : public ToolRoundBtn
 		{
 		public:
-			ConfToolButton(Rectf rect, GameId gameId, TextItem texti)
-				:ToolRoundBtn(rect, texti.getText(), texti.getFont(), Color::hex(0xffff00))
-			{
-				event = GameConfEventRef(new GameConfEvent(gameId));
-			}
-		};
-
-		typedef std::shared_ptr<StatToolButton> StatToolButtonRef;
-		typedef std::shared_ptr<ConfToolButton> ConfToolButtonRef;
+			ConfToolButton(const Rectf& rect, const GameId& gameId, const TextItem& text);
+		};		
 	}
 }

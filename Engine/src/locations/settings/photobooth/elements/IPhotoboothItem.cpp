@@ -20,7 +20,7 @@ IPhotoboothItem::IPhotoboothItem(PhotoboothSettingsRef phbSettings, const PhtTex
 	id(id)
 {
 	mainTitleY = closeMaxY;
-	subTitleY  = closeMaxY + offsetBetweenTitles;
+	subTitleY  = closeMaxY + offsetBetweenTitles; 
 	animHeight = closeHeightMax;
 	animatePosition = Vec2f(0.0f, closeHeightMax * index);
 

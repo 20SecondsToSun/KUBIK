@@ -2,6 +2,7 @@
 #include "gui/EventGUI.h"
 #include "gui/SimpleSpriteButton.h"
 #include "MenuSettings.h"
+#include "GameChoosedEvent.h"
 
 namespace kubik
 {

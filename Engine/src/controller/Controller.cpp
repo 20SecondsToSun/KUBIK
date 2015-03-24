@@ -6,7 +6,7 @@ using namespace kubik::games;
 using namespace kubik::games::photobooth;
 using namespace std;
 
-Controller::Controller(AppModelRef model, AppViewRef view)
+Controller::Controller(ApplicationModelRef model, AppViewRef view)
 {
 	this->view    = view;
 	this->model   = model;
@@ -165,7 +165,7 @@ void Controller::createLocations()
 
 	touchKeyboard().setup();
 
-	//screenSaver	  = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
+	//screenSaver = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
 	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
 	controlLayer  = ControlLayerRef(new ControlLayer(menuSettings));	
 
@@ -176,12 +176,14 @@ void Controller::createLocations()
 	controlScreen->init();
 
 	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
-	//gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
-	createGame(model->getDefaultGameID());	
+	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
+	createGame(model->getDefaultGameID());
+	//
+	view->addLayer(controlLayer);
 
 	//startup();
 
-	startLocation(menuScreen);
+	startMenuScreenLocation();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -195,7 +197,7 @@ void Controller::startup()
 	if(screenSaverSettings->isShow())	
 		startLocation(screenSaver);	
 	else
-		startLocation(menuScreen);		
+		startMenuScreenLocation();
 }
 
 void Controller::startLocation(IScreenRef location)
@@ -206,9 +208,10 @@ void Controller::startLocation(IScreenRef location)
 	closeCurrentLocation();
 
 	currentLocation = location;
-	currentLocation->start();
 
-	setLocationHandlers(currentLocation->getType());	
+	setLocationHandlers(currentLocation->getType());
+
+	currentLocation->start();
 	view->startLocation(currentLocation);
 }
 
@@ -289,29 +292,28 @@ void Controller::removeScreenSaverHandlers()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::setMenuScreenHandlers()
+void Controller::startMenuScreenLocation()
 {
-	if(model->onlyOneGameOn())	
-		startLocation(game);	
+	if (model->onlyOneGameOn())
+	{	
+		startGameHandler(model->onlyOneGameOnID());
+	}		
 	else	
-		startMultiplyGameMode();	
+		startLocation(menuScreen);	
 }
 
-void Controller::startMultiplyGameMode()
+void Controller::setMenuScreenHandlers()
 {
 	connect_once(menuScreen->startGameSignal,		bind(&Controller::startGameHandler, this, std::placeholders::_1));
-	connect_once(menuScreen->startSettingsSignal,	bind(&Controller::startLocation, this, controlScreen));
-	connect_once(menuScreen->startVideoSignal,		bind(&Controller::startLocation, this, screenSaver));	
+	connect_once(menuScreen->startVideoSignal,		bind(&Controller::startLocation, this, screenSaver));
+	controlLayer->connectEventHandler(&Controller::openSettingsHandler, this, ControlLayer::OPEN_SETTINGS);
 }
 
 void Controller::removeMenuScreenHandlers()
 {
-	if(!model->onlyOneGameOn())	
-	{
-		menuScreen->startGameSignal.disconnect_all_slots();
-		menuScreen->startSettingsSignal.disconnect_all_slots();
-		menuScreen->startVideoSignal.disconnect_all_slots();
-	}
+	menuScreen->startGameSignal.disconnect_all_slots();
+	menuScreen->startVideoSignal.disconnect_all_slots();	
+	controlLayer->disconnectEventHandler(ControlLayer::OPEN_SETTINGS);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -321,7 +323,7 @@ void Controller::removeMenuScreenHandlers()
 ////////////////////////////////////////////////////////////////////////////	
 
 void Controller::startGameHandler(GameId id)
-{
+{	
 	if(gameSettings->isGameCurrent(id))	
 		startLocation(game);	
 	else	
@@ -330,8 +332,13 @@ void Controller::startGameHandler(GameId id)
 
 void Controller::reloadGame(GameId id)
 {
+	closeCurrentLocation();//!!
+
 	view->showPreloader();
 	gameSettings->setNextGameId(id);
+
+	model->setDefaultGameID(id);
+	model->saveUserData();
 
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->LoadingErrorSignal,	bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
@@ -354,21 +361,26 @@ void Controller::createGame(GameId id)
 }
 
 void Controller::addGameHandlers()
-{
-	view->addLayer(controlLayer);		
-	game->connectEventHandler(&Controller::enableGameHandler, this, Photobooth::ENABLE_GAME_CLOSE);
-	game->connectEventHandler(&Controller::disableGameHandler, this, Photobooth::DISABLE_GAME_CLOSE);
+{	
+	if (!model->onlyOneGameOn())
+		controlLayer->showBackButton();
+
+	game->connectEventHandler(&Controller::enableGameHandler, this, IGame::ENABLE_GAME_CLOSE);
+	game->connectEventHandler(&Controller::disableGameHandler, this, IGame::DISABLE_GAME_CLOSE);
 }
 
 void Controller::enableGameHandler()
 {
+	console() << "ENABLE CLOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 	controlLayer->activateListeners();
 	controlLayer->connectEventHandler(&Controller::closeGameHandler, this, ControlLayer::CLOSE_GAME);
+	controlLayer->connectEventHandler(&Controller::openSettingsHandler, this, ControlLayer::OPEN_SETTINGS);
 }
 
 void Controller::disableGameHandler()
 {
 	controlLayer->disconnectEventHandler(ControlLayer::CLOSE_GAME);
+	controlLayer->disconnectEventHandler(ControlLayer::OPEN_SETTINGS);
 	controlLayer->unActivateListeners();
 }
 
@@ -377,12 +389,19 @@ void Controller::closeGameHandler()
 	startLocation(menuScreen);
 }
 
+void Controller::openSettingsHandler()
+{
+	startLocation(controlScreen);
+}
+
 void Controller::removeGameHandlers()
 {
 	disableGameHandler();
-	game->disconnectEventHandler(Photobooth::ENABLE_GAME_CLOSE);
-	game->disconnectEventHandler(Photobooth::DISABLE_GAME_CLOSE);
-	view->removeLayer(controlLayer);	
+	game->disconnectEventHandler(IGame::ENABLE_GAME_CLOSE);
+	game->disconnectEventHandler(IGame::DISABLE_GAME_CLOSE);
+
+	if (!model->onlyOneGameOn())
+		controlLayer->hideBackButton();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -393,16 +412,8 @@ void Controller::removeGameHandlers()
 
 void Controller::setConfigScreenHandlers()
 {
-	connect_once(controlScreen->closeLocationSignal, bind(&Controller::startLocation, this, menuScreen));		
-	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::appSettingsChangedHandler, this, std::placeholders::_1));	
-}
-
-void Controller::appSettingsChangedHandler(std::vector<Changes> changes)
-{
-	if(changes.empty())
-		startLocation(menuScreen);
-	else
-		reloadScreens(changes);	
+	connect_once(controlScreen->closeLocationSignal, bind(&Controller::startMenuScreenLocation, this));		
+	connect_once(controlScreen->appSettingsChangedSignal, bind(&Controller::reloadScreens, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void Controller::removeConfigScreenHandlers()
@@ -417,103 +428,39 @@ void Controller::removeConfigScreenHandlers()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Controller::reloadScreens(std::vector<Changes> changes)
+void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadAllDesign)
 {
-	bool toReload = false;
+	if (reloadAllDesign)
+	{
+		//removeScreenSaverHandlers();
+		removeGameHandlers();
+		removeMenuScreenHandlers();
+	
+	
+		//todo::  set textures
+		removeConfigScreenHandlers();
+		currentLocation->stop();
+		view->showPreloader();
+		view->clearLayers();
+		controlLayer->clear();
+		
+		loadAllLocationsGraphics();
+		return;
+	}
 
 	for(auto change : changes)
 	{		
-		ISettingsRef settings = getSettingsByChangeId(change.id);
+		console() << "change.id:::::::::::::::::::  " << change.id << endl;
 
-		if(change.texReload)
-		{
-			view->showPreloader();
-			settings->setTextures();
-			graphicsLoader->setLoadingTextures(settings->getResources());			
-			toReload = true;
-		}
-		else if (change.id == ChangeId::GAMES)		
-			menuScreen->resetMenuBtnGames();		
-		else			
-			getScreenByChangeId(change.id)->reset();
-	}
-	console()<<"NEED TO RELOAD:::::::::::::::::::  "<<toReload<<endl;
-
-	if(toReload)
-	{
-		connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsReloadCompleteHandler, this, changes));
-		connect_once(graphicsLoader->LoadingErrorSignal, bind(&Controller::graphicsLoadingErrorHandler, this, placeholders::_1));	
-		graphicsLoader->load();
-	}
-	else
-		startAfterReload();
-}
-
-void Controller::allGraphicsReloadCompleteHandler(vector<Changes> changes)
-{
-	removeGraphicsLoadingConnections();
-
-	GameId id = GameId::UNDEFINED;
-
-	for(auto change : changes)	
 		if (change.id == ChangeId::GAMES)
-			id = getReloadGameId();
-		else
-			getScreenByChangeId(change.id)->reset();
-
-	startAfterReload(id);
-}
-
-GameId Controller::getReloadGameId()
-{
-	GameId reloadGameId = GameId::UNDEFINED;
-	GameSettings::GamesDataStruct gameData = gameSettings->getData();
-
-	if(!gameSettings->isCurrentGameInSwitchOnGames() && gameData.getCountSwitchOnGames() == 1)
-	{	
-		vector<GamesInfo> games = gameData.getGames();
-
-		for (size_t i = 0; i < games.size(); i++)		
-			if( games[i].isOn)
-			{
-				reloadGameId = games[i].id;
-				break;
-			}				
+		{
+			menuScreen->resetMenuBtnGames();			
+		}
+		else if (gameSettings->isGameID(change.id))
+		{
+			game->reset();
+		}
 	}
-	return  reloadGameId;
-}
 
-void Controller::startAfterReload(GameId id)
-{
-	if(id != GameId::UNDEFINED)	
-		startGameHandler(id);	
-	else
-		startLocation(menuScreen);
-}
-
-ISettingsRef Controller::getSettingsByChangeId(ChangeId id)
-{
-	ISettingsRef settings;
-
-	if(gameSettings->isGameID(id))			
-		settings = gameSettings->get((game::id)id);	
-	else if (id == ChangeId::MENU)
-		settings = menuSettings;	
-	else if (id == ChangeId::SCREENSAVER)	
-		settings = screenSaverSettings;
-
-	return settings;
-}
-
-IScreenRef Controller::getScreenByChangeId(ChangeId id)
-{
-	IScreenRef screen;
-	if(gameSettings->isGameID(id))
-		screen   = game;
-	else if (id == ChangeId::MENU)
-		screen = menuScreen;
-	else if (id == ChangeId::SCREENSAVER)
-		screen = screenSaver;
-
-	return screen;
+	startup();
 }

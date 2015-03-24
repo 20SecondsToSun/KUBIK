@@ -3,7 +3,7 @@
 #include "IScreen.h"
 #include "IGame.h"
 #include "ServicePopup.h"
-#include "Preloader.h"
+#include "preloader/Preloader.h"
 #include "gui/Sprite.h"
 
 using namespace std;
@@ -21,7 +21,7 @@ namespace kubik
 			servicePopup = ServicePopupRef(new ServicePopup());// font memory leak
 		}
 
-		void startLocation(shared_ptr<IScreen> screen)
+		void startLocation(IScreenRef screen)
 		{				
 			location = screen;
 		}
@@ -32,6 +32,11 @@ namespace kubik
 
 			for (auto layer : layers)
 				layer->draw();
+		}
+
+		void clearLayers()
+		{
+			layers.clear();
 		}
 
 		void addLayer(SpriteRef layer)
@@ -52,6 +57,8 @@ namespace kubik
 
 		void showPreloader()
 		{
+			kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ if(location) draw(); }));
+			preloader->setBackground(getScreenShot());
 			location = preloader;
 		}
 
@@ -70,7 +77,7 @@ namespace kubik
 	private:	
 		IScreenRef location;
 		ServicePopupRef servicePopup;
-		PreloaderRef	 preloader;	
+		PreloaderRef preloader;	
 
 		std::list<SpriteRef> layers;
 	};

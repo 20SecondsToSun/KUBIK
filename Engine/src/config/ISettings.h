@@ -3,6 +3,8 @@
 #include "Types.h"
 #include "ApplicationModel.h"
 
+using namespace kubik::config;
+
 namespace kubik
 {
 	class ISettings

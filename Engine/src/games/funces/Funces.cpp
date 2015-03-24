@@ -16,11 +16,18 @@ Funces::~Funces()
 
 void Funces::start()
 {
-//	addMouseUpListener();
+	console() << "START FUNCES!!!" << endl;
+	initShowAnimation();
+}
+
+void Funces::showAnimationComplete()
+{
+	callback(ENABLE_GAME_CLOSE);
 }
 
 void Funces::stop()
 {
+	console() << "STOP FUNCES!!!" << endl;
 //	removeMouseUpListener();	
 }
 
@@ -46,5 +53,22 @@ void Funces::closeMouseUpHandler(IButton& button )
 
 void Funces::draw()
 {
-	//closeBtn->draw();
+	switch (state)
+	{
+	case SHOW_ANIM:
+		screenshotDraw();
+
+		gl::pushMatrices();
+		gl::translate(animX, 0.0f);
+		gl::color(Color(1, 0, 0));
+		gl::drawSolidRect(getWindowBounds());
+		gl::color(Color::white());
+		//currentLocation->draw();
+		gl::popMatrices();
+		break;
+
+	case DRAW:
+		//currentLocation->draw();
+		break;
+	}
 }

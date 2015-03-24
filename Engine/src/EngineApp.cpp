@@ -19,7 +19,7 @@ public:
 private:	
 	AppViewRef view;
 	ControllerRef controller;
-	AppModelRef model;
+	ApplicationModelRef model;
 	void prepareSettings(AppBasic::Settings *settings);
 };
 
@@ -46,7 +46,7 @@ void EngineApp::setup()
 	// [864,1536]
 	console()<<"GET WINDOWS SIZE------------------------::  "<<getWindowSize()<<endl;
 
-	model		= AppModelRef(new ApplicationModel());
+	model		= ApplicationModelRef(new ApplicationModel());
 	view		= AppViewRef(new ApplicationView());
 	controller  = ControllerRef(new Controller(model, view));
 

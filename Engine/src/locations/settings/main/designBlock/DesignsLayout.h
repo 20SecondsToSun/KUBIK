@@ -10,6 +10,8 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class DesignsLayout> DesignsLayoutRef;
+
 		class DesignsLayout: public Sprite
 		{
 		public:	
@@ -19,87 +21,24 @@ namespace kubik
 			static const int OPEN_USER_DESIGN_FOLDER = 3;	
 			static const int HIDE = 4;	
 
-			DesignsLayout(ConfigSettingsRef configSettings, ci::Vec2i position):Sprite(), configSettings(configSettings)					 
-			{
-				setPosition(position);	
-
-				returnButton = ReturnButtonRef(new ReturnButton(configSettings, ci::Vec2f(0.0f, 891.0f)));	
-				addChild(returnButton);	
-
-				screenSaver = ScreenSaverBlockRef(new ScreenSaverBlock(configSettings, ci::Vec2f(0.0f, 690.0f)));	
-				addChild(screenSaver);	
-
-				designChooser = DesignChooserRef(new DesignChooser(configSettings, ci::Vec2f(0.0f, 2.0f)));	
-				addChild(designChooser);
-			}	
+			DesignsLayout(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 			
-			virtual void activateListeners()
-			{
-				designChooser->activateListeners();
-				screenSaver->activateListeners();
+			virtual void activateListeners() override;
+			virtual void unActivateListeners() override;
 
-				designChooser->connectEventHandler(&DesignsLayout::designChanged,		 this, DesignChooser::CHANGED_DESIGN);
-				designChooser->connectEventHandler(&DesignsLayout::openUserDesignFolder, this, DesignChooser::OPEN_USER_DESIGN_FOLDER);
-				screenSaver->connectEventHandler(&DesignsLayout::checkerChanged,		 this, ScreenSaverBlock::SCREEN_SAVER_STATE);
-				screenSaver->connectEventHandler(&DesignsLayout::openScreenSaverFolder,	 this, ScreenSaverBlock::SCREEN_SAVER_OPEN_FOLDER);
-				returnButton->connectEventHandler(&DesignsLayout::returnHandler, this);			
-			}
-
-			virtual void unActivateListeners()
-			{
-				designChooser->unActivateListeners();
-				designChooser->disconnectEventHandler(DesignChooser::CHANGED_DESIGN);
-				designChooser->disconnectEventHandler(DesignChooser::OPEN_USER_DESIGN_FOLDER);
-
-				screenSaver->unActivateListeners();
-				screenSaver->disconnectEventHandler(ScreenSaverBlock::SCREEN_SAVER_STATE);
-				screenSaver->disconnectEventHandler(ScreenSaverBlock::SCREEN_SAVER_OPEN_FOLDER);
-
-				returnButton->disconnectEventHandler();	
-			}
-
-			void checkerChanged()
-			{
-				callback(SCREEN_SAVER_STATE);
-			}
-
-			void openScreenSaverFolder()
-			{
-				callback(SCREEN_SAVER_OPEN_FOLDER);	
-			}
-
-			void returnHandler(EventGUIRef& event)
-			{
-				callback(HIDE);
-			}			
-
-			void designChanged()
-			{
-				callback(CHANGED_DESIGN);
-			}
-
-			void openUserDesignFolder()
-			{
-				callback(OPEN_USER_DESIGN_FOLDER);
-			}
-
-			bool getScreenSaverValue() const
-			{
-				return screenSaver->getScreenSaverValue();
-			}
-
-			/*int getDesignID() const
-			{
-				return designChooser->getDesignID();
-			}*/
+			void checkerChanged();
+			void openScreenSaverFolder();
+			void returnHandler(EventGUIRef& event);
+			void designChanged();
+			void openUserDesignFolder();
+			bool getScreenSaverValue() const;
+			int getDesignID() const;
 
 		private:			
 			ConfigSettingsRef	configSettings;
 			ScreenSaverBlockRef screenSaver;
 			ReturnButtonRef		returnButton;
 			DesignChooserRef	designChooser;
-		};
-
-		typedef std::shared_ptr<DesignsLayout> DesignsLayoutRef;
+		};		
 	}
 }

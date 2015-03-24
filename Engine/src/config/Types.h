@@ -5,18 +5,18 @@
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
+//using namespace kubik::config;
 
 namespace kubik
-{
-	
+{	
 
 	class ApplicationView;
-	class ApplicationModel;
+	//class ApplicationModel;
 	class Controller;
 	class IButton;
 
 	typedef shared_ptr<ApplicationView> AppViewRef;
-	typedef shared_ptr<ApplicationModel> AppModelRef;
+	//typedef shared_ptr<ApplicationModel> AppModelRef;
 	typedef shared_ptr<Controller> ControllerRef;
 
 	typedef boost::shared_ptr<boost::thread> ThreadRef;
@@ -106,22 +106,22 @@ namespace kubik
 		IconPair iconPair;
 		Texture miniIcon, texture;
 
-		bool isGameOn()
+		bool isGameOn() const
 		{
 			return isOn;
 		}
 
-		game::id getGameId()
+		game::id getGameId() const
 		{
 			return id;
 		}
 
-		string getNameText()
+		string getNameText() const
 		{
 			return name;
 		}
 
-		IconPair getIcons()
+		IconPair getIcons() const
 		{
 			return iconPair;
 		}
@@ -136,12 +136,12 @@ namespace kubik
 			iconPair.unActiveIcon = tex;
 		}
 
-		void setMiniIcon(Texture tex)
+		void setMiniIcon(Texture tex) 
 		{
 			miniIcon = tex;
 		}
 
-		Texture getMiniIcon()
+		Texture getMiniIcon() const
 		{
 			return miniIcon;
 		}
@@ -151,7 +151,7 @@ namespace kubik
 			texture = tex;
 		}
 
-		Texture getTexture()
+		Texture getTexture() const
 		{
 			return texture;
 		}

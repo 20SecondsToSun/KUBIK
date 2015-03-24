@@ -16,9 +16,7 @@ ConfigScreen::ConfigScreen(ISettingsRef config) :IScreen(ScreenId::CONFIG)
 
 ConfigScreen::~ConfigScreen()
 {
-	console() << "~~~~~~~~~~~~~~~ TuneUpScreen destructor ~~~~~~~~~~~~~~~" << endl;
-	closeBtnListener.disconnect();
-	appSettingsChgListener.disconnect();
+	console() << "~~~~~~~~~~~~~~~ ConfigScreen destructor ~~~~~~~~~~~~~~~" << endl;
 }
 
 void ConfigScreen::setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings)
@@ -70,7 +68,6 @@ void ConfigScreen::initShowAnimation()
 
 void ConfigScreen::showAnimationComplete()
 {
-	console() << "showAnimationComplete" << endl;
 	state = DRAW;
 }
 
@@ -78,6 +75,7 @@ void ConfigScreen::stop()
 {
 	mainConfig->disconnectEventHandler();
 	mainConfig->unActivateListeners();
+	mainConfig->killAll();
 	photoboothConfig->unActivateListeners();
 	instakubConfig->unActivateListeners();
 }
@@ -99,6 +97,7 @@ void ConfigScreen::init(ISettingsRef settings)
 	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
 	instakubConfig = InstakubConfigRef(new InstakubConfig(instaSettings));
 
+	settingsList.push_back(gameSettings);
 	settingsList.push_back(configSettings);
 	settingsList.push_back(phbthSettings);
 	settingsList.push_back(instaSettings);
@@ -118,7 +117,8 @@ void ConfigScreen::draw()
 		gl::pushMatrices();
 		gl::translate(animX1, 0.0f);
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		gl::draw(screenshot);
+		if (screenshot)
+			gl::draw(screenshot);
 		gl::color(Color::white());
 		gl::popMatrices();
 
@@ -131,7 +131,7 @@ void ConfigScreen::draw()
 	case DRAW:
 		Sprite::draw();
 		break;
-	}	
+	}
 }
 
 void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
@@ -178,7 +178,7 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 		console() << "show url game ID:::::: " << urlEvent->getGameId() << endl;
 	}
 
-	console() << "EVENT:::::: " << endl;
+	//console() << "EVENT:::::: " << endl;
 }
 
 void ConfigScreen::showingMainConfAnimationComplete()
@@ -208,83 +208,13 @@ void ConfigScreen::closeLocationHandler()
 			changes.push_back(chng);
 		}
 	}
-	checkMenuParamsForChanges();
-	checkScreenSaverParamsForChanges();
-	checkGamesParamsForChanges();
-	//check if design switched
 
 	mainConfig->closeDesignBlock();
-	closeLocationSignal();
-}
 
-void ConfigScreen::checkMenuParamsForChanges()
-{
-	Changes chng;
-	chng.id = changeSetting::id::MENU;
+	bool reloadDesign = configSettings->designChanged();
 
-	//if(configSettings->settingsChanged())	
-	//	changes.push_back(chng);	
-}
-
-void ConfigScreen::checkGamesParamsForChanges()
-{
-	/*if(gamesData.getCountSwitchOnGames())
-	{
-	Changes chng;
-	chng.id = changeSetting::id::GAMES;
-
-	setDefaultGameIdInSwitchOnGames();
-	setReloadGamePropertyIfNeedIt(chng);
-
-	if (initialGamesData.getDefaultGameID() != gamesData.getDefaultGameID() || chng.gamesReload)
-	{
-	changes.push_back(chng);
-	gameSettings->setData(gamesData);
-	}
-	}
-	*/
-}
-
-void ConfigScreen::checkScreenSaverParamsForChanges()
-{
-	/*if (screensaverData.hasChanges(initialScreensaverData))
-	{
-	Changes chng;
-	chng.id = changeSetting::id::SCREENSAVER;
-	changes.push_back(chng);
-	screenSaverSettings->setData(screensaverData);
-	}*/
-}
-
-void ConfigScreen::setDefaultGameIdInSwitchOnGames()
-{
-	/*size_t len = gamesData.getGames().size();
-
-	if(!gamesData.isIdInSwitchOnGames((GameId)gamesData.getDefaultGameID()))
-	{
-	for (size_t i = 0; i < len; i++)
-	{
-	if(gamesData.getGames()[i].isOn)
-	{
-	gamesData.setDefaultGameID(gamesData.getGameID(i));
-	break;
-	}
-	}
-	}*/
-}
-
-void ConfigScreen::setReloadGamePropertyIfNeedIt(Changes &chng)
-{
-	/*size_t len = gamesData.getGames().size();
-
-	for (size_t i = 0; i < len; i++)
-	{
-	GamesInfo game = gamesData.getGames()[i];
-
-	if( game.isPurchased && game.isOn != initialGamesData.getGames()[i].isOn)
-	{
-	chng.gamesReload = true;
-	break;
-	}
-	}*/
+	if (!changes.size())
+		closeLocationSignal();
+	else
+		appSettingsChangedSignal(changes, reloadDesign);
 }

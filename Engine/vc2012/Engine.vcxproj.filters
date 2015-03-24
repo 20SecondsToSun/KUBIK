@@ -196,6 +196,27 @@
     <Filter Include="Source Files\games\photobooth\states\shooting">
       <UniqueIdentifier>{e22d9b22-7cf1-435b-98e2-4404e738189f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\config\settings">
+      <UniqueIdentifier>{732e8fb6-539f-4d98-9f1c-aae9cf1cb7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\preloader">
+      <UniqueIdentifier>{622dc241-7028-44d3-a8dc-ba837ab47909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\closeBlock">
+      <UniqueIdentifier>{f90cf6cf-8d73-41b0-8889-e5feaff91293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\logo">
+      <UniqueIdentifier>{35ff3a3a-77e5-4eae-8ad0-836f5e25b03e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\title">
+      <UniqueIdentifier>{932e2978-1e39-456c-a964-e459dfe589af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\statBlock">
+      <UniqueIdentifier>{8b0c89a3-2456-4de6-b638-40b304ccdc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\locations\settings\main\startNewActivity">
+      <UniqueIdentifier>{6faa5197-6a7f-411d-a339-129b4b97d7b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -318,9 +339,6 @@
     <ClCompile Include="..\src\gui\Sprite.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config\games\instakub\InstakubSettingscpp.cpp">
-      <Filter>Source Files\config\games\instakub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp">
       <Filter>Source Files\config\games\photobooth</Filter>
     </ClCompile>
@@ -378,6 +396,90 @@
     <ClCompile Include="..\src\locations\menu\GameButton.cpp">
       <Filter>Source Files\locations\menu</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\config\games\instakub\InstakubSettings.cpp">
+      <Filter>Source Files\config\games\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\GameSettings.cpp">
+      <Filter>Source Files\config\games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\ApplicationModel.cpp">
+      <Filter>Source Files\config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\MainConfig.cpp">
+      <Filter>Source Files\locations\settings\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\menu\Preloader.cpp">
+      <Filter>Source Files\locations\preloader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\printerBlock\PrinterBlock.cpp">
+      <Filter>Source Files\locations\settings\main\printerBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\printerBlock\PrinterControls.cpp">
+      <Filter>Source Files\locations\settings\main\printerBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\startNewActivity\StartNewActivity.cpp">
+      <Filter>Source Files\locations\settings\main\startNewActivity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\statBlock\StatBlock.cpp">
+      <Filter>Source Files\locations\settings\main\statBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\title\Title.cpp">
+      <Filter>Source Files\locations\settings\main\title</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\logo\Logo.cpp">
+      <Filter>Source Files\locations\settings\main\logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\closeBlock\CloseBlock.cpp">
+      <Filter>Source Files\locations\settings\main\closeBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\popup\NewActivityPopup.cpp">
+      <Filter>Source Files\locations\settings\main\popup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\GamesBlock.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\NotPurchasedGamesBlock.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\OneGameNotPurchased.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\OneGamePurchased.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\PurchasedGamesBlock.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\ToolButton.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\ToolField.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\gamesBlock\GameChecker.cpp">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\DesignBlock.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\DesignChooser.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\DesignsLayout.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\ReturnButton.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\ScreenSaverBlock.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.cpp">
+      <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -403,9 +505,6 @@
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\Photobooth.h">
       <Filter>Source Files\games\photobooth</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\Preloader.h">
-      <Filter>Source Files\locations</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
@@ -542,22 +641,7 @@
     <ClInclude Include="..\src\locations\settings\photobooth\elements\CheckerSocial.h">
       <Filter>Source Files\locations\settings\photobooth\elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\CloseBlock.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\Logo.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\MainConfig.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\StartNewActivity.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\StatBlock.h">
-      <Filter>Source Files\locations\settings\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\Title.h">
       <Filter>Source Files\locations\settings\main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GamesBlock.h">
@@ -589,9 +673,6 @@
     </ClInclude>
     <ClInclude Include="..\src\events\menu\GameChoosedEvent.h">
       <Filter>Source Files\events\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\popup\MainPopup.h">
-      <Filter>Source Files\locations\settings\main\popup</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\popup\NewActivityPopup.h">
       <Filter>Source Files\locations\settings\main\popup</Filter>
@@ -865,6 +946,27 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\menu\ScreenStorage.h">
       <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\preloader\Preloader.h">
+      <Filter>Source Files\locations\preloader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\startNewActivity\StartNewActivity.h">
+      <Filter>Source Files\locations\settings\main\startNewActivity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\statBlock\StatBlock.h">
+      <Filter>Source Files\locations\settings\main\statBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\title\Title.h">
+      <Filter>Source Files\locations\settings\main\title</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\logo\Logo.h">
+      <Filter>Source Files\locations\settings\main\logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\closeBlock\CloseBlock.h">
+      <Filter>Source Files\locations\settings\main\closeBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

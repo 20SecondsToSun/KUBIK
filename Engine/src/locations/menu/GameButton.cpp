@@ -2,10 +2,13 @@
 using namespace kubik::menu;
 
 GameButton::GameButton(const GameData& data)
-	:SimpleSpriteButton(data.getTexture().getWidth(), data.getTexture().getHeight(), data.getPosition()),
+	:SimpleSpriteButton(data.getTexture().getWidth(), 
+	data.getTexture().getHeight(),
+	data.getPosition(),
+	GameChoosedEventRef(new GameChoosedEvent(data.getID()))),
 	texture(data.getTexture())
-{
-	console() << "getPosition() ::: " << data.getPosition()<<endl;
+{	
+
 }
 
 void GameButton::drawLayout()

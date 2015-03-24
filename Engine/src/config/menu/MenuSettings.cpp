@@ -99,18 +99,24 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 	switch (filtergames.size())
 	{
 	case 1:
-		break;
+		return gameData;	
 	case 2:
 		size = Vec2i(518, 518);
 		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 179.0f));
 		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 1017.0f));		
 		break;
 	case 3:
+		size = Vec2i(305, 305);
 		position.push_back(Vec2f(165.0f, 239.0f));
 		position.push_back(Vec2f(165.0f, 731.0f));
 		position.push_back(Vec2f(165.0f, 1243.0f));
 		break;
 	case 4:
+		size = Vec2i(305, 305);
+		position.push_back(Vec2f(165.0f, 239.0f));
+		position.push_back(Vec2f(165.0f, 731.0f));
+		position.push_back(Vec2f(165.0f, 1243.0f));
+		position.push_back(Vec2f(165.0f, 1243.0f));
 		break;
 	}
 			
@@ -121,7 +127,8 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 		oneGame.position = position[i];
 
 		Texture tex = filtergames[i].getTexture();
-		float scale = size.x / tex.getWidth();
+		float scale = (float)size.x / tex.getWidth();
+	
 		oneGame.texture = Utils::drawGraphicsToFBO(size, [&]()
 		{ 			
 			gl::scale(scale, scale);
@@ -137,13 +144,13 @@ vector<GamesInfo> MenuSettings::getGames()
 {
 	return model->getGames();
 }
-
-string MenuSettings::getUserDesighFullPath()
-{
-	return getBasePath().string() + data.userTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
-}
-
-string MenuSettings::getKubikDesighFullPath()
-{
-	return getBasePath().string() + data.kubikTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
-}
+//
+//string MenuSettings::getUserDesighFullPath()
+//{
+//	return getBasePath().string() + data.userTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
+//}
+//
+//string MenuSettings::getKubikDesighFullPath()
+//{
+//	return getBasePath().string() + data.kubikTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
+//}

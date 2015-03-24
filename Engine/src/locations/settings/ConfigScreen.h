@@ -17,6 +17,8 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class ConfigScreen> ConfigScreenRef;
+
 		class ConfigScreen:public IScreen, public Sprite
 		{
 		public:
@@ -34,11 +36,11 @@ namespace kubik
 			void savePhtbtn();
 
 			SignalVoid closeSettingsSignal;
-			signal<void(std::vector<Changes>)> appSettingsChangedSignal;
+			signal<void(std::vector<Changes>, bool)> appSettingsChangedSignal;
 
-			connection mouseUpListener;
-			connection closeBtnListener;
-			connection appSettingsChgListener;
+			//connection mouseUpListener;
+			//connection closeBtnListener;
+			//connection appSettingsChgListener;
 
 			void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
 			void setMenuSettings(menu::MenuSettingsRef menuSettings);
@@ -73,7 +75,6 @@ namespace kubik
 			void gamesBlockHandler(EventGUIRef& event);
 		
 			void savePhotoboothParams();
-
 			void createPhotoboothParams();
 			void createMenuParams();	
 			void createFuncesParams();	
@@ -82,16 +83,11 @@ namespace kubik
 			void checkGamesParamsForChanges();
 			void checkScreenSaverParamsForChanges();
 			void createGamesParams();		
-			void createScreensaverParams();
-	
-			void setDefaultGameIdInSwitchOnGames();
-			void setReloadGamePropertyIfNeedIt(Changes &chng);
-
+			void createScreensaverParams();	
+		
 			void showingMainConfAnimationComplete();
 			void initShowAnimation();
 			void showAnimationComplete();
-		};
-
-		typedef std::shared_ptr<ConfigScreen> ConfigScreenRef;	
+		};		
 	}
 }

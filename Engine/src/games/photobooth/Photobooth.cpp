@@ -50,19 +50,7 @@ void Photobooth::start()
 
 	index = 0;
 	currentLocation = locations[index];
-
-	reset();
-
-	initShowAnimation();
-}
-
-void Photobooth::initShowAnimation()
-{
-	screenshot = getScreenShot();
-	state = SHOW_ANIM;
-	timeline().apply(&animX, 1080.0f, 0.0f, 0.9f, EaseOutCubic()).finishFn(bind(&Photobooth::showAnimationComplete, this));
-	timeline().apply(&animX1, 0.0f, -500.0f, 0.9f, EaseOutCubic());
-	timeline().apply(&alpha, 1.0f, 0.2f, 0.9f, EaseOutCubic());	
+	initShowAnimation();	
 }
 
 void Photobooth::showAnimationComplete()
@@ -137,8 +125,6 @@ void Photobooth::cameraSetup()
 
 void Photobooth::nextLocationHandler()
 {
-	//currentLocation->stop();
-	  
 	if (++index >= locations.size())
 		gotoFirstlocation();
 	else
@@ -170,12 +156,7 @@ void Photobooth::draw()
 	switch (state)
 	{
 	case SHOW_ANIM:
-		gl::pushMatrices();
-		gl::translate(animX1, 0.0f);
-		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		gl::draw(screenshot);
-		gl::color(Color::white());
-		gl::popMatrices();
+		screenshotDraw();		
 
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
@@ -196,7 +177,6 @@ void Photobooth::removeListeners()
 		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
 		loc->disconnectEventHandler(IPhotoboothLocation::BEGIN_ANIM);
 		loc->disconnectEventHandler(IPhotoboothLocation::COMPLETE_ANIM);
-	}
-		
+	}		
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 }

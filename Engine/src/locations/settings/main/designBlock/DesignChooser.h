@@ -13,52 +13,23 @@ namespace kubik
 		typedef std::shared_ptr<class SixButtonsLayer<ChangeDesignEvent>> SixButtonsLayerDesignRef;
 		typedef std::shared_ptr<class DesignChooser> DesignChooserRef;
 
-		class DesignChooser: public Sprite
+		class DesignChooser : public Sprite
 		{
-		public:	
+		public:
 			static const int CHANGED_DESIGN = 0;
 			static const int OPEN_USER_DESIGN_FOLDER = 1;
 
-			DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& position)
-				:Sprite(), configSettings(configSettings)					 
-			{
-				setPosition(position);
+			DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
-				DesignData designdata = configSettings->getDesignData();	
-				int activeID		  = configSettings->getActiveDesignID();
-				int userDesignID	  = configSettings->getUserDesignID();
-				std::string syspath	  = configSettings->getUserDesignPath();
-	
-				sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, 0.0f, 0.0f));
-				addChild(sixBtnLayer);				
-			}
+			virtual void activateListeners() override;
+			virtual void unActivateListeners() override;
+			void buttonClicked(EventGUIRef& event);
+			int getDesignID() const;
 
-			void activateListeners()
-			{
-				sixBtnLayer->connectEventHandler(&DesignChooser::buttonClicked, this);
-				Sprite::activateListeners();
-			}
-
-			void unActivateListeners()
-			{
-				sixBtnLayer->disconnectEventHandler();
-				Sprite::unActivateListeners();
-			}		
-
-			void buttonClicked(EventGUIRef& event)
-			{
-				EventGUI *ev = event.get();
-				if(ev)
-				{
-					console()<<"buttonClicked design changed"<<endl;
-					callback(CHANGED_DESIGN);
-					//mouseUpSignal(event);
-				}
-			}
-
-			private:			
-				ConfigSettingsRef configSettings;
-				SixButtonsLayerDesignRef sixBtnLayer;
-		};		
+		private:
+			ConfigSettingsRef configSettings;
+			SixButtonsLayerDesignRef sixBtnLayer;
+			int id;
+		};
 	}
 }

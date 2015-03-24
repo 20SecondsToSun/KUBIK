@@ -19,7 +19,7 @@
 			     "labels":"data\\configs\\mainconf\\labels.txt"},
 
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt", 
-   "userInfoPath" : "data\\configs\\userInfo.txt",
+   "userInfoPath" : "data\\configs\\user\\userInfo.txt",
    "labelsPath" : "data\\configs\\labels.txt",
    "designDataPath" : "data\\configs\\designs.txt"
 }

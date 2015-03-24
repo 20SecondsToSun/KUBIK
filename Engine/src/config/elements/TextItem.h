@@ -16,7 +16,7 @@ namespace kubik
 			this->text = text;
 		}
 	
-		std::string getText()
+		std::string getText() const
 		{
 			return text;
 		}
@@ -26,7 +26,7 @@ namespace kubik
 			this->fontName = fontName;
 		}
 
-		ci::Font getFont()
+		ci::Font getFont() const
 		{
 			return font;
 		}

@@ -3,11 +3,12 @@
 #include "IScreen.h"
 #include "IGame.h"
 #include "ServicePopup.h"
-#include "Preloader.h"
+#include "preloader/Preloader.h"
 #include "ILoader.h"
 
 using namespace std;
 using namespace ci;
+using namespace kubik::config;
 
 namespace kubik
 {
@@ -15,7 +16,7 @@ namespace kubik
 	{
 
 	public:	
-		ConfigLoader(AppModelRef model)
+		ConfigLoader(ApplicationModelRef model)
 		{
 			this->model = model;
 		}
@@ -72,7 +73,7 @@ namespace kubik
 		}
 
 	private:	
-		AppModelRef model;		
+		ApplicationModelRef model;		
 	};
 
 	typedef shared_ptr<ConfigLoader> ConfigLoaderRef;

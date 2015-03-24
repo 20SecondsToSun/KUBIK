@@ -101,7 +101,7 @@ namespace kubik
 
 		public:
 			ConfigSettings(ApplicationModelRef model):ISettings(model), memento(false)
-			{
+			{				
 				data.designData = model->getDesignData();
 				data.userDesignID = model->getUserDesignID();
 				data.setLang(model->getLang());

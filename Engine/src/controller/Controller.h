@@ -21,6 +21,7 @@
 #include "Funces.h"
 
 #include "VirtualKeyboard.h"
+#include "preloader/Preloader.h"
 
 using namespace std;
 
@@ -29,11 +30,11 @@ namespace kubik
 	class Controller
 	{
 	public:
-		Controller(AppModelRef model, AppViewRef view);
+		Controller(ApplicationModelRef model, AppViewRef view);
 		~Controller();
 
 	private:
-		AppModelRef				model;	
+		ApplicationModelRef		model;
 		AppViewRef				view;
 
 		ConfigLoaderRef			configLoader;
@@ -93,10 +94,10 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 		
-		void setMenuScreenHandlers();
+		void startMenuScreenLocation();
 		void removeMenuScreenHandlers();
-		void startMultiplyGameMode();
-
+		void setMenuScreenHandlers();
+		
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					CONFIG SCREEN
@@ -113,16 +114,8 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		ISettingsRef getSettingsByChangeId(ChangeId id);
-		IScreenRef getScreenByChangeId(ChangeId id);	
-
-		void startAfterReload(GameId id = GameId::UNDEFINED);
-		void appSettingsChangedHandler(vector<Changes> changes);
-		void reloadScreens(vector<Changes> changes);
-		void allGraphicsReloadCompleteHandler(vector<Changes> changes);	
-
-		GameId getReloadGameId();
-
+		void reloadScreens(const std::vector<Changes>& changes, bool reloadAllDesign);
+	
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					GAME SCREEN
@@ -140,6 +133,8 @@ namespace kubik
 		void startGameHandler(GameId id);		
 
 		void closeGameHandler();
+		void openSettingsHandler();
+		
 		void clearGameByID(GameId id);
 		void gameGraphicsLoadingCompleteHandler();		
 	};

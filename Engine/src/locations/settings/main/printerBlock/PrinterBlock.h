@@ -7,6 +7,8 @@ namespace kubik
 {
 	namespace config
 	{
+		typedef std::shared_ptr<class PrinterBlock> PrinterBlockRef;
+
 		class PrinterBlock: public Sprite
 		{
 		public:	
@@ -16,171 +18,39 @@ namespace kubik
 			static const int OPENED = 3;
 			static const int HIDED = 4;
 
-			PrinterBlock(ConfigSettingsRef configSettings, ci::Vec2i position)
-				:Sprite(),
-				hintText(configSettings->getTextItem(ConfigTextID::PHOTO_LEFT)),
-				changeBtnText(configSettings->getTextItem(ConfigTextID::CATRINGE_CHANGED)),
-				iconColor(ci::Color::hex(0xffffff)),
-				numsColor(ci::Color::hex(0xffffff)),
-				bckgrndColor(ci::Color::hex(0x1a1827)),
-				barColor1(ci::Color::hex(0x233442)),
-				barColor2(ci::Color::hex(0x00f067)),
-				maxBarWidth(312.0f),
-				numsFont(configSettings->getFont("introBold72")),
-				icon(configSettings->getTexture("catridgeIcon")),
-				maxPhotosToPrint(configSettings->getData().maxPhotosToPrint)						
-			{				
-				setPosition(position);
+			PrinterBlock(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
-				ci::gl::Texture img = textTools().getTextField(changeBtnText);
-				openBtn = ImageButtonSpriteRef(new ImageButtonSprite(img, Vec2f(670, 62.5)));
-				addChild(openBtn);
+			virtual void activateListeners() override;
+			virtual void unActivateListeners() override;
+			virtual void drawLayout() override;
+			virtual void draw() override;
+			virtual void eventListener(EventGUIRef event);
 
-				controls = PrinterControlsRef(new PrinterControls(configSettings, Vec2f(0, 170)));
-				addChild(controls);	
-			}
+			void openButtonHandler(EventGUIRef& event);
+			void openControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f);
+			void closeControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f);
+			void posAnimationUpdate();
+			void hideControlsAnimationFinish();
+			void openControlsAnimationFinish();	
 
-			virtual void activateListeners()
-			{
-				openBtn->connectEventHandler(&PrinterBlock::openButtonHandler, this);
-			}
-
-			void openButtonHandler(EventGUIRef& event)
-			{
-				if(eventHandlerDic[OPEN_EVENT])
-				{
-					openBtn->disconnectEventHandler();
-					eventHandlerDic[OPEN_EVENT]();				
-				}
-			}
-
-			virtual void unActivateListeners()
-			{
-				openBtn->disconnectEventHandler();
-			}
-
-			virtual void drawLayout()
-			{				
-				gl::color(bckgrndColor);
-				gl::drawSolidRect(Rectf(0.0f, 0.0f, 835.0f, 170.0f));
-				gl::color(Color::white());
-				textTools().textFieldDraw(to_string(currentPhotosPrinted), &numsFont, numsColor, Vec2f(88, 26));
-				textTools().textFieldDraw(hintText, Vec2f(240, 42.5));
-			
-				gl::color(iconColor);
-				gl::draw(icon, Vec2f(620, 66));
-				gl::color(barColor1);
-				gl::drawSolidRoundedRect(Rectf(245, 90, 245 + maxBarWidth, 103), 8, 200);
-				gl::color(barColor2);
-				if(curBarWidth > 20)// good parametr for rounded rectangle
-					gl::drawSolidRoundedRect(Rectf(245, 90, 245 + curBarWidth, 103), 8, 200);
-				gl::color(Color::white());		
-			}
-
-			virtual void draw()
-			{				
-				gl::pushMatrices();				
-				gl::translate(getGlobalPosition());
-					drawLayout();
-				gl::popMatrices();
-
-				openBtn->draw();
-				controls->draw();
-			}
-
-			void openControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
-			{
-				animatePosition = _localPosition;
-				timeline().apply( &animatePosition, _localPosition + Vec2f(0, -400), time, eFunc)
-					     .updateFn(bind( &PrinterBlock::posAnimationUpdate, this))
-						 .finishFn(bind( &PrinterBlock::openControlsAnimationFinish, this));
-			}
-
-			void closeControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f)
-			{
-				animatePosition = _localPosition;
-				timeline().apply( &animatePosition, _localPosition + Vec2f(0, 400), time, eFunc)
-					     .updateFn(bind( &PrinterBlock::posAnimationUpdate, this))
-						 .finishFn(bind( &PrinterBlock::hideControlsAnimationFinish, this));
-			}			
-
-			void posAnimationUpdate()
-			{
-				setPosition(animatePosition.value());
-			}
-
-			void hideControlsAnimationFinish()
-			{				
-				controls->unActivateListeners();
-				eventHandlerDic[HIDED]();
-			}
-
-			void openControlsAnimationFinish()
-			{	
-				if(eventHandlerDic[OPENED])
-				{
-					eventHandlerDic[OPENED]();
-					controls->activateListeners();
-					controls->connectEventHandler(&PrinterBlock::eventListener, this);
-				}
-			}
-			virtual void eventListener(EventGUIRef event)
-			{
-				EventGUI *ev = event.get();		
-				if(!ev) return;	
-
-				if(typeid(*ev) == typeid(PrinterControlsHideEvent))
-				{
-					if(eventHandlerDic[HIDE_EVENT])					
-						eventHandlerDic[HIDE_EVENT]();					
-				}
-				else if(typeid(*ev) == typeid(PrinterStatResetEvent))
-				{
-					if(eventHandlerDic[STAT_RESET_EVENT])					
-						eventHandlerDic[STAT_RESET_EVENT]();					
-				}
-
-			}
-
-			void setAlpha(float  alpha)
-			{			
-				bckgrndColor = Utils::colorAlpha(bckgrndColor, alpha);
-				numsColor = Utils::colorAlpha(numsColor, alpha);
-				hintText.setColor(Utils::colorAlpha(hintText.getColor(), alpha));
-				barColor1 = Utils::colorAlpha(barColor1, alpha);
-				barColor2 = Utils::colorAlpha(barColor2, alpha);
-				iconColor = Utils::colorAlpha(iconColor, alpha);
-				Sprite::setAlpha(alpha);
-			}	
-			
-			void setMaxPhotosToPrint(int value)
-			{
-				maxPhotosToPrint = value;
-			}
-
-			void set—urrentPhotosPrinted(int value)
-			{
-				currentPhotosPrinted = value;
-				curBarWidth = ((float)currentPhotosPrinted / maxPhotosToPrint) * maxBarWidth;
-			}
+			void setAlpha(float alpha);			
+			void setMaxPhotosToPrint(int value);
+			void set—urrentPhotosPrinted(int value);
 		
 		private:
-			ci::Vec2i position;
-			ci::gl::Texture icon;
-			TextItem hintText, changeBtnText;
+			ci::Vec2i position, digitTexturePos, hintTextTexturePos;
+			ci::gl::Texture icon, digitTexture, hintTextTexture;			
 			ci::ColorA numsColor, bckgrndColor, barColor2, barColor1, iconColor;
 			ci::Font numsFont;
-			int maxPhotosToPrint;
-			int currentPhotosPrinted;
-			float maxBarWidth;
-			int curBarWidth;
-		
 			ci::Rectf btnRectf;
-			ImageButtonSpriteRef openBtn;
 			ci::Anim<ci::Vec2f> animatePosition;
-			PrinterControlsRef controls;				
-		};
 
-		typedef std::shared_ptr<PrinterBlock> PrinterBlockRef;
+			TextItem hintText, changeBtnText;
+			ImageButtonSpriteRef openBtn;
+			PrinterControlsRef controls;
+
+			int maxPhotosToPrint, currentPhotosPrinted, curBarWidth;			
+			float maxBarWidth;							
+		};		
 	}
 }

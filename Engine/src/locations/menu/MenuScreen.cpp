@@ -27,11 +27,13 @@ void MenuScreen::init(ISettingsRef _settings)
 	bckgnd         =  settings->getTexture("background");
 
 	createMenuBtns(settings->getEnabledGamesData());
-	createControlsButtons();
 }
 
 void MenuScreen::resetMenuBtnGames()
 {
+	auto games = settings->getEnabledGamesData();
+	if (games.size() <= 1) return;
+
 	clearGamesButtonVector();
 	createMenuBtns(settings->getEnabledGamesData());
 }
@@ -39,18 +41,11 @@ void MenuScreen::resetMenuBtnGames()
 void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
 {	
 	for(auto it : games)
-	{			
+	{	
 		GameButtonRef button = GameButtonRef(new GameButton(it));
 		addChild(button);
 		gamesBtns.push_back(button);		
 	}
-}
-
-void MenuScreen::createControlsButtons()
-{
-	Rectf setButtonArea = Rectf(50.0f, 50.0f, 350.0f, 150.0f);
-	settingsButton = SimpleSpriteButtonRef(new SimpleSpriteButton(setButtonArea));
-	addChild(settingsButton);
 }
 
 Rectf MenuScreen::getMenuBtuttonArea(int i)
@@ -65,8 +60,6 @@ Rectf MenuScreen::getMenuBtuttonArea(int i)
 void MenuScreen::clearGamesButtonVector()
 {
 	removeAllChildren();
-
-	settingsButton->disconnectEventHandler();
 
 	for(auto btn : gamesBtns)	
 		btn->disconnectEventHandler();	
@@ -95,30 +88,32 @@ void MenuScreen::showAnimationComplete()
 {
 	state = DRAW;
 
-	settingsButton->connectEventHandler(&MenuScreen::startSettingsHandler, this);
-
 	for (auto btn : gamesBtns)
 		btn->connectEventHandler(&MenuScreen::startGameHandler, this);
 }
 
 void MenuScreen::stop()
 {
-	settingsButton->disconnectEventHandler();
-
 	for(auto btn : gamesBtns)	
 		btn->disconnectEventHandler();		
 }
 
 void MenuScreen::startGameHandler(EventGUIRef& evt )
 {	
-	console()<<"startGameHandler!!!!!!!!!!!!"<<endl;
-	//GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);		
-	startGameSignal(GameId::PHOTOBOOTH);//event->getGameID());
-}
+	EventGUI *ev = evt.get();
+	if (!ev) return;
 
-void MenuScreen::startSettingsHandler(EventGUIRef& evt )
-{
-	startSettingsSignal();
+	if (typeid(*ev) == typeid(GameChoosedEvent))
+	{		
+		GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);
+	
+		auto id = event->getGameID();
+
+		if (id != GameId::PHOTOBOOTH)
+			id = GameId::FUNCES;
+
+		startGameSignal(id);
+	}
 }
 
 void MenuScreen::videoMouseUpListener(EventGUIRef& evt )

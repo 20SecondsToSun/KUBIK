@@ -19,57 +19,36 @@ namespace kubik
 		class ChangeDesignButton: public ImageQuadroButton
 		{
 		public:
-			ChangeDesignButton(OneDesignItem item, ci::Vec2f pos)
-				:ImageQuadroButton(item, pos)
-			{
-				event = ChangeDesignEventRef(new ChangeDesignEvent(item));
-			}		
+			ChangeDesignButton(const OneDesignItem& item, const ci::Vec2f& pos);
 
 		};	
 
 		class PhotoOverButton: public ImageQuadroButton
 		{
 		public:
-			PhotoOverButton(OneDesignItem item, ci::Vec2f pos)
-				:ImageQuadroButton(item, pos)
-			{
-				event = ChangePhotoOverDesignEventRef(new ChangePhotoOverDesignEvent(item));
-			}		
+			PhotoOverButton(const OneDesignItem& item, const ci::Vec2f& pos);
 
 		};	
 
 		class PhotoCardStyleButton: public ImageQuadroButton
 		{
 		public:
-			PhotoCardStyleButton(OneDesignItem item, ci::Vec2f pos)
-				:ImageQuadroButton(item, pos)
-			{
-				event = ChangePhotoCardStyleDesignEventRef(new ChangePhotoCardStyleDesignEvent(item));
-			}	
+			PhotoCardStyleButton(const OneDesignItem& item, const ci::Vec2f& pos);			
 		};	
 
 		class PhotoFilterPreviewButton: public ImageQuadroButton
 		{
 		public:
-			PhotoFilterPreviewButton(OneDesignItem item, ci::Vec2f pos)
-				:ImageQuadroButton(item, pos)
-			{
-				event = ChangePhotoFilterPreviewActiveEventRef(new ChangePhotoFilterPreviewActiveEvent(item));
-			}	
+			PhotoFilterPreviewButton(const OneDesignItem& item, const ci::Vec2f& pos);			
 		};	
 
-
-		//typedef std::shared_ptr<class SixItemButton<Type>> SixItemButtonRef;
 		template <class Type> class SixItemButton: public ImageQuadroButton
 		{
 		public:
-			SixItemButton(OneDesignItem item, ci::Vec2f pos):ImageQuadroButton(item, pos)
+			SixItemButton(const OneDesignItem& item, const ci::Vec2f& pos) :ImageQuadroButton(item, pos)
 			{
 				event = std::shared_ptr<Type>(new Type(item));
 			}	
-		};	
-
-		
-		
+		};			
 	}
 }

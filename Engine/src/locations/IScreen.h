@@ -43,7 +43,6 @@ namespace kubik
 
 		void setScrenshot()
 		{
-			console() << "set screeeeeeeeeeeeeeeen" << endl;
 			kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); }));
 		}
 
