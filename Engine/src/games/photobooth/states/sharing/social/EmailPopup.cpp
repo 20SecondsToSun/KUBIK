@@ -1,24 +1,20 @@
-#include "states/sharing/Popup.h"
+#include "states/sharing/social/EmailPopup.h"
 
 using namespace kubik::games::photobooth;
 using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-Popup::Popup(PhotoboothSettingsRef settings)
-	:headColor(Color::hex(0x4b515a)),
-	bgColor(Color::hex(0x34383f)), 
+EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
+	:Popup(settings),
 	addEmailFontColor(Color::white()),
-	closeIcon(settings->getTexture("closePopup")),
 	addEmailIcon(settings->getTexture("addEmail")),
 	borderIcon(settings->getTexture("enterEmailBorder")),
 	borderIconRed(settings->getTexture("errorEmailBorder")),
-	inputFont(settings->getFont("introBook44")),
 	addEmailFont(settings->getFont("helveticaNeueLight24")),
 	initAddEmailPosition(Vec2f(165.0f, 480.0f)),
 	shiftEmailPosition(Vec2f(0.0f, 63.0f))
 {
-	closeBtn = ImageButtonSpriteRef(new ImageButtonSprite(closeIcon, Vec2f(getWindowWidth(), 0.0f) + Vec2f(-93.0f, 93.0f) - closeIcon.getSize() * 0.5f));
 	borderIconPos = Vec2f((getWindowWidth() - borderIcon.getWidth()) * 0.5f, 350.0f - borderIcon.getHeight() * 0.5f);
 
 	addEmailBtn = ImageButtonSpriteRef(new ImageButtonSprite(addEmailIcon, 
@@ -26,69 +22,49 @@ Popup::Popup(PhotoboothSettingsRef settings)
 		500.0f - addEmailIcon.getHeight() * 0.5f)));
 }
 
-void Popup::show()
+void EmailPopup::show()
 {
 	showAddEmail = true;
-
 	clearEmails();
 
-	initVirtualKeyboard();
-
-	timeline().apply(&alphaAnim, 0.0f, 0.97f, 0.6f, EaseOutCubic())
-		.finishFn(bind(&Popup::showAnimComplete, this));
+	Popup::show();
 }
 
-void Popup::clearEmails()
+void EmailPopup::clearEmails()
 {
 	emails.clear();
 	emailsTextures.clear();
 }
 
-void Popup::initVirtualKeyboard()
+void EmailPopup::initVirtualKeyboard()
 {
-	touchKeyboard().clearInputFieldText();
 	touchKeyboard().setInputField(borderIconPos.x + 10, borderIconPos.y, borderIconPos.x + 810.0f, borderIconPos.y + 139.0f);
-	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().setInputFont(inputFont);
 	touchKeyboard().setInputColor(Color::white());
-	touchKeyboard().connectKeyboard();
-	auto endY = 800.0f;
-	touchKeyboard().show(Vec2f(30.0f, endY + 500.0f), Vec2f(30.0f, endY), 0.7f);
-	//touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
+
+	Popup::initVirtualKeyboard();
 }
 
-void Popup::showAnimComplete()
+void EmailPopup::showAnimComplete()
 {
-	closeBtn->connectEventHandler(&Popup::hide, this);
-	addEmailBtn->connectEventHandler(&Popup::addEmailHandler, this);
+	Popup::showAnimComplete();
+	addEmailBtn->connectEventHandler(&EmailPopup::addEmailHandler, this);
 }
 
-void Popup::hideAnimComplete()
+void EmailPopup::hide(EventGUIRef& event)
 {
-	callback(POPUP_CLOSED);
-}
-
-void Popup::hide(EventGUIRef& event)
-{
-	closeBtn->disconnectEventHandler();
 	addEmailBtn->disconnectEventHandler();
-
-	touchKeyboard().clearInputFieldText();
-	touchKeyboard().disconnectKeyboard();
-	touchKeyboard().hide(Vec2f(30.0f, 1950.0f), 0.3f);
-
-	timeline().apply(&alphaAnim, 0.0f, 0.6f, EaseOutCubic())
-		.finishFn(bind(&Popup::hideAnimComplete, this));
+	Popup::hide(event);
 }
 
-void Popup::addEmailHandler(EventGUIRef& event)
+void EmailPopup::addEmailHandler(EventGUIRef& event)
 {
 	console() << "add email" << endl;
 	if (handleInputField())
 		addEmailToList();
 }
 
-bool Popup::handleInputField()
+bool EmailPopup::handleInputField()
 {
 	if (touchKeyboard().emptyInputField())
 	{
@@ -99,7 +75,7 @@ bool Popup::handleInputField()
 	return true;
 }
 
-void Popup::addEmailToList()
+void EmailPopup::addEmailToList()
 {
 	auto text = touchKeyboard().getInputFieldText();
 	emails.push_back(text);
@@ -118,17 +94,14 @@ void Popup::addEmailToList()
 	}
 }
 
-void Popup::showRedFocusStroke()
+void EmailPopup::showRedFocusStroke()
 {
 	timeline().apply(&alphaError, 1.0f, 0.0f, 2.5f, EaseOutCubic());
 }
 
-void Popup::draw()
+void EmailPopup::draw()
 {
-	drawBackgrounds();
-
-	closeBtn->setAlpha(alphaAnim);
-	closeBtn->draw();
+	Popup::draw();
 
 	drawInputField();
 
@@ -138,28 +111,12 @@ void Popup::draw()
 		addEmailBtn->draw();
 	}
 
-	drawAddedEmails();
-
-	touchKeyboard().draw();
+	drawAddedEmails();	
 
 	gl::color(Color::white());
 }
 
-void Popup::drawBackgrounds()
-{
-	float height = 716.0f;
-	auto color = Utils::colorAlpha(headColor, alphaAnim);
-	gl::color(color);
-	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), height));
-	color = Utils::colorAlpha(bgColor, alphaAnim);
-	gl::color(color);
-	gl::pushMatrices();
-	gl::translate(0.0f, height);
-	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 1920.0f - height));	
-	gl::popMatrices();
-}
-
-void Popup::drawInputField()
+void EmailPopup::drawInputField()
 {
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 	gl::draw(borderIcon, borderIconPos);
@@ -167,7 +124,7 @@ void Popup::drawInputField()
 	gl::draw(borderIconRed, borderIconPos);
 }
 
-void Popup::drawAddedEmails()
+void EmailPopup::drawAddedEmails()
 {
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 	for (auto email : emailsTextures)

@@ -37,7 +37,6 @@ namespace kubik
 			void alphAnimationUpdate();
 			void showAnimationFinish();
 			void initVirtualKeyboard();
-			void inputTouchHandler();
 			void closeHandler(EventGUIRef& event);
 			void newCompainHandler(EventGUIRef& event);
 			void disconnect();

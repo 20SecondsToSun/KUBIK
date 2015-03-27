@@ -146,8 +146,12 @@
     <ClCompile Include="..\src\games\photobooth\states\IPhotoboothLocation.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\PhotoSharing.cpp" />
-    <ClCompile Include="..\src\games\photobooth\states\sharing\Popup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\QrCode.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\EmailPopup.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\Popup.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\shooting\PhotoShooting.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\template\PhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
@@ -281,8 +285,12 @@
     <ClInclude Include="..\src\games\photobooth\states\IPhotoboothLocation.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\FinalPhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\PhotoSharing.h" />
-    <ClInclude Include="..\src\games\photobooth\states\sharing\Popup.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\QrCode.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\EmailPopup.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\Popup.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\shooting\PhotoShooting.h" />
     <ClInclude Include="..\src\games\photobooth\states\template\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\template\TemplateButtons.h" />

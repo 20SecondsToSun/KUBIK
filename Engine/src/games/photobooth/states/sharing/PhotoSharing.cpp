@@ -35,7 +35,10 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	againBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
 	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
 
-	popup	  = PopupRef(new Popup(settings));
+	emailpopup = EmailPopupRef(new EmailPopup(settings));
+	vkpopup = VkontaktePopupRef(new VkontaktePopup(settings));
+	fbpopup = FacebookPopupRef(new FacebookPopup(settings));
+	twpopup = TwitterPopupRef(new TwitterPopup(settings));
 	
 	float shiftY = 238.0f;
 	float posArrayWithEmail[]	 = { 468.0f, 776.0f, 776.0f + shiftY, 776.0f + 2.0f * shiftY };
@@ -194,24 +197,28 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& _event)
 void PhotoSharing::emailBtnHandler(EventGUIRef& _event)
 {
 	console() << "emailBtnHandler" << endl;
+	popup = emailpopup;
 	showPopup();
 }
 
 void PhotoSharing::fbBtnHandler(EventGUIRef& _event)
 {
 	console() << "fbBtnHandler" << endl;
+	popup = fbpopup;
 	showPopup();
 }
 
 void PhotoSharing::vkBtnHandler(EventGUIRef& _event)
 {
 	console() << "vkBtnHandler" << endl;
+	popup = vkpopup;
 	showPopup();
 }
 
 void PhotoSharing::twBtnHandler(EventGUIRef& _event)
 {
 	console() << "twBtnHandler" << endl;
+	popup = twpopup;
 	showPopup();
 }
 

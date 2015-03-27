@@ -31,12 +31,12 @@
    ],
    "isCustomDesign" : false,
    "isEmail" : true,
-   "isFacebook" : false,
+   "isFacebook" : true,
    "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : true,
-   "isTwitter" : true,
-   "isVkotakte" : false,
+   "isTwitter" : false,
+   "isVkotakte" : true,
    "seconds" : 4,
    "templateId" : 1
 }

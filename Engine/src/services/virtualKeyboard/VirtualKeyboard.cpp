@@ -28,6 +28,7 @@ float VirtualKeyboard::_xOffset5 = 12.0f;
 
 bool VirtualKeyboard::setuped = false;
 bool VirtualKeyboard::connected = false;
+bool VirtualKeyboard::showInputField = true;
 
 ci::Vec2f VirtualKeyboard::lineOffset1 = Vec2f(360.0f, 30.0f);
 ci::Vec2f VirtualKeyboard::lineOffset2 = Vec2f(415.0f, 122.0f);
@@ -223,6 +224,7 @@ void VirtualKeyboard::hide(Vec2f to, float time)
 		timeline().apply( &keyBoardPosition, to, time, ci::EaseOutCubic()).finishFn( [ & ]()
 		{
 			isShowing = false;
+			showInputField = true;
 		});
 	}
 }
@@ -265,6 +267,11 @@ void VirtualKeyboard::disconnectKeyboard()
 	connected = false;
 }
 
+void VirtualKeyboard::setInputFieldVisible(bool value)
+{
+	showInputField = value;
+}
+
 void VirtualKeyboard::draw( )
 {
 	if(isShowing)
@@ -277,18 +284,21 @@ void VirtualKeyboard::draw( )
 		gl::popMatrices();
 	}
 
-	gl::pushMatrices();				
+	if (showInputField)
+	{
+		gl::pushMatrices();
 		gl::translate(getGlobalPosition());
-		gl::pushMatrices();				
-			//touchInputZone->draw();	
-			if(!inputFieldEmpty() && isShowing && showEraseButton)
-				erase->draw();
+		gl::pushMatrices();
+		//touchInputZone->draw();	
+		if (!inputFieldEmpty() && isShowing && showEraseButton)
+			erase->draw();
 
-			gl::draw(inputFieldTexture,
-				touchInputZone->getLocalPosition() + 
-				Vec2f(15, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()) - 5 ));
+		gl::draw(inputFieldTexture,
+			touchInputZone->getLocalPosition() +
+			Vec2f(15, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()) - 5));
 		gl::popMatrices();
-	gl::popMatrices();	
+		gl::popMatrices();
+	}	
 }
 
 void VirtualKeyboard::setEraseButtonVisible(bool value)

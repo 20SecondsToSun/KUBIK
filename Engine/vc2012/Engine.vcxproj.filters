@@ -220,6 +220,9 @@
     <Filter Include="Source Files\games\instakub">
       <UniqueIdentifier>{b2f63ef4-72cf-4d56-b4e4-5615266861ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\photobooth\states\sharing\social">
+      <UniqueIdentifier>{b8c41a78-1111-47f9-aec4-8691539f90c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -390,9 +393,6 @@
     <ClCompile Include="..\src\games\photobooth\states\instruction\PhotoInstruction.cpp">
       <Filter>Source Files\games\photobooth\states\instruction</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\photobooth\states\sharing\Popup.cpp">
-      <Filter>Source Files\games\photobooth\states\sharing</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\config\menu\MenuSettings.cpp">
       <Filter>Source Files\config\menu</Filter>
     </ClCompile>
@@ -515,6 +515,21 @@
     </ClCompile>
     <ClCompile Include="..\src\app\ApplicationView.cpp">
       <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\Popup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\EmailPopup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -965,9 +980,6 @@
     <ClInclude Include="..\src\tools\TimerTools.h">
       <Filter>Source Files\tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\games\photobooth\states\sharing\Popup.h">
-      <Filter>Source Files\games\photobooth\states\sharing</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\menu\GameButton.h">
       <Filter>Source Files\locations\menu</Filter>
     </ClInclude>
@@ -1015,6 +1027,21 @@
     </ClInclude>
     <ClInclude Include="..\src\config\settings\ConfigSettings.h">
       <Filter>Source Files\config\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\Popup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\EmailPopup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

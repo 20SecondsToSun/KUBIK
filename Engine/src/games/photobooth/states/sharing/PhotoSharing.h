@@ -7,7 +7,11 @@
 #include "gui/ImageButtonSprite.h"
 #include "states/sharing/FinalPhotoTemplate.h"
 #include "states/sharing/QrCode.h"
-#include "states/sharing/Popup.h"
+#include "states/sharing/social/Popup.h"
+#include "states/sharing/social/EmailPopup.h"
+#include "states/sharing/social/VkontaktePopup.h"
+#include "states/sharing/social/FacebookPopup.h"
+#include "states/sharing/social/TwitterPopup.h"
 
 namespace kubik
 {
@@ -30,6 +34,10 @@ namespace kubik
 				}state;
 
 				PopupRef popup;
+				EmailPopupRef emailpopup;
+				VkontaktePopupRef vkpopup;
+				FacebookPopupRef fbpopup;
+				TwitterPopupRef twpopup;
 
 				PhotoStorageRef  photoStorage;
 				ci::gl::Texture sharefon;

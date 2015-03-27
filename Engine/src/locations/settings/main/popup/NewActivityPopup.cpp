@@ -110,8 +110,11 @@ void NewActivityPopup::show(const EaseFn& eFunc, float time)
 		.updateFn(bind(&NewActivityPopup::alphAnimationUpdate, this))
 		.finishFn(bind(&NewActivityPopup::showAnimationFinish, this));
 
-	touchKeyboard().setInputFieldText("");// configSett->getActionName());
-	touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 618.0f, inputFieldPos.y + 139.0f);
+	touchKeyboard().clearInputFieldText();
+	touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 613.0f, inputFieldPos.y + 139.0f);
+
+	auto endY = 1034.0f;
+	touchKeyboard().show(Vec2f(30.0f, endY + 500.0f), Vec2f(30.0f, endY), 0.7f);
 }
 
 void NewActivityPopup::hide(const EaseFn& eFunc, float time)
@@ -147,14 +150,8 @@ void NewActivityPopup::initVirtualKeyboard()
 {
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().connectKeyboard();
-	//touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
-	inputTouchHandler();
-}
-
-void NewActivityPopup::inputTouchHandler()
-{
-	auto endY = 1034.0f;
-	touchKeyboard().show(Vec2f(30.0f, endY + 500.0f), Vec2f(30.0f, endY), 0.7f);
+	touchKeyboard().setInputFont(configSett->getFont("introLight44"));
+	touchKeyboard().setInputColor(Color::black());	
 }
 
 void NewActivityPopup::closeHandler(EventGUIRef& event)

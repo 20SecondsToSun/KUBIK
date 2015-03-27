@@ -16,6 +16,7 @@ namespace kubik
 		static const int HIDED = 4;	
 		static bool setuped;
 		static bool connected;
+		static bool showInputField;	
 
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 
@@ -30,6 +31,7 @@ namespace kubik
 		void setPosition(const Vec2f& vec);
 		std::string getLastCode();
 		std::string getDisplayCode();
+		void setInputFieldVisible(bool value);
 
 		static ci::app::KeyEvent   imitate_ENTER_KEY_EVENT();
 		static ci::app::KeyEvent   imitate_BACKSPACE_KEY_EVENT();
