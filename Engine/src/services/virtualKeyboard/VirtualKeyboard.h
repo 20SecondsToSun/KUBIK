@@ -15,6 +15,7 @@ namespace kubik
 		static const int MAX_LETTER_LIMIT = 3;	
 		static const int HIDED = 4;	
 		static bool setuped;
+		static bool connected;
 
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 
@@ -136,6 +137,11 @@ namespace kubik
 			inputColor = color;
 		}
 
+		void clearInputFieldText()
+		{
+			setInputFieldText("");
+		}
+
 		void setInputFieldText(const std::string& text)
 		{
 			inputField = text;
@@ -145,7 +151,15 @@ namespace kubik
 		std::string getInputFieldText()
 		{
 			return inputField;
-		}		
+		}
+
+		bool emptyInputField()
+		{
+			return inputField == "";
+		}
+
+
+		
 	};
 
 	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance();};

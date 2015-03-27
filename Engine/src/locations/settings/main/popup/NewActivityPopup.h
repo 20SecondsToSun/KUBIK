@@ -42,7 +42,6 @@ namespace kubik
 			void newCompainHandler(EventGUIRef& event);
 			void disconnect();
 			void hideAnimationFinish();
-			bool emptyInputField();
 			
 		protected:
 			ConfigSettingsRef configSett;

@@ -33,7 +33,9 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	vkBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("vkontakte")));
 	twBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("twitter")));
 	againBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
-	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));	
+	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
+
+	popup	  = PopupRef(new Popup(settings));
 	
 	float shiftY = 238.0f;
 	float posArrayWithEmail[]	 = { 468.0f, 776.0f, 776.0f + shiftY, 776.0f + 2.0f * shiftY };
@@ -228,8 +230,8 @@ void PhotoSharing::showPopup()
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
 	setLastScreenShot();
-	popup.connectEventHandler(&PhotoSharing::popupClosed, this, Popup::POPUP_CLOSED);
-	popup.show();	
+	popup->connectEventHandler(&PhotoSharing::popupClosed, this, Popup::POPUP_CLOSED);
+	popup->show();	
 	state = POPUP;
 }
 
@@ -279,7 +281,7 @@ void PhotoSharing::draw()
 
 	case PhotoSharing::POPUP:
 		gl::draw(screenshot);
-		popup.draw();
+		popup->draw();
 		break;
 	}
 }

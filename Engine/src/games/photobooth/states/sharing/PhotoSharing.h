@@ -29,7 +29,7 @@ namespace kubik
 					POPUP
 				}state;
 
-				Popup popup;
+				PopupRef popup;
 
 				PhotoStorageRef  photoStorage;
 				ci::gl::Texture sharefon;

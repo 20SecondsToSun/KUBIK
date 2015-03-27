@@ -7,7 +7,7 @@ namespace kubik
 {
 	namespace config
 	{
-		typedef shared_ptr<class ISettings> ISettingsRef;
+		typedef std::shared_ptr<class ISettings> ISettingsRef;
 
 		class ISettings
 		{

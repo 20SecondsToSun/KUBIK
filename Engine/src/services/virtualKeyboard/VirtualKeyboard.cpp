@@ -27,6 +27,7 @@ float VirtualKeyboard::_xOffset4 = 12.0f;
 float VirtualKeyboard::_xOffset5 = 12.0f;
 
 bool VirtualKeyboard::setuped = false;
+bool VirtualKeyboard::connected = false;
 
 ci::Vec2f VirtualKeyboard::lineOffset1 = Vec2f(360.0f, 30.0f);
 ci::Vec2f VirtualKeyboard::lineOffset2 = Vec2f(415.0f, 122.0f);
@@ -247,14 +248,21 @@ void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
 
 void VirtualKeyboard::connectKeyboard()
 {	
+	if (connected)
+		return;
 	MouseDownCon   =  getWindow()->getSignalMouseDown().connect(std::bind( &VirtualKeyboard::MouseDown, this, std::placeholders::_1));
 	MouseUpCon	   =  getWindow()->getSignalMouseUp().connect(std::bind( &VirtualKeyboard::MouseUp, this, std::placeholders::_1));
+	connected = true;
 }
 
 void VirtualKeyboard::disconnectKeyboard()
 {	
+	if (!connected)
+		return;
+
 	MouseUpCon.disconnect( );
 	MouseDownCon.disconnect();
+	connected = false;
 }
 
 void VirtualKeyboard::draw( )

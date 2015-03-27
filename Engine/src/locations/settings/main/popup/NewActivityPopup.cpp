@@ -111,7 +111,7 @@ void NewActivityPopup::show(const EaseFn& eFunc, float time)
 		.finishFn(bind(&NewActivityPopup::showAnimationFinish, this));
 
 	touchKeyboard().setInputFieldText("");// configSett->getActionName());
-	touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 621.0f, inputFieldPos.y + 139.0f);
+	touchKeyboard().setInputField(inputFieldPos.x, inputFieldPos.y, inputFieldPos.x + 618.0f, inputFieldPos.y + 139.0f);
 }
 
 void NewActivityPopup::hide(const EaseFn& eFunc, float time)
@@ -147,7 +147,8 @@ void NewActivityPopup::initVirtualKeyboard()
 {
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().connectKeyboard();
-	touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
+	//touchKeyboard().connectEventHandler(&NewActivityPopup::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
+	inputTouchHandler();
 }
 
 void NewActivityPopup::inputTouchHandler()
@@ -167,7 +168,7 @@ void NewActivityPopup::closeHandler(EventGUIRef& event)
 
 void NewActivityPopup::newCompainHandler(EventGUIRef& event)
 {
-	if (!emptyInputField())
+	if (!touchKeyboard().emptyInputField())
 	{
 		if (eventHandlerDic[START_NEW_COMPAIN])
 		{
@@ -177,11 +178,6 @@ void NewActivityPopup::newCompainHandler(EventGUIRef& event)
 	}
 	else
 		showRedFocusStroke();
-}
-
-bool NewActivityPopup::emptyInputField()
-{
-	return touchKeyboard().getInputFieldText() == "";
 }
 
 void NewActivityPopup::showRedFocusStroke()

@@ -419,6 +419,17 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("qrtitle",			createImageResource(getTemplateDesignPath("PhotoShare\\qrtitle.png")));
 	addToDictionary("bg",				createImageResource(getTemplateDesignPath("bg.jpg")));	
 
+	addToDictionary("addEmail",			createImageResource(getTemplateDesignPath("PhotoShare\\addEmail.png")));
+	addToDictionary("enterEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\enterEmailBorder.png")));
+	addToDictionary("errorEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\errorEmailBorder.png")));
+	addToDictionary("closePopup",			createImageResource(getTemplateDesignPath("PhotoShare\\close.png")));
+	
+	addToDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
+	addToDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
+
+
+
+
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 	addToDictionary("helvetica100",     createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
@@ -435,7 +446,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("introThin120",     createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
 	addToDictionary("introb210",		createFontResource(getFontsPath("introb.ttf"), 210));
 	addToDictionary("introb18",			createFontResource(getFontsPath("introb.ttf"), 18));
-	addToDictionary("introb21",			createFontResource(getFontsPath("introb.ttf"), 21));
+	addToDictionary("introb21", createFontResource(getFontsPath("introb.ttf"), 21));
 	
 	for (auto item : photoOverDesignData)	
 	{
