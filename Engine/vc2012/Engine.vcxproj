@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -118,17 +118,23 @@
     <ClCompile Include="..\blocks\CanonSDK\src\CameraController.cpp" />
     <ClCompile Include="..\blocks\CanonSDK\src\CameraEventListener.cpp" />
     <ClCompile Include="..\blocks\CanonSDK\src\CanonException.cpp" />
+    <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\config\ApplicationModel.cpp" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
+    <ClCompile Include="..\src\config\games\GameSettings.cpp" />
     <ClCompile Include="..\src\config\games\instakub\InstakubSettings.cpp" />
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp" />
+    <ClCompile Include="..\src\config\ISettings.cpp" />
     <ClCompile Include="..\src\config\menu\MenuSettings.cpp" />
+    <ClCompile Include="..\src\config\screensaver\ScreenSaverSettings.cpp" />
+    <ClCompile Include="..\src\config\settings\ConfigSettings.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
-    <ClCompile Include="..\src\games\GameSettings.cpp" />
+    <ClCompile Include="..\src\games\GamesFactory.cpp" />
+    <ClCompile Include="..\src\games\instakub\Instakub.cpp" />
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\choosing\FilterSmallButton.cpp" />
@@ -147,6 +153,7 @@
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
+    <ClCompile Include="..\src\locations\IScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\GameButton.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\Preloader.cpp" />
@@ -162,6 +169,8 @@
     <ClCompile Include="..\src\locations\settings\instakub\HashTagBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\InstakubConfig.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\KeyBackground.cpp" />
+    <ClCompile Include="..\src\locations\settings\instakub\InstaErrorPopup.cpp" />
     <ClCompile Include="..\src\locations\settings\instakub\SearchBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\main\closeBlock\CloseBlock.cpp" />
     <ClCompile Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.cpp" />
@@ -195,12 +204,14 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
+    <ClCompile Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
     <ClCompile Include="..\src\srdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\tools\Utils.cpp" />
+    <ClCompile Include="Kotopoza.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h" />
@@ -212,7 +223,6 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\config\ApplicationModel.h" />
-    <ClInclude Include="..\src\config\ConfigSettings.h" />
     <ClInclude Include="..\src\config\elements\ConfigObject.h" />
     <ClInclude Include="..\src\config\elements\ConfigTexts.h" />
     <ClInclude Include="..\src\config\elements\DesignData.h" />
@@ -225,6 +235,7 @@
     <ClInclude Include="..\src\config\ISettings.h" />
     <ClInclude Include="..\src\config\menu\MenuSettings.h" />
     <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h" />
+    <ClInclude Include="..\src\config\settings\ConfigSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\CheckerEvent.h" />
@@ -257,6 +268,7 @@
     <ClInclude Include="..\src\games\funces\Funces.h" />
     <ClInclude Include="..\src\games\GamesFactory.h" />
     <ClInclude Include="..\src\games\IGame.h" />
+    <ClInclude Include="..\src\games\instakub\Instakub.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
@@ -316,6 +328,8 @@
     <ClInclude Include="..\src\locations\settings\instakub\HashtagBlock.h" />
     <ClInclude Include="..\src\locations\settings\instakub\InstakubConfig.h" />
     <ClInclude Include="..\src\locations\settings\instakub\InstaPhotoCardStyle.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\KeyBackground.h" />
+    <ClInclude Include="..\src\locations\settings\instakub\InstaErrorPopup.h" />
     <ClInclude Include="..\src\locations\settings\instakub\SearchBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\closeBlock\CloseBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ChangeDesignButton.h" />

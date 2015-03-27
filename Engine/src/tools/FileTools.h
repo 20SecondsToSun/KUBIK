@@ -1,5 +1,6 @@
 #pragma once
 #include <shellapi.h>
+#include "cinder/Url.h"
 #pragma comment(lib, "shell32")
 
 using namespace ci;
@@ -53,7 +54,11 @@ namespace kubik
 		{
 			std::wstring stemp = std::wstring(path.begin(), path.end());
 			ShellExecute(NULL, L"open", stemp.c_str(), NULL, NULL, SW_SHOWMAXIMIZED);
-			console()<<"OpenSystemDirectoryEvent  "<<path<<endl;
+		}
+
+		void openURL(const std::string& path)
+		{
+			loadUrlStream(path);
 		}
 	};
 

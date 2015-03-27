@@ -4,6 +4,8 @@ using namespace kubik;
 using namespace kubik::menu;
 using namespace kubik::games;
 using namespace kubik::games::photobooth;
+using namespace kubik::games::instakub;
+using namespace kubik::games::funces;
 using namespace std;
 
 Controller::Controller(ApplicationModelRef model, AppViewRef view)
@@ -125,7 +127,8 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
 
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));	
-	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));	
+	//graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::FUNCES));
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));
 
 	graphicsLoader->load();
 }
@@ -165,7 +168,7 @@ void Controller::createLocations()
 
 	touchKeyboard().setup();
 
-	//screenSaver = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
+	screenSaver = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
 	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
 	controlLayer  = ControlLayerRef(new ControlLayer(menuSettings));	
 
@@ -176,12 +179,13 @@ void Controller::createLocations()
 	controlScreen->init();
 
 	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettings);
+	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettings);
+	//gamesFactory.reg<Kotopoza>(GameId::INSTAKUB, gameSettings);
 	createGame(model->getDefaultGameID());
-	//
+	////
 	view->addLayer(controlLayer);
 
-	//startup();
+	////startup();
 
 	startMenuScreenLocation();
 }
@@ -361,7 +365,7 @@ void Controller::createGame(GameId id)
 }
 
 void Controller::addGameHandlers()
-{	
+{
 	if (!model->onlyOneGameOn())
 		controlLayer->showBackButton();
 
@@ -371,7 +375,6 @@ void Controller::addGameHandlers()
 
 void Controller::enableGameHandler()
 {
-	console() << "ENABLE CLOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 	controlLayer->activateListeners();
 	controlLayer->connectEventHandler(&Controller::closeGameHandler, this, ControlLayer::CLOSE_GAME);
 	controlLayer->connectEventHandler(&Controller::openSettingsHandler, this, ControlLayer::OPEN_SETTINGS);

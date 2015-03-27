@@ -18,6 +18,7 @@ namespace kubik
 
 			void setAlpha(float alpha);
 			void setActive(bool isActive);
+			void setFreeze();
 			bool getValue() const;
 			void setRadius(float radius);
 			void setStartX(float x);
@@ -35,6 +36,7 @@ namespace kubik
 			
 			IconPair icons;
 			ci::gl::Texture icon;
+			ci::ColorA freezeColor;
 		};
 	}
 }

@@ -15,6 +15,8 @@ Title::Title(ConfigSettingsRef configSettings, const Vec2i& position)
 
 void Title::drawLayout()
 {
+	gl::color(Color::hex(0x0d0917));
+	gl::drawSolidRect(Rectf(0, -100, 850, 190));
 	gl::color(Color::white());
 	textTools().textFieldDraw(name, &font, color, Vec2f(-12.0f, 3.0f));
 }

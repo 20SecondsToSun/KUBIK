@@ -1,12 +1,14 @@
 #include "Checker.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
-Checker::Checker(const ci::Rectf& rect, const IconPair& icons, ci::Color activeColor, ci::Color unActiveColor)
+Checker::Checker(const Rectf& rect, const IconPair& icons, Color activeColor, Color unActiveColor)
 	:SimpleSpriteButton(rect),
-	activeBordercolor(ci::Color::hex(0xbc6d10)),
-	unActiveBordercolor(ci::Color::hex(0xa05b09)),
+	activeBordercolor(Color::hex(0xbc6d10)),
+	unActiveBordercolor(Color::hex(0xa05b09)),
+	freezeColor(Color::hex(0x242135)),
 	icons(icons),
 	icon(icons.unActiveIcon),
 	isActive(false),				
@@ -72,7 +74,16 @@ void Checker::setActive(bool isActive)
 		icon   = icons.unActiveIcon;
 		sdvigX = startX;
 	}
-}		
+}	
+
+void Checker::setFreeze()
+{
+	isActive = true;
+	color = freezeColor;
+	borderColor = freezeColor;
+	icon = icons.activeIcon;
+	sdvigX = finishX;
+}
 
 bool Checker::getValue() const
 {

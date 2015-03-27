@@ -13,22 +13,24 @@ namespace kubik
 		class StatBlock :public Sprite
 		{
 		public:
-
 			StatBlock(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
 			virtual void drawLayout();
-
 			void setAlpha(float alpha);
 			void setPlayedTimes(int num);
 			void setPrintedPhotos(int num);
 			void setSharedAndEmail(int num);
 			void nullValues();
+			void calculateDigitTextures();
 
 		private:
-			ci::Font numsFont;
+			ci::Font numsFont1, numsFont2, numsFont3;
 
 			TextItem title1, title2, title3;
 			ci::ColorA linesColor, numsColor;
+
+			gl::Texture playedTimesTexture, printedPhotosTexture, sharedAndEmailTexture;
+			ci::Vec2f playedTimesPosition, printedPhotosPosition, sharedAndEmailPosition;
 
 			int playedTimes;
 			int printedPhotos;

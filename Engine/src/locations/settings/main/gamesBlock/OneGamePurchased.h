@@ -21,6 +21,9 @@ namespace kubik
 
 			void setAlpha(float  alpha);
 			void checkerClicked(EventGUIRef& event);
+			void freeze();
+			void unFreeze();
+			GameId getGameID();
 
 		private:
 			std::string nameText;
@@ -30,6 +33,7 @@ namespace kubik
 			ToolFieldRef toolfield;				
 			CheckerRef checker;	
 			ci::Rectf checkerArea;
+			GamesInfo info;
 		};
 	}
 }

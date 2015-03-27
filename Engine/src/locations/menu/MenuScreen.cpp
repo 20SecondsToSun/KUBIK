@@ -3,6 +3,7 @@
 
 using namespace kubik;
 using namespace kubik::menu;
+using namespace kubik::config;
 using namespace std;
 using namespace ci;
 using namespace ci::app;
@@ -105,13 +106,8 @@ void MenuScreen::startGameHandler(EventGUIRef& evt )
 
 	if (typeid(*ev) == typeid(GameChoosedEvent))
 	{		
-		GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);
-	
+		GameChoosedEventRef event = static_pointer_cast<GameChoosedEvent>(evt);	
 		auto id = event->getGameID();
-
-		if (id != GameId::PHOTOBOOTH)
-			id = GameId::FUNCES;
-
 		startGameSignal(id);
 	}
 }

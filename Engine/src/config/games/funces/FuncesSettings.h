@@ -2,12 +2,12 @@
 
 #include "ISettings.h"
 
-using namespace std;
-using namespace ci;
-using namespace ci::app;
+using namespace kubik::config;
 
 namespace kubik
 {
+	typedef std::shared_ptr<class FuncesSettings> FuncesSettingsRef;
+
 	class FuncesSettings: public ISettings
 	{
 	public:
@@ -34,7 +34,5 @@ namespace kubik
 		virtual void writeConfig(){};
 		bool settingsChanged(){return false;};	
 		changeSetting::id getChangeID() const { return changeSetting::id::FUNCES; };
-	};
-
-	typedef shared_ptr<FuncesSettings> FuncesSettingsRef;
+	};	
 }

@@ -4,7 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
 
-ScreenSaverBlock::ScreenSaverBlock(ConfigSettingsRef configSettings, const Vec2i& position)
+ScreenSaverBlock::ScreenSaverBlock(ConfigSettingsRef configSettings, ScreenSaverSettingsRef ssSettings, const Vec2i& position)
 	:Sprite(),
 	configSettings(configSettings),
 	lineColor(ci::Color::hex(0x233442)),
@@ -13,10 +13,11 @@ ScreenSaverBlock::ScreenSaverBlock(ConfigSettingsRef configSettings, const Vec2i
 {
 	setPosition(position);
 
-	loadButton = settingsFactory().createLoadButton(Vec2f(505.0f, 66.0f));
+	loadButton = settingsFactory().createLoadButton(ssSettings->getPath(), Vec2f(505.0f, 66.0f));
 	addChild(loadButton);
 
 	checker = settingsFactory().createScreenSaverChecker(Vec2f(0.0f, 60.0f));
+	checker->setActive(ssSettings->getActive());
 	addChild(checker);
 }
 
@@ -39,16 +40,12 @@ void ScreenSaverBlock::unActivateListeners()
 
 void ScreenSaverBlock::checkerClicked(EventGUIRef event)
 {
-	checker->swapActive();
-
-	if (eventHandlerDic[SCREEN_SAVER_STATE])
-		eventHandlerDic[SCREEN_SAVER_STATE]();
+	callback(SCREEN_SAVER_STATE);
 }
 
 void ScreenSaverBlock::openDirectory(EventGUIRef event)
 {
-	if (eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER])
-		eventHandlerDic[SCREEN_SAVER_OPEN_FOLDER]();
+	callback(SCREEN_SAVER_OPEN_FOLDER);
 }
 
 void ScreenSaverBlock::drawLayout()

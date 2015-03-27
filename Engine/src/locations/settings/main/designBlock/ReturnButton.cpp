@@ -23,7 +23,7 @@ void ReturnButton::drawLayout()
 	gl::pushMatrices();
 	gl::translate(startX, 95.0f);
 	gl::draw(icon);
-	gl::translate(icon.getWidth() + 28.0f, -14.0f);
+	gl::translate(icon.getWidth() + 28.0f, -11.0f);
 	gl::draw(textTexture);
 	gl::popMatrices();
 	gl::color(Color::white());

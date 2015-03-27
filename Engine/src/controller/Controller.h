@@ -18,12 +18,14 @@
 #include "GameSettings.h"
 #include "GamesFactory.h"
 #include "Photobooth.h"
+#include "instakub/Instakub.h"
 #include "Funces.h"
 
 #include "VirtualKeyboard.h"
 #include "preloader/Preloader.h"
 
-using namespace std;
+using namespace kubik::menu;
+using namespace kubik::config;
 
 namespace kubik
 {
@@ -43,10 +45,10 @@ namespace kubik
 		ScreenSaverSettingsRef	screenSaverSettings; 
 		ConfigSettingsRef		controlSettings; 
 		GameSettingsRef			gameSettings; 	
-		menu::MenuSettingsRef	menuSettings;
+		MenuSettingsRef			menuSettings;
 
-		menu::MenuScreenRef		menuScreen;
-		menu::ControlLayerRef	controlLayer;
+		MenuScreenRef			menuScreen;
+		ControlLayerRef			controlLayer;
 		ConfigScreenRef			controlScreen;
 		ScreenSaverRef			screenSaver;
 

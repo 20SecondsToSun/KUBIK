@@ -5,6 +5,7 @@
 #include "main/DesignBlock/ScreenSaverBlock.h"
 #include "ConfigSettings.h"
 #include "DesignChooser.h"
+#include "ScreenSaverSettings.h"
 
 namespace kubik
 {
@@ -17,11 +18,10 @@ namespace kubik
 		public:	
 			static const int SCREEN_SAVER_STATE = 0;
 			static const int SCREEN_SAVER_OPEN_FOLDER = 1;
-			static const int CHANGED_DESIGN = 2;
-			static const int OPEN_USER_DESIGN_FOLDER = 3;	
 			static const int HIDE = 4;	
 
-			DesignsLayout(ConfigSettingsRef configSettings, const ci::Vec2i& position);
+			DesignsLayout(ConfigSettingsRef configSettings, ScreenSaverSettingsRef ssSettings, const ci::Vec2i& position);
+			void callbackHandler(EventGUIRef& event);
 			
 			virtual void activateListeners() override;
 			virtual void unActivateListeners() override;
@@ -32,8 +32,7 @@ namespace kubik
 			void designChanged();
 			void openUserDesignFolder();
 			bool getScreenSaverValue() const;
-			int getDesignID() const;
-
+			
 		private:			
 			ConfigSettingsRef	configSettings;
 			ScreenSaverBlockRef screenSaver;

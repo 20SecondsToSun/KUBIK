@@ -66,7 +66,7 @@ namespace kubik
 			}
 			else
 				simple.addLine(stringTools().cp1251_to_utf8(item.getText().c_str()));	
-
+		
 			return gl::Texture( simple.render( true, false ) );
 		}	
 

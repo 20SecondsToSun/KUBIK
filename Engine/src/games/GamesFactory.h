@@ -21,6 +21,7 @@ namespace kubik
 
 		base_ptr create(game::id const& name)
 		{
+			console() << "name:::::::::  " << name << endl;
 			return games[name]->create(settings[name]);
 		}
 

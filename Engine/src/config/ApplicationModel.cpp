@@ -97,10 +97,12 @@ void ApplicationModel::parseUserData()
 		game.isPurchased = findGameId(game.id, purchasedGames);
 		game.name = it.getChild("name").getValue<string>();
 
+		game.setTexture(loadImage(getFullPath(iconUrl + it.getChild("icon").getValue<string>())));
+
 		game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
 		game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
 		game.setMiniIcon(loadImage(getFullPath(iconUrl + it.getChild("miniIcon").getValue<string>())));
-		game.setTexture(loadImage(getFullPath(iconUrl + it.getChild("icon").getValue<string>())));
+		
 		games.push_back(game);
 	}
 }
@@ -224,9 +226,14 @@ GameId ApplicationModel::onlyOneGameOnID()
 	int counter = 0;
 	for (auto it : games)
 		if (it.isOn)
+		{
+			console() << "----------------------------id::::::::::::::::::   " << it.id << endl;
 			return it.id;
+		}
+		//	return it.id;
 
 	
+	return GameId::INSTAKUB;
 	//return 0;
 }
 

@@ -12,6 +12,7 @@ PurchasedGamesBlock::PurchasedGamesBlock(ConfigSettingsRef configSett, const vec
 	{
 		OneGamePurchasedRef game = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));
 		game->setPosition(Vec2f(0.0f, oneGamePurchasedHeight * i++));
+		mainGamesVec.push_back(game);
 		addChild(game);
 	}
 }
@@ -19,7 +20,26 @@ PurchasedGamesBlock::PurchasedGamesBlock(ConfigSettingsRef configSett, const vec
 void PurchasedGamesBlock::activateListeners()
 {
 	for (auto game : displayList)
-		game->activateListeners();//addMouseUpListener(&PurchasedGamesBlock::mouseUpFunction, this);						
+		game->activateListeners();						
+}
+
+void PurchasedGamesBlock::unActivateListeners()
+{
+	for (auto game : displayList)
+		game->unActivateListeners();	
+}
+
+void PurchasedGamesBlock::freezeChecker(const GameId& id)
+{
+	for (size_t i = 0; i < mainGamesVec.size(); i++)		
+		if (id == mainGamesVec[i]->getGameID())		
+			mainGamesVec[i]->freeze();		
+}
+
+void PurchasedGamesBlock::unFreezeChecker()
+{
+	for (size_t i = 0; i < mainGamesVec.size(); i++)
+			mainGamesVec[i]->unFreeze();
 }
 
 float PurchasedGamesBlock::getHeight() const

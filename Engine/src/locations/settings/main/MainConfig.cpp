@@ -2,8 +2,12 @@
 using namespace kubik;
 using namespace kubik::config;
 
-MainConfig::MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSettings)
-	:Sprite(), configSettings(configSettings), gameSettings(gameSettings)
+MainConfig::MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSettings, ScreenSaverSettingsRef ssSettings)
+	:Sprite(),
+	configSettings(configSettings),
+	gameSettings(gameSettings),
+	ssSettings(ssSettings),
+	gamesBlockEnabled(true)
 {
 	setAlpha(1);
 
@@ -14,17 +18,21 @@ MainConfig::MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSet
 	statBlock = StatBlockRef(new StatBlock(configSettings, ci::Vec2i(100, 235)));
 	title = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));
 	closeBlock = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));
-	designBlock = DesignBlockRef(new DesignBlock(configSettings, ci::Vec2i(100, 600.0f - 178.0f)));
+	designBlock = DesignBlockRef(new DesignBlock(configSettings, ssSettings, ci::Vec2i(100, 600.0f - 178.0f)));
 	gamesBlock = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));
 
-	addChild(closeBlock);
+	addChild(designBlock);
+	addChild(gamesBlock);
+
+	
 	addChild(title);
 	addChild(startNewActivity);
-	addChild(designBlock);
+	
 	addChild(statBlock);
-	addChild(gamesBlock);
+	
 	addChild(printerBlock);
 	addChild(logo);
+	addChild(closeBlock);
 }
 
 void MainConfig::activateListeners()
@@ -37,11 +45,15 @@ void MainConfig::activateListeners()
 	printerBlock->activateListeners();
 
 	designBlock->connectEventHandler(&MainConfig::openingDesignLayout, this, DesignBlock::OPEN_EVENT);
+	designBlock->connectEventHandler(&MainConfig::hidingDesignLayout, this, DesignBlock::CLOSE_EVENT);
 	designBlock->unlockListeners();
-	designBlock->activateListeners();
+	designBlock->activateListeners();	
 
-	gamesBlock->activateListeners();
-	gamesBlock->connectEventHandler(&MainConfig::gamesBlockEventsHandler, this);
+	if(gamesBlockEnabled)
+	{
+		gamesBlock->activateListeners();
+		gamesBlock->connectEventHandler(&MainConfig::gamesBlockEventsHandler, this);
+	}
 }
 
 void MainConfig::unActivateListeners()
@@ -57,6 +69,7 @@ void MainConfig::unActivateListeners()
 	startNewActivity->disconnectEventHandler();
 
 	designBlock->disconnectEventHandler(PrinterBlock::OPEN_EVENT);
+	designBlock->disconnectEventHandler(DesignBlock::CLOSE_EVENT);
 	designBlock->lockListeners();
 }
 
@@ -64,6 +77,8 @@ void MainConfig::killAll()
 {
 	unActivateListeners();
 	designBlock->unActivateListeners();
+	designBlock->disconnectEventHandler(DesignBlock::OPENED);
+	designBlock->disconnectEventHandler();
 }
 
 void MainConfig::closeHandler(EventGUIRef& event)
@@ -197,41 +212,64 @@ void MainConfig::popupClosed()
 
 void MainConfig::openingDesignLayout()
 {
+	console() << "========openingDesignLayout===========---------------------- " << endl;
+	gamesBlockEnabled = false;
 	unActivateListeners();
+	
 	designBlock->disconnectEventHandler(DesignBlock::OPEN_EVENT);
+	//designBlock->disconnectEventHandler(DesignBlock::CLOSE_EVENT);
+	designBlock->connectEventHandler(&MainConfig::openedDesignLayout, this, DesignBlock::CLOSE_EVENT);
+
 	designBlock->connectEventHandler(&MainConfig::openedDesignLayout, this, DesignBlock::OPENED);
 	gamesBlock->hide(EaseOutCubic(), 0.9f);
 	designBlock->showDesigns(EaseOutCubic(), 0.9f);
 }
 
 void MainConfig::openedDesignLayout()
-{
+{	
 	activateListeners();
+	
 	designBlock->setOpened(true);
 	designBlock->disconnectEventHandler(DesignBlock::OPENED);
-	designBlock->activateListeners();
+	//designBlock->activateListeners();
 
+	designBlock->connectEventHandler(&MainConfig::callbacks, this);
 	designBlock->connectEventHandler(&MainConfig::screenSaverStateChanged, this, DesignBlock::SCREEN_SAVER_STATE);
 	designBlock->connectEventHandler(&MainConfig::screenSaverOpenFolder, this, DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
-	designBlock->connectEventHandler(&MainConfig::changedKubikDesign, this, DesignBlock::CHANGED_DESIGN);
-	designBlock->connectEventHandler(&MainConfig::openUserDesignFolder, this, DesignBlock::OPEN_USE_DESIGN_FOLDER);
 	designBlock->connectEventHandler(&MainConfig::hidingDesignLayout, this, DesignBlock::HIDE);
+}
+
+void MainConfig::callbacks(EventGUIRef& event)
+{
+	EventGUI *ev = event.get();
+	if (!ev)
+		return;
+
+	if (typeid(*event.get()) == typeid(OpenSystemDirectoryEvent))
+	{
+		OpenSystemDirectoryEventRef evt = static_pointer_cast<OpenSystemDirectoryEvent>(event);
+		auto path = evt->getPath();
+		console() << "OpenSystemDirectoryEvent url-------------" << path<< endl;
+		fileTools().openSystemDirectory(path);	
+	}
+	else if (typeid(*event.get()) == typeid(ChangeDesignEvent))
+	{
+		ChangeDesignEventRef evt = static_pointer_cast<ChangeDesignEvent>(event);
+		auto id = evt->getItem().getID();
+		configSettings->setActiveDesignID(id);
+		console() << "changed kubik design------------------  " << endl;
+	}
 }
 
 void MainConfig::screenSaverStateChanged()
 {
 	console() << "screen saver changed state------------------  " << designBlock->getScreenSaverValue() << endl;
+	ssSettings->setActive(designBlock->getScreenSaverValue());
 }
 
 void MainConfig::screenSaverOpenFolder()
 {
 	console() << "screen saver open folder------------------  " << endl;
-}
-
-void MainConfig::changedKubikDesign()
-{
-	console() << "changed kubik design------------------  " << endl;
-	configSettings->setActiveDesignID(designBlock->getDesignID());
 }
 
 void MainConfig::openUserDesignFolder()
@@ -244,10 +282,9 @@ void MainConfig::hidingDesignLayout()
 	console() << "hidingDesignLayout------------------  " << endl;
 	unActivateListeners();
 
+	designBlock->disconnectEventHandler();
 	designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_STATE);
 	designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
-	designBlock->disconnectEventHandler(DesignBlock::CHANGED_DESIGN);
-	designBlock->disconnectEventHandler(DesignBlock::OPEN_USE_DESIGN_FOLDER);
 	designBlock->disconnectEventHandler(DesignBlock::HIDE);
 	designBlock->connectEventHandler(&MainConfig::hideDesignLayot, this, DesignBlock::HIDED);
 	designBlock->hideDesigns(EaseOutCubic(), 0.9f);
@@ -256,6 +293,7 @@ void MainConfig::hidingDesignLayout()
 
 void MainConfig::hideDesignLayot()
 {
+	gamesBlockEnabled = true;
 	designBlock->setOpened(false);
 	designBlock->disconnectEventHandler(DesignBlock::HIDED);
 	activateListeners();
@@ -265,11 +303,14 @@ void MainConfig::closeDesignBlock()
 {
 	if (designBlock->getOpened())
 	{
+		gamesBlockEnabled = true;
+		designBlock->setOpened(false);
 		designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_STATE);
 		designBlock->disconnectEventHandler(DesignBlock::SCREEN_SAVER_OPEN_FOLDER);
-		designBlock->disconnectEventHandler(DesignBlock::CHANGED_DESIGN);
-		designBlock->disconnectEventHandler(DesignBlock::OPEN_USE_DESIGN_FOLDER);
 		designBlock->disconnectEventHandler(DesignBlock::HIDE);
+		designBlock->disconnectEventHandler();
+		designBlock->unActivateListeners();
+
 		designBlock->hideDesigns(EaseOutCubic(), 0.2f);
 		gamesBlock->show(EaseOutCubic(), 0.9f);
 	}
@@ -290,29 +331,55 @@ void MainConfig::gamesBlockEventsHandler(EventGUIRef& event)
 	if (typeid(*event.get()) == typeid(GameConfEvent))
 	{
 		GameConfEventRef eventref = static_pointer_cast<GameConfEvent>(event);
-		console() << "go to config page------------------  " << eventref->getGameId() << endl;
+		console() << "go to config page------------------ " << eventref->getGameId() << endl;
 		mouseUpSignal(event);
 	}
 	else if (typeid(*ev) == typeid(StatisticEvent))
 	{
 		StatisticEventRef eventref = static_pointer_cast<StatisticEvent>(event);
-		console() << "show statistic------------------  " << eventref->getGameId() << endl;
+		auto url = gameSettings->getGameStatisticURL(eventref->getGameId());
+		fileTools().openURL(url);
+		console() << "show statistic game url------------------ " << url << endl;
 	}
 	else if (typeid(*ev) == typeid(GameCheckerEvent))
 	{
 		GameCheckerEventRef eventref = static_pointer_cast<GameCheckerEvent>(event);
-		gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
-		console() << "active checker changed value -------------------" << eventref->getValue() << "   " << eventref->getGameId() << endl;
+		changeActiveGameState(eventref);	
 	}
 	else if (typeid(*ev) == typeid(GameShowUrlEvent))
 	{
 		GameShowUrlEventRef eventref = static_pointer_cast<GameShowUrlEvent>(event);
-		console() << "show  game url -------------------" << eventref->getGameId() << endl;
+		auto url = gameSettings->getGameDescribeURL(eventref->getGameId());
+		fileTools().openURL(url);
+		console() << "show game describe url------------------- " << url <<endl;
 	}
 }
 
-void MainConfig::setStartupData()
+void MainConfig::changeActiveGameState(GameCheckerEventRef eventref)
 {
+	//console() << "gameSettings->getGameActiveCount()------------------- " << gameSettings->getGameActiveCount() << endl;
+	if (gameSettings->getGameActiveCount() == 1)		
+	{	
+		if(eventref->getValue() == 0)
+			gamesBlock->freezeChecker(eventref->getGameId());
+		else
+		{
+			gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
+			gamesBlock->unFreezeChecker();
+		}//		
+	}
+	else	
+		gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());	
+
+	if (gameSettings->getGameActiveCount() == 1)
+	{
+		auto id = gameSettings->getActiveGameID();
+		gamesBlock->freezeChecker(id);		
+	}	
+}
+
+void MainConfig::setStartupData()
+{	
 	statBlock->setPlayedTimes(configSettings->getPlayedCount());
 	statBlock->setPrintedPhotos(configSettings->getPrintedCount());
 	statBlock->setSharedAndEmail(configSettings->getPublishedCount());

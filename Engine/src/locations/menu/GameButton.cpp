@@ -1,5 +1,7 @@
 #include "GameButton.h"
+
 using namespace kubik::menu;
+using namespace kubik::config;
 
 GameButton::GameButton(const GameData& data)
 	:SimpleSpriteButton(data.getTexture().getWidth(), 
@@ -8,7 +10,7 @@ GameButton::GameButton(const GameData& data)
 	GameChoosedEventRef(new GameChoosedEvent(data.getID()))),
 	texture(data.getTexture())
 {	
-
+	console() << "create id:::::::::::::::::::  " << data.getID() << endl;
 }
 
 void GameButton::drawLayout()

@@ -12,6 +12,7 @@
 #include "main/popup/NewActivityPopup.h"
 #include "GameCheckerEvent.h"
 #include "GameSettings.h"
+#include "ScreenSaverSettings.h"
 
 namespace kubik
 {
@@ -24,7 +25,7 @@ namespace kubik
 		public:
 			static const int SHOW_ANIM_COMPLETE = 0; 
 
-			MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSettings);
+			MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSettings, ScreenSaverSettingsRef ssSettings);
 
 			virtual void activateListeners();
 			virtual void unActivateListeners();
@@ -84,6 +85,7 @@ namespace kubik
 			virtual void draw();
 
 			void gamesBlockEventsHandler(EventGUIRef& event);
+			void callbacks(EventGUIRef& event);
 			void setStartupData();
 
 			void startAnimation(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.9f);			
@@ -101,6 +103,7 @@ namespace kubik
 		private:
 			ConfigSettingsRef	configSettings;
 			GameSettingsRef		gameSettings;
+			ScreenSaverSettingsRef ssSettings;
 			CloseBlockRef		closeBlock;
 			TitleRef			title;
 			StartNewActivityRef startNewActivity;
@@ -113,6 +116,10 @@ namespace kubik
 			
 			ci::Anim<ci::Vec2f> animatePosition;
 			ci::Anim<float> alpha;
+
+			bool gamesBlockEnabled;
+			void changeActiveGameState(GameCheckerEventRef event);
+
 		};		
 	}
 }

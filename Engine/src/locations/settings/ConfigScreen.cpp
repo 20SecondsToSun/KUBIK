@@ -6,7 +6,6 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 using namespace kubik::config;
-using namespace kubik::menu;
 using namespace kubik;
 
 ConfigScreen::ConfigScreen(ISettingsRef config) :IScreen(ScreenId::CONFIG)
@@ -88,7 +87,7 @@ void ConfigScreen::init()
 void ConfigScreen::init(ISettingsRef settings)
 {
 	configSettings = static_pointer_cast<ConfigSettings>(settings);
-	mainConfig = MainConfigRef(new MainConfig(configSettings, gameSettings));
+	mainConfig = MainConfigRef(new MainConfig(configSettings, gameSettings, screenSaverSettings));
 	addChild(mainConfig);
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
@@ -97,6 +96,7 @@ void ConfigScreen::init(ISettingsRef settings)
 	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
 	instakubConfig = InstakubConfigRef(new InstakubConfig(instaSettings));
 
+	settingsList.push_back(screenSaverSettings);
 	settingsList.push_back(gameSettings);
 	settingsList.push_back(configSettings);
 	settingsList.push_back(phbthSettings);
@@ -164,8 +164,15 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	}
 	else if (typeid(*ev) == typeid(BackToMainConfigEvent))
 	{
-		mainConfig->showAnimate(EaseOutCubic(), 0.7f);
-		gameSettingsScreen->hideAnimate(EaseOutCubic(), 0.7f);
+		if(gameSettingsScreen->canClose())
+		{
+			mainConfig->showAnimate(EaseOutCubic(), 0.7f);
+			gameSettingsScreen->hideAnimate(EaseOutCubic(), 0.7f);
+		}
+		else
+		{
+			gameSettingsScreen->showErrorPopup();
+		}		
 	}
 	if (typeid(*ev) == typeid(StatisticEvent))
 	{

@@ -22,10 +22,10 @@ namespace kubik
 				return tt; 
 			};
 
-			LoadButtonRef createLoadButton(const ci::Vec2f& pos)
+			LoadButtonRef createLoadButton(const std::string &path, const ci::Vec2f& pos)
 			{
 				return LoadButtonRef(
-					new LoadButton(" ", ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
+					new LoadButton(path, ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon")					
 					));

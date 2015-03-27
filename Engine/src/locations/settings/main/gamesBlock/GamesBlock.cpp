@@ -10,7 +10,8 @@ GamesBlock::GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, c
 	blockTopShiftY(79.0f),
 	lineColor(Color::hex(0x233442)),
 	configSett(configSett),
-	gameSett(gameSett)
+	gameSett(gameSett),
+	initPosition(position)
 {
 	setPosition(position);
 
@@ -26,7 +27,19 @@ GamesBlock::GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, c
 		npGameblock->setPosition(Vec2f(0.0f, pGameblock->getHeight() + 104.f));
 		addChild(npGameblock);
 	}
+	
+	freezeCheckerIfOne();
 }
+
+void GamesBlock::freezeCheckerIfOne()
+{
+	if (gameSett->getGameActiveCount() == 1)
+	{
+		auto id = gameSett->getActiveGameID();
+		freezeChecker(id);
+	}
+}
+
 
 void GamesBlock::activateListeners()
 {
@@ -34,6 +47,16 @@ void GamesBlock::activateListeners()
 		npGameblock->activateListeners();
 
 	pGameblock->activateListeners();
+
+	freezeCheckerIfOne();
+}
+
+void GamesBlock::unActivateListeners()
+{
+	if (hasGamesInShop) 
+		npGameblock->unActivateListeners();
+
+	pGameblock->unActivateListeners();
 }
 
 void GamesBlock::draw()
@@ -87,8 +110,10 @@ void GamesBlock::setAlpha(float alpha)
 
 void GamesBlock::hide(const EaseFn& eFunc, float time)
 {
+	unActivateListeners();
+
 	animatePosition = _localPosition;
-	Vec2f finPos = Vec2f(-getWindowWidth(), _localPosition.y);
+	Vec2f finPos = Vec2f(_localPosition.x, _localPosition.y + 1126.0f);
 	timeline().apply(&animatePosition, finPos, time, eFunc)
 		.updateFn(bind(&GamesBlock::posAnimationUpdate, this))
 		.finishFn(bind(&GamesBlock::hideAnimationFinish, this));
@@ -96,21 +121,29 @@ void GamesBlock::hide(const EaseFn& eFunc, float time)
 
 void GamesBlock::hideAnimationFinish()
 {
-	hideAnimCompleteSig();
+	//hideAnimCompleteSig();
 }
 
 void GamesBlock::show(const EaseFn& eFunc, float time)
 {
-	Vec2f finPos = Vec2f(100.0f, _localPosition.y);
-
-	timeline().apply(&animatePosition, finPos, time, eFunc)
+	timeline().apply(&animatePosition, initPosition, time, eFunc)
 		.updateFn(bind(&GamesBlock::posAnimationUpdate, this))
 		.finishFn(bind(&GamesBlock::showAnimationFinish, this));
 }
 
+void GamesBlock::freezeChecker(const GameId& id)
+{
+	pGameblock->freezeChecker(id);
+}
+
+void GamesBlock::unFreezeChecker()
+{
+	pGameblock->unFreezeChecker();}
+
+
 void GamesBlock::showAnimationFinish()
 {
-	showAnimCompleteSig();
+	activateListeners();
 }
 
 void GamesBlock::posAnimationUpdate()

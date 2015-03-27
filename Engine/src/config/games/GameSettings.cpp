@@ -37,7 +37,7 @@ int GameSettings::GamesDataStruct::getCountSwitchOnGames()
 	return count;
 }
 
-bool GameSettings::GamesDataStruct::isIdInSwitchOnGames(GameId id)
+bool GameSettings::GamesDataStruct::isIdInSwitchOnGames(const GameId& id)
 {
 	for (auto game : games)
 	{
@@ -72,7 +72,7 @@ std::vector<GamesInfo> GameSettings::GamesDataStruct::getPurchasedGames()
 	return _gamesSelect;
 }
 
-GamesInfo GameSettings::GamesDataStruct::getPurchasedGameInfo(GameId id)
+GamesInfo GameSettings::GamesDataStruct::getPurchasedGameInfo(const GameId& id)
 {
 	for (auto game : games)
 	{
@@ -85,14 +85,14 @@ GamesInfo GameSettings::GamesDataStruct::getPurchasedGameInfo(GameId id)
 	return null;
 }
 
-GameSettings::GameSettings(ApplicationModelRef model) :ISettings(model), memento(false)
+GameSettings::GameSettings(ApplicationModelRef model) : ISettings(model), memento(false)
 {
 	currentGame = model->getDefaultGameID();
 	data.games = model->getGames();
 	data.defaultGameID = model->getDefaultGameID();
 }
 
-ISettingsRef GameSettings::get(GameId id)
+ISettingsRef GameSettings::get(const GameId& id)
 {
 	return gameSettingsMap[id];
 }
@@ -102,8 +102,9 @@ IResourceDictionary GameSettings::getActiveGameResources()
 	return getGameTexturesById(currentGame);
 }
 
-IResourceDictionary GameSettings::getGameTexturesById(GameId id)
+IResourceDictionary GameSettings::getGameTexturesById(const GameId& id)
 {
+	console() << "id:::::::::::::::::::  " << id << endl;
 	IResourceDictionary rd = gameSettingsMap[id]->getResources();
 	return rd;
 }
@@ -154,8 +155,8 @@ void GameSettings::load()
 
 	for (auto game : games)
 	{
-		if (!game.isPurchased)
-			continue;
+		//if (!game.isPurchased)
+		//	continue;
 
 		switch (game.id)
 		{
@@ -191,8 +192,8 @@ void GameSettings::buildData()
 	std::vector<GamesInfo> games = model->getGames();
 	for (auto game : games)
 	{
-		if (!game.isPurchased)
-			continue;
+		//if (!game.isPurchased)
+		//	continue;
 		try
 		{
 			if (GameId::PHOTOBOOTH == game.id)
@@ -227,16 +228,15 @@ bool GameSettings::isGameCurrent(int id)
 
 GameId GameSettings::getCurrentGame()
 {
-	console() << "getCurrentGame::::::::::::------------------------  " << currentGame << endl;
 	return currentGame;
 }
 
-void GameSettings::setCurrentGame(GameId id)
+void GameSettings::setCurrentGame(const GameId& id)
 {
 	currentGame = id;
 }
 
-void GameSettings::setNextGameId(GameId id)
+void GameSettings::setNextGameId(const GameId& id)
 {
 	nextGameId = id;
 }
@@ -265,11 +265,42 @@ bool GameSettings::isCurrentGameInSwitchOnGames()
 	return data.isIdInSwitchOnGames(currentGame);
 }
 
-void GameSettings::setGameActive(GameId id, bool value)
+void GameSettings::setGameActive(const GameId& id, bool value)
 {
 	for (auto game = data.games.begin(); game != data.games.end(); ++game)
 	{
 		if (game->isPurchased && game->id == id)
 			game->isOn = value;
 	}
+}
+
+int GameSettings::getGameActiveCount()
+{
+	int count = 0;
+	for (auto game = data.games.begin(); game != data.games.end(); ++game)	
+		if (game->isOn)
+			count++;
+
+	return count;	
+}
+
+GameId GameSettings::getActiveGameID()
+{
+	for (auto game = data.games.begin(); game != data.games.end(); ++game)
+	{
+		if (game->isOn)
+			return game->getGameId();
+	}
+
+	return GameId::UNDEFINED;
+}
+
+string GameSettings::getGameDescribeURL(const GameId& id)
+{
+	return "http://google.ru";
+}
+
+string GameSettings::getGameStatisticURL(const GameId& id)
+{
+	return "http://yandex.ru";
 }

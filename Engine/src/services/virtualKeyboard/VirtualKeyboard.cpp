@@ -26,6 +26,8 @@ float VirtualKeyboard::_xOffset3 = 13.0f;
 float VirtualKeyboard::_xOffset4 = 12.0f;
 float VirtualKeyboard::_xOffset5 = 12.0f;
 
+bool VirtualKeyboard::setuped = false;
+
 ci::Vec2f VirtualKeyboard::lineOffset1 = Vec2f(360.0f, 30.0f);
 ci::Vec2f VirtualKeyboard::lineOffset2 = Vec2f(415.0f, 122.0f);
 ci::Vec2f VirtualKeyboard::lineOffset3 = Vec2f(455.0f, 214.0f);
@@ -34,6 +36,8 @@ ci::Vec2f VirtualKeyboard::lineOffset5 = Vec2f(504.0f, 398.0f);
 
 void VirtualKeyboard::setup()
 { 
+	if (setuped) return;
+
 	Font  mFont	= Font( loadFile(getAssetPath("fonts/Helvetica Neue Light.ttf")), 25 );
 	
 	gl::Texture backspaceBtnTex				= gl::Texture( loadImage( loadAsset(   "keyboard/backBtn.png" )));
@@ -192,6 +196,7 @@ void VirtualKeyboard::setup()
 	showEraseButton = true;
 	setlocale(LC_ALL, ""); 
 	createInputField();
+	setuped = true;
 }
 
 void VirtualKeyboard::show(Vec2f from, Vec2f to, float time)

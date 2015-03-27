@@ -10,9 +10,9 @@ DesignChooser::DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& 
 	setPosition(position);
 
 	DesignData designdata = configSettings->getDesignData();
-	int activeID = configSettings->getActiveDesignID();
-	int userDesignID = configSettings->getUserDesignID();
-	std::string syspath = configSettings->getUserDesignPath();
+	int activeID		  = configSettings->getActiveDesignID();
+	int userDesignID	  = configSettings->getUserDesignID();
+	std::string syspath   = configSettings->getUserDesignPath();
 
 	sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, 0.0f, 0.0f));
 	addChild(sixBtnLayer);
@@ -33,17 +33,5 @@ void DesignChooser::unActivateListeners()
 void DesignChooser::buttonClicked(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
-
-	if (ev)
-	{
-		ChangeDesignEventRef evt = static_pointer_cast<ChangeDesignEvent>(event);
-		id = evt->getItem().getID();
-		callback(CHANGED_DESIGN);
-		//mouseUpSignal(event);
-	}
-}
-
-int DesignChooser::getDesignID() const
-{
-	return id;
+	if (ev) mouseUpSignal(event);
 }

@@ -42,17 +42,20 @@ namespace kubik
 			void newCompainHandler(EventGUIRef& event);
 			void disconnect();
 			void hideAnimationFinish();
-
+			bool emptyInputField();
+			
 		protected:
 			ConfigSettingsRef configSett;
 			ci::ColorA bgColor, headColor, titlesColor, inputFieldColor, btnStartColor;
-			ci::Anim<float> alpha;
-			ci::gl::Texture subTitle, mainTitle, title, begin, closeIcon, closeTitle, inputField;			
+			ci::Anim<float> alpha, redFocusAlpha;
+			ci::gl::Texture subTitle, mainTitle, title, begin, closeIcon, closeTitle, inputField, redFocus;
 
 			SimpleSpriteButtonRef closeBtn, startBtn;
 			ci::Vec2f closeBtnPos, inputFieldPos;
 
 			float yPositionInputField;
+
+			void showRedFocusStroke();
 		};
 	}
 }

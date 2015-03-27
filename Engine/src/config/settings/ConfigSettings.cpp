@@ -201,6 +201,11 @@ namespace kubik
 				return getBasePath().string() + userDesignPath;
 			}
 
+			/*std::string getScreenSaverPath()
+			{
+				return getBasePath().string() + screenSaverPath;
+			}*/
+
 			ConfighDataStruct getData()	const
 			{
 				return data;
@@ -243,6 +248,7 @@ namespace kubik
 					JsonTree pathJSON  = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
 					designPath		   = pathJSON.getChild("designPath").getValue<string>();
 					userDesignPath	   = pathJSON.getChild("userDesignPath").getValue<string>();
+					//screenSaverPath	   = pathJSON.getChild("screenSaverPath").getValue<string>();
 				}
 				catch(...)
 				{
@@ -376,7 +382,14 @@ namespace kubik
 				addToDictionary("helvetica20",		 createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
 				addToDictionary("helveticaLight24",  createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 				addToDictionary("helveticaLight36",  createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
+
 				addToDictionary("introBold110",		 createFontResource(getFontsPath("introb.ttf"), 110));
+				addToDictionary("introBold90",		 createFontResource(getFontsPath("introb.ttf"), 90));
+				addToDictionary("introBold80",		 createFontResource(getFontsPath("introb.ttf"), 80));
+				addToDictionary("introBold70",		 createFontResource(getFontsPath("introb.ttf"), 70));
+				addToDictionary("introBold60",		 createFontResource(getFontsPath("introb.ttf"), 60));
+
+
 				addToDictionary("introBold72",		 createFontResource(getFontsPath("introb.ttf"), 72));
 				addToDictionary("introLight44",		 createFontResource(getFontsPath("IntroLight.ttf"), 44));
 				addToDictionary("introLight36",		 createFontResource(getFontsPath("IntroLight.ttf"), 36));
@@ -395,7 +408,10 @@ namespace kubik
 				addToDictionary("closePrinterIcon",	 createImageResource(getDesignPath() + "main/closePrinterIcon.png"));
 				addToDictionary("inputField",		 createImageResource(getDesignPath() + "main/inputField.png"));
 				addToDictionary("ssCheckerOn",		 createImageResource(getDesignPath() + "main/ssCheckerOn.png"));
-				addToDictionary("ssCheckerOff",		 createImageResource(getDesignPath() + "main/ssCheckerOff.png"));
+				addToDictionary("ssCheckerOff", createImageResource(getDesignPath() + "main/ssCheckerOff.png"));
+				addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
+
+
 				addToDictionary("gameInWebIcon",	 createImageResource(getDesignPath() + "gameInWebIcon.png"));
 
 				for (auto item : data.designData)			

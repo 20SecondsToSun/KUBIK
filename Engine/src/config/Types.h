@@ -73,6 +73,7 @@ namespace kubik
 			FUNCES = game::FUNCES,
 			PHOTOBOOTH = game::PHOTOBOOTH,
 			KOTOPOZA = game::KOTOPOZA,
+			INSTAKUB = game::INSTAKUB
 		};	
 	}
 

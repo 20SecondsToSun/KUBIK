@@ -2,7 +2,7 @@
 
 #include "gui/Sprite.h"
 #include "main/gamesBlock/ToolButton.h"
-#include "ConfigSettings.h"
+#include "settings/ConfigSettings.h"
 
 namespace kubik
 {

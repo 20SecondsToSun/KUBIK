@@ -7,8 +7,8 @@ ToolField::ToolField(ConfigSettingsRef config, const GamesInfo& info)
 	:Sprite(),
 	offText(config->getTextItem(ConfigTextID::SWITCH_OFF))
 {
-	Rectf ba1 = Rectf(295.0f, 65.0f, 295.0f + 180, 65.0f + 55.0f);
-	Rectf ba2 = Rectf(295.0f + 205, 65.0f, 295.0f + 205.0f + 180.0f + 10.0f, 65.0f + 55.0f);
+	Rectf ba1 = Rectf(295.0f, 65.0f, 295.0f + 180.0f, 65.0f + 55.0f);
+	Rectf ba2 = Rectf(295.0f + 205.0f, 65.0f, 295.0f + 205.0f + 180.0f + 10.0f, 65.0f + 55.0f);
 
 	statBtn = StatToolButtonRef(new StatToolButton(ba1, info.getGameId(), config->getTextItem(ConfigTextID::STAT)));
 	statBtn->setColor(Color::hex(0x6798ff));

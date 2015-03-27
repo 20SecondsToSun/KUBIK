@@ -17,9 +17,9 @@ InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci:
 	DesignData designdata = settings->getPhotoCardStyles();				
 	int activeID		  = settings->getActivePhotoCardStyleDesignID();
 	int userDesignID	  = settings->getUserPhotoCardStyleDesignID();
-	std::string syspath   = settings->getUserPhotoCardStylePath();
+	std::string syspath   = settings->getUserPhotoCardStylePath();	
 
-	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath));
+	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, 106.0f, 278.0f));
 	addChild(sixBtnLayer);
 }
 

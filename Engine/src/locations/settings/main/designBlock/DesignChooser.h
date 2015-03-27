@@ -5,6 +5,7 @@
 #include "ImageQuadroButton.h"
 #include "SettingsFactory.h"
 #include "SixButtonsLayer.h"
+#include "OpenPhotoBoothLayoutEvent.h"
 
 namespace kubik
 {
@@ -15,16 +16,12 @@ namespace kubik
 
 		class DesignChooser : public Sprite
 		{
-		public:
-			static const int CHANGED_DESIGN = 0;
-			static const int OPEN_USER_DESIGN_FOLDER = 1;
-
+		public:		
 			DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
 			virtual void activateListeners() override;
 			virtual void unActivateListeners() override;
-			void buttonClicked(EventGUIRef& event);
-			int getDesignID() const;
+			void buttonClicked(EventGUIRef& event);			
 
 		private:
 			ConfigSettingsRef configSettings;

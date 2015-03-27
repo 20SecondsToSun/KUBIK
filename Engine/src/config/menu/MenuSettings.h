@@ -6,7 +6,7 @@
 
 namespace kubik
 {
-	namespace menu
+	namespace config
 	{
 		typedef std::shared_ptr<class MenuSettings> MenuSettingsRef;
 
@@ -20,22 +20,12 @@ namespace kubik
 			ci::gl::Texture getTexture() const 
 			{ 
 				return texture; 
-			}
-
-			/*void setTexture(const ci::gl::Texture& val)
-			{
-			texture = val;
-			}*/
+			}	
 
 			ci::Vec2f getPosition() const
 			{
 				return position;
 			}
-
-			/*void setPosition(const ci::Vec2f& val)
-			{
-			position = val;
-			}*/
 
 			GameId getID() const
 			{

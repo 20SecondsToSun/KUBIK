@@ -1,54 +1,32 @@
 #pragma once
-
 #include "Types.h"
 #include "ISettings.h"
 #include "ScreenStorage.h"
 
-using namespace ci::signals;
-using namespace std;
+using namespace kubik::config;
 
 namespace kubik
 {
+	typedef std::shared_ptr<class IScreen> IScreenRef;
+
 	class IScreen
 	{
-
 	public:
-		IScreen(ScreenId id = ScreenId::UNDEFINED):id(id)
-		{
+		IScreen(const ScreenId& id = ScreenId::UNDEFINED);
+	
+		ScreenId getType() const;
+		void setType(const ScreenId& id);
 
-		}
-
-		~IScreen()
-		{
-		}
-
-		ScreenId getType()
-		{
-			return id;
-		}
-
-		void setType(ScreenId id)
-		{
-			this->id = id;
-		}
-
-		virtual void draw(){};
-		virtual void start(){};		
-		virtual void stop(){};		
+		virtual void draw();
+		virtual void start();
+		virtual void stop();
 		virtual void init(ISettingsRef config) = 0;
 		virtual void reset() = 0;		
+		void setScrenshot();
 
-		SignalVoid closeLocationSignal;
-
-
-		void setScrenshot()
-		{
-			kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); }));
-		}
+		SignalVoid closeLocationSignal;	
 
 	protected:
 		ScreenId id;
-	};
-
-	typedef shared_ptr<IScreen> IScreenRef;
+	};	
 }

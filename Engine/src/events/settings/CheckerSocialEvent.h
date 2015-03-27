@@ -2,6 +2,8 @@
 #include "gui/EventGUI.h"
 #include "PhotoboothSettings.h"
 
+using namespace kubik::config;
+
 namespace kubik
 {
 	class CheckerSocialEvent: public EventGUI

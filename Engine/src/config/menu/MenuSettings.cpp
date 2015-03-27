@@ -3,8 +3,8 @@
 using namespace std;
 using namespace ci;
 using namespace ci::app;
-using namespace kubik::menu;
 using namespace kubik;
+using namespace kubik::config;
 
 MenuSettings::MenuSettings(ApplicationModelRef model):ISettings(model)
 {
@@ -89,8 +89,12 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 	vector<GamesInfo> filtergames;
 
 	for(auto it : games)	
-		if (it.isOn && it.isPurchased)		
+		if (it.isOn && it.isPurchased)
+		{
 			filtergames.push_back(it);
+			console() << "id:::::::::::::  " << it.id << endl;
+		}
+			
 
 	vector<GameData> gameData;
 	vector<Vec2f> position;

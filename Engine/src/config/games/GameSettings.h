@@ -28,11 +28,11 @@ namespace kubik
 
 				std::vector<GamesInfo> getGames();
 				int getCountSwitchOnGames();
-				bool isIdInSwitchOnGames(GameId id);
+				bool isIdInSwitchOnGames(const GameId& id);
 
 				std::vector<GamesInfo> getNotPurchasedGames();
 				std::vector<GamesInfo> getPurchasedGames();
-				GamesInfo getPurchasedGameInfo(GameId id);
+				GamesInfo getPurchasedGameInfo(const GameId& id);
 
 				friend GameSettings;
 			};
@@ -42,9 +42,9 @@ namespace kubik
 			virtual void createMemento();
 			virtual void writeConfig();
 
-			ISettingsRef get(GameId id);
+			ISettingsRef get(const GameId& id);
 			IResourceDictionary getActiveGameResources();
-			IResourceDictionary getGameTexturesById(GameId id);			
+			IResourceDictionary getGameTexturesById(const GameId& id);
 
 			bool settingsChanged();
 			changeSetting::id getChangeID() const;
@@ -57,16 +57,21 @@ namespace kubik
 			bool isGameCurrent(int id);
 
 			GameId getCurrentGame();
-			void setCurrentGame(GameId id);
+			void setCurrentGame(const GameId& id);
 
-			void setNextGameId(GameId id);
+			void setNextGameId(const GameId& id);
 			GameId getNextGameId();
 
 			GamesDataStruct getData();
 			void setData(GamesDataStruct data);
 
 			bool isCurrentGameInSwitchOnGames();
-			void setGameActive(GameId id, bool value);
+			void setGameActive(const GameId& id, bool value);
+			int getGameActiveCount();
+			GameId getActiveGameID();
+
+			std::string getGameDescribeURL(const GameId& id);
+			std::string getGameStatisticURL(const GameId& id);
 
 		private:
 			bool memento;

@@ -8,7 +8,8 @@ OneGamePurchased::OneGamePurchased(ConfigSettingsRef config, const GamesInfo& in
 	nameText(info.getNameText()),
 	nameFont(config->getFont("introLight44")),
 	checkerArea(Rectf(20.0f, 4.0f, 214.0f, 126.0f)),
-	namePosition(Vec2f(282.0f, -10.0f))
+	namePosition(Vec2f(282.0f, -10.0f)),
+	info(info)
 {
 	toolfield = ToolFieldRef(new ToolField(config, info));
 	addChild(toolfield);
@@ -24,7 +25,7 @@ void OneGamePurchased::drawLayout()
 	Sprite::drawLayout();
 }
 
-void OneGamePurchased::setAlpha(float  alpha)
+void OneGamePurchased::setAlpha(float alpha)
 {
 	nameColor = Utils::colorAlpha(nameColor, alpha);
 	Sprite::setAlpha(alpha);
@@ -43,7 +44,23 @@ void OneGamePurchased::unActivateListeners()
 }
 
 void OneGamePurchased::checkerClicked(EventGUIRef& event)
-{
+{	
 	toolfield->swapActive();
 	mouseUpSignal(event);
+}
+
+void OneGamePurchased::freeze()
+{
+	toolfield->setActive(true);
+	checker->setFreeze();
+}
+
+void OneGamePurchased::unFreeze()
+{
+	checker->setActive(true);
+}
+
+GameId OneGamePurchased::getGameID()
+{
+	return info.getGameId();
 }

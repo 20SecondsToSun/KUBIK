@@ -5,6 +5,8 @@
 #include "HashTagBlock.h"
 #include "InstaPhotoCardStyle.h"
 #include "VirtualKeyboard.h"
+#include "KeyBackground.h"
+#include "InstaErrorPopup.h"
 
 namespace kubik 
 {
@@ -28,7 +30,11 @@ namespace kubik
 			void showAnimationFinish();			
 			void hideAnimationFinish();
 			void initKeyBoard();
-			void inputTouchHandler();			
+			void inputTouchHandler();
+			void keyBoardShowComplete();
+
+			virtual void showErrorPopup() override;
+			virtual bool canClose() override;			
 
 		private:					
 			ci::Anim<ci::Vec2f> animatePosition;
@@ -36,6 +42,11 @@ namespace kubik
 			HashTagBlockRef hashTagBlock;
 			InstaPhotoCardStyleRef photoCardStyle;
 			InstakubSettingsRef instSettings;
+			KeyBackgroundRef keyBackground;
+			InstaErrorPopupRef popup;
+
+			void closeKeyboardHandler();
+			void popupClosed();
 		};		
 	}
 }

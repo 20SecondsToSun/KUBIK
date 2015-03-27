@@ -1,7 +1,7 @@
 #pragma once
 #include "gui/Sprite.h"
 #include "TextTools.h"
-#include "ConfigSettings.h"
+#include "settings/ConfigSettings.h"
 #include "main/gamesBlock/OneGameNotPurchased.h"
 
 namespace kubik

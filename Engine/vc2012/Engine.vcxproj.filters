@@ -217,6 +217,9 @@
     <Filter Include="Source Files\locations\settings\main\startNewActivity">
       <UniqueIdentifier>{6faa5197-6a7f-411d-a339-129b4b97d7b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\instakub">
+      <UniqueIdentifier>{b2f63ef4-72cf-4d56-b4e4-5615266861ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -399,9 +402,6 @@
     <ClCompile Include="..\src\config\games\instakub\InstakubSettings.cpp">
       <Filter>Source Files\config\games\instakub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\GameSettings.cpp">
-      <Filter>Source Files\config\games</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\config\ApplicationModel.cpp">
       <Filter>Source Files\config</Filter>
     </ClCompile>
@@ -479,6 +479,42 @@
     </ClCompile>
     <ClCompile Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.cpp">
       <Filter>Source Files\locations\settings\main\designBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\screensaver\ScreenSaverSettings.cpp">
+      <Filter>Source Files\config\screensaver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\KeyBackground.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\settings\instakub\InstaErrorPopup.cpp">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\games\GameSettings.cpp">
+      <Filter>Source Files\config\games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\GamesFactory.cpp">
+      <Filter>Source Files\games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\Instakub.cpp">
+      <Filter>Source Files\games\instakub</Filter>
+    </ClCompile>
+    <ClCompile Include="Kotopoza.cpp">
+      <Filter>Source Files\games\kotopoza</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.cpp">
+      <Filter>Source Files\services\virtualKeyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\IScreen.cpp">
+      <Filter>Source Files\locations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\settings\ConfigSettings.cpp">
+      <Filter>Source Files\config\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\ISettings.cpp">
+      <Filter>Source Files\config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\ApplicationView.cpp">
+      <Filter>Source Files\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -758,12 +794,6 @@
     <ClInclude Include="..\src\events\CheckerEvent.h">
       <Filter>Source Files\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
-      <Filter>Source Files\events\settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\CheckerSocialEvent.h">
       <Filter>Source Files\events\settings</Filter>
     </ClInclude>
@@ -866,9 +896,6 @@
     <ClInclude Include="..\src\config\games\GameSettings.h">
       <Filter>Source Files\config\games</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\config\ConfigSettings.h">
-      <Filter>Source Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\ISettings.h">
       <Filter>Source Files\config</Filter>
     </ClInclude>
@@ -967,6 +994,27 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\KeyBackground.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\instakub\InstaErrorPopup.h">
+      <Filter>Source Files\locations\settings\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\Instakub.h">
+      <Filter>Source Files\games\instakub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\settings\ConfigSettings.h">
+      <Filter>Source Files\config\settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

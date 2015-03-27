@@ -26,6 +26,7 @@ namespace kubik
 		virtual void activateListeners();
 
 		void addChild(SpriteRef child);
+		void addChildFront(SpriteRef child);
 		void removeChild(SpriteRef child);
 		void removeAllChildren();
 		

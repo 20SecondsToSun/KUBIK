@@ -4,6 +4,7 @@
 #include "ConfigSettings.h"
 #include "SettingsFactory.h"
 #include "LoadButton.h"
+#include "ScreenSaverSettings.h"
 
 namespace kubik
 {
@@ -17,7 +18,7 @@ namespace kubik
 			static const int SCREEN_SAVER_STATE = 0;
 			static const int SCREEN_SAVER_OPEN_FOLDER = 1;
 
-			ScreenSaverBlock(ConfigSettingsRef configSettings, const ci::Vec2i& position);
+			ScreenSaverBlock(ConfigSettingsRef configSettings, ScreenSaverSettingsRef ssSettings, const ci::Vec2i& position);
 
 			bool getScreenSaverValue() const;
 			virtual void activateListeners() override;

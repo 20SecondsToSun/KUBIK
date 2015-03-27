@@ -23,6 +23,7 @@ namespace kubik
 			virtual void drawLayout();
 
 			void checkerClicked(EventGUIRef& event);
+			bool isChecked();
 			
 		private:
 			InstakubSettingsRef settings;	

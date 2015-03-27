@@ -37,13 +37,9 @@ namespace kubik
 
 			SignalVoid closeSettingsSignal;
 			signal<void(std::vector<Changes>, bool)> appSettingsChangedSignal;
-
-			//connection mouseUpListener;
-			//connection closeBtnListener;
-			//connection appSettingsChgListener;
-
+		
 			void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
-			void setMenuSettings(menu::MenuSettingsRef menuSettings);
+			void setMenuSettings(MenuSettingsRef menuSettings);
 			void setGameSettings(GameSettingsRef gameSettings);
 
 		private:			
@@ -56,7 +52,7 @@ namespace kubik
 
 			ConfigSettingsRef		configSettings;
 			ScreenSaverSettingsRef  screenSaverSettings;
-			menu::MenuSettingsRef	menuSettings;
+			MenuSettingsRef			menuSettings;
 			GameSettingsRef			gameSettings;		
 			GameSettingsSpriteRef	gameSettingsScreen;
 					

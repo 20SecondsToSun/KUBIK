@@ -6,8 +6,8 @@ using namespace ci;
 
 SearchBlock::SearchBlock(InstakubSettingsRef settings, const Vec2i& position):Sprite()
 {
-	setPosition(position);	
-
+	setPosition(position);
+	
 	titleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::SEARCH_TITLE_MAIN));
 	titleTextPos = Vec2f(0.5f * (914.0f - titleTextTex.getWidth()), 100.0f);			
 
@@ -44,4 +44,9 @@ void SearchBlock::drawLayout()
 
 	gl::draw(titleTextTex, titleTextPos);
 	gl::draw(subTitleTextTex, subTitleTextPos);				
+}
+
+bool SearchBlock::isChecked()
+{
+	return checker->getValue();
 }

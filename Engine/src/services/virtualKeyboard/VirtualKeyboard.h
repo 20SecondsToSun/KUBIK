@@ -14,6 +14,7 @@ namespace kubik
 		static const int KEY_TOUCH = 2;
 		static const int MAX_LETTER_LIMIT = 3;	
 		static const int HIDED = 4;	
+		static bool setuped;
 
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 

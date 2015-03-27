@@ -15,9 +15,11 @@ namespace kubik
 		class GamesBlock: public Sprite
 		{
 		public:	
-			GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, const ci::Vec2f& position);
+			GamesBlock(ConfigSettingsRef configSett, GameSettingsRef gameSett, const ci::Vec2f& position);		
 			
 			virtual void activateListeners() override;
+			virtual void unActivateListeners() override;
+
 			void draw();
 			void drawbg();
 			void drawDecorationLine1();
@@ -29,16 +31,18 @@ namespace kubik
 
 			void show(const ci::EaseFn& eFunc, float time);
 
+			void freezeChecker(const GameId& id);
+			void unFreezeChecker();
 			void showAnimationFinish();
 			void posAnimationUpdate();
-
-			SignalVoid hideAnimCompleteSig, showAnimCompleteSig;	
-
+		
 		private:
 			PurchasedGamesBlockRef pGameblock;
 			NotPurchasedGamesBlockRef npGameblock;
 			GameSettingsRef gameSett;
 			ConfigSettingsRef configSett;
+
+			ci::Vec2f initPosition;
 
 			bool hasGamesInShop;
 			float lineWidth;
@@ -47,6 +51,8 @@ namespace kubik
 
 			ci::ColorA lineColor;
 			ci::Anim<ci::Vec2f> animatePosition;
+
+			void freezeCheckerIfOne();
 		};	
 	}
 }

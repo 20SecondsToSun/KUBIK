@@ -1,8 +1,9 @@
 #include "Funces.h"
 
 using namespace kubik;
+using namespace kubik::games::funces;
 
-Funces::Funces(shared_ptr<ISettings> config)
+Funces::Funces(ISettingsRef config)
 {	
 	console()<<":: FUNCES CREATED::"<<endl;
 	init(config);
@@ -28,17 +29,11 @@ void Funces::showAnimationComplete()
 void Funces::stop()
 {
 	console() << "STOP FUNCES!!!" << endl;
-//	removeMouseUpListener();	
 }
 
 void Funces::init(ISettingsRef config)
 {
 	settings = static_pointer_cast<FuncesSettings>(config);
-	
-	//closeImg = settings->getTexture("closeImg");	
-	//closeBtn = ButtonRef(new Button(closeImg, Vec2f(getWindowWidth() - 100.0f, 100.0f)));	
-	//connect_once(closeBtn->mouseUpSignal, bind(&Funces::closeMouseUpHandler, this, std::placeholders::_1));
-	//displayList.push_back(closeBtn);
 }
 
 void Funces::reset() 

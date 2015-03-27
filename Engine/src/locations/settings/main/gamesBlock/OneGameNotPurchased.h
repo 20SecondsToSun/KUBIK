@@ -1,6 +1,6 @@
 #pragma once
 #include "gui/SimpleSpriteButton.h"
-#include "ConfigSettings.h"
+#include "settings/ConfigSettings.h"
 #include "TextTools.h"
 #include "settings/GameShowUrlEvent.h"
 

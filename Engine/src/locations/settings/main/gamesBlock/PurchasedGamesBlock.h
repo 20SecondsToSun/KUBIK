@@ -13,13 +13,17 @@ namespace kubik
 		{
 		public:
 			PurchasedGamesBlock(ConfigSettingsRef configSett, const std::vector<GamesInfo>& games);
-
+			
 			virtual void activateListeners() override;
+			virtual void unActivateListeners() override;
+			void freezeChecker(const GameId& id);
+			void unFreezeChecker();
 			float getHeight() const;
 
 		private:
 			int oneGamePurchasedHeight;
 			int purchasedGamesSize;
+			std::vector<OneGamePurchasedRef> mainGamesVec;
 		};
 	}
 }

@@ -18,7 +18,15 @@ void Sprite::addChild(SpriteRef child)
 	child->setChildPosition(_localPosition);
 	child->setAlpha(alpha);			
 	displayList.push_back(child);
-}	
+}
+
+void Sprite::addChildFront(SpriteRef child)
+{
+	child->setParent(this);
+	child->setChildPosition(_localPosition);
+	child->setAlpha(alpha);			
+	displayList.push_front(child);
+}
 
 void Sprite::removeChild(SpriteRef child)
 {
@@ -116,6 +124,7 @@ void Sprite::disconnectEventHandler(int event)
 {
 	eventHandlerDic[event] = nullptr;
 }
+
 void Sprite::connectEventHandler1( const std::function<void (EventGUIRef& )>& eventHandler, InteractEvent event)
 {
 	if(mEventHandler == nullptr)
@@ -139,7 +148,7 @@ void Sprite::mouseUp(ci::app::MouseEvent &_event)
 {			
 	if(lock) return;
 
-	if (mEventHandler)
+	if (!mEventHandler)return;
 	mEventHandler(event);
 
 	Sprite* _parent = parent;
