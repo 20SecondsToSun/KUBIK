@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -67,8 +67,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -118,6 +118,10 @@
     <ClCompile Include="..\blocks\CanonSDK\src\CameraController.cpp" />
     <ClCompile Include="..\blocks\CanonSDK\src\CameraEventListener.cpp" />
     <ClCompile Include="..\blocks\CanonSDK\src\CanonException.cpp" />
+    <ClCompile Include="..\blocks\Cinder-Awesomium\src\CinderAwesomium.cpp" />
+    <ClCompile Include="..\blocks\Cinder-Curl\src\Curl.cpp" />
+    <ClCompile Include="..\blocks\Cinder-Curl\src\Ftp.cpp" />
+    <ClCompile Include="..\blocks\Cinder-Curl\src\FtpManager.cpp" />
     <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\config\ApplicationModel.cpp" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
@@ -158,6 +162,7 @@
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
+    <ClCompile Include="..\src\locations\menu\ControlLayer.cpp" />
     <ClCompile Include="..\src\locations\menu\GameButton.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\Preloader.cpp" />
@@ -224,6 +229,10 @@
     <ClInclude Include="..\blocks\CanonSDK\include\CameraEventListener.h" />
     <ClInclude Include="..\blocks\CanonSDK\include\CanonEventCodes.h" />
     <ClInclude Include="..\blocks\CanonSDK\include\CanonException.h" />
+    <ClInclude Include="..\blocks\Cinder-Awesomium\include\CinderAwesomium.h" />
+    <ClInclude Include="..\blocks\Cinder-Curl\src\Curl.h" />
+    <ClInclude Include="..\blocks\Cinder-Curl\src\Ftp.h" />
+    <ClInclude Include="..\blocks\Cinder-Curl\src\FtpManager.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\config\ApplicationModel.h" />
