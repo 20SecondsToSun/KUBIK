@@ -14,9 +14,9 @@ WebSession*		 VkontaktePopup::session;
 VkontaktePopup::VkontaktePopup(PhotoboothSettingsRef settings)
 	:Popup(settings)
 {
-	mWebCorePtr = WebCore::Initialize(WebConfig());
-	session = mWebCorePtr->CreateWebSession(Awesomium::WSLit("soc"), WebPreferences());
-	mWebViewPtr = mWebCorePtr->CreateWebView(getWindowWidth(), getWindowHeight(), session);
+	//mWebCorePtr = WebCore::Initialize(WebConfig());
+	//session = mWebCorePtr->CreateWebSession(Awesomium::WSLit("soc"), WebPreferences());
+	//mWebViewPtr = mWebCorePtr->CreateWebView(getWindowWidth(), getWindowHeight(), session);
 }
 
 void VkontaktePopup::show()

@@ -185,7 +185,7 @@ void Controller::createLocations()
 	////
 	view->addLayer(controlLayer);
 
-	////startup();
+	//startup();
 
 	startMenuScreenLocation();
 }
