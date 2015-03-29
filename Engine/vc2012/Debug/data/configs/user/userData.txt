@@ -1,0 +1,7 @@
+{
+   "defaultGameID" : 2,
+   "lang" : "ru",
+   "netConnection" : true,
+   "standID" : 1,
+   "userID" : "1fggh"
+}

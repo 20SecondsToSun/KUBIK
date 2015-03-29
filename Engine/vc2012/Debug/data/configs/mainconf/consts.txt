@@ -1,0 +1,4 @@
+{
+   "activeColor" : "ff0000",   
+   "maxPhotosToPrint" : 400
+}

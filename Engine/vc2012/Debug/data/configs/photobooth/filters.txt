@@ -1,0 +1,57 @@
+{ 
+   "designs" : 
+      [{
+         "id" : 1,
+	 "textObj": {"text": "KALEIDOSCOPE",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" : "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter1.png"
+      },
+{
+         "id" : 2,
+	 "textObj": {"text": "PIXELATE",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter2.png"
+      },
+{
+         "id" : 3,
+	 "textObj": {"text": "DOT_SCREEN",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter3.png"
+      },
+{
+         "id" : 4,
+	 "textObj": {"text": "SATURATION",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter4.png"
+      },
+{
+         "id" : 5,
+	 "textObj": {"text": "SEPIA",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter5.png"
+      },
+{
+         "id" : 6,
+	 "textObj": {"text": "NOISE",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoFilters\\filter6.png"
+      }]      
+}

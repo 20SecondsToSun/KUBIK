@@ -1,0 +1,58 @@
+{ 
+   "userDesignID" : 6,
+   "designs" : 
+      [{
+         "id" : 1,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" : "ffffff"
+		},
+	 "iconPath" :"main/design1.png"
+      },
+{
+         "id" : 2,
+	 "textObj": {"text": "Tanznia",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"main/design2.png"
+      },
+{
+         "id" : 3,
+	 "textObj": {"text": "Shanzalize",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"main/design3.png"
+      },
+{
+         "id" : 4,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"main/design4.png"
+      },
+{
+         "id" : 5,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"main/design5.png"
+      },
+{
+         "id" : 6,
+	 "textObj": {"text": "Моя тема",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"main/design6.png"
+      }]      
+}

@@ -1,0 +1,4 @@
+{
+   "photoCardsStylesPath" : "data\\configs\\instakub\\photoCardStyles.txt",
+   "userPhotoCardStylePath" : "user_design\\design_elements\\gameDesign\\instakub\\photoCardStyles"
+}

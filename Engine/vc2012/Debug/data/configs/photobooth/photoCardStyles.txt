@@ -1,0 +1,65 @@
+{ 
+   "userDesignID" : 6,
+   "designs" : 
+      [{
+         "id" : 1,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" : "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design1.png",
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\design1.png"
+
+      },
+{
+         "id" : 2,
+	 "textObj": {"text": "Tanznia",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design2.png",
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\design2.png"
+      },
+{
+         "id" : 3,
+	 "textObj": {"text": "Shanzalize",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design3.png",
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\design3.png"
+      },
+{
+         "id" : 4,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design4.png",
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\design4.png"
+      },
+{
+         "id" : 5,
+	 "textObj": {"text": "MiniMal Epileptic",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design5.png",
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\design5.png"
+      },
+{
+         "id" : 6,
+	 "textObj": {"text": "Моя тема",
+		  "font" : "helveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\photobooth\\photoCardStyles\\design6.png",
+	 "designPath" :"user_design\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\template.png"
+      }]      
+}

@@ -1,0 +1,4 @@
+{   
+   "designPath" : "data\\interface\\configDesign\\",
+   "userDesignPath" : "user_design\\template\\"
+}

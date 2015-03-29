@@ -1,0 +1,29 @@
+{  
+ "searchtitle" : [
+      {
+     "lang" : "ru",	
+	 "main": { "text" : "Поиск по Instagram",
+		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+
+	 "sub": { "text" : "Самостоятельно искать фото по хештегу и пользователю",
+		   "font" : "helveticaNeueLight", "size" : 24, "color" :  "fefe87"}
+      }	],
+	 
+   "hashtagtitle" : [
+      {
+     "lang"  : "ru",
+	 "main": { "text" : "Хештег мероприятия",
+		   "font" : "introLight", "size" : 44, "color" :  "ffff00"},
+
+	 "sub": { "text" : "Печать фото из Instagram по хештегу",
+		   "font" : "helveticaNeueLight", "size" : 24, "color" :  "fefe87"}}],
+	 
+   "phototitle" : [
+      {
+     "lang"  : "ru",
+	 "main": { "text" : "Оформление фотокарточки",
+		   "font" : "introLight", "size" : 44, "color" :  "ffff00"},
+
+	 "sub": { "text" : "Выберите одну из тем или создайте свою",
+		   "font" : "helveticaNeueLight", "size" : 24, "color" :  "fefe87"}}]
+}

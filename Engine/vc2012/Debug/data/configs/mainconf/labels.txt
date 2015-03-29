@@ -1,0 +1,112 @@
+{  
+
+ "apps" : [
+      {
+         "lang" : "ru",
+		 "switchoff": { "text" : "Выключен",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		 "config": { "text" : "Настроить",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		 "stat" :  { "text" : "Статистика",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		 "notinstall" :  { "text" : "Такжe установите на Ваш KUBIK",
+		   "font" : "helveticaLight", "size" : 36, "color" :  "939eb0"}
+      }	],
+
+  "design" : [
+      {
+         "lang" : "ru",
+		 "designMain": { "text" : "Дизайн интерфейса и заставка",
+		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+
+		 "designSub": { "text" : "Настройте внешний вид Kubik'a",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"}
+      }	],
+
+  "stat" : [
+      {
+         "lang" : "ru",
+		 "finAndStart": { "text" : "Завершить и начать новое",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		 "playedCount": { "text" : "Сыграли",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "939eb0"},
+
+		 "printedCount" : { "text" : "Напечатали фото",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "939eb0"},
+
+		 "socialCount" : { "text" : "Соц.сети и email",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "939eb0"}
+      }	],
+   "screensaver" : [
+      {
+         "lang" : "ru",
+		 "loadMain": { "text" : "Заставка",
+		   "font" : "introLight", "size" : 36, "color" :  "ffffff"},
+
+		 "loadSub": { "text" : "видео или изображение",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "939eb0"}
+      }	]
+	  ,
+   "screensaver_back" : [
+      {
+         "lang" : "ru",
+		 "back": { "text" : "Вернуться к списку приложений",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "00f066"}	
+      }	]
+	    ,
+   "load" : [
+      {
+         "lang" : "ru",
+		 "load": { "text" : "Загрузить",
+		   "font" : "helveticaLight", "size" : 20, "color" :  "ffffff"}		
+      }	]
+ ,
+   "printer" : [
+      {
+         "lang" : "ru",
+
+		 "catridgeChange": { "text" : "фото до замены картриджа",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		"changed": { "text" : "Заменен",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "00f067"},
+
+	     "changeTitle": { "text" : "Вы заменили картридж в принтере?",
+		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+
+		 "changeSubTitle": { "text" : "Cчетчик будет сброшен. Один картридж печатает 400 фотографий.",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "939eb0"},
+
+		 "closeTitle": { "text" : "Я ошибся, оставим все как есть",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "00f067"},
+
+		 "okTitle": { "text" : "Картридж заменен",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"}	
+      }	]
+	  ,
+
+	  "newParty" : [
+      {
+         "lang" : "ru",
+
+		 "askTitle": { "text" : "Завершить\nмероприятие?",
+		   "font" : "introLight", "size" : 72, "color" :  "ffffff"},
+
+		"desqr": { "text" : "Все фотографии и статистика сохраняются в вашем личном\nкабинете на сайте. Там в любой момент можно найти всю\nинформацию по проведенным мероприятиям.",
+		   "font" : "helveticaLight", "size" : 22, "color" :  "dae1eb"},
+
+	     "title": { "text" : "Для старта нового мероприятия просто введите название",
+		   "font" : "introLight", "size" : 30, "color" :  "ffffff"},
+
+		 "begin": { "text" : "Начать!",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "ffffff"},
+
+		 "close": { "text" : "Я ошибся, ничего не надо завершать",
+		   "font" : "helveticaLight", "size" : 24, "color" :  "00f067"}
+      }	]
+
+}

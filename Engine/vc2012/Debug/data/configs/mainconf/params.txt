@@ -1,0 +1,10 @@
+{
+   "actionName" : "56788",
+   "activeDesign" : 2,
+   "currentPhotosPrinted" : 0,
+   "designPath" : "data\\interface\\configDesign\\",
+   "maxPhotosToPrint" : 400,
+   "playedCount" : 0,
+   "printedCount" : 0,
+   "publishedCount" : 0
+}
