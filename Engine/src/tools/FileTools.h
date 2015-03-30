@@ -60,6 +60,25 @@ namespace kubik
 		{
 			loadUrlStream(path);
 		}
+
+		std::vector<std::string> getAllJpegPaths(const std::string& path)
+		{
+			std::vector<std::string> content;
+			for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
+			{
+				if (fs::is_regular_file(*it))
+				{
+					string ext = it->path().extension().string();					
+
+					if (!isImageExtension(ext))
+						continue;
+
+					string filePath = path + it->path().filename().string();
+					content.push_back(filePath);
+				}
+			}
+			return content;
+		}		
 	};
 
 	// helper function(s) for easier access 

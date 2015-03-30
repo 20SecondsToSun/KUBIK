@@ -6,40 +6,12 @@ using namespace kubik::config;
 using namespace kubik;
 
 FacebookPopup::FacebookPopup(PhotoboothSettingsRef settings)
-	:Popup(settings)
+	:SocialPopup(settings)
 {
-
+	createSocialContext();
 }
 
-void FacebookPopup::show()
+void FacebookPopup::createSocialContext()
 {
-	Popup::show();
-}
-
-void FacebookPopup::initVirtualKeyboard()
-{
-	touchKeyboard().setInputFieldVisible(false);
-	Popup::initVirtualKeyboard();
-}
-
-void FacebookPopup::showAnimComplete()
-{
-	touchKeyboard().connectEventHandler(&FacebookPopup::keyTouchHandler, this, VirtualKeyboard::KEY_TOUCH);
-	Popup::showAnimComplete();	
-}
-
-void FacebookPopup::keyTouchHandler()
-{
-	console() << "::::::touch " << touchKeyboard().getLastCode() << endl;
-}
-
-void FacebookPopup::hide(EventGUIRef& event)
-{
-	touchKeyboard().disconnectEventHandler(VirtualKeyboard::KEY_TOUCH);
-	Popup::hide(event);
-}
-
-void FacebookPopup::draw()
-{
-	Popup::draw();	
+	social = Social::createFacebook();
 }

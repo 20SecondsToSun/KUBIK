@@ -33,7 +33,22 @@ void Popup::initVirtualKeyboard()
 
 void Popup::showAnimComplete()
 {
+	connectCloseBtn();
+}
+
+void Popup::kill()
+{
+	disconnectCloseBtn();
+}
+
+void Popup::connectCloseBtn()
+{
 	closeBtn->connectEventHandler(&Popup::hide, this);
+}
+
+void Popup::disconnectCloseBtn()
+{
+	closeBtn->disconnectEventHandler();
 }
 
 void Popup::hideAnimComplete()
@@ -42,6 +57,11 @@ void Popup::hideAnimComplete()
 }
 
 void Popup::hide(EventGUIRef& event)
+{
+	close();
+}
+
+void Popup::close()
 {
 	closeBtn->disconnectEventHandler();
 

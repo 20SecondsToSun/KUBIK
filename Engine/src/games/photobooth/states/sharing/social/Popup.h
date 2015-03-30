@@ -26,16 +26,21 @@ namespace kubik
 				virtual void hideAnimComplete();
 				virtual void initVirtualKeyboard();
 
+				void connectCloseBtn();
+				void disconnectCloseBtn();
+
 			public:
 				static const int POPUP_CLOSED = 1;
 				ci::Font inputFont;
 
 				Popup(kubik::config::PhotoboothSettingsRef settings);
 
+				virtual void kill();
 				virtual void show();
 				virtual void hide(EventGUIRef& event);
 				virtual void draw();
 				virtual void drawBackgrounds();
+				virtual void close();
 			};
 		}
 	}

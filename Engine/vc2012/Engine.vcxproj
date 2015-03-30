@@ -154,6 +154,7 @@
     <ClCompile Include="..\src\games\photobooth\states\sharing\social\EmailPopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\social\Popup.cpp" />
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\SocialPopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\shooting\PhotoShooting.cpp" />
@@ -213,12 +214,17 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
+    <ClCompile Include="..\src\services\social\Facebook.cpp" />
+    <ClCompile Include="..\src\services\social\Social.cpp" />
+    <ClCompile Include="..\src\services\social\SocShare.cpp" />
+    <ClCompile Include="..\src\services\social\Vkontakte.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
     <ClCompile Include="..\src\srdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\tools\Chromium.h" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
     <ClCompile Include="Kotopoza.cpp" />
   </ItemGroup>
@@ -298,6 +304,7 @@
     <ClInclude Include="..\src\games\photobooth\states\sharing\social\EmailPopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\social\FacebookPopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\social\Popup.h" />
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\SocialPopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\social\TwitterPopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\sharing\social\VkontaktePopup.h" />
     <ClInclude Include="..\src\games\photobooth\states\shooting\PhotoShooting.h" />
@@ -383,6 +390,10 @@
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
+    <ClInclude Include="..\src\services\social\Facebook.h" />
+    <ClInclude Include="..\src\services\social\Social.h" />
+    <ClInclude Include="..\src\services\social\SocShare.h" />
+    <ClInclude Include="..\src\services\social\Vkontakte.h" />
     <ClInclude Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.h" />
     <ClInclude Include="..\src\services\virtualKeyboard\VirtualKeyboard.h" />
     <ClInclude Include="..\src\stdafx.h" />

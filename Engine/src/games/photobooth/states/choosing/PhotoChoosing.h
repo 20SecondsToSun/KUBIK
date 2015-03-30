@@ -44,7 +44,7 @@ namespace kubik
 				float photoFiltersStartY;
 
 				PhotoStorageRef photoStorage;
-				std::vector<Surface> thumbs;
+				std::vector<ci::Surface> thumbs;
 				std::vector<PhotoContainerRef> photoBtns;
 				std::vector<FilterSmallButtonRef> filterBtns;
 				PhotoContainerRef lastSelected;

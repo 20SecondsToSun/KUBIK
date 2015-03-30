@@ -13,6 +13,7 @@
 #include "model/PhotoStorage.h"
 #include "CameraAdapter.h"
 #include "ScreenStorage.h"
+#include "Chromium.h"
 
 namespace kubik
 {

@@ -50,6 +50,7 @@ namespace kubik
 			void load()			override;
 			void setTextures()  override;
 			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };
+			vector<Texture> getSmileTextures();
 
 			TextItem getMainTitle(PhtTextID id);
 			TextItem getSubTitleClose(PhtTextID id);
@@ -196,8 +197,8 @@ namespace kubik
 			int templateId;
 			int minPhotosShots;
 			int maxPhotosShots;
-			int minSecBetweenShots;
-			int maxSecBetweenShots;
+			//int minSecBetweenShots;
+			//int maxSecBetweenShots;
 			int minCountTimer;
 			int maxCountTimer;
 			bool isCustomDesign;
@@ -238,7 +239,6 @@ namespace kubik
 			void loadPhotoFilterParams(JsonTree config);
 			void loadGameDesignParams(JsonTree config);
 			void loadGameStickerParams(JsonTree config);
-			//void loadGameBgPrintParams(JsonTree config);
 			void loadConfigTexts(JsonTree config);
 			void loadSharingIcons(JsonTree config);
 			void saveConfig();
@@ -249,7 +249,8 @@ namespace kubik
 			DesignData photoOverDesignData;
 			DesignData photoCardStyles;
 			DesignData photoFiltersPreview;
-
+			std::vector<std::string> smilePaths;
+			std::vector<ci::gl::Texture> smileTextures;			
 			std::string getActiveOverDesignText();
 			std::string getActiveCardStyleText();
 			std::string getActiveFiltersTexts();

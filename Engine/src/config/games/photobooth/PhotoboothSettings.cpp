@@ -79,8 +79,8 @@ void PhotoboothSettings::loadConsts()
 
 	minPhotosShots	    = constsJSON.getChild("minPhotosShots").getValue<int>();
 	maxPhotosShots	    = constsJSON.getChild("maxPhotosShots").getValue<int>();	
-	minSecBetweenShots  = constsJSON.getChild("minSecBetweenShots").getValue<int>();
-	maxSecBetweenShots  = constsJSON.getChild("maxSecBetweenShots").getValue<int>();			
+	//minSecBetweenShots  = constsJSON.getChild("minSecBetweenShots").getValue<int>();
+	//maxSecBetweenShots  = constsJSON.getChild("maxSecBetweenShots").getValue<int>();			
 	minCountTimer	    = constsJSON.getChild("minCountTimer").getValue<int>();
 	maxCountTimer	    = constsJSON.getChild("maxCountTimer").getValue<int>();
 
@@ -428,6 +428,10 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
 
 
+	smilePaths = fileTools().getAllJpegPaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
+	for (size_t i = 0; i < smilePaths.size(); i++)	
+		addToDictionary("smile" + to_string(i), createImageResource(smilePaths[i]));
+		
 
 
 	addToDictionary("helvetica40",      createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
@@ -498,7 +502,17 @@ void PhotoboothSettings::buildData()
 	}
 
 	configTexts.setDic(dic);
+
+	for (size_t i = 0; i < smilePaths.size(); i++)
+		smileTextures.push_back(getTexture("smile" + to_string(i)));
+	
+
 };
+
+vector<Texture> PhotoboothSettings::getSmileTextures()
+{
+	return smileTextures;
+}
 
 std::vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 {

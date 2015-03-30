@@ -41,6 +41,8 @@ void Photobooth::create()
 
 	initLocations();
 	cameraSetup();
+
+	chrome().init();
 }
 
 void Photobooth::start()

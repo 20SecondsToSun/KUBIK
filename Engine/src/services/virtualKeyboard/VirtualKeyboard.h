@@ -95,7 +95,7 @@ namespace kubik
 		SimpleSpriteButtonRef touchInputZone;
 		std::string inputField;
 		ci::Font inputFont;
-		int maxInputChars;
+		size_t maxInputChars;
 		bool isShowing;
 		Vec2f touchInputZonePos;
 		ci::gl::Texture inputFieldTexture;

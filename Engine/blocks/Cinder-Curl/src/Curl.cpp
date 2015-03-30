@@ -337,7 +337,7 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 
 	curl_easy_cleanup( curl );	
 
-	console() << "result  :" << result << endl;
+	console() << "result  :" << errorBuffer << endl;
 	
 	if( result == CURLE_OK )
 	{

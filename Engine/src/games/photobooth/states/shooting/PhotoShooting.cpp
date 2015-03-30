@@ -36,6 +36,8 @@ void PhotoShooting::start()
 	using namespace shaders::imagefilters;
 	console() << "start PhotoShooting" << endl;
 
+	smileIndex = 0;
+
 	cameraCanon().startLiveView();
 	auto filterID = photoStorage->getSelectedFilter();
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
@@ -67,7 +69,7 @@ void PhotoShooting::reset(PhotoboothSettingsRef settings)
 	IPhotoboothLocation::reset(settings);
 	countsTex = settings->getTexture("counts");
 	seekTex = settings->getTexture("seek");
-	smileTex = settings->getTexture("smile");
+	smileTexs = settings->getSmileTextures();
 	line = settings->getTexture("shootline");
 	frame = settings->getTexture("frame");
 
@@ -128,7 +130,7 @@ void PhotoShooting::draw()
 
 	case PhotoShooting::SHOOTING:
 	case PhotoShooting::PEPARE_FOR_SHOOTING:
-		gl::draw(smileTex, Vec2f(0.5f * (getWindowWidth() - smileTex.getWidth()), startY));
+		gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), startY));
 		break;
 
 	case PhotoShooting::PREVIEW:
@@ -256,10 +258,20 @@ void PhotoShooting::callPreviewShowingTimer()
 {
 	state = PREVIEW;
 
+	smileIndex = getNextSmileIndex();
+
 	delaycall(bind(&PhotoShooting::previewdelay, this), previewShowingTime);
 
 	previewAnimateX = -950.0f;
 	timeline().apply(&previewAnimateX, 0.0f, 0.9f, EaseOutCubic()).delay(0.5f);
+}
+
+int PhotoShooting::getNextSmileIndex()
+{
+	if (++smileIndex > smileTexs.size() - 1)
+		smileIndex = 0;
+
+	return smileIndex;
 }
 
 void PhotoShooting::stopAllTweens()

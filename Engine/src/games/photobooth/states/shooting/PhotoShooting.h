@@ -31,8 +31,7 @@ namespace kubik
 				}
 				state;
 
-				int	currentShot, shotsNum;
-				int	secBetweenShots;
+				size_t	currentShot, shotsNum, smileIndex;
 				bool checkTimerInUpdate;
 				float delayShootingTime, liveViewPrepareTime, previewShowingTime;
 				float progressBlockStartY;
@@ -42,10 +41,12 @@ namespace kubik
 				shaders::imagefilters::MaskShaderRef maskShader;
 
 				PhotoStorageRef photoStorage;
-				ci::gl::Texture countsTex, seekTex, photo, smileTex, line, frame;
+				ci::gl::Texture countsTex, seekTex, photo, line, frame;				
 				ci::gl::Texture cameraTexture, photoTemplate;
 				ci::Vec2f countsTexPos, seekTexPos0, framePosition;
 				ci::Vec2f cameraPosition;
+
+				std::vector<ci::gl::Texture> smileTexs;
 
 				ci::Anim<float> percent, progressBlockAnimateY, previewAnimateX;
 				ci::Anim<ci::Vec2f> seekPosition;
@@ -66,8 +67,9 @@ namespace kubik
 				void drawProgressBlock();
 				void drawDashedFrame();
 				void showAnimationComplete();
-
 				void drawCameraTexture();
+
+				int getNextSmileIndex();
 
 			public:
 				PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);

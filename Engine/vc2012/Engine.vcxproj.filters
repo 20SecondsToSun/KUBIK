@@ -229,6 +229,9 @@
     <Filter Include="blocks\Curl">
       <UniqueIdentifier>{482d0914-991b-4741-a917-d92307833937}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\services\social">
+      <UniqueIdentifier>{345817ed-aab0-433f-8022-8ccffa0d7c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -551,6 +554,24 @@
     </ClCompile>
     <ClCompile Include="..\src\locations\menu\ControlLayer.cpp">
       <Filter>Source Files\locations\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\Chromium.h">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\Social.cpp">
+      <Filter>Source Files\services\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\Vkontakte.cpp">
+      <Filter>Source Files\services\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\SocShare.cpp">
+      <Filter>Source Files\services\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\photobooth\states\sharing\social\SocialPopup.cpp">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\Facebook.cpp">
+      <Filter>Source Files\services\social</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1078,6 +1099,24 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\Social.h">
+      <Filter>Source Files\services\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\Vkontakte.h">
+      <Filter>Source Files\services\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\SocShare.h">
+      <Filter>Source Files\services\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\states\sharing\social\SocialPopup.h">
+      <Filter>Source Files\games\photobooth\states\sharing\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\Facebook.h">
+      <Filter>Source Files\services\social</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

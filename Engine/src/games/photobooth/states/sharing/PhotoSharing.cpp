@@ -229,6 +229,8 @@ void PhotoSharing::stop()
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
 	clearDelaycall();
+	popup->disconnectEventHandler(Popup::POPUP_CLOSED);
+	popup->kill();
 }
 
 void PhotoSharing::showPopup()

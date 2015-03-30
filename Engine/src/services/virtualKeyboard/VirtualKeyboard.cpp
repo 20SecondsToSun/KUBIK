@@ -336,6 +336,7 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 		{
 			inputField.pop_back();
 			setInputFieldText(inputField);
+			callback(KEY_TOUCH);
 		}
 	}
 	else if (lastCode.size() == 1)
