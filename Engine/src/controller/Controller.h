@@ -33,8 +33,7 @@ namespace kubik
 	{
 	public:
 		Controller(ApplicationModelRef model, AppViewRef view);
-		~Controller();
-
+	
 	private:
 		ApplicationModelRef		model;
 		AppViewRef				view;
@@ -57,16 +56,9 @@ namespace kubik
 
 		IScreenRef currentLocation;			
 
-		void loadKubikConfig();
-		void kubikConfigLoadingCompleteHandler();
-		void kubikConfigLoadingErrorHandler(KubikException exc);
-		void removeKubikConfigLoadingConnections();	
-		
+		void loadKubikConfig();		
 		void loadSettings();
-		void configsLoadingCompleteHandler();
-		void configsLoadingErrorHandler(KubikException exc);
-		void removeConfigsLoadingConnections();
-
+	
 		void loadAllLocationsGraphics();
 		void allGraphicsLoadingCompleteHandler();
 		void graphicsLoadingErrorHandler(KubikException exc);

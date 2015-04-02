@@ -6,6 +6,7 @@
 #include "ConfigTexts.h"
 #include "JsonTools.h"
 #include "ApplicationModel.h"
+#include "ConfigSettings.h"
 
 namespace kubik
 {
@@ -44,7 +45,7 @@ namespace kubik
 				}
 			};
 
-			PhotoboothSettings(ApplicationModelRef model);
+			PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 
 			void buildData()    override;
 			void load()			override;
@@ -94,15 +95,14 @@ namespace kubik
 			void setActivePhotoCardStyleDesignID(int id);
 
 			int getUserPhotoCardStyleDesignID();
-			int getCurrentPhotoCount();
-
+		
 			std::string getUserPhotoOverDesignPath();
 			std::string getUserPhotoCardStylePath();
 
 			void createMemento();
 			void writeConfig();
 
-			int getBeReadySeconds(){ return seconds; };
+			int getBeReadySeconds(){ return 5; };
 
 			bool wasChanged(){ return false; };
 			bool settingsChanged();
@@ -157,15 +157,12 @@ namespace kubik
 
 			class ConfigPath
 			{
-				std::string staticPartDesignPath;
-				std::string kubikTemplatePartDesignPath;
-				std::string userTemplatePartDesignPath;
-				std::string finalPath;
 				std::string userStickerPath;
 				std::string userCardStylePath;
 				std::string photoOverDesignDataPath;
 				std::string photoCardsStylesDesignDataPath;
 				std::string photoFiltersPreviewDesignDataPath;
+				std::string finalPath;
 
 			public:
 				friend PhotoboothSettings;
@@ -192,21 +189,10 @@ namespace kubik
 
 			ConfigObject mainConfigObj;
 
-			int seconds;
-			int secondsBetweenShots;
-			int templateId;
-			int minPhotosShots;
-			int maxPhotosShots;
-			//int minSecBetweenShots;
-			//int maxSecBetweenShots;
-			int minCountTimer;
-			int maxCountTimer;
-			bool isCustomDesign;
 			bool isSticker;
 
 			int activeOverDesignID, activeOverDesignIDMemento;
 			int userOverDesignID;
-
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
 
@@ -228,7 +214,7 @@ namespace kubik
 			void loadParams();
 			void loadLabels();
 			void loadConsts();
-			void loadDesignPath();
+			void setDesignPath();
 
 			void parsePhotoOverDesigns();
 			void parsePhotoCardStyles();
@@ -258,6 +244,8 @@ namespace kubik
 
 			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
 			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
+
+			ConfigSettingsRef configSettings;
 		};
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;

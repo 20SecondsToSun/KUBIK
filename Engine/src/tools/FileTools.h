@@ -58,8 +58,9 @@ namespace kubik
 
 		void openURL(const std::string& path)
 		{
-			loadUrlStream(path);
-		}
+			std::wstring stemp = std::wstring(path.begin(), path.end());
+			ShellExecute(0, 0, stemp.c_str(), 0, 0, SW_SHOW);
+		}		
 
 		std::vector<std::string> getAllJpegPaths(const std::string& path)
 		{

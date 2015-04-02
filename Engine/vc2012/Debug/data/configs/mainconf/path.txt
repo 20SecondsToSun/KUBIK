@@ -1,4 +1,5 @@
 {   
    "designPath" : "data\\interface\\configDesign\\",
-   "userDesignPath" : "user_design\\template\\"
+   "userDesignPath" : "user_design\\templates\\",
+   "templateDesignPath" : "kubik\\templates\\"
 }

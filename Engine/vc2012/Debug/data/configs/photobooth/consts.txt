@@ -1,10 +1,4 @@
-{
-   "minPhotosShots" : 1,
-   "maxPhotosShots" : 3,
-   "minSecBetweenShots" : 2,
-   "maxSecBetweenShots" :5, 
-   "minCountTimer" : 1, 
-   "maxCountTimer" : 3,
+{  
    "cardStylesRects":[
 {"x1" : 77, "y1" : 61, "x2" : 667, "y2" : 1833},
 {"x1" : 737, "y1" : 61, "x2" : 1918, "y2" : 1833},

@@ -3,7 +3,6 @@
 #include "model/PhotoStorage.h"
 #include "gui/Sprite.h"
 
-using namespace std;
 using namespace kubik::config;
 
 namespace kubik
@@ -12,14 +11,15 @@ namespace kubik
 	{
 		namespace photobooth
 		{
+			typedef std::shared_ptr<class IPhotoboothLocation> IPhotoboothLocationRef;
+
 			class IPhotoboothLocation : public Sprite
 			{	
 			protected:
 				static PhotoboothSettingsRef settings;
 				static ci::gl::Texture bckgrnd;
-				float titlePositionY;
+				float titlePositionY, animShowTitleTime;
 
-				float animShowTitleTime;
 				ci::Anim<float> titleAlpha, titleScale, titleFilterAlpha;
 				ci::Anim<ci::Vec2f> titleAnimPosition;
 				ci::gl::Texture title, screenshot;
@@ -28,8 +28,7 @@ namespace kubik
 			public:	
 				static const int NEXT_LOC = 100;
 				static const int BEGIN_ANIM = 101;
-				static const int COMPLETE_ANIM = 102;
-				
+				static const int COMPLETE_ANIM = 102;				
 
 				IPhotoboothLocation();
 
@@ -43,9 +42,7 @@ namespace kubik
 				void hideAnimationComplete();				
 				void fillBg();
 				void drawTitle();
-			};
-
-			typedef shared_ptr<IPhotoboothLocation> IPhotoboothLocationRef;
+			};		
 		}
 	}
 }

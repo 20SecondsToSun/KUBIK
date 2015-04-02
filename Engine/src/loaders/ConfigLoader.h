@@ -69,7 +69,7 @@ namespace kubik
 				}				
 			}
 
-			LoadingCompleteSignal();
+			//LoadingCompleteSignal();
 		}
 
 	private:	

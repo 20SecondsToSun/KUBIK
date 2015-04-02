@@ -8,7 +8,7 @@ using namespace mndl::curl;
 
 const std::string Facebook::FACEBOOK_BASE_URL = "https://graph.facebook.com/";
 
-const std::string Facebook::FACEBOOK_APP_ID = "";
+const std::string Facebook::FACEBOOK_APP_ID = "1437302953218656";
 const std::string Facebook::FACEBOOK_AUTH_URL = "https://www.facebook.com/dialog/oauth?client_id=" + FACEBOOK_APP_ID + "&redirect_uri=http://familyagency.ru/&response_type=token&display=popup&scope=publish_actions,email,public_profile,user_friends,user_photos";
 
 const std::string Facebook::FACEBOOK_FEED_URL = FACEBOOK_BASE_URL + "me/feed";

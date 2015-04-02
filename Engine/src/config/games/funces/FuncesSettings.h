@@ -1,38 +1,44 @@
 #pragma once
 
 #include "ISettings.h"
+#include "ConfigSettings.h"
 
 using namespace kubik::config;
 
 namespace kubik
 {
-	typedef std::shared_ptr<class FuncesSettings> FuncesSettingsRef;
-
-	class FuncesSettings: public ISettings
+	namespace config
 	{
-	public:
+		typedef std::shared_ptr<class FuncesSettings> FuncesSettingsRef;
 
-		FuncesSettings(ApplicationModelRef model):ISettings(model)
+		class FuncesSettings : public ISettings
 		{
-			mainConfigPath = model->getFuncesConfigPath();			
-		}
+			ConfigSettingsRef configSettings;
 
-		void load() override
-		{
-			JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
-			designPath = configJSON.getChild("designPath").getValue<string>();
-			setTextures();
-		}
+		public:
+			FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
+				:ISettings(model), configSettings(configSettings)
+			{
+				mainConfigPath = model->getFuncesConfigPath();
+			}
 
-		void setTextures() override
-		{		
-			clearResources();
-			addToDictionary("closeImg", createImageResource(getDesignPath() + "close.png"));
-		}
+			void load() override
+			{
+				JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
+				designPath = configJSON.getChild("designPath").getValue<string>();
+				setTextures();
+			}
 
-		virtual void createMemento(){};
-		virtual void writeConfig(){};
-		bool settingsChanged(){return false;};	
-		changeSetting::id getChangeID() const { return changeSetting::id::FUNCES; };
-	};	
+			void setTextures() override
+			{
+				clearResources();
+				addToDictionary("closeImg", createImageResource(getDesignPath() + "close.png"));
+			}
+
+			virtual void createMemento(){};
+			virtual void writeConfig(){};
+			bool settingsChanged(){ return false; };
+			changeSetting::id getChangeID() const { return changeSetting::id::FUNCES; };
+		};
+	}
 }

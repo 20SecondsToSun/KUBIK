@@ -15,12 +15,10 @@ Controller::Controller(ApplicationModelRef model, AppViewRef view)
 	game		  = NULL;
 
 	view->showPreloader();
-	loadKubikConfig();	
-}
 
-Controller::~Controller()
-{
-	console()<<"~~~~~~~~~~~~~~~~~ Controller destruct ~~~~~~~~~~~~~~~~~"<<endl;
+	loadKubikConfig();
+	loadSettings();
+	loadAllLocationsGraphics();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -31,31 +29,8 @@ Controller::~Controller()
 
 void Controller::loadKubikConfig()
 {
-	console()<<"start loading kubik config"<<endl;
 	configLoader = ConfigLoaderRef(new ConfigLoader(model));
-
-	connect_once(configLoader->LoadingCompleteSignal, bind(&Controller::kubikConfigLoadingCompleteHandler, this));
-	connect_once(configLoader->LoadingErrorSignal,	  bind(&Controller::kubikConfigLoadingErrorHandler, this, std::placeholders::_1));
-
 	configLoader->load();	
-}
-
-void Controller::kubikConfigLoadingCompleteHandler()
-{
-	removeKubikConfigLoadingConnections();
-	loadSettings();
-}
-
-void Controller::kubikConfigLoadingErrorHandler(KubikException exc)
-{
-	removeKubikConfigLoadingConnections();
-	view->showServicePopup(exc);
-}
-
-void Controller::removeKubikConfigLoadingConnections()
-{
-	configLoader->LoadingCompleteSignal.disconnect_all_slots();	
-	configLoader->LoadingErrorSignal.disconnect_all_slots();	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -68,44 +43,24 @@ void Controller::loadSettings()
 {
 	console()<<"start loading other configs"<<endl;
 
-	gameSettings		 = GameSettingsRef(new GameSettings(model));
-	menuSettings		 = MenuSettingsRef(new MenuSettings(model));
 	controlSettings		 = ConfigSettingsRef(new ConfigSettings(model));
+	gameSettings		 = GameSettingsRef(new GameSettings(model, controlSettings));
+	menuSettings		 = MenuSettingsRef(new MenuSettings(model));	
 	screenSaverSettings	 = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
 
 	settingsFactory().inject(controlSettings);
 
 	list<ISettingsRef> configs;
-	configs.push_back(gameSettings);
-	configs.push_back(menuSettings);
 	configs.push_back(controlSettings);
+	configs.push_back(gameSettings);
+	configs.push_back(menuSettings);	
 	configs.push_back(screenSaverSettings);
 
-	connect_once(configLoader->LoadingCompleteSignal, bind(&Controller::configsLoadingCompleteHandler, this));
-	connect_once(configLoader->LoadingErrorSignal,	  bind(&Controller::configsLoadingErrorHandler, this, std::placeholders::_1));
-
 	configLoader->loadConfigs(configs);
+	console() << "---------CONFIGS LOADED---------" << endl;
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	settingsFactory().inject(phbthSettings);	
-}
-
-void Controller::configsLoadingCompleteHandler()
-{
-	removeConfigsLoadingConnections();	
-	loadAllLocationsGraphics();
-}
-
-void Controller::configsLoadingErrorHandler(KubikException exc)
-{
-	removeConfigsLoadingConnections();
-	view->showServicePopup(exc);
-}
-
-void Controller::removeConfigsLoadingConnections()
-{
-	configLoader->LoadingCompleteSignal.disconnect_all_slots();	
-	configLoader->LoadingErrorSignal.disconnect_all_slots();	
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -125,11 +80,12 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
-
-	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));	
-	//graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::FUNCES));
+	//graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
+	console() << "set  PHOTOBOOTH" << endl;
+	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));
+	//graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::FUNCES));	
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));
-
+	console() << "set  INSTAKUB" << endl;
 	graphicsLoader->load();
 }
 
@@ -168,11 +124,11 @@ void Controller::createLocations()
 
 	touchKeyboard().setup();
 
-	screenSaver = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
+	screenSaver   = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
 	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	
-	controlLayer  = ControlLayerRef(new ControlLayer(menuSettings));	
-
+	controlLayer  = ControlLayerRef(new ControlLayer(menuSettings));
 	controlScreen = ConfigScreenRef(new ConfigScreen(controlSettings));
+
 	controlScreen->setScreenSaverSettings(screenSaverSettings);
 	controlScreen->setMenuSettings(menuSettings);
 	controlScreen->setGameSettings(gameSettings);
@@ -182,11 +138,10 @@ void Controller::createLocations()
 	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettings);
 	//gamesFactory.reg<Kotopoza>(GameId::INSTAKUB, gameSettings);
 	createGame(model->getDefaultGameID());
-	////
+
+
 	view->addLayer(controlLayer);
-
 	//startup();
-
 	startMenuScreenLocation();
 }
 
@@ -360,6 +315,7 @@ void Controller::gameGraphicsLoadingCompleteHandler()
 
 void Controller::createGame(GameId id)
 {
+	console() << "createGame" << endl;
 	gameSettings->setCurrentGame(id);
 	game = gamesFactory.create(id);		
 }
@@ -437,8 +393,7 @@ void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadA
 	{
 		//removeScreenSaverHandlers();
 		removeGameHandlers();
-		removeMenuScreenHandlers();
-	
+		removeMenuScreenHandlers();	
 	
 		//todo::  set textures
 		removeConfigScreenHandlers();
@@ -446,7 +401,8 @@ void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadA
 		view->showPreloader();
 		view->clearLayers();
 		controlLayer->clear();
-		
+
+		gameSettings->setTextures();
 		loadAllLocationsGraphics();
 		return;
 	}

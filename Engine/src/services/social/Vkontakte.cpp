@@ -12,7 +12,7 @@ using namespace mndl::curl;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-const std::string Vkontakte::VKONTAKTE_APP_ID = "";
+const std::string Vkontakte::VKONTAKTE_APP_ID = "4610587";
 const std::string Vkontakte::VKONTAKTE_AUTH_URL = "https://oauth.vk.com/authorize?client_id=" + VKONTAKTE_APP_ID + "&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,wall&display=page&response_type=token";
 const std::string Vkontakte::VKONTAKTE_LOGOUT_URL = "https://login.vk.com/?act=openapi&oauth=1&aid=" + VKONTAKTE_APP_ID + "&location=familyagency.ru&do_logout=1&token=";
 //

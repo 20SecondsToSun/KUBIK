@@ -232,6 +232,9 @@
     <Filter Include="Source Files\services\social">
       <UniqueIdentifier>{345817ed-aab0-433f-8022-8ccffa0d7c30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\games\instakub\states">
+      <UniqueIdentifier>{88909fd5-42b1-41fc-a994-acb29c81dcfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -572,6 +575,21 @@
     </ClCompile>
     <ClCompile Include="..\src\services\social\Facebook.cpp">
       <Filter>Source Files\services\social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\InstakubLocation.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\HashtagOnly.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\SearchOnly.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\HashtagAndSearch.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\InstagramView.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1117,6 +1135,24 @@
     </ClInclude>
     <ClInclude Include="..\src\services\social\Facebook.h">
       <Filter>Source Files\services\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\HashtagOnly.h">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\SearchOnly.h">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\HashtagAndSearch.h">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\InstakubLocation.h">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\InstagramView.h">
+      <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

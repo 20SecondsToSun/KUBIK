@@ -6,6 +6,7 @@
 #include "InstakubSettings.h"
 #include "Types.h"
 #include "ApplicationModel.h"
+#include "ConfigSettings.h"
 
 namespace kubik
 {
@@ -37,7 +38,7 @@ namespace kubik
 				friend GameSettings;
 			};
 
-			GameSettings(ApplicationModelRef model);
+			GameSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 
 			virtual void createMemento();
 			virtual void writeConfig();
@@ -45,6 +46,7 @@ namespace kubik
 			ISettingsRef get(const GameId& id);
 			IResourceDictionary getActiveGameResources();
 			IResourceDictionary getGameTexturesById(const GameId& id);
+			IResourceDictionary getActiveGameTextures();			
 
 			bool settingsChanged();
 			changeSetting::id getChangeID() const;
@@ -78,6 +80,8 @@ namespace kubik
 			GameId currentGame, nextGameId;
 			std::map<GameId, ISettingsRef> gameSettingsMap;
 			GamesDataStruct data, dataMemento;
+
+			ConfigSettingsRef configSettings;
 		};
 	}
 }

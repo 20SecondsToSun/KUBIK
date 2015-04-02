@@ -93,6 +93,9 @@ namespace kubik
 			DesignData  getDesignData();
 			int			getUserDesignID();
 
+			std::string getTemplatePath();
+			std::string getInterfacePath();
+
 		private:
 			int			standID;
 			bool		netConnection;
@@ -109,6 +112,9 @@ namespace kubik
 			std::string userDataPath, _userDataPath;
 			std::string gamesPurchasedPath;
 			std::string gamesTurnOnPath;
+			std::string userTemplateDesignPath;
+			std::string templatesDesignPath;
+			std::string intarfaceDesignPath;		
 
 			std::vector<GamesInfo> games;
 			GameId defaultGameID;

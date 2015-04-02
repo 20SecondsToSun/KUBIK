@@ -6,6 +6,7 @@
 #include "ConfigTexts.h"
 #include "JsonTools.h"
 #include "ApplicationModel.h"
+#include "ConfigSettings.h"
 
 namespace kubik
 {
@@ -23,14 +24,15 @@ namespace kubik
 				PHOTO_TITLE_MAIN, PHOTO_TITLE_SUB				
 			};
 
-			InstakubSettings(ApplicationModelRef model);
+			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			virtual void load();
 			virtual void setTextures();
 			virtual void buildData();
 
-			void loadConfigPaths();
+			void loadPaths();
 			void loadParams();
 			void loadLabels();
+			void setDesignPath();
 			void parsePhotoCardStyles();
 			
 			TextItem getTextItem(const InstaTextID& id);
@@ -54,6 +56,10 @@ namespace kubik
 			bool settingsChanged();
 			changeSetting::id getChangeID() const;
 
+			bool hashtagEnabled();
+			bool searchEnabled();
+			
+
 		private:
 			bool memento;
 			std::string hashtag, hashtag_save;
@@ -66,10 +72,13 @@ namespace kubik
 			ConfigObject mainConfigObj;
 			DesignData photoCardStyles;
 
+			ConfigSettingsRef configSettings;
+
 			class ConfigPath
 			{			
 				std::string photoCardsStylesDesignDataPath;
 				std::string userPhotoCardStylePath;
+				std::string finalPath;				
 				
 			public:
 				friend InstakubSettings;

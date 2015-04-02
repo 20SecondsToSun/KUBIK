@@ -97,7 +97,7 @@ namespace kubik
 
 			ConfigObject mainConfigObj;
 
-			std::string userDesignPath;
+			std::string userDesignPath, templateDesignPath;
 
 		public:
 			ConfigSettings(ApplicationModelRef model):ISettings(model), memento(false)
@@ -247,13 +247,28 @@ namespace kubik
 				{
 					JsonTree pathJSON  = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
 					designPath		   = pathJSON.getChild("designPath").getValue<string>();
-					userDesignPath	   = pathJSON.getChild("userDesignPath").getValue<string>();
+					userDesignPath	= pathJSON.getChild("userDesignPath").getValue<string>();
+					templateDesignPath = pathJSON.getChild("templateDesignPath").getValue<string>();
+					
 					//screenSaverPath	   = pathJSON.getChild("screenSaverPath").getValue<string>();
 				}
 				catch(...)
 				{
 					throw ExcConfigFileParsing();
 				}
+			}
+
+			std::string getInterfaceDesign()
+			{
+				return designPath;
+			}
+
+			std::string getTemplateDesign()
+			{
+				if (data.activeDesign == data.userDesignID)				
+					return userDesignPath + to_string(data.activeDesign) + "\\";
+
+				return templateDesignPath + to_string(data.activeDesign) + "\\";
 			}
 
 			void loadConsts()

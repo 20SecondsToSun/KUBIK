@@ -3,8 +3,9 @@
 using namespace kubik;
 using namespace kubik::config;
 
-InstakubSettings::InstakubSettings(ApplicationModelRef model)
+InstakubSettings::InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
 	:ISettings(model),
+	configSettings(configSettings),
 	memento(false)
 {
 
@@ -13,21 +14,34 @@ InstakubSettings::InstakubSettings(ApplicationModelRef model)
 void InstakubSettings::load()
 {
 	mainConfigObj = model->getConfigObject(settings::id::INSTAKUB);
+	try
+	{
+		loadPaths();
+		loadParams();
+		loadLabels();
+		//loadConsts();	
+		//parsePhotoOverDesigns();
+		parsePhotoCardStyles();
+		//parsePhotoFiltersPreview();
 
-	loadConfigPaths();
-	loadParams();
-	loadLabels();
-
-	parsePhotoCardStyles();
+	}
+	catch (...)
+	{
+		throw ExcConfigFileParsing();
+	}
 
 	setTextures();
 }
 
-void InstakubSettings::loadConfigPaths()
+void InstakubSettings::loadPaths()
 {
 	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
 	configPaths.photoCardsStylesDesignDataPath = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
 	configPaths.userPhotoCardStylePath = getBasePath().string() + pathJSON.getChild("userPhotoCardStylePath").getValue<string>();
+	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();
+
+	staticDesignPath  = pathJSON.getChild("interfacePath").getValue<string>();
+	
 }
 
 void InstakubSettings::loadParams()
@@ -67,6 +81,11 @@ void InstakubSettings::loadLabels()
 	}
 }
 
+void InstakubSettings::setDesignPath()
+{
+	templateDesignPath = configSettings->getTemplateDesign() + configPaths.finalPath;
+}
+
 void InstakubSettings::parsePhotoCardStyles()
 {
 	JsonTree designDataJSON = JsonTree(loadFile(getBasePath().string() + configPaths.photoCardsStylesDesignDataPath));
@@ -91,13 +110,26 @@ void InstakubSettings::parsePhotoCardStyles()
 
 void InstakubSettings::setTextures()
 {
+	setDesignPath();
+	clearResources();
+
 	addToDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
 	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
+
+
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
 	addToDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
 	addToDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
+
+	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.png")));
+	addToDictionary("hashtagTitle", createImageResource(getTemplateDesignPath("hashtagTitle.png")));
+	addToDictionary("hashtagPlashka", createImageResource(getTemplateDesignPath("hashtagPlashka.png")));
+	addToDictionary("hashtagPlashkaText", createImageResource(getTemplateDesignPath("hashtagPlashkaText.png")));
+	addToDictionary("searchTitle", createImageResource(getTemplateDesignPath("searchTitle.png")));
+	addToDictionary("searchField", createImageResource(getTemplateDesignPath("searchField.png")));
 
 	for (auto item : photoCardStyles)
 		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
@@ -107,15 +139,13 @@ void InstakubSettings::buildData()
 {
 	auto dic = configTexts.getDic();
 
-	for (auto it = dic.begin(); it != dic.end(); ++it)
-	{
-		it->second.setFont(fonts);
-	}
+	for (auto &it : dic)	
+		it.second.setFont(fonts);	
 
-	for (auto it = photoCardStyles.begin(); it != photoCardStyles.end(); ++it)
+	for (auto &it : photoCardStyles)
 	{
-		it->setIcon(getTexture(it->getIconTexName()));
-		it->setFont(fonts);
+		it.setIcon(getTexture(it.getIconTexName()));
+		it.setFont(fonts);
 	}
 
 	configTexts.setDic(dic);
@@ -136,12 +166,12 @@ void InstakubSettings::setSearchFlag(bool value)
 	search = value;
 }
 
-std::string InstakubSettings::getHashtag() const
+string InstakubSettings::getHashtag() const
 {
 	return hashtag;
 }
 
-void InstakubSettings::setHashtag(const std::string& value)
+void InstakubSettings::setHashtag(const string& value)
 {
 	hashtag = value;
 }
@@ -166,7 +196,7 @@ int InstakubSettings::getUserPhotoCardStyleDesignID() const
 	return userPhotoCardStyleDesignID;
 }
 
-std::string InstakubSettings::getUserPhotoCardStylePath() const
+string InstakubSettings::getUserPhotoCardStylePath() const
 {
 	return configPaths.userPhotoCardStylePath;
 }
@@ -210,3 +240,13 @@ changeSetting::id InstakubSettings::getChangeID() const
 {
 	return changeSetting::id::INSTAKUB;
 };
+
+bool InstakubSettings::hashtagEnabled()
+{
+	return hashtag != "";
+}
+
+bool InstakubSettings::searchEnabled()
+{
+	return search;
+}

@@ -102,6 +102,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY  - againBtn->getHeight()  * 0.5f));
 	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
+
+	popup = emailpopup;
 }
 
 void PhotoSharing::start()
@@ -228,7 +230,7 @@ void PhotoSharing::stop()
 	stopAllTweens();
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
-	clearDelaycall();
+	clearDelaycall();	
 	popup->disconnectEventHandler(Popup::POPUP_CLOSED);
 	popup->kill();
 }

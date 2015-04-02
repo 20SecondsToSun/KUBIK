@@ -340,6 +340,7 @@ void MainConfig::gamesBlockEventsHandler(EventGUIRef& event)
 		auto url = gameSettings->getGameStatisticURL(eventref->getGameId());
 		fileTools().openURL(url);
 		console() << "show statistic game url------------------ " << url << endl;
+		
 	}
 	else if (typeid(*ev) == typeid(GameCheckerEvent))
 	{
@@ -357,7 +358,6 @@ void MainConfig::gamesBlockEventsHandler(EventGUIRef& event)
 
 void MainConfig::changeActiveGameState(GameCheckerEventRef eventref)
 {
-	//console() << "gameSettings->getGameActiveCount()------------------- " << gameSettings->getGameActiveCount() << endl;
 	if (gameSettings->getGameActiveCount() == 1)		
 	{	
 		if(eventref->getValue() == 0)
@@ -366,7 +366,7 @@ void MainConfig::changeActiveGameState(GameCheckerEventRef eventref)
 		{
 			gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
 			gamesBlock->unFreezeChecker();
-		}//		
+		}	
 	}
 	else	
 		gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());	
@@ -436,7 +436,6 @@ void MainConfig::hideAnimate(GameId id, ci::EaseFn eFunc, float time)
 	timeline().apply(&alpha, 0.0f, time, eFunc)
 		.updateFn(bind(&MainConfig::alphAnimationUpdate, this))
 		.finishFn(bind(&MainConfig::hideAnimationFinish, this));
-
 
 	Texture icon = gameSettings->getData().getPurchasedGameInfo(id).getIcons().activeIcon;
 	logo->animateToMiniState(icon, eFunc, time);

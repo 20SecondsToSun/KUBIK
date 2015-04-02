@@ -60,7 +60,7 @@ void ApplicationModel::parseConfigPaths()
 
 void ApplicationModel::parseUserData()
 {
-	JsonTree userInfoJSON	= JsonTree(loadFile(getUserDataPath()));
+	JsonTree userInfoJSON = JsonTree(loadFile(getUserDataPath()));
 
 	_userDataPath = JsonTree(userInfoJSON.getChild("userData")).getValue<string>();
 	JsonTree userDataJSON = JsonTree(loadFile(getFullPath(_userDataPath)));
@@ -71,15 +71,14 @@ void ApplicationModel::parseUserData()
 	netConnection = userDataJSON.getChild("netConnection").getValue<bool>();
 	defaultGameID = (GameId)userDataJSON.getChild("defaultGameID").getValue<int>();
 
-
 	auto gamesAvailablePath = JsonTree(userInfoJSON.getChild("gamesAvailable")).getValue<string>();
-	gamesPurchasedPath		= JsonTree(userInfoJSON.getChild("gamesPurchasedPath")).getValue<string>();
-	gamesTurnOnPath			= JsonTree(userInfoJSON.getChild("gamesTurnOnPath")).getValue<string>();	
+	gamesPurchasedPath = JsonTree(userInfoJSON.getChild("gamesPurchasedPath")).getValue<string>();
+	gamesTurnOnPath = JsonTree(userInfoJSON.getChild("gamesTurnOnPath")).getValue<string>();
 
 	JsonTree gamesPurchased = JsonTree(loadFile(getFullPath(gamesPurchasedPath))).getChild("data");
-	JsonTree gamesTurnOn	= JsonTree(loadFile(getFullPath(gamesTurnOnPath))).getChild("data");
+	JsonTree gamesTurnOn = JsonTree(loadFile(getFullPath(gamesTurnOnPath))).getChild("data");
 	JsonTree gamesAvailable = JsonTree(loadFile(getFullPath(gamesAvailablePath))).getChild("data");
-	
+
 	vector<int> purchasedGames, turnOnGames;
 	for (auto it : gamesPurchased)
 		purchasedGames.push_back(it.getChild("id").getValue<int>());
@@ -96,13 +95,10 @@ void ApplicationModel::parseUserData()
 		game.isOn = findGameId(game.id, turnOnGames);
 		game.isPurchased = findGameId(game.id, purchasedGames);
 		game.name = it.getChild("name").getValue<string>();
-
 		game.setTexture(loadImage(getFullPath(iconUrl + it.getChild("icon").getValue<string>())));
-
 		game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
 		game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
 		game.setMiniIcon(loadImage(getFullPath(iconUrl + it.getChild("miniIcon").getValue<string>())));
-		
 		games.push_back(game);
 	}
 }
@@ -156,7 +152,7 @@ void ApplicationModel::writeGamesData(const std::vector<GamesInfo>& games)
 			JsonTree id;
 			id.addChild(JsonTree("id", it.id));
 			gamesTurnOn.pushBack(id);
-		}		
+		}
 	}
 
 	doc.addChild(gamesTurnOn);
@@ -172,7 +168,7 @@ void ApplicationModel::saveUserData()
 	doc.addChild(JsonTree("lang", lang));
 	doc.addChild(JsonTree("standID", standID));
 	doc.addChild(JsonTree("netConnection", netConnection));
-	doc.addChild(JsonTree("defaultGameID", defaultGameID));	
+	doc.addChild(JsonTree("defaultGameID", defaultGameID));
 	doc.write(writeFile(basePath), JsonTree::WriteOptions());
 }
 
@@ -217,7 +213,7 @@ bool ApplicationModel::onlyOneGameOn()
 	for (auto it : games)
 		if (it.isOn && ++counter > 1)
 			return false;
-	
+
 	return true;
 }
 
@@ -230,9 +226,9 @@ GameId ApplicationModel::onlyOneGameOnID()
 			console() << "----------------------------id::::::::::::::::::   " << it.id << endl;
 			return it.id;
 		}
-		//	return it.id;
+	//	return it.id;
 
-	
+
 	return GameId::INSTAKUB;
 	//return 0;
 }
@@ -261,16 +257,13 @@ void ApplicationModel::setScreenSaverPath(const string& path)
 
 const ConfigObject& ApplicationModel::getConfigObject(settings::id id)
 {
-	if (id == settings::id::PHOTOBOOTH)
+	switch (id)
 	{
+	case settings::id::PHOTOBOOTH:
 		return photoboothConfigObject;
-	}
-	else if (id == settings::id::INSTAKUB)
-	{
+	case settings::id::INSTAKUB:
 		return instakubConfigObject;
-	}
-	else if (id == settings::id::MAINCONFIG)
-	{
+	case settings::id::MAINCONFIG:
 		return mainConfigObject;
 	}
 }

@@ -28,11 +28,9 @@ int GameSettings::GamesDataStruct::getCountSwitchOnGames()
 {
 	int count = 0;
 
-	for (auto game : games)
-	{
+	for (auto game : games)	
 		if (game.isOn)
-			count++;
-	}
+			count++;	
 
 	return count;
 }
@@ -85,7 +83,8 @@ GamesInfo GameSettings::GamesDataStruct::getPurchasedGameInfo(const GameId& id)
 	return null;
 }
 
-GameSettings::GameSettings(ApplicationModelRef model) : ISettings(model), memento(false)
+GameSettings::GameSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
+	: ISettings(model), memento(false), configSettings(configSettings)
 {
 	currentGame = model->getDefaultGameID();
 	data.games = model->getGames();
@@ -104,9 +103,13 @@ IResourceDictionary GameSettings::getActiveGameResources()
 
 IResourceDictionary GameSettings::getGameTexturesById(const GameId& id)
 {
-	console() << "id:::::::::::::::::::  " << id << endl;
-	IResourceDictionary rd = gameSettingsMap[id]->getResources();
-	return rd;
+	return  gameSettingsMap[id]->getResources();
+}
+
+IResourceDictionary GameSettings::getActiveGameTextures()
+{
+	auto id = getActiveGameID();
+	return  gameSettingsMap[id]->getResources();
 }
 
 void GameSettings::createMemento()
@@ -146,30 +149,29 @@ changeSetting::id GameSettings::getChangeID() const
 
 void GameSettings::setTextures()
 {
+	//gameSettingsMap[currentGame]->lo
 	gameSettingsMap[currentGame]->setTextures();
 }
 
 void GameSettings::load()
 {
 	std::vector<GamesInfo> games = model->getGames();
+	bool error = false;
 
 	for (auto game : games)
-	{
-		//if (!game.isPurchased)
-		//	continue;
-
+	{	
 		switch (game.id)
 		{
 		case  GameId::PHOTOBOOTH:
-			gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model));
+			gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model, configSettings));
 			break;
 
 		case  GameId::FUNCES:
-			gameSettingsMap[game.id] = FuncesSettingsRef(new FuncesSettings(model));
+			gameSettingsMap[game.id] = FuncesSettingsRef(new FuncesSettings(model, configSettings));
 			break;
 
 		case  GameId::INSTAKUB:
-			gameSettingsMap[game.id] = InstakubSettingsRef(new InstakubSettings(model));
+			gameSettingsMap[game.id] = InstakubSettingsRef(new InstakubSettings(model, configSettings));
 			break;
 
 		default:
@@ -182,13 +184,28 @@ void GameSettings::load()
 		}
 		catch (...)
 		{
-			throw ExcConfigFileParsing();
+			error = true;
+			//throw ExcConfigFileParsing();
 		}
 	}
+
+	if (error)
+		throw ExcConfigFileParsing();
 }
 
 void GameSettings::buildData()
 {
+	//auto id = getActiveGameID();
+
+	//try
+	//{
+	//	gameSettingsMap[id]->buildData();
+	//}
+	//catch (...)
+	//{
+	//	throw ExcConfigFileParsing();
+	//}
+
 	std::vector<GamesInfo> games = model->getGames();
 	for (auto game : games)
 	{
