@@ -81,11 +81,9 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
 	//graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
-	console() << "set  PHOTOBOOTH" << endl;
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));
 	//graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::FUNCES));	
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));
-	console() << "set  INSTAKUB" << endl;
 	graphicsLoader->load();
 }
 

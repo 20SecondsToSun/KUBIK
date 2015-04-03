@@ -65,6 +65,7 @@ void Instakub::showAnimationComplete()
 void Instakub::stop()
 {
 	console() << "STOP Instakub!!!" << endl;
+	view->stop();
 }
 
 void Instakub::reset()

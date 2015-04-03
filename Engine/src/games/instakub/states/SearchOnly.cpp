@@ -6,8 +6,13 @@ using namespace kubik::games::instakub;
 
 SearchOnly::SearchOnly(InstakubSettingsRef settings) :InstakubLocation(settings)
 {	
-	instagramView->setYPosition(518.0f);
+	instagramView->setPosition(10.0f, 518.0f);
 	reset();
+}
+
+void SearchOnly::start()
+{
+	instagramView->load();
 }
 
 void SearchOnly::reset()

@@ -29,6 +29,8 @@ namespace kubik
 			virtual void setTextures();
 			virtual void buildData();
 
+			ci::gl::Texture getCurrentTemplate();
+
 			void loadPaths();
 			void loadParams();
 			void loadLabels();
@@ -57,8 +59,7 @@ namespace kubik
 			changeSetting::id getChangeID() const;
 
 			bool hashtagEnabled();
-			bool searchEnabled();
-			
+			bool searchEnabled();			
 
 		private:
 			bool memento;

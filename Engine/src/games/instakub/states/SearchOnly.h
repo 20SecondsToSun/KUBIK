@@ -18,7 +18,7 @@ namespace kubik
 			public:
 				SearchOnly(InstakubSettingsRef settings);
 
-				virtual void start(){};
+				virtual void start();
 				virtual void draw();
 				virtual void reset();
 				virtual void stop(){};

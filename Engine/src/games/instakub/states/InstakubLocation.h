@@ -16,8 +16,8 @@ namespace kubik
 			class InstakubLocation : public Sprite
 			{
 			protected:
-				ci::gl::Texture bg;
-				ci::gl::Texture title;
+				static ci::gl::Texture bg;
+				ci::gl::Texture title, overMask;
 				ci::Vec2f titlePosition, searchFieldPosition;
 
 				static InstagramViewRef instagramView;
@@ -27,7 +27,7 @@ namespace kubik
 				virtual void start() = 0;
 				virtual void draw();
 				virtual void stop() = 0;
-				virtual void reset(){};
+				virtual void reset();
 			
 				void fillBg();
 				void drawTitle();

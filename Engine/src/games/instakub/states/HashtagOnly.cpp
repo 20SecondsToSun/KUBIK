@@ -9,7 +9,7 @@ HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
 	hashtagPlashka(settings->getTexture("hashtagPlashka")),
 	hashtagPlashkaText(settings->getTexture("hashtagPlashkaText"))
 {
-	instagramView->setYPosition(332.0f);
+	instagramView->setPosition(10.0f, 332.0f);
 	reset();
 }
 
@@ -22,6 +22,7 @@ void HashtagOnly::reset()
 void HashtagOnly::start()
 {
 	hashTagTexture = textTools().getTextField(settings->getHashtag(), &settings->getFont("introLight90"), Color::hex(0xaa9b74));
+	instagramView->load();
 }
 
 void HashtagOnly::draw()

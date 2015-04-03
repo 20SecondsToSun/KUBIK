@@ -8,7 +8,9 @@
 		  "size" : 24,
 		  "color" : "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design1.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design1.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
+
       },
 {
          "id" : 2,
@@ -17,7 +19,8 @@
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design2.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design2.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
       },
 {
          "id" : 3,
@@ -26,7 +29,8 @@
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design3.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design3.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
       },
 {
          "id" : 4,
@@ -35,7 +39,8 @@
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design4.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design4.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
       },
 {
          "id" : 5,
@@ -44,7 +49,8 @@
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design5.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design5.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
       },
 {
          "id" : 6,
@@ -53,6 +59,7 @@
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
-	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design6.png"
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\design6.png",
+ "designPath" :"user_design\\design_elements\\gameDesign\\instakub\\photoCardStyles\\design1.png"
       }]      
 }

@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -220,6 +220,10 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
     <ClCompile Include="..\src\services\social\Facebook.cpp" />
+    <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp" />
+    <ClCompile Include="..\src\services\social\instagram\InstagramClient.cpp" />
+    <ClCompile Include="..\src\services\social\instagram\InstagramViewer.cpp" />
+    <ClCompile Include="..\src\services\social\instagram\InstaPopup.cpp" />
     <ClCompile Include="..\src\services\social\Social.cpp" />
     <ClCompile Include="..\src\services\social\SocShare.cpp" />
     <ClCompile Include="..\src\services\social\Vkontakte.cpp" />
@@ -401,6 +405,19 @@
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
     <ClInclude Include="..\src\services\social\Facebook.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\ImagesList.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\InstagramMedia.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\InstagramResponse.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\InstBaseObject.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\MetaData.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\Pagination.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\Tag.h" />
+    <ClInclude Include="..\src\services\social\instagram\api\User.h" />
+    <ClInclude Include="..\src\services\social\instagram\ImageGraphic.h" />
+    <ClInclude Include="..\src\services\social\instagram\InstagramClient.h" />
+    <ClInclude Include="..\src\services\social\instagram\InstagramViewer.h" />
+    <ClInclude Include="..\src\services\social\instagram\InstaPopup.h" />
     <ClInclude Include="..\src\services\social\Social.h" />
     <ClInclude Include="..\src\services\social\SocShare.h" />
     <ClInclude Include="..\src\services\social\Vkontakte.h" />

@@ -89,6 +89,11 @@ namespace kubik
 			}		
 		}
 
+		void setDesignTexture(const ci::gl::Texture& designTexture)
+		{
+			designData.push_back(designTexture);
+		}
+
 		ci::gl::Texture sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
 		{
 			gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());

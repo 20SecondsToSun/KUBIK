@@ -96,6 +96,7 @@ void InstakubSettings::parsePhotoCardStyles()
 		OneDesignItem item;
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
+		item.setDesignPath(it.getChild("designPath").getValue<string>());
 		item.setIconTexName("instaElement" + item.getID());
 		JsonTree text = it.getChild("textObj");
 
@@ -131,8 +132,22 @@ void InstakubSettings::setTextures()
 	addToDictionary("searchTitle", createImageResource(getTemplateDesignPath("searchTitle.png")));
 	addToDictionary("searchField", createImageResource(getTemplateDesignPath("searchField.png")));
 
+	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
+	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));	
+
 	for (auto item : photoCardStyles)
+	{
 		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
+	}		
+}
+
+ci::gl::Texture InstakubSettings::getCurrentTemplate()
+{
+	auto iter = photoCardStyles.begin();
+	std::advance(iter, activePhotoCardStyleDesignID - 1);
+
+	return iter->getMappedTextures()[0];
 }
 
 void InstakubSettings::buildData()
@@ -144,6 +159,8 @@ void InstakubSettings::buildData()
 
 	for (auto &it : photoCardStyles)
 	{
+		auto tex = getTexture(it.getDesignTexName());
+		it.setDesignTexture(tex);
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fonts);
 	}

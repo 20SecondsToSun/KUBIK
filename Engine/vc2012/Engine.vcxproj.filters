@@ -235,6 +235,12 @@
     <Filter Include="Source Files\games\instakub\states">
       <UniqueIdentifier>{88909fd5-42b1-41fc-a994-acb29c81dcfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\services\social\instagram">
+      <UniqueIdentifier>{995fc214-accb-462c-8c3a-0b443e0436f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\services\social\instagram\api">
+      <UniqueIdentifier>{15e7bcf8-fe5e-456e-8c78-329e39845db8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -590,6 +596,18 @@
     </ClCompile>
     <ClCompile Include="..\src\games\instakub\states\InstagramView.cpp">
       <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\instagram\InstagramClient.cpp">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\instagram\InstagramViewer.cpp">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\social\instagram\InstaPopup.cpp">
+      <Filter>Source Files\services\social\instagram</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1153,6 +1171,48 @@
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\InstagramView.h">
       <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\ImagesList.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\InstagramMedia.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\InstagramResponse.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\InstBaseObject.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\MetaData.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\Pagination.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\Tag.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\api\User.h">
+      <Filter>Source Files\services\social\instagram\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\InstagramClient.h">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\InstagramViewer.h">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\InstaPopup.h">
+      <Filter>Source Files\services\social\instagram</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\social\instagram\ImageGraphic.h">
+      <Filter>Source Files\services\social\instagram</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
