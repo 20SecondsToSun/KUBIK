@@ -7,7 +7,7 @@ using namespace instagram;
 using namespace mndl::curl;
 
 InstagramClient::InstagramClient(const string& clientID)
-	:clientID(clientID), _loading(false), _needSynch(false)
+	:clientID(clientID), _loading(false), _needSynch(false), _noMore(false)
 {
 
 }
@@ -54,7 +54,15 @@ void InstagramClient::loadNextMedia()
 
 void InstagramClient::_loadNextMedia()
 {
-	loadMediaRequest(lastMediaResponse.getPagination().getNextURL());
+	if(lastMediaResponse.getPagination().hasNextURL())
+		loadMediaRequest(lastMediaResponse.getPagination().getNextURL());
+	else
+	{
+		console() << "no more::::::::::::::  " << endl;
+		_needSynch = false;
+		_loading = false;
+		_noMore = true;
+	}
 }
 
 void InstagramClient::loadMediaRequest(const string& request)
@@ -68,18 +76,26 @@ void InstagramClient::loadMediaRequest(const string& request)
 }
 
 void InstagramClient::setupLoadThread()
-{
-	startLoadEvent();
+{	
 	_loading = true;
 	updateCon = App::get()->getSignalUpdate().connect(std::bind(&InstagramClient::update, this));
+	startLoadEvent();
 }
 
 void InstagramClient::update()
 {
-	if (!_loading && _needSynch)
+	if (!_loading)
 	{
-		updateCon.disconnect();
-		synchEvent();
+		if (_needSynch)
+		{
+			updateCon.disconnect();
+			synchEvent();
+		}
+		else if (_noMore)
+		{
+			updateCon.disconnect();
+			noMoreEvent();
+		}	
 	}
 }
 
@@ -111,7 +127,7 @@ std::vector<ImageGraphic> InstagramClient::getImages() const
 
 bool InstagramClient::canLoad() const
 {
-	return _loading || !_needSynch;
+	return !_loading && !_needSynch;
 }
 
 void InstagramClient::loadImages()
@@ -131,7 +147,6 @@ void InstagramClient::loadImages()
 		synchImages.push_back(imageGr);
 	}
 }
-
 
 void InstagramClient::killLoad()
 {

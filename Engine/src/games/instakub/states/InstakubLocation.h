@@ -32,29 +32,31 @@ namespace kubik
 				static bool init;
 
 			public:
-				InstakubLocation(InstakubSettingsRef settings);
+				InstakubLocation(InstakubSettingsRef settings, const ci::Vec2f& position);
 				virtual void start() = 0;
 				virtual void draw();
 				virtual void stop() = 0;
+				virtual void load() = 0;
 				virtual void reset();
+				void initOverMask();
 			
 				void fillBg();
-				void drawTitle();
-				void setPosition(float x, float y);
-				void load();
+				virtual void drawTitle();
+				void initPosition();			
+				void hashTagOnlyload(const string& hashtag);
 				void clear();
 				void drawPopup();
 
 			protected:
 				InstakubSettingsRef settings;
 
-			private:		
-
+			private:	
 				static InstagramClientRef instClient;
 				static InstagramViewerRef instaViewer;
 				static InstaPopupRef instaPopup;
 
 				float yPosition;
+				ci::Vec2f position;
 
 				void touchedHandler();
 				void closePopupHandler();
@@ -63,6 +65,7 @@ namespace kubik
 
 				void synchHandler();
 				void startLoadHandler();
+				void noMoreHandler();				
 			};
 		}
 	}

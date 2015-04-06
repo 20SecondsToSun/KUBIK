@@ -31,7 +31,7 @@ namespace kubik
 		static const int HIDE_CONTROLS = 4;		
 
 		virtual ~IGame(){};
-		virtual void draw() = 0;		
+		virtual void draw(){};
 		virtual void start() = 0;
 		virtual void update() = 0;
 		virtual void clean(){};

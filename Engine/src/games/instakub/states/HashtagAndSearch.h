@@ -19,6 +19,7 @@ namespace kubik
 				HashtagAndSearch(InstakubSettingsRef settings);
 
 				virtual void start();
+				virtual void load();
 				virtual void draw();
 				virtual void reset();
 				virtual void stop();		

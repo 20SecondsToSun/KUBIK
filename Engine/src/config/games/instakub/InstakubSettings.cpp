@@ -133,8 +133,13 @@ void InstakubSettings::setTextures()
 	addToDictionary("searchField", createImageResource(getTemplateDesignPath("searchField.png")));
 
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
-	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));	
+	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));
 
+	addToDictionary("preloaderMain", createImageResource(getTemplateDesignPath("preloaderMain.png")));
+	addToDictionary("preloaderMini", createImageResource(getTemplateDesignPath("preloaderMini.png")));
+	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
+	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
+	
 	for (auto item : photoCardStyles)
 	{
 		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));

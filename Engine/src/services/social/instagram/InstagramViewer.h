@@ -9,14 +9,41 @@ namespace instagram
 	{
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
+		ci::gl::Texture preloaderMain;
+		ci::gl::Texture preloaderMini;
+		ci::gl::Texture noMaterials;
+		ci::gl::Texture allLoaded;
+
+		enum drawState{ IMAGES_DRAWING,
+			PRELOADING, 
+			MINI_PRELOADING,
+			SHOW_NO_MORE_POPUP,
+			NO_MATERIALS } state;
+
+		void drawImages();
+		void drawMainPreloader();
+		void drawMiniPreloader();
+		void drawNoMorePopup();
+		void drawNoMaterialsPopup();		
+		void loadNextMedia();
+		void noMorePopupAnimFinished();	
+
+		ci::Anim<float> noMorePopupAlpha;
+
 	public:	
-		InstagramViewer(InstagramClientRef client);
+		InstagramViewer(InstagramClientRef client,
+			const ci::gl::Texture& preloaderMain,
+			const ci::gl::Texture& preloaderMini,
+			const ci::gl::Texture& noMaterials,
+			const ci::gl::Texture& allLoaded);
 
 		void connect();
 		void disconnect();
+		void showPreloader();		
 		void setPosition(float x, float y);
 
 		void synchImages();
+		void showNoMoreImagesMsg();
 		void draw();
 		void mouseDown(ci::app::MouseEvent event);
 		void mouseUp(ci::app::MouseEvent event);

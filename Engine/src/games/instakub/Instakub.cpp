@@ -63,6 +63,7 @@ void Instakub::start()
 void Instakub::showAnimationComplete()
 {
 	state = DRAW;
+	view->load();
 }
 
 void Instakub::stop()

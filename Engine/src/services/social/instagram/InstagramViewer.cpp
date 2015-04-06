@@ -5,8 +5,16 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-InstagramViewer::InstagramViewer(InstagramClientRef client)
+InstagramViewer::InstagramViewer(InstagramClientRef client, 
+	const gl::Texture& preloaderMain,
+	const gl::Texture& preloaderMini,
+	const gl::Texture& noMaterials,
+	const gl::Texture& allLoaded)
 	:client(client),
+	preloaderMain(preloaderMain),
+	preloaderMini(preloaderMini),
+	noMaterials(noMaterials),
+	allLoaded(allLoaded),
 	currentPos(Vec2f::zero()),
 	futureCurrentPos(Vec2f::zero()),
 	blockDrag(false),
@@ -32,7 +40,7 @@ void InstagramViewer::connect()
 	mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&InstagramViewer::mouseDown, this, std::placeholders::_1));
 	mouseUpCon	 = getWindow()->getSignalMouseUp().connect(std::bind(&InstagramViewer::mouseUp, this, std::placeholders::_1));
 	mouseDragCon = getWindow()->getSignalMouseDrag().connect(std::bind(&InstagramViewer::mouseDrag, this, std::placeholders::_1));
-	connected	 = true;
+	connected	 = true;	
 }
 
 void InstagramViewer::disconnect()
@@ -43,6 +51,11 @@ void InstagramViewer::disconnect()
 	mouseDragCon.disconnect();
 	mouseUpCon.disconnect();
 	connected = false;
+}
+
+void InstagramViewer::showPreloader()
+{
+	state = PRELOADING;
 }
 
 void InstagramViewer::setPosition(float x, float y)
@@ -60,9 +73,59 @@ void InstagramViewer::synchImages()
 	if (images.size() % countInRaw != 0) plus = 1;
 
 	mainHeight = (images.size() / countInRaw + plus) * (oneImageWidth + sdvigX);
+
+	if (!images.empty())	
+		state = IMAGES_DRAWING;	
+	else
+		state = NO_MATERIALS;
+}
+
+void InstagramViewer::showNoMoreImagesMsg()
+{
+	if (state == SHOW_NO_MORE_POPUP)
+		return;
+	
+	state = SHOW_NO_MORE_POPUP;
+
+	noMorePopupAlpha = 1.0f;
+	timeline().apply(&noMorePopupAlpha, 1.0f, 0.0f, 0.8f, animFunc)
+		.finishFn(bind(&InstagramViewer::noMorePopupAnimFinished, this)).delay(0.5);
+}
+
+void InstagramViewer::noMorePopupAnimFinished()
+{
+	state = IMAGES_DRAWING;
 }
 
 void InstagramViewer::draw()
+{
+	switch (state)
+	{
+	case IMAGES_DRAWING:
+		drawImages();
+		break;
+
+	case PRELOADING:
+		drawMainPreloader();
+		break;
+
+	case MINI_PRELOADING:
+		drawImages();
+		drawMiniPreloader();
+		break;	
+
+	case SHOW_NO_MORE_POPUP:
+		drawImages();
+		drawNoMorePopup();
+		break;
+
+	case NO_MATERIALS:		
+		drawNoMaterialsPopup();
+		break;
+	}	
+}
+
+void InstagramViewer::drawImages()
 {
 	gl::pushMatrices();
 	gl::translate(currentPos.value());
@@ -79,9 +142,47 @@ void InstagramViewer::draw()
 	gl::popMatrices();
 }
 
+void InstagramViewer::drawMainPreloader()
+{
+	gl::pushMatrices();
+	gl::translate(initPosition);
+	gl::translate((getWindowWidth() - preloaderMain.getWidth())*0.5f, 100);
+	gl::draw(preloaderMain);
+	gl::popMatrices();
+}
+
+void InstagramViewer::drawMiniPreloader()
+{
+	gl::pushMatrices();
+	gl::translate(currentPos.value());
+	gl::translate(initPosition);
+	gl::translate((getWindowWidth() - preloaderMini.getWidth())*0.5f, mainHeight);
+	gl::draw(preloaderMini);
+	gl::popMatrices();
+}
+
+void InstagramViewer::drawNoMorePopup()
+{
+	gl::pushMatrices();
+	gl::translate(initPosition);
+	gl::translate((getWindowWidth() - allLoaded.getWidth()) * 0.5f, 100);
+	gl::color(ColorA(1, 1, 1, noMorePopupAlpha));
+	gl::draw(allLoaded);
+	gl::popMatrices();
+}
+
+void InstagramViewer::drawNoMaterialsPopup()
+{
+	gl::pushMatrices();
+	gl::translate(initPosition);
+	gl::translate((getWindowWidth() - noMaterials.getWidth()) * 0.5f, 100);	
+	gl::draw(noMaterials);
+	gl::popMatrices();
+}
+
 void InstagramViewer::mouseDown(MouseEvent event)
 {
-	if (event.getPos().y < initPosition.y) return;
+	if (event.getPos().y < initPosition.y || images.empty()) return;
 	currentMousePos = event.getPos();
 	wasDrag = false;
 	downSecond = getElapsedSeconds();
@@ -89,6 +190,9 @@ void InstagramViewer::mouseDown(MouseEvent event)
 
 void InstagramViewer::mouseUp(MouseEvent event)
 {
+	if (images.empty())
+		return;
+
 	int bottomCorner = futureCurrentPos.y + mainHeight;
 
 	if (futureCurrentPos.y > 0)
@@ -112,7 +216,7 @@ void InstagramViewer::mouseUp(MouseEvent event)
 
 void InstagramViewer::mouseDrag(MouseEvent event)
 {
-	if (event.getPos().y < initPosition.y) return;
+	if (event.getPos().y < initPosition.y || images.empty()) return;
 
 	wasDrag = true;
 
@@ -133,7 +237,7 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.y);
 		blockDrag = true;
 
-		client->loadNextMedia();
+		loadNextMedia();		
 	}
 
 	timeline().apply(&currentPos, futureCurrentPos, animTime, animFunc)
@@ -142,13 +246,19 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	currentMousePos = event.getPos();
 }
 
+void InstagramViewer::loadNextMedia()
+{
+	client->loadNextMedia();
+	state = MINI_PRELOADING;
+}
+
 void InstagramViewer::getTouchedImage(const Vec2f& pos)
 {
 	int xCoord = (int)(pos.x / (oneImageWidth + sdvigX));
 	int yCoord = (int)((pos.y - currentPos.value().y - initPosition.y) / (oneImageHeight + sdvigY));
 	lastImageIndexTouched = yCoord * countInRaw + xCoord;
 
-	if (lastImageIndexTouched < images.size())
+	if (!images.empty() && lastImageIndexTouched < images.size())
 		touchedEvent();
 }
 

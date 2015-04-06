@@ -13,11 +13,13 @@ namespace kubik
 			class HashtagOnly : public InstakubLocation
 			{	
 				ci::gl::Texture hashtagPlashka, hashtagPlashkaText, hashTagTexture;
+				ci::Vec2f hashtagPlashkaPos, hashTagTexturePos, hashtagPlashkaTextPos;
 			public:
 				HashtagOnly(InstakubSettingsRef settings);
+				virtual void load();
 				virtual void start();
 				virtual void reset();
-				virtual void draw();
+				virtual void draw() override;
 				virtual void stop();
 			};
 		}

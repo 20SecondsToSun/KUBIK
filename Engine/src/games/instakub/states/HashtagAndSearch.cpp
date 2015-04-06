@@ -4,13 +4,17 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings) :InstakubLocation(settings)
-{
-	setPosition(18.0f, 518.0f);
+HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings) :InstakubLocation(settings, Vec2f(18.0f, 518.0f))
+{	
 	reset();
 }
 
 void HashtagAndSearch::start()
+{
+	
+}
+
+void HashtagAndSearch::load()
 {
 	InstakubLocation::start();
 	InstakubLocation::load();
@@ -24,7 +28,8 @@ void HashtagAndSearch::stop()
 void HashtagAndSearch::reset()
 {
 	InstakubLocation::reset();
-	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), 518), [&](){gl::draw(bg); });
+	InstakubLocation::initOverMask();
+
 	title = settings->getTexture("searchTitle");
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight() * 0.5f);
 	searchField = settings->getTexture("searchField");

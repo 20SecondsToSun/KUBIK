@@ -4,13 +4,17 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-SearchOnly::SearchOnly(InstakubSettingsRef settings) :InstakubLocation(settings)
+SearchOnly::SearchOnly(InstakubSettingsRef settings) :InstakubLocation(settings, Vec2f(18.0f, 518.0f))
 {	
-	setPosition(10.0f, 518.0f);
 	reset();
 }
 
 void SearchOnly::start()
+{
+	InstakubLocation::initPosition();	
+}
+
+void SearchOnly::load()
 {
 	InstakubLocation::start();
 	InstakubLocation::load();
@@ -23,6 +27,9 @@ void SearchOnly::stop()
 
 void SearchOnly::reset()
 {
+	InstakubLocation::reset();
+	InstakubLocation::initOverMask();
+
 	title = settings->getTexture("searchTitle");
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight() * 0.5f);
 	searchField = settings->getTexture("searchField");

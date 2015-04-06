@@ -13,16 +13,25 @@ InstaPopupRef InstakubLocation::instaPopup;
 
 gl::Texture InstakubLocation::bg;
 
-InstakubLocation::InstakubLocation(InstakubSettingsRef settings)
+InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)
 	:settings(settings) , yPosition(0.0f)
 {
+	this->position = position;
+
 	if (init)
 		return;	
 
 	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
 	string clientID = "6ac8af15a5d341e9802c8d1a26899ae3";
 	instClient = InstagramClientRef(new InstagramClient(clientID));
-	instaViewer = InstagramViewerRef(new InstagramViewer(instClient));
+
+	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
+		settings->getTexture("preloaderMain"),
+		settings->getTexture("preloaderMini"),
+		settings->getTexture("noMaterials"),
+		settings->getTexture("allLoaded")));
+	
+
 	instaPopup = InstaPopupRef(new InstaPopup(instClient,
 		settings->getTexture("closeInstaPopup"), 
 		settings->getTexture("printInstaPopup"), 
@@ -31,9 +40,9 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings)
 	init = true;
 }
 
-void InstakubLocation::setPosition(float x, float y)
+void InstakubLocation::initPosition()
 {
-	instaViewer->setPosition(x, y);
+	instaViewer->setPosition(position.x, position.y);
 }
 
 void InstakubLocation::clear()
@@ -42,14 +51,18 @@ void InstakubLocation::clear()
 }
 
 void InstakubLocation::start()
-{
-	instaViewer->touchedEvent.connect(bind(&InstakubLocation::touchedHandler, this));
-	instaViewer->connect();
+{	
+	instaViewer->showPreloader();
 }
 
 void InstakubLocation::stop()
 {
 	instaViewer->touchedEvent.disconnect_all_slots();
+
+	instClient->startLoadEvent.disconnect_all_slots();
+	instClient->noMoreEvent.disconnect_all_slots();
+	instClient->synchEvent.disconnect_all_slots();
+
 	instaViewer->disconnect();
 	instaViewer->clear();
 	disconnectPopup();
@@ -71,6 +84,11 @@ void InstakubLocation::reset()
 	bg = settings->getTexture("bg");	
 }
 
+void InstakubLocation::initOverMask()
+{
+	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), position.y), [&](){gl::draw(bg); });
+}
+
 void InstakubLocation::fillBg()
 {
 	gl::draw(bg);
@@ -89,6 +107,18 @@ void InstakubLocation::load()
 	instClient->loadTagMedia("nature");
 }
 
+void InstakubLocation::hashTagOnlyload(const string& hashtag)
+{
+	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::touchedHandler, this));
+	instaViewer->connect();
+
+	connect_once(instClient->synchEvent, bind(&InstakubLocation::synchHandler, this));
+	connect_once(instClient->startLoadEvent, bind(&InstakubLocation::startLoadHandler, this));
+	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreHandler, this));
+
+	instClient->loadTagMedia(hashtag);	
+}
+
 void InstakubLocation::synchHandler()
 {
 	instaViewer->synchImages();
@@ -98,6 +128,12 @@ void InstakubLocation::synchHandler()
 void InstakubLocation::startLoadHandler()
 {
 	callback(DISABLE_CONTROLS);
+}
+
+void InstakubLocation::noMoreHandler()
+{
+	instaViewer->showNoMoreImagesMsg();
+	callback(ENABLE_CONTROLS);
 }
 
 void InstakubLocation::touchedHandler()

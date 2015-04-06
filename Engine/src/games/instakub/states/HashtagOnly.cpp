@@ -5,25 +5,40 @@ using namespace kubik::config;
 using namespace kubik::games::instakub;
 
 HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
-	:InstakubLocation(settings),
+	: InstakubLocation(settings, Vec2f(18.0f, 332.0f)),
 	hashtagPlashka(settings->getTexture("hashtagPlashka")),
 	hashtagPlashkaText(settings->getTexture("hashtagPlashkaText"))
 {
-	setPosition(10.0f, 332.0f);
 	reset();
 }
 
 void HashtagOnly::reset()
 {
+	InstakubLocation::reset();
+	InstakubLocation::initOverMask();
 	title = settings->getTexture("hashtagTitle");
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight()*0.5f);	
 }
 
 void HashtagOnly::start()
 {
-	hashTagTexture = textTools().getTextField(settings->getHashtag(), &settings->getFont("introLight90"), Color::hex(0xaa9b74));
+	string hashtag = settings->getHashtag();
+	hashTagTexture = textTools().getTextField("#" + hashtag, &settings->getFont("introLight90"), Color::hex(0xaa9b74));
+
+	float plashkaY = getWindowHeight() - hashtagPlashka.getHeight();
+	hashTagTexturePos = Vec2f(0.5f * (getWindowWidth() - hashTagTexture.getWidth()), plashkaY + 100.0f);
+	hashtagPlashkaPos = Vec2f(0.0f, plashkaY);
+
+	hashtagPlashkaTextPos = Vec2f(0.5f * (getWindowWidth() - hashtagPlashkaText.getWidth()), plashkaY + 90.0f - hashtagPlashkaText.getHeight()*0.5f);
+
+	InstakubLocation::initPosition();	
 	InstakubLocation::start();
-	InstakubLocation::load();
+}
+
+void HashtagOnly::load()
+{
+	string hashtag = settings->getHashtag();	
+	InstakubLocation::hashTagOnlyload(hashtag);
 }
 
 void HashtagOnly::stop()
@@ -34,12 +49,13 @@ void HashtagOnly::stop()
 void HashtagOnly::draw()
 {
 	InstakubLocation::draw();
-	gl::draw(title, titlePosition);
+	gl::color(Color::white());
+	gl::draw(overMask);
+	gl::draw(title, titlePosition);	
 	
-	float plashkaY = getWindowHeight() - hashtagPlashka.getHeight();
+	gl::draw(hashtagPlashka, hashtagPlashkaPos);
+	gl::draw(hashtagPlashkaText, hashtagPlashkaTextPos);
+	gl::draw(hashTagTexture, hashTagTexturePos);
 
-	gl::draw(hashtagPlashka, Vec2f(0.0f, plashkaY));
-
-	gl::draw(hashtagPlashkaText, Vec2f(0.5f * (getWindowWidth() - hashtagPlashkaText.getWidth()), plashkaY + 90.0f - hashtagPlashkaText.getHeight()*0.5f));
-	gl::draw(hashTagTexture, Vec2f(0.5f * (getWindowWidth() - hashTagTexture.getWidth()), plashkaY + 100.0f));
+	InstakubLocation::drawPopup();
 };

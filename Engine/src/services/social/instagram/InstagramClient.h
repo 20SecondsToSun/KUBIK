@@ -75,12 +75,12 @@ namespace instagram
 	
 		void killLoad();
 
-		SignalVoid synchEvent, startLoadEvent;
+		SignalVoid synchEvent, startLoadEvent, noMoreEvent;
 		ci::signals::scoped_connection updateCon;
 
 	protected:
 		std::string clientID;
-		bool _loading, _needSynch;
+		bool _loading, _needSynch, _noMore;
 
 		std::vector<ImageGraphic> synchImages;
 		std::list<User> userList;
