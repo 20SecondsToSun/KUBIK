@@ -325,6 +325,8 @@ void Controller::addGameHandlers()
 
 	game->connectEventHandler(&Controller::enableGameHandler, this, IGame::ENABLE_GAME_CLOSE);
 	game->connectEventHandler(&Controller::disableGameHandler, this, IGame::DISABLE_GAME_CLOSE);
+	game->connectEventHandler(&Controller::showControlsHandler, this, IGame::SHOW_CONTROLS);
+	game->connectEventHandler(&Controller::hideControlsHandler, this, IGame::HIDE_CONTROLS);
 }
 
 void Controller::enableGameHandler()
@@ -339,6 +341,17 @@ void Controller::disableGameHandler()
 	controlLayer->disconnectEventHandler(ControlLayer::CLOSE_GAME);
 	controlLayer->disconnectEventHandler(ControlLayer::OPEN_SETTINGS);
 	controlLayer->unActivateListeners();
+}
+
+void Controller::showControlsHandler()
+{
+	enableGameHandler();
+}
+
+void Controller::hideControlsHandler()
+{
+	disableGameHandler();
+	controlLayer->hideButtons();
 }
 
 void Controller::closeGameHandler()
@@ -356,6 +369,8 @@ void Controller::removeGameHandlers()
 	disableGameHandler();
 	game->disconnectEventHandler(IGame::ENABLE_GAME_CLOSE);
 	game->disconnectEventHandler(IGame::DISABLE_GAME_CLOSE);
+	game->disconnectEventHandler(IGame::SHOW_CONTROLS);
+	game->disconnectEventHandler(IGame::HIDE_CONTROLS);
 
 	if (!model->onlyOneGameOn())
 		controlLayer->hideBackButton();

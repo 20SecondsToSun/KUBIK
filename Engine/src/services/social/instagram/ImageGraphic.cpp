@@ -2,30 +2,23 @@
 
 using namespace instagram;
 using namespace ci;
+using namespace ci::app;
 using namespace std;
 
-ImageGraphic::ImageGraphic() : animTime(.7f), animFunc(ci::EaseOutQuad()), loaded(false)
+ImageGraphic::ImageGraphic()
+	:animTime(.7f),
+	animFunc(ci::EaseOutQuad()),
+	loadedthumb(false)
 {
 
-}
-
-void ImageGraphic::setLowResSurface(const Surface& surf)
-{
-	lowSurface = surf;
-}
-
-ci::Surface ImageGraphic::getLowResSurface()
-{
-	return lowSurface;
 }
 
 void ImageGraphic::fadeIn(float from, float to)
 {
-	alpha = from;
-	ci::app::timeline().apply(&alpha, to, animTime, animFunc);
+	ci::app::timeline().apply(&alpha, from, to, animTime, animFunc);
 }
 
-float ImageGraphic::getAlpha() const 
+float ImageGraphic::getAlpha() const
 {
 	return alpha;
 }
@@ -35,99 +28,57 @@ void ImageGraphic::setSize(int size)
 	width = height = size;
 }
 
-void ImageGraphic::draw(const Vec2f& vec)
+void ImageGraphic::draw(const ci::Vec2f& vec)
 {
-	if (loaded)
+	if (tex)
 	{
 		gl::pushMatrices();
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		float scale = ((float)width) / lowSurface.getWidth();
+		float scale = ((float)width) / tex.getWidth();
+		
 		gl::translate(vec);
 		gl::scale(scale, scale);
-		gl::draw(lowSurface);
-		gl::popMatrices();
+		gl::draw(tex);
+		gl::popMatrices();		
 	}
 	else
 	{
+		tex = ph::fetchTexture(lowResURL);
+		if (tex)
+			fadeIn(0.0f, 1.0f);
+
 		gl::pushMatrices();
 		gl::translate(vec);
 		gl::color(ColorA(0.1f, 0.1f, 0.1f, 1.0f));
-		gl::drawSolidRect(Rectf(0.0f, 0.0f, width - 0.0f, height - 0.0f));
+		gl::drawSolidRect(Rectf(5.0f, 5.0f, width - 5.0f, height - 5.0f));
 		gl::popMatrices();
 	}
 }
 
-void ImageGraphic::drawStandartResImage(const Vec2f& vec)
-{
-	using namespace ci;
-
-	if (standartSurface)
-	{
-		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		gl::draw(standartSurface, vec);
-	}
-}
-
-void ImageGraphic::setLowResURL(const string& url)
+void ImageGraphic::setLowResURL(const std::string& url)
 {
 	lowResURL = url;
 }
 
-string ImageGraphic::getLowResURL() const 
+std::string ImageGraphic::getLowResURL() const
 {
 	return lowResURL;
 }
 
-void ImageGraphic::setStandartResURL(const string& url)
+void ImageGraphic::setStandartResURL(const std::string& url)
 {
 	standartResURL = url;
 }
 
-void ImageGraphic::loadLowRes()
+std::string ImageGraphic::getStandartResURL() const
 {
-	if (loaded)
-		return;
-
-	ci::app::console() << lowResURL << std::endl;
-	try
-	{
-		lowSurface = loadImage(loadUrl(lowResURL));
-		ci::app::console() << "loaded" << std::endl;
-		loaded = true;		
-	}
-	catch (...)
-	{
-	}
-
-	fadeIn(0, 1);
+	return standartResURL;
 }
 
-void ImageGraphic::setResImage(const Surface& surf)
+ci::gl::Texture ImageGraphic::getStandartResImage()
 {
-	lowSurface = surf;
-	fadeIn(0, 1);
-}
+	if (!bigtex)
+		bigtex = ph::fetchTexture(standartResURL);
 
-
-void ImageGraphic::loadStandartRes()
-{
-	if (standartSurfaceTex)
-		return;
-
-	try
-	{
-		standartSurface = loadImage(loadUrl(standartResURL));
-		standartSurfaceTex = gl::Texture(standartSurface);
-	}
-	catch (...)
-	{
-	}
-}
-
-gl::Texture ImageGraphic::getStandartResImage()
-{
-	if (standartSurface)
-		return standartSurface;
-
-	return gl::Texture();
+	return bigtex;
 }

@@ -16,7 +16,7 @@ namespace instagram
 		void disconnect();
 		void setPosition(float x, float y);
 
-		void update();
+		void synchImages();
 		void draw();
 		void mouseDown(ci::app::MouseEvent event);
 		void mouseUp(ci::app::MouseEvent event);
@@ -25,6 +25,7 @@ namespace instagram
 		void animComplete();
 		int getLastImageIndexTouched();
 		void clear();
+		ImageGraphic getImageGraphic();
 
 		SignalVoid touchedEvent;
 
@@ -49,6 +50,7 @@ namespace instagram
 
 		ci::EaseFn animFunc;		
 
-		ci::signals::scoped_connection	mouseDownCon, mouseUpCon, mouseDragCon, updateCon;	
+		ci::signals::scoped_connection	mouseDownCon, mouseUpCon, mouseDragCon;
+		std::vector<ImageGraphic> images;
 	};	
 }

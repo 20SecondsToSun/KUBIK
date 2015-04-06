@@ -30,11 +30,15 @@ namespace kubik
 				void printPopupHandler();
 				void disconnectPopup();
 
+				void synchHandler();
+				void startLoadHandler();
+
 			public:
 				InstagramView(const gl::Texture& close, const gl::Texture& save, const gl::Texture& _template);
 				void draw();
 				void drawPopup();
 				void load();
+				void start();				
 				void stop();
 				void clear();				
 				void setPosition(float x, float y);

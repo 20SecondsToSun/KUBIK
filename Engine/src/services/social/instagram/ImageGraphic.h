@@ -1,3 +1,5 @@
+#include "loaders/asynchTextureLoader/TextureStore.h"
+
 #pragma once
 
 namespace instagram
@@ -17,6 +19,7 @@ namespace instagram
 		void loadLowRes();
 		void setResImage(const ci::Surface& surf);
 		void loadStandartRes();
+		std::string getStandartResURL() const;
 		float getAlpha() const;
 
 		std::string getLowResURL() const;
@@ -24,10 +27,8 @@ namespace instagram
 		ci::Surface getLowResSurface();
 
 	protected:
-		ci::Surface lowSurface;
-		ci::Surface standartSurface;
-
-		bool loaded;
+		ci::gl::Texture tex, bigtex;
+		bool loadedthumb;
 
 		ci::EaseFn animFunc;
 		ci::gl::Texture standartSurfaceTex;

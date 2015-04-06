@@ -29,6 +29,7 @@ namespace kubik
 
 			void showBackButton();
 			void hideBackButton();
+			void hideButtons();			
 			void close(EventGUIRef& event);
 			void createControlsButtons();
 			void startSettings(EventGUIRef& event);

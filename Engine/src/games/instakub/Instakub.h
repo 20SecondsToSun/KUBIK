@@ -42,6 +42,11 @@ namespace kubik
 				HashtagAndSearchRef hashTagAndSearch;	
 
 				void closeMouseUpHandler(IButton& button);
+
+				void enableControls();
+				void disableControls();
+				void showControls();
+				void hideControls();
 			};
 		}
 	}

@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\src\loaders\asynchTextureLoader</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -167,6 +167,7 @@
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
+    <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\ControlLayer.cpp" />
     <ClCompile Include="..\src\locations\menu\GameButton.cpp" />
@@ -340,6 +341,10 @@
     <ClInclude Include="..\src\gui\ImageButtonSprite.h" />
     <ClInclude Include="..\src\gui\SimpleSpriteButton.h" />
     <ClInclude Include="..\src\gui\Sprite.h" />
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentDeque.h" />
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentMap.h" />
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentQueue.h" />
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\TextureStore.h" />
     <ClInclude Include="..\src\loaders\ConfigLoader.h" />
     <ClInclude Include="..\src\loaders\GraphicsLoader.h" />
     <ClInclude Include="..\src\loaders\Iloader.h" />

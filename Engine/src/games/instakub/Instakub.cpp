@@ -51,6 +51,10 @@ void Instakub::start()
 		console() << "hashTagAndSearch" << endl;
 	}
 
+	view->connectEventHandler(&Instakub::enableControls, this, InstakubLocation::ENABLE_CONTROLS);
+	view->connectEventHandler(&Instakub::disableControls, this, InstakubLocation::DISABLE_CONTROLS);
+	view->connectEventHandler(&Instakub::showControls, this, InstakubLocation::SHOW_CONTROLS);
+	view->connectEventHandler(&Instakub::hideControls, this, InstakubLocation::HIDE_CONTROLS);
 	view->start();
 
 	initShowAnimation();
@@ -58,13 +62,16 @@ void Instakub::start()
 
 void Instakub::showAnimationComplete()
 {
-	callback(ENABLE_GAME_CLOSE);
 	state = DRAW;
 }
 
 void Instakub::stop()
 {
 	console() << "STOP Instakub!!!" << endl;
+	view->disconnectEventHandler(InstakubLocation::ENABLE_CONTROLS);
+	view->disconnectEventHandler(InstakubLocation::DISABLE_CONTROLS);
+	view->disconnectEventHandler(InstakubLocation::SHOW_CONTROLS);
+	view->disconnectEventHandler(InstakubLocation::HIDE_CONTROLS);
 	view->stop();
 }
 
@@ -73,11 +80,6 @@ void Instakub::reset()
 	hashtagOnly->reset();
 	searchOnly->reset();
 	hashTagAndSearch->reset();
-}
-
-void Instakub::closeMouseUpHandler(IButton& button )
-{	
-	closeLocationSignal();
 }
 
 void Instakub::draw()
@@ -89,7 +91,6 @@ void Instakub::draw()
 
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
-		//gl::color(Color(1, 1, 0));
 		gl::drawSolidRect(getWindowBounds());
 		gl::color(Color::white());
 		view->draw();
@@ -100,4 +101,29 @@ void Instakub::draw()
 		view->draw();
 		break;
 	}
+}
+
+void Instakub::closeMouseUpHandler(IButton& button)
+{
+	closeLocationSignal();
+}
+
+void Instakub::enableControls()
+{
+	callback(ENABLE_GAME_CLOSE);
+}
+
+void Instakub::disableControls()
+{
+	callback(DISABLE_GAME_CLOSE);
+}
+
+void Instakub::showControls()
+{
+	callback(SHOW_CONTROLS);
+}
+
+void Instakub::hideControls()
+{
+	callback(HIDE_CONTROLS);
 }

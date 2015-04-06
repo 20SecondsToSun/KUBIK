@@ -241,6 +241,9 @@
     <Filter Include="Source Files\services\social\instagram\api">
       <UniqueIdentifier>{15e7bcf8-fe5e-456e-8c78-329e39845db8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\loaders\asynchTextureLoader">
+      <UniqueIdentifier>{ae2850cb-7023-4d74-b5a9-96b89c4c13e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -608,6 +611,9 @@
     </ClCompile>
     <ClCompile Include="..\src\services\social\instagram\InstaPopup.cpp">
       <Filter>Source Files\services\social\instagram</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp">
+      <Filter>Source Files\loaders\asynchTextureLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1213,6 +1219,21 @@
     </ClInclude>
     <ClInclude Include="..\src\services\social\instagram\ImageGraphic.h">
       <Filter>Source Files\services\social\instagram</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentDeque.h">
+      <Filter>Source Files\loaders\asynchTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentMap.h">
+      <Filter>Source Files\loaders\asynchTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentQueue.h">
+      <Filter>Source Files\loaders\asynchTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\asynchTextureLoader\TextureStore.h">
+      <Filter>Source Files\loaders\asynchTextureLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -123,6 +123,9 @@ namespace kubik
 		void addGameHandlers(); 
 		void enableGameHandler();
 		void disableGameHandler();
+		void showControlsHandler();
+		void hideControlsHandler();
+
 		void removeGameHandlers();
 		void startGameHandler(GameId id);		
 

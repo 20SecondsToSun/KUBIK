@@ -30,6 +30,11 @@ namespace instagram
 
 	class InstagramClient
 	{
+		static const int THUMB_SIZE = 342;
+		static const int LOAD_COUNT = 24;
+
+		typedef ci::signals::signal<void(void)> SignalVoid;
+
 	public:
 		InstagramClient(const std::string& clientID);
 
@@ -39,8 +44,8 @@ namespace instagram
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		void loadTagMedia(const std::string& tagName, int count = 20);
-		void _loadTagMedia(const std::string& tagName, int count = 20);
+		void loadTagMedia(const std::string& tagName, int count = LOAD_COUNT);
+		void _loadTagMedia(const std::string& tagName, int count = LOAD_COUNT);
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -50,13 +55,8 @@ namespace instagram
 
 		void loadNextMedia();
 		void _loadNextMedia();
-
-		void loadMediaRequest(const std::string& request);
-		void loadStandartResImageByIndex(int index);
-
-		void _loadStandartResImageByIndex();
-		ci::gl::Texture getLastStandartResTexture();
-
+		void loadMediaRequest(const std::string& request);		
+	
 		////////////////////////////////////////////////////////////////////////////
 		//
 		//					GETTERS
@@ -64,34 +64,32 @@ namespace instagram
 		////////////////////////////////////////////////////////////////////////////
 
 		bool isLoading() const;
-		std::vector<ImageGraphic> getImages();
-		std::list<User> getUsers() const;
+		bool canLoad() const;
+		bool needSynch() const;
+		void setSynch(bool val);
 
-		void clear();
-		void killLoad();		
+		void setupLoadThread();
+		void update();
+
+		std::vector<ImageGraphic> getImages() const;
+	
+		void killLoad();
+
+		SignalVoid synchEvent, startLoadEvent;
+		ci::signals::scoped_connection updateCon;
 
 	protected:
 		std::string clientID;
+		bool _loading, _needSynch;
 
-		ThreadRef mediaLoadThread, mediaBigLoadThread;
-
-		size_t lastHiResIndex;
-		bool _loading, loadImagesImmediately;
-
-		bool kill;
-		boost::mutex kill_mutex;
-
-		std::vector<ImageGraphic> cashedTextures;
-		boost::mutex cashed_mutex;
-
-		std::shared_ptr<ci::Surface> lastLoadedStandartResImage;
-		boost::mutex standartImageMutex;
-
+		std::vector<ImageGraphic> synchImages;
 		std::list<User> userList;
 
 		std::string nextRequest;
 		InstagramResponse<InstagramMedia> lastMediaResponse;
 
 		void loadImages();
+
+		ThreadRef mediaLoadThread;
 	};
 }

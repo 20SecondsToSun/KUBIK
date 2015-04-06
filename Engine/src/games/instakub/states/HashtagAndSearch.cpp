@@ -12,12 +12,13 @@ HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings) :InstakubLocati
 
 void HashtagAndSearch::start()
 {
-	instagramView->load();
+	InstakubLocation::start();
+	instagramView->load();	
 }
 
 void HashtagAndSearch::stop()
 {
-	instagramView->stop();
+	InstakubLocation::stop();	
 }
 
 void HashtagAndSearch::reset()

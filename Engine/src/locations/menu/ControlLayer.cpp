@@ -20,6 +20,9 @@ void ControlLayer::showBackButton()
 void ControlLayer::activateListeners()
 {
 	btn->connectEventHandler(&ControlLayer::close, this);
+	settingsbtn->connectEventHandler(&ControlLayer::startSettings, this);
+	btn->setAlpha(1.0f);
+	settingsbtn->setAlpha(1.0f);
 }
 
 void ControlLayer::hideBackButton()
@@ -34,7 +37,16 @@ void ControlLayer::close(EventGUIRef& event)
 
 void ControlLayer::unActivateListeners()
 {
+	btn->setAlpha(0.2);
+	settingsbtn->setAlpha(0.2);
 	btn->disconnectEventHandler();
+	settingsbtn->disconnectEventHandler();	
+}
+
+void ControlLayer::hideButtons()
+{
+	btn->setAlpha(0);
+	settingsbtn->setAlpha(0);
 }
 
 void ControlLayer::draw()

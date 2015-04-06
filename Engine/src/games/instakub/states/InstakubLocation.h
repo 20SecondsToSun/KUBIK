@@ -15,6 +15,12 @@ namespace kubik
 
 			class InstakubLocation : public Sprite
 			{
+			public:
+				static const int ENABLE_CONTROLS = 1;
+				static const int DISABLE_CONTROLS = 2;
+				static const int SHOW_CONTROLS = 3;
+				static const int HIDE_CONTROLS = 4;
+
 			protected:
 				static ci::gl::Texture bg;
 				ci::gl::Texture title, overMask;
@@ -34,6 +40,12 @@ namespace kubik
 
 			protected:
 				InstakubSettingsRef settings;
+
+			private:
+				void enableControls();
+				void disableControls();
+				void showControls();
+				void hideControls();
 			};
 		}
 	}

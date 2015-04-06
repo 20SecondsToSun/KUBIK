@@ -24,7 +24,7 @@ namespace instagram
 		virtual void draw();
 		virtual void setAlpha(float alpha);
 
-		void show(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.7f);
+		void show(const ImageGraphic& image, ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.7f);
 		void hide(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.7f);
 		void alphAnimationUpdate();
 		void showAnimationFinish();
@@ -42,6 +42,7 @@ namespace instagram
 		InstagramClientRef client;
 		ImageButtonSpriteRef closeBtn, printBtn;
 		bool showing;
+		ImageGraphic image;
 
 		void hiding(EventGUIRef& event);
 		void printing(EventGUIRef& event);

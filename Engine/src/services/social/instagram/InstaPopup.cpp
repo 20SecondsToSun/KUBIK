@@ -25,7 +25,9 @@ void InstaPopup::draw()
 	gl::color(ColorA(bgColor.r, bgColor.g, bgColor.b, alpha));
 	gl::drawSolidRect(getWindowBounds());
 	gl::color(Color::white());
-	ci::gl::Texture tex = client->getLastStandartResTexture();
+
+	ci::gl::Texture tex = image.getStandartResImage();
+	
 	if (tex)
 	{
 		float scale = ((float)tex.getWidth()) / templateImage.getWidth();
@@ -38,16 +40,16 @@ void InstaPopup::draw()
 		gl::popMatrices();
 		gl::draw(tex, shift);
 		
-	}
-		
+	}		
 
 	closeBtn->draw();
 	printBtn->draw();
 	gl::popMatrices();
 }
 
-void InstaPopup::show(ci::EaseFn eFunc, float time)
+void InstaPopup::show(const ImageGraphic& image, ci::EaseFn eFunc, float time)
 {
+	this->image = image;
 	showing = true;
 	alpha = 0.0f;
 	timeline().apply(&alpha, 0.95f, time, eFunc)

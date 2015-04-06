@@ -32,7 +32,6 @@ void InstagramViewer::connect()
 	mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&InstagramViewer::mouseDown, this, std::placeholders::_1));
 	mouseUpCon	 = getWindow()->getSignalMouseUp().connect(std::bind(&InstagramViewer::mouseUp, this, std::placeholders::_1));
 	mouseDragCon = getWindow()->getSignalMouseDrag().connect(std::bind(&InstagramViewer::mouseDrag, this, std::placeholders::_1));
-	updateCon	 = App::get()->getSignalUpdate().connect(std::bind(&InstagramViewer::update, this));
 	connected	 = true;
 }
 
@@ -43,7 +42,6 @@ void InstagramViewer::disconnect()
 	mouseDownCon.disconnect();
 	mouseDragCon.disconnect();
 	mouseUpCon.disconnect();
-	updateCon.disconnect();
 	connected = false;
 }
 
@@ -52,11 +50,15 @@ void InstagramViewer::setPosition(float x, float y)
 	initPosition = Vec2f(x, y);
 }
 
-void InstagramViewer::update()
+void InstagramViewer::synchImages()
 {
+	auto _newImages = client->getImages();
+	images.insert(images.end(), _newImages.begin(), _newImages.end());
+	client->setSynch(false);
+
 	int plus = 0;
-	auto images = client->getImages();
 	if (images.size() % countInRaw != 0) plus = 1;
+
 	mainHeight = (images.size() / countInRaw + plus) * (oneImageWidth + sdvigX);
 }
 
@@ -67,13 +69,12 @@ void InstagramViewer::draw()
 	gl::translate(initPosition);
 
 	int x = 0, y = 0;
-	auto vec = client->getImages();
 
-	for (size_t i = 0; i < vec.size(); i++)
+	for (size_t i = 0; i < images.size(); i++)
 	{
 		x = (oneImageWidth + sdvigX) * (i % countInRaw);
 		y = (oneImageWidth + sdvigY) * (i / countInRaw);
-		vec[i].draw(Vec2f(x, y));
+		images[i].draw(Vec2f(x, y));
 	}
 	gl::popMatrices();
 }
@@ -147,8 +148,13 @@ void InstagramViewer::getTouchedImage(const Vec2f& pos)
 	int yCoord = (int)((pos.y - currentPos.value().y - initPosition.y) / (oneImageHeight + sdvigY));
 	lastImageIndexTouched = yCoord * countInRaw + xCoord;
 
-	if (lastImageIndexTouched < client->getImages().size())
+	if (lastImageIndexTouched < images.size())
 		touchedEvent();
+}
+
+ImageGraphic InstagramViewer::getImageGraphic()
+{
+	return images[lastImageIndexTouched];
 }
 
 void InstagramViewer::animComplete()
@@ -161,7 +167,7 @@ void InstagramViewer::clear()
 	currentPos = futureCurrentPos = Vec2i::zero();
 	blockDrag = false;	
 	client->killLoad();
-	client->clear();
+	images.clear();
 }
 
 int InstagramViewer::getLastImageIndexTouched()
