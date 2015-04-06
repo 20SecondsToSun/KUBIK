@@ -1,9 +1,12 @@
 #pragma once
 #include "gui/Sprite.h"
 #include "InstakubSettings.h"
-#include "instakub/states/InstagramView.h"
+#include "instagram/InstagramClient.h"
+#include "instagram/InstagramViewer.h"
+#include "instagram/InstaPopup.h"
 
 using namespace kubik::config;
+using namespace instagram;
 
 namespace kubik
 {
@@ -26,7 +29,7 @@ namespace kubik
 				ci::gl::Texture title, overMask;
 				ci::Vec2f titlePosition, searchFieldPosition;
 
-				static InstagramViewRef instagramView;
+				static bool init;
 
 			public:
 				InstakubLocation(InstakubSettingsRef settings);
@@ -37,15 +40,29 @@ namespace kubik
 			
 				void fillBg();
 				void drawTitle();
+				void setPosition(float x, float y);
+				void load();
+				void clear();
+				void drawPopup();
 
 			protected:
 				InstakubSettingsRef settings;
 
-			private:
-				void enableControls();
-				void disableControls();
-				void showControls();
-				void hideControls();
+			private:		
+
+				static InstagramClientRef instClient;
+				static InstagramViewerRef instaViewer;
+				static InstaPopupRef instaPopup;
+
+				float yPosition;
+
+				void touchedHandler();
+				void closePopupHandler();
+				void printPopupHandler();
+				void disconnectPopup();
+
+				void synchHandler();
+				void startLoadHandler();
 			};
 		}
 	}

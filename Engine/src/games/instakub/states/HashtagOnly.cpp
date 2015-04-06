@@ -9,7 +9,7 @@ HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
 	hashtagPlashka(settings->getTexture("hashtagPlashka")),
 	hashtagPlashkaText(settings->getTexture("hashtagPlashkaText"))
 {
-	instagramView->setPosition(10.0f, 332.0f);
+	setPosition(10.0f, 332.0f);
 	reset();
 }
 
@@ -22,15 +22,20 @@ void HashtagOnly::reset()
 void HashtagOnly::start()
 {
 	hashTagTexture = textTools().getTextField(settings->getHashtag(), &settings->getFont("introLight90"), Color::hex(0xaa9b74));
-	instagramView->load();
+	InstakubLocation::start();
+	InstakubLocation::load();
+}
+
+void HashtagOnly::stop()
+{
+	InstakubLocation::stop();
 }
 
 void HashtagOnly::draw()
 {
 	InstakubLocation::draw();
 	gl::draw(title, titlePosition);
-	instagramView->draw();
-
+	
 	float plashkaY = getWindowHeight() - hashtagPlashka.getHeight();
 
 	gl::draw(hashtagPlashka, Vec2f(0.0f, plashkaY));

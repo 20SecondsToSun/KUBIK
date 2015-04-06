@@ -6,14 +6,14 @@ using namespace kubik::games::instakub;
 
 HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings) :InstakubLocation(settings)
 {
-	instagramView->setPosition(18.0f, 518.0f);
+	setPosition(18.0f, 518.0f);
 	reset();
 }
 
 void HashtagAndSearch::start()
 {
 	InstakubLocation::start();
-	instagramView->load();	
+	InstakubLocation::load();
 }
 
 void HashtagAndSearch::stop()
@@ -33,11 +33,10 @@ void HashtagAndSearch::reset()
 
 void HashtagAndSearch::draw()
 {
-	InstakubLocation::draw();
-	instagramView->draw();
+	InstakubLocation::draw();	
 	gl::color(Color::white());
 	gl::draw(overMask);
 	gl::draw(title, titlePosition);
 	gl::draw(searchField, searchFieldPosition);	
-	instagramView->drawPopup();
+	InstakubLocation::drawPopup();
 };

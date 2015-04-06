@@ -18,7 +18,7 @@ namespace kubik
 				virtual void start();
 				virtual void reset();
 				virtual void draw();
-				virtual void stop(){};
+				virtual void stop();
 			};
 		}
 	}

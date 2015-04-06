@@ -141,7 +141,6 @@
     <ClCompile Include="..\src\games\instakub\Instakub.cpp" />
     <ClCompile Include="..\src\games\instakub\states\HashtagAndSearch.cpp" />
     <ClCompile Include="..\src\games\instakub\states\HashtagOnly.cpp" />
-    <ClCompile Include="..\src\games\instakub\states\InstagramView.cpp" />
     <ClCompile Include="..\src\games\instakub\states\InstakubLocation.cpp" />
     <ClCompile Include="..\src\games\instakub\states\SearchOnly.cpp" />
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp" />
@@ -300,7 +299,6 @@
     <ClInclude Include="..\src\games\instakub\Instakub.h" />
     <ClInclude Include="..\src\games\instakub\states\HashtagAndSearch.h" />
     <ClInclude Include="..\src\games\instakub\states\HashtagOnly.h" />
-    <ClInclude Include="..\src\games\instakub\states\InstagramView.h" />
     <ClInclude Include="..\src\games\instakub\states\InstakubLocation.h" />
     <ClInclude Include="..\src\games\instakub\states\SearchOnly.h" />
     <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />

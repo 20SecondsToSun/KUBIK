@@ -597,9 +597,6 @@
     <ClCompile Include="..\src\games\instakub\states\HashtagAndSearch.cpp">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\games\instakub\states\InstagramView.cpp">
-      <Filter>Source Files\games\instakub\states</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp">
       <Filter>Source Files\services\social\instagram</Filter>
     </ClCompile>
@@ -1173,9 +1170,6 @@
       <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\InstakubLocation.h">
-      <Filter>Source Files\games\instakub\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\instakub\states\InstagramView.h">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
