@@ -612,6 +612,9 @@
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp">
       <Filter>Source Files\loaders\asynchTextureLoader</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\SearchLocation.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1228,6 +1231,12 @@
     </ClInclude>
     <ClInclude Include="..\src\loaders\asynchTextureLoader\TextureStore.h">
       <Filter>Source Files\loaders\asynchTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\SearchLocation.h">
+      <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

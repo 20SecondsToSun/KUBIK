@@ -67,7 +67,7 @@ namespace kubik
 				virtual void loadingCompleteHandler();
 				virtual void startLoadHandler(); 
 				virtual	void noMoreLoadsHandler();
-				virtual void closePopupHandler();
+				virtual void closePopupHandler();				
 
 			private:	
 				static InstagramClientRef instClient;						

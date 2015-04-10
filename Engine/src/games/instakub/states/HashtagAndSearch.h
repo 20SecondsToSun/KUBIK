@@ -1,5 +1,5 @@
 #pragma once
-#include "instakub/states/InstakubLocation.h"
+#include "instakub/states/SearchLocation.h"
 
 using namespace kubik::config;
 
@@ -11,18 +11,17 @@ namespace kubik
 		{
 			typedef std::shared_ptr<class HashtagAndSearch> HashtagAndSearchRef;
 
-			class HashtagAndSearch : public InstakubLocation
+			class HashtagAndSearch : public SearchLocation
 			{
-				ci::gl::Texture searchField;
 
 			public:	
 				HashtagAndSearch(InstakubSettingsRef settings);
-
-				virtual void start();
-				virtual void load();
-				virtual void draw();
-				virtual void reset();
-				virtual void stop();		
+				virtual void loadStrategity() override;
+				virtual void start() override;
+				virtual void load() override;
+				virtual void draw() override;
+				virtual void reset() override;
+				virtual void reload() override;
 			};
 		}
 	}
