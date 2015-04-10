@@ -37,16 +37,16 @@ void ControlLayer::close(EventGUIRef& event)
 
 void ControlLayer::unActivateListeners()
 {
-	btn->setAlpha(0.2);
-	settingsbtn->setAlpha(0.2);
+	btn->setAlpha(0.2f);
+	settingsbtn->setAlpha(0.2f);
 	btn->disconnectEventHandler();
 	settingsbtn->disconnectEventHandler();	
 }
 
 void ControlLayer::hideButtons()
 {
-	btn->setAlpha(0);
-	settingsbtn->setAlpha(0);
+	btn->setAlpha(0.f);
+	settingsbtn->setAlpha(0.f);
 }
 
 void ControlLayer::draw()

@@ -9,6 +9,7 @@
 #include "instagram/api/InstBaseObject.h"
 #include "instagram/api/MetaData.h"
 #include "instagram/ImageGraphic.h"
+#include "Utils.h"
 
 namespace instagram
 {
@@ -37,6 +38,15 @@ namespace instagram
 
 	public:
 		InstagramClient(const std::string& clientID);
+
+		////////////////////////////////////////////////////////////////////////////
+		//
+		//					LOAD POPULAR
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		void loadPopular(int count = LOAD_COUNT);
+		void _loadPopular(int count = LOAD_COUNT);
 
 		////////////////////////////////////////////////////////////////////////////
 		//

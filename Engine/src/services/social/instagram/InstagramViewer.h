@@ -25,7 +25,6 @@ namespace instagram
 		void drawMiniPreloader();
 		void drawNoMorePopup();
 		void drawNoMaterialsPopup();		
-		void loadNextMedia();
 		void noMorePopupAnimFinished();	
 
 		ci::Anim<float> noMorePopupAlpha;
@@ -37,6 +36,7 @@ namespace instagram
 			const ci::gl::Texture& noMaterials,
 			const ci::gl::Texture& allLoaded);
 
+		void showMiniPreloader();
 		void connect();
 		void disconnect();
 		void showPreloader();		
@@ -54,7 +54,7 @@ namespace instagram
 		void clear();
 		ImageGraphic getImageGraphic();
 
-		SignalVoid touchedEvent;
+		SignalVoid touchedEvent, reloadAllMedia, loadNextMedia;
 
 	protected:
 		InstagramClientRef client;	

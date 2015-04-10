@@ -24,8 +24,8 @@ namespace instagram
 		virtual void draw();
 		virtual void setAlpha(float alpha);
 
-		void show(const ImageGraphic& image, ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.7f);
-		void hide(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.7f);
+		void show(const ImageGraphic& image, const ci::EaseFn& = ci::EaseOutCubic(), float time = 0.7f);
+		void hide(const ci::EaseFn& = ci::EaseOutCubic(), float time = 0.7f);
 		void alphAnimationUpdate();
 		void showAnimationFinish();
 		void hideAnimationFinish();
@@ -34,6 +34,8 @@ namespace instagram
 		void unActivateListeners();
 
 		SignalVoid touchedEvent;
+
+		bool isOpen();
 
 	private:
 		ci::gl::Texture closeImage, saveImage, templateImage;

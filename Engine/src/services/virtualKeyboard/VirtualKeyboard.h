@@ -13,7 +13,10 @@ namespace kubik
 		static const int INPUT_TOUCH = 1;
 		static const int KEY_TOUCH = 2;
 		static const int MAX_LETTER_LIMIT = 3;	
-		static const int HIDED = 4;	
+		static const int HIDED = 4;
+		static const int SEND_TOUCH = 5;
+		static const int SEARCH_TOUCH = 6;
+
 		static bool setuped;
 		static bool connected;
 		static bool showInputField;	
@@ -23,7 +26,6 @@ namespace kubik
 		void setup();
 		void show(ci::Vec2f from, ci::Vec2f to, float time);
 		void hide(ci::Vec2f to, float time);
-		void hide();
 		void draw();
 		void update();
 		void connectKeyboard();
@@ -49,7 +51,19 @@ namespace kubik
 		bool inputFieldEmpty();
 		void setEraseButtonVisible(bool value);
 
+		void activateSearchMode();
+		void activateSendMode();
+		void activateUsualMode();
+
 	private :	
+		enum modes
+		{
+			USUAL_MODE,
+			SEARCH_MODE,
+			SEND_MODE
+		}
+		mode;
+
 		std::vector<KeyBoardButtonSpriteRef> buttonsMainKeyboard, buttonsSecondKeyboard, buttonsRusMainKeyboard, *activeKeyboard;
 		std::vector<KeyBoardButtonSpriteRef> systemKeyboard;
 
@@ -74,9 +88,13 @@ namespace kubik
 		bool isShiftDown, isKeyBoardChangeDown, showEraseButton;
 
 		ci::gl::Texture	 shiftTex1, shiftTex0;
+		ci::gl::Texture	 smallspaceBtnTex, spaceBtnTex, sendBtnTex, searchBtnTex;
+
 		ci::gl::Texture	 changeKeyboardTex1, changeKeyboardTex2;
 		KeyBoardButtonSpriteRef shift, erase;
 		KeyBoardButtonSpriteRef changeKeyboardBtn, changeKeyboardBtnDuplicat;	
+		KeyBoardButtonSpriteRef spaceBtn, sendBtn, searchBtn;
+
 		ci::signals::connection KeyDownCon, MouseDownCon, MouseUpCon;
 		ci::Anim<ci::Vec2f> keyBoardPosition;
 
@@ -91,6 +109,7 @@ namespace kubik
 		void onCapsLock();	
 		bool alwaysCaps;
 		void setLanguage(KEYBOARD_LANG eng);
+		void clearCurrentMode();
 
 		SimpleSpriteButtonRef touchInputZone;
 		std::string inputField;
@@ -150,7 +169,7 @@ namespace kubik
 			inputFieldTexture = textTools().getTextField(text, &inputFont, inputColor);		
 		}
 
-		std::string getInputFieldText()
+		std::string getInputFieldText() const
 		{
 			return inputField;
 		}
@@ -158,6 +177,12 @@ namespace kubik
 		bool emptyInputField()
 		{
 			return inputField == "";
+		}
+
+
+		bool showing() const
+		{
+			return isShowing;
 		}
 
 

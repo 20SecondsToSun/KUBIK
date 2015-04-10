@@ -3,12 +3,13 @@
 using namespace kubik;
 using namespace kubik::config;
 
-KeyBackground::KeyBackground()
+KeyBackground::KeyBackground(const Vec2f& initPosition)
 	:alphaColor(0.0f),
-	showing(false)
+	showing(false),
+	initPosition(initPosition)
 {
 	btn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(0.0f,0.0f, 1080.0f, 80.f)));
-	btn->setPosition(Vec2f(-166.0f, 918.0f));
+	btn->setPosition(initPosition);
 	addChild(btn);
 }
 
@@ -45,6 +46,6 @@ void KeyBackground::drawLayout()
 {
 	btn->setAlpha(alphaColor);
 	gl::color(Utils::colorAlpha(Color::hex(0x313a43), alphaColor));	
-	gl::drawSolidRect(Rectf(Vec2f(-166.0f, 918.0f), Vec2f(-166.0f + 1080, 1920.0f)));
+	gl::drawSolidRect(Rectf(initPosition, Vec2f(initPosition.x + 1080, 1920.0f)));
 	gl::color(Color::white());
 }

@@ -22,7 +22,7 @@ namespace kubik
 		}
 		state;
 
-		ci::gl::Texture	screenshot;
+		ci::gl::Texture	screenshot;		
 
 	public:	
 		static const int ENABLE_GAME_CLOSE = 1;

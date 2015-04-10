@@ -31,17 +31,17 @@ namespace instagram
 		// setters
 		void setPagination(Pagination value)
 		{
-			this->pagination = value;
+			pagination = value;
 		}
 
 		void setMetadata(Metadata meta)
 		{
-			this->meta = meta;
+			meta = meta;
 		}
 
 		void setData(T data)
 		{
-			this->data = data;
+			data = data;
 		}
 
 		void clear()
@@ -49,29 +49,43 @@ namespace instagram
 			data.clear();
 		}
 
-		void parse(std::string json)
+		void parse(const std::string& json)
 		{
 			clear();
-
-			meta.parse(JsonTree(json).getChild("meta"));
-
-			if(meta.okCode())
+			console() << json<<endl;
+			try
 			{
-				pagination.parse(JsonTree(json).getChild("pagination"));			
-				JsonTree jdata = JsonTree(json).getChild("data");
-		
-				for (auto _data : jdata)
+				meta.parse(JsonTree(json).getChild("meta"));
+
+				if (meta.okCode())
 				{
-					T object;			
-					object.parse(_data);
-					data.push_back(object);				
+					try
+					{
+						pagination.parse(JsonTree(json).getChild("pagination"));
+					}
+					catch (...)
+					{
+
+					}
+
+					JsonTree jdata = JsonTree(json).getChild("data");
+
+					for (auto _data : jdata)
+					{
+						T object;
+						object.parse(_data);
+						data.push_back(object);
+					}
+				}
+				else
+				{
+					ci::app::console() << "code:  " << meta.getCode() << std::endl;
 				}
 			}
-			else
+			catch (...)
 			{
-				ci::app::console()<<"code:  "<<meta.getCode()<<std::endl;
-			}
 
+			}
 		}
 	};
 }

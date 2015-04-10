@@ -10,6 +10,8 @@
 #include "instakub/states/SearchOnly.h"
 #include "instakub/states/HashtagAndSearch.h"
 
+#include "TimerTools.h"
+
 namespace kubik
 {
 	namespace games
@@ -33,6 +35,8 @@ namespace kubik
 				void showAnimationComplete() override;
 
 			private:
+				static const float RELOAD_TIME;
+
 				ci::gl::Texture closeImg;
 			
 				InstakubSettingsRef settings;
@@ -42,12 +46,24 @@ namespace kubik
 				HashtagAndSearchRef hashTagAndSearch;	
 
 				void closeMouseUpHandler(IButton& button);
+				void mouseTouched(EventGUIRef& event);
 
 				void enableControls();
 				void disableControls();
 				void showControls();
 				void hideControls();
-			};
+
+				void stopTimer();
+				void startTimer();
+				void resetTimer();
+				void timerComplete();
+
+				void viewDrawings();
+				void animDrawings();
+
+				void (Instakub::* drawFuncPointer)();
+				void changeState(const locationStates& state);
+			};		
 		}
 	}
 }

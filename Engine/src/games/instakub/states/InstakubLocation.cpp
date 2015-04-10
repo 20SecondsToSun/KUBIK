@@ -23,14 +23,13 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 
 	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
 	string clientID = "6ac8af15a5d341e9802c8d1a26899ae3";
-	instClient = InstagramClientRef(new InstagramClient(clientID));
+	instClient  = InstagramClientRef(new InstagramClient(clientID));
 
 	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
 		settings->getTexture("preloaderMain"),
 		settings->getTexture("preloaderMini"),
 		settings->getTexture("noMaterials"),
-		settings->getTexture("allLoaded")));
-	
+		settings->getTexture("allLoaded")));	
 
 	instaPopup = InstaPopupRef(new InstaPopup(instClient,
 		settings->getTexture("closeInstaPopup"), 
@@ -58,6 +57,8 @@ void InstakubLocation::start()
 void InstakubLocation::stop()
 {
 	instaViewer->touchedEvent.disconnect_all_slots();
+	instaViewer->reloadAllMedia.disconnect_all_slots();
+	instaViewer->loadNextMedia.disconnect_all_slots();
 
 	instClient->startLoadEvent.disconnect_all_slots();
 	instClient->noMoreEvent.disconnect_all_slots();
@@ -84,9 +85,18 @@ void InstakubLocation::reset()
 	bg = settings->getTexture("bg");	
 }
 
+void InstakubLocation::reload()
+{
+	clear();
+	start();
+
+	if (instaPopup->isOpen())
+		closePopupHandler();
+}
+
 void InstakubLocation::initOverMask()
 {
-	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), position.y), [&](){gl::draw(bg); });
+	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), position.y), [&](){ gl::draw(bg); });
 }
 
 void InstakubLocation::fillBg()
@@ -101,7 +111,7 @@ void InstakubLocation::drawTitle()
 
 void InstakubLocation::load()
 {
-	instClient->synchEvent.connect(bind(&InstakubLocation::synchHandler, this));
+	instClient->synchEvent.connect(bind(&InstakubLocation::loadingCompleteHandler, this));
 	instClient->startLoadEvent.connect(bind(&InstakubLocation::startLoadHandler, this));
 
 	instClient->loadTagMedia("nature");
@@ -109,17 +119,33 @@ void InstakubLocation::load()
 
 void InstakubLocation::hashTagOnlyload(const string& hashtag)
 {
-	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::touchedHandler, this));
+	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
+	connect_once(instaViewer->reloadAllMedia, bind(&InstakubLocation::reloadHandler, this));
+	connect_once(instaViewer->loadNextMedia, bind(&InstakubLocation::nextLoadHandler, this));
 	instaViewer->connect();
 
-	connect_once(instClient->synchEvent, bind(&InstakubLocation::synchHandler, this));
+	connect_once(instClient->synchEvent, bind(&InstakubLocation::loadingCompleteHandler, this));
 	connect_once(instClient->startLoadEvent, bind(&InstakubLocation::startLoadHandler, this));
-	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreHandler, this));
+	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreLoadsHandler, this));
 
 	instClient->loadTagMedia(hashtag);	
 }
 
-void InstakubLocation::synchHandler()
+void InstakubLocation::loadPopuplar()
+{
+	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
+	instaViewer->connect();
+
+	connect_once(instClient->synchEvent, bind(&InstakubLocation::loadingCompleteHandler, this));
+	connect_once(instClient->startLoadEvent, bind(&InstakubLocation::startLoadHandler, this));
+	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreLoadsHandler, this));
+
+	instClient->loadPopular();
+
+	mode = POPULAR_MODE;
+}
+
+void InstakubLocation::loadingCompleteHandler()
 {
 	instaViewer->synchImages();
 	callback(ENABLE_CONTROLS);
@@ -130,13 +156,13 @@ void InstakubLocation::startLoadHandler()
 	callback(DISABLE_CONTROLS);
 }
 
-void InstakubLocation::noMoreHandler()
+void InstakubLocation::noMoreLoadsHandler()
 {
 	instaViewer->showNoMoreImagesMsg();
 	callback(ENABLE_CONTROLS);
 }
 
-void InstakubLocation::touchedHandler()
+void InstakubLocation::openPopupHandler()
 {
 	callback(HIDE_CONTROLS);
 	instaViewer->disconnect();
@@ -145,6 +171,17 @@ void InstakubLocation::touchedHandler()
 	instaPopup->connectEventHandler(&InstakubLocation::closePopupHandler, this, InstaPopup::CLOSE_POPUP);
 	instaPopup->connectEventHandler(&InstakubLocation::printPopupHandler, this, InstaPopup::PRINT);
 	instaPopup->activateListeners();
+}
+
+void InstakubLocation::nextLoadHandler()
+{
+	instClient->loadNextMedia();
+	instaViewer->showMiniPreloader();
+}
+
+void InstakubLocation::reloadHandler()
+{
+	reload();
 }
 
 void InstakubLocation::closePopupHandler()

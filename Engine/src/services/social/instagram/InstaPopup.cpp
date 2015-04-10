@@ -1,6 +1,8 @@
 #include "instagram/InstaPopup.h"
 
 using namespace instagram;
+using namespace ci;
+using namespace ci::app;
 
 InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template)
 	:client(client),
@@ -38,8 +40,7 @@ void InstaPopup::draw()
 		gl::scale(scale, scale);
 		gl::draw(templateImage);
 		gl::popMatrices();
-		gl::draw(tex, shift);
-		
+		gl::draw(tex, shift);		
 	}		
 
 	closeBtn->draw();
@@ -47,7 +48,7 @@ void InstaPopup::draw()
 	gl::popMatrices();
 }
 
-void InstaPopup::show(const ImageGraphic& image, ci::EaseFn eFunc, float time)
+void InstaPopup::show(const ImageGraphic& image, const ci::EaseFn& eFunc, float time)
 {
 	this->image = image;
 	showing = true;
@@ -57,7 +58,7 @@ void InstaPopup::show(const ImageGraphic& image, ci::EaseFn eFunc, float time)
 		.finishFn(bind(&InstaPopup::showAnimationFinish, this));
 }
 
-void InstaPopup::hide(ci::EaseFn eFunc, float time)
+void InstaPopup::hide(const ci::EaseFn& eFunc, float time)
 {
 	showing = false;
 	timeline().apply(&alpha, 0.0f, time, eFunc)
@@ -80,7 +81,7 @@ void InstaPopup::hideAnimationFinish()
 	//HideCompleteSignal();
 }
 
-void InstaPopup::setAlpha(float  alpha)
+void InstaPopup::setAlpha(float alpha)
 {
 	//bgColor = Utils::colorAlpha(bgColor, alpha);
 	//closeBlock->setAlpha(alpha);
@@ -107,4 +108,9 @@ void InstaPopup::hiding(EventGUIRef& event)
 void InstaPopup::printing(EventGUIRef& event)
 {
 	callback(PRINT);	
+}
+
+bool InstaPopup::isOpen()
+{
+	return showing;
 }

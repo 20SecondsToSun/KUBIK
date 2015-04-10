@@ -15,11 +15,11 @@ namespace kubik
 			void mouseUpHandler(EventGUIRef& event);
 			SimpleSpriteButtonRef btn;
 			bool showing;
-
+			Vec2f initPosition;
 		public:
 			static const int HIDE_KEYBOARD = 0;
 
-			KeyBackground();
+			KeyBackground(const Vec2f& initPosition = Vec2f(-166.0f, 918.0f));
 
 			void show(const EaseFn& eFunc, float time);
 			void hide(const EaseFn& eFunc, float time);

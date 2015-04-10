@@ -4,7 +4,8 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings) :InstakubLocation(settings, Vec2f(18.0f, 518.0f))
+HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings)
+	:InstakubLocation(settings, Vec2f(18.0f, 518.0f))
 {	
 	reset();
 }

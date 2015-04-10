@@ -4,6 +4,8 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
+const float Instakub::RELOAD_TIME = 20.0f;
+
 Instakub::Instakub(ISettingsRef config)
 {	
 	console()<<":: Instakub CREATED::"<<endl;
@@ -19,8 +21,8 @@ void Instakub::init(ISettingsRef config)
 
 void Instakub::create()
 {
-	hashtagOnly = HashtagOnlyRef(new HashtagOnly(settings));
-	searchOnly = SearchOnlyRef(new SearchOnly(settings));
+	hashtagOnly		 = HashtagOnlyRef(new HashtagOnly(settings));
+	searchOnly		 = SearchOnlyRef(new SearchOnly(settings));
 	hashTagAndSearch = HashtagAndSearchRef(new HashtagAndSearch(settings));
 
 	view = hashtagOnly;
@@ -28,7 +30,7 @@ void Instakub::create()
 
 Instakub::~Instakub()
 {
-	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Instakub destructor~~~~~~~~~~~~~~~~~~~"<<endl;	
+	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Instakub destructor~~~~~~~~~~~~~~~~~~~~~~~"<<endl;	
 }
 
 void Instakub::start()
@@ -54,16 +56,25 @@ void Instakub::start()
 	view->connectEventHandler(&Instakub::enableControls, this, InstakubLocation::ENABLE_CONTROLS);
 	view->connectEventHandler(&Instakub::disableControls, this, InstakubLocation::DISABLE_CONTROLS);
 	view->connectEventHandler(&Instakub::showControls, this, InstakubLocation::SHOW_CONTROLS);
-	view->connectEventHandler(&Instakub::hideControls, this, InstakubLocation::HIDE_CONTROLS);
+	view->connectEventHandler(&Instakub::hideControls, this, InstakubLocation::HIDE_CONTROLS);	
 	view->start();
 
 	initShowAnimation();
+	changeState(SHOW_ANIM);	
 }
 
 void Instakub::showAnimationComplete()
-{
-	state = DRAW;
+{	
+	changeState(DRAW);
+	
 	view->load();
+	connectEventHandler(&Instakub::mouseTouched, this);
+	startTimer();
+}
+
+void Instakub::mouseTouched(EventGUIRef& event)
+{
+	resetTimer();
 }
 
 void Instakub::stop()
@@ -74,6 +85,32 @@ void Instakub::stop()
 	view->disconnectEventHandler(InstakubLocation::SHOW_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::HIDE_CONTROLS);
 	view->stop();
+	disconnectEventHandler();
+	stopTimer();	
+}
+
+void Instakub::startTimer()
+{
+	delaycall(bind(&Instakub::timerComplete, this), 20.0);
+}
+
+void Instakub::resetTimer()
+{
+	console()<<"----reset timer----"<<endl;
+	stopTimer();
+	startTimer();
+}
+
+void Instakub::stopTimer()
+{
+	clearDelaycall();
+}
+
+void Instakub::timerComplete()
+{
+	console()<<"----timerComplete----"<<endl;
+	view->reload();
+	resetTimer();
 }
 
 void Instakub::reset()
@@ -85,23 +122,24 @@ void Instakub::reset()
 
 void Instakub::draw()
 {
-	switch (state)
-	{
-	case SHOW_ANIM:
-		screenshotDraw();
+	(this->*drawFuncPointer)();	
+}
 
-		gl::pushMatrices();
-		gl::translate(animX, 0.0f);
-		gl::drawSolidRect(getWindowBounds());
-		gl::color(Color::white());
-		view->draw();
-		gl::popMatrices();
-		break;
+void Instakub::animDrawings()
+{
+	screenshotDraw();
 
-	case DRAW:
-		view->draw();
-		break;
-	}
+	gl::pushMatrices();
+	gl::translate(animX, 0.0f);
+	gl::drawSolidRect(getWindowBounds());
+	gl::color(Color::white());
+	view->draw();
+	gl::popMatrices();
+}
+
+void Instakub::viewDrawings()
+{
+	view->draw();
 }
 
 void Instakub::closeMouseUpHandler(IButton& button)
@@ -127,4 +165,20 @@ void Instakub::showControls()
 void Instakub::hideControls()
 {
 	callback(HIDE_CONTROLS);
+}
+
+void Instakub::changeState(const locationStates& state)
+{
+	this->state = state;
+
+	switch (state)
+	{
+	case DRAW:
+		drawFuncPointer = &Instakub::viewDrawings;
+		break;
+
+	case SHOW_ANIM:
+		drawFuncPointer = &Instakub::animDrawings;
+		break;
+	}
 }

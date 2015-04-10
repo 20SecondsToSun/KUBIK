@@ -231,12 +231,12 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	{
 		futureCurrentPos = Vec2i::zero();
 		blockDrag = true;
+		reloadAllMedia();
 	}
 	else if (getWindowHeight() - mainHeight - marginBottom > currentPos.value().y + initPosition.y)
 	{
 		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.y);
 		blockDrag = true;
-
 		loadNextMedia();		
 	}
 
@@ -246,9 +246,9 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	currentMousePos = event.getPos();
 }
 
-void InstagramViewer::loadNextMedia()
+void InstagramViewer::showMiniPreloader()
 {
-	client->loadNextMedia();
+	//client->loadNextMedia();
 	state = MINI_PRELOADING;
 }
 

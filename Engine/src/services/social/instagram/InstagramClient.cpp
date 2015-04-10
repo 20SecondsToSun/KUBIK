@@ -14,12 +14,38 @@ InstagramClient::InstagramClient(const string& clientID)
 
 ////////////////////////////////////////////////////////////////////////////
 //
+//					LOAD POPULAR
+//
+////////////////////////////////////////////////////////////////////////////
+
+
+void InstagramClient::loadPopular(int count)
+{
+	if (canLoad())
+	{
+		setupLoadThread();
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&InstagramClient::_loadPopular, this, count)));
+	}
+}
+
+void InstagramClient::_loadPopular(int count)
+{
+	string request = API::POPULAR + "?" +
+		API::CLIENT_ID + "=" + clientID +
+		"&COUNT=" + to_string(count);
+
+	loadMediaRequest(request);
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
 //					LOAD BY TAG
 //
 ////////////////////////////////////////////////////////////////////////////
 
 void InstagramClient::loadTagMedia(const string& tagName, int count)
 {
+	console() << "can load::::::::::::::::  " << canLoad() << endl;
 	if (canLoad())
 	{
 		setupLoadThread();
@@ -29,7 +55,7 @@ void InstagramClient::loadTagMedia(const string& tagName, int count)
 
 void InstagramClient::_loadTagMedia(const string& tagName, int count)
 {
-	string request = API::TAGS + tagName + "/" +
+	string request = API::TAGS + Utils::cp1251_to_utf8(tagName.c_str()) + "/" +
 		API::MEDIA_RECENT + "?" +
 		API::CLIENT_ID + "=" + clientID +
 		"&COUNT=" + to_string(count);

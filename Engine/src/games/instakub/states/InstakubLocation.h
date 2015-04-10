@@ -4,6 +4,7 @@
 #include "instagram/InstagramClient.h"
 #include "instagram/InstagramViewer.h"
 #include "instagram/InstaPopup.h"
+#include "VirtualKeyboard.h"
 
 using namespace kubik::config;
 using namespace instagram;
@@ -17,7 +18,7 @@ namespace kubik
 			typedef std::shared_ptr<class InstakubLocation> InstakubLocationRef;
 
 			class InstakubLocation : public Sprite
-			{
+			{			
 			public:
 				static const int ENABLE_CONTROLS = 1;
 				static const int DISABLE_CONTROLS = 2;
@@ -25,6 +26,12 @@ namespace kubik
 				static const int HIDE_CONTROLS = 4;
 
 			protected:
+				enum LoadMode
+				{
+					POPULAR_MODE,
+					HASHTAG_MODE
+				} mode;
+
 				static ci::gl::Texture bg;
 				ci::gl::Texture title, overMask;
 				ci::Vec2f titlePosition, searchFieldPosition;
@@ -38,34 +45,41 @@ namespace kubik
 				virtual void stop() = 0;
 				virtual void load() = 0;
 				virtual void reset();
-				void initOverMask();
-			
-				void fillBg();
+				virtual void reload();	
+
 				virtual void drawTitle();
+				virtual void openPopupHandler();
+
+				void initOverMask();			
+				void fillBg();			
 				void initPosition();			
-				void hashTagOnlyload(const string& hashtag);
+				void hashTagOnlyload(const std::string& hashtag);
+				void loadPopuplar();				
 				void clear();
 				void drawPopup();
 
 			protected:
 				InstakubSettingsRef settings;
+				
+				static InstaPopupRef instaPopup;
+				static InstagramViewerRef instaViewer;
+
+				virtual void loadingCompleteHandler();
+				virtual void startLoadHandler(); 
+				virtual	void noMoreLoadsHandler();
+				virtual void closePopupHandler();
 
 			private:	
-				static InstagramClientRef instClient;
-				static InstagramViewerRef instaViewer;
-				static InstaPopupRef instaPopup;
+				static InstagramClientRef instClient;						
 
 				float yPosition;
 				ci::Vec2f position;
-
-				void touchedHandler();
-				void closePopupHandler();
+				
+				void reloadHandler();
+				void nextLoadHandler();
+				
 				void printPopupHandler();
-				void disconnectPopup();
-
-				void synchHandler();
-				void startLoadHandler();
-				void noMoreHandler();				
+				void disconnectPopup();									
 			};
 		}
 	}

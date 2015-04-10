@@ -42,32 +42,34 @@ void VirtualKeyboard::setup()
 
 	Font  mFont	= Font( loadFile(getAssetPath("fonts/Helvetica Neue Light.ttf")), 25 );
 	
-	gl::Texture backspaceBtnTex				= gl::Texture( loadImage( loadAsset(   "keyboard/backBtn.png" )));
-	gl::Texture _simple						= gl::Texture( loadImage( loadAsset(   "keyboard/_simpleBtn.png" )));	
-	gl::Texture _simple1					= gl::Texture( loadImage( loadAsset(   "keyboard/_simpleBtn1.png" )));	
-	gl::Texture	yaBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/ya.png")));
-	gl::Texture ramBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/ram.png")));
-	gl::Texture mailBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/mail.png" )));
-	gl::Texture gmailBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/gmail.png" )));
+	gl::Texture backspaceBtnTex				= gl::Texture( loadImage( loadAsset("keyboard/backBtn.png" )));
+	gl::Texture _simple						= gl::Texture( loadImage( loadAsset("keyboard/_simpleBtn.png" )));	
+	gl::Texture _simple1					= gl::Texture( loadImage( loadAsset("keyboard/_simpleBtn1.png" )));	
+	gl::Texture	yaBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/ya.png")));
+	gl::Texture ramBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/ram.png")));
+	gl::Texture mailBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/mail.png" )));
+	gl::Texture gmailBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/gmail.png" )));
 
-	gl::Texture sendBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/send.png" )));
-	shiftTex1								= gl::Texture( loadImage( loadAsset(   "keyboard/shift.png" )));
-	shiftTex0								= gl::Texture( loadImage( loadAsset(   "keyboard/shift0.png")));
+	sendBtnTex = gl::Texture(loadImage(loadAsset("keyboard/send.png")));
+	searchBtnTex = gl::Texture(loadImage(loadAsset("keyboard/search.png")));
+	shiftTex1								= gl::Texture( loadImage( loadAsset("keyboard/shift.png" )));
+	shiftTex0								= gl::Texture( loadImage( loadAsset("keyboard/shift0.png")));
 
-	gl::Texture spaceBtnTex					= gl::Texture( loadImage( loadAsset(   "keyboard/space.png" )));
+	spaceBtnTex								= gl::Texture(loadImage(loadAsset("keyboard/space.png")));
+	smallspaceBtnTex						= gl::Texture(loadImage(loadAsset("keyboard/smallSpace.png")));
 
-	changeKeyboardTex1						= gl::Texture( loadImage( loadAsset(   "keyboard/k2.png" )));
-	changeKeyboardTex2						= gl::Texture( loadImage( loadAsset(   "keyboard/k2.png")));
+	changeKeyboardTex1						= gl::Texture( loadImage( loadAsset("keyboard/k2.png" )));
+	changeKeyboardTex2						= gl::Texture( loadImage( loadAsset("keyboard/k2.png")));
 
-	gl::Texture langChangeTex				= gl::Texture( loadImage( loadAsset(   "keyboard/lang.png")));
+	gl::Texture langChangeTex				= gl::Texture( loadImage( loadAsset("keyboard/lang.png")));
 
-	gl::Texture eraseTex					= gl::Texture( loadImage( loadAsset(   "keyboard/erase.png")));
+	gl::Texture eraseTex					= gl::Texture( loadImage( loadAsset("keyboard/erase.png")));
 
 	Vec2f shift_Y = Vec2f::zero();
 	float _width  = 79.0f;
 	float _width1 = 68.0f;	
 
-	lineOffset1 = Vec2f(0.0f,      0.0f);
+	lineOffset1 = Vec2f::zero();
 	lineOffset2 = Vec2f(65.0f,    88.0f);
 	lineOffset3 = Vec2f(105.0f, 2*88.0f);
 	lineOffset4 = Vec2f(150.0f, 3*88.0f);
@@ -83,7 +85,6 @@ void VirtualKeyboard::setup()
 	}
 
 	erase = KeyBoardButtonSpriteRef( new KeyBoardButtonSprite(eraseTex, "erase"));	
-
 	
 	shift = KeyBoardButtonSpriteRef( new KeyBoardButtonSprite(shiftTex0, "shift"));
 	shift->setPosition(lineOffset4 - Vec2f(91.0f, 0.0f) + shift_Y);
@@ -165,7 +166,7 @@ void VirtualKeyboard::setup()
 		buttonsRusMainKeyboard.push_back( btn );
 	}
 	
-	KeyBoardButtonSpriteRef spaceBtn , sendBtn , langBtn;
+	KeyBoardButtonSpriteRef langBtn;
 
 	changeKeyboardBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(changeKeyboardTex1, mFont, "#+="));
 	changeKeyboardBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 170.0f, 0.0f)+ shift_Y);	
@@ -193,6 +194,14 @@ void VirtualKeyboard::setup()
 	buttonsSecondKeyboard.push_back(changeKeyboardBtnDuplicat);
 	buttonsRusMainKeyboard.push_back(changeKeyboardBtnDuplicat);
 
+	searchBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(searchBtnTex, "search"));
+	searchBtn->setPosition(pos + Vec2f(_xOffset5 + spaceBtnTex.getWidth() - 31, 0.0f));
+
+	sendBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(sendBtnTex, "send"));
+	sendBtn->setPosition(pos + Vec2f(_xOffset5 + spaceBtnTex.getWidth() - 31, 0.0f));
+
+
+	mode = USUAL_MODE;
 	alwaysCaps = false;
 	isShowing = false;	
 	showEraseButton = true;
@@ -330,6 +339,14 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 	{				
 	
 	}
+	else if (lastCode == "search")
+	{
+		callback(SEARCH_TOUCH);
+	}
+	else if (lastCode == "send")
+	{
+		callback(SEND_TOUCH);
+	}
 	else if (lastCode == "back")
 	{				
 		if(!inputField.empty())
@@ -460,8 +477,6 @@ void VirtualKeyboard::changeLangMode()
 	case KEYBOARD_LANG::RUS:
 		activeLanguage = KEYBOARD_LANG::ENG;
 	break;
-	default:
-		break;
 	}
 
 	setLanguage(activeLanguage);
@@ -481,6 +496,69 @@ void VirtualKeyboard::changeLangMode()
 			(*item)->setBtnId(oneChar);
 		}
 	}
+}
+
+void VirtualKeyboard::activateSearchMode()
+{	
+	if (mode == SEARCH_MODE)
+		return;
+
+	clearCurrentMode();
+	spaceBtn->changeTexture(smallspaceBtnTex);
+
+	buttonsMainKeyboard.push_back(searchBtn);
+	buttonsSecondKeyboard.push_back(searchBtn);
+	buttonsRusMainKeyboard.push_back(searchBtn);
+
+	mode = SEARCH_MODE;
+}
+
+void VirtualKeyboard::activateSendMode()
+{
+	if (mode == SEND_MODE)
+		return;
+
+	clearCurrentMode();
+	spaceBtn->changeTexture(smallspaceBtnTex);
+
+	buttonsMainKeyboard.push_back(sendBtn);
+	buttonsSecondKeyboard.push_back(sendBtn);
+	buttonsRusMainKeyboard.push_back(sendBtn);
+
+	mode = SEND_MODE;
+}
+
+void VirtualKeyboard::activateUsualMode()
+{
+	if (mode == USUAL_MODE)
+		return;
+
+	clearCurrentMode();
+	spaceBtn->changeTexture(spaceBtnTex);
+	mode = USUAL_MODE;
+}
+
+void VirtualKeyboard::clearCurrentMode()
+{
+	KeyBoardButtonSpriteRef deleteBtn;
+	switch (mode)
+	{
+	case USUAL_MODE:
+		deleteBtn = changeKeyboardBtnDuplicat;
+		break;
+
+	case SEND_MODE:
+		deleteBtn = changeKeyboardBtnDuplicat;
+		break;
+
+	case SEARCH_MODE:
+		deleteBtn = changeKeyboardBtnDuplicat;
+		break;
+	}
+
+	buttonsMainKeyboard.erase(std::remove(buttonsMainKeyboard.begin(), buttonsMainKeyboard.end(), deleteBtn), buttonsMainKeyboard.end());
+	buttonsSecondKeyboard.erase(std::remove(buttonsSecondKeyboard.begin(), buttonsSecondKeyboard.end(), deleteBtn), buttonsSecondKeyboard.end());
+	buttonsRusMainKeyboard.erase(std::remove(buttonsRusMainKeyboard.begin(), buttonsRusMainKeyboard.end(), deleteBtn), buttonsRusMainKeyboard.end());
 }
 
 void VirtualKeyboard::changeKeyboardMode()

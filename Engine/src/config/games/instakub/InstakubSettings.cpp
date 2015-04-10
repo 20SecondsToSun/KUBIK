@@ -131,7 +131,8 @@ void InstakubSettings::setTextures()
 	addToDictionary("hashtagPlashkaText", createImageResource(getTemplateDesignPath("hashtagPlashkaText.png")));
 	addToDictionary("searchTitle", createImageResource(getTemplateDesignPath("searchTitle.png")));
 	addToDictionary("searchField", createImageResource(getTemplateDesignPath("searchField.png")));
-
+	addToDictionary("searchFieldError", createImageResource(getTemplateDesignPath("searchFieldError.png")));
+	
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
 	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));
 
