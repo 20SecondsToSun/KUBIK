@@ -10,26 +10,16 @@ HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings)
 	reset();
 }
 
-void HashtagAndSearch::start()
-{
-	SearchLocation::start();
-}
-
 void HashtagAndSearch::load()
 {
-	SearchLocation::load();
+	mode = HASHTAG_DEFAULT_PHOTOS_LOAD;
+	SearchLocation::load();	
 	loadStrategity();
-}
-
-void HashtagAndSearch::loadStrategity()
-{
-	string hashtag = settings->getHashtag();
-	InstakubLocation::hashTagOnlyload(hashtag);
 }
 
 void HashtagAndSearch::reset()
 {
-	InstakubLocation::reset();
+	SearchLocation::reset();
 	InstakubLocation::initOverMask();
 
 	title = settings->getTexture("searchTitle");
@@ -38,39 +28,41 @@ void HashtagAndSearch::reset()
 
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight() * 0.5f);	
 	searchFieldPosition = Vec2f(0.5f * (getWindowWidth() - searchField.getWidth()), 357.0f - searchField.getHeight() * 0.5f);
+
+	hashtagPosition = Vec2f(266.0f, 330.0f);
+}
+
+void HashtagAndSearch::start()
+{
+	SearchLocation::start();
+	hashTagAlpha = 1.0f;
+	hashtagTexture = textTools().getTextField("#"+settings->getHashtag(), &settings->getFont("introLight36"), Color::white());
+}
+
+void HashtagAndSearch::inputTouchHandler()
+{
+	hashTagAlpha = 0.0f;
+	SearchLocation::inputTouchHandler();
+}
+
+void HashtagAndSearch::closeKeyboardHandler()
+{
+	if (!touchKeyboard().emptyInputField())
+		SearchLocation::closeKeyboardHandler();
+	else
+	{
+		instaViewer->connect();
+		hideKeyboardLayout();
+		hashTagAlpha = 1.0f;
+		mode = HASHTAG_DEFAULT_PHOTOS_LOAD;
+		reload();
+	}
 }
 
 void HashtagAndSearch::draw()
 {
-	InstakubLocation::draw();	
+	SearchLocation::draw();
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, hashTagAlpha));
+	gl::draw(hashtagTexture, hashtagPosition);
 	gl::color(Color::white());
-	gl::draw(overMask);
-	gl::draw(title, titlePosition);
-
-	gl::draw(searchField, searchFieldPosition);
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaError));
-	gl::draw(searchFieldRed, searchFieldPosition);
-	gl::color(Color::white());
-
-	drawTouchKeyboardLayout();
-	InstakubLocation::drawPopup();
 };
-
-void HashtagAndSearch::reload()
-{
-	if (instaPopup->isOpen())
-		closePopupHandler();
-
-	if (touchKeyboard().showing())
-	{
-		instaViewer->connect();
-		disconnectKeyboard();
-	}
-
-	if (mode != POPULAR_MODE)
-	{
-		console() << "RELOAD hashtag" << endl;
-		InstakubLocation::reload();
-		hashTagOnlyload(touchKeyboard().getInputFieldText());
-	}
-}

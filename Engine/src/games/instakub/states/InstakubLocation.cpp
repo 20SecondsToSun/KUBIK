@@ -72,7 +72,7 @@ void InstakubLocation::stop()
 void InstakubLocation::draw()
 {
 	fillBg();
-	drawTitle();
+	//drawTitle();
 
 	gl::pushMatrices();
 	gl::color(Color::white());
@@ -85,15 +85,6 @@ void InstakubLocation::reset()
 	bg = settings->getTexture("bg");	
 }
 
-void InstakubLocation::reload()
-{
-	clear();
-	start();
-
-	if (instaPopup->isOpen())
-		closePopupHandler();
-}
-
 void InstakubLocation::initOverMask()
 {
 	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), position.y), [&](){ gl::draw(bg); });
@@ -104,20 +95,7 @@ void InstakubLocation::fillBg()
 	gl::draw(bg);
 };
 
-void InstakubLocation::drawTitle()
-{
-
-};
-
-void InstakubLocation::load()
-{
-	instClient->synchEvent.connect(bind(&InstakubLocation::loadingCompleteHandler, this));
-	instClient->startLoadEvent.connect(bind(&InstakubLocation::startLoadHandler, this));
-
-	instClient->loadTagMedia("nature");
-}
-
-void InstakubLocation::hashTagOnlyload(const string& hashtag)
+void InstakubLocation::hashtagPhotosload(const string& hashtag)
 {
 	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
 	connect_once(instaViewer->reloadAllMedia, bind(&InstakubLocation::reloadHandler, this));
@@ -131,8 +109,24 @@ void InstakubLocation::hashTagOnlyload(const string& hashtag)
 	instClient->loadTagMedia(hashtag);	
 }
 
-void InstakubLocation::loadPopuplar()
+void InstakubLocation::userPhotosload(const string& userName)
 {
+	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
+	connect_once(instaViewer->reloadAllMedia, bind(&InstakubLocation::reloadHandler, this));
+	connect_once(instaViewer->loadNextMedia, bind(&InstakubLocation::nextLoadHandler, this));
+	instaViewer->connect();
+
+	connect_once(instClient->synchEvent, bind(&InstakubLocation::loadingCompleteHandler, this));
+	connect_once(instClient->startLoadEvent, bind(&InstakubLocation::startLoadHandler, this));
+	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreLoadsHandler, this));
+
+	instClient->loadUserMedia(userName);
+}
+
+void InstakubLocation::popularPhotosLoad()
+{
+	console() << "LOAD STRAGEDY:::::::::::::::: POPULAR_PHOTOS_LOAD :::: " << endl;
+
 	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
 	instaViewer->connect();
 
@@ -140,9 +134,7 @@ void InstakubLocation::loadPopuplar()
 	connect_once(instClient->startLoadEvent, bind(&InstakubLocation::startLoadHandler, this));
 	connect_once(instClient->noMoreEvent, bind(&InstakubLocation::noMoreLoadsHandler, this));
 
-	instClient->loadPopular();
-
-	mode = POPULAR_MODE;
+	instClient->loadPopular();	
 }
 
 void InstakubLocation::loadingCompleteHandler()
@@ -207,4 +199,38 @@ void InstakubLocation::printPopupHandler()
 void InstakubLocation::drawPopup()
 {
 	instaPopup->draw();
+}
+
+void InstakubLocation::reload()
+{
+	if (instaPopup->isOpen())
+		closePopupHandler();
+	
+	clear();
+	
+	//start();
+	instaViewer->showPreloader();	
+	loadStrategity();
+}
+
+void InstakubLocation::loadStrategity()
+{	
+	switch (mode)
+	{
+	case HASHTAG_DEFAULT_PHOTOS_LOAD:
+		hashTagDefaultPhotosLoad();
+		break;
+
+	case POPULAR_PHOTOS_LOAD:
+		popularPhotosLoad();
+		break;
+	}
+}
+
+void InstakubLocation::hashTagDefaultPhotosLoad()
+{
+	string hashtag = settings->getHashtag();
+	hashtagPhotosload(hashtag);
+
+	console() << "LOAD STRAGEDY:::::::::::::::: HASHTAG_DEFAULT_PHOTOS_LOAD :::: " << hashtag << endl;
 }

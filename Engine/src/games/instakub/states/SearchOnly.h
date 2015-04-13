@@ -16,12 +16,9 @@ namespace kubik
 			{			
 			public:
 				SearchOnly(InstakubSettingsRef settings);
-				virtual void loadStrategity() override;
-				virtual void start() override;
-				virtual void load() override;
-				virtual void draw() override;
-				virtual void reset() override;
-				virtual void reload() override;
+				void load() override;
+				void draw() override;
+				void reset() override;				
 			};
 		}
 	}

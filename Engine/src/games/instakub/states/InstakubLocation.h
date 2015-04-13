@@ -28,8 +28,10 @@ namespace kubik
 			protected:
 				enum LoadMode
 				{
-					POPULAR_MODE,
-					HASHTAG_MODE
+					POPULAR_PHOTOS_LOAD,
+					USER_PHOTOS_LOAD,
+					HASHTAG_DEFAULT_PHOTOS_LOAD,
+					HASHTAG_PHOTOS_LOAD
 				} mode;
 
 				static ci::gl::Texture bg;
@@ -47,16 +49,18 @@ namespace kubik
 				virtual void reset();
 				virtual void reload();	
 
-				virtual void drawTitle();
+				//virtual void drawTitle() = 0;
 				virtual void openPopupHandler();
 
 				void initOverMask();			
 				void fillBg();			
-				void initPosition();			
-				void hashTagOnlyload(const std::string& hashtag);
-				void loadPopuplar();				
+				void initPosition();	
 				void clear();
 				void drawPopup();
+
+				void hashtagPhotosload(const std::string& hashtag);
+				void userPhotosload(const std::string& hashtag);
+				void popularPhotosLoad();				
 
 			protected:
 				InstakubSettingsRef settings;
@@ -67,7 +71,11 @@ namespace kubik
 				virtual void loadingCompleteHandler();
 				virtual void startLoadHandler(); 
 				virtual	void noMoreLoadsHandler();
-				virtual void closePopupHandler();				
+				virtual void closePopupHandler();
+				
+				virtual void hashTagDefaultPhotosLoad();			
+
+				virtual void loadStrategity();
 
 			private:	
 				static InstagramClientRef instClient;						
@@ -76,8 +84,7 @@ namespace kubik
 				ci::Vec2f position;
 				
 				void reloadHandler();
-				void nextLoadHandler();
-				
+				void nextLoadHandler();				
 				void printPopupHandler();
 				void disconnectPopup();									
 			};

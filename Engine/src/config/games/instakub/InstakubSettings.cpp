@@ -116,6 +116,7 @@ void InstakubSettings::setTextures()
 
 	addToDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
 	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
 	addToDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
 
 
@@ -132,6 +133,11 @@ void InstakubSettings::setTextures()
 	addToDictionary("searchTitle", createImageResource(getTemplateDesignPath("searchTitle.png")));
 	addToDictionary("searchField", createImageResource(getTemplateDesignPath("searchField.png")));
 	addToDictionary("searchFieldError", createImageResource(getTemplateDesignPath("searchFieldError.png")));
+
+	addToDictionary("hashtagSearch", createImageResource(getTemplateDesignPath("hashtagSearch.png")));
+	addToDictionary("hashtagSearchOver", createImageResource(getTemplateDesignPath("hashtagSearchOver.png")));
+	addToDictionary("userSearch", createImageResource(getTemplateDesignPath("userSearch.png")));
+	addToDictionary("userSearchOver", createImageResource(getTemplateDesignPath("userSearchOver.png")));	
 	
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
 	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));

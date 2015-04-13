@@ -7,7 +7,10 @@ using namespace instagram;
 using namespace mndl::curl;
 
 InstagramClient::InstagramClient(const string& clientID)
-	:clientID(clientID), _loading(false), _needSynch(false), _noMore(false)
+	:clientID(clientID),
+	_loading(false),
+	_needSynch(false),
+	_noMore(false)
 {
 
 }
@@ -32,7 +35,7 @@ void InstagramClient::_loadPopular(int count)
 {
 	string request = API::POPULAR + "?" +
 		API::CLIENT_ID + "=" + clientID +
-		"&COUNT=" + to_string(count);
+		"&COUNT=" + to_string(count);	
 
 	loadMediaRequest(request);
 }
@@ -45,7 +48,6 @@ void InstagramClient::_loadPopular(int count)
 
 void InstagramClient::loadTagMedia(const string& tagName, int count)
 {
-	console() << "can load::::::::::::::::  " << canLoad() << endl;
 	if (canLoad())
 	{
 		setupLoadThread();
@@ -56,6 +58,63 @@ void InstagramClient::loadTagMedia(const string& tagName, int count)
 void InstagramClient::_loadTagMedia(const string& tagName, int count)
 {
 	string request = API::TAGS + Utils::cp1251_to_utf8(tagName.c_str()) + "/" +
+		API::MEDIA_RECENT + "?" +
+		API::CLIENT_ID + "=" + clientID +
+		"&COUNT=" + to_string(count);
+
+	loadMediaRequest(request);
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+//					USER LOAD 
+//
+////////////////////////////////////////////////////////////////////////////
+
+void InstagramClient::loadUserMedia(const string& tagName, int count)
+{
+	if (canLoad())
+	{
+		setupLoadThread();
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&InstagramClient::_loadUserMedia, this, tagName, count)));
+	}
+}
+
+void InstagramClient::_loadUserMedia(const string& userName, int count)
+{
+	string request = API::USERS
+		+ API::SEARCH
+		+ "?q="
+		+ Utils::cp1251_to_utf8(userName.c_str()) + "&" +
+		API::CLIENT_ID + "=" + clientID;
+
+	loadUsersRequest(request);
+}
+
+void InstagramClient::loadUsersRequest(const string& request)
+{
+	string json = Curl::get(request);
+	userResponse.parse(json);
+
+	auto data = userResponse.getData();
+
+	if (data.empty())
+	{
+		_needSynch = true;
+		_loading = false;
+	}
+	else
+	{
+		auto firstUser = data.front();
+		console() << "firstUser::::   " << firstUser.getID() << endl;	
+		loadUserPhotos(firstUser.getID());
+	}
+}
+
+void InstagramClient::loadUserPhotos(const string& userID, int count)
+{
+	string request = API::USERS
+		+ userID + "/" +
 		API::MEDIA_RECENT + "?" +
 		API::CLIENT_ID + "=" + clientID +
 		"&COUNT=" + to_string(count);
@@ -102,7 +161,8 @@ void InstagramClient::loadMediaRequest(const string& request)
 }
 
 void InstagramClient::setupLoadThread()
-{	
+{
+	synchImages.clear();
 	_loading = true;
 	updateCon = App::get()->getSignalUpdate().connect(std::bind(&InstagramClient::update, this));
 	startLoadEvent();
@@ -159,8 +219,6 @@ bool InstagramClient::canLoad() const
 void InstagramClient::loadImages()
 {
 	list<InstagramMedia> mediaList = lastMediaResponse.getData();
-
-	ci::app::console() << "loaded InstagramMedia ::::  " << mediaList.size() << endl;
 
 	synchImages.clear();
 

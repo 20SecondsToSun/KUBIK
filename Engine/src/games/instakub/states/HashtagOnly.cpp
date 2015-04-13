@@ -20,12 +20,6 @@ void HashtagOnly::reset()
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight() * 0.5f);	
 }
 
-void HashtagOnly::reload()
-{
-	InstakubLocation::reload();
-	load();
-}
-
 void HashtagOnly::start()
 {
 	string hashtag = settings->getHashtag();
@@ -43,8 +37,8 @@ void HashtagOnly::start()
 
 void HashtagOnly::load()
 {
-	string hashtag = settings->getHashtag();	
-	InstakubLocation::hashTagOnlyload(hashtag);
+	mode = HASHTAG_DEFAULT_PHOTOS_LOAD;
+	loadStrategity();
 }
 
 void HashtagOnly::stop()

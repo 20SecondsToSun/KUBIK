@@ -16,12 +16,11 @@ namespace kubik
 				ci::Vec2f hashtagPlashkaPos, hashTagTexturePos, hashtagPlashkaTextPos;
 			public:
 				HashtagOnly(InstakubSettingsRef settings);
-				virtual void load();
-				virtual void start();
-				virtual void reset();
-				virtual void reload();				
-				virtual void draw() override;
-				virtual void stop();
+				void load() override;
+				void start() override;
+				void reset() override;
+				void draw() override;
+				void stop() override;
 			};
 		}
 	}

@@ -10,25 +10,16 @@ SearchOnly::SearchOnly(InstakubSettingsRef settings)
 	reset();
 }
 
-void SearchOnly::start()
-{
-	SearchLocation::start();
-}
-
 void SearchOnly::load()
 {
+	mode = POPULAR_PHOTOS_LOAD;
 	SearchLocation::load();	
 	loadStrategity();
 }
 
-void SearchOnly::loadStrategity()
-{
-	InstakubLocation::loadPopuplar();
-}
-
 void SearchOnly::reset()
 {
-	InstakubLocation::reset();
+	SearchLocation::reset();
 	InstakubLocation::initOverMask();
 
 	title		= settings->getTexture("searchTitle");
@@ -40,35 +31,5 @@ void SearchOnly::reset()
 
 void SearchOnly::draw()
 {
-	InstakubLocation::draw();
-	gl::color(Color::white());
-	gl::draw(overMask);
-	gl::draw(title, titlePosition);
-	
-	gl::draw(searchField, searchFieldPosition);
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaError));
-	gl::draw(searchFieldRed, searchFieldPosition);
-	gl::color(Color::white());	
-
-	drawTouchKeyboardLayout();	
-	InstakubLocation::drawPopup();
-}
-
-void SearchOnly::reload()
-{
-	if (instaPopup->isOpen())
-		closePopupHandler();
-
-	if (touchKeyboard().showing())
-	{
-		instaViewer->connect();
-		disconnectKeyboard();
-	}		
-
-	if (mode != POPULAR_MODE)
-	{
-		console() << "RELOAD hashtag" << endl;
-		InstakubLocation::reload();
-		hashTagOnlyload(touchKeyboard().getInputFieldText());
-	}
+	SearchLocation::draw();
 }

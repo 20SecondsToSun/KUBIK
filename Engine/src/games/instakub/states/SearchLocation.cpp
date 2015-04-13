@@ -13,12 +13,24 @@ SearchLocation::SearchLocation(InstakubSettingsRef settings, const ci::Vec2f& ve
 	:InstakubLocation(settings, vectr),
 	alphaError(0.0f)
 {	
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f)));
+	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f)));	
+}
+
+void SearchLocation::reset()
+{
+	InstakubLocation::reset();
+	searchBtns = SearchButtonsRef(new SearchButtons(
+		settings->getTexture("hashtagSearch"),
+		settings->getTexture("hashtagSearchOver"),
+		settings->getTexture("userSearch"),
+		settings->getTexture("userSearchOver")));
 }
 
 void SearchLocation::start()
 {
 	touchKeyboard().setInputFieldText("");
+	searchingText = "";
+	
 	InstakubLocation::initPosition();
 	InstakubLocation::start();
 	alphaKeyBoardBg = 0.0f;
@@ -33,15 +45,13 @@ void SearchLocation::load()
 void SearchLocation::closeKeyboardHandler()
 {
 	instaViewer->connect();
-	touchKeyboard().hide(HIDING_KEYBORAD_POSITION, HIDING_KEYBORAD_TIME);
-	keyBackground->hide(EaseOutCubic(), HIDING_KEYBORAD_TIME);
+	hideKeyboardLayout();
+	resetInputField();
+}
 
-	if (touchKeyboard().emptyInputField())
-	{
-		clear();
-		instaViewer->showPreloader();
-		loadStrategity();
-	}
+void SearchLocation::resetInputField()
+{
+	touchKeyboard().setInputFieldText(searchingText);
 }
 
 void SearchLocation::initVirtualKeyboard()
@@ -58,14 +68,20 @@ void SearchLocation::inputTouchHandler()
 	instaViewer->disconnect();
 	touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
 	keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);
+	searchBtns->show();
 }
 
 void SearchLocation::searchTouchHandler()
 {
 	if (!touchKeyboard().emptyInputField())
 	{
-		mode = HASHTAG_MODE;
-		closeKeyboardHandler();
+		searchingText = touchKeyboard().getInputFieldText();
+
+		if (searchBtns->hashtagSearchMode())
+			mode = HASHTAG_PHOTOS_LOAD;
+		else
+			mode = USER_PHOTOS_LOAD;
+
 		reload();
 	}
 	else	
@@ -73,9 +89,21 @@ void SearchLocation::searchTouchHandler()
 }
 
 void SearchLocation::disconnectKeyboard()
+{	
+	hideKeyboardLayout();
+	disconnectKeyboardListeners();
+}
+
+void SearchLocation::hideKeyboardLayout()
 {
+	searchBtns->hide();
 	touchKeyboard().hide(HIDING_KEYBORAD_POSITION, HIDING_KEYBORAD_TIME);
 	keyBackground->hide(EaseOutCubic(), HIDING_KEYBORAD_TIME);
+}
+
+void SearchLocation::disconnectKeyboardListeners()
+{
+	searchBtns->disconnect();
 	keyBackground->disconnectEventHandler(KeyBackground::HIDE_KEYBOARD);
 	touchKeyboard().disconnectEventHandler(VirtualKeyboard::INPUT_TOUCH);
 	touchKeyboard().disconnectEventHandler(VirtualKeyboard::SEARCH_TOUCH);
@@ -83,6 +111,7 @@ void SearchLocation::disconnectKeyboard()
 
 void SearchLocation::connectKeyboard()
 {
+	searchBtns->connect();
 	touchKeyboard().connectKeyboard();
 	touchKeyboard().connectEventHandler(&SearchLocation::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
 	touchKeyboard().connectEventHandler(&SearchLocation::searchTouchHandler, this, VirtualKeyboard::SEARCH_TOUCH);
@@ -92,9 +121,7 @@ void SearchLocation::connectKeyboard()
 void SearchLocation::stop()
 {
 	InstakubLocation::stop();
-	keyBackground->disconnectEventHandler(KeyBackground::HIDE_KEYBOARD);
-	touchKeyboard().disconnectEventHandler(VirtualKeyboard::INPUT_TOUCH);
-	touchKeyboard().disconnectEventHandler(VirtualKeyboard::SEARCH_TOUCH);
+	disconnectKeyboardListeners();
 }
 
 void SearchLocation::drawTouchKeyboardLayout()
@@ -102,6 +129,7 @@ void SearchLocation::drawTouchKeyboardLayout()
 	keyBackground->draw();
 	gl::color(Color::white());
 	touchKeyboard().draw();
+	searchBtns->draw();
 }
 
 void SearchLocation::openPopupHandler()
@@ -132,4 +160,67 @@ void SearchLocation::closePopupHandler()
 {
 	InstakubLocation::closePopupHandler();
 	connectKeyboard();
+}
+
+void SearchLocation::reload()
+{
+	if (touchKeyboard().showing())
+	{
+		instaViewer->connect();
+		disconnectKeyboard();
+	}
+	
+	InstakubLocation::reload();
+}
+
+void SearchLocation::loadStrategity()
+{
+	switch (mode)
+	{
+	case HASHTAG_PHOTOS_LOAD:
+		hashTagPhotosLoad();
+		break;
+
+	case HASHTAG_DEFAULT_PHOTOS_LOAD:
+		hashTagDefaultPhotosLoad();
+		break;
+
+	case USER_PHOTOS_LOAD:
+		userPhotosLoad();
+		break;
+
+	case POPULAR_PHOTOS_LOAD:
+		popularPhotosLoad();
+		break;
+	}
+}
+
+void SearchLocation::hashTagPhotosLoad()
+{
+	string hashtag = touchKeyboard().getInputFieldText();
+	console() << "LOAD STRAGEDY:::::::::::::::: HASHTAG_PHOTOS_LOAD :::: " << hashtag << endl;
+	hashtagPhotosload(hashtag);
+}
+
+void SearchLocation::userPhotosLoad()
+{
+	string userName = touchKeyboard().getInputFieldText();
+	console() << "LOAD STRAGEDY:::::::::::::::: USER_PHOTOS_LOAD :::: " << userName << endl;
+	userPhotosload(userName);
+}
+
+void SearchLocation::draw()
+{
+	InstakubLocation::draw();
+	gl::color(Color::white());
+	gl::draw(overMask);
+	gl::draw(title, titlePosition);
+
+	gl::draw(searchField, searchFieldPosition);
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaError));
+	gl::draw(searchFieldRed, searchFieldPosition);
+	gl::color(Color::white());
+
+	drawTouchKeyboardLayout();
+	InstakubLocation::drawPopup();
 }

@@ -12,16 +12,20 @@ namespace kubik
 			typedef std::shared_ptr<class HashtagAndSearch> HashtagAndSearchRef;
 
 			class HashtagAndSearch : public SearchLocation
-			{
+			{	
+				void closeKeyboardHandler() override;
+				void inputTouchHandler() override;				
+
+				ci::Anim<float> hashTagAlpha;
+				ci::gl::Texture hashtagTexture;
+				ci::Vec2f hashtagPosition;
 
 			public:	
 				HashtagAndSearch(InstakubSettingsRef settings);
-				virtual void loadStrategity() override;
-				virtual void start() override;
-				virtual void load() override;
-				virtual void draw() override;
-				virtual void reset() override;
-				virtual void reload() override;
+				void load() override;
+				void draw() override;
+				void start() override;
+				void reset() override;
 			};
 		}
 	}

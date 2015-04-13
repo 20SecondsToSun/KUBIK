@@ -77,7 +77,7 @@ namespace ph {
 			garbageCollect();
 
 #ifdef _DEBUG
-			console() << getElapsedSeconds() << ": creating Texture for '" << url << "'." << endl;
+			//console() << getElapsedSeconds() << ": creating Texture for '" << url << "'." << endl;
 #endif
 			ph::Texture tex(surface, fmt);
 			if (tex) {
@@ -136,7 +136,7 @@ namespace ph {
 			garbageCollect();
 
 #ifdef _DEBUG
-			console() << getElapsedSeconds() << ": creating Texture for '" << url << "'." << endl;
+			//console() << getElapsedSeconds() << ": creating Texture for '" << url << "'." << endl;
 #endif
 			ph::Texture tex(surface, fmt);
 			if (tex) {
@@ -150,7 +150,7 @@ namespace ph {
 			// hand over to threaded loader
 			if (mQueue.push_back(url, true)) {
 #ifdef _DEBUG
-				console() << getElapsedSeconds() << ": queueing Texture '" << url << "' for loading." << endl;
+				//console() << getElapsedSeconds() << ": queueing Texture '" << url << "' for loading." << endl;
 #endif
 			}
 		}
@@ -192,7 +192,7 @@ namespace ph {
 			if (itr->second.getUseCount() < 2)
 			{
 #ifdef _DEBUG
-				console() << getElapsedSeconds() << ": removing texture '" << itr->first << "' because it is no longer in use." << endl;
+				//console() << getElapsedSeconds() << ": removing texture '" << itr->first << "' because it is no longer in use." << endl;
 #endif
 				//itr = mTextures.erase(itr); //no return type for std::map erase();
 				//this should work

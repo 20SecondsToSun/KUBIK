@@ -615,6 +615,9 @@
     <ClCompile Include="..\src\games\instakub\states\SearchLocation.cpp">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\instakub\states\SearchButtons.cpp">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1236,6 +1239,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\SearchLocation.h">
+      <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\instakub\states\SearchButtons.h">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
   </ItemGroup>

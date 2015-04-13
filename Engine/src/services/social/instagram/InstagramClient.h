@@ -59,6 +59,17 @@ namespace instagram
 
 		////////////////////////////////////////////////////////////////////////////
 		//
+		//					USER LOAD
+		//
+		////////////////////////////////////////////////////////////////////////////
+
+		void loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
+		void _loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
+		void loadUserPhotos(const string& userID, int count = LOAD_COUNT);
+		void loadUsersRequest(const std::string& request);		
+	
+		////////////////////////////////////////////////////////////////////////////
+		//
 		//					PAGINATION
 		//
 		////////////////////////////////////////////////////////////////////////////
@@ -97,6 +108,8 @@ namespace instagram
 
 		std::string nextRequest;
 		InstagramResponse<InstagramMedia> lastMediaResponse;
+		InstagramResponse<User> userResponse;
+
 
 		void loadImages();
 
