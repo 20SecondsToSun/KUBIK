@@ -5,6 +5,8 @@ using namespace ci;
 using namespace kubik::games::instakub;
 using namespace instagram;
 
+const std::string InstakubLocation::HASH_SYMBOL = "#";
+
 bool InstakubLocation::init = false;
 
 InstagramClientRef InstakubLocation::instClient;
@@ -26,17 +28,18 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 	instClient  = InstagramClientRef(new InstagramClient(clientID));
 
 	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
-		settings->getTexture("preloaderMain"),
+		settings->getMainPreloader(),
 		settings->getTexture("preloaderMini"),
 		settings->getTexture("noMaterials"),
-		settings->getTexture("allLoaded")));	
+		settings->getTexture("allLoaded")));
+
 
 	instaPopup = InstaPopupRef(new InstaPopup(instClient,
 		settings->getTexture("closeInstaPopup"), 
 		settings->getTexture("printInstaPopup"), 
 		settings->getCurrentTemplate()));
 
-	init = true;
+	init = true;	
 }
 
 void InstakubLocation::initPosition()
@@ -69,17 +72,6 @@ void InstakubLocation::stop()
 	disconnectPopup();
 }
 
-void InstakubLocation::draw()
-{
-	fillBg();
-	//drawTitle();
-
-	gl::pushMatrices();
-	gl::color(Color::white());
-	instaViewer->draw();
-	gl::popMatrices();
-};
-
 void InstakubLocation::reset()
 {
 	bg = settings->getTexture("bg");	
@@ -89,6 +81,13 @@ void InstakubLocation::initOverMask()
 {
 	overMask = Utils::drawGraphicsToFBO(Vec2f(getWindowWidth(), position.y), [&](){ gl::draw(bg); });
 }
+
+void InstakubLocation::draw()
+{
+	fillBg();
+	gl::color(Color::white());
+	instaViewer->draw();
+};
 
 void InstakubLocation::fillBg()
 {
@@ -124,9 +123,7 @@ void InstakubLocation::userPhotosload(const string& userName)
 }
 
 void InstakubLocation::popularPhotosLoad()
-{
-	console() << "LOAD STRAGEDY:::::::::::::::: POPULAR_PHOTOS_LOAD :::: " << endl;
-
+{	
 	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
 	instaViewer->connect();
 
@@ -207,8 +204,6 @@ void InstakubLocation::reload()
 		closePopupHandler();
 	
 	clear();
-	
-	//start();
 	instaViewer->showPreloader();	
 	loadStrategity();
 }

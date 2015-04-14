@@ -8,14 +8,31 @@ using namespace kubik;
 
 Preloader::Preloader(const ci::Vec2f& position)
 {
-	this->position = position;
-	tex = gl::Texture(loadImage(ci::app::App::loadResource(2, "IMAGE")));
+	create(position);
+	
+	/*preloaderMovie = qtime::MovieGl(loadAsset("test.gif"));
+	preloaderMovie.setLoop();
+	preloaderMovie.play();*/
 }
 
 Preloader::Preloader()
 {
-	this->position = Vec2f(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f);
-	tex = gl::Texture(loadImage(ci::app::App::loadResource(2, "IMAGE")));
+	create(Vec2f(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f));	
+}
+
+void Preloader::create(const ci::Vec2f& position)
+{
+	this->position = position;
+
+	std::vector<std::string> files = fileTools().getAllJpegPaths(getAssetPath(fs::path("preloader\\")).string());
+	std::vector<ci::gl::Texture> preloaderSeq;
+
+	for (int i = 0; i < files.size(); i++)
+		preloaderSeq.push_back(gl::Texture(loadImage(ci::loadFile(files[i]))));	
+
+	sequencer = ImageSequencerRef(new ImageSequencer());
+	sequencer->setImages(preloaderSeq);	
+	sequencer->setPosition(0.5f * (getWindowSize() - preloaderSeq[0].getSize()));
 }
 
 void Preloader::draw()
@@ -28,13 +45,8 @@ void Preloader::draw()
 		gl::color(Color::white());
 	}
 
-	gl::pushMatrices();
-	gl::translate(position);
-	gl::scale(0.5f, 0.5f);
-	gl::rotate(180.0f * float(getElapsedSeconds()));
-	gl::translate(-0.5f * Vec2f(151.0f, 151.0f));
-	gl::draw(tex);
-	gl::popMatrices();
+	sequencer->draw();
+
 }
 
 void Preloader::setPosition(const ci::Vec2f& position)

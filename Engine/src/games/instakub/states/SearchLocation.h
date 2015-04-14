@@ -15,7 +15,6 @@ namespace kubik
 
 			class SearchLocation : public InstakubLocation
 			{	
-				virtual void openPopupHandler();
 				virtual void loadingCompleteHandler();
 				virtual void startLoadHandler();
 				virtual	void noMoreLoadsHandler();				
@@ -42,7 +41,7 @@ namespace kubik
 				virtual void closeKeyboardHandler();
 				virtual void inputTouchHandler();
 				virtual void searchTouchHandler();
-
+				virtual void openPopupHandler();
 				virtual	void closePopupHandler();
 
 				void initVirtualKeyboard();

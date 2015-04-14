@@ -12,9 +12,11 @@ namespace kubik
 			typedef std::shared_ptr<class HashtagAndSearch> HashtagAndSearchRef;
 
 			class HashtagAndSearch : public SearchLocation
-			{	
+			{				
 				void closeKeyboardHandler() override;
-				void inputTouchHandler() override;				
+				void inputTouchHandler() override;	
+				void openPopupHandler() override;
+				void closePopupHandler() override;
 
 				ci::Anim<float> hashTagAlpha;
 				ci::gl::Texture hashtagTexture;

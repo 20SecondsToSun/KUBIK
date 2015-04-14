@@ -2,6 +2,8 @@
 
 #include "Resources.h"
 #include "IScreen.h"
+#include "FileTools.h"
+#include "ImageSequencer\ImageSequencer.h"
 
 namespace kubik
 {
@@ -12,6 +14,7 @@ namespace kubik
 	public:
 		Preloader(const ci::Vec2f& position);
 		Preloader();
+		void create(const ci::Vec2f& position);
 
 		virtual void draw() override;
 
@@ -23,8 +26,11 @@ namespace kubik
 	protected:
 		void setTextures();
 
-	private:
+	private:		
 		ci::Vec2f position;
-		ci::gl::Texture tex, background;
+		ci::gl::Texture background;
+		//qtime::MovieGl preloaderMovie;
+		ImageSequencerRef sequencer;
+		
 	};	
 }

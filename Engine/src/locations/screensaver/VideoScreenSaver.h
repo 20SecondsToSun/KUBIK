@@ -1,5 +1,5 @@
 #pragma once
-
+#include "IResourceScreenSaver.h"
 namespace kubik
 {
 	class VideoScreenSaver:public IResourceScreenSaver

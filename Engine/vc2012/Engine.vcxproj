@@ -167,6 +167,7 @@
     <ClCompile Include="..\src\games\photobooth\states\template\PhotoTemplate.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
+    <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="..\src\games\photobooth\states\template\PhotoTemplate.h" />
     <ClInclude Include="..\src\games\photobooth\states\template\TemplateButtons.h" />
     <ClInclude Include="..\src\games\photobooth\states\timer\PhotoTimer.h" />
+    <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\Bloom.h" />
     <ClInclude Include="..\src\graphics\shaders\ColorHalftone.h" />

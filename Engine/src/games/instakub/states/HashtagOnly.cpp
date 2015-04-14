@@ -5,9 +5,7 @@ using namespace kubik::config;
 using namespace kubik::games::instakub;
 
 HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
-	:InstakubLocation(settings, Vec2f(18.0f, 332.0f)),
-	hashtagPlashka(settings->getTexture("hashtagPlashka")),
-	hashtagPlashkaText(settings->getTexture("hashtagPlashkaText"))
+	:InstakubLocation(settings, Vec2f(18.0f, 332.0f))	
 {
 	reset();
 }
@@ -16,6 +14,8 @@ void HashtagOnly::reset()
 {
 	InstakubLocation::reset();
 	InstakubLocation::initOverMask();
+	hashtagPlashka = settings->getTexture("hashtagPlashka");
+	hashtagPlashkaText = settings->getTexture("hashtagPlashkaText");
 	title = settings->getTexture("hashtagTitle");
 	titlePosition = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 176.0f - title.getHeight() * 0.5f);	
 }
@@ -23,7 +23,7 @@ void HashtagOnly::reset()
 void HashtagOnly::start()
 {
 	string hashtag = settings->getHashtag();
-	hashTagTexture = textTools().getTextField("#" + hashtag, &settings->getFont("introLight90"), Color::hex(0xaa9b74));
+	hashTagTexture = textTools().getTextField(HASH_SYMBOL+ hashtag, &settings->getFont("introLight90"), Color::hex(0xaa9b74));
 
 	float plashkaY = getWindowHeight() - hashtagPlashka.getHeight();
 	hashTagTexturePos = Vec2f(0.5f * (getWindowWidth() - hashTagTexture.getWidth()), plashkaY + 100.0f);

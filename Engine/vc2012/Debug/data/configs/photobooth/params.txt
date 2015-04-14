@@ -29,14 +29,11 @@
          "isOn" : true
       }
    ],
-   "isCustomDesign" : false,
    "isEmail" : true,
    "isFacebook" : true,
    "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : true,
    "isTwitter" : false,
-   "isVkotakte" : true,
-   "seconds" : 4,
-   "templateId" : 1
+   "isVkotakte" : true
 }

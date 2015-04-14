@@ -5,6 +5,7 @@
 #include "instagram/InstagramViewer.h"
 #include "instagram/InstaPopup.h"
 #include "VirtualKeyboard.h"
+#include "VideoScreenSaver.h"
 
 using namespace kubik::config;
 using namespace instagram;
@@ -24,6 +25,7 @@ namespace kubik
 				static const int DISABLE_CONTROLS = 2;
 				static const int SHOW_CONTROLS = 3;
 				static const int HIDE_CONTROLS = 4;
+				static const std::string HASH_SYMBOL;
 
 			protected:
 				enum LoadMode

@@ -146,12 +146,19 @@ void InstakubSettings::setTextures()
 	addToDictionary("preloaderMini", createImageResource(getTemplateDesignPath("preloaderMini.png")));
 	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
 	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
+
+	addToDictionary("preloaderMainGIF", createVideoResource(getTemplateDesignPath("preloaderMain.gif")));
 	
 	for (auto item : photoCardStyles)
 	{
 		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
-	}		
+	}	
+
+	std::vector<std::string> files = fileTools().getAllJpegPaths(getTemplateDesignPath("mainpreloader\\"));
+	mainPreloaderSize = files.size();
+	for (int i = 0; i < files.size(); i++)
+		addToDictionary("mainPreloader" + to_string(i), createImageResource(files[i]));
 }
 
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
@@ -178,7 +185,20 @@ void InstakubSettings::buildData()
 	}
 
 	configTexts.setDic(dic);
+
+	std::vector<ci::gl::Texture> preloaderSeq;
+	for (int i = 0; i < mainPreloaderSize; i++)
+		preloaderSeq.push_back(getTexture("mainPreloader" + to_string(i)));
+
+	mainPreloader = ImageSequencerRef(new ImageSequencer());
+	mainPreloader->setImages(preloaderSeq);
+	mainPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
 };
+
+ImageSequencerRef InstakubSettings::getMainPreloader() const
+{
+	return mainPreloader;
+}
 
 TextItem InstakubSettings::getTextItem(const InstaTextID& id)
 {

@@ -244,6 +244,9 @@
     <Filter Include="Source Files\loaders\asynchTextureLoader">
       <UniqueIdentifier>{ae2850cb-7023-4d74-b5a9-96b89c4c13e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\imagesequencer">
+      <UniqueIdentifier>{d0253aaa-f443-49f8-9eb8-380ed9da8e50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -617,6 +620,9 @@
     </ClCompile>
     <ClCompile Include="..\src\games\instakub\states\SearchButtons.cpp">
       <Filter>Source Files\games\instakub\states</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp">
+      <Filter>Source Files\graphics\imagesequencer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1246,6 +1252,12 @@
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\SearchButtons.h">
       <Filter>Source Files\games\instakub\states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h">
+      <Filter>Source Files\graphics\imagesequencer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

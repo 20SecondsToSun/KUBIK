@@ -200,7 +200,6 @@ void VirtualKeyboard::setup()
 	sendBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(sendBtnTex, "send"));
 	sendBtn->setPosition(pos + Vec2f(_xOffset5 + spaceBtnTex.getWidth() - 31, 0.0f));
 
-
 	mode = USUAL_MODE;
 	alwaysCaps = false;
 	isShowing = false;	
@@ -210,7 +209,7 @@ void VirtualKeyboard::setup()
 	setuped = true;
 }
 
-void VirtualKeyboard::show(Vec2f from, Vec2f to, float time)
+void VirtualKeyboard::show(const ci::Vec2f& from, const ci::Vec2f& to, float time)
 {
 	if(!isShowing)
 	{
@@ -225,7 +224,7 @@ void VirtualKeyboard::show(Vec2f from, Vec2f to, float time)
 	}	
 }
 
-void VirtualKeyboard::hide(Vec2f to, float time)
+void VirtualKeyboard::hide(const ci::Vec2f& to, float time)
 {
 	if(isShowing)
 	{
@@ -238,47 +237,32 @@ void VirtualKeyboard::hide(Vec2f to, float time)
 	}
 }
 
-void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
+void VirtualKeyboard::hideQuick(const ci::Vec2f& value)
 {
-	switch (activeLanguage)
-	{
-		case KEYBOARD_LANG::ENG:
-			activeKeyboard = &buttonsMainKeyboard;
-			shift->setPosition(lineOffset4 - Vec2f(91.0f, 0.0f));
-			break;
-
-		case KEYBOARD_LANG::RUS:
-			activeKeyboard = &buttonsRusMainKeyboard;
-			shift->setPosition(lineOffset4 - Vec2f(91.0f + 14, 0.0f));
-			break;
-
-		default:
-			break;
-	}
+	keyBoardPosition = value;
+	isShowing = false;
 }
+
+
 
 void VirtualKeyboard::connectKeyboard()
 {	
-	if (connected)
-		return;
-	MouseDownCon   =  getWindow()->getSignalMouseDown().connect(std::bind( &VirtualKeyboard::MouseDown, this, std::placeholders::_1));
-	MouseUpCon	   =  getWindow()->getSignalMouseUp().connect(std::bind( &VirtualKeyboard::MouseUp, this, std::placeholders::_1));
-	connected = true;
+	if (!connected)
+	{
+		MouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&VirtualKeyboard::MouseDown, this, std::placeholders::_1));
+		MouseUpCon = getWindow()->getSignalMouseUp().connect(std::bind(&VirtualKeyboard::MouseUp, this, std::placeholders::_1));
+		connected = true;
+	}	
 }
 
 void VirtualKeyboard::disconnectKeyboard()
 {	
-	if (!connected)
-		return;
-
-	MouseUpCon.disconnect( );
-	MouseDownCon.disconnect();
-	connected = false;
-}
-
-void VirtualKeyboard::setInputFieldVisible(bool value)
-{
-	showInputField = value;
+	if (connected)
+	{
+		MouseUpCon.disconnect();
+		MouseDownCon.disconnect();
+		connected = false;
+	}	
 }
 
 void VirtualKeyboard::draw( )
@@ -310,35 +294,13 @@ void VirtualKeyboard::draw( )
 	}	
 }
 
-void VirtualKeyboard::setEraseButtonVisible(bool value)
-{
-	showEraseButton = value;
-}
-
-bool VirtualKeyboard::inputFieldEmpty()
-{
-	return inputField.empty();
-}
-
 void VirtualKeyboard::MouseUp(MouseEvent &event)
 {
-	if (lastCode == "shift")
-	{
-		//keyboardTouchSignal();
-	}
-	else if (lastCode == "erase" && showEraseButton && isShowing)
+	if (lastCode == "erase" && showEraseButton && isShowing)
 	{
 		inputField = "";
 		setInputFieldText(inputField);
-	}
-	else if (lastCode == "#+=" || lastCode == "ABC")
-	{
-					
-	}
-	else if (lastCode == "lang")
-	{				
-	
-	}
+	}	
 	else if (lastCode == "search")
 	{
 		callback(SEARCH_TOUCH);
@@ -369,13 +331,77 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 		{
 			callback(MAX_LETTER_LIMIT);
 		}
+	}		
+}
+
+void VirtualKeyboard::MouseDown(MouseEvent &event)
+{
+	lastCode = "-1";
+
+	ci::Vec2f coords = event.getPos() - originPoint;
+
+	if (touchInputZone->inButtonField(coords))
+		callback(INPUT_TOUCH);
+
+	if (!isShowing)
+		return;
+
+	coords = event.getPos() - keyBoardPosition.value() - originPoint;
+
+	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
+	{
+		if ((*item)->inButtonField(coords))
+		{
+			checkCapsLock();
+			lastCode = (*item)->getBtnId();
+			(*item)->down();
+
+			if (lastCode == "shift")
+				changeShiftMode();
+			else if (lastCode == "#+=" || lastCode == "ABC")
+				changeKeyboardMode();
+			else if (lastCode == "lang")
+				changeLangMode();
+			break;
+		}
 	}
 
-	
-	ci::Vec2f coords = event.getPos() - originPoint;
-	
-	if (touchInputZone->inButtonField(coords))		
-			callback(INPUT_TOUCH);	
+	if (erase->inButtonField(coords))
+		lastCode = erase->getBtnId();
+}
+
+void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
+{
+	switch (activeLanguage)
+	{
+	case KEYBOARD_LANG::ENG:
+		activeKeyboard = &buttonsMainKeyboard;
+		shift->setPosition(lineOffset4 - Vec2f(91.0f, 0.0f));
+		break;
+
+	case KEYBOARD_LANG::RUS:
+		activeKeyboard = &buttonsRusMainKeyboard;
+		shift->setPosition(lineOffset4 - Vec2f(91.0f + 14, 0.0f));
+		break;
+
+	default:
+		break;
+	}
+}
+
+void VirtualKeyboard::setInputFieldVisible(bool value)
+{
+	showInputField = value;
+}
+
+void VirtualKeyboard::setEraseButtonVisible(bool value)
+{
+	showEraseButton = value;
+}
+
+bool VirtualKeyboard::inputFieldEmpty()
+{
+	return inputField.empty();
 }
 
 void VirtualKeyboard::setPosition(const Vec2f& vec)
@@ -386,41 +412,6 @@ void VirtualKeyboard::setPosition(const Vec2f& vec)
 void VirtualKeyboard::alwaysCapsLock(bool value)
 {
 	alwaysCaps = value;
-}
-
-void VirtualKeyboard::MouseDown( MouseEvent &event )
-{
-	lastCode = "-1";
-	
-	if(!isShowing)
-		return;
-
-	ci::Vec2f coords = event.getPos() - keyBoardPosition.value() - originPoint;//position.value();
-
-	for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )
-	{		
-		if((*item)->inButtonField(coords))
-		{
-			checkCapsLock();
-			lastCode = (*item)->getBtnId();
-			(*item)->down();
-		
-			if (lastCode == "shift")			
-				changeShiftMode();				
-			else if (lastCode == "#+=" || lastCode == "ABC")			
-				changeKeyboardMode();				
-			else if (lastCode == "lang")						
-				changeLangMode();					
-			break;
-		}
-	}	
-
-	coords = event.getPos() - originPoint;
-	
-	if(erase->inButtonField(coords))
-	{
-		lastCode = erase->getBtnId();
-	}	
 }
 
 string VirtualKeyboard::getLastCode()
@@ -510,7 +501,7 @@ void VirtualKeyboard::activateSearchMode()
 	buttonsSecondKeyboard.push_back(searchBtn);
 	buttonsRusMainKeyboard.push_back(searchBtn);
 
-	mode = SEARCH_MODE;
+	mode = SEARCH_MODE;		
 }
 
 void VirtualKeyboard::activateSendMode()
@@ -525,7 +516,7 @@ void VirtualKeyboard::activateSendMode()
 	buttonsSecondKeyboard.push_back(sendBtn);
 	buttonsRusMainKeyboard.push_back(sendBtn);
 
-	mode = SEND_MODE;
+	mode = SEND_MODE;		
 }
 
 void VirtualKeyboard::activateUsualMode()
@@ -591,7 +582,7 @@ KeyEvent VirtualKeyboard::imitate_BACKSPACE_KEY_EVENT()
 	return key;
 }
 
-MouseEvent VirtualKeyboard::inititateMouseEvent(ci::Vec2f vec)
+MouseEvent VirtualKeyboard::inititateMouseEvent(const ci::Vec2f& vec)
 {
 	unsigned int k = 1;
 	float r = 1.0f;

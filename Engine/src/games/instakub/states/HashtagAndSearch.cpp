@@ -36,7 +36,10 @@ void HashtagAndSearch::start()
 {
 	SearchLocation::start();
 	hashTagAlpha = 1.0f;
-	hashtagTexture = textTools().getTextField("#"+settings->getHashtag(), &settings->getFont("introLight36"), Color::white());
+	hashtagTexture = textTools().getTextField(
+		HASH_SYMBOL + settings->getHashtag(), 
+		&settings->getFont("introLight36"),
+		Color::white());
 }
 
 void HashtagAndSearch::inputTouchHandler()
@@ -47,16 +50,31 @@ void HashtagAndSearch::inputTouchHandler()
 
 void HashtagAndSearch::closeKeyboardHandler()
 {
-	if (!touchKeyboard().emptyInputField())
-		SearchLocation::closeKeyboardHandler();
-	else
+	if (touchKeyboard().emptyInputField() || searchingText =="")
 	{
+		touchKeyboard().setInputFieldText("");
 		instaViewer->connect();
 		hideKeyboardLayout();
 		hashTagAlpha = 1.0f;
 		mode = HASHTAG_DEFAULT_PHOTOS_LOAD;
 		reload();
 	}
+	else
+		SearchLocation::closeKeyboardHandler();
+}
+
+void HashtagAndSearch::openPopupHandler()
+{
+	hashTagAlpha = 0.0f;
+	SearchLocation::openPopupHandler();
+}
+
+void HashtagAndSearch::closePopupHandler()
+{
+	if(mode == HASHTAG_DEFAULT_PHOTOS_LOAD)	
+		hashTagAlpha = 1.0f;
+
+	SearchLocation::closePopupHandler();
 }
 
 void HashtagAndSearch::draw()

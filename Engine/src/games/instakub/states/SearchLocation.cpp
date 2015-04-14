@@ -65,6 +65,9 @@ void SearchLocation::initVirtualKeyboard()
 
 void SearchLocation::inputTouchHandler()
 {
+	if (touchKeyboard().showing())
+		return;
+
 	instaViewer->disconnect();
 	touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
 	keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);
@@ -122,6 +125,7 @@ void SearchLocation::stop()
 {
 	InstakubLocation::stop();
 	disconnectKeyboardListeners();
+	disconnectKeyboard();
 }
 
 void SearchLocation::drawTouchKeyboardLayout()
@@ -130,12 +134,6 @@ void SearchLocation::drawTouchKeyboardLayout()
 	gl::color(Color::white());
 	touchKeyboard().draw();
 	searchBtns->draw();
-}
-
-void SearchLocation::openPopupHandler()
-{
-	InstakubLocation::openPopupHandler();
-	disconnectKeyboard();
 }
 
 void SearchLocation::loadingCompleteHandler()
@@ -154,6 +152,12 @@ void SearchLocation::noMoreLoadsHandler()
 {
 	InstakubLocation::noMoreLoadsHandler();
 	connectKeyboard();
+}
+
+void SearchLocation::openPopupHandler()
+{
+	InstakubLocation::openPopupHandler();
+	disconnectKeyboard();
 }
 
 void SearchLocation::closePopupHandler()

@@ -1,5 +1,6 @@
 #pragma once
 #include "instagram/InstagramClient.h"
+#include "ImageSequencer/ImageSequencer.h"
 
 namespace instagram
 {
@@ -9,7 +10,7 @@ namespace instagram
 	{
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
-		ci::gl::Texture preloaderMain;
+		kubik::ImageSequencerRef preloaderMain;
 		ci::gl::Texture preloaderMini;
 		ci::gl::Texture noMaterials;
 		ci::gl::Texture allLoaded;
@@ -26,12 +27,13 @@ namespace instagram
 		void drawNoMorePopup();
 		void drawNoMaterialsPopup();		
 		void noMorePopupAnimFinished();	
+		void setState(const drawState& value);
 
 		ci::Anim<float> noMorePopupAlpha;
 
 	public:	
 		InstagramViewer(InstagramClientRef client,
-			const ci::gl::Texture& preloaderMain,
+			kubik::ImageSequencerRef prel,
 			const ci::gl::Texture& preloaderMini,
 			const ci::gl::Texture& noMaterials,
 			const ci::gl::Texture& allLoaded);

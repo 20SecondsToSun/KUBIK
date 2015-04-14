@@ -106,12 +106,13 @@ void InstakubConfig::hideAnimationFinish()
 }
 
 void InstakubConfig::initKeyBoard()
-{	
-	touchKeyboard().setInputFieldText(instSettings->getHashtag());
+{
+	touchKeyboard().hideQuick(Vec2f(-130.0f, 1920.0f));
 	touchKeyboard().setOriginPoint(Vec2f(166.0f, 0.0f));
 	touchKeyboard().setInputField(162.0f, 695.0f, 800.0f, 797.0f);
 	touchKeyboard().setInputFont(instSettings->getFont("introLight44"));
 	touchKeyboard().setInputColor(Color::black());
+	touchKeyboard().setInputFieldText(instSettings->getHashtag());
 	touchKeyboard().connectKeyboard();
 	touchKeyboard().connectEventHandler(&InstakubConfig::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);				
 }

@@ -10,6 +10,7 @@ namespace kubik
 	class VirtualKeyboard : public Sprite
 	{
 	public:
+
 		static const int INPUT_TOUCH = 1;
 		static const int KEY_TOUCH = 2;
 		static const int MAX_LETTER_LIMIT = 3;	
@@ -24,8 +25,10 @@ namespace kubik
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 
 		void setup();
-		void show(ci::Vec2f from, ci::Vec2f to, float time);
-		void hide(ci::Vec2f to, float time);
+		void show(const ci::Vec2f& from, const ci::Vec2f& to, float time);
+		void hide(const ci::Vec2f& to, float time);
+		void hideQuick(const ci::Vec2f& to);
+		
 		void draw();
 		void update();
 		void connectKeyboard();
@@ -37,7 +40,7 @@ namespace kubik
 
 		static ci::app::KeyEvent   imitate_ENTER_KEY_EVENT();
 		static ci::app::KeyEvent   imitate_BACKSPACE_KEY_EVENT();
-		static ci::app::MouseEvent inititateMouseEvent(ci::Vec2f _vec);
+		static ci::app::MouseEvent inititateMouseEvent(const ci::Vec2f& vec);
 
 		bool isMailCode();
 		bool isBackCode();
@@ -179,14 +182,10 @@ namespace kubik
 			return inputField == "";
 		}
 
-
 		bool showing() const
 		{
 			return isShowing;
-		}
-
-
-		
+		}		
 	};
 
 	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance();};

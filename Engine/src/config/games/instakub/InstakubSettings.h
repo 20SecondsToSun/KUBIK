@@ -7,6 +7,7 @@
 #include "JsonTools.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
+#include "ImageSequencer/ImageSequencer.h"
 
 namespace kubik
 {
@@ -59,14 +60,19 @@ namespace kubik
 			changeSetting::id getChangeID() const;
 
 			bool hashtagEnabled();
-			bool searchEnabled();			
+			bool searchEnabled();	
+
+			ImageSequencerRef getMainPreloader() const;
 
 		private:
+			int mainPreloaderSize, miniPreloaderSize;
 			bool memento;
 			std::string hashtag, hashtag_save;
 			bool search, search_save;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
 			int userPhotoCardStyleDesignID;
+
+			ImageSequencerRef mainPreloader, miniPreloader;
 
 			ConfigTexts<InstaTextID> configTexts;
 
