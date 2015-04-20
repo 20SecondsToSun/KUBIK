@@ -18,7 +18,7 @@ namespace kubik
 
 	private:
 		std::vector<ci::gl::Texture> images;
-		int index;
+		size_t index;
 		ci::Vec2f position;
 	};
 }

@@ -8,10 +8,12 @@ namespace instagram
 
 	class InstagramViewer
 	{
+		static const int MAX_PHOTO_CASHED = 100;
+		static const int CASH_PHOTO_CLEAR_COUNT = 20;
+
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
-		kubik::ImageSequencerRef preloaderMain;
-		ci::gl::Texture preloaderMini;
+		kubik::ImageSequencerRef preloaderMain, preloaderMini;
 		ci::gl::Texture noMaterials;
 		ci::gl::Texture allLoaded;
 
@@ -34,7 +36,7 @@ namespace instagram
 	public:	
 		InstagramViewer(InstagramClientRef client,
 			kubik::ImageSequencerRef prel,
-			const ci::gl::Texture& preloaderMini,
+			kubik::ImageSequencerRef preloaderMini,
 			const ci::gl::Texture& noMaterials,
 			const ci::gl::Texture& allLoaded);
 

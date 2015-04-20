@@ -9,10 +9,6 @@ using namespace kubik;
 Preloader::Preloader(const ci::Vec2f& position)
 {
 	create(position);
-	
-	/*preloaderMovie = qtime::MovieGl(loadAsset("test.gif"));
-	preloaderMovie.setLoop();
-	preloaderMovie.play();*/
 }
 
 Preloader::Preloader()
@@ -23,11 +19,11 @@ Preloader::Preloader()
 void Preloader::create(const ci::Vec2f& position)
 {
 	this->position = position;
-
-	std::vector<std::string> files = fileTools().getAllJpegPaths(getAssetPath(fs::path("preloader\\")).string());
+	auto path = (getAppPath() / "kubik/design_elements/preloader/").string();
+	
+	std::vector<std::string> files = fileTools().getAllJpegPaths(path);
 	std::vector<ci::gl::Texture> preloaderSeq;
-
-	for (int i = 0; i < files.size(); i++)
+	for (size_t i = 0; i < files.size(); i++)
 		preloaderSeq.push_back(gl::Texture(loadImage(ci::loadFile(files[i]))));	
 
 	sequencer = ImageSequencerRef(new ImageSequencer());
@@ -46,7 +42,6 @@ void Preloader::draw()
 	}
 
 	sequencer->draw();
-
 }
 
 void Preloader::setPosition(const ci::Vec2f& position)
@@ -59,7 +54,10 @@ void Preloader::init(ISettingsRef config)
 
 }
 
-void Preloader::reset() {}
+void Preloader::reset() 
+{
+
+}
 
 void Preloader::setBackground(const gl::Texture& texture)
 {

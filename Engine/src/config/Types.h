@@ -46,6 +46,7 @@ namespace kubik
 	{	
 		enum id
 		{
+			KEYBOARD = 0,
 			MENU = 10,
 			CONFIG = 20,
 			SCREENSAVER = 30,

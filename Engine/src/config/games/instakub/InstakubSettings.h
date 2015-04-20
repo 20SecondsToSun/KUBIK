@@ -61,8 +61,9 @@ namespace kubik
 
 			bool hashtagEnabled();
 			bool searchEnabled();	
-
+			
 			ImageSequencerRef getMainPreloader() const;
+			ImageSequencerRef getMiniPreloader() const;
 
 		private:
 			int mainPreloaderSize, miniPreloaderSize;

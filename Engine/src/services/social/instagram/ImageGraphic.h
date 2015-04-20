@@ -24,20 +24,18 @@ namespace instagram
 
 		std::string getLowResURL() const;
 		ci::gl::Texture getStandartResImage();
-		ci::Surface getLowResSurface();
-
+		ci::gl::Texture getLowResImage();
+	
 	protected:
-		ci::gl::Texture tex, bigtex;
-		bool loadedthumb;
-
-		ci::EaseFn animFunc;
+		ci::gl::Texture lowTex, bigtex;		
 		ci::gl::Texture standartSurfaceTex;
+		ci::EaseFn animFunc;
 		ci::Anim<float> alpha;
-
-		float animTime;		
-		int width, height;
-
 		std::string lowResURL;
 		std::string standartResURL;
+
+		bool loadedthumb;
+		float animTime;		
+		int width, height;		
 	};
 }

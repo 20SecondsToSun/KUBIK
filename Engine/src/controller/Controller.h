@@ -21,6 +21,7 @@
 #include "instakub/Instakub.h"
 #include "Funces.h"
 
+#include "KeyboardSettings.h"
 #include "VirtualKeyboard.h"
 #include "preloader/Preloader.h"
 
@@ -45,6 +46,7 @@ namespace kubik
 		ConfigSettingsRef		controlSettings; 
 		GameSettingsRef			gameSettings; 	
 		MenuSettingsRef			menuSettings;
+		KeyboardSettingsRef		keyboardSettings;
 
 		MenuScreenRef			menuScreen;
 		ControlLayerRef			controlLayer;

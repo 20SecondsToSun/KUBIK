@@ -13,7 +13,7 @@ InstagramClientRef InstakubLocation::instClient;
 InstagramViewerRef InstakubLocation::instaViewer;
 InstaPopupRef InstakubLocation::instaPopup;
 
-gl::Texture InstakubLocation::bg;
+//gl::Texture InstakubLocation::bg;
 
 InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)
 	:settings(settings) , yPosition(0.0f)
@@ -29,7 +29,7 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 
 	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
 		settings->getMainPreloader(),
-		settings->getTexture("preloaderMini"),
+		settings->getMiniPreloader(),
 		settings->getTexture("noMaterials"),
 		settings->getTexture("allLoaded")));
 
@@ -108,7 +108,7 @@ void InstakubLocation::hashtagPhotosload(const string& hashtag)
 	instClient->loadTagMedia(hashtag);	
 }
 
-void InstakubLocation::userPhotosload(const string& userName)
+void InstakubLocation::userPhotosload(const std::string& userName)
 {
 	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
 	connect_once(instaViewer->reloadAllMedia, bind(&InstakubLocation::reloadHandler, this));

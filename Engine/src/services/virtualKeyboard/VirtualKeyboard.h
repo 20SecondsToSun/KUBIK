@@ -4,6 +4,7 @@
 #include "gui/SimpleSpriteButton.h"
 #include "KeyBoardButtonSprite.h"
 #include "TextTools.h"
+#include "ISettings.h"
 
 namespace kubik
 {
@@ -24,7 +25,7 @@ namespace kubik
 
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 
-		void setup();
+		void create(config::ISettingsRef config);
 		void show(const ci::Vec2f& from, const ci::Vec2f& to, float time);
 		void hide(const ci::Vec2f& to, float time);
 		void hideQuick(const ci::Vec2f& to);
@@ -113,6 +114,7 @@ namespace kubik
 		bool alwaysCaps;
 		void setLanguage(KEYBOARD_LANG eng);
 		void clearCurrentMode();
+		void createInputField(const ci::Font& font);
 
 		SimpleSpriteButtonRef touchInputZone;
 		std::string inputField;
@@ -123,69 +125,18 @@ namespace kubik
 		ci::gl::Texture inputFieldTexture;
 
 		ci::Color inputColor;
-
-		void createInputField()
-		{
-			originPoint = Vec2f::zero();
-			maxInputChars = 20;
-			setInputColor(Color::black());
-			setInputFont(Font( loadFile(getAssetPath("fonts/IntroLight.ttf")), 44 ));
-			setInputFieldText("test");
-
-			touchInputZone  = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(0,0, 600, 50)));
-			touchInputZone->setColor(Color(1,0,0));
-		}
-
-		ci::Vec2f originPoint;
+		ci::Vec2f originPoint;		
 
 	public:
-		void setOriginPoint(Vec2f point)
-		{
-			originPoint = point;
-		}
-
-		void setInputField(float x, float y, float width, float height)
-		{
-			touchInputZonePos = Vec2f(x, y);
-			touchInputZone->setButtonArea1(Rectf(x, y, width, height));
-			erase->setPosition(touchInputZonePos + Vec2f(touchInputZone->getWidth() - 50, 0.5f*(touchInputZone->getHeight() - 30)));
-		}
-
-		void setInputFont(const ci::Font& font)
-		{
-			inputFont = font;
-		}
-
-		void setInputColor(const ci::Color& color)
-		{
-			inputColor = color;
-		}
-
-		void clearInputFieldText()
-		{
-			setInputFieldText("");
-		}
-
-		void setInputFieldText(const std::string& text)
-		{
-			inputField = text;
-			inputFieldTexture = textTools().getTextField(text, &inputFont, inputColor);		
-		}
-
-		std::string getInputFieldText() const
-		{
-			return inputField;
-		}
-
-		bool emptyInputField()
-		{
-			return inputField == "";
-		}
-
-		bool showing() const
-		{
-			return isShowing;
-		}		
+		void setOriginPoint(const ci::Vec2f& point);
+		void setInputField(float x, float y, float width, float height);
+		void setInputFont(const ci::Font& font);
+		void setInputColor(const ci::Color& color);
+		void clearInputFieldText();
+		void setInputFieldText(const std::string& text);
+		std::string getInputFieldText() const;
+		bool emptyInputField();
+		bool showing() const;
 	};
 
 	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance();};

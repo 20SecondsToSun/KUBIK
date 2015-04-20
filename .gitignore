@@ -55,8 +55,10 @@ Icon
 ipch/
 photoDir/
 preloader/
+preloader__/
 mainpreloader/
-
+minipreloader/
+user_design/
 
 
 

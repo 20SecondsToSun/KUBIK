@@ -38,6 +38,7 @@ namespace instagram
 		bool isOpen();
 
 	private:
+		ci::Vec2f imageShift;
 		ci::gl::Texture closeImage, saveImage, templateImage;
 		ci::ColorA bgColor;
 		ci::Anim<float> alpha;

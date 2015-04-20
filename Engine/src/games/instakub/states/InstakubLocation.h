@@ -36,7 +36,7 @@ namespace kubik
 					HASHTAG_PHOTOS_LOAD
 				} mode;
 
-				static ci::gl::Texture bg;
+				ci::gl::Texture bg;
 				ci::gl::Texture title, overMask;
 				ci::Vec2f titlePosition, searchFieldPosition;
 

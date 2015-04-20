@@ -13,6 +13,8 @@ InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, cons
 {
 	closeBtn = ImageButtonSpriteRef(new ImageButtonSprite(close, Vec2f(getWindowWidth(), 0.0f) + Vec2f(-93.0f, 93.0f) - close.getSize() * 0.5f));
 	printBtn = ImageButtonSpriteRef(new ImageButtonSprite(print, Vec2f(0.5f * (getWindowWidth() - print.getWidth()), 10.0f)));
+
+	imageShift = Vec2f(0.5f * (getWindowWidth() - 640.0f), 224.0f);
 }
 
 void InstaPopup::draw()
@@ -28,20 +30,39 @@ void InstaPopup::draw()
 	gl::drawSolidRect(getWindowBounds());
 	gl::color(Color::white());
 
-	ci::gl::Texture tex = image.getStandartResImage();
-	
+	ci::gl::Texture tex = image.getStandartResImage(), _image;
+	float templateScale = 1, imageScale = 1;
+
 	if (tex)
 	{
-		float scale = ((float)tex.getWidth()) / templateImage.getWidth();
-		auto shift = Vec2f(0.5f * (getWindowWidth() - tex.getWidth()), 224.0f);
-		
+		_image = tex;
+		templateScale = 640.0f / templateImage.getWidth();
+	}
+	else
+	{
+		auto lowResImage = image.getLowResImage();
+		if (lowResImage)
+		{
+			templateScale = 640.0f / templateImage.getWidth();
+			 imageScale = 640.0f / lowResImage.getWidth();
+			_image = lowResImage;
+		}			
+	}
+
+	if (_image)
+	{
 		gl::pushMatrices();
-		gl::translate(shift);
-		gl::scale(scale, scale);
+		gl::translate(imageShift);
+		gl::scale(templateScale, templateScale);
 		gl::draw(templateImage);
 		gl::popMatrices();
-		gl::draw(tex, shift);		
-	}		
+
+		gl::pushMatrices();
+		gl::translate(imageShift);
+		gl::scale(imageScale, imageScale);
+		gl::draw(_image);
+		gl::popMatrices();
+	}	
 
 	closeBtn->draw();
 	printBtn->draw();

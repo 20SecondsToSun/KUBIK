@@ -30,21 +30,21 @@ void ImageGraphic::setSize(int size)
 
 void ImageGraphic::draw(const ci::Vec2f& vec)
 {
-	if (tex)
+	if (lowTex)
 	{
 		gl::pushMatrices();
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		float scale = ((float)width) / tex.getWidth();
+		float scale = ((float)width) / lowTex.getWidth();
 		
 		gl::translate(vec);
 		gl::scale(scale, scale);
-		gl::draw(tex);
+		gl::draw(lowTex);
 		gl::popMatrices();		
 	}
 	else
 	{
-		tex = ph::fetchTexture(lowResURL);
-		if (tex)
+		lowTex = ph::fetchTexture(lowResURL);
+		if (lowTex)
 			fadeIn(0.0f, 1.0f);
 
 		gl::pushMatrices();
@@ -81,4 +81,13 @@ ci::gl::Texture ImageGraphic::getStandartResImage()
 		bigtex = ph::fetchTexture(standartResURL);
 
 	return bigtex;
+}
+
+
+ci::gl::Texture ImageGraphic::getLowResImage()
+{
+	if (!lowTex)
+		lowTex = ph::fetchTexture(lowResURL);
+
+	return lowTex;
 }

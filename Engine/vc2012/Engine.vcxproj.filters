@@ -169,9 +169,6 @@
     <Filter Include="Source Files\config\screensaver">
       <UniqueIdentifier>{d75bb8d2-8603-4fe8-9891-14e23f6bb370}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\config\menu">
-      <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\config\elements">
       <UniqueIdentifier>{627a7039-2a64-4151-af8d-c0174e2d31aa}</UniqueIdentifier>
     </Filter>
@@ -246,6 +243,15 @@
     </Filter>
     <Filter Include="Source Files\graphics\imagesequencer">
       <UniqueIdentifier>{d0253aaa-f443-49f8-9eb8-380ed9da8e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\services">
+      <UniqueIdentifier>{7160154d-699f-4c39-8352-7f6d04b261dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\services\keyboard">
+      <UniqueIdentifier>{2ab8e162-ed82-4177-8c81-62a92e02d0b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\games\menu">
+      <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -418,7 +424,7 @@
       <Filter>Source Files\games\photobooth\states\instruction</Filter>
     </ClCompile>
     <ClCompile Include="..\src\config\menu\MenuSettings.cpp">
-      <Filter>Source Files\config\menu</Filter>
+      <Filter>Source Files\config\games\menu</Filter>
     </ClCompile>
     <ClCompile Include="..\src\locations\menu\GameButton.cpp">
       <Filter>Source Files\locations\menu</Filter>
@@ -623,6 +629,9 @@
     </ClCompile>
     <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp">
       <Filter>Source Files\graphics\imagesequencer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\services\keyboard\KeyboardSettings.cpp">
+      <Filter>Source Files\config\services\keyboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -987,7 +996,7 @@
       <Filter>Source Files\config\elements</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\menu\MenuSettings.h">
-      <Filter>Source Files\config\menu</Filter>
+      <Filter>Source Files\config\games\menu</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h">
       <Filter>Source Files\config\screensaver</Filter>
@@ -1258,6 +1267,12 @@
     </ClInclude>
     <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h">
       <Filter>Source Files\graphics\imagesequencer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h">
+      <Filter>Source Files\config\services\keyboard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

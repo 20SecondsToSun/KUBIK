@@ -142,12 +142,8 @@ void InstakubSettings::setTextures()
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
 	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));
 
-	addToDictionary("preloaderMain", createImageResource(getTemplateDesignPath("preloaderMain.png")));
-	addToDictionary("preloaderMini", createImageResource(getTemplateDesignPath("preloaderMini.png")));
 	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
 	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
-
-	addToDictionary("preloaderMainGIF", createVideoResource(getTemplateDesignPath("preloaderMain.gif")));
 	
 	for (auto item : photoCardStyles)
 	{
@@ -159,6 +155,11 @@ void InstakubSettings::setTextures()
 	mainPreloaderSize = files.size();
 	for (int i = 0; i < files.size(); i++)
 		addToDictionary("mainPreloader" + to_string(i), createImageResource(files[i]));
+
+	files = fileTools().getAllJpegPaths(getTemplateDesignPath("minipreloader\\"));
+	miniPreloaderSize = files.size();
+	for (int i = 0; i < files.size(); i++)
+		addToDictionary("miniPreloader" + to_string(i), createImageResource(files[i]));
 }
 
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
@@ -193,11 +194,25 @@ void InstakubSettings::buildData()
 	mainPreloader = ImageSequencerRef(new ImageSequencer());
 	mainPreloader->setImages(preloaderSeq);
 	mainPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
+
+	preloaderSeq.clear();
+	for (int i = 0; i < miniPreloaderSize; i++)
+		preloaderSeq.push_back(getTexture("miniPreloader" + to_string(i)));
+
+	miniPreloader = ImageSequencerRef(new ImageSequencer());
+	miniPreloader->setImages(preloaderSeq);
+	miniPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
+
 };
 
 ImageSequencerRef InstakubSettings::getMainPreloader() const
 {
 	return mainPreloader;
+}
+
+ImageSequencerRef InstakubSettings::getMiniPreloader() const
+{
+	return miniPreloader;
 }
 
 TextItem InstakubSettings::getTextItem(const InstaTextID& id)

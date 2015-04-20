@@ -148,13 +148,3 @@ vector<GamesInfo> MenuSettings::getGames()
 {
 	return model->getGames();
 }
-//
-//string MenuSettings::getUserDesighFullPath()
-//{
-//	return getBasePath().string() + data.userTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
-//}
-//
-//string MenuSettings::getKubikDesighFullPath()
-//{
-//	return getBasePath().string() + data.kubikTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
-//}

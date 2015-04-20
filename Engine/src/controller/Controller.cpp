@@ -46,7 +46,8 @@ void Controller::loadSettings()
 	controlSettings		 = ConfigSettingsRef(new ConfigSettings(model));
 	gameSettings		 = GameSettingsRef(new GameSettings(model, controlSettings));
 	menuSettings		 = MenuSettingsRef(new MenuSettings(model));	
-	screenSaverSettings	 = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
+	screenSaverSettings  = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
+	keyboardSettings	 = KeyboardSettingsRef(new KeyboardSettings(model));
 
 	settingsFactory().inject(controlSettings);
 
@@ -55,6 +56,7 @@ void Controller::loadSettings()
 	configs.push_back(gameSettings);
 	configs.push_back(menuSettings);	
 	configs.push_back(screenSaverSettings);
+	configs.push_back(keyboardSettings);
 
 	configLoader->loadConfigs(configs);
 	console() << "---------CONFIGS LOADED---------" << endl;
@@ -77,6 +79,7 @@ void Controller::loadAllLocationsGraphics()
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->LoadingErrorSignal, bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
 
+	graphicsLoader->setLoadingTextures(keyboardSettings->getResources());
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
@@ -120,7 +123,7 @@ void Controller::createLocations()
 {	
 	console()<<"create locations"<<endl;
 
-	touchKeyboard().setup();
+	touchKeyboard().create(keyboardSettings);
 
 	screenSaver   = ScreenSaverRef(new ScreenSaver(screenSaverSettings));
 	menuScreen	  = MenuScreenRef(new MenuScreen(menuSettings));	

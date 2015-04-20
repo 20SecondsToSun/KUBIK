@@ -6,17 +6,17 @@ using namespace ci::app;
 using namespace std;
 using namespace kubik;
 
-string VirtualKeyboard::secondLineCharacters[10]   = {"q","w","e","r","t","y","u","i","o","p"};
-string VirtualKeyboard::thirdLineCharacters[9]     = {"a","s","d","f","g","h","j","k","l"};
-string VirtualKeyboard::fourthLineCharacters[9]    = {"z","x","c","v","b","n","m",".","@"};
+string VirtualKeyboard::secondLineCharacters[10] = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" };
+string VirtualKeyboard::thirdLineCharacters[9] = { "a", "s", "d", "f", "g", "h", "j", "k", "l" };
+string VirtualKeyboard::fourthLineCharacters[9] = { "z", "x", "c", "v", "b", "n", "m", ".", "@" };
 
-string VirtualKeyboard::secondLineCharacters2[10]  = {"(",")","{","}","#","%","^","*","+","="};
-string VirtualKeyboard::thirdLineCharacters2[9]    = {"\\","|","~","<",">","$","&","'","\""};
-string VirtualKeyboard::fourthLineCharacters2[10]  = {"_","-","/",":",";","?","!",",",".","@"};
+string VirtualKeyboard::secondLineCharacters2[10] = { "(", ")", "{", "}", "#", "%", "^", "*", "+", "=" };
+string VirtualKeyboard::thirdLineCharacters2[9] = { "\\", "|", "~", "<", ">", "$", "&", "'", "\"" };
+string VirtualKeyboard::fourthLineCharacters2[10] = { "_", "-", "/", ":", ";", "?", "!", ",", ".", "@" };
 
-string VirtualKeyboard::secondLineCharacters3[12]  = {"é","ö","ó","ê","å","í","ã","ø","ù","ç","õ","Ú"};
-string VirtualKeyboard::thirdLineCharacters3[11]   = {"ô","û","â","à","ï","ð","î","ë","ä","æ", "ý"};
-string VirtualKeyboard::fourthLineCharacters3[10]  = {"ÿ","÷","ñ","ì","è","ò","ü","á","þ", "@"};
+string VirtualKeyboard::secondLineCharacters3[12] = { "é", "ö", "ó", "ê", "å", "í", "ã", "ø", "ù", "ç", "õ", "Ú" };
+string VirtualKeyboard::thirdLineCharacters3[11] = { "ô", "û", "â", "à", "ï", "ð", "î", "ë", "ä", "æ", "ý" };
+string VirtualKeyboard::fourthLineCharacters3[10] = { "ÿ", "÷", "ñ", "ì", "è", "ò", "ü", "á", "þ", "@" };
 
 int VirtualKeyboard::lineLength1 = 10;
 
@@ -36,159 +36,154 @@ ci::Vec2f VirtualKeyboard::lineOffset3 = Vec2f(455.0f, 214.0f);
 ci::Vec2f VirtualKeyboard::lineOffset4 = Vec2f(510.0f, 306.0f);
 ci::Vec2f VirtualKeyboard::lineOffset5 = Vec2f(504.0f, 398.0f);
 
-void VirtualKeyboard::setup()
-{ 
+void VirtualKeyboard::create(config::ISettingsRef config)
+{
 	if (setuped) return;
 
-	Font  mFont	= Font( loadFile(getAssetPath("fonts/Helvetica Neue Light.ttf")), 25 );
-	
-	gl::Texture backspaceBtnTex				= gl::Texture( loadImage( loadAsset("keyboard/backBtn.png" )));
-	gl::Texture _simple						= gl::Texture( loadImage( loadAsset("keyboard/_simpleBtn.png" )));	
-	gl::Texture _simple1					= gl::Texture( loadImage( loadAsset("keyboard/_simpleBtn1.png" )));	
-	gl::Texture	yaBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/ya.png")));
-	gl::Texture ramBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/ram.png")));
-	gl::Texture mailBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/mail.png" )));
-	gl::Texture gmailBtnTex					= gl::Texture( loadImage( loadAsset("keyboard/gmail.png" )));
+	Font mFont = config->getFont("helveticaLight25");
+	gl::Texture backspaceBtnTex = config->getTexture("backspaceBtnTex");
+	gl::Texture _simple = config->getTexture("_simple");
+	gl::Texture _simple1 = config->getTexture("_simple1");
 
-	sendBtnTex = gl::Texture(loadImage(loadAsset("keyboard/send.png")));
-	searchBtnTex = gl::Texture(loadImage(loadAsset("keyboard/search.png")));
-	shiftTex1								= gl::Texture( loadImage( loadAsset("keyboard/shift.png" )));
-	shiftTex0								= gl::Texture( loadImage( loadAsset("keyboard/shift0.png")));
+	sendBtnTex = config->getTexture("send");
+	searchBtnTex = config->getTexture("search");
+	shiftTex1 = config->getTexture("shift");
+	shiftTex0 = config->getTexture("shift0");
 
-	spaceBtnTex								= gl::Texture(loadImage(loadAsset("keyboard/space.png")));
-	smallspaceBtnTex						= gl::Texture(loadImage(loadAsset("keyboard/smallSpace.png")));
+	spaceBtnTex = config->getTexture("space");
+	smallspaceBtnTex = config->getTexture("smallSpace");
 
-	changeKeyboardTex1						= gl::Texture( loadImage( loadAsset("keyboard/k2.png" )));
-	changeKeyboardTex2						= gl::Texture( loadImage( loadAsset("keyboard/k2.png")));
+	changeKeyboardTex1 = config->getTexture("k2");
+	changeKeyboardTex2 = config->getTexture("k2");
 
-	gl::Texture langChangeTex				= gl::Texture( loadImage( loadAsset("keyboard/lang.png")));
+	gl::Texture langChangeTex = config->getTexture("lang");
 
-	gl::Texture eraseTex					= gl::Texture( loadImage( loadAsset("keyboard/erase.png")));
+	gl::Texture eraseTex = config->getTexture("erase");
 
 	Vec2f shift_Y = Vec2f::zero();
-	float _width  = 79.0f;
-	float _width1 = 68.0f;	
+	float _width = 79.0f;
+	float _width1 = 68.0f;
 
 	lineOffset1 = Vec2f::zero();
-	lineOffset2 = Vec2f(65.0f,    88.0f);
-	lineOffset3 = Vec2f(105.0f, 2*88.0f);
-	lineOffset4 = Vec2f(150.0f, 3*88.0f);
-	lineOffset5 = Vec2f(194.0f, 4*88.0f);
-	
+	lineOffset2 = Vec2f(65.0f, 88.0f);
+	lineOffset3 = Vec2f(105.0f, 2 * 88.0f);
+	lineOffset4 = Vec2f(150.0f, 3 * 88.0f);
+	lineOffset5 = Vec2f(194.0f, 4 * 88.0f);
+
 	for (auto i = 0; i < lineLength1; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, to_string(i)));
-		btn->setPosition(lineOffset1 + Vec2f(i*(_xOffset1 + _width), 0.0f)+shift_Y);		
-		buttonsMainKeyboard.push_back( btn );
-		buttonsSecondKeyboard.push_back( btn );
-		buttonsRusMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset1 + Vec2f(i*(_xOffset1 + _width), 0.0f) + shift_Y);
+		buttonsMainKeyboard.push_back(btn);
+		buttonsSecondKeyboard.push_back(btn);
+		buttonsRusMainKeyboard.push_back(btn);
 	}
 
-	erase = KeyBoardButtonSpriteRef( new KeyBoardButtonSprite(eraseTex, "erase"));	
-	
-	shift = KeyBoardButtonSpriteRef( new KeyBoardButtonSprite(shiftTex0, "shift"));
+	erase = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(eraseTex, "erase"));
+
+	shift = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(shiftTex0, "shift"));
 	shift->setPosition(lineOffset4 - Vec2f(91.0f, 0.0f) + shift_Y);
-	buttonsMainKeyboard.push_back(shift);	
+	buttonsMainKeyboard.push_back(shift);
 	buttonsRusMainKeyboard.push_back(shift);
 
-	KeyBoardButtonSpriteRef backspaceBtn = KeyBoardButtonSpriteRef( new KeyBoardButtonSprite(backspaceBtnTex, "back"));
-	backspaceBtn->setPosition(lineOffset1 + Vec2f(10.0f*(_xOffset1 + _width),0.0f)+shift_Y);	
+	KeyBoardButtonSpriteRef backspaceBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(backspaceBtnTex, "back"));
+	backspaceBtn->setPosition(lineOffset1 + Vec2f(10.0f*(_xOffset1 + _width), 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(backspaceBtn);
 	buttonsSecondKeyboard.push_back(backspaceBtn);
-	buttonsRusMainKeyboard.push_back(backspaceBtn);	
+	buttonsRusMainKeyboard.push_back(backspaceBtn);
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, secondLineCharacters[i]));
-		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);		
-		buttonsMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);
+		buttonsMainKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, secondLineCharacters2[i]));
-		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);		
-		buttonsSecondKeyboard.push_back( btn );
+		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);
+		buttonsSecondKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 12; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple1, mFont, secondLineCharacters3[i]));
-		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width1) - 47, 0.0f) + shift_Y);		
-		buttonsRusMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset2 + Vec2f(i*(_xOffset2 + _width1) - 47, 0.0f) + shift_Y);
+		buttonsRusMainKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 9; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, thirdLineCharacters[i]));
-		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);		
-		buttonsMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);
+		buttonsMainKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 9; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, thirdLineCharacters2[i]));
-		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);		
-		buttonsSecondKeyboard.push_back( btn );
+		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);
+		buttonsSecondKeyboard.push_back(btn);
 	}
-	
+
 	for (size_t i = 0; i < 11; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple1, mFont, thirdLineCharacters3[i]));
-		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset2 + _width1) - 37, 0.0f) + shift_Y);		
-		buttonsRusMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset3 + Vec2f(i*(_xOffset2 + _width1) - 37, 0.0f) + shift_Y);
+		buttonsRusMainKeyboard.push_back(btn);
 	}
 
 
 	for (size_t i = 0; i < 9; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, fourthLineCharacters[i]));
-		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset4 + _width), 0.0f)+ shift_Y);		
-		buttonsMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset4 + _width), 0.0f) + shift_Y);
+		buttonsMainKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		KeyBoardButtonSpriteRef btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, fourthLineCharacters2[i]));
-		btn->setPosition(lineOffset4 + Vec2f((i)*(_xOffset4 + _width), 0.0f)+ shift_Y - Vec2f(_xOffset4 + _width, 0.0f));		
-		buttonsSecondKeyboard.push_back( btn );
+		btn->setPosition(lineOffset4 + Vec2f((i)*(_xOffset4 + _width), 0.0f) + shift_Y - Vec2f(_xOffset4 + _width, 0.0f));
+		buttonsSecondKeyboard.push_back(btn);
 	}
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		KeyBoardButtonSpriteRef btn;
-		if(fourthLineCharacters3[i] != "@")
+		if (fourthLineCharacters3[i] != "@")
 			btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple1, mFont, fourthLineCharacters3[i]));
 		else
 			btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, fourthLineCharacters3[i]));
 
-		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset2 + _width1) - 12, 0.0f) + shift_Y);		
-		buttonsRusMainKeyboard.push_back( btn );
+		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset2 + _width1) - 12, 0.0f) + shift_Y);
+		buttonsRusMainKeyboard.push_back(btn);
 	}
-	
+
 	KeyBoardButtonSpriteRef langBtn;
 
 	changeKeyboardBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(changeKeyboardTex1, mFont, "#+="));
-	changeKeyboardBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 170.0f, 0.0f)+ shift_Y);	
+	changeKeyboardBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 170.0f, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(changeKeyboardBtn);
 	buttonsSecondKeyboard.push_back(changeKeyboardBtn);
 	buttonsRusMainKeyboard.push_back(changeKeyboardBtn);
 
 	langBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(langChangeTex, "lang"));
-	langBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 31.0f, 0.0f) + shift_Y);	
+	langBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 31.0f, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(langBtn);
 	buttonsSecondKeyboard.push_back(langBtn);
 	buttonsRusMainKeyboard.push_back(langBtn);
 
-	spaceBtn= KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(spaceBtnTex, " "));
-	spaceBtn->setPosition(lineOffset5 + 2.0f*Vec2f((_xOffset5 + _width) - 38, 0.0f)+ shift_Y);	
+	spaceBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(spaceBtnTex, " "));
+	spaceBtn->setPosition(lineOffset5 + 2.0f*Vec2f((_xOffset5 + _width) - 38, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(spaceBtn);
 	buttonsSecondKeyboard.push_back(spaceBtn);
 	buttonsRusMainKeyboard.push_back(spaceBtn);
 
 	changeKeyboardBtnDuplicat = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(changeKeyboardTex1, mFont, "#+="));
-	Vec2f pos = lineOffset5 + 2.0f*Vec2f((_xOffset5  + _width - 38), 0.0f) + shift_Y;
-	changeKeyboardBtnDuplicat->setPosition(pos+ Vec2f(_xOffset5 + spaceBtnTex.getWidth(), 0.0f));	
+	Vec2f pos = lineOffset5 + 2.0f*Vec2f((_xOffset5 + _width - 38), 0.0f) + shift_Y;
+	changeKeyboardBtnDuplicat->setPosition(pos + Vec2f(_xOffset5 + spaceBtnTex.getWidth(), 0.0f));
 
 	buttonsMainKeyboard.push_back(changeKeyboardBtnDuplicat);
 	buttonsSecondKeyboard.push_back(changeKeyboardBtnDuplicat);
@@ -202,16 +197,16 @@ void VirtualKeyboard::setup()
 
 	mode = USUAL_MODE;
 	alwaysCaps = false;
-	isShowing = false;	
+	isShowing = false;
 	showEraseButton = true;
-	setlocale(LC_ALL, ""); 
-	createInputField();
+	setlocale(LC_ALL, "");
+	createInputField(config->getFont("introLight44"));
 	setuped = true;
 }
 
 void VirtualKeyboard::show(const ci::Vec2f& from, const ci::Vec2f& to, float time)
 {
-	if(!isShowing)
+	if (!isShowing)
 	{
 		erase->setAlpha(1);
 		isShowing = true;
@@ -220,16 +215,16 @@ void VirtualKeyboard::show(const ci::Vec2f& from, const ci::Vec2f& to, float tim
 		lastCode = "NONE";
 		setLanguage(KEYBOARD_LANG::ENG);
 
-		timeline().apply( &keyBoardPosition, from, to, time, ci::EaseOutCubic());	
-	}	
+		timeline().apply(&keyBoardPosition, from, to, time, ci::EaseOutCubic());
+	}
 }
 
 void VirtualKeyboard::hide(const ci::Vec2f& to, float time)
 {
-	if(isShowing)
+	if (isShowing)
 	{
 		erase->setAlpha(0);
-		timeline().apply( &keyBoardPosition, to, time, ci::EaseOutCubic()).finishFn( [ & ]()
+		timeline().apply(&keyBoardPosition, to, time, ci::EaseOutCubic()).finishFn([&]()
 		{
 			isShowing = false;
 			showInputField = true;
@@ -243,37 +238,35 @@ void VirtualKeyboard::hideQuick(const ci::Vec2f& value)
 	isShowing = false;
 }
 
-
-
 void VirtualKeyboard::connectKeyboard()
-{	
+{
 	if (!connected)
 	{
 		MouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&VirtualKeyboard::MouseDown, this, std::placeholders::_1));
 		MouseUpCon = getWindow()->getSignalMouseUp().connect(std::bind(&VirtualKeyboard::MouseUp, this, std::placeholders::_1));
 		connected = true;
-	}	
+	}
 }
 
 void VirtualKeyboard::disconnectKeyboard()
-{	
+{
 	if (connected)
 	{
 		MouseUpCon.disconnect();
 		MouseDownCon.disconnect();
 		connected = false;
-	}	
+	}
 }
 
-void VirtualKeyboard::draw( )
+void VirtualKeyboard::draw()
 {
-	if(isShowing)
+	if (isShowing)
 	{
-		gl::pushMatrices();				
-			gl::translate(getGlobalPosition());
-			gl::translate(keyBoardPosition);
-			for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )		
-				(*item)->draw();
+		gl::pushMatrices();
+		gl::translate(getGlobalPosition());
+		gl::translate(keyBoardPosition);
+		for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
+			(*item)->draw();
 		gl::popMatrices();
 	}
 
@@ -291,7 +284,7 @@ void VirtualKeyboard::draw( )
 			Vec2f(15, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()) - 5));
 		gl::popMatrices();
 		gl::popMatrices();
-	}	
+	}
 }
 
 void VirtualKeyboard::MouseUp(MouseEvent &event)
@@ -300,7 +293,7 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 	{
 		inputField = "";
 		setInputFieldText(inputField);
-	}	
+	}
 	else if (lastCode == "search")
 	{
 		callback(SEARCH_TOUCH);
@@ -310,8 +303,8 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 		callback(SEND_TOUCH);
 	}
 	else if (lastCode == "back")
-	{				
-		if(!inputField.empty())
+	{
+		if (!inputField.empty())
 		{
 			inputField.pop_back();
 			setInputFieldText(inputField);
@@ -319,10 +312,10 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 		}
 	}
 	else if (lastCode.size() == 1)
-	{				
+	{
 		callback(KEY_TOUCH);
 
-		if(inputField.size() < maxInputChars)
+		if (inputField.size() < maxInputChars)
 		{
 			inputField += lastCode;
 			setInputFieldText(inputField);
@@ -331,7 +324,7 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 		{
 			callback(MAX_LETTER_LIMIT);
 		}
-	}		
+	}
 }
 
 void VirtualKeyboard::MouseDown(MouseEvent &event)
@@ -389,6 +382,66 @@ void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
 	}
 }
 
+void VirtualKeyboard::createInputField(const ci::Font& font)
+{
+	originPoint = Vec2f::zero();
+	maxInputChars = 20;
+	setInputColor(Color::black());
+	setInputFont(font);
+	setInputFieldText("test");
+
+	touchInputZone = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(0, 0, 600, 50)));
+	touchInputZone->setColor(Color(1, 0, 0));
+}
+
+void VirtualKeyboard::setOriginPoint(const Vec2f& point)
+{
+	originPoint = point;
+}
+
+void VirtualKeyboard::setInputField(float x, float y, float width, float height)
+{
+	touchInputZonePos = Vec2f(x, y);
+	touchInputZone->setButtonArea1(Rectf(x, y, width, height));
+	erase->setPosition(touchInputZonePos + Vec2f(touchInputZone->getWidth() - 50, 0.5f*(touchInputZone->getHeight() - 30)));
+}
+
+void VirtualKeyboard::setInputFont(const ci::Font& font)
+{
+	inputFont = font;
+}
+
+void VirtualKeyboard::setInputColor(const ci::Color& color)
+{
+	inputColor = color;
+}
+
+void VirtualKeyboard::clearInputFieldText()
+{
+	setInputFieldText("");
+}
+
+void VirtualKeyboard::setInputFieldText(const std::string& text)
+{
+	inputField = text;
+	inputFieldTexture = textTools().getTextField(text, &inputFont, inputColor);
+}
+
+std::string VirtualKeyboard::getInputFieldText() const
+{
+	return inputField;
+}
+
+bool VirtualKeyboard::emptyInputField()
+{
+	return inputField == "";
+}
+
+bool VirtualKeyboard::showing() const
+{
+	return isShowing;
+}
+
 void VirtualKeyboard::setInputFieldVisible(bool value)
 {
 	showInputField = value;
@@ -421,35 +474,35 @@ string VirtualKeyboard::getLastCode()
 
 string VirtualKeyboard::getDisplayCode()
 {
-	if(alwaysCaps && lastCode.size() == 1)
+	if (alwaysCaps && lastCode.size() == 1)
 	{
 		char letter = lastCode[0];
 		letter = toupper(letter);
 		lastCode[0] = letter;
 	}
-	
+
 	return Utils::cp1251_to_utf8(lastCode.c_str());
 }
 
 void VirtualKeyboard::changeShiftMode()
 {
 	isShiftDown = !isShiftDown;
-	if (isShiftDown) 
+	if (isShiftDown)
 		shift->changeTexture(shiftTex1);
-	else 
+	else
 		shift->changeTexture(shiftTex0);
-	
-	for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )
-	{			
-		if((*item)->getBtnId().size()!=1) continue;
+
+	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
+	{
+		if ((*item)->getBtnId().size() != 1) continue;
 		char letter = (*item)->getBtnId()[0];
-		if (isalpha((unsigned char)letter) )
-		{		
+		if (isalpha((unsigned char)letter))
+		{
 			string oneChar = "";
-			if (isShiftDown)			
-				oneChar.append(1, toupper(letter));				
+			if (isShiftDown)
+				oneChar.append(1, toupper(letter));
 			else
-				oneChar.append(1, tolower(letter));	
+				oneChar.append(1, tolower(letter));
 
 			(*item)->setBtnId(oneChar);
 		}
@@ -463,26 +516,26 @@ void VirtualKeyboard::changeLangMode()
 	{
 	case KEYBOARD_LANG::ENG:
 		activeLanguage = KEYBOARD_LANG::RUS;
-	break;
+		break;
 
 	case KEYBOARD_LANG::RUS:
 		activeLanguage = KEYBOARD_LANG::ENG;
-	break;
+		break;
 	}
 
 	setLanguage(activeLanguage);
 
-	for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )
-	{			
-		if((*item)->getBtnId().size()!=1) continue;
+	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
+	{
+		if ((*item)->getBtnId().size() != 1) continue;
 		char letter = (*item)->getBtnId()[0];
-		if (isalpha((unsigned char)letter) )
-		{		
+		if (isalpha((unsigned char)letter))
+		{
 			std::string oneChar = "";
-			if (isShiftDown)			
-				oneChar.append(1, toupper(letter));				
+			if (isShiftDown)
+				oneChar.append(1, toupper(letter));
 			else
-				oneChar.append(1, tolower(letter));	
+				oneChar.append(1, tolower(letter));
 
 			(*item)->setBtnId(oneChar);
 		}
@@ -490,7 +543,7 @@ void VirtualKeyboard::changeLangMode()
 }
 
 void VirtualKeyboard::activateSearchMode()
-{	
+{
 	if (mode == SEARCH_MODE)
 		return;
 
@@ -501,7 +554,7 @@ void VirtualKeyboard::activateSearchMode()
 	buttonsSecondKeyboard.push_back(searchBtn);
 	buttonsRusMainKeyboard.push_back(searchBtn);
 
-	mode = SEARCH_MODE;		
+	mode = SEARCH_MODE;
 }
 
 void VirtualKeyboard::activateSendMode()
@@ -516,7 +569,7 @@ void VirtualKeyboard::activateSendMode()
 	buttonsSecondKeyboard.push_back(sendBtn);
 	buttonsRusMainKeyboard.push_back(sendBtn);
 
-	mode = SEND_MODE;		
+	mode = SEND_MODE;
 }
 
 void VirtualKeyboard::activateUsualMode()
@@ -554,19 +607,19 @@ void VirtualKeyboard::clearCurrentMode()
 
 void VirtualKeyboard::changeKeyboardMode()
 {
-	isKeyBoardChangeDown  = !isKeyBoardChangeDown;
+	isKeyBoardChangeDown = !isKeyBoardChangeDown;
 
 	if (isKeyBoardChangeDown)
-	{		
-		changeKeyboardBtn->setBtnId("ABC");	
-		changeKeyboardBtnDuplicat->setBtnId("ABC");	
-		activeKeyboard = &buttonsSecondKeyboard;		
+	{
+		changeKeyboardBtn->setBtnId("ABC");
+		changeKeyboardBtnDuplicat->setBtnId("ABC");
+		activeKeyboard = &buttonsSecondKeyboard;
 	}
 	else
 	{
 		changeKeyboardBtn->setBtnId("#+=");
-		changeKeyboardBtnDuplicat->setBtnId("#+=");	
-		setLanguage(activeLanguage);	
+		changeKeyboardBtnDuplicat->setBtnId("#+=");
+		setLanguage(activeLanguage);
 	}
 }
 
@@ -613,10 +666,10 @@ bool VirtualKeyboard::isShiftCode()
 void VirtualKeyboard::checkCapsLock()
 {
 	BYTE kbd[256];
-	GetKeyboardState(kbd);	
+	GetKeyboardState(kbd);
 	BOOL bCapsIsOn = kbd[VK_CAPITAL];
 	//console()<<"alwaysCaps  "<<alwaysCaps<<"  "<<bCapsIsOn<<endl;
-	if(bCapsIsOn != isShiftDown )//|| alwaysCaps !=bCapsIsOn)
+	if (bCapsIsOn != isShiftDown)//|| alwaysCaps !=bCapsIsOn)
 	{
 		keybd_event(VK_CAPITAL, 0x3a, 0, 0);	// these two-line code
 		keybd_event(VK_CAPITAL, 0x3a, KEYEVENTF_KEYUP, 0);	// will simulate pressing capslock key
@@ -626,9 +679,9 @@ void VirtualKeyboard::checkCapsLock()
 void VirtualKeyboard::onCapsLock()
 {
 	BYTE kbd[256];
-	GetKeyboardState(kbd);	
+	GetKeyboardState(kbd);
 	BOOL bCapsIsOn = kbd[VK_CAPITAL];
-	if(!bCapsIsOn)
+	if (!bCapsIsOn)
 	{
 		keybd_event(VK_CAPITAL, 0x3a, 0, 0);	// these two-line code
 		keybd_event(VK_CAPITAL, 0x3a, KEYEVENTF_KEYUP, 0);	// will simulate pressing capslock key
@@ -638,9 +691,9 @@ void VirtualKeyboard::onCapsLock()
 void VirtualKeyboard::offCapsLock()
 {
 	BYTE kbd[256];
-	GetKeyboardState(kbd);	
+	GetKeyboardState(kbd);
 	BOOL bCapsIsOn = kbd[VK_CAPITAL];
-	if(bCapsIsOn)
+	if (bCapsIsOn)
 	{
 		keybd_event(VK_CAPITAL, 0x3a, 0, 0);	// these two-line code
 		keybd_event(VK_CAPITAL, 0x3a, KEYEVENTF_KEYUP, 0);	// will simulate pressing capslock key

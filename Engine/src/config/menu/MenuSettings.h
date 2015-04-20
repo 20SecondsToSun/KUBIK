@@ -73,9 +73,6 @@ namespace kubik
 			std::vector<GamesInfo> getGames();
 			std::vector<GameData> getEnabledGamesData();
 
-			//std::string getUserDesighFullPath();
-			//std::string getKubikDesighFullPath();
-
 		private:
 			MenuDataStruct data;
 			GameData gamesdata;
