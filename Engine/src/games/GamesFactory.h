@@ -13,20 +13,20 @@ namespace kubik
 		typedef std::shared_ptr<base> base_ptr;
 
 		template <class derived>
-		void reg(game::id const& name, std::shared_ptr<GameSettings> setting)
+		void reg(game::id const& name, std::shared_ptr<ISettings> setting)
 		{
+			console() << "reg game id :::::::::  " << name << endl;
 			games[name] = base_type_ptr(new derived_type<derived>);
-			settings[name] = setting->get(name);
+			settings[name] = setting;
 		}
 
 		base_ptr create(game::id const& name)
 		{
-			console() << "name:::::::::  " << name << endl;
+			console() << "create game id :::::::::  " << name << endl;
 			return games[name]->create(settings[name]);
 		}
 
 	private:
-
 		class base_type
 		{
 		public:

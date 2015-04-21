@@ -47,7 +47,8 @@ namespace kubik
 
 			PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 
-			void buildData()    override;
+			void buildSettingData() override;
+			void buildLocationData() override;	
 			void load()			override;
 			void setTextures()  override;
 			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };

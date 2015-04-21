@@ -26,9 +26,10 @@ namespace kubik
 			};
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
-			virtual void load();
-			virtual void setTextures();
-			virtual void buildData();
+			void load() override;
+			void setTextures() override;
+			void buildLocationData() override;
+			void buildSettingData() override;
 
 			ci::gl::Texture getCurrentTemplate();
 

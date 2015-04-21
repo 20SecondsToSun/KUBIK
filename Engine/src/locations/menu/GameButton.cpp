@@ -10,7 +10,7 @@ GameButton::GameButton(const GameData& data)
 	GameChoosedEventRef(new GameChoosedEvent(data.getID()))),
 	texture(data.getTexture())
 {	
-	console() << "create id:::::::::::::::::::  " << data.getID() << endl;
+	console() << "create button game id:::::::::::::::::::  " << data.getID() << endl;
 }
 
 void GameButton::drawLayout()

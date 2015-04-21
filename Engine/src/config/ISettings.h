@@ -25,13 +25,15 @@ namespace kubik
 			FontResourceDictionary getFonts() const;
 			VideoResourceDictionary getVideos() const;
 			IResourceDictionary getResources() const;
+			IResourceDictionary getSettingsResources() const;
 
 			ci::gl::Texture getTexture(const std::string& name);
 			ci::Font getFont(const std::string& name);
 
 			void clearResources();
 
-			virtual void buildData();
+			virtual void buildLocationData();
+			virtual void buildSettingData();		
 
 			virtual void load() = 0;
 			virtual void setTextures() = 0;			
@@ -52,13 +54,17 @@ namespace kubik
 			ImageResourceDictionary textures;
 			FontResourceDictionary fonts;
 			VideoResourceDictionary videos;
-			IResourceDictionary	resources;
+			IResourceDictionary	resources, settingsResources;
 
 			static ci::fs::path getBasePath();
 
 			void addToDictionary(const std::string& key, std::shared_ptr<ImageResource>  value);
 			void addToDictionary(const std::string& key, std::shared_ptr<FontResource>   value);
 			void addToDictionary(const std::string& key, std::shared_ptr<VideoResource>  value);
+
+			void addToSettingsDictionary(const std::string& key, std::shared_ptr<ImageResource>  value);
+			void addToSettingsDictionary(const std::string& key, std::shared_ptr<FontResource>   value);
+			void addToSettingsDictionary(const std::string& key, std::shared_ptr<VideoResource>  value);
 
 			std::shared_ptr<ImageResource> createImageResource(const std::string& path, loadingType loadType = loadingType::FULL_PATH);
 			std::shared_ptr<FontResource> createFontResource(const std::string& path, float size = 30, loadingType loadType = loadingType::FULL_PATH);

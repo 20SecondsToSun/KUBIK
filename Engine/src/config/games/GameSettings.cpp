@@ -3,6 +3,9 @@ using namespace ci;
 using namespace ci::app;
 using namespace kubik::config;
 using namespace kubik;
+using namespace kubik::games::photobooth;
+using namespace kubik::games::instakub;
+using namespace kubik::games::funces;
 
 int GameSettings::GamesDataStruct::getDefaultGameID()
 {
@@ -87,7 +90,7 @@ GameSettings::GameSettings(ApplicationModelRef model, ConfigSettingsRef configSe
 	: ISettings(model), memento(false), configSettings(configSettings)
 {
 	currentGame = model->getDefaultGameID();
-	data.games = model->getGames();
+	data.games  = model->getGames();
 	data.defaultGameID = model->getDefaultGameID();
 }
 
@@ -106,9 +109,40 @@ IResourceDictionary GameSettings::getGameTexturesById(const GameId& id)
 	return  gameSettingsMap[id]->getResources();
 }
 
+IResourceDictionary GameSettings::getGameSettingsTexturesById(const GameId& id)
+{
+	return  gameSettingsMap[id]->getSettingsResources();
+}
+
+vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
+{
+	std::vector<GamesInfo> games = model->getGames();
+
+	vector<IResourceBaseRef> resources;
+
+	for (auto game : games)
+	{
+		if (!game.isPurchased) continue;
+
+		try
+		{
+			auto oneGameResources = gameSettingsMap[game.id]->getSettingsResources();
+			for (auto it = oneGameResources.begin(); it != oneGameResources.end(); it++)
+				resources.push_back((*it).second);
+		}
+		catch (...)
+		{
+			throw ExcConfigFileParsing();
+		}
+	}
+
+	return resources;
+}
+
 IResourceDictionary GameSettings::getActiveGameTextures()
 {
-	auto id = getActiveGameID();
+	auto id = model->getDefaultGameID();// getActiveGameID();
+	console() << "active resources:::::::::::::  " << id << endl;
 	return  gameSettingsMap[id]->getResources();
 }
 
@@ -160,6 +194,9 @@ void GameSettings::load()
 
 	for (auto game : games)
 	{	
+		if (!game.isPurchased)
+			continue;
+
 		switch (game.id)
 		{
 		case  GameId::PHOTOBOOTH:
@@ -193,30 +230,30 @@ void GameSettings::load()
 		throw ExcConfigFileParsing();
 }
 
-void GameSettings::buildData()
+void GameSettings::buildLocationData()
 {
-	//auto id = getActiveGameID();
+	auto id = model->getDefaultGameID();
+	try
+	{
+		gameSettingsMap[id]->buildLocationData();
+	}
+	catch (...)
+	{
+		throw ExcConfigFileParsing();
+	}
+}
 
-	//try
-	//{
-	//	gameSettingsMap[id]->buildData();
-	//}
-	//catch (...)
-	//{
-	//	throw ExcConfigFileParsing();
-	//}
-
+void GameSettings::buildSettingData()
+{
 	std::vector<GamesInfo> games = model->getGames();
+
 	for (auto game : games)
 	{
-		//if (!game.isPurchased)
-		//	continue;
+		if (!game.isPurchased) continue;
+
 		try
 		{
-			if (GameId::PHOTOBOOTH == game.id)
-				gameSettingsMap[game.id]->buildData();
-			if (GameId::INSTAKUB == game.id)
-				gameSettingsMap[game.id]->buildData();
+			gameSettingsMap[game.id]->buildSettingData();
 		}
 		catch (...)
 		{
@@ -241,6 +278,17 @@ bool GameSettings::isGameID(int id)
 bool GameSettings::isGameCurrent(int id)
 {
 	return currentGame == (GameId)id;
+}
+
+GamesFactory<IGame>::base_ptr GameSettings::createGame(const GameId& id)
+{
+	return gamesFactory.create(id);
+}
+
+void GameSettings::gamesfactoryReg()
+{
+	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettingsMap[GameId::INSTAKUB]);
+	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettingsMap[GameId::PHOTOBOOTH]);
 }
 
 GameId GameSettings::getCurrentGame()

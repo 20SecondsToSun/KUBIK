@@ -224,7 +224,7 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 			text.getChild("font").getValue<string>(),
 			text.getChild("size").getValue<int>(),
 			text.getChild("color").getValue<string>());
-		photoOverDesignData.push_back(item);
+		photoOverDesignData.push_back(item);		
 	}
 
 	userOverDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
@@ -350,55 +350,58 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("errorEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\errorEmailBorder.png")));
 	addToDictionary("closePopup", createImageResource(getTemplateDesignPath("PhotoShare\\close.png")));
 
-	addToDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
-	addToDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
-
 	smilePaths = fileTools().getAllJpegPaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		addToDictionary("smile" + to_string(i), createImageResource(smilePaths[i]));
 
-	addToDictionary("helvetica40", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
-	addToDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
-	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
-
-	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToDictionary("introLight60", createFontResource(getFontsPath("IntroLight.ttf"), 60));
-	addToDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
-	addToDictionary("introLight18", createFontResource(getFontsPath("IntroLight.ttf"), 18));
-	addToDictionary("introLight30", createFontResource(getFontsPath("IntroLight.ttf"), 30));
-	addToDictionary("introBook30", createFontResource(getFontsPath("Intro-Book.ttf"), 30));
-	addToDictionary("introBook12", createFontResource(getFontsPath("Intro-Book.ttf"), 12));
-	addToDictionary("introBook14", createFontResource(getFontsPath("Intro-Book.ttf"), 14));
-	addToDictionary("introThin120", createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
-	addToDictionary("introb210", createFontResource(getFontsPath("introb.ttf"), 210));
-	addToDictionary("introb18", createFontResource(getFontsPath("introb.ttf"), 18));
-	addToDictionary("introb21", createFontResource(getFontsPath("introb.ttf"), 21));
 
 	for (auto item : photoOverDesignData)
 	{
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
-		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 	}
 
 	for (auto item : photoCardStyles)
 	{
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
-		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 	}
 
 	for (auto item : photoFiltersPreview)
-		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+
+
+	addToSettingsDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
+	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
+	addToSettingsDictionary("helvetica40", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
+	addToSettingsDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
+	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
+	addToSettingsDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
+
+	addToSettingsDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToSettingsDictionary("introLight60", createFontResource(getFontsPath("IntroLight.ttf"), 60));
+	addToSettingsDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
+	addToSettingsDictionary("introLight18", createFontResource(getFontsPath("IntroLight.ttf"), 18));
+	addToSettingsDictionary("introLight30", createFontResource(getFontsPath("IntroLight.ttf"), 30));
+	addToSettingsDictionary("introBook30", createFontResource(getFontsPath("Intro-Book.ttf"), 30));
+	addToSettingsDictionary("introBook12", createFontResource(getFontsPath("Intro-Book.ttf"), 12));
+	addToSettingsDictionary("introBook14", createFontResource(getFontsPath("Intro-Book.ttf"), 14));
+	addToSettingsDictionary("introThin120", createFontResource(getFontsPath("Intro-Thin.ttf"), 120));
+	addToSettingsDictionary("introb210", createFontResource(getFontsPath("introb.ttf"), 210));
+	addToSettingsDictionary("introb18", createFontResource(getFontsPath("introb.ttf"), 18));
+	addToSettingsDictionary("introb21", createFontResource(getFontsPath("introb.ttf"), 21));
 }
 
-void PhotoboothSettings::buildData()
+void PhotoboothSettings::buildSettingData()
 {
-	logger().log("build photobooth");
+	logger().log("buildSettingsGameData photobooth");
 
 	auto dic = configTexts.getDic();
 
 	for (auto &it : dic)
 		it.second.setFont(fonts);
+
+	configTexts.setDic(dic);
 
 	int i = 0;
 	for (auto &it : photoFiltersPreview)
@@ -410,19 +413,27 @@ void PhotoboothSettings::buildData()
 
 	for (auto &it : photoCardStyles)
 	{
-		it.setDesignTexture(getTexture(it.getDesignTexName()), photoCardStylesCoordRects);
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fonts);
 	}
 
 	for (auto &it : photoOverDesignData)
 	{
-		it.setDesignTexture(getTexture(it.getDesignTexName()), photoOverCoordRects);
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fonts);
 	}
+}
 
-	configTexts.setDic(dic);
+void PhotoboothSettings::buildLocationData()
+{
+	logger().log("buildActiveGameData photobooth");	
+
+	for (auto &it : photoCardStyles)	
+		it.setDesignTexture(getTexture(it.getDesignTexName()), photoCardStylesCoordRects);
+		
+
+	for (auto &it : photoOverDesignData)	
+		it.setDesignTexture(getTexture(it.getDesignTexName()), photoOverCoordRects);	
 
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		smileTextures.push_back(getTexture("smile" + to_string(i)));

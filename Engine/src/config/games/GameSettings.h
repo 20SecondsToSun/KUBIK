@@ -7,6 +7,10 @@
 #include "Types.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
+#include "GamesFactory.h"
+#include "Photobooth.h"
+#include "instakub/Instakub.h"
+#include "Funces.h"
 
 namespace kubik
 {
@@ -46,6 +50,8 @@ namespace kubik
 			ISettingsRef get(const GameId& id);
 			IResourceDictionary getActiveGameResources();
 			IResourceDictionary getGameTexturesById(const GameId& id);
+			IResourceDictionary getGameSettingsTexturesById(const GameId& id);	
+			vector<IResourceBaseRef> getGameSettingsTextures();
 			IResourceDictionary getActiveGameTextures();			
 
 			bool settingsChanged();
@@ -53,7 +59,8 @@ namespace kubik
 
 			void setTextures() override;
 			void load() override;
-			void buildData();
+			void buildSettingData() override;
+			void buildLocationData() override;
 
 			bool isGameID(int id);
 			bool isGameCurrent(int id);
@@ -75,6 +82,9 @@ namespace kubik
 			std::string getGameDescribeURL(const GameId& id);
 			std::string getGameStatisticURL(const GameId& id);
 
+			GamesFactory<IGame>::base_ptr createGame(const GameId& id);
+			void gamesfactoryReg();
+
 		private:
 			bool memento;
 			GameId currentGame, nextGameId;
@@ -82,6 +92,9 @@ namespace kubik
 			GamesDataStruct data, dataMemento;
 
 			ConfigSettingsRef configSettings;
+
+			GamesFactory<IGame>	gamesFactory;
+
 		};
 	}
 }

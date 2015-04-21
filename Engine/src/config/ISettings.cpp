@@ -66,6 +66,11 @@ IResourceDictionary ISettings::getResources() const
 	return resources;
 }
 
+IResourceDictionary ISettings::getSettingsResources() const
+{
+	return settingsResources;
+}
+
 void ISettings::clearResources()
 {
 	textures.clear();
@@ -74,7 +79,11 @@ void ISettings::clearResources()
 	resources.clear();
 }
 
-void ISettings::buildData()
+void ISettings::buildLocationData()
+{
+};
+
+void ISettings::buildSettingData()
 {
 };
 
@@ -101,6 +110,28 @@ void ISettings::addToDictionary(const std::string& key, shared_ptr<VideoResource
 	videos[key] = value;
 	resources[key] = value;
 }
+
+
+void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<ImageResource>  value)
+{
+	textures[key] = value;
+	settingsResources[key] = value;
+}
+
+void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<FontResource>  value)
+{
+	fonts[key] = value;
+	settingsResources[key] = value;
+}
+
+void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<VideoResource>  value)
+{
+	videos[key] = value;
+	settingsResources[key] = value;
+}
+
+
+
 
 shared_ptr<ImageResource> ISettings::createImageResource(const std::string& path, loadingType loadType)
 {

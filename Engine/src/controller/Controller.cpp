@@ -3,9 +3,6 @@
 using namespace kubik;
 using namespace kubik::menu;
 using namespace kubik::games;
-using namespace kubik::games::photobooth;
-using namespace kubik::games::instakub;
-using namespace kubik::games::funces;
 using namespace std;
 
 Controller::Controller(ApplicationModelRef model, AppViewRef view)
@@ -41,7 +38,7 @@ void Controller::loadKubikConfig()
 
 void Controller::loadSettings()
 {
-	console()<<"start loading other configs"<<endl;
+	logger().log("START LOADING OTHER CONFIGS");
 
 	controlSettings		 = ConfigSettingsRef(new ConfigSettings(model));
 	gameSettings		 = GameSettingsRef(new GameSettings(model, controlSettings));
@@ -57,9 +54,9 @@ void Controller::loadSettings()
 	configs.push_back(menuSettings);	
 	configs.push_back(screenSaverSettings);
 	configs.push_back(keyboardSettings);
-
 	configLoader->loadConfigs(configs);
-	console() << "---------CONFIGS LOADED---------" << endl;
+
+	logger().log("CONFIGS LOADED");
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	settingsFactory().inject(phbthSettings);	
@@ -73,7 +70,8 @@ void Controller::loadSettings()
 
 void Controller::loadAllLocationsGraphics()
 {	
-	console()<<"start loading graphics"<<endl;
+	logger().log("START LOADING GRAPHICS");
+
 	graphicsLoader = GraphicsLoaderRef(new GraphicsLoader());
 
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
@@ -83,19 +81,17 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
-	//graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
-	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::PHOTOBOOTH));
-	//graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::FUNCES));	
-	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(GameId::INSTAKUB));
+	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
+	graphicsLoader->setLoadingTextures(gameSettings->getGameSettingsTextures());	
 	graphicsLoader->load();
 }
 
 void Controller::allGraphicsLoadingCompleteHandler()
 {
-	console()<<"buildData"<<endl;
+	logger().log("BUILD SETTINGS DATA");
 
-	controlSettings->buildData();
-	gameSettings->buildData();
+	controlSettings->buildData();	
+	gameSettings->buildSettingData();
 
 	removeGraphicsLoadingConnections();
 	createLocations();
@@ -121,7 +117,7 @@ void Controller::removeGraphicsLoadingConnections()
 
 void Controller::createLocations()
 {	
-	console()<<"create locations"<<endl;
+	logger().log("CREATE LOCATIONS");
 
 	touchKeyboard().create(keyboardSettings);
 
@@ -135,13 +131,11 @@ void Controller::createLocations()
 	controlScreen->setGameSettings(gameSettings);
 	controlScreen->init();
 
-	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettings);
-	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettings);
-	//gamesFactory.reg<Kotopoza>(GameId::INSTAKUB, gameSettings);
+	gameSettings->gamesfactoryReg();	
+	
 	createGame(model->getDefaultGameID());
-
-
 	view->addLayer(controlLayer);
+
 	//startup();
 	startMenuScreenLocation();
 }
@@ -292,7 +286,7 @@ void Controller::startGameHandler(GameId id)
 
 void Controller::reloadGame(GameId id)
 {
-	closeCurrentLocation();//!!
+	closeCurrentLocation();
 
 	view->showPreloader();
 	gameSettings->setNextGameId(id);
@@ -316,9 +310,10 @@ void Controller::gameGraphicsLoadingCompleteHandler()
 
 void Controller::createGame(GameId id)
 {
-	console() << "createGame" << endl;
+	logger().log("CREATE GAME" + id);
+	gameSettings->buildLocationData();
 	gameSettings->setCurrentGame(id);
-	game = gamesFactory.create(id);		
+	game = gameSettings->createGame(id);	
 }
 
 void Controller::addGameHandlers()
@@ -425,7 +420,7 @@ void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadA
 
 	for(auto change : changes)
 	{		
-		console() << "change.id:::::::::::::::::::  " << change.id << endl;
+		logger().log("change.id:::::::::::::::::::  " + change.id);
 
 		if (change.id == ChangeId::GAMES)
 		{

@@ -21,6 +21,12 @@ namespace kubik
 				loadingRes.push_back((*it).second);
 		}
 
+		void setLoadingTextures(vector<IResourceBaseRef> _textures)
+		{
+			for (auto it = _textures.begin(); it != _textures.end(); it++)
+				loadingRes.push_back(*it);
+		}
+
 		void load() override
 		{
 			loadingStatus = LOADING;

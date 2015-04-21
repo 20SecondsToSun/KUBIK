@@ -16,11 +16,6 @@
 #include "ApplicationView.h"
 #include "ApplicationModel.h"
 #include "GameSettings.h"
-#include "GamesFactory.h"
-#include "Photobooth.h"
-#include "instakub/Instakub.h"
-#include "Funces.h"
-
 #include "KeyboardSettings.h"
 #include "VirtualKeyboard.h"
 #include "preloader/Preloader.h"
@@ -53,7 +48,6 @@ namespace kubik
 		ConfigScreenRef			controlScreen;
 		ScreenSaverRef			screenSaver;
 
-		GamesFactory<IGame>				gamesFactory;
 		GamesFactory<IGame>::base_ptr	game;
 
 		IScreenRef currentLocation;			

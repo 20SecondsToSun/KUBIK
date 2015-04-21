@@ -114,17 +114,22 @@ void InstakubSettings::setTextures()
 	setDesignPath();
 	clearResources();
 
-	addToDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
-	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
-	addToDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
+	addToSettingsDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
+	addToSettingsDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
+	addToSettingsDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
+	addToSettingsDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
+	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
+	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
+
+	addToSettingsDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
+	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
+	addToSettingsDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
 
 
-	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
-	addToDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
-	addToDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
-	addToDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
+	///////////////////////////////////////
+	//
+	///////////////////////////////////////
+
 
 	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.png")));
 	addToDictionary("hashtagTitle", createImageResource(getTemplateDesignPath("hashtagTitle.png")));
@@ -147,7 +152,7 @@ void InstakubSettings::setTextures()
 	
 	for (auto item : photoCardStyles)
 	{
-		addToDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
 	}	
 
@@ -170,23 +175,8 @@ ci::gl::Texture InstakubSettings::getCurrentTemplate()
 	return iter->getMappedTextures()[0];
 }
 
-void InstakubSettings::buildData()
+void InstakubSettings::buildLocationData()
 {
-	auto dic = configTexts.getDic();
-
-	for (auto &it : dic)	
-		it.second.setFont(fonts);	
-
-	for (auto &it : photoCardStyles)
-	{
-		auto tex = getTexture(it.getDesignTexName());
-		it.setDesignTexture(tex);
-		it.setIcon(getTexture(it.getIconTexName()));
-		it.setFont(fonts);
-	}
-
-	configTexts.setDic(dic);
-
 	std::vector<ci::gl::Texture> preloaderSeq;
 	for (int i = 0; i < mainPreloaderSize; i++)
 		preloaderSeq.push_back(getTexture("mainPreloader" + to_string(i)));
@@ -203,6 +193,28 @@ void InstakubSettings::buildData()
 	miniPreloader->setImages(preloaderSeq);
 	miniPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
 
+	for (auto &it : photoCardStyles)
+	{
+		auto tex = getTexture(it.getDesignTexName());
+		it.setDesignTexture(tex);
+	}
+}
+
+void InstakubSettings::buildSettingData()
+{
+	auto dic = configTexts.getDic();
+
+	for (auto &it : dic)	
+		it.second.setFont(fonts);	
+
+	configTexts.setDic(dic);
+
+	for (auto &it : photoCardStyles)
+	{
+		///auto tex = getTexture(it.getDesignTexName());
+		it.setIcon(getTexture(it.getIconTexName()));
+		it.setFont(fonts);
+	}
 };
 
 ImageSequencerRef InstakubSettings::getMainPreloader() const

@@ -89,12 +89,8 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 	vector<GamesInfo> filtergames;
 
 	for(auto it : games)	
-		if (it.isOn && it.isPurchased)
-		{
-			filtergames.push_back(it);
-			console() << "id:::::::::::::  " << it.id << endl;
-		}
-			
+		if (it.isOn && it.isPurchased)		
+			filtergames.push_back(it);			
 
 	vector<GameData> gameData;
 	vector<Vec2f> position;
