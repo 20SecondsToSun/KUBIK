@@ -1,5 +1,5 @@
-
 #include "ISettings.h"
+
 using namespace kubik::config;
 using namespace kubik;
 using namespace std;
@@ -129,9 +129,6 @@ void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<Video
 	videos[key] = value;
 	settingsResources[key] = value;
 }
-
-
-
 
 shared_ptr<ImageResource> ISettings::createImageResource(const std::string& path, loadingType loadType)
 {

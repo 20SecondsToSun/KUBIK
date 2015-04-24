@@ -10,7 +10,8 @@
 			     "labels":"data\\configs\\photobooth\\labels.txt"},
 
    "instakubConfig" : {"path":"data\\configs\\instakub\\path.txt",
-			     "params":"data\\configs\\instakub\\params.txt",		
+			     "params":"data\\configs\\instakub\\params.txt",
+ 			    "consts":"data\\configs\\instakub\\consts.txt",		
 			     "labels":"data\\configs\\instakub\\labels.txt"},
 
  "mainConfig" : {"path":"data\\configs\\mainconf\\path.txt",

@@ -17,7 +17,8 @@ namespace kubik
 				void inputTouchHandler() override;	
 				void openPopupHandler() override;
 				void closePopupHandler() override;
-
+				void showDefaultHashtag();
+				
 				ci::Anim<float> hashTagAlpha;
 				ci::gl::Texture hashtagTexture;
 				ci::Vec2f hashtagPosition;
@@ -28,6 +29,7 @@ namespace kubik
 				void draw() override;
 				void start() override;
 				void reset() override;
+				void timeOutReload() override;
 			};
 		}
 	}

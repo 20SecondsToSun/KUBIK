@@ -45,6 +45,8 @@ namespace kubik
 		protected:
 			ApplicationModelRef model;
 
+			settings::id settingsID;
+
 			std::string mainConfigPath;
 			std::string designPath;
 			std::string staticDesignPath;

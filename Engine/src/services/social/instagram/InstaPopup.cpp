@@ -19,8 +19,6 @@ InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, cons
 
 void InstaPopup::draw()
 {
-	using namespace ci;
-
 	if (!showing)
 		return;
 
@@ -28,7 +26,7 @@ void InstaPopup::draw()
 	gl::translate(getGlobalPosition());
 	gl::color(ColorA(bgColor.r, bgColor.g, bgColor.b, alpha));
 	gl::drawSolidRect(getWindowBounds());
-	gl::color(Color::white());
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
 
 	ci::gl::Texture tex = image.getStandartResImage(), _image;
 	float templateScale = 1, imageScale = 1;
@@ -53,12 +51,14 @@ void InstaPopup::draw()
 	{
 		gl::pushMatrices();
 		gl::translate(imageShift);
+		gl::translate(imagePositionAnim);
 		gl::scale(templateScale, templateScale);
 		gl::draw(templateImage);
 		gl::popMatrices();
 
 		gl::pushMatrices();
 		gl::translate(imageShift);
+		gl::translate(imagePositionAnim);
 		gl::scale(imageScale, imageScale);
 		gl::draw(_image);
 		gl::popMatrices();
@@ -73,23 +73,18 @@ void InstaPopup::show(const ImageGraphic& image, const ci::EaseFn& eFunc, float 
 {
 	this->image = image;
 	showing = true;
-	alpha = 0.0f;
-	timeline().apply(&alpha, 0.95f, time, eFunc)
-		.updateFn(bind(&InstaPopup::alphAnimationUpdate, this))
+
+	timeline().apply(&alpha, 0.0f, 0.95f, time, eFunc)
 		.finishFn(bind(&InstaPopup::showAnimationFinish, this));
+
+	timeline().apply(&imagePositionAnim, Vec2f(0.0f,-100.0f), Vec2f::zero(), time, eFunc);	
 }
 
 void InstaPopup::hide(const ci::EaseFn& eFunc, float time)
 {
 	showing = false;
-	timeline().apply(&alpha, 0.0f, time, eFunc)
-		.updateFn(bind(&InstaPopup::alphAnimationUpdate, this))
+	timeline().apply(&alpha, 0.0f, time, eFunc)		
 		.finishFn(bind(&InstaPopup::hideAnimationFinish, this));
-}
-
-void InstaPopup::alphAnimationUpdate()
-{
-	setAlpha(alpha.value());
 }
 
 void InstaPopup::showAnimationFinish()
@@ -99,14 +94,12 @@ void InstaPopup::showAnimationFinish()
 
 void InstaPopup::hideAnimationFinish()
 {
-	//HideCompleteSignal();
+
 }
 
 void InstaPopup::setAlpha(float alpha)
 {
-	//bgColor = Utils::colorAlpha(bgColor, alpha);
-	//closeBlock->setAlpha(alpha);
-	//CompositeDispatcher::setAlpha(alpha);
+
 }
 
 void InstaPopup::activateListeners()

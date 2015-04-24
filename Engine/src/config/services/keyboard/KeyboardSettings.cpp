@@ -32,7 +32,6 @@ void KeyboardSettings::setTextures()
 	
 	addToDictionary("helveticaLight25", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 25));
 	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
-
 }
 
 changeSetting::id KeyboardSettings::getChangeID() const

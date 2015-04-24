@@ -28,7 +28,6 @@ namespace kubik
 			gl::translate(animPosition);
 			gl::draw(image, ci::Vec2f(0.0f, 3.0f));
 			gl::color(ci::Color::white());
-			//gl::drawSolidRect(buttonArea);
 		}
 
 		void changeTexture(const ci::gl::Texture& image)

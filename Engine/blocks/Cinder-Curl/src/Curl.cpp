@@ -309,7 +309,7 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	curl_easy_setopt( curl, CURLOPT_FOLLOWLOCATION, 1           );
 	curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION , writer      );
 	curl_easy_setopt( curl, CURLOPT_WRITEDATA     , &buffer     );
-	//curl_easy_setopt( curl, CURLOPT_TIMEOUT       , serverParams::SERVER_WAITING_TIME   );
+	curl_easy_setopt( curl, CURLOPT_TIMEOUT       , 10   );
 
 	if( post )
 	{

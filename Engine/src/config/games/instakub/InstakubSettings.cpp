@@ -19,11 +19,8 @@ void InstakubSettings::load()
 		loadPaths();
 		loadParams();
 		loadLabels();
-		//loadConsts();	
-		//parsePhotoOverDesigns();
+		loadConsts();	
 		parsePhotoCardStyles();
-		//parsePhotoFiltersPreview();
-
 	}
 	catch (...)
 	{
@@ -39,9 +36,7 @@ void InstakubSettings::loadPaths()
 	configPaths.photoCardsStylesDesignDataPath = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
 	configPaths.userPhotoCardStylePath = getBasePath().string() + pathJSON.getChild("userPhotoCardStylePath").getValue<string>();
 	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();
-
-	staticDesignPath  = pathJSON.getChild("interfacePath").getValue<string>();
-	
+	staticDesignPath  = pathJSON.getChild("interfacePath").getValue<string>();	
 }
 
 void InstakubSettings::loadParams()
@@ -79,6 +74,12 @@ void InstakubSettings::loadLabels()
 		configTexts.insert(lang, InstaTextID::PHOTO_TITLE_MAIN, jtools().parseTextItem(it.getChild("main")));
 		configTexts.insert(lang, InstaTextID::PHOTO_TITLE_SUB, jtools().parseTextItem(it.getChild("sub")));
 	}
+}
+
+void InstakubSettings::loadConsts()
+{
+	JsonTree constsJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
+	clientID = constsJSON.getChild("instagramClientID").getValue<string>();
 }
 
 void InstakubSettings::setDesignPath()
@@ -147,8 +148,14 @@ void InstakubSettings::setTextures()
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
 	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));
 
+	addToDictionary("notExistUser", createImageResource(getTemplateDesignPath("notExistUser.png")));
+	addToDictionary("notPhotosUser", createImageResource(getTemplateDesignPath("notPhotosUser.png")));
 	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
 	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
+	addToDictionary("privateUser", createImageResource(getTemplateDesignPath("privateUser.png")));
+	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
+	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
+	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));
 	
 	for (auto item : photoCardStyles)
 	{
@@ -158,37 +165,32 @@ void InstakubSettings::setTextures()
 
 	std::vector<std::string> files = fileTools().getAllJpegPaths(getTemplateDesignPath("mainpreloader\\"));
 	mainPreloaderSize = files.size();
-	for (int i = 0; i < files.size(); i++)
+	for (size_t i = 0; i < files.size(); i++)
 		addToDictionary("mainPreloader" + to_string(i), createImageResource(files[i]));
 
 	files = fileTools().getAllJpegPaths(getTemplateDesignPath("minipreloader\\"));
 	miniPreloaderSize = files.size();
-	for (int i = 0; i < files.size(); i++)
+	for (size_t i = 0; i < files.size(); i++)
 		addToDictionary("miniPreloader" + to_string(i), createImageResource(files[i]));
-}
-
-ci::gl::Texture InstakubSettings::getCurrentTemplate()
-{
-	auto iter = photoCardStyles.begin();
-	std::advance(iter, activePhotoCardStyleDesignID - 1);
-
-	return iter->getMappedTextures()[0];
 }
 
 void InstakubSettings::buildLocationData()
 {
-	std::vector<ci::gl::Texture> preloaderSeq;
-	for (int i = 0; i < mainPreloaderSize; i++)
-		preloaderSeq.push_back(getTexture("mainPreloader" + to_string(i)));
+	auto getPreloaderImages = [&](int size, const string& name)
+	{
+		std::vector<ci::gl::Texture> preloaderSeq;
+		for (int i = 0; i < size; i++)
+			preloaderSeq.push_back(getTexture(name + to_string(i)));
 
+		return preloaderSeq;
+	};
+
+	auto preloaderSeq = getPreloaderImages(mainPreloaderSize, "mainPreloader");
 	mainPreloader = ImageSequencerRef(new ImageSequencer());
 	mainPreloader->setImages(preloaderSeq);
 	mainPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
 
-	preloaderSeq.clear();
-	for (int i = 0; i < miniPreloaderSize; i++)
-		preloaderSeq.push_back(getTexture("miniPreloader" + to_string(i)));
-
+	preloaderSeq = getPreloaderImages(miniPreloaderSize, "miniPreloader");
 	miniPreloader = ImageSequencerRef(new ImageSequencer());
 	miniPreloader->setImages(preloaderSeq);
 	miniPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
@@ -211,11 +213,18 @@ void InstakubSettings::buildSettingData()
 
 	for (auto &it : photoCardStyles)
 	{
-		///auto tex = getTexture(it.getDesignTexName());
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fonts);
 	}
 };
+
+ci::gl::Texture InstakubSettings::getCurrentTemplate()
+{
+	auto iter = photoCardStyles.begin();
+	std::advance(iter, activePhotoCardStyleDesignID - 1);
+
+	return iter->getMappedTextures()[0];
+}
 
 ImageSequencerRef InstakubSettings::getMainPreloader() const
 {
@@ -277,22 +286,25 @@ string InstakubSettings::getUserPhotoCardStylePath() const
 	return configPaths.userPhotoCardStylePath;
 }
 
+string InstakubSettings::getClientID() const
+{
+	return clientID;
+}
+
 void InstakubSettings::writeConfig()
 {
 	if (memento)
-	{
-		{
-			fs::path basePath(mainConfigObj.getParamsConfigPath());
-			JsonTree doc;
-			doc.addChild(JsonTree("search", search));
-			doc.addChild(JsonTree("hashtag", hashtag));
-			doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
-			doc.write(writeFile(basePath), JsonTree::WriteOptions());
+	{		
+		fs::path basePath(mainConfigObj.getParamsConfigPath());
+		JsonTree doc;
+		doc.addChild(JsonTree("search", search));
+		doc.addChild(JsonTree("hashtag", hashtag));
+		doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
+		doc.write(writeFile(basePath), JsonTree::WriteOptions());
 
-			console() << "WRITE INSTAKUB" << basePath << endl;
-			console() << "activePhotoCardStyleDesignID" << activePhotoCardStyleDesignID << endl;
-		}
-
+		console() << "WRITE INSTAKUB" << basePath << endl;
+		console() << "activePhotoCardStyleDesignID" << activePhotoCardStyleDesignID << endl;
+	
 		memento = false;
 	}
 }

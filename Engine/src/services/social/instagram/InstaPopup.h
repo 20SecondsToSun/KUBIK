@@ -19,14 +19,13 @@ namespace instagram
 		static const int CLOSE_POPUP = 0;
 		static const int PRINT = 1;
 
-		InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& save, const gl::Texture& _template);
+		explicit InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& save, const gl::Texture& _template);
 
-		virtual void draw();
-		virtual void setAlpha(float alpha);
+		void draw() override;
+		void setAlpha(float alpha) override;
 
 		void show(const ImageGraphic& image, const ci::EaseFn& = ci::EaseOutCubic(), float time = 0.7f);
 		void hide(const ci::EaseFn& = ci::EaseOutCubic(), float time = 0.7f);
-		void alphAnimationUpdate();
 		void showAnimationFinish();
 		void hideAnimationFinish();
 
@@ -42,10 +41,11 @@ namespace instagram
 		ci::gl::Texture closeImage, saveImage, templateImage;
 		ci::ColorA bgColor;
 		ci::Anim<float> alpha;
+		ci::Anim<ci::Vec2f> imagePositionAnim;		
 		InstagramClientRef client;
-		ImageButtonSpriteRef closeBtn, printBtn;
-		bool showing;
+		ImageButtonSpriteRef closeBtn, printBtn;		
 		ImageGraphic image;
+		bool showing;
 
 		void hiding(EventGUIRef& event);
 		void printing(EventGUIRef& event);

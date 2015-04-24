@@ -10,6 +10,7 @@ namespace instagram
 		Pagination pagination;
 		Metadata meta;
 		std::list<T> data;
+		int code;
 
 	public:
 		// getters
@@ -49,14 +50,19 @@ namespace instagram
 			data.clear();
 		}
 
+		int getCode() const
+		{
+			return code;
+		}
+
 		void parse(const std::string& json)
 		{
 			clear();
 			console() << json<<endl;
 			try
-			{
+			{				
 				meta.parse(JsonTree(json).getChild("meta"));
-
+				code = meta.getCode();
 				if (meta.okCode())
 				{
 					try
@@ -80,6 +86,7 @@ namespace instagram
 				else
 				{
 					ci::app::console() << "code:  " << meta.getCode() << std::endl;
+					// 400
 				}
 			}
 			catch (...)

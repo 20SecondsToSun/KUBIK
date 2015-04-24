@@ -4,7 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-const float Instakub::RELOAD_TIME = 20.0f;
+const float Instakub::RELOAD_TIME = 40.0f;
 
 Instakub::Instakub(ISettingsRef config)
 {	
@@ -108,7 +108,7 @@ void Instakub::stopTimer()
 
 void Instakub::timerComplete()
 {
-	view->reload();
+	view->timeOutReload();
 	resetTimer();
 }
 

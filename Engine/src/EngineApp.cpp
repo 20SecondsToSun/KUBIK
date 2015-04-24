@@ -80,6 +80,7 @@ void EngineApp::update()
 
 void EngineApp::draw()
 {
+
 	gl::clear(Color::black()); 
 	view->draw();
 }

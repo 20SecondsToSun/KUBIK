@@ -31,7 +31,7 @@ void PhotoboothSettings::load()
 		loadPaths();
 		loadParams();
 		loadLabels();
-		loadConsts();	
+		loadConsts();
 
 		parsePhotoOverDesigns();
 		parsePhotoCardStyles();
@@ -47,14 +47,14 @@ void PhotoboothSettings::load()
 
 void PhotoboothSettings::loadPaths()
 {
-	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));	
+	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
 
 	configPaths.userStickerPath = pathJSON.getChild("userStickerPath").getValue<string>();
 	configPaths.userCardStylePath = pathJSON.getChild("userCardStylePath").getValue<string>();
 	configPaths.photoOverDesignDataPath = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
 	configPaths.photoCardsStylesDesignDataPath = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
 	configPaths.photoFiltersPreviewDesignDataPath = pathJSON.getChild("photoFiltersPreviewDesignDataPath").getValue<string>();
-	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();	
+	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();
 
 	staticDesignPath = pathJSON.getChild("interfacePath").getValue<string>();
 }
@@ -76,7 +76,7 @@ void PhotoboothSettings::loadLabels()
 void PhotoboothSettings::loadConsts()
 {
 	JsonTree constsJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
-	
+
 	JsonTree rects = JsonTree(constsJSON.getChild("cardStylesRects"));
 	for (auto it : rects)
 	{
@@ -103,8 +103,8 @@ void PhotoboothSettings::loadConsts()
 }
 
 void PhotoboothSettings::setDesignPath()
-{		
-	templateDesignPath = configSettings->getTemplateDesign() + configPaths.finalPath;	
+{
+	templateDesignPath = configSettings->getTemplateDesign() + configPaths.finalPath;
 }
 
 void PhotoboothSettings::loadSocialParams(JsonTree config)
@@ -131,11 +131,11 @@ void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
 
 void PhotoboothSettings::loadGameDesignParams(JsonTree config)
 {
-	activeOverDesignID			 = config.getChild("activeOverDesignID").getValue<int>();
-	isSticker					 = config.getChild("isSticker").getValue<bool>();
-	activeSticker.id			 = config.getChild("activeSticker").getValue<int>();
+	activeOverDesignID = config.getChild("activeOverDesignID").getValue<int>();
+	isSticker = config.getChild("isSticker").getValue<bool>();
+	activeSticker.id = config.getChild("activeSticker").getValue<int>();
 	activePhotoCardStyleDesignID = config.getChild("activePhotoCardStyleDesignID").getValue<int>();
-	activeBgPrint.id			 = config.getChild("activeBgPrint").getValue<int>();
+	activeBgPrint.id = config.getChild("activeBgPrint").getValue<int>();
 }
 
 void PhotoboothSettings::loadConfigTexts(JsonTree config)
@@ -147,7 +147,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		string lang = it.getChild("lang").getValue<string>();
 		configTexts.insert(lang, PhtTextID::CARD_STYLE, jtools().parseTextItem(it.getChild("photoCardDesign")));
 		configTexts.insert(lang, PhtTextID::PHOTO_OVER, jtools().parseTextItem(it.getChild("overElements")));
-		configTexts.insert(lang, PhtTextID::FILTERS,	jtools().parseTextItem(it.getChild("photoFilters")));
+		configTexts.insert(lang, PhtTextID::FILTERS, jtools().parseTextItem(it.getChild("photoFilters")));
 		configTexts.insert(lang, PhtTextID::PUBLISHING, jtools().parseTextItem(it.getChild("photoPublishing")));
 	}
 
@@ -157,7 +157,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 		string lang = it.getChild("lang").getValue<string>();
 		configTexts.insert(lang, PhtTextID::CARD_STYLE_SUB, jtools().parseTextItem(it.getChild("photoCardDesign")));
 		configTexts.insert(lang, PhtTextID::PHOTO_OVER_SUB, jtools().parseTextItem(it.getChild("overElements")));
-		configTexts.insert(lang, PhtTextID::FILTERS_SUB,	jtools().parseTextItem(it.getChild("photoFilters")));
+		configTexts.insert(lang, PhtTextID::FILTERS_SUB, jtools().parseTextItem(it.getChild("photoFilters")));
 		configTexts.insert(lang, PhtTextID::PUBLISHING_SUB, jtools().parseTextItem(it.getChild("photoPublishing")));
 	}
 
@@ -224,7 +224,7 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 			text.getChild("font").getValue<string>(),
 			text.getChild("size").getValue<int>(),
 			text.getChild("color").getValue<string>());
-		photoOverDesignData.push_back(item);		
+		photoOverDesignData.push_back(item);
 	}
 
 	userOverDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
@@ -426,14 +426,14 @@ void PhotoboothSettings::buildSettingData()
 
 void PhotoboothSettings::buildLocationData()
 {
-	logger().log("buildActiveGameData photobooth");	
+	logger().log("buildActiveGameData photobooth");
 
-	for (auto &it : photoCardStyles)	
+	for (auto &it : photoCardStyles)
 		it.setDesignTexture(getTexture(it.getDesignTexName()), photoCardStylesCoordRects);
-		
 
-	for (auto &it : photoOverDesignData)	
-		it.setDesignTexture(getTexture(it.getDesignTexName()), photoOverCoordRects);	
+
+	for (auto &it : photoOverDesignData)
+		it.setDesignTexture(getTexture(it.getDesignTexName()), photoOverCoordRects);
 
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		smileTextures.push_back(getTexture("smile" + to_string(i)));
@@ -730,4 +730,43 @@ bool PhotoboothSettings::filtersNotEqual(const vector<Filter>& filter1, const ve
 	std::sort(f2.begin(), f2.end());
 
 	return (f2 != f1);
+}
+
+bool PhotoboothSettings::Filter::isActive() const
+{
+	return isOn;
+}
+
+int PhotoboothSettings::Filter::getID()  const
+{
+	return id;
+}
+
+std::string PhotoboothSettings::Filter::getText() const
+{
+	return text;
+}
+
+std::vector<PhotoboothSettings::Filter> PhotoboothSettings::getFilters() const
+{
+	return filters;
+}
+
+DesignData PhotoboothSettings::getPhotoOverDesignData() const
+{
+	return photoOverDesignData;
+}
+DesignData PhotoboothSettings::getPhotoCardStyles() const
+{
+	return photoCardStyles;
+}
+
+DesignData PhotoboothSettings::getPhotoFiltersPreview() const
+{
+	return photoFiltersPreview;
+}
+
+bool PhotoboothSettings::PhotoCountItem::getActive() const
+{
+	return isActive;
 }

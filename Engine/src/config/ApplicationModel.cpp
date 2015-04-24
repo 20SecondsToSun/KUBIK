@@ -8,11 +8,11 @@ using namespace kubik;
 
 void ApplicationModel::load()
 {
-	logger().log("parse config data");
+	logger().log("PARSE CONFIG DATA");
 	parseConfigPaths();
-	logger().log("parse user data");
+	logger().log("PARSE USER DATA");
 	parseUserData();
-	logger().log("parse design data");
+	logger().log("PARSE DESIGN DATA");
 	parseDesignData();
 }
 
@@ -35,21 +35,24 @@ void ApplicationModel::parseConfigPaths()
 	designDataPath = configJSON.getChild("designDataPath").getValue<string>();
 
 	JsonTree phtJSON = configJSON.getChild("photoboothConfig");
-	photoboothConfigObject.setPathsConfigPath(getFullPath(phtJSON.getChild("path").getValue<string>()));
-	photoboothConfigObject.setParamsConfigPath(getFullPath(phtJSON.getChild("params").getValue<string>()));
-	photoboothConfigObject.setLabelsConfigPath(getFullPath(phtJSON.getChild("labels").getValue<string>()));
-	photoboothConfigObject.setConstsConfigPath(getFullPath(phtJSON.getChild("consts").getValue<string>()));
+	parseConfigPaths(photoboothConfigObject, phtJSON);
+	configObjectMap[settings::id::PHOTOBOOTH] = photoboothConfigObject;
 
 	JsonTree instaJSON = configJSON.getChild("instakubConfig");
-	instakubConfigObject.setPathsConfigPath(getFullPath(instaJSON.getChild("path").getValue<string>()));
-	instakubConfigObject.setParamsConfigPath(getFullPath(instaJSON.getChild("params").getValue<string>()));
-	instakubConfigObject.setLabelsConfigPath(getFullPath(instaJSON.getChild("labels").getValue<string>()));
+	parseConfigPaths(instakubConfigObject, instaJSON);
+	configObjectMap[settings::id::INSTAKUB] = instakubConfigObject;
 
 	JsonTree mainJSON = configJSON.getChild("mainConfig");
-	mainConfigObject.setPathsConfigPath(getFullPath(mainJSON.getChild("path").getValue<string>()));
-	mainConfigObject.setParamsConfigPath(getFullPath(mainJSON.getChild("params").getValue<string>()));
-	mainConfigObject.setLabelsConfigPath(getFullPath(mainJSON.getChild("labels").getValue<string>()));
-	mainConfigObject.setConstsConfigPath(getFullPath(mainJSON.getChild("consts").getValue<string>()));
+	parseConfigPaths(mainConfigObject, mainJSON);
+	configObjectMap[settings::id::MAINCONFIG] = mainConfigObject;
+}
+
+void ApplicationModel::parseConfigPaths(ConfigObject& configObject, const JsonTree& json)
+{
+	configObject.setPathsConfigPath(getFullPath(json.getChild("path").getValue<string>()));
+	configObject.setParamsConfigPath(getFullPath(json.getChild("params").getValue<string>()));
+	configObject.setLabelsConfigPath(getFullPath(json.getChild("labels").getValue<string>()));
+	configObject.setConstsConfigPath(getFullPath(json.getChild("consts").getValue<string>()));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -145,15 +148,13 @@ void ApplicationModel::writeGamesData(const std::vector<GamesInfo>& games)
 
 	JsonTree doc;
 	JsonTree gamesTurnOn = JsonTree::makeArray("data");
-	for (auto it : games)
-	{
+	for (auto it : games)	
 		if (it.isOn)
 		{
 			JsonTree id;
 			id.addChild(JsonTree("id", it.id));
 			gamesTurnOn.pushBack(id);
-		}
-	}
+		}	
 
 	doc.addChild(gamesTurnOn);
 	doc.write(writeFile(basePath), JsonTree::WriteOptions());
@@ -192,9 +193,9 @@ vector<GamesInfo> ApplicationModel::getGames()
 	return games;
 }
 
-void ApplicationModel::setGames(const vector<GamesInfo>& _games)
+void ApplicationModel::setGames(const vector<GamesInfo>& _value)
 {
-	games = _games;
+	games = _value;
 }
 
 void ApplicationModel::setDefaultGameID(GameId _value)
@@ -222,15 +223,9 @@ GameId ApplicationModel::onlyOneGameOnID()
 	int counter = 0;
 	for (auto it : games)
 		if (it.isOn)
-		{
-			console() << "----------------------------id::::::::::::::::::   " << it.id << endl;
 			return it.id;
-		}
-	//	return it.id;
 
-
-	return GameId::INSTAKUB;
-	//return 0;
+	return GameId::INSTAKUB;//TODO
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -255,17 +250,9 @@ void ApplicationModel::setScreenSaverPath(const string& path)
 //
 ////////////////////////////////////////////////////////////////////////////
 
-const ConfigObject& ApplicationModel::getConfigObject(settings::id id)
+const ConfigObject& ApplicationModel::getConfigObject(const settings::id& id)
 {
-	switch (id)
-	{
-	case settings::id::PHOTOBOOTH:
-		return photoboothConfigObject;
-	case settings::id::INSTAKUB:
-		return instakubConfigObject;
-	case settings::id::MAINCONFIG:
-		return mainConfigObject;
-	}
+	return configObjectMap[id];	
 }
 
 string ApplicationModel::getLabelsPath()
@@ -308,7 +295,7 @@ string ApplicationModel::getDesignDataPath()
 	return getFullPath(designDataPath);
 }
 
-string ApplicationModel::getFullPath(const string& path)
+string ApplicationModel::getFullPath(const string& path) const
 {
 	return  getAppPath().string() + path;
 }
@@ -318,12 +305,12 @@ string ApplicationModel::getLang() const
 	return lang;
 }
 
-DesignData ApplicationModel::getDesignData()
+DesignData ApplicationModel::getDesignData() const
 {
 	return designData;
 }
 
-int ApplicationModel::getUserDesignID()
+int ApplicationModel::getUserDesignID() const
 {
 	return userDesignID;
 }

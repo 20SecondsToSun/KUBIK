@@ -17,20 +17,9 @@ namespace kubik
 			GameId id;
 			
 		public:
-			ci::gl::Texture getTexture() const 
-			{ 
-				return texture; 
-			}	
-
-			ci::Vec2f getPosition() const
-			{
-				return position;
-			}
-
-			GameId getID() const
-			{
-				return id;
-			}
+			ci::gl::Texture getTexture() const;
+			ci::Vec2f getPosition() const;
+			GameId getID() const;
 
 			friend class MenuSettings;
 		};
@@ -48,11 +37,7 @@ namespace kubik
 				std::string userTemplatePartDesignPath;
 				std::string finalPath;
 
-				bool hasDesignChanges(const MenuDataStruct& menu)
-				{
-					return (isCustomDesign != menu.isCustomDesign ||
-						templateId != menu.templateId);
-				}
+				bool hasDesignChanges(const MenuDataStruct& menu);
 			};
 
 			MenuSettings(ApplicationModelRef model);

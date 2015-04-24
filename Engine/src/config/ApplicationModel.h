@@ -59,6 +59,7 @@ namespace kubik
 
 			void setDefaultGameID(GameId value);
 			GameId getDefaultGameID() const;
+
 			bool onlyOneGameOn();
 			GameId onlyOneGameOnID();
 
@@ -78,7 +79,7 @@ namespace kubik
 			//
 			////////////////////////////////////////////////////////////////////////////			
 
-			const ConfigObject& getConfigObject(settings::id id);
+			const ConfigObject& getConfigObject(const settings::id& id);
 
 			std::string getLabelsPath();
 			std::string getMenuConfigPath();
@@ -88,10 +89,10 @@ namespace kubik
 			std::string getKotopozaConfigPath();
 			std::string getUserDataPath();
 			std::string getDesignDataPath();			
-			std::string getFullPath(const std::string& path);
+			std::string getFullPath(const std::string& path) const;
 			std::string getLang() const;
-			DesignData  getDesignData();
-			int			getUserDesignID();
+			DesignData  getDesignData() const;
+			int			getUserDesignID() const;
 
 			std::string getTemplatePath();
 			std::string getInterfacePath();
@@ -121,8 +122,10 @@ namespace kubik
 			DesignData designData;
 			int userDesignID;
 
+			std::map<settings::id, ConfigObject> configObjectMap;
 			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject;
-			fs::path getConfigPath();			
+			fs::path getConfigPath();
+			void parseConfigPaths(ConfigObject& configObject, const JsonTree& json);
 		};
 
 		typedef std::shared_ptr<ApplicationModel> ApplicationModelRef;

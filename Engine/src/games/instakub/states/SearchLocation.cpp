@@ -13,7 +13,7 @@ SearchLocation::SearchLocation(InstakubSettingsRef settings, const ci::Vec2f& ve
 	:InstakubLocation(settings, vectr),
 	alphaError(0.0f)
 {	
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f)));	
+	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f), settings->getTexture("closeKeyboard")));
 }
 
 void SearchLocation::reset()
@@ -43,7 +43,8 @@ void SearchLocation::load()
 }
 
 void SearchLocation::closeKeyboardHandler()
-{
+{	
+	//instaViewer->animatePositionTo(position.x, position.y);
 	instaViewer->connect();
 	hideKeyboardLayout();
 	resetInputField();
@@ -56,10 +57,13 @@ void SearchLocation::resetInputField()
 
 void SearchLocation::initVirtualKeyboard()
 {
+	touchKeyboard().setDefaultSettings();
+	touchKeyboard().setEraseButtonTexture(settings->getTexture("eraseInstagram"));
 	touchKeyboard().clearInputFieldText();
 	touchKeyboard().setOriginPoint(Vec2f::zero());
-	touchKeyboard().setInputField(258.0f, 335.0f, 895.0f, 386.0f);
+	touchKeyboard().setInputField(234.0f, 290.0f, 924.0f, 402.0f);
 	touchKeyboard().setInputColor(Color::white());
+	touchKeyboard().setInputFont(settings->getFont("introLight36"));
 	touchKeyboard().activateSearchMode();
 }
 
@@ -68,6 +72,9 @@ void SearchLocation::inputTouchHandler()
 	if (touchKeyboard().showing())
 		return;
 
+	string hashtag = touchKeyboard().getInputFieldText();
+
+	//instaViewer->animatePositionTo(position.x, position.y + 35.f);
 	instaViewer->disconnect();
 	touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
 	keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);
@@ -202,14 +209,14 @@ void SearchLocation::loadStrategity()
 void SearchLocation::hashTagPhotosLoad()
 {
 	string hashtag = touchKeyboard().getInputFieldText();
-	console() << "LOAD STRAGEDY:::::::::::::::: HASHTAG_PHOTOS_LOAD :::: " << hashtag << endl;
+	logger().log("LOAD STRAGEDY:::::::::::::::: HASHTAG_PHOTOS_LOAD ::::" + hashtag);
 	hashtagPhotosload(hashtag);
 }
 
 void SearchLocation::userPhotosLoad()
 {
 	string userName = touchKeyboard().getInputFieldText();
-	console() << "LOAD STRAGEDY:::::::::::::::: USER_PHOTOS_LOAD :::: " << userName << endl;
+	logger().log("LOAD STRAGEDY:::::::::::::::: USER_PHOTOS_LOAD :::: " + userName);
 	userPhotosload(userName);
 }
 
@@ -218,11 +225,15 @@ void SearchLocation::draw()
 	InstakubLocation::draw();
 	gl::color(Color::white());
 	gl::draw(overMask);
-	gl::draw(title, titlePosition);
+	gl::draw(title, Vec2i(titlePosition.x, titlePosition.y));
 
-	gl::draw(searchField, searchFieldPosition);
+	gl::draw(searchField, Vec2i(searchFieldPosition.x, searchFieldPosition.y));
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaError));
+
+	gl::pushMatrices();	
 	gl::draw(searchFieldRed, searchFieldPosition);
+	gl::popMatrices();
+
 	gl::color(Color::white());
 
 	drawTouchKeyboardLayout();

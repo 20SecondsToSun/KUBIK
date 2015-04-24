@@ -36,6 +36,7 @@ namespace kubik
 			void loadPaths();
 			void loadParams();
 			void loadLabels();
+			void loadConsts();			
 			void setDesignPath();
 			void parsePhotoCardStyles();
 			
@@ -54,6 +55,7 @@ namespace kubik
 
 			int getUserPhotoCardStyleDesignID() const;
 			std::string getUserPhotoCardStylePath() const;
+			std::string getClientID() const;
 
 			void writeConfig();
 			void createMemento();
@@ -66,10 +68,10 @@ namespace kubik
 			ImageSequencerRef getMainPreloader() const;
 			ImageSequencerRef getMiniPreloader() const;
 
-		private:
+		private:			
 			int mainPreloaderSize, miniPreloaderSize;
 			bool memento;
-			std::string hashtag, hashtag_save;
+			std::string hashtag, hashtag_save, clientID;
 			bool search, search_save;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
 			int userPhotoCardStyleDesignID;

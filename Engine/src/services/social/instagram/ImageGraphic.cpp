@@ -49,7 +49,7 @@ void ImageGraphic::draw(const ci::Vec2f& vec)
 
 		gl::pushMatrices();
 		gl::translate(vec);
-		gl::color(ColorA(0.1f, 0.1f, 0.1f, 1.0f));
+		gl::color(ColorA(1.f, 1.f, 1.f, 0.01f));
 		gl::drawSolidRect(Rectf(5.0f, 5.0f, width - 5.0f, height - 5.0f));
 		gl::popMatrices();
 	}

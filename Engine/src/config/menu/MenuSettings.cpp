@@ -144,3 +144,24 @@ vector<GamesInfo> MenuSettings::getGames()
 {
 	return model->getGames();
 }
+
+bool MenuSettings::MenuDataStruct::hasDesignChanges(const MenuDataStruct& menu)
+{
+	return (isCustomDesign != menu.isCustomDesign ||
+		templateId != menu.templateId);
+}
+
+ci::gl::Texture GameData::getTexture() const
+{
+	return texture;
+}
+
+ci::Vec2f GameData::getPosition() const
+{
+	return position;
+}
+
+GameId GameData::getID() const
+{
+	return id;
+}

@@ -248,10 +248,8 @@ void Controller::removeScreenSaverHandlers()
 
 void Controller::startMenuScreenLocation()
 {
-	if (model->onlyOneGameOn())
-	{	
-		startGameHandler(model->onlyOneGameOnID());
-	}		
+	if (model->onlyOneGameOn())		
+		startGameHandler(model->onlyOneGameOnID());	
 	else	
 		startLocation(menuScreen);	
 }

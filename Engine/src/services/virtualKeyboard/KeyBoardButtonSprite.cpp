@@ -69,9 +69,6 @@ void  KeyBoardButtonSprite::createTextField()
 void KeyBoardButtonSprite::down()
 {
 	timeline().apply(&overColor, Color::hex(0x00b6c4), Color::white(), 0.5f, EaseInBack());
-	//.finishFn([&]()
-	//{
-	//});
 }
 
 void KeyBoardButtonSprite::setAlpha(float alpha)

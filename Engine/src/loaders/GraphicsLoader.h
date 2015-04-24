@@ -76,7 +76,9 @@ namespace kubik
 						ImageResourceRef imageRes = static_pointer_cast<ImageResource>(res);	
 
 						console()<<"try image load  "<< res->path <<endl;
-						Surface image = Surface(loadImage( ci::loadFile( res->path ) ));
+						ci::Surface image = ci::Surface(loadImage(ci::loadFile(res->path)));
+						
+						//image.setPremultiplied(true);
 						imageRes->set(image);								
 					}
 					else if(res->resourceType == resourceType::VIDEO)

@@ -39,10 +39,7 @@ namespace kubik
 				bool isActive;
 
 			public:
-				bool getActive()
-				{
-					return isActive;
-				}
+				bool getActive() const;
 			};
 
 			PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
@@ -68,24 +65,11 @@ namespace kubik
 			std::vector<ci::gl::Texture> getPhotoOverActiveTemplate();
 
 			ci::gl::Texture getActivePrintBgTex();
-
 			void swapFilter(int id);
-
-			//bool findFilterId(int id, std::vector<int> filters);			
-
-			DesignData getPhotoOverDesignData()
-			{
-				return photoOverDesignData;
-			}
-			DesignData getPhotoCardStyles()
-			{
-				return photoCardStyles;
-			}
-
-			DesignData getPhotoFiltersPreview()
-			{
-				return photoFiltersPreview;
-			}
+			
+			DesignData getPhotoOverDesignData() const;
+			DesignData getPhotoCardStyles() const;
+			DesignData getPhotoFiltersPreview() const;
 
 			void setActiveOverDesignID(int id);
 			int getActiveOverDesignID();
@@ -119,30 +103,15 @@ namespace kubik
 			public:
 				friend PhotoboothSettings;
 
-				bool isActive()
-				{
-					return isOn;
-				}
-
-				int getID()
-				{
-					return id;
-				}
-
-				std::string getText()
-				{
-					return text;
-				}
+				bool isActive() const;
+				int getID() const;
+				std::string getText() const;
 			};
 
-			std::vector<Filter> getFilters()
-			{
-				return filters;
-			}
+			std::vector<Filter> getFilters() const;
 			std::vector<Filter> getOnFilters();
 
 		private:
-
 			class ImageElement
 			{
 				std::string path;
@@ -191,7 +160,6 @@ namespace kubik
 			ConfigObject mainConfigObj;
 
 			bool isSticker;
-
 			int activeOverDesignID, activeOverDesignIDMemento;
 			int userOverDesignID;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;

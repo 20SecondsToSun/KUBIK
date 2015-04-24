@@ -29,6 +29,8 @@ float VirtualKeyboard::_xOffset5 = 12.0f;
 bool VirtualKeyboard::setuped = false;
 bool VirtualKeyboard::connected = false;
 bool VirtualKeyboard::showInputField = true;
+bool VirtualKeyboard::carridgeDrawing = false;
+bool VirtualKeyboard::carridgePhase = false;
 
 ci::Vec2f VirtualKeyboard::lineOffset1 = Vec2f(360.0f, 30.0f);
 ci::Vec2f VirtualKeyboard::lineOffset2 = Vec2f(415.0f, 122.0f);
@@ -58,7 +60,7 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 
 	gl::Texture langChangeTex = config->getTexture("lang");
 
-	gl::Texture eraseTex = config->getTexture("erase");
+	eraseTex = config->getTexture("erase");
 
 	Vec2f shift_Y = Vec2f::zero();
 	float _width = 79.0f;
@@ -202,6 +204,8 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 	setlocale(LC_ALL, "");
 	createInputField(config->getFont("introLight44"));
 	setuped = true;
+	carridgeDrawing = false;
+	carridgePhase = false;
 }
 
 void VirtualKeyboard::show(const ci::Vec2f& from, const ci::Vec2f& to, float time)
@@ -223,6 +227,7 @@ void VirtualKeyboard::hide(const ci::Vec2f& to, float time)
 {
 	if (isShowing)
 	{
+		carridgeDrawing = false;
 		erase->setAlpha(0);
 		timeline().apply(&keyBoardPosition, to, time, ci::EaseOutCubic()).finishFn([&]()
 		{
@@ -278,13 +283,35 @@ void VirtualKeyboard::draw()
 		//touchInputZone->draw();	
 		if (!inputFieldEmpty() && isShowing && showEraseButton)
 			erase->draw();
-
+		 
 		gl::draw(inputFieldTexture,
 			touchInputZone->getLocalPosition() +
-			Vec2f(15, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()) - 5));
+			Vec2f(19, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight())));
+		drawCarriage();
 		gl::popMatrices();
 		gl::popMatrices();
 	}
+}
+
+void VirtualKeyboard::drawCarriage()
+{
+	auto position = touchInputZone->getLocalPosition() + Vec2f(19.0f, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()));
+	auto x1 = position.x + inputFieldTexture.getWidth();
+	auto x2 = position.x + inputFieldTexture.getWidth() + 2.0f;
+	auto y1 = position.y;
+	auto y2 = position.y + inputFieldTexture.getHeight();
+
+	if (carridgeDrawing)
+	{
+		if (getElapsedFrames() % 30 == 0)
+			carridgePhase = !carridgePhase;
+
+		if (carridgePhase)
+		{
+			gl::color(inputColor);
+			gl::drawSolidRect(Rectf(x1, y1, x2, y2));
+		}			
+	}	
 }
 
 void VirtualKeyboard::MouseUp(MouseEvent &event)
@@ -315,7 +342,7 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 	{
 		callback(KEY_TOUCH);
 
-		if (inputField.size() < maxInputChars)
+		if (inputFieldTexture.getWidth() < touchInputZone->getWidth() - 110)
 		{
 			inputField += lastCode;
 			setInputFieldText(inputField);
@@ -334,7 +361,14 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	ci::Vec2f coords = event.getPos() - originPoint;
 
 	if (touchInputZone->inButtonField(coords))
+	{
+		carridgeDrawing = true;
+
 		callback(INPUT_TOUCH);
+		if (erase->inButtonField(coords))
+			lastCode = "erase";
+		return;
+	}		
 
 	if (!isShowing)
 		return;
@@ -403,7 +437,7 @@ void VirtualKeyboard::setInputField(float x, float y, float width, float height)
 {
 	touchInputZonePos = Vec2f(x, y);
 	touchInputZone->setButtonArea1(Rectf(x, y, width, height));
-	erase->setPosition(touchInputZonePos + Vec2f(touchInputZone->getWidth() - 50, 0.5f*(touchInputZone->getHeight() - 30)));
+	erase->setPosition(touchInputZonePos + Vec2f(-39.0f + touchInputZone->getWidth() - erase->getWidth(), 0.5f * (touchInputZone->getHeight() - erase->getHeight())));
 }
 
 void VirtualKeyboard::setInputFont(const ci::Font& font)
@@ -419,6 +453,16 @@ void VirtualKeyboard::setInputColor(const ci::Color& color)
 void VirtualKeyboard::clearInputFieldText()
 {
 	setInputFieldText("");
+}
+
+void VirtualKeyboard::setEraseButtonTexture(const gl::Texture& value )
+{
+	erase->changeTexture(value);
+}
+
+void VirtualKeyboard::setDefaultSettings()
+{
+	erase->changeTexture(eraseTex);
 }
 
 void VirtualKeyboard::setInputFieldText(const std::string& text)

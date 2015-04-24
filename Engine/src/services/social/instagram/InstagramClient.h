@@ -27,6 +27,8 @@ namespace instagram
 		const static std::string MEDIA_RECENT = "media/recent/";
 		const static std::string CLIENT_ID = "client_id";
 		const static std::string QUERY = "q";
+
+		const static int USER_NOT_EXIST = -1000;
 	}
 
 	class InstagramClient
@@ -87,7 +89,12 @@ namespace instagram
 		bool isLoading() const;
 		bool canLoad() const;
 		bool needSynch() const;
-		void setSynch(bool val);
+		bool userPrivate() const; 
+		bool userNotExist() const;
+		int getLastCode() const;
+		bool userNotHavePhotos() const;
+		bool noHashtagPhotos() const;
+		void setSynch(bool val);		
 
 		void setupLoadThread();
 		void update();
@@ -102,6 +109,8 @@ namespace instagram
 	protected:
 		std::string clientID;
 		bool _loading, _needSynch, _noMore;
+
+		int lastCode;
 
 		std::vector<ImageGraphic> synchImages;
 		std::list<User> userList;

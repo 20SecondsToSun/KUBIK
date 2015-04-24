@@ -4,6 +4,8 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
+const float HashtagOnly::TIME_TO_BACK_PLASHKA = 10.0f;
+
 HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
 	:InstakubLocation(settings, Vec2f(18.0f, 332.0f))	
 {
@@ -33,6 +35,8 @@ void HashtagOnly::start()
 
 	InstakubLocation::initPosition();	
 	InstakubLocation::start();
+
+	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), Vec2f::zero(), 0.8f, EaseOutCubic());
 }
 
 void HashtagOnly::load()
@@ -44,6 +48,7 @@ void HashtagOnly::load()
 void HashtagOnly::stop()
 {
 	InstakubLocation::stop();
+	instaViewer->touchedDownEvent.disconnect_all_slots();
 }
 
 void HashtagOnly::draw()
@@ -51,11 +56,31 @@ void HashtagOnly::draw()
 	InstakubLocation::draw();
 	gl::color(Color::white());
 	gl::draw(overMask);
-	gl::draw(title, titlePosition);	
+	gl::draw(title, titlePosition);		
 	
+	gl::pushMatrices();
+	gl::translate(hashtagAnimPosition);
 	gl::draw(hashtagPlashka, hashtagPlashkaPos);
 	gl::draw(hashtagPlashkaText, hashtagPlashkaTextPos);
 	gl::draw(hashTagTexture, hashTagTexturePos);
+	gl::popMatrices();
 
 	InstakubLocation::drawPopup();
 };
+
+void HashtagOnly::timeOutReload()
+{
+	InstakubLocation::reload();
+	timeline().apply(&hashtagAnimPosition, Vec2f::zero(), 0.8f, EaseOutCubic());
+}
+
+void HashtagOnly::initViewerHandlers()
+{
+	connect_once(instaViewer->touchedDownEvent, bind(&HashtagOnly::touchDownHandler, this));
+	InstakubLocation::initViewerHandlers();
+}
+
+void HashtagOnly::touchDownHandler()
+{
+	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), 0.8f, EaseOutCubic());
+}

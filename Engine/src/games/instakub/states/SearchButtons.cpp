@@ -18,8 +18,9 @@ SearchButtons::SearchButtons(const ci::gl::Texture& tex1,
 	hashTagButton = ImageButtonSpriteRef(new ImageButtonSprite(tex1));
 	userButton = ImageButtonSpriteRef(new ImageButtonSprite(tex3));
 
-	hashTagButton->setPosition(Vec2i(158, 435));
-	userButton->setPosition(Vec2i(550, 435));
+	auto halfWindowWidthWidth = 1080.0f * 0.5f;
+	hashTagButton->setPosition(Vec2i(halfWindowWidthWidth - tex1.getWidth(), 457.0f - tex1.getHeight()* 0.5f));
+	userButton->setPosition(Vec2i(halfWindowWidthWidth, 457.0f - tex2.getHeight()*0.5f));
 
 	userButton->setAlpha(alpha);
 	hashTagButton->setAlpha(alpha);

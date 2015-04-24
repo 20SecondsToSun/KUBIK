@@ -48,10 +48,9 @@ namespace kubik
 				virtual void draw();
 				virtual void stop() = 0;
 				virtual void load() = 0;
+				virtual void timeOutReload() = 0;				
 				virtual void reset();
 				virtual void reload();	
-
-				//virtual void drawTitle() = 0;
 				virtual void openPopupHandler();
 
 				void initOverMask();			
@@ -75,20 +74,21 @@ namespace kubik
 				virtual	void noMoreLoadsHandler();
 				virtual void closePopupHandler();
 				
-				virtual void hashTagDefaultPhotosLoad();			
-
+				virtual void hashTagDefaultPhotosLoad();
 				virtual void loadStrategity();
+				virtual void initViewerHandlers();
 
-			private:	
-				static InstagramClientRef instClient;						
-
-				float yPosition;
 				ci::Vec2f position;
+			private:	
+				static InstagramClientRef instClient;		
+
+				float yPosition;				
 				
 				void reloadHandler();
 				void nextLoadHandler();				
 				void printPopupHandler();
-				void disconnectPopup();									
+				void disconnectPopup();					
+				void initClientHandlers();
 			};
 		}
 	}

@@ -21,8 +21,10 @@ namespace kubik
 
 		static bool setuped;
 		static bool connected;
-		static bool showInputField;	
-
+		static bool showInputField;
+		static bool carridgeDrawing;
+		static bool carridgePhase;
+		
 		static VirtualKeyboard& getInstance() { static VirtualKeyboard vk; return vk; };
 
 		void create(config::ISettingsRef config);
@@ -93,8 +95,8 @@ namespace kubik
 
 		ci::gl::Texture	 shiftTex1, shiftTex0;
 		ci::gl::Texture	 smallspaceBtnTex, spaceBtnTex, sendBtnTex, searchBtnTex;
+		ci::gl::Texture	 changeKeyboardTex1, changeKeyboardTex2, eraseTex;
 
-		ci::gl::Texture	 changeKeyboardTex1, changeKeyboardTex2;
 		KeyBoardButtonSpriteRef shift, erase;
 		KeyBoardButtonSpriteRef changeKeyboardBtn, changeKeyboardBtnDuplicat;	
 		KeyBoardButtonSpriteRef spaceBtn, sendBtn, searchBtn;
@@ -116,6 +118,8 @@ namespace kubik
 		void clearCurrentMode();
 		void createInputField(const ci::Font& font);
 
+		void drawCarriage();
+
 		SimpleSpriteButtonRef touchInputZone;
 		std::string inputField;
 		ci::Font inputFont;
@@ -133,7 +137,9 @@ namespace kubik
 		void setInputFont(const ci::Font& font);
 		void setInputColor(const ci::Color& color);
 		void clearInputFieldText();
+		void setDefaultSettings();		
 		void setInputFieldText(const std::string& text);
+		void setEraseButtonTexture(const gl::Texture& value);
 		std::string getInputFieldText() const;
 		bool emptyInputField();
 		bool showing() const;

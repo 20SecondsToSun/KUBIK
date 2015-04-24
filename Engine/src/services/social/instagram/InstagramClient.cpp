@@ -96,15 +96,17 @@ void InstagramClient::loadUsersRequest(const string& request)
 	string json = Curl::get(request);
 	userResponse.parse(json);
 
-	auto data = userResponse.getData();
-
+	auto data = userResponse.getData();	
+	
 	if (data.empty())
-	{
+	{	
+		lastCode = API::USER_NOT_EXIST;
 		_needSynch = true;
-		_loading = false;
+		_loading = false;			
 	}
 	else
 	{
+		lastCode = userResponse.getCode();
 		auto firstUser = data.front();
 		console() << "firstUser::::   " << firstUser.getID() << endl;	
 		loadUserPhotos(firstUser.getID());
@@ -143,10 +145,9 @@ void InstagramClient::_loadNextMedia()
 		loadMediaRequest(lastMediaResponse.getPagination().getNextURL());
 	else
 	{
-		console() << "no more::::::::::::::  " << endl;
-		_needSynch = false;
-		_loading = false;
+		_needSynch = false;		
 		_noMore = true;
+		_loading = false;
 	}
 }
 
@@ -156,6 +157,7 @@ void InstagramClient::loadMediaRequest(const string& request)
 	lastMediaResponse.parse(json);
 	loadImages();
 
+	lastCode = lastMediaResponse.getCode();
 	_needSynch = true;
 	_loading = false;
 }
@@ -216,6 +218,31 @@ bool InstagramClient::canLoad() const
 	return !_loading && !_needSynch;
 }
 
+int InstagramClient::getLastCode() const
+{
+	return lastCode;
+}
+
+bool InstagramClient::userPrivate() const
+{
+	return lastCode == 400;
+}
+
+bool InstagramClient::userNotExist() const
+{
+	return lastCode == API::USER_NOT_EXIST;
+}
+
+bool InstagramClient::userNotHavePhotos() const
+{
+	return synchImages.empty();
+}
+
+bool InstagramClient::noHashtagPhotos() const
+{
+	return synchImages.empty();
+}
+
 void InstagramClient::loadImages()
 {
 	list<InstagramMedia> mediaList = lastMediaResponse.getData();
@@ -234,10 +261,20 @@ void InstagramClient::loadImages()
 
 void InstagramClient::killLoad()
 {
+	ci::app::console() << "TRY TO KILL!!!!!!!!!!!!!!!" << endl;
 	if (_loading)
 	{
+		ci::app::console() << "join!!!!!!!!!!!!!!!" << endl;
+
 		if (mediaLoadThread && mediaLoadThread->joinable())
+		{
+			//mediaLoadThread->interrupt();
 			mediaLoadThread->join();
+		}
+		
+
+		//if (mediaLoadThread && mediaLoadThread->joinable())
+		//	mediaLoadThread->join();
 	}
 
 	_loading = false;

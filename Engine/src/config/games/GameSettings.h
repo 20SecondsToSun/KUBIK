@@ -92,9 +92,7 @@ namespace kubik
 			GamesDataStruct data, dataMemento;
 
 			ConfigSettingsRef configSettings;
-
 			GamesFactory<IGame>	gamesFactory;
-
 		};
 	}
 }

@@ -204,7 +204,7 @@ namespace kubik
 		}
 	};
 
-	class ImageResource: public IResource<Surface>
+	class ImageResource: public IResource<ci::Surface>
 	{
 	public:	
 		ImageResource()
