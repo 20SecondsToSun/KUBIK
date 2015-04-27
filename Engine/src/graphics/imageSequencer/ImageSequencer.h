@@ -3,22 +3,20 @@
 #include "Resources.h"
 #include "IScreen.h"
 #include "FileTools.h"
+#include "IMovie.h"
 
 namespace kubik
 {
 	typedef std::shared_ptr<class ImageSequencer> ImageSequencerRef;
 
-	class ImageSequencer
+	class ImageSequencer : public IMovie
 	{
 	public:
-		ImageSequencer();		
-		void draw();
-		void setImages(const std::vector<ci::gl::Texture>& images);	
-		void setPosition(const ci::Vec2f& vec);
+		ImageSequencer(const std::vector<ci::gl::Texture>& images);
+		void draw() override;			
 
 	private:
 		std::vector<ci::gl::Texture> images;
 		size_t index;
-		ci::Vec2f position;
 	};
 }

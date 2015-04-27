@@ -4,6 +4,7 @@
 #include "IScreen.h"
 #include "FileTools.h"
 #include "ImageSequencer\ImageSequencer.h"
+#include "videoplayer\VideoPlayer.h"
 
 namespace kubik
 {
@@ -29,8 +30,6 @@ namespace kubik
 	private:		
 		ci::Vec2f position;
 		ci::gl::Texture background;
-		//qtime::MovieGl preloaderMovie;
-		ImageSequencerRef sequencer;
-		
+		IMovieRef preloader;		
 	};	
 }

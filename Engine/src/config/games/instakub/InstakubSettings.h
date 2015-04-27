@@ -7,7 +7,10 @@
 #include "JsonTools.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
+#include "MovieLoader.h"
 #include "ImageSequencer/ImageSequencer.h"
+#include "videoplayer/VideoPlayer.h"
+
 
 namespace kubik
 {
@@ -24,6 +27,9 @@ namespace kubik
 				HASHTAG_TITLE_MAIN,	HASHTAG_TITLE_SUB,
 				PHOTO_TITLE_MAIN, PHOTO_TITLE_SUB				
 			};
+
+			kubik::MovieLoader::MovieLoaderStruct mainPreloaderStruct, miniPreloaderStruct;
+			
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			void load() override;
@@ -65,18 +71,17 @@ namespace kubik
 			bool hashtagEnabled();
 			bool searchEnabled();	
 			
-			ImageSequencerRef getMainPreloader() const;
-			ImageSequencerRef getMiniPreloader() const;
+			IMovieRef getMainPreloader() const;
+			IMovieRef getMiniPreloader() const;
 
 		private:			
-			int mainPreloaderSize, miniPreloaderSize;
 			bool memento;
 			std::string hashtag, hashtag_save, clientID;
 			bool search, search_save;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
 			int userPhotoCardStyleDesignID;
 
-			ImageSequencerRef mainPreloader, miniPreloader;
+			IMovieRef mainPreloader, miniPreloader;
 
 			ConfigTexts<InstaTextID> configTexts;
 

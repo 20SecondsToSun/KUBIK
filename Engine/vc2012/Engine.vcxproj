@@ -169,6 +169,8 @@
     <ClCompile Include="..\src\games\photobooth\states\template\TemplateButtons.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp" />
+    <ClCompile Include="..\src\graphics\IMovie.cpp" />
+    <ClCompile Include="..\src\graphics\videoplayer\VideoPlayer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
@@ -332,6 +334,7 @@
     <ClInclude Include="..\src\games\photobooth\states\template\TemplateButtons.h" />
     <ClInclude Include="..\src\games\photobooth\states\timer\PhotoTimer.h" />
     <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h" />
+    <ClInclude Include="..\src\graphics\IMovie.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\Bloom.h" />
     <ClInclude Include="..\src\graphics\shaders\ColorHalftone.h" />
@@ -343,6 +346,7 @@
     <ClInclude Include="..\src\graphics\shaders\ShaderTool.h" />
     <ClInclude Include="..\src\graphics\shaders\Pixelate.h" />
     <ClInclude Include="..\src\graphics\shaders\Sepia.h" />
+    <ClInclude Include="..\src\graphics\videoplayer\VideoPlayer.h" />
     <ClInclude Include="..\src\gui\EventGUI.h" />
     <ClInclude Include="..\src\gui\ImageButtonSprite.h" />
     <ClInclude Include="..\src\gui\SimpleSpriteButton.h" />
@@ -354,6 +358,7 @@
     <ClInclude Include="..\src\loaders\ConfigLoader.h" />
     <ClInclude Include="..\src\loaders\GraphicsLoader.h" />
     <ClInclude Include="..\src\loaders\Iloader.h" />
+    <ClInclude Include="..\src\loaders\MovieLoader.h" />
     <ClInclude Include="..\src\locations\IScreen.h" />
     <ClInclude Include="..\src\locations\menu\ControlLayer.h" />
     <ClInclude Include="..\src\locations\menu\GameButton.h" />

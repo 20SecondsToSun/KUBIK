@@ -143,8 +143,8 @@ void InstakubSettings::setTextures()
 	addToDictionary("hashtagSearch", createImageResource(getTemplateDesignPath("hashtagSearch.png")));
 	addToDictionary("hashtagSearchOver", createImageResource(getTemplateDesignPath("hashtagSearchOver.png")));
 	addToDictionary("userSearch", createImageResource(getTemplateDesignPath("userSearch.png")));
-	addToDictionary("userSearchOver", createImageResource(getTemplateDesignPath("userSearchOver.png")));	
-	
+	addToDictionary("userSearchOver", createImageResource(getTemplateDesignPath("userSearchOver.png")));
+
 	addToDictionary("closeInstaPopup", createImageResource(getTemplateDesignPath("closeInstaPopup.png")));
 	addToDictionary("printInstaPopup", createImageResource(getTemplateDesignPath("printInstaPopup.png")));
 
@@ -156,44 +156,32 @@ void InstakubSettings::setTextures()
 	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
 	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
 	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));
-	
+
 	for (auto item : photoCardStyles)
 	{
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
-	}	
+	}
 
-	std::vector<std::string> files = fileTools().getAllJpegPaths(getTemplateDesignPath("mainpreloader\\"));
-	mainPreloaderSize = files.size();
-	for (size_t i = 0; i < files.size(); i++)
-		addToDictionary("mainPreloader" + to_string(i), createImageResource(files[i]));
+	auto addPreloaderFilesToDictionary = [&](MovieLoader::MovieLoaderStruct& movieStruct, const string& name)
+	{
+		movieStruct = movieLoader().getMovieStruct(getTemplateDesignPath(name + "\\"), name);
 
-	files = fileTools().getAllJpegPaths(getTemplateDesignPath("minipreloader\\"));
-	miniPreloaderSize = files.size();
-	for (size_t i = 0; i < files.size(); i++)
-		addToDictionary("miniPreloader" + to_string(i), createImageResource(files[i]));
+		if (movieStruct.type == MovieLoader::VIDEO)		
+			addToDictionary(movieStruct.name, createVideoResource(movieStruct.paths[0]));		
+		else if (movieStruct.type == MovieLoader::IMAGE_SEQUENCE)		
+			for (size_t i = 0; i < movieStruct.paths.size(); i++)
+				addToDictionary(movieStruct.name + to_string(i), createImageResource(movieStruct.paths[i]));		
+	};
+
+	addPreloaderFilesToDictionary(mainPreloaderStruct, "mainpreloader");
+	addPreloaderFilesToDictionary(miniPreloaderStruct, "minipreloader");
 }
 
 void InstakubSettings::buildLocationData()
 {
-	auto getPreloaderImages = [&](int size, const string& name)
-	{
-		std::vector<ci::gl::Texture> preloaderSeq;
-		for (int i = 0; i < size; i++)
-			preloaderSeq.push_back(getTexture(name + to_string(i)));
-
-		return preloaderSeq;
-	};
-
-	auto preloaderSeq = getPreloaderImages(mainPreloaderSize, "mainPreloader");
-	mainPreloader = ImageSequencerRef(new ImageSequencer());
-	mainPreloader->setImages(preloaderSeq);
-	mainPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
-
-	preloaderSeq = getPreloaderImages(miniPreloaderSize, "miniPreloader");
-	miniPreloader = ImageSequencerRef(new ImageSequencer());
-	miniPreloader->setImages(preloaderSeq);
-	miniPreloader->setPosition(Vec2f(0.5f * (getWindowWidth() - preloaderSeq[0].getWidth()), 0.0f));
+	mainPreloader = movieLoader().getMovie(mainPreloaderStruct, getTextures(), getVideos());
+	miniPreloader = movieLoader().getMovie(miniPreloaderStruct, getTextures(), getVideos());	
 
 	for (auto &it : photoCardStyles)
 	{
@@ -226,12 +214,12 @@ ci::gl::Texture InstakubSettings::getCurrentTemplate()
 	return iter->getMappedTextures()[0];
 }
 
-ImageSequencerRef InstakubSettings::getMainPreloader() const
+IMovieRef InstakubSettings::getMainPreloader() const
 {
 	return mainPreloader;
 }
 
-ImageSequencerRef InstakubSettings::getMiniPreloader() const
+IMovieRef InstakubSettings::getMiniPreloader() const
 {
 	return miniPreloader;
 }

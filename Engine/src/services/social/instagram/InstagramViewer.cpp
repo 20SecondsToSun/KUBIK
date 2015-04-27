@@ -7,8 +7,8 @@ using namespace ci::app;
 using namespace kubik;
 
 InstagramViewer::InstagramViewer(InstagramClientRef client, 
-	ImageSequencerRef preloaderMain,
-	ImageSequencerRef preloaderMini,
+	IMovieRef preloaderMain,
+	IMovieRef preloaderMini,
 	const gl::Texture& noMaterials,
 	const gl::Texture& allLoaded,
 	const gl::Texture& privateUser,

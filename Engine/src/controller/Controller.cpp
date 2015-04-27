@@ -232,7 +232,7 @@ void Controller::removeLocationHandlers(ScreenId type)
 
 void Controller::setScreenSaverHandlers()
 {
-	connect_once(currentLocation->closeLocationSignal, bind(&Controller::startLocation, this, menuScreen));
+	connect_once(currentLocation->closeLocationSignal, bind(&Controller::startMenuScreenLocation, this));//, menuScreen));
 }
 
 void Controller::removeScreenSaverHandlers()

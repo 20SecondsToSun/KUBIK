@@ -253,6 +253,9 @@
     <Filter Include="Source Files\config\games\menu">
       <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\videoplayer">
+      <UniqueIdentifier>{2b002652-ded0-44b5-a52e-e92f8a2be4f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -632,6 +635,12 @@
     </ClCompile>
     <ClCompile Include="..\src\config\services\keyboard\KeyboardSettings.cpp">
       <Filter>Source Files\config\services\keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graphics\IMovie.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graphics\videoplayer\VideoPlayer.cpp">
+      <Filter>Source Files\graphics\videoplayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1273,6 +1282,18 @@
     </ClInclude>
     <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h">
       <Filter>Source Files\config\services\keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\IMovie.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\videoplayer\VideoPlayer.h">
+      <Filter>Source Files\graphics\videoplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\loaders\MovieLoader.h">
+      <Filter>Source Files\loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

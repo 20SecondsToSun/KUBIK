@@ -70,8 +70,7 @@ void HashtagOnly::draw()
 
 void HashtagOnly::timeOutReload()
 {
-	InstakubLocation::reload();
-	timeline().apply(&hashtagAnimPosition, Vec2f::zero(), 0.8f, EaseOutCubic());
+	InstakubLocation::reload();	
 }
 
 void HashtagOnly::initViewerHandlers()
@@ -82,5 +81,9 @@ void HashtagOnly::initViewerHandlers()
 
 void HashtagOnly::touchDownHandler()
 {
-	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), 0.8f, EaseOutCubic());
+	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), 0.8f, EaseOutCubic())
+		.finishFn([&]()
+	{
+		timeline().apply(&hashtagAnimPosition, Vec2f::zero(), 0.8f, EaseOutCubic()).delay(TIME_TO_BACK_PLASHKA);
+	});	
 }

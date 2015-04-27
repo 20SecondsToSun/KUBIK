@@ -316,6 +316,13 @@ void VirtualKeyboard::drawCarriage()
 
 void VirtualKeyboard::MouseUp(MouseEvent &event)
 {
+	ci::Vec2f coords = event.getPos() - originPoint;
+	if (touchInputZone->inButtonField(coords))
+	{
+		if (isShowing)
+			carridgeDrawing = true;
+	}
+
 	if (lastCode == "erase" && showEraseButton && isShowing)
 	{
 		inputField = "";
@@ -361,9 +368,7 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	ci::Vec2f coords = event.getPos() - originPoint;
 
 	if (touchInputZone->inButtonField(coords))
-	{
-		carridgeDrawing = true;
-
+	{	
 		callback(INPUT_TOUCH);
 		if (erase->inButtonField(coords))
 			lastCode = "erase";
@@ -623,6 +628,11 @@ void VirtualKeyboard::activateUsualMode()
 
 	clearCurrentMode();
 	spaceBtn->changeTexture(spaceBtnTex);
+
+	buttonsMainKeyboard.push_back(changeKeyboardBtnDuplicat);
+	buttonsSecondKeyboard.push_back(changeKeyboardBtnDuplicat);
+	buttonsRusMainKeyboard.push_back(changeKeyboardBtnDuplicat);
+
 	mode = USUAL_MODE;
 }
 
@@ -636,11 +646,11 @@ void VirtualKeyboard::clearCurrentMode()
 		break;
 
 	case SEND_MODE:
-		deleteBtn = changeKeyboardBtnDuplicat;
+		deleteBtn = sendBtn;
 		break;
 
 	case SEARCH_MODE:
-		deleteBtn = changeKeyboardBtnDuplicat;
+		deleteBtn = searchBtn;
 		break;
 	}
 

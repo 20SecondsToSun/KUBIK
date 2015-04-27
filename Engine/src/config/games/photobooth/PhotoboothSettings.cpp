@@ -350,7 +350,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("errorEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\errorEmailBorder.png")));
 	addToDictionary("closePopup", createImageResource(getTemplateDesignPath("PhotoShare\\close.png")));
 
-	smilePaths = fileTools().getAllJpegPaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
+	smilePaths = fileTools().getAllImagePaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		addToDictionary("smile" + to_string(i), createImageResource(smilePaths[i]));
 

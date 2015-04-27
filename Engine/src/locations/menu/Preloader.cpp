@@ -20,15 +20,30 @@ void Preloader::create(const ci::Vec2f& position)
 {
 	this->position = position;
 	auto path = (getAppPath() / "kubik/design_elements/preloader/").string();
-	
-	std::vector<std::string> files = fileTools().getAllJpegPaths(path);
-	std::vector<ci::gl::Texture> preloaderSeq;
-	for (size_t i = 0; i < files.size(); i++)
-		preloaderSeq.push_back(gl::Texture(loadImage(ci::loadFile(files[i]))));	
 
-	sequencer = ImageSequencerRef(new ImageSequencer());
-	sequencer->setImages(preloaderSeq);	
-	sequencer->setPosition(0.5f * (getWindowSize() - preloaderSeq[0].getSize()));
+
+	auto videoPath = fileTools().getVideoPath(path);
+
+	if (!videoPath.empty())
+	{
+		qtime::MovieGl movie = qtime::MovieGl(videoPath);
+		preloader = VideoPlayerRef(new VideoPlayer(movie));
+		preloader->setPosition(0.5f * (getWindowSize() - movie.getSize()));
+	}
+	else	
+	{
+		auto files = fileTools().getAllImagePaths(path);
+
+		if (!files.empty())
+		{
+			std::vector<ci::gl::Texture> preloaderSeq;
+			for (size_t i = 0; i < files.size(); i++)
+				preloaderSeq.push_back(gl::Texture(loadImage(ci::loadFile(files[i]))));
+
+			preloader = ImageSequencerRef(new ImageSequencer(preloaderSeq));
+			preloader->setPosition(0.5f * (getWindowSize() - preloaderSeq[0].getSize()));
+		}		
+	}
 }
 
 void Preloader::draw()
@@ -38,10 +53,11 @@ void Preloader::draw()
 		gl::draw(background);
 		gl::color(ColorA(.0f, .0f, .0f, 0.8f));
 		gl::drawSolidRect(getWindowBounds());
+
 		gl::color(Color::white());
 	}
 
-	sequencer->draw();
+	preloader->draw();
 }
 
 void Preloader::setPosition(const ci::Vec2f& position)

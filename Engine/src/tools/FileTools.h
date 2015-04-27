@@ -11,7 +11,7 @@ namespace kubik
 	static const int MAX_IMAGE_FILE_SIZE = 10000000;
 
 	static const string IMAGE_SUPPORT_EXTENSIONS[3] = {".jpeg", ".jpg", ".png"};
-	static const string VIDEO_SUPPORT_EXTENSIONS[1] = {".mov"};
+	static const string VIDEO_SUPPORT_EXTENSIONS[2] = {".mov", ".mp4"};
 
 	class FileTools
 	{
@@ -62,7 +62,7 @@ namespace kubik
 			ShellExecute(0, 0, stemp.c_str(), 0, 0, SW_SHOW);
 		}		
 
-		std::vector<std::string> getAllJpegPaths(const std::string& path)
+		std::vector<std::string> getAllImagePaths(const std::string& path)
 		{
 			std::vector<std::string> content;
 			for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
@@ -79,7 +79,28 @@ namespace kubik
 				}
 			}
 			return content;
-		}		
+		}
+
+		std::string getVideoPath(const std::string& path)
+		{
+			std::string filePath = "";
+
+			for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
+			{
+				if (fs::is_regular_file(*it))
+				{
+					string ext = it->path().extension().string();
+
+					if (isVideoExtension(ext))
+					{
+						filePath = path + it->path().filename().string();
+						break;
+					}					
+				}
+			}
+
+			return filePath;
+		}
 	};
 
 	// helper function(s) for easier access 

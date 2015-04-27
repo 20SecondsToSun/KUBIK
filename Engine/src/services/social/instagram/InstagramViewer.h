@@ -13,7 +13,7 @@ namespace instagram
 
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
-		kubik::ImageSequencerRef preloaderMain, preloaderMini;
+		kubik::IMovieRef preloaderMain, preloaderMini;
 		ci::gl::Texture noMaterials;
 		ci::gl::Texture allLoaded;
 		ci::gl::Texture privateUser;
@@ -47,8 +47,8 @@ namespace instagram
 
 	public:	
 		InstagramViewer(InstagramClientRef client,
-			kubik::ImageSequencerRef prel,
-			kubik::ImageSequencerRef preloaderMini,
+			kubik::IMovieRef prel,
+			kubik::IMovieRef preloaderMini,
 			const ci::gl::Texture& noMaterials,
 			const ci::gl::Texture& allLoaded,
 			const ci::gl::Texture& privateUser,	

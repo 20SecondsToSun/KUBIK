@@ -67,6 +67,7 @@ namespace kubik
 
 		void loadTextures()
 		{
+			string loadPath;
 			try 
 			{
 				for (auto res: loadingRes)
@@ -75,8 +76,9 @@ namespace kubik
 					{					
 						ImageResourceRef imageRes = static_pointer_cast<ImageResource>(res);	
 
-						console()<<"try image load  "<< res->path <<endl;
-						ci::Surface image = ci::Surface(loadImage(ci::loadFile(res->path)));
+						//console()<<"try image load  "<< res->path <<endl;
+						loadPath = res->path;
+						ci::Surface image = ci::Surface(loadImage(ci::loadFile(loadPath)));
 						
 						//image.setPremultiplied(true);
 						imageRes->set(image);								
@@ -85,16 +87,17 @@ namespace kubik
 					{				
 						VideoResourceRef videoRes = static_pointer_cast<VideoResource>(res);	
 
-						console()<<"try video load  "<< res->path <<endl;
-						qtime::MovieGl movie = qtime::MovieGl( res->path);					
+						//console()<<"try video load  "<< res->path <<endl;
+						loadPath = res->path;
+						qtime::MovieGl movie = qtime::MovieGl(loadPath);
 						videoRes->set(movie);							
 					}
 					else if(res->resourceType == resourceType::FONT)
 					{					
 						FontResourceRef fontRes = static_pointer_cast<FontResource>(res);
-
-						console()<<"try font load  "<< res->path <<endl;
-						Font font =  Font(loadFile(fs::path(res->path)), fontRes->fontSize);
+						loadPath = res->path;
+						//console()<<"try font load  "<< res->path <<endl;
+						Font font = Font(loadFile(fs::path(loadPath)), fontRes->fontSize);
 						fontRes->set(font);	
 					}
 				}
@@ -102,7 +105,7 @@ namespace kubik
 			catch(...) 
 			{
 				loadingStatus = LOADING_ERROR;
-				console() << "Unable to load the resource." <<endl;
+				console() << "Unable to load the resource." << loadPath << endl;
 			}
 
 			if(loadingStatus == LOADING)
