@@ -32,13 +32,14 @@ InstagramViewer::InstagramViewer(InstagramClientRef client,
 	countInRaw(3),
 	connected(false),
 	mainHeight(0),
-	marginBottom(400.0f),
+	marginBottom(300.0f),
 	marginTop(400.0f),
 	marginToShowUpdate(100.f),
 	animTime(0.3f),
 	animFunc(EaseOutQuad()),
 	sdvigX(8),
-	sdvigY(8)
+	sdvigY(8),
+	showAlphaDrag(true)
 {
 	
 }
@@ -90,8 +91,12 @@ void InstagramViewer::synchImages()
 		mainHeight = 0;
 		return;
 	}
-	else if (images.size() > MAX_PHOTO_CASHED)	
-		images.erase(images.begin(), images.begin() + CASH_PHOTO_CLEAR_COUNT);	
+	else if (images.size() > MAX_PHOTO_CASHED)
+	{
+		images.erase(images.begin(), images.begin() + CASH_PHOTO_CLEAR_COUNT);
+		//currentPos = currentPos.value() + Vec2f(0.0f, 1800.0f);
+		//TODO скачок!!!
+	}			
 
 	int plus = 0;
 	if (images.size() % countInRaw != 0) 
@@ -145,7 +150,14 @@ void InstagramViewer::setState(const drawState& value)
 		noMorePopupAlpha = 1.0f;
 		timeline().apply(&noMorePopupAlpha, 1.0f, 0.0f, 0.8f, animFunc)
 			.finishFn(bind(&InstagramViewer::noMorePopupAnimFinished, this)).delay(0.5f);
-		break;	
+		break;
+	case MINI_PRELOADING:
+		mainHeight += preloaderMini->getHeight() + 50;
+		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.value().y);
+		currentPos.stop();
+		timeline().apply(&currentPos, futureCurrentPos, animTime, animFunc)
+				.finishFn(bind(&InstagramViewer::animComplete, this));
+		break;
 	}
 }
 
@@ -214,8 +226,12 @@ void InstagramViewer::drawImages()
 void InstagramViewer::drawMainPreloader()
 {
 	gl::pushMatrices();	
-	gl::translate(initPosition);
+	gl::translate(0.0f, (getWindowHeight() - preloaderMain->getHeight())*0.5f);
+#ifdef PORTRAIT_RES
+	//gl::translate(0.0f, 300.0f);
+#else
 	gl::translate(0.0f, 100.0f);
+#endif
 	preloaderMain->draw();
 	gl::popMatrices();
 }
@@ -225,7 +241,7 @@ void InstagramViewer::drawMiniPreloader()
 	gl::pushMatrices();
 	gl::translate(currentPos.value());
 	gl::translate(initPosition);
-	gl::translate(0.0f, mainHeight);
+	gl::translate(0.0f, mainHeight - 150.0f);
 	preloaderMini->draw();
 	gl::popMatrices();
 }
@@ -335,7 +351,7 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 		blockDrag = true;
 		reloadAllMedia();
 	}
-	else if(currentPos.value().y > marginToShowUpdate)
+	else if(currentPos.value().y > marginToShowUpdate && showAlphaDrag)
 	{
 		alphaDragToReload = ci::lmap((float)currentPos.value().y, marginToShowUpdate, marginToShowUpdate + 100, 0.0f, 1.0f);
 	}	
@@ -388,4 +404,9 @@ int InstagramViewer::getLastImageIndexTouched()
 ImageGraphic InstagramViewer::getImageGraphic()
 {
 	return images[lastImageIndexTouched];
+}
+
+void InstagramViewer::setTopDragVisible(bool value)
+{
+	showAlphaDrag = value;
 }

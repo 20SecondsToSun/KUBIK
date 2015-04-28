@@ -8,7 +8,7 @@ namespace instagram
 
 	class InstagramViewer
 	{
-		static const int MAX_PHOTO_CASHED = 100;
+		static const int MAX_PHOTO_CASHED = 60;
 		static const int CASH_PHOTO_CLEAR_COUNT = 20;
 
 		typedef ci::signals::signal<void(void)> SignalVoid;	
@@ -78,6 +78,7 @@ namespace instagram
 		int getLastImageIndexTouched();
 		void clear();
 		ImageGraphic getImageGraphic();
+		void setTopDragVisible(bool value);
 
 		SignalVoid touchedEvent, reloadAllMedia, loadNextMedia, touchedDownEvent;
 
@@ -90,6 +91,7 @@ namespace instagram
 		bool blockDrag;
 		bool connected;	
 		bool wasDrag;
+		bool showAlphaDrag;
 
 		int mainHeight;
 		int oneImageWidth, oneImageHeight;

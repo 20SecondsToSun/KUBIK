@@ -1295,6 +1295,9 @@
     <ClInclude Include="..\src\loaders\MovieLoader.h">
       <Filter>Source Files\loaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

@@ -99,13 +99,16 @@ void SearchLocation::searchTouchHandler()
 }
 
 void SearchLocation::disconnectKeyboard()
-{	
+{
 	hideKeyboardLayout();
 	disconnectKeyboardListeners();
 }
 
 void SearchLocation::hideKeyboardLayout()
 {
+	if (!touchKeyboard().showing())//todo!! while here?
+		return;
+
 	searchBtns->hide();
 	touchKeyboard().hide(HIDING_KEYBORAD_POSITION, HIDING_KEYBORAD_TIME);
 	keyBackground->hide(EaseOutCubic(), HIDING_KEYBORAD_TIME);
@@ -190,18 +193,22 @@ void SearchLocation::loadStrategity()
 	{
 	case HASHTAG_PHOTOS_LOAD:
 		hashTagPhotosLoad();
+		instaViewer->setTopDragVisible(true);
 		break;
 
 	case HASHTAG_DEFAULT_PHOTOS_LOAD:
 		hashTagDefaultPhotosLoad();
+		instaViewer->setTopDragVisible(true);
 		break;
 
 	case USER_PHOTOS_LOAD:
 		userPhotosLoad();
+		instaViewer->setTopDragVisible(true);
 		break;
 
 	case POPULAR_PHOTOS_LOAD:
 		popularPhotosLoad();
+		instaViewer->setTopDragVisible(false);
 		break;
 	}
 }

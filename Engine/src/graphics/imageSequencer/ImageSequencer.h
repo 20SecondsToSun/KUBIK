@@ -13,7 +13,9 @@ namespace kubik
 	{
 	public:
 		ImageSequencer(const std::vector<ci::gl::Texture>& images);
-		void draw() override;			
+		void draw() override;
+		float getHeight() override;
+		float getWidth()override;
 
 	private:
 		std::vector<ci::gl::Texture> images;

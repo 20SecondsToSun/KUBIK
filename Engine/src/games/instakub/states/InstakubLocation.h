@@ -89,6 +89,7 @@ namespace kubik
 				void printPopupHandler();
 				void disconnectPopup();					
 				void initClientHandlers();
+				void disconnectViewer();
 			};
 		}
 	}

@@ -17,3 +17,14 @@ void ImageSequencer::draw()
 		index = 0;
 	gl::popMatrices();
 }
+
+
+float ImageSequencer::getHeight()
+{
+	return images[0].getHeight();
+}
+
+float ImageSequencer::getWidth()
+{
+	return images[0].getWidth();
+}

@@ -53,14 +53,12 @@ void InstakubLocation::clear()
 
 void InstakubLocation::start()
 {	
-	instaViewer->showPreloader();
+	instaViewer->showPreloader();	
 }
 
 void InstakubLocation::stop()
 {
-	instaViewer->touchedEvent.disconnect_all_slots();
-	instaViewer->reloadAllMedia.disconnect_all_slots();
-	instaViewer->loadNextMedia.disconnect_all_slots();
+	disconnectViewer();
 
 	instClient->startLoadEvent.disconnect_all_slots();
 	instClient->noMoreEvent.disconnect_all_slots();
@@ -69,6 +67,13 @@ void InstakubLocation::stop()
 	instaViewer->disconnect();
 	instaViewer->clear();
 	disconnectPopup();
+}
+
+void InstakubLocation::disconnectViewer()
+{
+	instaViewer->touchedEvent.disconnect_all_slots();
+	instaViewer->reloadAllMedia.disconnect_all_slots();
+	instaViewer->loadNextMedia.disconnect_all_slots();
 }
 
 void InstakubLocation::reset()
@@ -112,7 +117,8 @@ void InstakubLocation::userPhotosload(const std::string& userName)
 }
 
 void InstakubLocation::popularPhotosLoad()
-{	
+{
+	disconnectViewer();
 	connect_once(instaViewer->touchedEvent, bind(&InstakubLocation::openPopupHandler, this));
 	instaViewer->connect();
 

@@ -1,5 +1,5 @@
 {
-   "actionName" : "56788",
+   "actionName" : "נההנאאננמממ",
    "activeDesign" : 1,
    "currentPhotosPrinted" : 0,
    "designPath" : "data\\interface\\configDesign\\",

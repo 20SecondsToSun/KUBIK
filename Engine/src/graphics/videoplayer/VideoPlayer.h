@@ -11,6 +11,8 @@ namespace kubik
 	public:
 		VideoPlayer(const  qtime::MovieGl& video);
 		void draw() override;
+		float getHeight() override;
+		float getWidth() override;
 
 	private:
 		qtime::MovieGl video;

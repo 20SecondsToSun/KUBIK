@@ -19,6 +19,8 @@ namespace kubik
 
 		void setPosition(const ci::Vec2f& vec);
 		virtual void draw() = 0;
+		virtual float getHeight() = 0;
+		virtual float getWidth() = 0;
 
 	protected:
 		ci::Vec2f position;

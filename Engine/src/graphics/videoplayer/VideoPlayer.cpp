@@ -24,3 +24,13 @@ void VideoPlayer::draw()
 		}	
 	}
 }
+
+float VideoPlayer::getHeight()
+{
+	return video.getTexture().getHeight();
+}
+
+float VideoPlayer::getWidth()
+{
+	return video.getTexture().getWidth();
+}

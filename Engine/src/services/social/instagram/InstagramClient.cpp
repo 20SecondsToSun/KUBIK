@@ -37,6 +37,8 @@ void InstagramClient::_loadPopular(int count)
 		API::CLIENT_ID + "=" + clientID +
 		"&COUNT=" + to_string(count);	
 
+	console() << "-----------load popular!   ::   " << request<<endl;
+
 	loadMediaRequest(request);
 }
 

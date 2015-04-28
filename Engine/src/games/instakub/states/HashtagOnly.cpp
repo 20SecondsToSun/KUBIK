@@ -36,6 +36,8 @@ void HashtagOnly::start()
 	InstakubLocation::initPosition();	
 	InstakubLocation::start();
 
+	instaViewer->setTopDragVisible(true);
+
 	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), Vec2f::zero(), 0.8f, EaseOutCubic());
 }
 
