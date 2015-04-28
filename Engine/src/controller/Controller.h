@@ -18,6 +18,7 @@
 #include "GameSettings.h"
 #include "KeyboardSettings.h"
 #include "VirtualKeyboard.h"
+#include "SocialSettings.h"
 #include "preloader/Preloader.h"
 
 using namespace kubik::menu;
@@ -42,6 +43,7 @@ namespace kubik
 		GameSettingsRef			gameSettings; 	
 		MenuSettingsRef			menuSettings;
 		KeyboardSettingsRef		keyboardSettings;
+		SocialSettingsRef		socialSettings;		
 
 		MenuScreenRef			menuScreen;
 		ControlLayerRef			controlLayer;

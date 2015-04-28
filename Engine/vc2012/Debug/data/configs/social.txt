@@ -1,0 +1,8 @@
+{
+ "twitterApiKey" : "80HDLdNZzabYMuLmvsEHwo4q0",
+ "twitterApiSecret" : "DgKEslEMNrKySlwpXYpsbQRHBOoiUaTdKcBa55tCnZQTS2UdFN",
+ "twitterTokenKey":"185547855-YEq5mPDrhGwnwKJCegRn1mvxxoA9gvRsKpRGepaa",
+ "twitterTokenSecret":"RgbooAwXMlZDajAKvIKSlWyrQgZJQmNcx1TGEtmLP0mJr",
+ "facebookAppId" : "1437302953218656",
+ "vkontakteAppId" : "4610587"
+}

@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\services\social\twitter;..\src\config\services\social</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -132,6 +132,7 @@
     <ClCompile Include="..\src\config\menu\MenuSettings.cpp" />
     <ClCompile Include="..\src\config\screensaver\ScreenSaverSettings.cpp" />
     <ClCompile Include="..\src\config\services\keyboard\KeyboardSettings.cpp" />
+    <ClCompile Include="..\src\config\services\social\SocialSettings.cpp" />
     <ClCompile Include="..\src\config\settings\ConfigSettings.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
@@ -232,6 +233,13 @@
     <ClCompile Include="..\src\services\social\instagram\InstaPopup.cpp" />
     <ClCompile Include="..\src\services\social\Social.cpp" />
     <ClCompile Include="..\src\services\social\SocShare.cpp" />
+    <ClCompile Include="..\src\services\social\Twitter.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\base64.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\HMAC_SHA1.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\oauthlib.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\SHA1.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\twitcurl.cpp" />
+    <ClCompile Include="..\src\services\social\twitter\urlencode.cpp" />
     <ClCompile Include="..\src\services\social\Vkontakte.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.cpp" />
     <ClCompile Include="..\src\services\virtualKeyboard\VirtualKeyboard.cpp" />
@@ -270,6 +278,7 @@
     <ClInclude Include="..\src\config\menu\MenuSettings.h" />
     <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h" />
     <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h" />
+    <ClInclude Include="..\src\config\services\social\SocialSettings.h" />
     <ClInclude Include="..\src\config\settings\ConfigSettings.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
@@ -436,6 +445,14 @@
     <ClInclude Include="..\src\services\social\instagram\InstaPopup.h" />
     <ClInclude Include="..\src\services\social\Social.h" />
     <ClInclude Include="..\src\services\social\SocShare.h" />
+    <ClInclude Include="..\src\services\social\Twitter.h" />
+    <ClInclude Include="..\src\services\social\twitter\base64.h" />
+    <ClInclude Include="..\src\services\social\twitter\HMAC_SHA1.h" />
+    <ClInclude Include="..\src\services\social\twitter\oauthlib.h" />
+    <ClInclude Include="..\src\services\social\twitter\SHA1.h" />
+    <ClInclude Include="..\src\services\social\twitter\twitcurl.h" />
+    <ClInclude Include="..\src\services\social\twitter\twitcurlurls.h" />
+    <ClInclude Include="..\src\services\social\twitter\urlencode.h" />
     <ClInclude Include="..\src\services\social\Vkontakte.h" />
     <ClInclude Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.h" />
     <ClInclude Include="..\src\services\virtualKeyboard\VirtualKeyboard.h" />

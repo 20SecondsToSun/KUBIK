@@ -1,5 +1,6 @@
 #pragma once
 #include "services/social/SocShare.h"
+#include "SocialSettings.h"
 
 namespace kubik
 {
@@ -8,20 +9,6 @@ namespace kubik
 	class Vkontakte : public SocShare
 	{
 	public:
-		static const std::string VKONTAKTE_APP_ID;
-		static const std::string VKONTAKTE_AUTH_URL;
-		static const std::string VKONTAKTE_LOGOUT_URL;
-
-		static const std::string VKONTAKTE_BASE_URL;
-		static const std::string WALL_POST_URL;
-		static const std::string WALL_UPLOAD_SERVER_URL;
-		static const std::string SAVE_WALL_PHOTO_URL;
-
-		static const std::string ACCESS_TOKEN;
-		static const std::string NULL_ALBUM_ID;
-		static const std::string STATUS_DEFAULT;
-		static const std::string POSTING_WAITING_TEXT;
-
 		Vkontakte();
 		
 		const char *getAuthUrl();

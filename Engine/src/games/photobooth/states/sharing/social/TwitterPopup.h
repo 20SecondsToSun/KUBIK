@@ -6,6 +6,7 @@
 #include "gui/ImageButtonSprite.h"
 #include "VirtualKeyboard.h"
 #include "states/sharing/social/Popup.h"
+#include "services/social/Twitter.h"
 
 namespace kubik
 {
@@ -17,16 +18,18 @@ namespace kubik
 
 			class TwitterPopup : public Popup
 			{	
-				virtual void showAnimComplete() override;
-				virtual void initVirtualKeyboard() override;
-				void keyTouchHandler();
+				void showAnimComplete() override;
+				void initVirtualKeyboard() override;
+				void keyTouchHandler();		
+
+				kubik::TwitterRef twitter;
 
 			public:				
 				TwitterPopup(kubik::config::PhotoboothSettingsRef settings);
 
-				virtual void show() override;
-				virtual void hide(EventGUIRef& event) override;
-				virtual void draw() override;				
+				void show() override;
+				void hide(EventGUIRef& event) override;
+				void draw() override;				
 			};
 		}
 	}

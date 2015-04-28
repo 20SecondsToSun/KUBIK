@@ -81,6 +81,7 @@ namespace kubik
 
 			const ConfigObject& getConfigObject(const settings::id& id);
 
+
 			std::string getLabelsPath();
 			std::string getMenuConfigPath();
 			std::string getScreenSaverConfigPath();
@@ -96,6 +97,8 @@ namespace kubik
 
 			std::string getTemplatePath();
 			std::string getInterfacePath();
+			std::string getSocialSettingsFilePath() const;
+			
 
 		private:
 			int			standID;
@@ -121,6 +124,7 @@ namespace kubik
 			GameId defaultGameID;
 			DesignData designData;
 			int userDesignID;
+			std::string socSettingsFilePath;
 
 			std::map<settings::id, ConfigObject> configObjectMap;
 			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject;

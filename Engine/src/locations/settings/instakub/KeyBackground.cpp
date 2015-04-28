@@ -20,9 +20,9 @@ KeyBackground::KeyBackground(const Vec2f& initPosition, const ci::gl::Texture& c
 	showing(false),
 	initPosition(initPosition),
 	plashkaHeight(592.0f),
-	bgHeight(1920.0f - 592.0f - initPosition.x)
+	bgHeight(1920.0f - 592.0f - initPosition.x),
+	closeKeyboard(closeKeyboard)
 {	
-	this->closeKeyboard = closeKeyboard;
 
 #ifdef PORTRAIT_RES
 	auto positionY = closeBtnY - closeKeyboard.getHeight() * 0.5f;

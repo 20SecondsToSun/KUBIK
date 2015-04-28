@@ -53,6 +53,7 @@ namespace kubik
 			PRELOADER = 40,
 			SERVICEPOPUP = 50,
 			GAMES = 60,
+			SOCIAL = 70,
 			FUNCES = game::FUNCES,
 			PHOTOBOOTH = game::PHOTOBOOTH,
 			KOTOPOZA = game::KOTOPOZA,

@@ -33,6 +33,7 @@ void ApplicationModel::parseConfigPaths()
 	userDataPath = configJSON.getChild("userInfoPath").getValue<string>();
 	labelsPath = configJSON.getChild("labelsPath").getValue<string>();
 	designDataPath = configJSON.getChild("designDataPath").getValue<string>();
+	socSettingsFilePath = configJSON.getChild("socialConfigPath").getValue<string>();
 
 	JsonTree phtJSON = configJSON.getChild("photoboothConfig");
 	parseConfigPaths(photoboothConfigObject, phtJSON);
@@ -313,6 +314,11 @@ DesignData ApplicationModel::getDesignData() const
 int ApplicationModel::getUserDesignID() const
 {
 	return userDesignID;
+}
+
+string ApplicationModel::getSocialSettingsFilePath() const
+{
+	return socSettingsFilePath;
 }
 
 fs::path ApplicationModel::getConfigPath()

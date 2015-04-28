@@ -8,8 +8,7 @@ InstakubConfig::InstakubConfig(InstakubSettingsRef instSettings):GameSettingsSpr
 	searchBlock	   = SearchBlockRef(new SearchBlock(instSettings, Vec2i::zero()));
 	hashTagBlock   = HashTagBlockRef(new HashTagBlock(instSettings, Vec2i(0, 435)));
 	photoCardStyle = InstaPhotoCardStyleRef(new InstaPhotoCardStyle(instSettings, Vec2i(0, 920)));//920
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(-166.0f, 918.0f), instSettings->getTexture("closeKeyboard"), 795.0f));
-
+	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(-166.0f, 918.0f), instSettings->getTexture("closeKeyboardSettings"), 795.0f));
 	popup = InstaErrorPopupRef(new InstaErrorPopup(instSettings->getTexture("errorText")));
 	
 	addChild(searchBlock);

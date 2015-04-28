@@ -34,6 +34,6 @@
    "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : true,
-   "isTwitter" : false,
+   "isTwitter" : true,
    "isVkotakte" : true
 }

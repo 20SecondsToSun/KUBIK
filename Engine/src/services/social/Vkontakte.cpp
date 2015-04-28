@@ -2,29 +2,10 @@
 
 using namespace std;
 using namespace kubik;
+using namespace kubik::config;
 using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
-
-////////////////////////////////////////////////////////////////////////////
-//
-//				VKONTAKTE
-//
-////////////////////////////////////////////////////////////////////////////
-
-const std::string Vkontakte::VKONTAKTE_APP_ID = "4610587";
-const std::string Vkontakte::VKONTAKTE_AUTH_URL = "https://oauth.vk.com/authorize?client_id=" + VKONTAKTE_APP_ID + "&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,wall&display=page&response_type=token";
-const std::string Vkontakte::VKONTAKTE_LOGOUT_URL = "https://login.vk.com/?act=openapi&oauth=1&aid=" + VKONTAKTE_APP_ID + "&location=familyagency.ru&do_logout=1&token=";
-//
-const std::string Vkontakte::VKONTAKTE_BASE_URL = "https://api.vk.com/";
-const std::string Vkontakte::WALL_POST_URL = VKONTAKTE_BASE_URL + "method/wall.post";
-const std::string Vkontakte::WALL_UPLOAD_SERVER_URL = VKONTAKTE_BASE_URL + "method/photos.getWallUploadServer";
-const std::string Vkontakte::SAVE_WALL_PHOTO_URL = VKONTAKTE_BASE_URL + "method/photos.saveWallPhoto";
-//
-const std::string Vkontakte::ACCESS_TOKEN = "access_token";
-const std::string Vkontakte::NULL_ALBUM_ID = "-1";
-const std::string Vkontakte::STATUS_DEFAULT = "#тест rich bich";
-const std::string Vkontakte::POSTING_WAITING_TEXT = "...";
 
 Vkontakte::Vkontakte() :SocShare()
 {
@@ -106,13 +87,13 @@ void  Vkontakte::posting()
 void Vkontakte::postTextVK()
 {
 	if (textStatus.empty())
-		textStatus = STATUS_DEFAULT;
+		textStatus = SocialSettings::VK_STATUS_DEFAULT;
 
 	std::map<string, string> strings;
 	strings.insert(pair<string, string>("message", Utils::cp1251_to_utf8(textStatus.c_str())));
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
+	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
 
-	string vkRequest = Curl::post(WALL_POST_URL, strings);
+	string vkRequest = Curl::post(SocialSettings::VK_WALL_POST_URL, strings);
 
 	if (vkRequest != "")
 	{
@@ -141,9 +122,9 @@ void Vkontakte::postTextVK()
 void Vkontakte::postPhotoVK()
 {
 	std::map<string, string> strings;
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
+	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
 
-	string vkRequest = Curl::post(WALL_UPLOAD_SERVER_URL, strings);
+	string vkRequest = Curl::post(SocialSettings::VK_WALL_UPLOAD_SERVER_URL, strings);
 	string upload_url = "";
 	try
 	{
@@ -191,7 +172,7 @@ void Vkontakte::postPhotoVK()
 	strings.insert(pair<string, string>("message", Utils::cp1251_to_utf8(textStatus.c_str())));
 	strings.insert(pair<string, string>("access_token", access_token));
 
-	vkRequest = Curl::post(WALL_POST_URL, strings);
+	vkRequest = Curl::post(SocialSettings::VK_WALL_POST_URL, strings);
 
 	if (vkRequest != "")
 	{
@@ -219,7 +200,7 @@ void Vkontakte::postPhotoVK()
 string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const string& path)
 {
 	std::map<string, string> strings;
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
+	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
 
 	string vkRequest = Curl::postUpload(upload_url, strings, path);
 
@@ -229,9 +210,9 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 	strings.insert(pair<string, string>("server", jTree.getChild("server").getValue()));
 	strings.insert(pair<string, string>("photo", jTree.getChild("photo").getValue()));
 	strings.insert(pair<string, string>("hash", jTree.getChild("hash").getValue()));
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));	
+	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
 
-	vkRequest = Curl::post(SAVE_WALL_PHOTO_URL, strings);
+	vkRequest = Curl::post(SocialSettings::VK_SAVE_WALL_PHOTO_URL, strings);
 	string photo_id = "";
 
 	jTree = JsonTree(vkRequest);
@@ -244,17 +225,17 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 
 const char * Vkontakte::getAuthUrl()
 {
-	return VKONTAKTE_AUTH_URL.c_str();
+	return SocialSettings::VK_AUTH_URL.c_str();
 }
 
 void Vkontakte::logOut()
 {
-	string  logout = VKONTAKTE_LOGOUT_URL + access_token;
+	string  logout = SocialSettings::VK_LOGOUT_URL + access_token;
 	const char * url = logout.c_str();
 	string vkRequest = Curl::get(url);
 }
 
 string Vkontakte::getDefaultStatus()
 {
-	return STATUS_DEFAULT;
+	return SocialSettings::VK_STATUS_DEFAULT;
 }

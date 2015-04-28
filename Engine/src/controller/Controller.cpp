@@ -45,6 +45,7 @@ void Controller::loadSettings()
 	menuSettings		 = MenuSettingsRef(new MenuSettings(model));	
 	screenSaverSettings  = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
 	keyboardSettings	 = KeyboardSettingsRef(new KeyboardSettings(model));
+	socialSettings		 = SocialSettingsRef(new SocialSettings(model));
 
 	settingsFactory().inject(controlSettings);
 
@@ -54,6 +55,7 @@ void Controller::loadSettings()
 	configs.push_back(menuSettings);	
 	configs.push_back(screenSaverSettings);
 	configs.push_back(keyboardSettings);
+	configs.push_back(socialSettings);
 	configLoader->loadConfigs(configs);
 
 	logger().log("CONFIGS LOADED");

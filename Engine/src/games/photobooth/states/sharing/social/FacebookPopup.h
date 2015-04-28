@@ -11,7 +11,7 @@ namespace kubik
 
 			class FacebookPopup : public SocialPopup
 			{
-				virtual void createSocialContext() override;
+				void createSocialContext() override;
 
 			public:
 				FacebookPopup(kubik::config::PhotoboothSettingsRef settings);

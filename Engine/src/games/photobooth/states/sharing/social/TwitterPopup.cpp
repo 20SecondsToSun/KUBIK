@@ -8,7 +8,7 @@ using namespace kubik;
 TwitterPopup::TwitterPopup(PhotoboothSettingsRef settings)
 	:Popup(settings)
 {
-
+	twitter = TwitterRef(new Twitter());
 }
 
 void TwitterPopup::show()
@@ -31,6 +31,10 @@ void TwitterPopup::showAnimComplete()
 void TwitterPopup::keyTouchHandler()
 {
 	console() << "::::::touch " << touchKeyboard().getLastCode() << endl;
+	twitter->authorize("yurikblech@ya.ru", "Metalcorehero88");
+	twitter->postTextTweet("debug тест");
+	//twitter->authorize("yuriklech@ya.ru", "Metalcorehero88");
+
 }
 
 void TwitterPopup::hide(EventGUIRef& event)

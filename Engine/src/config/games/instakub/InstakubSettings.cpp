@@ -125,6 +125,7 @@ void InstakubSettings::setTextures()
 	addToSettingsDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
 	addToSettingsDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
+	addToSettingsDictionary("closeKeyboardSettings", createImageResource(getInterfacePath("configDesign\\instakub\\closeKeyboard.png")));
 
 
 	///////////////////////////////////////

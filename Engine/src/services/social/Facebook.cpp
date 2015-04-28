@@ -2,24 +2,10 @@
 
 using namespace std;
 using namespace kubik;
+using namespace kubik::config;
 using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
-
-const std::string Facebook::FACEBOOK_BASE_URL = "https://graph.facebook.com/";
-
-const std::string Facebook::FACEBOOK_APP_ID = "1437302953218656";
-const std::string Facebook::FACEBOOK_AUTH_URL = "https://www.facebook.com/dialog/oauth?client_id=" + FACEBOOK_APP_ID + "&redirect_uri=http://familyagency.ru/&response_type=token&display=popup&scope=publish_actions,email,public_profile,user_friends,user_photos";
-
-const std::string Facebook::FACEBOOK_FEED_URL = FACEBOOK_BASE_URL + "me/feed";
-const std::string Facebook::FACEBOOK_APP_LOGOUT_URL = FACEBOOK_BASE_URL + "me/permissions";
-const std::string Facebook::FACEBOOK_ALBUMS_URL = FACEBOOK_BASE_URL + "me/albums";
-
-const std::string Facebook::ACCESS_TOKEN = "access_token";
-const std::string Facebook::NULL_ALBUM_ID = "-1";
-const std::string Facebook::ALBUM_NAME_DEFAULT = "Dreamies";
-const std::string Facebook::STATUS_DEFAULT = "#тест рич бич";
-const std::string Facebook::POSTING_WAITING_TEXT = "Facebook..";
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -27,9 +13,10 @@ const std::string Facebook::POSTING_WAITING_TEXT = "Facebook..";
 //
 ////////////////////////////////////////////////////////////////////////////
 
-Facebook::Facebook() :SocShare()
+Facebook::Facebook()
+	:SocShare()
 {
-	availableArea = Rectf(256.f, 234.f, 897.f, 638.f);
+	availableArea = (Rectf(256.f, 234.f, 897.f, 638.f));
 }
 
 void Facebook::updatePopupPosition()
@@ -102,13 +89,13 @@ void  Facebook::posting()
 void Facebook::postTextFB()
 {
 	if (textStatus.empty())
-		textStatus = STATUS_DEFAULT;
+		textStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;
 
 	map<string, string> strings;
 	strings.insert(pair<string, string>("message", Utils::cp1251_to_utf8(textStatus.c_str())));
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
+	strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
 
-	string fbRequest = Curl::post(FACEBOOK_FEED_URL, strings);
+	string fbRequest = Curl::post(SocialSettings::FACEBOOK_FEED_URL, strings);
 	console() << " fbRequest" << fbRequest << "   " << access_token<<std::endl;
 	if (fbRequest != "")
 	{
@@ -133,7 +120,7 @@ void Facebook::postTextFB()
 
 string Facebook::getDefaultStatus()
 {
-	return STATUS_DEFAULT;
+	return  SocialSettings::FACEBOOK_STATUS_DEFAULT;
 }
 
 /*
@@ -236,14 +223,14 @@ void Facebook::setPhotoAlbumName(string &name)
 */
 const char * Facebook::getAuthUrl()
 {
-	return FACEBOOK_AUTH_URL.c_str();
+	return SocialSettings::FACEBOOK_AUTH_URL.c_str();
 }
 
 void Facebook::logOut()
 {
 	std::map<string, string> strings;
-	strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
-	string fbRequest = Curl::deleteRequest(FACEBOOK_APP_LOGOUT_URL, strings);
+	strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
+	string fbRequest = Curl::deleteRequest(SocialSettings::FACEBOOK_APP_LOGOUT_URL, strings);
 
 	/*if (fbRequest != "true")
 	{

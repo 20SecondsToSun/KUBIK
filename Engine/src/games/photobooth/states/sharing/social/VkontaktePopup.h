@@ -11,7 +11,7 @@ namespace kubik
 
 			class VkontaktePopup : public SocialPopup
 			{
-				virtual void createSocialContext() override;
+				void createSocialContext() override;
 
 			public:
 				VkontaktePopup(kubik::config::PhotoboothSettingsRef settings);				
