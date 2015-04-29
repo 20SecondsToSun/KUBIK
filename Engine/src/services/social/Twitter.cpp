@@ -1,9 +1,52 @@
 #include "Twitter.h"
 
-using namespace kubik::twParams;
 using namespace kubik::config;
 using namespace kubik;
 using namespace std;
+
+Twitter::Twitter() 
+	:isAuthFlowComplete(false)
+{ 
+	
+};
+
+void Twitter::authorizePost(const std::string& login, const std::string& password, const std::string& textstatus)
+{
+	if (status == POSTING)
+		return;
+
+	status = POSTING;
+	postingStart();
+
+	loadingSignal = App::get()->getSignalUpdate().connect(bind(&Twitter::waitLoadingComplete, this));
+	loadingThread = ThreadRef(new boost::thread(&Twitter::posting, this, login, password, textstatus));
+}
+
+void Twitter::posting(const std::string& login, const std::string& password, const std::string& textstatus)
+{
+	isAuthFlowComplete = false;
+
+	try
+	{
+		authorize(login, password);
+		postTextTweet(textstatus);
+		status = POST_READY;
+	}
+	catch (...)
+	{
+		status = POST_ERROR;
+	}	
+}
+
+void Twitter::waitLoadingComplete()
+{
+	if (status != POSTING)
+	{
+		loadingThread->join();
+		loadingSignal.disconnect();
+		postingComplete();
+	}
+}
 
 bool Twitter::authorize(const string& login, const string& password)
 {
@@ -12,7 +55,7 @@ bool Twitter::authorize(const string& login, const string& password)
    
     std::string tmpStr, tmpStr2;
     std::string replyMsg;
-    char tmpBuf[1024];
+    //char tmpBuf[1024];
 
     /* Set twitter username and password */
     twitterObj.setTwitterUsername( userName );
@@ -57,29 +100,27 @@ bool Twitter::authorize(const string& login, const string& password)
     {
         twitterObj.getLastCurlError( replyMsg );
 		console()<<"ERROR  ::"<<replyMsg.c_str()<<std::endl;
+		//throw
 		return false;       
     }
 }
 
-bool Twitter::postTextTweet(const std::string& status)
+void Twitter::postTextTweet(const std::string& status)
 {
-	if (!isAuthFlowComplete) return false;
+	if (isAuthFlowComplete)
+	{
+		std::string replyMsg = "";
 
-	std::string replyMsg = "";
+		if (!twitterObj.statusUpdate(Utils::cp1251_to_utf8(status.c_str())))
+		{
+			twitterObj.getLastCurlError(replyMsg);
+			//throw
+		}
 
-	if( twitterObj.statusUpdate(  Utils::cp1251_to_utf8(status.c_str())  ) )
-    {
-        twitterObj.getLastWebResponse( replyMsg );
-        console()<<"twitterClient:: twitCurl::statusUpdate web response: "<< replyMsg.c_str()<<std::endl;
-		return true;
-    }
-    else
-    {
-        twitterObj.getLastCurlError( replyMsg );
-        console()<<"twitterClient:: twitCurl1111::statusUpdate error: "<< replyMsg.c_str()<<std::endl;
-		return false;
-    }
+		twitterObj.getLastWebResponse(replyMsg);
+	} 	
 }
+
 bool Twitter::postPhotoTweet(const std::string& status, const std::vector<std::string>& filesPath)
 {
 	if (!isAuthFlowComplete) return false;
@@ -149,62 +190,9 @@ bool Twitter::postPhotoTweetBase64(const std::string& status, const std::string&
     }
 }
 
-void Twitter::post()
-{
-	//serverThread = shared_ptr<thread>( new thread( bind( &Twitter::twitterPostThread, this ) ) );	
-}
-
-void Twitter::twitterPostThread()
-{
-	/*ci::ThreadSetup threadSetup; // instantiate this if you're talking to Cinder from a secondary thread	
-
-	bool status;
-
-	if (isAuthFlowComplete == false)
-	{
-		status = init(login, password);
-
-		if (status == false) 
-		{
-			response = SocialPostError;
-			//serverHandler();
-			return;
-		}
-	}
-
-	status =  false;
-
-	switch (type)
-	{
-		case TEXT_STATUS:
-			status = postTextTweet(textStatus);			
-		break;
-
-		case PHOTO_STATUS:
-			status =  postPhotoTweet(textStatus, photosVector);			
-		break;
-
-		default:
-		break;
-	}
-
-	if (status)
-	{
-		response = SocialPostOk;	
-	}
-	else
-	{
-		response = SocialPostError;
-	}
-
-	serverThread->detach();	
-
-	// notificate main thread that twitter finished
-	serverHandler();*/
-}
 const char * Twitter::getAuthUrl()
 {	
-	return twitterAuthURL.c_str();
+	return SocialSettings::TWITTER_AUTH_URL.c_str();
 }
 
 void Twitter::logOut()
@@ -215,5 +203,5 @@ void Twitter::logOut()
 
 string  Twitter::getDefaultStatus()
 {
-	return STATUS_DEFAULT;
+	return SocialSettings::TWITTER_STATUS_DEFAULT;
 }

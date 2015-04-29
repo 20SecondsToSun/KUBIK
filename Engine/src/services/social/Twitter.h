@@ -10,26 +10,22 @@
 
 namespace kubik
 {
-	namespace twParams
-	{
-		const std::string STATUS_DEFAULT = "#KUBIK";
-	}
-
 	typedef std::shared_ptr<class Twitter> TwitterRef;
 
 	class Twitter : public SocShare
 	{
 	public:
-		Twitter(){ isAuthFlowComplete = false;  twitterAuthURL = "https://twitter.com"; };
+		Twitter();
 
 		bool							authorize(const std::string& login, const std::string& password);
-		bool							postTextTweet(const std::string& status);
+		void							postTextTweet(const std::string& status);
 		bool							postPhotoTweet(const std::string& status, const std::vector<std::string>& filesPath);
 		bool							postPhotoTweetBase64(const std::string& status, const std::string& filesPath);
+		void authorizePost(const std::string& login, const std::string& password, const std::string& status);
 
-		const char *					getAuthUrl();
+		const char *					getAuthUrl() override;
 		void							post();
-		void							logOut();
+		void							logOut() override;
 
 	private:
 
@@ -37,7 +33,8 @@ namespace kubik
 		twitCurl						twitterObj;
 		std::shared_ptr<std::thread>	serverThread;
 		void							twitterPostThread();
-		std::string						twitterAuthURL;
-		std::string						getDefaultStatus();		
+		std::string						getDefaultStatus() override;	
+		void posting(const std::string& login, const std::string& password, const std::string& textstatus);
+		void waitLoadingComplete();
 	};
 }

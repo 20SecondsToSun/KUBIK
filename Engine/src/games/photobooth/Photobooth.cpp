@@ -65,6 +65,8 @@ void Photobooth::showAnimationComplete()
 		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
 		loc->connectEventHandler(&Photobooth::beginAnimHandler, this, IPhotoboothLocation::BEGIN_ANIM);
 		loc->connectEventHandler(&Photobooth::completeAnimHandler, this, IPhotoboothLocation::COMPLETE_ANIM);
+		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IPhotoboothLocation::DISABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::enableGameCloseHandler, this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
 	}		
 
 	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
@@ -82,6 +84,16 @@ void Photobooth::completeAnimHandler()
 {	
 	console() << "ENABLE_GAME_CLOSE!" << endl;
 	callback(ENABLE_GAME_CLOSE);
+}
+
+void Photobooth::enableGameCloseHandler()
+{
+	callback(ENABLE_GAME_CLOSE);
+}
+
+void Photobooth::disableGameCloseHandler()
+{
+	callback(DISABLE_GAME_CLOSE);
 }
 
 void Photobooth::stop()
@@ -180,6 +192,8 @@ void Photobooth::removeListeners()
 		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
 		loc->disconnectEventHandler(IPhotoboothLocation::BEGIN_ANIM);
 		loc->disconnectEventHandler(IPhotoboothLocation::COMPLETE_ANIM);
+		loc->disconnectEventHandler(IPhotoboothLocation::DISABLE_GAME_CLOSE);
+		loc->disconnectEventHandler(IPhotoboothLocation::ENABLE_GAME_CLOSE);		
 	}		
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 }

@@ -54,7 +54,7 @@ namespace kubik
 		std::string	response;
 		std::string	getLastError();
 
-		boost::signals2::signal<void(void)>			serverHandler, hideSignal, postingComplete, postingStart;
+		boost::signals2::signal<void(void)>	serverHandler, hideSignal, postingComplete, postingStart, postingError;
 
 		void initChromium();
 		virtual void update();

@@ -14,7 +14,7 @@ namespace kubik
 			typedef std::shared_ptr<class IPhotoboothLocation> IPhotoboothLocationRef;
 
 			class IPhotoboothLocation : public Sprite
-			{	
+			{
 			protected:
 				static PhotoboothSettingsRef settings;
 				static ci::gl::Texture bckgrnd;
@@ -28,7 +28,9 @@ namespace kubik
 			public:	
 				static const int NEXT_LOC = 100;
 				static const int BEGIN_ANIM = 101;
-				static const int COMPLETE_ANIM = 102;				
+				static const int COMPLETE_ANIM = 102;	
+				static const int ENABLE_GAME_CLOSE = 103;
+				static const int DISABLE_GAME_CLOSE = 104;
 
 				IPhotoboothLocation();
 

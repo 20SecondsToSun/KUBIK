@@ -20,9 +20,15 @@ namespace kubik
 			{	
 				void showAnimComplete() override;
 				void initVirtualKeyboard() override;
-				void keyTouchHandler();		
+				void keyTouchHandler();
+				void sendHandler();		
+				void postingCompleteHandler();
+				void disconnectListeners();				
+				void postingErrorHandler();				
 
 				kubik::TwitterRef twitter;
+				gl::Texture socialTexture;
+				ci::Vec2f socialTexturePosition;
 
 			public:				
 				TwitterPopup(kubik::config::PhotoboothSettingsRef settings);

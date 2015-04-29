@@ -30,10 +30,10 @@
       }
    ],
    "isEmail" : true,
-   "isFacebook" : true,
+   "isFacebook" : false,
    "isPrint" : true,
    "isQrCode" : true,
-   "isSticker" : true,
+   "isSticker" : false,
    "isTwitter" : true,
-   "isVkotakte" : true
+   "isVkotakte" : false
 }

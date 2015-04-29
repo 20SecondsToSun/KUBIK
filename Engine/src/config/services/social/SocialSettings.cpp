@@ -34,6 +34,9 @@ std::string SocialSettings::TWITTER_TOKEN_KEY;
 std::string SocialSettings::TWITTER_TOKEN_SECRET;
 std::string SocialSettings::TWITTER_API_KEY;
 std::string SocialSettings::TWITTER_API_SECRET;
+const std::string SocialSettings::TWITTER_AUTH_URL = "https://twitter.com";
+const std::string SocialSettings::TWITTER_STATUS_DEFAULT = "#тест rich bich";
+
 
 ////////////////////////////////////////////////////////////////////////////
 //

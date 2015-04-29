@@ -237,6 +237,7 @@ void PhotoSharing::stop()
 
 void PhotoSharing::showPopup()
 {
+	callback(DISABLE_GAME_CLOSE);
 	clearDelaycall();
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
@@ -248,6 +249,7 @@ void PhotoSharing::showPopup()
 
 void PhotoSharing::popupClosed()
 {
+	callback(ENABLE_GAME_CLOSE);
 	connectHandlers();
 	state = TEMPLATE_CHOOSE;
 }

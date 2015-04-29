@@ -63,6 +63,8 @@ namespace kubik
 				void gotoFirstlocation();
 				void beginAnimHandler();
 				void completeAnimHandler();
+				void enableGameCloseHandler();
+				void disableGameCloseHandler();
 			};
 		}
 	}

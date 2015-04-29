@@ -37,6 +37,8 @@ namespace kubik
 			static std::string TWITTER_TOKEN_SECRET;
 			static std::string TWITTER_API_KEY;
 			static std::string TWITTER_API_SECRET;
+			static const std::string TWITTER_AUTH_URL;	
+			static const std::string TWITTER_STATUS_DEFAULT;
 
 			static std::string VK_APP_ID;
 			static std::string VK_AUTH_URL;
