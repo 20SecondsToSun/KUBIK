@@ -64,7 +64,6 @@ Engine/blocks/CanonSDK/lib/EDSDK/Library/
 Engine/blocks/CanonSDK/bin/
 Engine/vc2012/soc
 Engine.sln.DotSettings.user
-Engine/blocks/Cinder-Awesomium/build
 
 ipch/
 Release/
