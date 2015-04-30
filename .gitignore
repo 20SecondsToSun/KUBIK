@@ -59,9 +59,6 @@ photoDir/
 cookies.txt
 
 
-
-Engine/blocks/CanonSDK/lib/EDSDK/Library/
-Engine/blocks/CanonSDK/bin/
 Engine/vc2012/soc
 Engine.sln.DotSettings.user
 
