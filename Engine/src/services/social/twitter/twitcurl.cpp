@@ -1366,7 +1366,7 @@ bool twitCurl::accountRateLimitGet()
 bool twitCurl::accountVerifyCredGet()
 {
     /* Perform GET */
-    return performGet( twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
+  return performGet( twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
                        twitterDefaults::TWITCURL_ACCOUNTVERIFYCRED_URL +
                        twitCurlDefaults::TWITCURL_EXTENSIONFORMATS[m_eApiFormatType] );
 }
@@ -2559,11 +2559,13 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
     curl_easy_setopt( m_curlHandle, CURLOPT_HTTPGET, 1 );
     curl_easy_setopt( m_curlHandle, CURLOPT_URL, authorizeUrl.c_str() );
 
+	ci::app::console() << "authorizeUrl:::::::::::::::::: " << authorizeUrl << std::endl;
+
     /* Send http request */
     if( CURLE_OK == curl_easy_perform( m_curlHandle ) )
     {
         if( pOAuthHeaderList )
-        {
+        {			
             curl_easy_getinfo( m_curlHandle, CURLINFO_HTTP_CODE, &httpStatusCode );
             curl_slist_free_all( pOAuthHeaderList );
 
@@ -2601,6 +2603,8 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
         return false;
     }
 
+	ci::app::console() << "m_callbackData:::::::::::::::::: " << m_callbackData << std::endl;
+
     // Second phase for the authorization
     pOAuthHeaderList = NULL;
     oAuthHttpHeader.clear();
@@ -2616,7 +2620,7 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
               oAuthLibDefaults::OAUTHLIB_AUTHENTICITY_TOKEN_KEY + "=" + authenticityTokenVal + "&" +  \
               oAuthLibDefaults::OAUTHLIB_SESSIONUSERNAME_KEY + "=" + getTwitterUsername() + "&" +     \
               oAuthLibDefaults::OAUTHLIB_SESSIONPASSWORD_KEY + "=" + getTwitterPassword();
-
+		
     /* Set OAuth header */
     m_oAuth.getOAuthHeader( eOAuthHttpPost, authorizeUrl, dataStr, oAuthHttpHeader );
     if( oAuthHttpHeader.length() )
@@ -2633,6 +2637,8 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
     curl_easy_setopt( m_curlHandle, CURLOPT_URL, authorizeUrl.c_str() );
     curl_easy_setopt( m_curlHandle, CURLOPT_COPYPOSTFIELDS, dataStr.c_str() );
 
+	ci::app::console() << "-----------m_callbackData:::::::::::::::::: " << m_callbackData << std::endl;
+
     /* Send http request */
     if( CURLE_OK == curl_easy_perform( m_curlHandle ) )
     {
@@ -2642,7 +2648,8 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
             curl_slist_free_all( pOAuthHeaderList );
 
             // Now, let's find the PIN CODE
-            nPosStart = m_callbackData.find( oAuthLibDefaults::OAUTHLIB_PIN_TWITTER_RESP_KEY );
+			nPosStart = m_callbackData.find(oAuthLibDefaults::OAUTHLIB_PIN_TWITTER_RESP_KEY);
+			//ci::app::console() << "-----------m_callbackData:::::::::::::::::: " << m_callbackData << std::endl;
             if( std::string::npos == nPosStart )
             {
                 return false;

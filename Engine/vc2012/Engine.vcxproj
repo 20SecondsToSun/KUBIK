@@ -173,6 +173,7 @@
     <ClCompile Include="..\src\graphics\IMovie.cpp" />
     <ClCompile Include="..\src\graphics\videoplayer\VideoPlayer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
+    <ClCompile Include="..\src\gui\TextField.cpp" />
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\ControlLayer.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="..\src\gui\ImageButtonSprite.h" />
     <ClInclude Include="..\src\gui\SimpleSpriteButton.h" />
     <ClInclude Include="..\src\gui\Sprite.h" />
+    <ClInclude Include="..\src\gui\TextField.h" />
     <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentDeque.h" />
     <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentMap.h" />
     <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentQueue.h" />

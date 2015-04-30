@@ -34,7 +34,7 @@ void Twitter::posting(const std::string& login, const std::string& password, con
 	}
 	catch (...)
 	{
-		status = POST_ERROR;
+		status = POST_ERROR;		
 	}	
 }
 
@@ -44,7 +44,11 @@ void Twitter::waitLoadingComplete()
 	{
 		loadingThread->join();
 		loadingSignal.disconnect();
-		postingComplete();
+
+		if (status == POST_ERROR)
+			postingError();
+		else if (status == POST_READY)
+			postingComplete();
 	}
 }
 
@@ -82,8 +86,22 @@ bool Twitter::authorize(const string& login, const string& password)
 
 		 twitterObj.oAuthHandlePIN( authUrl );//!!!!!!!!!!!!!!!
 
+
+
         /* Step 4: Exchange request token with access token */
         twitterObj.oAuthAccessToken();
+
+
+		string myOAuthAccessTokenKey, myOAuthAccessTokenSecret;
+		/* Step 5: Now, save this access token key and secret for future use without PIN */
+		twitterObj.getOAuth().getOAuthTokenKey(myOAuthAccessTokenKey);
+		twitterObj.getOAuth().getOAuthTokenSecret(myOAuthAccessTokenSecret);
+
+		console() << "::::  " << myOAuthAccessTokenKey << endl;
+		console() << "::::  " << myOAuthAccessTokenSecret << endl;
+
+		twitterObj.getOAuth().setOAuthTokenKey(myOAuthAccessTokenKey);
+		twitterObj.getOAuth().setOAuthTokenSecret(myOAuthAccessTokenSecret);
 
     }
     /* OAuth flow ends */

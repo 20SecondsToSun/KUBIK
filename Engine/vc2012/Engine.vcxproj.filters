@@ -672,6 +672,9 @@
     <ClCompile Include="..\src\config\services\social\SocialSettings.cpp">
       <Filter>Source Files\config\services\social</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\gui\TextField.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1354,6 +1357,12 @@
     </ClInclude>
     <ClInclude Include="..\src\config\services\social\SocialSettings.h">
       <Filter>Source Files\config\services\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\gui\TextField.h">
+      <Filter>Source Files\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
