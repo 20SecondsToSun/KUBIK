@@ -42,7 +42,6 @@ Icon
 *.opensdf
 *.lastbuildstate
 *.map
-*.dll
 *.pdb
 *.exe
 *.idb
