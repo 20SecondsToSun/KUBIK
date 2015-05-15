@@ -221,9 +221,9 @@ void Facebook::setPhotoAlbumName(string &name)
 	facebookAlbumNameToPost = name;
 }
 */
-const char * Facebook::getAuthUrl()
+std::string Facebook::getAuthUrl()
 {
-	return SocialSettings::FACEBOOK_AUTH_URL.c_str();
+	return SocialSettings::FACEBOOK_AUTH_URL;
 }
 
 void Facebook::logOut()

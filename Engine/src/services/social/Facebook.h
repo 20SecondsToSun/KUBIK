@@ -11,7 +11,7 @@ namespace kubik
 	public:
 		Facebook();
 
-		const char *getAuthUrl();
+		std::string getAuthUrl();
 		void logOut();
 
 		virtual void updatePopupPosition() override;

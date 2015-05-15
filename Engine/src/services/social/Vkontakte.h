@@ -11,7 +11,7 @@ namespace kubik
 	public:
 		Vkontakte();
 		
-		const char *getAuthUrl();
+		std::string getAuthUrl();
 		void logOut();
 		virtual void updatePopupPosition() override;
 		virtual void update() override;

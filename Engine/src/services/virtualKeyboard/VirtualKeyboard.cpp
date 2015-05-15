@@ -283,7 +283,7 @@ void VirtualKeyboard::draw()
 		//touchInputZone->draw();	
 		if (!inputFieldEmpty() && isShowing && showEraseButton)
 			erase->draw();
-		 
+
 		gl::draw(inputFieldTexture,
 			touchInputZone->getLocalPosition() +
 			Vec2f(19, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight())));
@@ -310,8 +310,8 @@ void VirtualKeyboard::drawCarriage()
 		{
 			gl::color(inputColor);
 			gl::drawSolidRect(Rectf(x1, y1, x2, y2));
-		}			
-	}	
+		}
+	}
 }
 
 void VirtualKeyboard::MouseUp(MouseEvent &event)
@@ -368,12 +368,12 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	ci::Vec2f coords = event.getPos() - originPoint;
 
 	if (touchInputZone->inButtonField(coords))
-	{	
+	{
 		callback(INPUT_TOUCH);
 		if (erase->inButtonField(coords))
 			lastCode = "erase";
 		return;
-	}		
+	}
 
 	if (!isShowing)
 		return;
@@ -460,7 +460,7 @@ void VirtualKeyboard::clearInputFieldText()
 	setInputFieldText("");
 }
 
-void VirtualKeyboard::setEraseButtonTexture(const gl::Texture& value )
+void VirtualKeyboard::setEraseButtonTexture(const gl::Texture& value)
 {
 	erase->changeTexture(value);
 }
@@ -545,15 +545,48 @@ void VirtualKeyboard::changeShiftMode()
 	{
 		if ((*item)->getBtnId().size() != 1) continue;
 		char letter = (*item)->getBtnId()[0];
-		if (isalpha((unsigned char)letter))
+		if (letter == '÷' || letter == '×')
 		{
 			string oneChar = "";
 			if (isShiftDown)
-				oneChar.append(1, toupper(letter));
-			else
-				oneChar.append(1, tolower(letter));
-
+			{
+				if (letter == '÷')
+				{
+					oneChar.append(1, '×');
+				}
+			}
+			else if (letter == '×')
+			{
+				oneChar.append(1, '÷');
+			}
 			(*item)->setBtnId(oneChar);
+		}
+		//if (isalpha(letter, loc1))
+		if (isalpha((unsigned char)letter))
+		{
+
+			string oneChar = "";
+			if (isShiftDown)
+			{
+				if (letter == 'ÿ')
+					oneChar.append(1, 'ß');
+				else if (letter == '÷')
+				{
+					oneChar.append(1, '×');
+
+				}
+				else
+					oneChar.append(1, toupper(letter));
+			}
+			else
+				if (letter == 'ß')
+					oneChar.append(1, 'ÿ');
+				else if (letter == '×')
+					oneChar.append(1, '÷');
+				else
+					oneChar.append(1, tolower(letter));
+
+				(*item)->setBtnId(oneChar);
 		}
 	}
 	checkCapsLock();
@@ -578,9 +611,11 @@ void VirtualKeyboard::changeLangMode()
 	{
 		if ((*item)->getBtnId().size() != 1) continue;
 		char letter = (*item)->getBtnId()[0];
+
 		if (isalpha((unsigned char)letter))
 		{
 			std::string oneChar = "";
+
 			if (isShiftDown)
 				oneChar.append(1, toupper(letter));
 			else

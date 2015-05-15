@@ -24,7 +24,6 @@ MenuScreen::~MenuScreen()
 void MenuScreen::init(ISettingsRef _settings)
 {	
 	settings	   =  static_pointer_cast<MenuSettings>(_settings);
-	font		   =  settings->getFont("helvetica30");
 	bckgnd         =  settings->getTexture("background");
 
 	createMenuBtns(settings->getEnabledGamesData());
@@ -41,22 +40,29 @@ void MenuScreen::resetMenuBtnGames()
 
 void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
 {	
+	AdditionalGameData additionalGD = settings->getMenuScreenAdditionalDesignElements();
+
 	for(auto it : games)
 	{	
-		GameButtonRef button = GameButtonRef(new GameButton(it));
+		GameButtonRef button = GameButtonRef(new GameButton(it,
+			additionalGD.getBackground(),
+			additionalGD.getBackgroundPosition(),
+			additionalGD.getTitleByID(it.getID()),
+			additionalGD.getTitlePosition()
+			));
 		addChild(button);
 		gamesBtns.push_back(button);		
 	}
 }
 
-Rectf MenuScreen::getMenuBtuttonArea(int i)
-{
-	float x      = 300.0f * (1 + i);
-	float y      = 400.0f;
-	float width  = 200.0f;
-	float height = 200.0f;
-	return  Rectf(x, y, x + width, y + height);
-}
+//Rectf MenuScreen::getMenuBtuttonArea(int i)
+//{
+//	float x      = 300.0f * (1 + i);
+//	float y      = 400.0f;
+//	float width  = 200.0f;
+//	float height = 200.0f;
+//	return Rectf(x, y, x + width, y + height);
+//}
 
 void MenuScreen::clearGamesButtonVector()
 {

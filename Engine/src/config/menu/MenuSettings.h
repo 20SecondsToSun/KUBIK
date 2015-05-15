@@ -24,6 +24,28 @@ namespace kubik
 			friend class MenuSettings;
 		};
 
+		class AdditionalGameData
+		{
+			ci::gl::Texture background;
+			ci::Vec2f backgroundPosition, titlePosition;
+
+			std::map<GameId, ci::gl::Texture> titles;
+
+		public:
+			ci::gl::Texture getBackground() const;
+			void setBackground(const ci::gl::Texture& tex);
+			void addTitle(const GameId& value, const ci::gl::Texture& tex);
+
+			ci::Vec2f getBackgroundPosition() const;
+			ci::Vec2f getTitlePosition() const;
+
+			void setBackgroundPosition(const ci::Vec2f& value);
+			void setTitlePosition(const ci::Vec2f& value);
+			ci::gl::Texture getTitleByID(const GameId& value);
+
+			friend class MenuSettings;
+		};
+
 		class MenuSettings :public ISettings
 		{
 		public:
@@ -57,6 +79,7 @@ namespace kubik
 
 			std::vector<GamesInfo> getGames();
 			std::vector<GameData> getEnabledGamesData();
+			AdditionalGameData getMenuScreenAdditionalDesignElements();
 
 		private:
 			MenuDataStruct data;

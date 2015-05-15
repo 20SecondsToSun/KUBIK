@@ -316,7 +316,7 @@ void PhotoboothSettings::setTextures()
 
 	addToDictionary("counts", createImageResource(getTemplateDesignPath("PhotoShooting\\counts.png")));
 	addToDictionary("seek", createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));
-	addToDictionary("smile", createImageResource(getTemplateDesignPath("PhotoShooting\\smile.png")));
+	//addToDictionary("smile", createImageResource(getTemplateDesignPath("PhotoShooting\\smile.png")));
 	addToDictionary("shootline", createImageResource(getTemplateDesignPath("PhotoShooting\\line.png")));
 	addToDictionary("frame", createImageResource(getTemplateDesignPath("PhotoShooting\\frame.png")));
 
@@ -375,6 +375,7 @@ void PhotoboothSettings::setTextures()
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 
 
+	addToSettingsDictionary("arial13", createFontResource(getFontsPath("arial.ttf"), 13));
 	addToSettingsDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
 	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
 	addToSettingsDictionary("helvetica40", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));

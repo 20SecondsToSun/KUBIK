@@ -51,14 +51,13 @@ namespace kubik
 
 			void showAnimationComplete();
 
-			ci::Rectf getMenuBtuttonArea(int i);
+			//ci::Rectf getMenuBtuttonArea(int i);
 			void drawShowAnim();
 			void drawInitAnim();
 			MenuSettingsRef settings;
 			SimpleSpriteButtonRef settingsButton, videoButton;
 			ci::gl::Texture bckgnd, screenshot;
-			ci::Font font;
-
+			
 			std::list<SimpleSpriteButtonRef> gamesBtns;
 			ci::Anim<float> animX1, animX, alpha;
 		};

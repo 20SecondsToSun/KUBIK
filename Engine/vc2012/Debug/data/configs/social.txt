@@ -1,6 +1,6 @@
 {
- "twitterApiKey" : "80HDLdNZzabYMuLmvsEHwo4q0",
- "twitterApiSecret" : "DgKEslEMNrKySlwpXYpsbQRHBOoiUaTdKcBa55tCnZQTS2UdFN",
+ "twitterApiKey" : "JlJuD4YKMo9LGqfojJwlKTIgb",
+ "twitterApiSecret" : "W72LKnYU1Atct746K9OHD4ZTHmc5no6Gobz9Y1rg9WrTcugzhC",
  "twitterTokenKey":"185547855-YEq5mPDrhGwnwKJCegRn1mvxxoA9gvRsKpRGepaa",
  "twitterTokenSecret":"RgbooAwXMlZDajAKvIKSlWyrQgZJQmNcx1TGEtmLP0mJr",
  "facebookAppId" : "1437302953218656",

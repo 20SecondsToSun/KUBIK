@@ -223,9 +223,9 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 	return photo_id;
 }
 
-const char * Vkontakte::getAuthUrl()
+std::string Vkontakte::getAuthUrl()
 {
-	return SocialSettings::VK_AUTH_URL.c_str();
+	return SocialSettings::VK_AUTH_URL;
 }
 
 void Vkontakte::logOut()

@@ -120,7 +120,7 @@ void Photobooth::initLocations()
 	removeListeners();
 
 	locations.clear();
-	locations.push_back(photoInstruction);
+	//locations.push_back(photoInstruction);
 
 	//locations.push_back(photoFilter);
 	//locations.push_back(photoTimer);

@@ -17,6 +17,13 @@ namespace kubik
 			ci::Font font;
 			bool touched;
 
+			gl::Texture inputFieldTexture;
+
+			ci::Anim < ci::Color > borderColor;
+
+			void drawCarriage();
+			bool carridgePhase;
+
 		public:
 			TextField(const ci::Rectf& value);
 
@@ -27,8 +34,9 @@ namespace kubik
 			void setField(const ci::Rectf& field);
 			void setFont(const ci::Font& font);
 			void setTextColor(const ci::Color& color);
-			void showEmpty();
-			void draw();
+			void showThatEmpty();
+			bool empty();
+			void draw();					
 			std::string getText();
 		};
 	}

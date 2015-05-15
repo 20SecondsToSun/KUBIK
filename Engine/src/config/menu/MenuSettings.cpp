@@ -69,7 +69,13 @@ void MenuSettings::setTextures()
 	clearResources();
 	addToDictionary("background", createImageResource(getTemplateDesignPath("bg.png")));
 	addToDictionary("menuButton", createImageResource(getTemplateDesignPath("menulayer.png")));
-	addToDictionary("helvetica30", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
+
+	addToDictionary("2gamesBG", createImageResource(getTemplateDesignPath("2games\\buttonBg.png")));
+	addToDictionary("2gamesTitle1", createImageResource(getTemplateDesignPath("2games\\title1.png")));
+	addToDictionary("2gamesTitle2", createImageResource(getTemplateDesignPath("2games\\title2.png")));
+	addToDictionary("2gamesTitle3", createImageResource(getTemplateDesignPath("2games\\title3.png")));
+
+	//addToDictionary("helvetica30", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 }
 
 void MenuSettings::setData(MenuDataStruct value)
@@ -81,6 +87,49 @@ void MenuSettings::setData(MenuDataStruct value)
 MenuSettings::MenuDataStruct MenuSettings::getData()
 {
 	return data;
+}
+
+AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
+{
+	auto games = model->getGames();
+	vector<GamesInfo> filtergames;
+
+	for (auto it : games)
+		if (it.isOn && it.isPurchased)
+			filtergames.push_back(it);
+
+	AdditionalGameData gamedata;
+
+	if (!filtergames.empty())
+	{
+		string prefix = to_string(filtergames.size()) + "games";	
+		gamedata.setBackground(getTexture(prefix + "BG"));
+
+		Vec2f bgPosition, titlePosition;
+
+		switch (filtergames.size())
+		{
+		case 2:
+			bgPosition = Vec2f(-240.0f, -100.0f);
+			titlePosition = Vec2f(28.0f, 590.0f);
+			break;
+
+		case 3:
+			bgPosition = Vec2f(-240.0f, -100.0f);
+			break;
+
+		default:
+			break;
+		}
+
+		for (size_t i = 0; i < filtergames.size(); i++)				
+			gamedata.addTitle(filtergames[i].getGameId(), getTexture(prefix + "Title" + to_string(filtergames[i].getGameId())));			
+		
+		gamedata.setTitlePosition(titlePosition);
+		gamedata.setBackgroundPosition(bgPosition);
+	}
+
+	return gamedata;
 }
 
 vector<GameData> MenuSettings::getEnabledGamesData()
@@ -102,8 +151,8 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 		return gameData;	
 	case 2:
 		size = Vec2i(518, 518);
-		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 179.0f));
-		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 1017.0f));		
+		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 140.0f));
+		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 1094.0f));		
 		break;
 	case 3:
 		size = Vec2i(305, 305);
@@ -164,4 +213,44 @@ ci::Vec2f GameData::getPosition() const
 GameId GameData::getID() const
 {
 	return id;
+}
+
+ci::gl::Texture AdditionalGameData::getBackground() const
+{
+	return background;
+}
+
+void AdditionalGameData::setBackground(const ci::gl::Texture& texture)
+{
+	background = texture;
+}
+
+void AdditionalGameData::addTitle(const GameId& value, const ci::gl::Texture& texture)
+{
+	titles[value] = texture;
+}
+
+ci::Vec2f AdditionalGameData::getBackgroundPosition() const
+{
+	return backgroundPosition;
+}
+
+ci::Vec2f AdditionalGameData::getTitlePosition() const
+{
+	return titlePosition;
+}
+
+void AdditionalGameData::setBackgroundPosition(const ci::Vec2f& value)
+{
+	backgroundPosition = value;
+}
+
+void AdditionalGameData::setTitlePosition(const ci::Vec2f& value)
+{
+	titlePosition = value;
+}
+
+ci::gl::Texture AdditionalGameData::getTitleByID(const GameId& value)
+{
+	return titles[value];
 }

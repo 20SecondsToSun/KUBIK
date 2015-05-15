@@ -250,9 +250,6 @@
     <Filter Include="Source Files\config\services\keyboard">
       <UniqueIdentifier>{2ab8e162-ed82-4177-8c81-62a92e02d0b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\config\games\menu">
-      <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\graphics\videoplayer">
       <UniqueIdentifier>{2b002652-ded0-44b5-a52e-e92f8a2be4f9}</UniqueIdentifier>
     </Filter>
@@ -261,6 +258,9 @@
     </Filter>
     <Filter Include="Source Files\config\services\social">
       <UniqueIdentifier>{d6f31a76-34f0-495c-94d4-67232e3818a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\menu">
+      <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -433,7 +433,7 @@
       <Filter>Source Files\games\photobooth\states\instruction</Filter>
     </ClCompile>
     <ClCompile Include="..\src\config\menu\MenuSettings.cpp">
-      <Filter>Source Files\config\games\menu</Filter>
+      <Filter>Source Files\config\menu</Filter>
     </ClCompile>
     <ClCompile Include="..\src\locations\menu\GameButton.cpp">
       <Filter>Source Files\locations\menu</Filter>
@@ -1038,7 +1038,7 @@
       <Filter>Source Files\config\elements</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\menu\MenuSettings.h">
-      <Filter>Source Files\config\games\menu</Filter>
+      <Filter>Source Files\config\menu</Filter>
     </ClInclude>
     <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h">
       <Filter>Source Files\config\screensaver</Filter>
@@ -1363,6 +1363,9 @@
     </ClInclude>
     <ClInclude Include="..\src\gui\TextField.h">
       <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

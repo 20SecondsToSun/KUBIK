@@ -318,11 +318,15 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	}	
 	
 	curl_slist *headers=NULL; // init to NULL is important 
- 
+	console() << "url  :" << url << endl;
+	console() << "postParamString  :" << postParamString << endl;
+	
+
 	curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8"); 
 	curl_slist_append(headers, "Accept-Language: ru,en-us;q=0.7,en;q=0.3"); 
 	curl_slist_append(headers, "Accept-Encoding: identity"); 
-	curl_slist_append(headers, "Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.7"); 
+	curl_slist_append(headers, "Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.7");
+	curl_slist_append(headers, "Content - Type: application / x - www - form - urlencoded");
 
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); 
 
