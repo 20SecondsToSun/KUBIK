@@ -9,7 +9,7 @@ using namespace kubik::games::photobooth;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
 	:photoStorage(photoStorage),
-	photoFiltersStartY(1386.0f)
+	photoFiltersStartY(1398.0f)
 {
 	photoPositions[0] = Vec2f(96.0f,  439.0f);
 	photoPositions[1] = Vec2f(404.0f, 439.0f);
@@ -244,7 +244,7 @@ void PhotoChoosing::filterSelected(int id)
 	float bigfwidth = 137.0f;
 	float fulSize = (filterBtns.size() - 1.0f) * fwidth + (filterBtns.size() - 1.0f) * shiftX + bigfwidth;
 
-	Vec2f startVec = Vec2f(0.5f * (getWindowWidth() - fulSize), photoFiltersStartY + 167.0f);
+	Vec2f startVec = Vec2f(0.5f * (getWindowWidth() - fulSize), photoFiltersStartY + 88.0f);
 	Vec2f offset = startVec;
 
 	for (unsigned int i = 0; i < filterBtns.size(); i++)
@@ -363,7 +363,14 @@ void PhotoChoosing::setFiltersData()
 	for (unsigned int i = 0; i < filters.size(); i++)
 	{
 		auto position = startVec + Vec2f((shiftX + fwidth) * i, 0.0f);
-		filterBtns.push_back(FilterSmallButtonRef(new FilterSmallButton(position, filters[i].getID(), filters[i].getText(), settings->getFont("introBook12"), settings->getFont("introBook14"))));
+		filterBtns.push_back(FilterSmallButtonRef(
+			new FilterSmallButton(position, 
+			filters[i].getID(),
+			filters[i].getText(), 
+			settings->getTexture("plashFilter"),
+			settings->getFont("introBook12"),
+			settings->getFont("introBook14")
+			)));
 	}
 }
 
@@ -376,7 +383,7 @@ void PhotoChoosing::setFiltersTitleDesign()
 void PhotoChoosing::setAdditionaBackgroung()
 {
 	choosefon = settings->getTexture("choosefon");
-	choosefonPos = Vec2f(0.0f, getWindowHeight() - choosefon.getHeight());
+	choosefonPos = Vec2f(0.0f, 1920.0f - choosefon.getHeight());
 }
 
 void PhotoChoosing::stopAllTweens()

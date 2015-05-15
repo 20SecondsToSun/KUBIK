@@ -19,7 +19,7 @@ namespace kubik
 				std::string text;
 				ci::Font fontC, fontO;
 
-				gl::Texture titleSmall, titleBig, photo;
+				gl::Texture titleSmall, titleBig, photo, background;
 				Vec2f titleSmallPos, titleBigPos;
 
 				shaders::imagefilters::BaseShaderRef shader;
@@ -31,8 +31,16 @@ namespace kubik
 				}
 				state;
 
+				float getScaleBetweenStates();
+
 			public:
-				FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO);
+				FilterSmallButton(const ci::Vec2f& vec,
+					int id, 
+					const std::string &text,
+					const ci::gl::Texture &background, 
+					ci::Font fontC, 
+					ci::Font fontO);
+
 				void setSelected(bool value);
 				bool selected();
 				virtual void drawLayout();

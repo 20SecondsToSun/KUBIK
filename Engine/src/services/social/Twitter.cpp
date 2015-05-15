@@ -4,10 +4,9 @@ using namespace kubik::config;
 using namespace kubik;
 using namespace std;
 
-Twitter::Twitter() 
-	:isAuthFlowComplete(false)
+Twitter::Twitter():isAuthFlowComplete(false)
 { 
-	
+	availableArea = (Rectf(0.f, 0.f, 897.f, 538.f));	
 };
 
 void Twitter::authorizePost(const std::string& login, const std::string& password, const std::string& textstatus)
@@ -29,8 +28,8 @@ void Twitter::posting(const std::string& login, const std::string& password, con
 	try
 	{
 		authorize(login, password);
-		postTextTweet(textstatus);
-		status = POST_READY;
+		//postTextTweet(textstatus);
+		status = GET_AUTH_URL;
 	}
 	catch (...)
 	{
@@ -49,11 +48,15 @@ void Twitter::waitLoadingComplete()
 			postingError();
 		else if (status == POST_READY)
 			postingComplete();
+		else if (status == GET_AUTH_URL)
+			gettingAuthURLComplete();
 	}
 }
 
 bool Twitter::authorize(const string& login, const string& password)
 {
+	isAuthFlowComplete = false;
+
 	std::string userName( login );
     std::string passWord( password );	
    
@@ -68,21 +71,23 @@ bool Twitter::authorize(const string& login, const string& password)
 	 /* OAuth flow begins */
 
     /* Step 0: Set OAuth related params. These are got by registering your app at twitter.com */
+	
 	twitterObj.getOAuth().setConsumerKey(SocialSettings::TWITTER_API_KEY);
 	twitterObj.getOAuth().setConsumerSecret(SocialSettings::TWITTER_API_SECRET);
 
-	if (SocialSettings::TWITTER_TOKEN_KEY.size() && SocialSettings::TWITTER_TOKEN_SECRET.size())
-   {
-       /* If we already have these keys, then no need to go through auth again */
-	   twitterObj.getOAuth().setOAuthTokenKey(SocialSettings::TWITTER_TOKEN_KEY);
-	   twitterObj.getOAuth().setOAuthTokenSecret(SocialSettings::TWITTER_TOKEN_SECRET);
-    }
-    else
+	//if (SocialSettings::TWITTER_TOKEN_KEY.size() && SocialSettings::TWITTER_TOKEN_SECRET.size())
+   //{
+   //    /* If we already have these keys, then no need to go through auth again */
+	//   twitterObj.getOAuth().setOAuthTokenKey(SocialSettings::TWITTER_TOKEN_KEY);
+	///   twitterObj.getOAuth().setOAuthTokenSecret(SocialSettings::TWITTER_TOKEN_SECRET);
+   /// }
+    //else
     {
         /* Step 2: Get request token key and secret */
         std::string authUrl;
         twitterObj.oAuthRequestToken( authUrl );
 		console()<<" oath ---------------------------"<<authUrl<<std::endl;
+		return true;
 
 		 twitterObj.oAuthHandlePIN( authUrl );//!!!!!!!!!!!!!!!
 
@@ -184,6 +189,7 @@ bool Twitter::postPhotoTweet(const std::string& status, const std::vector<std::s
 		return false;
     }
 }
+
 bool Twitter::postPhotoTweetBase64(const std::string& status, const std::string& filesPath)
 {
 	if (!isAuthFlowComplete) return false;
@@ -208,9 +214,111 @@ bool Twitter::postPhotoTweetBase64(const std::string& status, const std::string&
     }
 }
 
-const char * Twitter::getAuthUrl()
+std::string Twitter::getAuthUrl()
 {	
-	return SocialSettings::TWITTER_AUTH_URL.c_str();
+	twitterObj.getOAuth().setConsumerKey(SocialSettings::TWITTER_API_KEY);
+	twitterObj.getOAuth().setConsumerSecret(SocialSettings::TWITTER_API_SECRET);
+	std::string authUrl;
+	console() << "auth url:::   " << authUrl << endl;
+	twitterObj.oAuthRequestToken(authUrl);
+
+	return authUrl;
+}
+
+void Twitter::update()
+{	
+	SocShare::update();
+
+	if (isAuthFlowComplete) 
+		return;
+
+	//std::string userName("ferry.is.very@gmail.com");
+	//std::string passWord("qwerty12+");
+
+	//twitterObj.setTwitterUsername(userName);
+	//twitterObj.setTwitterPassword(passWord);
+	//twitterObj.getOAuth().setConsumerKey(SocialSettings::TWITTER_API_KEY);
+	//twitterObj.getOAuth().setConsumerSecret(SocialSettings::TWITTER_API_SECRET);
+
+	//std::string authUrl;
+	//twitterObj.oAuthRequestToken(authUrl);
+	//console() << " oath ---------------------------" << authUrl << std::endl;
+	//
+	//twitterObj.oAuthHandlePIN(authUrl);//!!!!!!!!!!!!!!!
+	//isAuthFlowComplete = true;
+
+
+
+	if (status != WAITING_FOR_NETWORK)
+		return;
+
+	//char anchr[1024];
+	//mWebViewPtr->url().query().ToUTF8(anchr, 1024);
+	//string anchString(anchr);
+	//console() << "::::-------------------  query " << anchString << endl;
+
+	//mWebViewPtr->url().spec().ToUTF8(anchr, 1024);
+	//anchString = anchr;
+	//console() << "::::-------------------  spec " << anchString << endl;
+
+	//anchString = anchr;
+	//console() << "::::-------------------  scheme " << anchString << endl;
+	//
+	string param = "document.documentElement.outerHTML";
+//	param = "document.getElementsByTagName('html')[0].innerHTML";
+	//param = "document.getElementsByTagName('input')";
+	
+	WebString html = mWebViewPtr->ExecuteJavascriptWithResult(WSLit(param.c_str()), Awesomium::WSLit("")).ToString();
+	
+	char html_[100024];
+	html.ToUTF8(html_, 100024);
+	string htmlString(html_);
+	//JsonTree configJSON = JsonTree(htmlString);
+	//console() << "::::-------------------  html_ " << htmlString << endl;
+	//console() << "::::-------------------  mWebViewPtr->focused_element_type() " << mWebViewPtr->Copy() << endl;
+
+	//clipboar
+	
+	int nPosStart = htmlString.find("<code>");	
+	
+	if (std::string::npos != nPosStart)
+	{
+		int nPosEnd = htmlString.substr(nPosStart + 6).find("</code>");
+
+		if (std::string::npos != nPosEnd)
+		{
+			string pinCodeVal = htmlString.substr(nPosStart + 6, nPosEnd);
+
+			console() <<"::::  "<< pinCodeVal << endl;
+			authorize("yurikblech@gmail.com", "Metalcorehero88");
+			//std::string userName("yurikblech@gmail.com");
+			//std::string passWord("Metalcorehero88");
+			//mWebViewPtr->LoadURL(WebURL(WSLit(getAuthUrl().c_str())));
+		/*	std::string userName("ferry.is.very@gmail.com");
+			std::string passWord("qwerty12+");
+
+			twitterObj.setTwitterUsername(userName);
+			twitterObj.setTwitterPassword(passWord);
+			twitterObj.getOAuth().setConsumerKey(SocialSettings::TWITTER_API_KEY);
+			twitterObj.getOAuth().setConsumerSecret(SocialSettings::TWITTER_API_SECRET);
+			twitterObj.getOAuth().setOAuthPin(pinCodeVal);
+			twitterObj.oAuthAccessToken();
+
+			isAuthFlowComplete = true;
+
+			postTextTweet("kubik test");*/
+
+			console() << ":::: posted :::: "  << endl;
+		}		
+	}
+}
+
+void Twitter::updatePopupPosition()
+{
+	if (mWebTexture)
+		popupPosition = Vec2f(0.5f * (getWindowWidth() - mWebTexture.getWidth()), 166.0f);
+	else
+		popupPosition = Vec2f::zero();
 }
 
 void Twitter::logOut()
@@ -222,4 +330,14 @@ void Twitter::logOut()
 string  Twitter::getDefaultStatus()
 {
 	return SocialSettings::TWITTER_STATUS_DEFAULT;
+}
+
+int Twitter::getBrowserWidth()
+{
+	return 675;
+}
+
+int Twitter::getBrowserHeight()
+{
+	return 360;
 }

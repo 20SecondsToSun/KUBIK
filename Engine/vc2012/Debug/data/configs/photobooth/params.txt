@@ -1,7 +1,7 @@
 {
    "activeBgPrint" : 0,
-   "activeOverDesignID" : 2,
-   "activePhotoCardStyleDesignID" : 2,
+   "activeOverDesignID" : 1,
+   "activePhotoCardStyleDesignID" : 1,
    "activeSticker" : 1,
    "filtersIds" : [
       {
@@ -22,7 +22,7 @@
       },
       {
          "id" : 5,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 6,
@@ -30,10 +30,10 @@
       }
    ],
    "isEmail" : true,
-   "isFacebook" : false,
+   "isFacebook" : true,
    "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : false,
    "isTwitter" : true,
-   "isVkotakte" : false
+   "isVkotakte" : true
 }

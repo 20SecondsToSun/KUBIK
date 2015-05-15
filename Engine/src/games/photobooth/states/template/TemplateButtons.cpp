@@ -160,7 +160,7 @@ void TemplateButton2::init()
 	activeIndex = 0;
 
 	for (unsigned int i = 0; i < subBtns.size(); i++)
-		subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);
+		subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);// DEBUG ASSERT TODO
 }
 
 void TemplateButton2::setSelected(bool value)

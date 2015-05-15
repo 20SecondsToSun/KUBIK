@@ -72,6 +72,8 @@ void PhotoShooting::reset(PhotoboothSettingsRef settings)
 	smileTexs = settings->getSmileTextures();
 	line = settings->getTexture("shootline");
 	frame = settings->getTexture("frame");
+	backgroundProgresstexture = settings->getTexture("plash");
+	
 
 	framePosition = Vec2f((getWindowWidth() - frame.getWidth()) * 0.5f, 252.0f);
 	countsTexPos = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
@@ -106,6 +108,7 @@ void PhotoShooting::draw()
 	fillBg();
 
 	float _scale, _scale1, startY = 294.0f;// 10.0f;
+	float smileY = 829.0f;
 
 	ci::gl::Texture _photo, _photoMask;
 
@@ -130,7 +133,8 @@ void PhotoShooting::draw()
 
 	case PhotoShooting::SHOOTING:
 	case PhotoShooting::PEPARE_FOR_SHOOTING:
-		gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), startY));
+		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1670.0f));
+		gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
 		break;
 
 	case PhotoShooting::PREVIEW:
@@ -174,8 +178,9 @@ void PhotoShooting::drawProgressBlock()
 	gl::translate(0.0f, progressBlockStartY + progressBlockAnimateY);
 
 	{//draw alpha bg
-		gl::color(ColorA::hexA(0xD60e0d0a));
-		gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 232.0f));
+		//gl::color(ColorA::hexA(0xD60e0d0a));
+		gl::draw(backgroundProgresstexture);
+		//gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 232.0f));
 	}
 
 	{// draw progress line

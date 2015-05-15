@@ -316,7 +316,7 @@ void PhotoboothSettings::setTextures()
 
 	addToDictionary("counts", createImageResource(getTemplateDesignPath("PhotoShooting\\counts.png")));
 	addToDictionary("seek", createImageResource(getTemplateDesignPath("PhotoShooting\\seek.png")));
-	//addToDictionary("smile", createImageResource(getTemplateDesignPath("PhotoShooting\\smile.png")));
+	addToDictionary("plash", createImageResource(getTemplateDesignPath("PhotoShooting\\plash.png")));
 	addToDictionary("shootline", createImageResource(getTemplateDesignPath("PhotoShooting\\line.png")));
 	addToDictionary("frame", createImageResource(getTemplateDesignPath("PhotoShooting\\frame.png")));
 
@@ -331,6 +331,8 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("okBtn", createImageResource(getTemplateDesignPath("PhotoChoosing\\okBtn.png")));
 	addToDictionary("reshotBtn", createImageResource(getTemplateDesignPath("PhotoChoosing\\reshotBtn.png")));
 	addToDictionary("choosetitle", createImageResource(getTemplateDesignPath("PhotoChoosing\\title.png")));
+	addToDictionary("plashFilter", createImageResource(getTemplateDesignPath("PhotoChoosing\\plashFilter.png")));
+	
 	addToDictionary("chooseTitleFilter", createImageResource(getTemplateDesignPath("PhotoChoosing\\titleFilter.png")));
 	addToDictionary("choosefon", createImageResource(getTemplateDesignPath("PhotoChoosing\\fon.png")));
 
@@ -357,7 +359,6 @@ void PhotoboothSettings::setTextures()
 	smilePaths = fileTools().getAllImagePaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		addToDictionary("smile" + to_string(i), createImageResource(smilePaths[i]));
-
 
 	for (auto item : photoOverDesignData)
 	{
@@ -432,14 +433,13 @@ void PhotoboothSettings::buildSettingData()
 void PhotoboothSettings::buildLocationData()
 {
 	logger().log("buildActiveGameData photobooth");
-
 	for (auto &it : photoCardStyles)
 		it.setDesignTexture(getTexture(it.getDesignTexName()), photoCardStylesCoordRects);
-
 
 	for (auto &it : photoOverDesignData)
 		it.setDesignTexture(getTexture(it.getDesignTexName()), photoOverCoordRects);
 
+	smileTextures.clear();
 	for (size_t i = 0; i < smilePaths.size(); i++)
 		smileTextures.push_back(getTexture("smile" + to_string(i)));
 };

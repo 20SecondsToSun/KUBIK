@@ -4,6 +4,7 @@ using namespace kubik;
 
 VkontakteRef Social::vkontakte;
 FacebookRef Social::facebook;
+TwitterRef Social::twitter;
 
 SocShare::SocShare():connected(false)
 {

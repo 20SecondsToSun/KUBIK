@@ -23,9 +23,16 @@ namespace kubik
 		bool							postPhotoTweetBase64(const std::string& status, const std::string& filesPath);
 		void authorizePost(const std::string& login, const std::string& password, const std::string& status);
 
-		const char *					getAuthUrl() override;
+		std::string						getAuthUrl() override;
 		void							post();
 		void							logOut() override;
+		void							update() override;
+		void							updatePopupPosition() override;
+
+		int getBrowserWidth() override;
+		int getBrowserHeight() override;		
+
+		boost::signals2::signal<void(void)> gettingAuthURLComplete;	
 
 	private:
 

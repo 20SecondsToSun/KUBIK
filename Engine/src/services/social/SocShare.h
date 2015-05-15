@@ -25,7 +25,8 @@ namespace kubik
 			USER_REJECT,
 			POSTING,
 			POST_READY,
-			POST_ERROR
+			POST_ERROR,
+			GET_AUTH_URL
 		}
 		status;
 
@@ -39,7 +40,7 @@ namespace kubik
 		SocShare();
 
 		//virtual void post() = 0;
-		virtual const char *getAuthUrl() = 0;
+		virtual std::string getAuthUrl() = 0;
 		virtual void logOut() = 0;
 
 		void clear_token();
@@ -81,6 +82,9 @@ namespace kubik
 
 		virtual std::string	 getDefaultStatus() = 0;
 		virtual void updatePopupPosition();
+
+		virtual int getBrowserWidth();
+		virtual int getBrowserHeight();
 
 	private:
 		ci::signals::connection	keyDownCon, mouseDownCon, mouseUpCon;

@@ -98,7 +98,7 @@ void PhotoTimer::update()
 		break;
 
 	case PhotoTimer::HIDE_ANIM:
-		currentDigit = digits[MAX_SEC - 1];
+		currentDigit = digits[3];
 		break;
 	default:
 		break;
@@ -112,8 +112,8 @@ void PhotoTimer::calculateDigit()
 	changeAngle = rotor * timersec;
 
 	int index = MAX_SEC - seconds;
-	if (index >= MAX_SEC)
-		index = MAX_SEC - 1;
+	if (index > 3)
+		index = 3;
 
 	seconds = (MAX_SEC - (int)cdTimer.getSeconds());
 

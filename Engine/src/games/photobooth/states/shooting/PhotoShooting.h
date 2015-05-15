@@ -41,7 +41,7 @@ namespace kubik
 				shaders::imagefilters::MaskShaderRef maskShader;
 
 				PhotoStorageRef photoStorage;
-				ci::gl::Texture countsTex, seekTex, photo, line, frame;				
+				ci::gl::Texture countsTex, seekTex, photo, line, frame, backgroundProgresstexture;
 				ci::gl::Texture cameraTexture, photoTemplate;
 				ci::Vec2f countsTexPos, seekTexPos0, framePosition;
 				ci::Vec2f cameraPosition;

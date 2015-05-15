@@ -2,6 +2,7 @@
 
 #include "services/social/Vkontakte.h"
 #include "services/social/Facebook.h"
+#include "services/social/Twitter.h"
 #include "services/social/SocShare.h"
 
 namespace kubik
@@ -10,6 +11,7 @@ namespace kubik
 	{
 		static VkontakteRef vkontakte;
 		static FacebookRef facebook;
+		static TwitterRef twitter;
 
 	public:
 		static SocShareRef createVkontakte()
@@ -25,5 +27,12 @@ namespace kubik
 				facebook = FacebookRef(new Facebook());
 			return facebook;
 		}
+
+		static SocShareRef createTwitter()
+		{
+			if (!twitter)
+				twitter = TwitterRef(new Twitter());
+			return twitter;
+		}		
 	};
 }

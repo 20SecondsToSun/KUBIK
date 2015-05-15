@@ -9,7 +9,10 @@ using namespace shaders::imagefilters;
 
 shaders::imagefilters::BaseShaderRef PhotoContainer::shader;
 
-PhotoContainer::PhotoContainer(int id, const ci::gl::Texture& tex1, const ci::gl::Texture& tex2, const ci::Vec2f& vec)
+PhotoContainer::PhotoContainer(int id,
+	const ci::gl::Texture& tex1, 
+	const ci::gl::Texture& tex2, 
+	const ci::Vec2f& vec)
 	:SimpleSpriteButton(Rectf(vec, vec + Vec2f(270.0f, 350.0f)),
 	PhotoChoosedEventRef(new PhotoChoosedEvent(id))),
 	galka(tex1),
@@ -32,18 +35,18 @@ bool PhotoContainer::selected()
 void PhotoContainer::drawLayout()
 {
 	gl::translate(animPosition);
+
 	if (photo)
-	{
-		
-		gl::color(ColorA(1, 1, 1, alpha));
+	{		
+		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
 		gl::draw(photo);
 		gl::color(Color::white());
-	}		
 
-	if (isSelected)
-	{		
-		gl::draw(ramka, Vec2f(-9.0f, -10.0f));	
-		gl::draw(galka, Vec2f(29.0f, 270.0f));		
+		if (isSelected)
+		{
+			gl::draw(ramka, Vec2f(0.5f * (photo.getWidth() - ramka.getWidth()), 0.5f * (photo.getHeight() - ramka.getHeight())));
+			gl::draw(galka, Vec2f(29.0f, 270.0f));
+		}
 	}
 }
 

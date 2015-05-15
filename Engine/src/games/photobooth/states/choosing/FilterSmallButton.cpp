@@ -6,11 +6,17 @@ using namespace std;
 using namespace shaders::imagefilters;
 using namespace kubik::games::photobooth;
 
-FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, int id, const std::string &text, ci::Font fontC, ci::Font fontO)
+FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec, 
+	int id, 
+	const std::string &text,
+	const ci::gl::Texture &background,
+	ci::Font fontC,
+	ci::Font fontO)
 	:SimpleSpriteButton(ci::Rectf(vec, vec + ci::Vec2f(109.0f, 228.0f)), FilterChangedEventRef(new FilterChangedEvent(id))),
 	isSelected(false),
 	id(id),
 	text(text),
+	background(background),
 	fontC(fontC),
 	fontO(fontO),
 	state(CLOSE)
@@ -40,28 +46,39 @@ void FilterSmallButton::drawLayout()
 {
 	float translY = 0.0f;
 
-	gl::translate(animPosition);
+	gl::translate(animPosition);	
 
 	if (state == CLOSE)
 	{
-		gl::color(Utils::colorAlpha(Color::hex(0x191b1c), alpha));
-		gl::drawSolidRect(buttonArea);	
+		float _scale = getScaleBetweenStates();
+		float transX = (getWidth() - background.getWidth() * _scale) * 0.5f;
+
+		gl::pushMatrices();
+		gl::translate(transX, 0.0f);
+		gl::scale(_scale, _scale);
+		gl::draw(background);
+		gl::popMatrices();
+
 		gl::color(Utils::colorAlpha(Color::white(), alpha));
 		gl::draw(titleSmall, titleSmallPos);
 	}
 	else
 	{
+		float transX = (getWidth() - background.getWidth()) *0.5;
 		translY = -30.0f;
-		gl::color(Utils::colorAlpha(Color::hex(0x191b1c), alpha));
-		gl::drawSolidRect(buttonArea);
 
+		gl::pushMatrices();		
+		gl::translate(transX, translY);
+		gl::draw(background);
+		gl::popMatrices();
+		
 		gl::color(Utils::colorAlpha(Color::white(), alpha));
 		gl::draw(titleBig, titleBigPos);
 	}
 
 	if(photo)
 	{
-		float scale = getWidth()/photo.getWidth();
+		float scale = getWidth() / photo.getWidth();
 		gl::pushMatrices();
 		gl::translate(0.0f, translY);
 		gl::scale(scale, scale);		
@@ -93,4 +110,9 @@ void FilterSmallButton::setPhoto(const ci::gl::Texture& tex)
 	{
 		shader->render(tex);
 	});
+}
+
+float FilterSmallButton::getScaleBetweenStates()
+{
+	return  109.0f / 137.0f;
 }

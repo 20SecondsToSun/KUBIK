@@ -51,14 +51,15 @@ std::string SocShare::getLastError()
 
 void SocShare::initChromium()
 {
+	//return;
 	mWebCorePtr = chrome().getWebCorePtr();
 	mWebViewPtr = chrome().getWebViewPtr();
 	chrome().clearCookies();
 
 	if (mWebViewPtr)
 	{
-		mWebViewPtr->Resize(675, 440);
-		mWebViewPtr->LoadURL(WebURL(WSLit(getAuthUrl())));
+		mWebViewPtr->Resize(getBrowserWidth(), getBrowserHeight());
+		mWebViewPtr->LoadURL(WebURL(WSLit(getAuthUrl().c_str())));
 		mWebViewPtr->Focus();
 	}
 
@@ -66,7 +67,7 @@ void SocShare::initChromium()
 }
 
 void SocShare::update()
-{
+{	
 	mWebCorePtr->Update();
 
 	if (mWebViewPtr && ph::awesomium::isDirty(mWebViewPtr))
@@ -82,7 +83,7 @@ void SocShare::update()
 		}
 
 		char title[1024];
-		mWebViewPtr->title().ToUTF8(title, 1024);
+		mWebViewPtr->title().ToUTF8(title, 1024);		
 	}
 
 	updatePopupPosition();
@@ -136,8 +137,6 @@ void SocShare::connectTouchDown()
 
 void SocShare::mouseDown(MouseEvent &event)
 {
-	console() << "pos::::  " << event.getPos() <<endl;
-
 	if (availableArea.contains(event.getPos()))
 	{
 		MouseEvent mEvent = touchKeyboard().inititateMouseEvent(event.getPos() - popupPosition);
@@ -150,7 +149,7 @@ void SocShare::mouseUp(MouseEvent &event)
 	if (availableArea.contains(event.getPos()))
 	{
 		MouseEvent mEvent = VirtualKeyboard::inititateMouseEvent(event.getPos() - popupPosition);
-		ph::awesomium::handleMouseUp(mWebViewPtr, mEvent);
+		ph::awesomium::handleMouseUp(mWebViewPtr, mEvent);		
 	}
 }
 
@@ -173,4 +172,14 @@ void SocShare::disconnectTouchDown()
 SocShare::serverStatus SocShare::getStatus()
 {
 	return status;
+}
+
+int SocShare::getBrowserWidth()
+{
+	return 675;
+}
+
+int SocShare::getBrowserHeight()
+{
+	return 440;
 }

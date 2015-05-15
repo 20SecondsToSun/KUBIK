@@ -49,7 +49,7 @@ namespace kubik
 			void load()			override;
 			void setTextures()  override;
 			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };
-			vector<Texture> getSmileTextures();
+			std::vector<ci::gl::Texture> getSmileTextures();
 
 			TextItem getMainTitle(PhtTextID id);
 			TextItem getSubTitleClose(PhtTextID id);

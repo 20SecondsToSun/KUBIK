@@ -52,6 +52,12 @@ public:
                          std::string& oAuthHttpHeader, /* out */
                          const bool includeOAuthVerifierPin = false /* in */ );
 
+	oAuthKeyValuePairs getRawKeyPairs(const eOAuthHttpRequestType eType, /* in */
+		const std::string& rawUrl, /* in */
+		const std::string& rawData, /* in */
+		std::string& oAuthHttpHeader, /* out */
+		const bool includeOAuthVerifierPin = false /* in */);
+	
     bool extractOAuthTokenKeySecret( const std::string& requestTokenResponse /* in */ );
 
     oAuth clone();
