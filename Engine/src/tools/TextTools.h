@@ -2,7 +2,6 @@
 
 #include "StringTools.h"
 #include "TextItem.h"
-#include "cinder/cairo/Cairo.h"
 
 using namespace ci;
 namespace kubik

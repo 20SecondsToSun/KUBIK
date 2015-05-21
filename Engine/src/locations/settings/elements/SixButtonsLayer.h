@@ -40,7 +40,7 @@ namespace kubik
 					i++;					
 				}			
 
-				loadButton = settingsFactory().createDecorLoadButton(path, btns[userDesignID]->getLocalPosition() + Vec2f(0.0f, btns[userDesignID]->getHeight()));			
+				loadButton = settingsFactory().createDecorLoadButton(path, btns[userDesignID]->getLocalPosition() + Vec2f(0.0f, btns[userDesignID]->getHeight()), over);
 				selectActiveDesign(activeID);	
 			}
 			

@@ -11,9 +11,7 @@ ImageQuadroButton::ImageQuadroButton(OneDesignItem item, const ci::gl::Texture& 
 
 void ImageQuadroButton::drawLayout()
 {
-	gl::Texture icon = item.getIcon();
-
-	gl::draw(icon);
+	gl::draw(item.getIcon());
 
 	if (selection && overtex)
 	{
@@ -21,9 +19,10 @@ void ImageQuadroButton::drawLayout()
 		gl::translate(-7, -7);
 		gl::draw(overtex);
 		gl::popMatrices();
+		gl::color(Color::hex(0xffff00));
 	}
 
-	gl::draw(textTex, Vec2f((icon.getWidth() - textTex.getWidth()) * 0.5f, icon.getHeight() + 10));
+	gl::draw(textTex, Vec2f((item.getIcon().getWidth() - textTex.getWidth()) * 0.5f, item.getIcon().getHeight() + 10));
 	gl::color(Color::white());
 }
 

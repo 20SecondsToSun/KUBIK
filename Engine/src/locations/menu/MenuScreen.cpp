@@ -84,6 +84,8 @@ void MenuScreen::showAnimationComplete()
 
 	for (auto btn : gamesBtns)
 		btn->connectEventHandler(&MenuScreen::startGameHandler, this);
+
+	//callback(ENABLE_GAME_CLOSE);
 }
 
 void MenuScreen::stop()

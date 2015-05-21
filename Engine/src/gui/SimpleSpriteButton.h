@@ -144,9 +144,9 @@ namespace kubik
 		}
 
 	protected:
-		Rectf buttonArea;
-		bool bgVisible;	
-		ColorA color;	
+		bool bgVisible;
+		ci::Rectf buttonArea;		
+		ci::ColorA color;	
 		ci::Anim<float> alpha;
 		ci::Anim<ci::Vec2f> animPosition;
 	};

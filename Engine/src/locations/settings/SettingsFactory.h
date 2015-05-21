@@ -30,13 +30,13 @@ namespace kubik
 					settings->getTexture("loadIcon")));
 			}
 
-			LoadButtonRef createDecorLoadButton(const std::string &path, const ci::Vec2f& pos)
+			LoadButtonRef createDecorLoadButton(const std::string &path, const ci::Vec2f& pos, const ci::gl::Texture& over)
 			{
 				return DecorLoadButtonRef(
 					new DecorLoadButton(path,
 					ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),					
 					settings->getTextItem(ConfigTextID::LOAD),					
-					settings->getTexture("loadIcon")));
+					settings->getTexture("loadIcon"), over));
 			}
 
 			ScreenSaverCheckerRef createScreenSaverChecker(const ci::Vec2f& pos)

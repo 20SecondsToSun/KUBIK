@@ -31,31 +31,31 @@ void PhotoboothConfig::mouseUpHandler(EventGUIRef& mEvent)
 	else if(typeid(*ev) == typeid(CheckerSocialEvent))
 	{	
 		CheckerSocialEventRef event = static_pointer_cast<CheckerSocialEvent>(mEvent);	
-		console()<<"CheckerSocialEvent:::: "<<event->getSocialID()<<" ....  "<<event->getValue()<<endl;
+		//console()<<"CheckerSocialEvent:::: "<<event->getSocialID()<<" ....  "<<event->getValue()<<endl;
 		phbSettings->setSocialState(event->getSocialID(), event->getValue());
 	}
 	else if(typeid(*ev) == typeid(ChangePhotoOverDesignEvent))
 	{
 		ChangePhotoOverDesignEventRef event = static_pointer_cast<ChangePhotoOverDesignEvent>(mEvent);	
-		console()<<"PhotoTemplateChooseEvent:::: "<<event->getItem().getID()<<endl;
+		//console()<<"PhotoTemplateChooseEvent:::: "<<event->getItem().getID()<<endl;
 		phbSettings->setActiveOverDesignID(event->getItem().getID());
 	}	
 	else if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
 	{
 		ChangePhotoCardStyleDesignEventRef event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(mEvent);	
-		console()<<"ChangePhotoCardStyleDesignEvent:::: "<<event->getItem().getID()<<endl;
+		//console()<<"ChangePhotoCardStyleDesignEvent:::: "<<event->getItem().getID()<<endl;
 		phbSettings->setActivePhotoCardStyleDesignID(event->getItem().getID());
 	}
 	else if(typeid(*ev) == typeid(ChangePhotoFilterPreviewActiveEvent))
 	{
 		ChangePhotoFilterPreviewActiveEventRef event = static_pointer_cast<ChangePhotoFilterPreviewActiveEvent>(mEvent);	
-		console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<event->getItem().getID()<<endl;
+		//console()<<"ChangePhotoFilterPreviewActiveEvent:::: "<<event->getItem().getID()<<endl;
 		phbSettings->swapFilter(event->getItem().getID());
 	}	
 	else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
 	{
 		OpenSystemDirectoryEventRef event = static_pointer_cast<OpenSystemDirectoryEvent>(mEvent);	
-		console()<<"OpenSystemDirectoryEvent:::: "<<event->getPath()<<endl;
+		//console()<<"OpenSystemDirectoryEvent:::: "<<event->getPath()<<endl;
 		fileTools().openSystemDirectory(event->getPath());			
 	}
 }
@@ -64,8 +64,9 @@ void PhotoboothConfig::activateListeners()
 {
 	for (auto layout : displayList)	
 	{
-		layout->connectEventHandler(&PhotoboothConfig::mouseUpHandler, this);
-		layout->activateListeners();
+		IPhotoboothItemRef ref = static_pointer_cast<IPhotoboothItem>(layout);
+		ref->connectEventHandler(&PhotoboothConfig::mouseUpHandler, this);
+		ref->activateTitleListeners();
 	}	
 }
 
@@ -83,6 +84,7 @@ void PhotoboothConfig::setOpenItem(int index)
 	for (auto layout : displayList)		
 	{
 		IPhotoboothItemRef ref = static_pointer_cast<IPhotoboothItem>(layout);
+
 		if (index == ref->getIndex())
 			ref->activateListeners();	
 		else

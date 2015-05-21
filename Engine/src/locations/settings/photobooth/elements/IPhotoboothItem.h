@@ -16,6 +16,7 @@ namespace kubik
 			IPhotoboothItem(PhotoboothSettingsRef phbSettings, const PhtTextID& id, const ci::Color& color, int index);
 
 			virtual void activateListeners();
+			virtual void activateTitleListeners();			
 			virtual void unActivateListeners();
 			virtual void mainTitleClicked(EventGUIRef& event);
 			virtual void draw();

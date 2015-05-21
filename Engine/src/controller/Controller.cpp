@@ -261,6 +261,7 @@ void Controller::setMenuScreenHandlers()
 	connect_once(menuScreen->startGameSignal,		bind(&Controller::startGameHandler, this, std::placeholders::_1));
 	connect_once(menuScreen->startVideoSignal,		bind(&Controller::startLocation, this, screenSaver));
 	controlLayer->connectEventHandler(&Controller::openSettingsHandler, this, ControlLayer::OPEN_SETTINGS);
+	controlLayer->activateListeners();
 }
 
 void Controller::removeMenuScreenHandlers()
@@ -268,6 +269,7 @@ void Controller::removeMenuScreenHandlers()
 	menuScreen->startGameSignal.disconnect_all_slots();
 	menuScreen->startVideoSignal.disconnect_all_slots();	
 	controlLayer->disconnectEventHandler(ControlLayer::OPEN_SETTINGS);
+	controlLayer->unActivateListeners();
 }
 
 ////////////////////////////////////////////////////////////////////////////

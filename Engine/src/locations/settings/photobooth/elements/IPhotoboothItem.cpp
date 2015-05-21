@@ -51,6 +51,12 @@ void IPhotoboothItem::activateListeners()
 	Sprite::activateListeners();
 }
 
+void IPhotoboothItem::activateTitleListeners()
+{
+	mainTitleButton->connectEventHandler(&IPhotoboothItem::mainTitleClicked, this);
+	//Sprite::activateListeners();
+}
+
 void IPhotoboothItem::mainTitleClicked(EventGUIRef& event)
 {
 

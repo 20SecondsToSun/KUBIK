@@ -16,8 +16,8 @@ namespace kubik
 		public:	
 			PhotoCardStyle(PhotoboothSettingsRef phbSettings, const ci::Color& color, int index);
 
-			virtual void activateListeners();
-			virtual void unActivateListeners();
+			void activateListeners() override;
+			void unActivateListeners() override;
 			void buttonClicked(EventGUIRef& event);
 
 		private:
