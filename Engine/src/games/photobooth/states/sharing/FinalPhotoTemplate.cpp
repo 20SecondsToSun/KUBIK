@@ -3,7 +3,8 @@ using namespace kubik::games::photobooth;
 
 FinalPhotoTemplate::FinalPhotoTemplate()
 	:templateWidth(424.0f),
-	animTime(0.6f)
+	animTime(0.6f),
+	index(0)
 {
 }
 

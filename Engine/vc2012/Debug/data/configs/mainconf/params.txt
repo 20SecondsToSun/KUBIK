@@ -1,6 +1,6 @@
 {
-   "actionName" : "נההנאאננמממ",
-   "activeDesign" : 2,
+   "actionName" : "hello",
+   "activeDesign" : 1,
    "currentPhotosPrinted" : 0,
    "designPath" : "data\\interface\\configDesign\\",
    "maxPhotosToPrint" : 400,

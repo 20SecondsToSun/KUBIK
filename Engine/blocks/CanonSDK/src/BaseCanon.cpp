@@ -16,8 +16,10 @@ BaseCanon::BaseCanon():_isCameraConnected(false), _isLiveView(false), _isFrameNe
 void BaseCanon::setup(CameraController* controller, int cameraIndex)
 {
 	mLivePixels = Surface8u(CAMERA_WIDTH, CAMERA_HEIGHT, false, SurfaceChannelOrder::RGB);	
-	shutCon     = App::get()->getSignalShutdown().connect(bind(&BaseCanon::shutdown, this));
-	init(controller);
+	if (!shutCon.connected())
+		shutCon = App::get()->getSignalShutdown().connect(bind(&BaseCanon::shutdown, this));
+	if (!_isCameraConnected)
+		init(controller);
 }
 
 void BaseCanon::init(CameraController* controller)

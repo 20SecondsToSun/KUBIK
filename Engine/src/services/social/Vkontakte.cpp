@@ -239,3 +239,13 @@ string Vkontakte::getDefaultStatus()
 {
 	return SocialSettings::VK_STATUS_DEFAULT;
 }
+
+int Vkontakte::getBrowserWidth()
+{
+	return 656;
+}
+
+int Vkontakte::getBrowserHeight()
+{
+	return 377;
+}

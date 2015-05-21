@@ -21,15 +21,27 @@ PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  ph
 	cameraHeight = 704 * cameraScale;
 	cameraPosition = Vec2f((1080.0f - cameraHeight) * 0.5f, 0.0f);
 
-	cameraCanon().photoTakenEvent.connect(std::bind(&PhotoShooting::photoTakenHandler, this));
-	cameraCanon().photoDownloadedEvent.connect(std::bind(&PhotoShooting::photoDownloadHandler, this, std::placeholders::_1));
-	cameraCanon().photoErrorEvent.connect(bind(&PhotoShooting::photoErrorHandler, this));
+	if (!photoTakenCon.connected())
+		photoTakenCon = cameraCanon().photoTakenEvent.connect(std::bind(&PhotoShooting::photoTakenHandler, this));
+
+	if (!photoDownloadedCon.connected())
+		photoDownloadedCon = cameraCanon().photoDownloadedEvent.connect(std::bind(&PhotoShooting::photoDownloadHandler, this, std::placeholders::_1));
+
+	if (!photoErrorCon.connected())
+		photoErrorCon = cameraCanon().photoErrorEvent.connect(bind(&PhotoShooting::photoErrorHandler, this));
 
 	using namespace shaders::imagefilters;
 	maskShader = shadertool().getMaskShader();
 
 	reset(settings);
 };
+
+PhotoShooting::~PhotoShooting()
+{
+	photoTakenCon.disconnect();
+	photoDownloadedCon.disconnect();
+	photoErrorCon.disconnect();
+}
 
 void PhotoShooting::start()
 {
@@ -140,7 +152,9 @@ void PhotoShooting::draw()
 	case PhotoShooting::PREVIEW:
 		_scale = 748.0f / photoTemplate.getWidth();
 		_scale1 = 748.0f / photo.getWidth();
-	
+
+		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1670.0f));
+
 		gl::pushMatrices();
 		gl::translate(previewAnimateX, 0.0f);
 		gl::pushMatrices();
@@ -178,9 +192,7 @@ void PhotoShooting::drawProgressBlock()
 	gl::translate(0.0f, progressBlockStartY + progressBlockAnimateY);
 
 	{//draw alpha bg
-		//gl::color(ColorA::hexA(0xD60e0d0a));
 		gl::draw(backgroundProgresstexture);
-		//gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 232.0f));
 	}
 
 	{// draw progress line
@@ -248,25 +260,23 @@ void PhotoShooting::callDelayShotTimer()
 {
 	state = LIVE_VIEW;
 	delaycall(bind(&PhotoShooting::delayshoot, this), delayShootingTime);
-
-	timeline().apply(&percent, 0.0f, 1.0f, delayShootingTime);
-	timeline().apply(&seekPosition, Vec2f((currentShot - 1) * 197.0f, 0.0f), 0.3f, EaseOutCubic());
+	timeline().apply(&percent, 0.0f, 1.0f, delayShootingTime);	
 }
 
 void PhotoShooting::callLiveViewPrepareTimer()
 {
 	delaycall(bind(&PhotoShooting::liveviewdelay, this), liveViewPrepareTime);
 	timeline().apply(&previewAnimateX, 1500.0f, 1.0f, EaseInExpo()).delay(1.4f);
+
+	if (currentShot < SHOT_NUM)
+		timeline().apply(&seekPosition, Vec2f((currentShot) * 197.0f, 0.0f), 0.8f, EaseOutCubic()).delay(1.4f);
 }
 
 void PhotoShooting::callPreviewShowingTimer()
 {
 	state = PREVIEW;
-
 	smileIndex = getNextSmileIndex();
-
 	delaycall(bind(&PhotoShooting::previewdelay, this), previewShowingTime);
-
 	previewAnimateX = -950.0f;
 	timeline().apply(&previewAnimateX, 0.0f, 0.9f, EaseOutCubic()).delay(0.5f);
 }

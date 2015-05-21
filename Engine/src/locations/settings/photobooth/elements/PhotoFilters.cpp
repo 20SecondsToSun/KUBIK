@@ -12,13 +12,14 @@ PhotoFilters::PhotoFilters(PhotoboothSettingsRef phbSettings, const ci::Color& c
 	int i = 0;
 	float shiftX = 53, shiftY = 130;
 	float startX = 106, startY= 354;
+	auto over6 = phbSettings->getTexture("over6");
 
 	for (auto it : designdata)
 	{
 		pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
 		pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);
 
-		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(it, pos);
+		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(it, over6, pos);
 
 		btns[it.getID()] = imageQuadroButton;
 		addChild(imageQuadroButton);	

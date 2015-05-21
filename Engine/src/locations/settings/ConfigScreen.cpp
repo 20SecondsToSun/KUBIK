@@ -58,7 +58,7 @@ void ConfigScreen::start()
 
 void ConfigScreen::initShowAnimation()
 {
-	screenshot = getScreenShot();
+	//screenshot = getScreenShot();
 	state = SHOW_ANIM;
 	timeline().apply(&animX, 1080.0f, 0.0f, 0.9f, EaseOutCubic()).finishFn(bind(&ConfigScreen::showAnimationComplete, this));
 	timeline().apply(&animX1, 0.0f, -500.0f, 0.9f, EaseOutCubic());
@@ -117,8 +117,7 @@ void ConfigScreen::draw()
 		gl::pushMatrices();
 		gl::translate(animX1, 0.0f);
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		if (screenshot)
-			gl::draw(screenshot);
+		drawScreenShot();
 		gl::color(Color::white());
 		gl::popMatrices();
 

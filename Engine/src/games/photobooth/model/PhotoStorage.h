@@ -67,7 +67,9 @@ namespace kubik
 
 			public:
 				PhotoStorage();
+				~PhotoStorage();
 				void clear();
+				bool empty();
 				void createChoosingPreview();
 				std::vector<ci::gl::Texture> getChoosingPreview();
 				void setNextPhoto(const ci::gl::Texture& tex);

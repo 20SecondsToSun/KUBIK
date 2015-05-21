@@ -5,6 +5,8 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
+ci::gl::Texture Popup::backgroundImage;
+
 Popup::Popup(PhotoboothSettingsRef settings)
 	:headColor(Color::hex(0x4b515a)),
 	bgColor(Color::hex(0x34383f)), 
@@ -88,14 +90,23 @@ void Popup::draw()
 
 void Popup::drawBackgrounds()
 {
-	float height = 716.0f;
-	auto color = Utils::colorAlpha(headColor, alphaAnim);
+	//float height = 716.0f;
+	//auto color = Utils::colorAlpha(headColor, alphaAnim);
+	auto color = Utils::colorAlpha(Color::white(), alphaAnim);
 	gl::color(color);
-	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), height));
+	if (backgroundImage)	
+		gl::draw(backgroundImage);
+		
+	/*gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), height));
 	color = Utils::colorAlpha(bgColor, alphaAnim);
 	gl::color(color);
 	gl::pushMatrices();
 	gl::translate(0.0f, height);
 	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 1920.0f - height));	
-	gl::popMatrices();
+	gl::popMatrices();*/
+}
+
+void Popup::setBackground(ci::gl::Texture& texture)
+{
+	backgroundImage = texture;
 }

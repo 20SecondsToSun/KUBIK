@@ -6,12 +6,13 @@ using namespace kubik::config;
 PhotoCardStyle::PhotoCardStyle(PhotoboothSettingsRef phbSettings, const ci::Color& color, int index)
 	:IPhotoboothItem(phbSettings, PhtTextID::CARD_STYLE, color, index)
 {
-	DesignData designdata = settings->getPhotoCardStyles();	
-	int activeID		  = settings->getActivePhotoCardStyleDesignID();
-	int userDesignID	  = settings->getUserPhotoCardStyleDesignID();
-	std::string syspath	  = settings->getUserPhotoCardStylePath();
-	
-	sixBtnLayer = SixButtonsLayerPhotoCardRef( new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath));
+	auto designdata = settings->getPhotoCardStyles();
+	auto activeID = settings->getActivePhotoCardStyleDesignID();
+	auto userDesignID = settings->getUserPhotoCardStyleDesignID();
+	auto syspath = settings->getUserPhotoCardStylePath();
+	auto over6 = settings->getTexture("over6");
+
+	sixBtnLayer = SixButtonsLayerPhotoCardRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, over6));
 	addChild(sixBtnLayer);			
 }
 

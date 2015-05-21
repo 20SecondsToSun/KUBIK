@@ -69,8 +69,12 @@ void IPhotoboothItem::draw()
 	gl::color(color);
 	gl::drawSolidRect(ci::Rectf( ci::Vec2f::zero(), ci::Vec2f(itemWidth, animHeight)));
 	gl::color(ci::Color::white());
-	gl::draw(mainTextTex, Vec2f(mainTextTexPosX, mainTitleY));
-	gl::draw(subText, Vec2f(subTextTexPosX, subTitleY));			
+
+	//textTools().drawCairo(settings->getMainTitle(id));
+	textTools().drawCairo(settings->getMainTitle(id), color, Vec2f(mainTextTexPosX, mainTitleY));
+	textTools().drawCairo(settings->getSubTitleClose(id), color, Vec2f(subTextTexPosX, subTitleY));
+	//gl::draw(mainTextTex, Vec2f(mainTextTexPosX, mainTitleY));
+	//gl::draw(subText, Vec2f(subTextTexPosX, subTitleY));			
 	gl::popMatrices();	
 
 	if (state == OPEN)	

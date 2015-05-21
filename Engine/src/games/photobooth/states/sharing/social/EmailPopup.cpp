@@ -59,7 +59,6 @@ void EmailPopup::hide(EventGUIRef& event)
 
 void EmailPopup::addEmailHandler(EventGUIRef& event)
 {
-	console() << "add email" << endl;
 	if (handleInputField())
 		addEmailToList();
 }

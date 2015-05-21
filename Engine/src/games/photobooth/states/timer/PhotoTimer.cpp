@@ -158,6 +158,7 @@ void PhotoTimer::drawAnimationCircle()
 
 	auto photo = Utils::drawGraphicsToFBO(timerTex2.getSize(), [&]()
 	{
+		//gl::draw(timerTex2);
 		maskShader->render(timerTex2, texMask, Vec2f::zero(), 1);
 	});
 
@@ -170,7 +171,14 @@ void PhotoTimer::drawAnimationCircle()
 	gl::scale(circleScale, circleScale);
 	gl::translate(-centerTex);
 	gl::draw(timerTex1);
+	//gl::draw(photo);	
+	//gl::draw(timerTex2);
+	//gl::translate(100,0);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	gl::draw(photo);
+	//glBlendFunc(GL_ONE, GL_ZERO);
+	gl::enableAlphaBlending();
 	gl::popMatrices();
 	gl::color(Color::white());
 }

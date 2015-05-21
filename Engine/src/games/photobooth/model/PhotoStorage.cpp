@@ -6,6 +6,7 @@ using namespace kubik::games::photobooth;
 
 PhotoStorage::PhotoStorage()
 {
+	console() << "CREATE PHOTO STORAGE!!!!!!!!!!!!!" << endl;
 	format2.width	=	1181; 
 	format2.height	=	1521;
 	format2.top		=	281;
@@ -25,10 +26,20 @@ PhotoStorage::PhotoStorage()
 	selectedFilterID = 1;
 }
 
+PhotoStorage::~PhotoStorage()
+{
+	console() << "DESTRUCT PHOTO STORAGE!!!!!!!!!!!!!" << endl;
+}
+
 void PhotoStorage::clear()
 {
 	loadedPhotoTexVec.clear();
 	photoTemplates.clear();
+}
+
+bool PhotoStorage::empty()
+{
+	return loadedPhotoTexVec.empty();
 }
 
 ci::gl::Texture PhotoStorage::loadDownloadedPhoto(const string& path)

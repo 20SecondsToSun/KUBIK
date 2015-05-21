@@ -14,9 +14,7 @@ using namespace ci::app;
 ////////////////////////////////////////////////////////////////////////////
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model),
-	memento(false),
-	configSettings(configSettings)
+	:ISettings(model), memento(false), configSettings(configSettings)
 {
 
 }
@@ -251,6 +249,7 @@ void PhotoboothSettings::parsePhotoCardStyles()
 			text.getChild("color").getValue<string>());
 		photoCardStyles.push_back(item);
 	}
+
 	userPhotoCardStyleDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
 }
 
@@ -285,7 +284,6 @@ vector<Texture> PhotoboothSettings::getPhotoCardStylesActiveTemplate()
 {
 	auto iter = photoCardStyles.begin();
 	std::advance(iter, activePhotoCardStyleDesignID - 1);
-
 	return iter->getMappedTextures();
 }
 
@@ -300,6 +298,9 @@ void PhotoboothSettings::setTextures()
 {
 	setDesignPath();
 	clearResources();
+
+	addToSettingsDictionary("over6", createImageResource(getInterfacePath("configDesign\\photobooth\\over6.png")));
+
 
 	addToDictionary("instrFon", createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
 	addToDictionary("instrTitle", createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\title.png")));
@@ -347,6 +348,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("qrtitle", createImageResource(getTemplateDesignPath("PhotoShare\\qrtitle.png")));
 	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.jpg")));
 
+	addToDictionary("popupBg", createImageResource(getTemplateDesignPath("PhotoShare\\popupBg.png")));
 	addToDictionary("addEmail", createImageResource(getTemplateDesignPath("PhotoShare\\addEmail.png")));
 	addToDictionary("enterEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\enterEmailBorder.png")));
 	addToDictionary("errorEmailBorder", createImageResource(getTemplateDesignPath("PhotoShare\\errorEmailBorder.png")));
@@ -396,6 +398,13 @@ void PhotoboothSettings::setTextures()
 	addToSettingsDictionary("introb210", createFontResource(getFontsPath("introb.ttf"), 210));
 	addToSettingsDictionary("introb18", createFontResource(getFontsPath("introb.ttf"), 18));
 	addToSettingsDictionary("introb21", createFontResource(getFontsPath("introb.ttf"), 21));
+	
+	addToSettingsDictionary("helveticaLight128", createFontResource(getFontsPath("HelveticaLight.ttf"), 128));
+	addToSettingsDictionary("helveticaLight30", createFontResource(getFontsPath("HelveticaLight.ttf"), 30));
+	addToSettingsDictionary("helveticaLight28", createFontResource(getFontsPath("HelveticaLight.ttf"), 28));
+	addToSettingsDictionary("introLight30", createFontResource(getFontsPath("IntroLight.ttf"), 30));
+	addToSettingsDictionary("introLight24", createFontResource(getFontsPath("IntroLight.ttf"), 24));
+	addToSettingsDictionary("introLight28", createFontResource(getFontsPath("IntroLight.ttf"), 28));
 }
 
 void PhotoboothSettings::buildSettingData()

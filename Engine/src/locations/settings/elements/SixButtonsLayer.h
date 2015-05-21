@@ -13,8 +13,15 @@ namespace kubik
 		template <class Type> class SixButtonsLayer: public Sprite
 		{
 		public:
-			SixButtonsLayer(const DesignData& designdata, int activeID, int userDesignID, const std::string& path, float startX = 106, float startY = 354)
-				:userDesignID(userDesignID), activeID(-1)
+			SixButtonsLayer(const DesignData& designdata,
+				int activeID, 
+				int userDesignID,
+				const std::string& path,
+				const ci::gl::Texture& over = ci::gl::Texture(), 
+				float startX = 106,
+				float startY = 354)
+				:userDesignID(userDesignID),
+				activeID(-1)
 			{
 				using namespace ci;				
 
@@ -27,7 +34,7 @@ namespace kubik
 					pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
 					pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);
 
-					ImageQuadroButtonRef imageQuadroButton = std::shared_ptr<SixItemButton<Type>>(new SixItemButton<Type>(it, pos));			
+					ImageQuadroButtonRef imageQuadroButton = std::shared_ptr<SixItemButton<Type>>(new SixItemButton<Type>(it, over, pos));
 					btns[it.getID()] = imageQuadroButton;
 					addChild(imageQuadroButton);	
 					i++;					

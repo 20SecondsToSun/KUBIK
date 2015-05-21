@@ -14,9 +14,11 @@ namespace kubik
 		std::string getAuthUrl();
 		void logOut();
 
-		virtual void updatePopupPosition() override;
-		virtual void update() override;
-		virtual std::string	getDefaultStatus() override;
+		void updatePopupPosition() override;
+		void update() override;
+		std::string	getDefaultStatus() override;
+		int getBrowserWidth() override;
+		int getBrowserHeight() override;
 
 	private:
 		void postTextFB();

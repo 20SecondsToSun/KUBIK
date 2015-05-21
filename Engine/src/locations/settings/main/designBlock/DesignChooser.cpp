@@ -9,12 +9,13 @@ DesignChooser::DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& 
 {
 	setPosition(position);
 
-	DesignData designdata = configSettings->getDesignData();
-	int activeID		  = configSettings->getActiveDesignID();
-	int userDesignID	  = configSettings->getUserDesignID();
-	std::string syspath   = configSettings->getUserDesignPath();
+	auto designdata   = configSettings->getDesignData();
+	auto activeID	  = configSettings->getActiveDesignID();
+	auto userDesignID = configSettings->getUserDesignID();
+	auto syspath	  = configSettings->getUserDesignPath();
+	auto over6		  = configSettings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, 0.0f, 0.0f));
+	sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, over6, 0.0f, 0.0f));
 	addChild(sixBtnLayer);
 }
 

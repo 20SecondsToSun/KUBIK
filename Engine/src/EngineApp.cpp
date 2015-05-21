@@ -26,15 +26,14 @@ private:
 void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
 	settings->setFrameRate(60);
-	settings->setWindowSize(1080, 1920);// 1080, 1120);//(1880, 1120);	
+	settings->setWindowSize(1080, 1120);// 1080, 1120);//(1880, 1120);	
 	settings->setWindowPos(100, 100);
 	//settings->setFullScreen(true);
 	//settings->setBorderless(true);	
 }
 
 void EngineApp::setup()
-{	
-	
+{		
 	//setWindowSize(1080, 1920);
 	//setFrameRate(60);
 	FullScreenOptions fo;
@@ -52,7 +51,7 @@ void EngineApp::setup()
 	controller  = ControllerRef(new Controller(model, view));
 
 	gl::enableAlphaBlending();
-	
+	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);	
 }
 
 void EngineApp::mouseDown( MouseEvent event )
@@ -81,7 +80,6 @@ void EngineApp::update()
 
 void EngineApp::draw()
 {
-
 	gl::clear(Color::black()); 
 	view->draw();
 }

@@ -22,14 +22,16 @@ PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef pho
 
 void PhotoChoosing::start()
 {
-#define debug
-#ifdef debug
+//#define debug
+#ifdef loadfromfolder
 	photoStorage->clear();
-	for (int i = 1; i < 6; i++)
-	{
-		photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
-	}
 #endif
+
+	if (photoStorage->empty())
+	for (int i = 1; i < 6; i++)	
+		photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
+	
+
 	//
 	state = CHOOSING;
 	selectedNum = 0;

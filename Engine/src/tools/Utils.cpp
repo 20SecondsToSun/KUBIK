@@ -411,14 +411,20 @@ void  Utils::drawGraphicsToFBO(Fbo fbo, const function<void ()>& graphicsFunc )
 	gl::setViewport(saveView);
 }
 
-ci::gl::Texture Utils::drawGraphicsToFBO(ci::Vec2f size, const function<void ()>& graphicsFunc )
+ci::gl::Texture Utils::drawGraphicsToFBO(ci::Vec2i size, const function<void ()>& graphicsFunc )
 {
 	return drawGraphicsToFBO(size.x, size.y, graphicsFunc);
 }
 
 ci::gl::Texture Utils::drawGraphicsToFBO(int width, int height, const function<void ()>& graphicsFunc )
 {
-	Fbo fbo = gl::Fbo(width, height);
+	Fbo::Format format = Fbo::Format();
+	format.setMagFilter(GL_NEAREST);
+	format.enableMipmapping();
+	format.enableColorBuffer();
+	format.setMinFilter(GL_NEAREST);
+	format.setColorInternalFormat(GL_RGBA);		
+	Fbo fbo = gl::Fbo(width, height, format);
 
 	gl::SaveFramebufferBinding bindingSaver;
 	fbo.bindFramebuffer();
@@ -428,12 +434,16 @@ ci::gl::Texture Utils::drawGraphicsToFBO(int width, int height, const function<v
 
 	gl::pushMatrices();
 	gl::setMatricesWindow(fbo.getSize(), false);
+	gl::enableAlphaBlending();
+	glEnable(GL_BLEND);
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	graphicsFunc();
 	gl::popMatrices();
 	gl::setViewport(saveView);
 
 	auto retTex = fbo.getTexture();
 	clearFBO(fbo);	
+
 	return retTex;
 }
 

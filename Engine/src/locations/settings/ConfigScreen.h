@@ -63,7 +63,6 @@ namespace kubik
 			std::vector<Changes> changes;
 			std::list<ISettingsRef> settingsList;
 
-			ci::gl::Texture screenshot;
 			ci::Anim<float> animX1, animX, alpha;
 
 			void update();

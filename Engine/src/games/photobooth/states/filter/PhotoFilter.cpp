@@ -50,13 +50,14 @@ void PhotoFilter::initStartAnimation()
 			filter->showAnimate(0.0f, 1.0f, showingTime, delay);
 			delay += 0.1f;
 		}
-		delaycall(bind(&PhotoFilter::showAnimationComplete, this), showingTime + delay);
+		delaycall(bind(&PhotoFilter::showAnimationComplete, this), showingTime + delay);// TODO some on complee problems
 	}
 }
 
 void PhotoFilter::titleAnimComplete()
 {
 	state = UPDATE;
+	//showAnimationComplete();
 }
 
 void PhotoFilter::showAnimationComplete()

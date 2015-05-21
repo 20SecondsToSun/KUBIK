@@ -226,6 +226,16 @@ std::string Facebook::getAuthUrl()
 	return SocialSettings::FACEBOOK_AUTH_URL;
 }
 
+int Facebook::getBrowserWidth()
+{
+	return 675;
+}
+
+int Facebook::getBrowserHeight()
+{
+	return 440;
+}
+
 void Facebook::logOut()
 {
 	std::map<string, string> strings;

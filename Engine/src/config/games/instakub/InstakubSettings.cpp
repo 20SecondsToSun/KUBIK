@@ -126,6 +126,7 @@ void InstakubSettings::setTextures()
 	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
 	addToSettingsDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
 	addToSettingsDictionary("closeKeyboardSettings", createImageResource(getInterfacePath("configDesign\\instakub\\closeKeyboard.png")));
+	addToSettingsDictionary("over6", createImageResource(getInterfacePath("configDesign\\instakub\\over6.png")));
 
 
 	///////////////////////////////////////
@@ -157,6 +158,8 @@ void InstakubSettings::setTextures()
 	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
 	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
 	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));
+
+
 
 	for (auto item : photoCardStyles)
 	{

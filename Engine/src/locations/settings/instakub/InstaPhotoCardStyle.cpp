@@ -14,12 +14,13 @@ InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci:
 	subTitleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB));
 	subTitleTextPos = Vec2f(0.5f * (914.0f - subTitleTextTex.getWidth()), 166.0f);	
 
-	DesignData designdata = settings->getPhotoCardStyles();				
-	int activeID		  = settings->getActivePhotoCardStyleDesignID();
-	int userDesignID	  = settings->getUserPhotoCardStyleDesignID();
-	std::string syspath   = settings->getUserPhotoCardStylePath();	
+	auto designdata   = settings->getPhotoCardStyles();
+	auto activeID	  = settings->getActivePhotoCardStyleDesignID();
+	auto userDesignID = settings->getUserPhotoCardStyleDesignID();
+	auto syspath	  = settings->getUserPhotoCardStylePath();
+	auto over6		  = settings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, 106.0f, 278.0f));
+	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, over6, 106.0f, 278.0f));
 	addChild(sixBtnLayer);
 }
 

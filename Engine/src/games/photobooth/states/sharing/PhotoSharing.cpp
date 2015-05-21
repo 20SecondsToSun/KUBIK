@@ -39,6 +39,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	vkpopup = VkontaktePopupRef(new VkontaktePopup(settings));
 	fbpopup = FacebookPopupRef(new FacebookPopup(settings));
 	twpopup = TwitterPopupRef(new TwitterPopup(settings));
+
+	emailpopup->setBackground(settings->getTexture("popupBg"));
 	
 	float shiftY = 238.0f;
 	float posArrayWithEmail[]	 = { 468.0f, 776.0f, 776.0f + shiftY, 776.0f + 2.0f * shiftY };
@@ -53,10 +55,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 		serviceBtns.push_back(emailBtn);
 		currentY++;
 	}
-	else
-	{
-		currentY = &posArrayWithoutEmail[0];
-	}
+	else	
+		currentY = &posArrayWithoutEmail[0];	
 
 	if (settings->getSocialState(PhtTextID::FACEBOOK))
 	{
@@ -98,7 +98,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
-	startServiceButtonY = 1588.0f;
+	startServiceButtonY = 588.0f;
 
 	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY  - againBtn->getHeight()  * 0.5f));
 	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
@@ -120,25 +120,6 @@ void PhotoSharing::start()
 
 	qrcode->initLink();
 	initShowAnim();
-}
-void PhotoSharing::connectHandlers()
-{
-	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
-	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
-
-	if (settings->getSocialState(PhtTextID::EMAIL))	
-		emailBtn->connectEventHandler(&PhotoSharing::emailBtnHandler, this);
-
-	if (settings->getSocialState(PhtTextID::FACEBOOK))
-		fbBtn->connectEventHandler(&PhotoSharing::fbBtnHandler, this);
-
-	if (settings->getSocialState(PhtTextID::VKONTAKTE))
-		vkBtn->connectEventHandler(&PhotoSharing::vkBtnHandler, this);
-
-	if (settings->getSocialState(PhtTextID::TWITTER))
-		twBtn->connectEventHandler(&PhotoSharing::twBtnHandler, this);
-
-	callback(COMPLETE_ANIM);
 }
 
 void PhotoSharing::initShowAnim()
@@ -164,7 +145,6 @@ void PhotoSharing::initShowAnim()
 	titleAnimPosition = titlePos + Vec2f(200.0f, 0.0f);
 	timeline().apply(&titleAnimPosition, titlePos, 0.5f, EaseOutCubic());
 
-
 	qrcode->showAnimate(0.0f, 1.0f, 0.8f, 0.2f);
 
 	againBtn->showAnimate(0.0f, 1.0f, 0.8f, 0.3f);
@@ -176,9 +156,31 @@ void PhotoSharing::initShowAnim()
 	delaycall(bind(&PhotoSharing::connectHandlers, this), showingTime + delay);
 }
 
+void PhotoSharing::connectHandlers()
+{
+	console() << "CONNECT HANDLERS:::::::::::::::::: " << endl;
+	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
+	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
+
+	if (settings->getSocialState(PhtTextID::EMAIL))	
+		emailBtn->connectEventHandler(&PhotoSharing::emailBtnHandler, this);
+
+	if (settings->getSocialState(PhtTextID::FACEBOOK))
+		fbBtn->connectEventHandler(&PhotoSharing::fbBtnHandler, this);
+
+	if (settings->getSocialState(PhtTextID::VKONTAKTE))
+		vkBtn->connectEventHandler(&PhotoSharing::vkBtnHandler, this);
+
+	if (settings->getSocialState(PhtTextID::TWITTER))
+		twBtn->connectEventHandler(&PhotoSharing::twBtnHandler, this);
+
+	callback(COMPLETE_ANIM);
+}
+
 void PhotoSharing::againBtnHandler(EventGUIRef& event)
 {
 	console() << "againBtnHandler" << endl;
+	disconnectEventHandlers();
 	setLastScreenShot();
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.6f, EaseOutCubic())
 		.finishFn(bind(&PhotoSharing::hideAnimComplete, this));
@@ -256,6 +258,7 @@ void PhotoSharing::popupClosed()
 
 void PhotoSharing::disconnectEventHandlers()
 {
+	console() << "DISCONNECT HANDLERS:::::::::::::::::: " << endl;
 	againBtn->disconnectEventHandler();
 	allAppBtn->disconnectEventHandler();
 	emailBtn->disconnectEventHandler();

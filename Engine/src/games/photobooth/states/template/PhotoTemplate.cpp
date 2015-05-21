@@ -23,6 +23,7 @@ void PhotoTemplate::start()
 
 	for (auto templ : templatebtns)
 	{
+		console() << "photoStorage->getPhotoTemplates()---------  " << photoStorage->getPhotoTemplates().size() << endl;
 		templ->setSelected(false);
 		templ->setPhotoTemplates(photoStorage->getPhotoTemplates(), shader);
 		templ->init();
@@ -35,7 +36,6 @@ void PhotoTemplate::start()
 		templ->setAlpha(0.0f);
 
 	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.2f);
-	//initShowAnim();
 }
 
 void PhotoTemplate::initShowAnim()
@@ -47,7 +47,7 @@ void PhotoTemplate::initShowAnim()
 	for (auto templ : templatebtns)
 	{
 		templ->showAnimate(0.0f, 1.0f, 0.7f, delay);
-		templ->showPositionAnimate(Vec2f(0, -80.0f), 0.7f, delay);
+		templ->showPositionAnimate(Vec2f(0.0f, -80.0f), 0.7f, delay);
 		delay += 0.1f;
 	}
 
@@ -70,8 +70,8 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 
 	templates = settings->getPhotoCardStylesActiveTemplate();
 	stickers = settings->getPhotoOverActiveTemplate();
-
 	title = settings->getTexture("printtitle");
+
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), titlePositionY - 0.5f * title.getHeight());
 
 	resetTemplateButtons();

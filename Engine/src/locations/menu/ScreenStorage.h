@@ -22,6 +22,17 @@ namespace kubik
 		{
 			return texture;
 		}
+
+		void drawScreenShot()
+		{
+			if (texture)
+			{
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+				gl::draw(texture);
+				gl::enableAlphaBlending();
+			}				
+		}
 	};
 
 	inline void setScreenShot(const ci::gl::Texture& texture) 
@@ -32,5 +43,10 @@ namespace kubik
 	inline ci::gl::Texture getScreenShot() 
 	{ 
 		return ScreenStorage::getInstance().getScreenShot();
+	};
+
+	inline void drawScreenShot()
+	{
+		return ScreenStorage::getInstance().drawScreenShot();
 	};
 }

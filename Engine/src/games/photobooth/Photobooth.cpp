@@ -40,6 +40,7 @@ void Photobooth::create()
 	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,   photoStorage));
 
 	initLocations();
+
 	cameraSetup();
 
 	chrome().init();
@@ -47,7 +48,7 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
-	console()<<"START PHOTOBOOOOOOTH!"<<endl;
+	console()<<"START PHOTOBOTH!"<<endl;
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
 
 	index = 0;
@@ -57,7 +58,6 @@ void Photobooth::start()
 
 void Photobooth::showAnimationComplete()
 {
-	console() << "showAnimationComplete" << endl;
 	state = DRAW;
 
 	for (auto loc : locations)
@@ -76,13 +76,11 @@ void Photobooth::showAnimationComplete()
 
 void Photobooth::beginAnimHandler()
 {
-	console() << "DISABLE_GAME_CLOSE!" << endl;
 	callback(DISABLE_GAME_CLOSE);
 }
 
 void Photobooth::completeAnimHandler()
 {	
-	console() << "ENABLE_GAME_CLOSE!" << endl;
 	callback(ENABLE_GAME_CLOSE);
 }
 
@@ -98,7 +96,7 @@ void Photobooth::disableGameCloseHandler()
 
 void Photobooth::stop()
 {
-	console()<<"STOP PHOTOBOOOOOOTH!"<<endl;
+	console()<<"STOP PHOTOBOOTH!"<<endl;
 	updateSignal.disconnect();
 	for (auto it: locations)
 		it->stop();
@@ -110,7 +108,7 @@ void Photobooth::stop()
 
 void Photobooth::reset()
 {
-	console()<<"RESET PHOTOBOOOOOOTH!"<<endl;
+	console()<<"RESET PHOTOBOOTH!"<<endl;
 	for (auto it: locations)
 		it->reset(settings);
 }
@@ -124,9 +122,9 @@ void Photobooth::initLocations()
 
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
-	locations.push_back(photoShooting);
-	locations.push_back(photoChoosing);
-	locations.push_back(photoTemplate);	
+	//locations.push_back(photoShooting);
+	//locations.push_back(photoChoosing);
+	//locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
 }
 
@@ -171,8 +169,7 @@ void Photobooth::draw()
 	switch (state)
 	{
 	case SHOW_ANIM:
-		screenshotDraw();		
-
+		screenshotDraw();
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
 		currentLocation->draw();

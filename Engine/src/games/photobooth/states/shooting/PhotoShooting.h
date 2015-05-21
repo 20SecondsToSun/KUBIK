@@ -71,8 +71,12 @@ namespace kubik
 
 				int getNextSmileIndex();
 
+				ci::signals::connection photoTakenCon, photoErrorCon, photoDownloadedCon;
+
 			public:
 				PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
+				~PhotoShooting();
+
 				virtual void reset(PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void update() override;

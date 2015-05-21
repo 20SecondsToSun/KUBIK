@@ -19,33 +19,33 @@ namespace kubik
 		class ChangeDesignButton: public ImageQuadroButton
 		{
 		public:
-			ChangeDesignButton(const OneDesignItem& item, const ci::Vec2f& pos);
+			ChangeDesignButton(const OneDesignItem& item, const ci::gl::Texture& texture, const ci::Vec2f& pos);
 
 		};	
 
 		class PhotoOverButton: public ImageQuadroButton
 		{
 		public:
-			PhotoOverButton(const OneDesignItem& item, const ci::Vec2f& pos);
+			PhotoOverButton(const OneDesignItem& item, const ci::gl::Texture& texture, const ci::Vec2f& pos);
 
 		};	
 
 		class PhotoCardStyleButton: public ImageQuadroButton
 		{
 		public:
-			PhotoCardStyleButton(const OneDesignItem& item, const ci::Vec2f& pos);			
+			PhotoCardStyleButton(const OneDesignItem& item, const ci::gl::Texture& texture, const ci::Vec2f& pos);
 		};	
 
 		class PhotoFilterPreviewButton: public ImageQuadroButton
 		{
 		public:
-			PhotoFilterPreviewButton(const OneDesignItem& item, const ci::Vec2f& pos);			
+			PhotoFilterPreviewButton(const OneDesignItem& item, const ci::gl::Texture& texture, const ci::Vec2f& pos);
 		};	
 
 		template <class Type> class SixItemButton: public ImageQuadroButton
 		{
 		public:
-			SixItemButton(const OneDesignItem& item, const ci::Vec2f& pos) :ImageQuadroButton(item, pos)
+			SixItemButton(const OneDesignItem& item, const ci::gl::Texture& texture, const ci::Vec2f& pos) :ImageQuadroButton(item, texture, pos)
 			{
 				event = std::shared_ptr<Type>(new Type(item));
 			}	

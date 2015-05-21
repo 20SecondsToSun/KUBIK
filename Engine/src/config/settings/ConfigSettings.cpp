@@ -317,7 +317,7 @@ void ConfigSettings::setTextures()
 	addToDictionary("helvetica20", createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToDictionary("helveticaLight36", createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
-
+	
 	addToDictionary("introBold110", createFontResource(getFontsPath("introb.ttf"), 110));
 	addToDictionary("introBold90", createFontResource(getFontsPath("introb.ttf"), 90));
 	addToDictionary("introBold80", createFontResource(getFontsPath("introb.ttf"), 80));
@@ -346,6 +346,9 @@ void ConfigSettings::setTextures()
 	addToDictionary("ssCheckerOff", createImageResource(getDesignPath() + "main/ssCheckerOff.png"));
 	addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
 
+	addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
+	addToDictionary("over6", createImageResource(getDesignPath() + "over6.png"));
+
 
 	addToDictionary("gameInWebIcon", createImageResource(getDesignPath() + "gameInWebIcon.png"));
 
@@ -359,17 +362,13 @@ void ConfigSettings::buildData()
 	auto texts = data.getTexts();
 	auto dic = texts.getDic();
 
-	logger().log(to_string(dic.size()));
+	for (auto &it : dic)	
+		it.second.setFont(fonts);
 
-	for (ConfigTexts<TextID>::DicType::iterator it = dic.begin(); it != dic.end(); ++it)
+	for (auto &it : data.designData)
 	{
-		it->second.setFont(fonts);
-	}
-
-	for (auto it = data.designData.begin(); it != data.designData.end(); ++it)
-	{
-		it->setIcon(getTexture(it->getIconTexName()));
-		it->setFont(fonts);
+		it.setIcon(getTexture(it.getIconTexName()));
+		it.setFont(fonts);
 	}
 
 	texts.setDic(dic);

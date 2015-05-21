@@ -9,8 +9,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
 
-MenuScreen::MenuScreen(ISettingsRef config)
-	:IScreen(ScreenId::MENU)
+MenuScreen::MenuScreen(ISettingsRef config):IScreen(ScreenId::MENU)
 {
 	init(config);
 }
@@ -18,32 +17,30 @@ MenuScreen::MenuScreen(ISettingsRef config)
 MenuScreen::~MenuScreen()
 {
 	clearGamesButtonVector();	
-	console()<<"~~~~~~~~~~~~~~~~Menu screen destructor~~~~~~~~~~~~~~~~"<<endl;
 }
 
-void MenuScreen::init(ISettingsRef _settings)
+void MenuScreen::init(ISettingsRef value)
 {	
-	settings	   =  static_pointer_cast<MenuSettings>(_settings);
-	bckgnd         =  settings->getTexture("background");
-
+	settings = static_pointer_cast<MenuSettings>(value);
+	bckgnd   =  settings->getTexture("background");
 	createMenuBtns(settings->getEnabledGamesData());
 }
 
 void MenuScreen::resetMenuBtnGames()
-{
-	auto games = settings->getEnabledGamesData();
-	if (games.size() <= 1) return;
-
+{	
 	clearGamesButtonVector();
 	createMenuBtns(settings->getEnabledGamesData());
 }
 
 void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
-{	
+{
+	if (games.size() <= 1)
+		return;
+
 	AdditionalGameData additionalGD = settings->getMenuScreenAdditionalDesignElements();
 
 	for(auto it : games)
-	{	
+	{			
 		GameButtonRef button = GameButtonRef(new GameButton(it,
 			additionalGD.getBackground(),
 			additionalGD.getBackgroundPosition(),
@@ -54,15 +51,6 @@ void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
 		gamesBtns.push_back(button);		
 	}
 }
-
-//Rectf MenuScreen::getMenuBtuttonArea(int i)
-//{
-//	float x      = 300.0f * (1 + i);
-//	float y      = 400.0f;
-//	float width  = 200.0f;
-//	float height = 200.0f;
-//	return Rectf(x, y, x + width, y + height);
-//}
 
 void MenuScreen::clearGamesButtonVector()
 {
@@ -76,8 +64,7 @@ void MenuScreen::clearGamesButtonVector()
 
 void MenuScreen::start()
 {	
-	screenshot = getScreenShot();
-	if (screenshot)
+	if (getScreenShot())
 	{
 		state = SHOW_ANIM;
 		timeline().apply(&animX, 0.0f, 1080.0f, 0.9f, EaseOutCubic()).finishFn(bind(&MenuScreen::showAnimationComplete, this));
@@ -126,14 +113,17 @@ void MenuScreen::videoMouseUpListener(EventGUIRef& evt )
 void MenuScreen::draw()
 {
 	gl::draw(bckgnd, getWindowBounds());
+
 	switch (state)
 	{
 	case MenuScreen::SHOW_ANIM:
 		drawShowAnim();
 		break;
+
 	case MenuScreen::INIT_ANIM:
 		drawInitAnim();
 		break;
+
 	case MenuScreen::DRAW:
 		Sprite::draw();
 		break;
@@ -144,7 +134,7 @@ void MenuScreen::drawShowAnim()
 {
 	gl::pushMatrices();
 	gl::translate(animX, 0.0f);	
-	gl::draw(screenshot);	
+	drawScreenShot();
 	gl::popMatrices();
 
 	gl::pushMatrices();

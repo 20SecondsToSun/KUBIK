@@ -13,7 +13,7 @@ namespace kubik
 		class ImageQuadroButton: public SimpleSpriteButton
 		{
 		public:
-			ImageQuadroButton(OneDesignItem item, const ci::Vec2f& pos);
+			ImageQuadroButton(OneDesignItem item, const ci::gl::Texture& texture,  const ci::Vec2f& pos);
 
 			virtual void drawLayout();
 			void setAlpha(float alpha);
@@ -23,7 +23,7 @@ namespace kubik
 
 		private:
 			OneDesignItem item;
-			gl::Texture textTex;
+			gl::Texture textTex, overtex;
 			bool selection;
 		};	
 	}

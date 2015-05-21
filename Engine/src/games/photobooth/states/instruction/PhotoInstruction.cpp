@@ -14,6 +14,11 @@ PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings)
 	reset(settings);
 };
 
+PhotoInstruction::~PhotoInstruction()
+{
+	console() << "DISTRUCT PHOTO INSTRUCTION" << endl;
+}
+
 void PhotoInstruction::reset(PhotoboothSettingsRef set)
 {
 	settings = set;
@@ -26,6 +31,12 @@ void PhotoInstruction::start()
 {
 	console() << "start Instruction" <<endl;	
 	voidBtn->connectEventHandler(&PhotoInstruction::hideAnimation, this);
+	delaycall(bind(&PhotoInstruction::initAnimationcomplete, this), 0.4f);
+}
+
+void PhotoInstruction::initAnimationcomplete()
+{
+	callback(COMPLETE_ANIM);
 }
 
 void PhotoInstruction::stop()
@@ -37,6 +48,7 @@ void PhotoInstruction::stop()
 
 void PhotoInstruction::hideAnimation(EventGUIRef& event)
 {	
+	voidBtn->disconnectEventHandler();
 	callback(BEGIN_ANIM);
 	timeline().apply(&alphaAnim, 0.0f, animTime, EaseOutCubic()).finishFn(bind(&PhotoInstruction::hideAnimationComplete, this));
 }
@@ -49,15 +61,15 @@ void PhotoInstruction::hideAnimationComplete()
 
 void PhotoInstruction::update()
 {
-
 }
 
 void PhotoInstruction::draw()
 {
+	fillBg();
+
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 	gl::draw(fonTex);
-	gl::draw(titleTex, titleTexPos);
-	//voidBtn->draw();
+	gl::draw(titleTex, Vec2i(titleTexPos));
 }
 
 void PhotoInstruction::stopAllTweens()

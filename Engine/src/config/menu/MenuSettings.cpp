@@ -117,9 +117,6 @@ AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
 		case 3:
 			bgPosition = Vec2f(-240.0f, -100.0f);
 			break;
-
-		default:
-			break;
 		}
 
 		for (size_t i = 0; i < filtergames.size(); i++)				

@@ -49,7 +49,7 @@ class Utils
 
 		static void  drawGraphicsToFBO(Fbo fbo, const function<void ()>& graphicsFunc);
 		static ci::gl::Texture drawGraphicsToFBO(int width, int height, const function<void ()>& graphicsFunc);
-		static ci::gl::Texture drawGraphicsToFBO(ci::Vec2f size, const function<void ()>& graphicsFunc);
+		static ci::gl::Texture drawGraphicsToFBO(ci::Vec2i size, const function<void ()>& graphicsFunc);
 
 		static void clearFBO(Fbo fbo);
 		static void printVideoMemoryInfo();

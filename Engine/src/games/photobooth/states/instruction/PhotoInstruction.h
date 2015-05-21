@@ -2,6 +2,7 @@
 #include "states/IPhotoboothLocation.h"
 #include "gui/SimpleSpriteButton.h"
 #include "PhotoboothSettings.h"
+#include "TimerTools.h"
 
 namespace kubik
 {
@@ -21,9 +22,11 @@ namespace kubik
 				float animTime;
 				void hideAnimation(EventGUIRef& event);
 				void hideAnimationComplete();
-
+				void initAnimationcomplete();
+				
 			public:
 				PhotoInstruction(PhotoboothSettingsRef settings);
+				~PhotoInstruction();
 				virtual void reset(PhotoboothSettingsRef set) override;
 				virtual void start() override;
 				virtual void stop() override;

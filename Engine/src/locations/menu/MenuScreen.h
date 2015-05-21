@@ -56,7 +56,7 @@ namespace kubik
 			void drawInitAnim();
 			MenuSettingsRef settings;
 			SimpleSpriteButtonRef settingsButton, videoButton;
-			ci::gl::Texture bckgnd, screenshot;
+			ci::gl::Texture bckgnd;
 			
 			std::list<SimpleSpriteButtonRef> gamesBtns;
 			ci::Anim<float> animX1, animX, alpha;

@@ -19,7 +19,9 @@ namespace kubik
 			protected:
 				ci::Anim<float> alphaAnim;
 				ci::ColorA bgColor, headColor;
-				ci::gl::Texture closeIcon;			
+				ci::gl::Texture closeIcon;
+				static ci::gl::Texture backgroundImage;
+
 				kubik::ImageButtonSpriteRef closeBtn;
 
 				virtual void showAnimComplete();
@@ -38,9 +40,10 @@ namespace kubik
 				virtual void kill();
 				virtual void show();
 				virtual void hide(EventGUIRef& event);
-				virtual void draw();
-				virtual void drawBackgrounds();
+				virtual void draw();						
 				virtual void close();
+				virtual void drawBackgrounds();
+				void setBackground(ci::gl::Texture& texture);
 			};
 		}
 	}

@@ -13,8 +13,10 @@ namespace kubik
 		
 		std::string getAuthUrl();
 		void logOut();
-		virtual void updatePopupPosition() override;
-		virtual void update() override;
+		void updatePopupPosition() override;
+		void update() override;
+		int getBrowserWidth() override;
+		int getBrowserHeight() override;
 
 	private:
 		std::string					 vkontakteAuthURL;

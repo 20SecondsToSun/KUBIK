@@ -6,12 +6,13 @@ using namespace kubik::config;
 PhotoOverElements::PhotoOverElements(PhotoboothSettingsRef settings, const ci::Color& color, int index)
 	:IPhotoboothItem(settings, PhtTextID::PHOTO_OVER, color, index)
 {
-	DesignData designdata = settings->getPhotoOverDesignData();	
-	int activeID		  = settings->getActiveOverDesignID();
-	int userDesignID	  = settings->getUserOverDesignID();
-	std::string syspath	  = settings->getUserPhotoOverDesignPath();
+	auto designdata = settings->getPhotoOverDesignData();
+	auto activeID = settings->getActiveOverDesignID();
+	auto userDesignID = settings->getUserOverDesignID();
+	auto syspath = settings->getUserPhotoOverDesignPath();
+	auto over6 = settings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(designdata, activeID, userDesignID, syspath));
+	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(designdata, activeID, userDesignID, syspath, over6));
 	addChild(sixBtnLayer);	
 }
 
