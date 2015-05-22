@@ -20,7 +20,8 @@ InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci:
 	auto syspath	  = settings->getUserPhotoCardStylePath();
 	auto over6		  = settings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, over6, 106.0f, 278.0f));
+	SixButtonsInitObject initObj(designdata, activeID, userDesignID, syspath, Color::hex(0x578d24), over6, 106.0f, 278.0f);
+	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(initObj));
 	addChild(sixBtnLayer);
 }
 

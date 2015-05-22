@@ -5,6 +5,7 @@ using namespace kubik::games::photobooth;
 using namespace std;
 using namespace ci::signals;
 using namespace ci::app;
+using namespace shaders::imagefilters;
 
 PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
 	:photoStorage(photoStorage),
@@ -29,8 +30,7 @@ PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  ph
 
 	if (!photoErrorCon.connected())
 		photoErrorCon = cameraCanon().photoErrorEvent.connect(bind(&PhotoShooting::photoErrorHandler, this));
-
-	using namespace shaders::imagefilters;
+	
 	maskShader = shadertool().getMaskShader();
 
 	reset(settings);
@@ -45,17 +45,16 @@ PhotoShooting::~PhotoShooting()
 
 void PhotoShooting::start()
 {
-	using namespace shaders::imagefilters;
-	console() << "start PhotoShooting" << endl;
-
-	smileIndex = 0;
+	console() << "start PhotoShooting" << endl;	
 
 	cameraCanon().startLiveView();
+
 	auto filterID = photoStorage->getSelectedFilter();
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
 
 	photoStorage->clear();
 	currentShot = 1;
+	smileIndex = 0;
 
 	progressBlockStartY = getWindowHeight() - 232.0f;
 	progressBlockAnimateY = 300.0f;
@@ -84,8 +83,8 @@ void PhotoShooting::reset(PhotoboothSettingsRef settings)
 	smileTexs = settings->getSmileTextures();
 	line = settings->getTexture("shootline");
 	frame = settings->getTexture("frame");
-	backgroundProgresstexture = settings->getTexture("plash");
-	
+	shadow = settings->getTexture("shadow");
+	backgroundProgresstexture = settings->getTexture("plash");	
 
 	framePosition = Vec2f((getWindowWidth() - frame.getWidth()) * 0.5f, 252.0f);
 	countsTexPos = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
@@ -158,6 +157,10 @@ void PhotoShooting::draw()
 		gl::pushMatrices();
 		gl::translate(previewAnimateX, 0.0f);
 		gl::pushMatrices();
+			gl::pushMatrices();
+			gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY);
+				gl::draw(shadow);
+			gl::popMatrices();
 		gl::scale(_scale, _scale);
 		gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
 		gl::draw(photoTemplate);
@@ -191,14 +194,11 @@ void PhotoShooting::drawProgressBlock()
 	gl::pushMatrices();
 	gl::translate(0.0f, progressBlockStartY + progressBlockAnimateY);
 
-	{//draw alpha bg
-		gl::draw(backgroundProgresstexture);
-	}
+	gl::draw(backgroundProgresstexture);	
 
-	{// draw progress line
-		gl::color(Color::white());
-		gl::draw(line, Vec2f(-line.getWidth() + getWindowWidth() * percent, 0.0f));
-	}
+	// draw progress line
+	gl::color(Color::white());
+	gl::draw(line, Vec2f(-line.getWidth() + getWindowWidth() * percent, 0.0f));	
 
 	// draw counts
 	gl::translate(0.0f, 95.0f);
@@ -230,7 +230,6 @@ void PhotoShooting::photoErrorHandler()
 	photo = cameraTexture;
 	photoStorage->setNextPhoto(cameraTexture);
 	delaycall(bind(&PhotoShooting::callPreviewShowingTimer, this), 1.0f);
-	//callPreviewShowingTimer();
 }
 
 void PhotoShooting::delayshoot()

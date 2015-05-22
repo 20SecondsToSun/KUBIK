@@ -47,31 +47,33 @@ namespace kubik
 				return ch;
 			}
 
-			ImageQuadroButtonRef createImageQuadroButton(OneDesignItem item, const ci::gl::Texture& texture, const ci::Vec2f& pos)
+			ImageQuadroButtonRef createImageQuadroButton(const SixButtonOneData& data)
 			{				
-				ImageQuadroButtonRef iq = ImageQuadroButtonRef(new ImageQuadroButton(item, texture, pos));	
-				return iq;				
+				return ImageQuadroButtonRef(new ImageQuadroButton(data));							
 			}
 
-			ChangeDesignButtonRef createChangeDesignButton(OneDesignItem item, const ci::gl::Texture& texture, const ci::Vec2f& pos)
-			{				
-				return ChangeDesignButtonRef(new ChangeDesignButton(item, texture, pos));
-			}		
-
-			ImageQuadroButtonRef createPhotoOverButton(OneDesignItem item, const ci::gl::Texture& texture, const ci::Vec2f& pos)
-			{				
-				return PhotoOverButtonRef(new PhotoOverButton(item, texture, pos));
+			ChangeDesignButtonRef createChangeDesignButton(const SixButtonOneData& data)
+			{
+				ChangeDesignButtonRef value = ChangeDesignButtonRef(new ChangeDesignButton(data));
+				return value;
 			}
 
-			ImageQuadroButtonRef createCardStyleButton(OneDesignItem item, const ci::gl::Texture& texture, const ci::Vec2f& pos)
+			ImageQuadroButtonRef createPhotoOverButton(const SixButtonOneData& data)
 			{				
-				return PhotoCardStyleButtonRef(new PhotoCardStyleButton(item, texture, pos));
+				PhotoOverButtonRef value = PhotoOverButtonRef(new PhotoOverButton(data));
+				return value;
+			}
+
+			ImageQuadroButtonRef createCardStyleButton(const SixButtonOneData& data)
+			{				
+				PhotoCardStyleButtonRef value = PhotoCardStyleButtonRef(new PhotoCardStyleButton(data));
+				return value;
 			}			
 
-			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(OneDesignItem item, const ci::gl::Texture& texture, const ci::Vec2f& pos)
+			PhotoFilterPreviewButtonRef createPhotoFilterPreviewButton(const SixButtonOneData& data)
 			{
-				PhotoFilterPreviewButtonRef iq = PhotoFilterPreviewButtonRef(new PhotoFilterPreviewButton(item, texture, pos));
-				return iq;	
+				PhotoFilterPreviewButtonRef value = PhotoFilterPreviewButtonRef(new PhotoFilterPreviewButton(data));
+				return value;
 			}
 
 			void inject(ConfigSettingsRef configSettings)

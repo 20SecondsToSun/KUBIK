@@ -12,7 +12,8 @@ PhotoOverElements::PhotoOverElements(PhotoboothSettingsRef settings, const ci::C
 	auto syspath = settings->getUserPhotoOverDesignPath();
 	auto over6 = settings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(designdata, activeID, userDesignID, syspath, over6));
+	SixButtonsInitObject initObj(designdata, activeID, userDesignID, syspath, color, over6);
+	sixBtnLayer = SixButtonsLayerPhotoOverRef(new SixButtonsLayer<ChangePhotoOverDesignEvent>(initObj));
 	addChild(sixBtnLayer);	
 }
 

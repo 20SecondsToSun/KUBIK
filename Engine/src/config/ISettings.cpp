@@ -47,7 +47,7 @@ Texture ISettings::getTexture(const string& name)
 	texformat.enableMipmapping(false);
 	texformat.setMagFilter(GL_NEAREST); // disable multi-sample if >= 100%
 	texformat.setMinFilter(GL_NEAREST);  // enable multi-sampling if < 100%   	
-	console() << "name" << name << endl;
+	//console() << "name" << name << endl;
 	return gl::Texture(textures[name]->get(), texformat);
 }
 

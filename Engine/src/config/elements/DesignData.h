@@ -41,7 +41,7 @@ namespace kubik
 			iconPath = path;
 		}
 
-		ci::gl::Texture getIcon()
+		ci::gl::Texture getIcon() const
 		{
 			return icon;
 		}
@@ -51,7 +51,7 @@ namespace kubik
 			return iconPath;
 		}
 
-		std::string getIconTexName()
+		std::string getIconTexName() const
 		{
 			return iconTextName;//text.getText() + to_string(id);
 		}

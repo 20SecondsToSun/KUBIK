@@ -15,7 +15,7 @@ namespace kubik
 			return tt; 
 		};
 
-		void textFieldDraw(std::string text,ci::Font *font,  ColorA color, Vec2f coords = Vec2f::zero())
+		void textFieldDraw(const std::string& text, ci::Font *font, const ci::ColorA& color, const Vec2f& coords = Vec2f::zero())
 		{
 			gl::pushMatrices();
 			gl::translate(coords);
@@ -30,7 +30,7 @@ namespace kubik
 			gl::color(Color::white());
 		}
 
-		gl::Texture  getTextField(std::string text,ci::Font* font, ColorA color)
+		gl::Texture  getTextField(const std::string& text, ci::Font* font, const ci::ColorA& color)
 		{	
 			ci::TextLayout simple;			
 			simple.clear(ColorA(1,1,1,0));
@@ -40,7 +40,7 @@ namespace kubik
 			return gl::Texture( simple.render( true, false ) );
 		}
 
-		gl::Texture  getTextField(const char* text,ci::Font* font, ColorA color)
+		gl::Texture  getTextField(const char* text, ci::Font* font, const ci::ColorA& color)
 		{		
 			ci::TextLayout simple;
 			simple.clear(ColorA(1,1,1,0));
@@ -50,7 +50,7 @@ namespace kubik
 			return gl::Texture( simple.render( true, false ) );
 		}
 
-		ci::Surface getTextField(TextItem item, bool isCentered = false, float offset = 0)
+		ci::Surface getTextField(const TextItem& item, bool isCentered = false, float offset = 0)
 		{
 			ci::TextLayout simple;
 			simple.clear(ColorA(1,1,1,0));
@@ -70,7 +70,7 @@ namespace kubik
 			return simple.render(true, false);// gl::Texture();
 		}	
 
-		void textFieldDraw(TextItem item, Vec2f coords = Vec2f::zero())
+		void textFieldDraw(const TextItem& item, const ci::Vec2f& coords = Vec2f::zero())
 		{
 			gl::pushMatrices();
 			gl::translate(coords);
@@ -84,68 +84,38 @@ namespace kubik
 			gl::color(Color::white());
 		}
 
-		void drawCairo(const TextItem& item, Color color, Vec2f position)
+		void drawTextBox(const TextItem& item, const Color& color, const Vec2f& position, const Vec2f& size)
 		{
-			
-		//	cairo::SurfaceImage srfImage(800, 100, false);
-		//	cairo::Context ctx(srfImage);// cairo::createWindowSurface());
-	
-		//	Color color = Color::hex(0x01a7fb);
-		//	ctx.setSourceRgb(color.r, color.g, color.b);
-		//	ctx.paint();
-
-		//	// Render the name of the font in the font itself
-
-		////	static Font mFont = Font(loadFile(fs::path("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\fonts\\\HelveticaLight.ttf")), 18);
-
-		//	ctx.setFont(item.getFont());
-		//	//ctx.setFontSize(44);
-		//	ctx.moveTo(50, 50);	
-		//	color = item.getColor();
-		//	ctx.setSourceRgb(color.r, color.g, color.b);
-
-		//	cairo::FontOptions* opt = new cairo::FontOptions();			
-		//	ctx.getFontOptions(opt);
-		//	ctx.setAntiAlias(cairo::ANTIALIAS_GRAY);
-		//	//opt->setAntiAlias(cairo::ANTIALIAS_GRAY);
-		//	//ctx.setFontOptions(opt);
-		//	
-		///*	CAIRO_ANTIALIAS_DEFAULT,
-		//		CAIRO_ANTIALIAS_NONE,
-		//		CAIRO_ANTIALIAS_GRAY,
-		//		CAIRO_ANTIALIAS_SUBPIXEL*/
-		//	//ctx.setAntiAlias(0);
-		//	ctx.setSourceRgb(item.getColor().r, item.getColor().g, item.getColor().b);
-		//	ctx.showText("TITLEdfsggfsgfhgfhdgfhQWERTYUIOPLKHGF");// stringTools().cp1251_to_utf8(item.getText().c_str()));
-		//	ctx.stroke();
-
-			
-
-			//auto mSimpleTexture = gl::Texture(srfImage.getSurface());
-			//gl::draw(mSimpleTexture);			
-
-			// create a text box (rectangular text area)
-			TextBox mTextBox;// = TextBox();
-			// set font and font size
-			mTextBox.backgroundColor(color);// Color::hex(0x01a7fb));
+			TextBox mTextBox;
+			mTextBox.backgroundColor(color);
 			mTextBox.setPremultiplied(false);
 			mTextBox.setColor(item.getColor());
 			mTextBox.setFont(item.getFont());			
-			mTextBox.setSize(Vec2i(914, 50));			
-			mTextBox.alignment(TextBox::CENTER);
-			// break lines between words
-			//mTextBox.setBoundary(Text::WORD);
-			// adjust space between lines
-			//mTextBox.setLineSpace(1.5f);
-
-			// load a text and hand it to the text box
-			mTextBox.setText(stringTools().cp1251_to_utf8(item.getText().c_str())); //"TITLEdfsggfsgfhgfhdgfhQWERTYUIOPLKHGF");
-			// draw the text
+			mTextBox.setSize(size);
+			mTextBox.alignment(TextBox::CENTER);		
+			mTextBox.setText(stringTools().cp1251_to_utf8(item.getText().c_str()));
+		
 			gl::pushMatrices();
-			gl::translate(0, position.y);
+			gl::translate(position);
 			gl::draw(mTextBox.render());
 			gl::popMatrices();
-			//gl::drawString("TITLEdfsggfsgfhgfhdgfhQWERTYUIOPLKHGF", Vec2f(40, 40));
+		}
+
+		void drawTextBox(const TextItem& item, const Color& color, const Color& textColor, const Vec2f& position, const Vec2f& size)
+		{
+			TextBox mTextBox;
+			mTextBox.backgroundColor(color);
+			mTextBox.setPremultiplied(false);
+			mTextBox.setColor(textColor);
+			mTextBox.setFont(item.getFont());
+			mTextBox.setSize(size);
+			mTextBox.alignment(TextBox::CENTER);
+			mTextBox.setText(stringTools().cp1251_to_utf8(item.getText().c_str()));
+
+			gl::pushMatrices();
+			gl::translate(position);
+			gl::draw(mTextBox.render());
+			gl::popMatrices();
 		}
 	};
 

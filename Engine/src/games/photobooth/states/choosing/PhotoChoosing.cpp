@@ -90,7 +90,7 @@ void PhotoChoosing::initShowAnimationParams()
 	}
 
 	{// photoBtns anim init
-		for (unsigned int i = 0; i < photoBtns.size(); i++)
+		for (size_t i = 0; i < photoBtns.size(); i++)
 		{
 			//console() << "alphaupdate -------------------------------->" << endl;
 			photoBtns[i]->showAnimate(0.0f, 1.0f, 0.6f, delay);

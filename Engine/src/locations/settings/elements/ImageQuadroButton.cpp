@@ -3,10 +3,11 @@
 using namespace kubik;
 using namespace kubik::config;
 
-ImageQuadroButton::ImageQuadroButton(OneDesignItem item, const ci::gl::Texture& overtex, const ci::Vec2f& pos)
-	:SimpleSpriteButton(item.getIcon().getSize(), pos), item(item), selection(false), overtex(overtex)
+ImageQuadroButton::ImageQuadroButton(const SixButtonOneData& data) :SimpleSpriteButton(data.getDesignItem().getIcon().getSize(), data.getPosition()),
+item(data.getDesignItem()), selection(false), overtex(data.getOverTexture()), backgroundTextColor(data.getBgTextColor())
 {
-	textTex = textTools().getTextField(item.getTextItem());
+	textPosition = Vec2f(0, item.getIcon().getHeight() + 10.0f);
+	textBoxSize = Vec2i(item.getIcon().getWidth(), 50.0f);
 }
 
 void ImageQuadroButton::drawLayout()
@@ -18,12 +19,11 @@ void ImageQuadroButton::drawLayout()
 		gl::pushMatrices();
 		gl::translate(-7, -7);
 		gl::draw(overtex);
-		gl::popMatrices();
-		gl::color(Color::hex(0xffff00));
+		gl::popMatrices();	
+		textTools().drawTextBox(item.getTextItem(), backgroundTextColor, Color::hex(0xffff00), textPosition, textBoxSize);
 	}
-
-	gl::draw(textTex, Vec2f((item.getIcon().getWidth() - textTex.getWidth()) * 0.5f, item.getIcon().getHeight() + 10));
-	gl::color(Color::white());
+	else
+		textTools().drawTextBox(item.getTextItem(), backgroundTextColor, textPosition, textBoxSize);
 }
 
 void ImageQuadroButton::setAlpha(float alpha)

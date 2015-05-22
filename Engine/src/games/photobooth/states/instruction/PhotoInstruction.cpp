@@ -61,6 +61,7 @@ void PhotoInstruction::hideAnimationComplete()
 
 void PhotoInstruction::update()
 {
+
 }
 
 void PhotoInstruction::draw()

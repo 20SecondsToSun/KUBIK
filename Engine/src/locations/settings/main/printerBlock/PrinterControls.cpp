@@ -1,9 +1,10 @@
 #include "PrinterControls.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
-PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const ci::Vec2i& position)
+PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const Vec2i& position)
 	:Sprite(), configSettings(configSettings),
 	titleText1(configSettings->getTextItem(ConfigTextID::PRINTER_ASK_TITLE)),
 	titleText2(configSettings->getTextItem(ConfigTextID::PRINTER_ASK_SUB_TITLE)),
@@ -12,11 +13,10 @@ PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const ci::Vec
 	closeIcon(configSettings->getTexture("closePrinterIcon"))
 {
 	setPosition(position);
-	okButtonArea = Rectf(632, 230, 632 + 285, 230 + 70);
+	okButtonArea = Rectf(632.0f, 230.0f, 917.0f, 300.0f);
 
 	Texture tex = textTools().getTextField(changedText);
-	okTextPos = Vec2f(okButtonArea.x1 + 0.5 * (okButtonArea.getWidth() - tex.getWidth()),
-		okButtonArea.y1 + 0.5 * (okButtonArea.getHeight() - tex.getHeight()) - 2);
+	okTextPos = Vec2f(okButtonArea.x1 + 5.0f, okButtonArea.y1 + 5.0f);
 
 	PrinterStatResetEventRef  eventReset = PrinterStatResetEventRef(new PrinterStatResetEvent());
 	okBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(okButtonArea, eventReset));
@@ -24,11 +24,11 @@ PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const ci::Vec
 	addChild(okBtn);
 
 	PrinterControlsHideEventRef eventHide = PrinterControlsHideEventRef(new PrinterControlsHideEvent());
-	closeBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(415, 40, Vec2f(160, 248), eventHide));
+	closeBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(415.0f, 40.0f, Vec2f(160.0f, 248.0f), eventHide));
 	closeBtn->setAlpha(0.5f);
 	addChild(closeBtn);
 
-	closeBtnBig = SimpleSpriteButtonRef(new SimpleSpriteButton(getWindowWidth(), 1920 - 400 - 170, Vec2f(0, -(1920 - 400)), eventHide));
+	closeBtnBig = SimpleSpriteButtonRef(new SimpleSpriteButton(getWindowWidth(), 1350.0f, Vec2f(0.0f, -1520.0f), eventHide));
 	closeBtnBig->setAlpha(0.5f);
 	addChild(closeBtnBig);
 }
@@ -49,19 +49,20 @@ void PrinterControls::unActivateListeners()
 
 void PrinterControls::drawLayout()
 {
-	gl::color(ci::Color::hex(0x171521));
-	gl::drawSolidRect(ci::Rectf(0.0f, 0.0f, getWindowWidth(), 400.0f));
-	gl::color(ci::Color::white());
-	textTools().textFieldDraw(titleText1, ci::Vec2f(150, 95));
-	textTools().textFieldDraw(titleText2, ci::Vec2f(157, 158));
+	gl::color(Color::hex(0x171521));
+	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 400.0f));
+	gl::color(Color::white());
+	textTools().textFieldDraw(titleText1, Vec2f(150.0f, 95.0f));
+	textTools().textFieldDraw(titleText2, Vec2f(157.0f, 158.0f));
 
-	textTools().textFieldDraw(iErrorText, ci::Vec2f(202, 246));
-	gl::draw(closeIcon, ci::Vec2f(160, 248));
+	textTools().textFieldDraw(iErrorText, Vec2f(202.0f, 246.0f));
+	gl::draw(closeIcon, Vec2f(160.0f, 248.0f));
 
-	gl::color(ci::Color::hex(0x6798ff));
+	gl::color(Color::hex(0x6798ff));
 	gl::drawSolidRoundedRect(okButtonArea, 7);
-	gl::color(ci::Color::white());
+	gl::color(Color::white());
 	textTools().textFieldDraw(changedText, okTextPos);
+	textTools().drawTextBox(changedText, Color::hex(0x6798ff), okTextPos, okBtn->getSize() - Vec2f(10.0f, 10.0f));
 }
 
 void PrinterControls::draw()

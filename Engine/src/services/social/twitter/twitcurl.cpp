@@ -735,7 +735,7 @@ bool  twitCurl::uploadPictureFromFile(std::vector<std::string> filelinks, std::s
 	size_t len = filelinks.size()+1;
 		struct curl_forms* forms = new struct curl_forms[len];	
 
-	for (int i = 0; i < len-1; i++)
+	for (size_t i = 0; i < len-1; i++)
 	{
 		forms[i].option = CURLFORM_FILE;
 		forms[i].value  = filelinks[i].c_str();		

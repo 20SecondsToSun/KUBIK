@@ -22,12 +22,12 @@ namespace kubik
 			static const int HIDED = 4;
 
 			NewActivityPopup(ConfigSettingsRef configSett);
-			virtual void draw();
+			virtual void draw() override;
 			void drawBackgrounds();
 			void drawTitles();
 			void drawInputFieldBackground();
 			void drawCloseBlock();
-			virtual void setAlpha(float alpha);
+			virtual void setAlpha(float alpha) override;
 
 			void show(const ci::EaseFn& eFunc = EaseOutCubic(), float time = 0.4f);
 			void hide(const ci::EaseFn& eFunc = EaseOutCubic(), float time = 0.3f);

@@ -17,9 +17,10 @@ PhotoFilters::PhotoFilters(PhotoboothSettingsRef phbSettings, const ci::Color& c
 	for (auto it : designdata)
 	{
 		pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
-		pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);
+		pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);	
 
-		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(it, over6, pos);
+		SixButtonOneData data(it, color, over6);
+		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(data);
 
 		btns[it.getID()] = imageQuadroButton;
 		addChild(imageQuadroButton);	

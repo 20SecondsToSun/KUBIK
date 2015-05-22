@@ -15,7 +15,8 @@ DesignChooser::DesignChooser(ConfigSettingsRef configSettings, const ci::Vec2i& 
 	auto syspath	  = configSettings->getUserDesignPath();
 	auto over6		  = configSettings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(designdata, activeID, userDesignID, syspath, over6, 0.0f, 0.0f));
+	SixButtonsInitObject initObj(designdata, activeID, userDesignID, syspath, Color::hex(0x0d0917), over6, 0.0f, 0.0f);
+	sixBtnLayer = SixButtonsLayerDesignRef(new SixButtonsLayer<ChangeDesignEvent>(initObj));
 	addChild(sixBtnLayer);
 }
 

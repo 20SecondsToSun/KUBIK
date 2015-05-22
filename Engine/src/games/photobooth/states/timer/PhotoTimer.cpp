@@ -11,21 +11,21 @@ void PhotoTimer::clear()
 	cdTimer.stop();
 }
 
-PhotoTimer::~PhotoTimer()
-{
-	clear();
-};
-
-PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
+PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
 	:photoStorage(photoStorage),
 	startAngle(90),
 	endAngle(-270),
 	changeAngle(0),
-	RADIUS(500)
+	RADIUS(600)
 {
 	reset(settings);
 	maskShader = shadertool().getMaskShader();
 }
+
+PhotoTimer::~PhotoTimer()
+{
+	clear();
+};
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
 {
@@ -40,12 +40,11 @@ void PhotoTimer::reset(PhotoboothSettingsRef sett)
 	timerTex2 = settings->getTexture("timer2");
 
 	digits.clear();
-	digits.push_back(settings->getTexture("digit4"));
-	digits.push_back(settings->getTexture("digit3"));
-	digits.push_back(settings->getTexture("digit2"));
-	digits.push_back(settings->getTexture("digit1"));
+	for (size_t i = DIGIT_COUNT; i > 0; i--)
+		digits.push_back(settings->getTexture("digit" + to_string(i)));	
 
-	timerTexPos = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), centerY - timerTex1.getHeight() * 0.5f);
+	timerTexPos1 = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), centerY - timerTex1.getHeight() * 0.5f);
+	timerTexPos2 = Vec2f(0.5f * (getWindowWidth() - timerTex2.getWidth()), centerY - timerTex2.getHeight() * 0.5f);
 }
 
 void PhotoTimer::start()
@@ -62,14 +61,14 @@ void PhotoTimer::start()
 void PhotoTimer::initShowAnimationParams()
 {
 	titleAlpha = 0.1f;
-	titleAnimPosition = Vec2f(titlePos.x, titlePositionY - 170.0f);
-	timeline().apply(&titleAlpha, 1.0f, animShowTitleTime + 0.2f);// , EaseOutQuart());
+	digitScale = 0.0f;
+	titleAnimPosition = Vec2f(titlePos.x, titlePositionY - 170.0f);	
+
+	timeline().apply(&titleAlpha, 1.0f, animShowTitleTime + 0.2f);	
+	timeline().apply(&circleScale, 0.3f, 1.0f, 0.8f, EaseOutBack(2.40158f));	
+	timeline().apply(&digitScale, 0.2f, 1.0f, 0.8f, EaseOutBack(2.40158f)).delay(0.25f);
 	timeline().apply(&titleAnimPosition, Vec2f(titlePos.x, titlePositionY), animShowTitleTime, EaseOutExpo())
 		.finishFn(bind(&PhotoTimer::showAnimationComplete, this));
-
-	timeline().apply(&circleScale, 0.3f, 1.0f, 0.8f, EaseOutBack(2.40158f));
-	digitScale = 0.0f;
-	timeline().apply(&digitScale, 0.2f, 1.0f, 0.8f, EaseOutBack(2.40158f)).delay(0.25f);
 }
 
 void PhotoTimer::showAnimationComplete()
@@ -98,9 +97,7 @@ void PhotoTimer::update()
 		break;
 
 	case PhotoTimer::HIDE_ANIM:
-		currentDigit = digits[3];
-		break;
-	default:
+		currentDigit = digits[DIGIT_COUNT-1];
 		break;
 	}
 }
@@ -112,8 +109,8 @@ void PhotoTimer::calculateDigit()
 	changeAngle = rotor * timersec;
 
 	int index = MAX_SEC - seconds;
-	if (index > 3)
-		index = 3;
+	if (index > DIGIT_COUNT - 1)
+		index = DIGIT_COUNT - 1;
 
 	seconds = (MAX_SEC - (int)cdTimer.getSeconds());
 
@@ -130,9 +127,9 @@ void PhotoTimer::calculateDigit()
 void PhotoTimer::initHideAnimationParams()
 {
 	callback(BEGIN_ANIM);
-	timeline().apply(&circleScale, 1.0f, 0.5f, 0.5f, EaseInBack(2.70158f)).delay(0.15f)
-		.finishFn(bind(&PhotoTimer::hideAnimationComplete, this));
 	timeline().apply(&digitScale, 0.0f, 0.5f, EaseInBack(2.70158f));
+	timeline().apply(&circleScale, 1.0f, 0.5f, 0.5f, EaseInBack(2.70158f)).delay(0.15f)
+		.finishFn(bind(&PhotoTimer::hideAnimationComplete, this));	
 }
 
 void PhotoTimer::hideAnimationComplete()
@@ -153,7 +150,7 @@ void PhotoTimer::draw()
 
 void PhotoTimer::drawAnimationCircle()
 {
-	float y = timerTexPos.y + 0.5f * timerTex1.getHeight();
+	float y = timerTexPos2.y - 0.5f * timerTex2.getHeight();
 	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y, RADIUS, startAngle, endAngle + changeAngle, true);
 
 	auto photo = Utils::drawGraphicsToFBO(timerTex2.getSize(), [&]()
@@ -165,21 +162,29 @@ void PhotoTimer::drawAnimationCircle()
 	auto centerTex = timerTex1.getSize()*0.5f;
 
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, titleAlpha));
+
 	gl::pushMatrices();
-	gl::translate(timerTexPos);
+	gl::translate(timerTexPos1);
 	gl::translate(centerTex);
 	gl::scale(circleScale, circleScale);
 	gl::translate(-centerTex);
 	gl::draw(timerTex1);
-	//gl::draw(photo);	
-	//gl::draw(timerTex2);
-	//gl::translate(100,0);
+	gl::popMatrices();
+
+	//centerTex = photo.getSize()*0.5f;
+
+	gl::pushMatrices();
+	gl::translate(timerTexPos2);
+	gl::translate(centerTex);
+	gl::scale(circleScale, circleScale);
+	gl::translate(-centerTex);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	gl::draw(photo);
-	//glBlendFunc(GL_ONE, GL_ZERO);
-	gl::enableAlphaBlending();
 	gl::popMatrices();
+	
+	gl::enableAlphaBlending();
+
 	gl::color(Color::white());
 }
 

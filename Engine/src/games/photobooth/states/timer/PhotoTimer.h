@@ -17,15 +17,17 @@ namespace kubik
 
 			class PhotoTimer :public IPhotoboothLocation
 			{
-				PhotoStorageRef photoStorage;
+				static const int DIGIT_COUNT = 4;
 
+				PhotoStorageRef photoStorage;
+				
 				int MAX_SEC;
 				int seconds;
 				float startAngle, endAngle, changeAngle, RADIUS, rotor;
 
 				ci::Timer cdTimer;
 				ci::gl::Texture timerTex1, timerTex2, currentDigit;
-				ci::Vec2f titlePos, timerTexPos;
+				ci::Vec2f titlePos, timerTexPos1, timerTexPos2;
 				std::vector<ci::gl::Texture> digits;
 
 				ci::Anim<float> circleScale, digitScale;

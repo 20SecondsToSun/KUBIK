@@ -151,7 +151,7 @@ void DesignBlock::drawLayout()
 	
 	gl::draw(icon);
 	gl::popMatrices();
-
+	
 	textTools().textFieldDraw(titleText,	Vec2f(82.0f, 40.0f));
 	textTools().textFieldDraw(subTitleText, Vec2f(89.0f, 100.0f));	
 }

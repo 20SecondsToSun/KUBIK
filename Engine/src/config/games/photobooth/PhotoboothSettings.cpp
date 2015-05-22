@@ -320,6 +320,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("plash", createImageResource(getTemplateDesignPath("PhotoShooting\\plash.png")));
 	addToDictionary("shootline", createImageResource(getTemplateDesignPath("PhotoShooting\\line.png")));
 	addToDictionary("frame", createImageResource(getTemplateDesignPath("PhotoShooting\\frame.png")));
+	addToDictionary("shadow", createImageResource(getTemplateDesignPath("PhotoShooting\\shadow.png")));
 
 	addToDictionary("print", createImageResource(getTemplateDesignPath("PhotoTemplate\\print.png")));
 	addToDictionary("printtitle", createImageResource(getTemplateDesignPath("PhotoTemplate\\title.png")));

@@ -4,26 +4,22 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
 
-ChangeDesignButton::ChangeDesignButton(const OneDesignItem& item, const ci::gl::Texture& overtex, const Vec2f& pos)
-	:ImageQuadroButton(item, overtex, pos)
+ChangeDesignButton::ChangeDesignButton(const SixButtonOneData& data):ImageQuadroButton(data)
 {
-	event = ChangeDesignEventRef(new ChangeDesignEvent(item));
+	event = ChangeDesignEventRef(new ChangeDesignEvent(data.getDesignItem()));
 }
 
-PhotoOverButton::PhotoOverButton(const OneDesignItem& item, const ci::gl::Texture& overtex, const Vec2f& pos)
-	: ImageQuadroButton(item, overtex, pos)
+PhotoOverButton::PhotoOverButton(const SixButtonOneData& data):ImageQuadroButton(data)
 {
-	event = ChangePhotoOverDesignEventRef(new ChangePhotoOverDesignEvent(item));
+	event = ChangePhotoOverDesignEventRef(new ChangePhotoOverDesignEvent(data.getDesignItem()));
 }
 
-PhotoCardStyleButton::PhotoCardStyleButton(const OneDesignItem& item, const ci::gl::Texture& overtex, const Vec2f& pos)
-	: ImageQuadroButton(item, overtex, pos)
+PhotoCardStyleButton::PhotoCardStyleButton(const SixButtonOneData& data):ImageQuadroButton(data)
 {
-	event = ChangePhotoCardStyleDesignEventRef(new ChangePhotoCardStyleDesignEvent(item));
+	event = ChangePhotoCardStyleDesignEventRef(new ChangePhotoCardStyleDesignEvent(data.getDesignItem()));
 }
 
-PhotoFilterPreviewButton::PhotoFilterPreviewButton(const OneDesignItem& item, const ci::gl::Texture& overtex, const Vec2f& pos)
-	: ImageQuadroButton(item, overtex, pos)
+PhotoFilterPreviewButton::PhotoFilterPreviewButton(const SixButtonOneData& data):ImageQuadroButton(data)
 {
-	event = ChangePhotoFilterPreviewActiveEventRef(new ChangePhotoFilterPreviewActiveEvent(item));
+	event = ChangePhotoFilterPreviewActiveEventRef(new ChangePhotoFilterPreviewActiveEvent(data.getDesignItem()));
 }

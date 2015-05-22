@@ -8,7 +8,7 @@ using namespace ci::app;
 
 Photobooth::Photobooth(ISettingsRef config)
 {
-	console()<<"Photobooth CREATED::: "<<endl;
+	console()<<" :::Photobooth CREATED::: "<<endl;
 	init(config);
 	setType(ScreenId::PHOTOBOOTH);
 	create();
@@ -16,8 +16,8 @@ Photobooth::Photobooth(ISettingsRef config)
 
 Photobooth::~Photobooth()
 {	
-	console()<<"~~~~~~~~~~~~~~~ Photobooth destructor ~~~~~~~~~~~~~~~"<<endl;
-	updateSignal.disconnect();	
+	console() << " :::Photobooth DESTRUCTION::: " << endl;
+	updateSignal.disconnect();
 	removeListeners();
 	locations.clear();
 }
@@ -28,7 +28,7 @@ void Photobooth::init(ISettingsRef config)
 }
 
 void Photobooth::create()
-{	
+{
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
@@ -48,7 +48,7 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
-	console()<<"START PHOTOBOTH!"<<endl;
+	console()<<" :::START PHOTOBOTH::: "<<endl;
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
 
 	index = 0;
@@ -96,7 +96,7 @@ void Photobooth::disableGameCloseHandler()
 
 void Photobooth::stop()
 {
-	console()<<"STOP PHOTOBOOTH!"<<endl;
+	console()<<" :::STOP PHOTOBOOTH::: "<<endl;
 	updateSignal.disconnect();
 	for (auto it: locations)
 		it->stop();
@@ -108,7 +108,7 @@ void Photobooth::stop()
 
 void Photobooth::reset()
 {
-	console()<<"RESET PHOTOBOOTH!"<<endl;
+	console()<<" :::RESET PHOTOBOOTH::: "<<endl;
 	for (auto it: locations)
 		it->reset(settings);
 }
@@ -122,9 +122,9 @@ void Photobooth::initLocations()
 
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
-	//locations.push_back(photoShooting);
-	//locations.push_back(photoChoosing);
-	//locations.push_back(photoTemplate);	
+	locations.push_back(photoShooting);
+	locations.push_back(photoChoosing);
+	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
 }
 

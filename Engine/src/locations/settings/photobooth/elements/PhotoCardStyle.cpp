@@ -12,7 +12,8 @@ PhotoCardStyle::PhotoCardStyle(PhotoboothSettingsRef phbSettings, const ci::Colo
 	auto syspath = settings->getUserPhotoCardStylePath();
 	auto over6 = settings->getTexture("over6");
 
-	sixBtnLayer = SixButtonsLayerPhotoCardRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(designdata, activeID, userDesignID, syspath, over6));
+	SixButtonsInitObject initObj(designdata, activeID, userDesignID, syspath, color, over6);
+	sixBtnLayer = SixButtonsLayerPhotoCardRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(initObj));
 	addChild(sixBtnLayer);			
 }
 
