@@ -44,8 +44,19 @@ namespace kubik
 
 		void clearCookies()
 		{
-			session->ClearCookies();
+			session->ClearCookies();			
 		}
+
+		std::string convertToString(const WebString& webString)
+		{
+			const int size = 1024;
+
+			char buffer[size];			
+			webString.ToUTF8(buffer, size);
+			std::string queryString(buffer);
+
+			return  queryString;
+		}		
 	};
 
 	inline Chromium& chrome() { return Chromium::getInstance(); };

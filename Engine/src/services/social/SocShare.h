@@ -13,14 +13,16 @@ namespace kubik
 	class SocShare
 	{
 	public:
-		enum activityID
+		enum ActivityID
 		{
 			PHOTO_STATUS,
 			TEXT_STATUS
-		};
+		} 
+		activity;
 
-		enum serverStatus
+		enum ServerStatus
 		{
+			IDLE,
 			WAITING_FOR_NETWORK,
 			USER_REJECT,
 			POSTING,
@@ -30,7 +32,7 @@ namespace kubik
 		}
 		status;
 
-		enum postingStatus
+		enum PostingStatus
 		{
 			WallPostVkontakteServerError,
 			VkontaktePostOk
@@ -39,8 +41,6 @@ namespace kubik
 
 		SocShare();
 
-		//virtual void post() = 0;
-		virtual std::string getAuthUrl() = 0;
 		virtual void logOut() = 0;
 
 		void clear_token();
@@ -57,18 +57,19 @@ namespace kubik
 
 		boost::signals2::signal<void(void)>	serverHandler, hideSignal, postingComplete, postingStart, postingError;
 
-		void initChromium();
+		virtual void initChromium();
 		virtual void update();
-		void draw();
+		virtual void draw();
 		void handleKeyDown();
 
 		void connectTouchDown();
 		void disconnectTouchDown();
-		serverStatus getStatus();
+		ServerStatus getStatus();
 
 	protected:		
-		std::vector<std::string> photosVector;
-		std::string	login, password, textStatus, lastError;									
+		std::string authURL;
+
+		std::string	login, password, lastError, defaultStatus;
 		ci::Rectf availableArea;
 		bool connected;
 
@@ -79,17 +80,24 @@ namespace kubik
 		WebView*		 mWebViewPtr;
 		ci::gl::Texture  mWebTexture;
 		ci::Vec2f		 popupPosition;
+		ci::Vec2f		 initWebBrowserSize;
 
-		virtual std::string	 getDefaultStatus() = 0;
+		virtual std::string	 getDefaultStatus() const;
 		virtual void updatePopupPosition();
 
-		virtual int getBrowserWidth();
-		virtual int getBrowserHeight();
+		virtual int getBrowserWidth() const;
+		virtual int getBrowserHeight() const;
+		virtual std::string getAuthUrl();
+		virtual std::vector<std::string> getUploadPhotoPathVec() const;
+		virtual void postText(const std::string& textStatus){};
+		virtual void postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath){};
+		virtual void posting();
+		virtual std::string getPostingStatus() const{ return ""; };		
 
 	private:
 		ci::signals::connection	keyDownCon, mouseDownCon, mouseUpCon;
 		void mouseDown(MouseEvent &event);
 		void mouseUp(MouseEvent &event);
-		void keyDown(KeyEvent event);
+		void keyDown(KeyEvent event);		
 	};
 }

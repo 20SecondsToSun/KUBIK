@@ -94,8 +94,6 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 		qrcode = qrCodeNullObject;
 	}
 
-	////////////////////////////////////////////
-
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
 	startServiceButtonY = 588.0f;
@@ -108,8 +106,6 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 void PhotoSharing::start()
 {
-	console() << "start PhotoSharing" << endl;
-
 	auto photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
 
 	#ifndef debug
@@ -158,7 +154,6 @@ void PhotoSharing::initShowAnim()
 
 void PhotoSharing::connectHandlers()
 {
-	console() << "CONNECT HANDLERS:::::::::::::::::: " << endl;
 	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
 	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
 
@@ -179,7 +174,6 @@ void PhotoSharing::connectHandlers()
 
 void PhotoSharing::againBtnHandler(EventGUIRef& event)
 {
-	console() << "againBtnHandler" << endl;
 	disconnectEventHandlers();
 	setLastScreenShot();
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.6f, EaseOutCubic())
@@ -200,35 +194,30 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& _event)
 
 void PhotoSharing::emailBtnHandler(EventGUIRef& _event)
 {
-	console() << "emailBtnHandler" << endl;
 	popup = emailpopup;
 	showPopup();
 }
 
 void PhotoSharing::fbBtnHandler(EventGUIRef& _event)
 {
-	console() << "fbBtnHandler" << endl;
 	popup = fbpopup;
 	showPopup();
 }
 
 void PhotoSharing::vkBtnHandler(EventGUIRef& _event)
 {
-	console() << "vkBtnHandler" << endl;
 	popup = vkpopup;
 	showPopup();
 }
 
 void PhotoSharing::twBtnHandler(EventGUIRef& _event)
 {
-	console() << "twBtnHandler" << endl;
 	popup = twpopup;
 	showPopup();
 }
 
 void PhotoSharing::stop()
 {
-	console() << "stop PhotoSharing" << endl;
 	stopAllTweens();
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
@@ -258,7 +247,6 @@ void PhotoSharing::popupClosed()
 
 void PhotoSharing::disconnectEventHandlers()
 {
-	console() << "DISCONNECT HANDLERS:::::::::::::::::: " << endl;
 	againBtn->disconnectEventHandler();
 	allAppBtn->disconnectEventHandler();
 	emailBtn->disconnectEventHandler();

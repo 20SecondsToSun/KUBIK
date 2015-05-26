@@ -19,14 +19,15 @@ namespace kubik
 			class SocialPopup : public Popup
 			{
 			protected:
+				virtual void createSocialContext() = 0;
 				virtual void showAnimComplete() override;
 				virtual void initVirtualKeyboard() override;				
 				void postingStartHandler();
 				void postingCompleteHandler();
 				void disconnectSignals();
-				virtual void createSocialContext() = 0;
+
 				SocShareRef social;
-				ci::signals::connection hideSignalCon, postingStartSignalCon, postingCompleteSignalCon;
+				ci::signals::connection hideSignalCon, postingStartSignalCon, postingCompleteSignalCon, postingErrorSignalCon;
 
 			public:
 				SocialPopup(kubik::config::PhotoboothSettingsRef settings);
@@ -34,9 +35,9 @@ namespace kubik
 				virtual void hide(EventGUIRef& event) override;
 				virtual void show() override;
 
-				virtual void draw() override;
-				virtual void kill() override;
-				virtual void close()  override;				
+				virtual void draw()  override;
+				virtual void kill()  override;
+				virtual void close() override;				
 			};
 		}
 	}

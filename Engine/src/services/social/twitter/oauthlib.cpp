@@ -84,7 +84,8 @@ void oAuth::getConsumerKey( std::string& consumerKey )
 *--*/
 void oAuth::setConsumerKey( const std::string& consumerKey )
 {
-    m_consumerKey.assign( consumerKey );
+	//m_consumerKey.assign(consumerKey);
+	m_consumerKey = consumerKey;
 }
 
 /*++
@@ -144,7 +145,13 @@ void oAuth::getOAuthTokenKey( std::string& oAuthTokenKey )
 *--*/
 void oAuth::setOAuthTokenKey( const std::string& oAuthTokenKey )
 {
-    m_oAuthTokenKey = oAuthTokenKey;
+    m_oAuthTokenKey = oAuthTokenKey;	
+}
+
+void oAuth::clearOAuth()
+{
+	oAuth cloneObj;
+	*this = cloneObj;	
 }
 
 /*++
@@ -506,7 +513,7 @@ bool oAuth::getOAuthHeader( const eOAuthHttpRequestType eType,
                             const std::string& rawData,
                             std::string& oAuthHttpHeader,
                             const bool includeOAuthVerifierPin )
-{
+{	
 	oAuthKeyValuePairs rawKeyValuePairs = getRawKeyPairs(eType, rawUrl, rawData, oAuthHttpHeader, includeOAuthVerifierPin);
    
     /* Get OAuth header in string format */
@@ -514,7 +521,7 @@ bool oAuth::getOAuthHeader( const eOAuthHttpRequestType eType,
 	std::string paramsSeperator = ",";
 
     getStringFromOAuthKeyValuePairs( rawKeyValuePairs, rawParams, paramsSeperator );
-
+	
     /* Build authorization header */
     oAuthHttpHeader.assign( oAuthLibDefaults::OAUTHLIB_AUTHHEADER_STRING );
     oAuthHttpHeader.append( rawParams );
@@ -534,7 +541,7 @@ oAuthKeyValuePairs oAuth::getRawKeyPairs(const eOAuthHttpRequestType eType,
 	/* Clear header string initially */
 	oAuthHttpHeader = "";
 	rawKeyValuePairs.clear();
-
+	
 	/* If URL itself contains ?key=value, then extract and put them in map */
 	size_t nPos = rawUrl.find_first_of("?");
 	if (std::string::npos != nPos)
@@ -543,11 +550,11 @@ oAuthKeyValuePairs oAuth::getRawKeyPairs(const eOAuthHttpRequestType eType,
 		pureUrl = rawUrl.substr(0, nPos);
 
 		/* Get only key=value data part */
-		std::string dataPart = rawUrl.substr(nPos + 1);
+		std::string dataPart = rawUrl.substr(nPos + 1);		
 
 		/* Split the data in URL as key=value pairs */
 		buildOAuthRawDataKeyValPairs(dataPart, true, rawKeyValuePairs);
-	}
+	}	
 
 	/* Split the raw data if it's present, as key=value pairs. Data should already be urlencoded once */
 	buildOAuthRawDataKeyValPairs(rawData, false, rawKeyValuePairs);
@@ -566,8 +573,6 @@ oAuthKeyValuePairs oAuth::getRawKeyPairs(const eOAuthHttpRequestType eType,
 
 	return rawKeyValuePairs;
 }
-
-
 
 
 /*++
@@ -652,7 +657,7 @@ bool oAuth::extractOAuthTokenKeySecret( const std::string& requestTokenResponse 
     }
 
     size_t nPos = std::string::npos;
-    std::string strDummy;
+    std::string strDummy;	
 
     /* Get oauth_token key */
     nPos = requestTokenResponse.find( oAuthLibDefaults::OAUTHLIB_TOKEN_KEY );

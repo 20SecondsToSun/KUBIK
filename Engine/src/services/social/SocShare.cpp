@@ -6,32 +6,20 @@ using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
 
-void SocShare::setLoginPassword(const string& login, const string& password)
+void  SocShare::posting()
 {
-	this->login = login;
-	this->password = password;
-}
+	switch (activity)
+	{
+	case SocShare::PHOTO_STATUS:
+		postPhoto(getPostingStatus(), getUploadPhotoPathVec());
+		break;
 
-void SocShare::postStatus(const string& _textStatus)
-{
-	//type = TEXT_STATUS;
-	textStatus = _textStatus == "" ? getDefaultStatus() : _textStatus;	
-}
+	case SocShare::TEXT_STATUS:
+		postText(getPostingStatus());
+		break;
+	}
 
-void SocShare::postPhoto(const string& path, const string& textStatus)
-{
-	//type = PHOTO_STATUS;
-	this->textStatus = textStatus == "" ? getDefaultStatus() : textStatus;
-	photosVector.clear();
-	photosVector.push_back(path);	
-}
-
-void SocShare::postPhoto(const vector<string>& path, const string& textStatus)
-{
-	//type = PHOTO_STATUS;
-	this->textStatus = textStatus;
-	photosVector.clear();
-	photosVector = path;	
+	logOut();
 }
 
 void SocShare::clear_token()
@@ -51,10 +39,10 @@ std::string SocShare::getLastError()
 
 void SocShare::initChromium()
 {
-	//return;
-	mWebCorePtr = chrome().getWebCorePtr();
-	mWebViewPtr = chrome().getWebViewPtr();
 	chrome().clearCookies();
+
+	mWebCorePtr = chrome().getWebCorePtr();
+	mWebViewPtr = chrome().getWebViewPtr();	
 
 	if (mWebViewPtr)
 	{
@@ -68,7 +56,8 @@ void SocShare::initChromium()
 
 void SocShare::update()
 {	
-	mWebCorePtr->Update();
+	if(mWebCorePtr)
+		mWebCorePtr->Update();
 
 	if (mWebViewPtr && ph::awesomium::isDirty(mWebViewPtr))
 	{
@@ -91,7 +80,7 @@ void SocShare::update()
 
 void SocShare::updatePopupPosition()
 {
-
+	popupPosition = Vec2f(0.5f * (getWindowWidth() - getBrowserWidth()), 166.0f);	
 }
 
 void SocShare::draw()
@@ -169,17 +158,40 @@ void SocShare::disconnectTouchDown()
 	connected = false;
 }
 
-SocShare::serverStatus SocShare::getStatus()
+SocShare::ServerStatus SocShare::getStatus()
 {
 	return status;
 }
 
-int SocShare::getBrowserWidth()
+std::string	 SocShare::getDefaultStatus() const
 {
-	return 675;
+	return defaultStatus;
 }
 
-int SocShare::getBrowserHeight()
+int SocShare::getBrowserWidth() const
 {
-	return 440;
+	return initWebBrowserSize.x;
+}
+
+int SocShare::getBrowserHeight() const
+{
+	return initWebBrowserSize.y;
+}
+
+std::string SocShare::getAuthUrl()
+{
+	return authURL;
+}
+
+std::vector<std::string> SocShare::getUploadPhotoPathVec() const
+{
+	string path1 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon2.png";
+	string path2 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon1.png";
+	string path3 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon3.png";
+	std::vector<std::string> filesPath;
+	filesPath.push_back(path1);
+	filesPath.push_back(path2);
+	filesPath.push_back(path3);
+
+	return filesPath;
 }

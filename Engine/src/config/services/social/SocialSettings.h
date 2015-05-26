@@ -31,7 +31,7 @@ namespace kubik
 			static const std::string FACEBOOK_ALBUM_NAME_DEFAULT;
 			static const std::string FACEBOOK_STATUS_DEFAULT;
 			static const std::string FACEBOOK_POSTING_WAITING_TEXT;
-			static std::string FACEBOOK_AUTH_URL;
+			static std::string FACEBOOK_AUTH_URL; 
 
 			static std::string TWITTER_TOKEN_KEY;
 			static std::string TWITTER_TOKEN_SECRET;
@@ -39,6 +39,7 @@ namespace kubik
 			static std::string TWITTER_API_SECRET;
 			static const std::string TWITTER_AUTH_URL;	
 			static const std::string TWITTER_STATUS_DEFAULT;
+			static const std::string TWITTER_OAUTH_CALLBACK;
 
 			static std::string VK_APP_ID;
 			static std::string VK_AUTH_URL;
@@ -55,8 +56,7 @@ namespace kubik
 			static const std::string VK_POSTING_WAITING_TEXT;
 
 		private:
-			static std::string FACEBOOK_APP_ID;
-			
+			static std::string FACEBOOK_APP_ID;			
 		};
 	}
 }

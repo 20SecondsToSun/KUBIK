@@ -36,8 +36,8 @@ public:
 
     /* Twitter OAuth authorization methods */
     oAuth& getOAuth();
-    bool oAuthRequestToken( std::string& authorizeUrl /* out */ );
-    bool oAuthAccessToken();
+	bool oAuthRequestToken(std::string& authorizeUrl /* out */, const std::string& callback_url);
+	bool oAuthAccessToken(const std::string& oauth_verifier);
     bool oAuthHandlePIN( const std::string& authorizeUrl /* in */ );
 
     /* Twitter login APIs, set once and forget */
@@ -61,6 +61,7 @@ public:
     bool uploadPictureRaw( char *data, int size, std::string &newStatus /* in */ );
 	bool uploadPictureFromFile(std::vector<std::string> filelinks, std::string& newStatus);
 	bool getTwitterConfiguration();
+	std::string findOauthVerifier(const std::string& searchString);
 	
 
     /* Twitter timeline APIs */
@@ -185,7 +186,7 @@ private:
     bool performGetInternal( const std::string& getUrl,
                              const std::string& oAuthHttpHeader );
     bool performDelete( const std::string& deleteUrl );
-    bool performPost( const std::string& postUrl, std::string dataStr = "" );
+	bool performPost(const std::string& postUrl, std::string dataStr = "", bool headerInBody = true, const std::string& additional_post_params = "");
 	bool performPostWithMedia( const std::string& postUrl, std::string dataStr="" );
 
     /* Internal cURL related methods */

@@ -35,5 +35,5 @@
    "isQrCode" : true,
    "isSticker" : false,
    "isTwitter" : true,
-   "isVkotakte" : true
+   "isVkotakte" : false
 }

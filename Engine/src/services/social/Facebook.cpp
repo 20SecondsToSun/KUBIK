@@ -13,45 +13,55 @@ using namespace mndl::curl;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-Facebook::Facebook()
-	:SocShare()
+Facebook::Facebook() 
+	: SocShare(),
+	facebookAlbumNameToPost("test кубика")	
 {
-	availableArea = (Rectf(256.f, 234.f, 897.f, 638.f));
-}
-
-void Facebook::updatePopupPosition()
-{
-	if (mWebTexture)
-		popupPosition = Vec2f(0.5f * (getWindowWidth() - mWebTexture.getWidth()), 166.0f);
-	else
-		popupPosition = Vec2f::zero();
+	initWebBrowserSize = Vec2f(675, 440);
+	defaultStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;
+	authURL = SocialSettings::FACEBOOK_AUTH_URL;
+	availableArea = Rectf(256.f, 234.f, 897.f, 638.f);
 }
 
 void Facebook::update()
 {
+	switch (status)
+	{
+	case WAITING_FOR_NETWORK:
+		signInUpdate();
+		break;
+
+	case POST_READY:
+		postingComplete();
+		status = IDLE;
+		break;
+
+	case POST_ERROR:
+		postingError();
+		status = IDLE;
+		break;
+	}
+
 	SocShare::update();
+}
 
-	if (status != WAITING_FOR_NETWORK)
-		return;
+void  Facebook::signInUpdate()
+{
+	std::string anchorString = chrome().convertToString(mWebViewPtr->url().anchor());
+	size_t pos = anchorString.find("access_token");
 
-	char anchr[1024];
-	mWebViewPtr->url().anchor().ToUTF8(anchr, 1024);
-	string anchString(anchr);
-	size_t pos = anchString.find("access_token");
-
-	if (pos == 0 && status == WAITING_FOR_NETWORK)
+	if (pos == 0)
 	{
 		string delimiter = "&";
-		string token = anchString.substr(0, anchString.find(delimiter));
+		string token = anchorString.substr(0, anchorString.find(delimiter));
 		access_token = token.substr(13);
 
-		facebookPostThread();		
+		facebookPostThread();
 	}
 	else
 	{
-		char query[1024];
-		mWebViewPtr->url().query().ToUTF8(query, 1024);
-		string queryString(query);
+		std::string queryString = chrome().convertToString(mWebViewPtr->url().query());
+	
 		size_t pos_denied = queryString.find("error_reason=user_denied");
 		if (queryString.size() == 0 || pos_denied < 1000)
 		{
@@ -65,38 +75,16 @@ void  Facebook::facebookPostThread()
 {
 	status = POSTING;
 	postingStart();
-
-	loadingSignal = App::get()->getSignalUpdate().connect(bind(&Facebook::waitLoadingComplete, this));
 	loadingThread = ThreadRef(new boost::thread(&Facebook::posting, this));
 }
 
-void  Facebook::waitLoadingComplete()
-{
-	if (status != POSTING)
-	{
-		loadingThread->join();
-		loadingSignal.disconnect();
-		postingComplete();
-	}
-}
-
-void  Facebook::posting()
-{
-	postTextFB();
-	logOut();
-}
-
-void Facebook::postTextFB()
-{
-	if (textStatus.empty())
-		textStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;
-
+void Facebook::postText(const std::string& textStatus)
+{	
 	map<string, string> strings;
 	strings.insert(pair<string, string>("message", Utils::cp1251_to_utf8(textStatus.c_str())));
 	strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
 
 	string fbRequest = Curl::post(SocialSettings::FACEBOOK_FEED_URL, strings);
-	console() << " fbRequest" << fbRequest << "   " << access_token<<std::endl;
 	if (fbRequest != "")
 	{
 		try
@@ -118,18 +106,11 @@ void Facebook::postTextFB()
 	status = POST_ERROR;
 }
 
-string Facebook::getDefaultStatus()
+void Facebook::postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
-	return  SocialSettings::FACEBOOK_STATUS_DEFAULT;
-}
-
-/*
-
-string Facebook::postPhotoFB()
-{
-	string fbRequest = Curl::get(FACEBOOK_ALBUMS_URL + "/?access_token=" + access_token);
-	facebookAlbumId = NULL_ALBUM_ID;
-
+	string fbRequest = Curl::get(SocialSettings::FACEBOOK_ALBUMS_URL + "/?access_token=" + access_token);
+	facebookAlbumId = SocialSettings::FACEBOOK_NULL_ALBUM_ID;
+	
 	try
 	{
 		JsonTree jTree = JsonTree(fbRequest);
@@ -142,58 +123,69 @@ string Facebook::postPhotoFB()
 				string _nameCyr = Utils::Utf8_to_cp1251(_name.c_str());
 				if (_nameCyr == facebookAlbumNameToPost)
 				{
-					facebookAlbumId = item->getChild("id").getValue<string>();
+					facebookAlbumId = item->getChild("id").getValue<string>();					
 				}
 			}
 		}
-		else return FacebookAlbumAccessError;
+		else
+		{
+			status = POST_ERROR;
+			return;
+		}
 	}
 	catch (...)
 	{
-		return FacebookAlbumAccessError;
+		status = POST_ERROR;
+		return;
 	}
 
-	if (facebookAlbumId == NULL_ALBUM_ID)
+	if (facebookAlbumId == SocialSettings::FACEBOOK_NULL_ALBUM_ID)
 	{
 		map<string, string> strings;
-		strings.insert(pair<string, string>(ACCESS_TOKEN, access_token));
+		strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
 		strings.insert(pair<string, string>("name", Utils::cp1251_to_utf8(facebookAlbumNameToPost.c_str())));
-		string fbRequest = Curl::post(FACEBOOK_ALBUMS_URL, strings);
+		string fbRequest = Curl::post(SocialSettings::FACEBOOK_ALBUMS_URL, strings);
 
 		try
 		{
 			JsonTree jTree = JsonTree(fbRequest);
+			console() << "fbRequest------------------------------>" << fbRequest << endl;
 			if (jTree.hasChild("id"))
 			{
 				facebookAlbumId = jTree.getChild("id").getValue();
 
 				if (facebookAlbumId != "")
 				{
-					return postPhotosToFbAlbum();
+					console() << "postPhotosToFbAlbum------------------------------>"<< endl;
+					postPhotosToFbAlbum(textStatus, filesPath);
+					return;
 				}
 			}
 
-			return FacebookAlbumAccessError;
+			status = POST_ERROR;
+			return;
 		}
 		catch (...)
 		{
-			return FacebookAlbumAccessError;
+			status = POST_ERROR;
+			return;
 		}
 	}
 	else
 	{
-		return postPhotosToFbAlbum();
+		status = POST_ERROR;
+		return;
 	}
 }
 
-string Facebook::postPhotosToFbAlbum()
+void Facebook::postPhotosToFbAlbum(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
 	int success_upload = 0;
 
-	for (size_t i = 0, ilen = photosVector.size(); i < ilen; i++)
+	for (size_t i = 0, ilen = filesPath.size(); i < ilen; i++)
 	{
-		string fbRequest = Curl::postUploadFB(FACEBOOK_BASE_URL + facebookAlbumId + "/photos/",
-			access_token, photosVector[i],
+		string fbRequest = Curl::postUploadFB(SocialSettings::FACEBOOK_BASE_URL + facebookAlbumId + "/photos/",
+			access_token, filesPath[i],
 			Utils::cp1251_to_utf8(textStatus.c_str()));
 		try
 		{
@@ -203,37 +195,31 @@ string Facebook::postPhotosToFbAlbum()
 				string post_id = jTree.getChild("post_id").getValue();
 				if (post_id != "") success_upload++;
 			}
-			else return FacebookPostPhotoError;
+			else
+			{
+				status = POST_ERROR;
+				return;
+			}
 		}
 		catch (...)
 		{
-			return FacebookPostPhotoError;
+			status = POST_ERROR;
+			return;
 		}
 	}
 
-	if (success_upload > 0) return FacebookPostOk;
+	if (success_upload > 0)
+	{
+		status = POST_READY;
+		return;
+	}	
 
-	return FacebookPostPhotoError;
+	status = POST_ERROR;
 }
 
-void Facebook::setPhotoAlbumName(string &name)
+void Facebook::setPhotoAlbumName(const string &name)
 {
 	facebookAlbumNameToPost = name;
-}
-*/
-std::string Facebook::getAuthUrl()
-{
-	return SocialSettings::FACEBOOK_AUTH_URL;
-}
-
-int Facebook::getBrowserWidth()
-{
-	return 675;
-}
-
-int Facebook::getBrowserHeight()
-{
-	return 440;
 }
 
 void Facebook::logOut()
@@ -241,15 +227,4 @@ void Facebook::logOut()
 	std::map<string, string> strings;
 	strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
 	string fbRequest = Curl::deleteRequest(SocialSettings::FACEBOOK_APP_LOGOUT_URL, strings);
-
-	/*if (fbRequest != "true")
-	{
-	lastError = FacebookLogOutError;
-	}*/
 }
-
-/*
-string  Facebook::getDefaultStatus()
-{
-	return STATUS_DEFAULT;
-}*/

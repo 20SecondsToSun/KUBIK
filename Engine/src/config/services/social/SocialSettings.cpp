@@ -36,7 +36,7 @@ std::string SocialSettings::TWITTER_API_KEY;
 std::string SocialSettings::TWITTER_API_SECRET;
 const std::string SocialSettings::TWITTER_AUTH_URL = "https://twitter.com";
 const std::string SocialSettings::TWITTER_STATUS_DEFAULT = "#тест rich bich";
-
+const std::string SocialSettings::TWITTER_OAUTH_CALLBACK = ",oauth_callback=http://familyagency.ru";
 
 ////////////////////////////////////////////////////////////////////////////
 //

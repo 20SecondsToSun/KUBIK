@@ -10,20 +10,20 @@ namespace kubik
 	{
 	public:
 		Facebook();
-
-		std::string getAuthUrl();
-		void logOut();
-
-		void updatePopupPosition() override;
-		void update() override;
-		std::string	getDefaultStatus() override;
-		int getBrowserWidth() override;
-		int getBrowserHeight() override;
+	
+		void		logOut() override;
+		void		update() override;	
+		void		signInUpdate();
+		void		setPhotoAlbumName(const string &name);
 
 	private:
-		void postTextFB();
-		void facebookPostThread();
-		void waitLoadingComplete();
-		void posting();
+		void		postText(const std::string& textStatus) override;
+		void		postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath) override;
+		void		facebookPostThread();
+		void		waitLoadingComplete();
+		void		postPhotosToFbAlbum(const std::string& textStatus, const std::vector<std::string>& filesPath);
+
+		std::string facebookAlbumNameToPost;
+		std::string facebookAlbumId;		
 	};
 }

@@ -9,26 +9,18 @@ namespace kubik
 	class Vkontakte : public SocShare
 	{
 	public:
-		Vkontakte();
-		
-		std::string getAuthUrl();
-		void logOut();
-		void updatePopupPosition() override;
-		void update() override;
-		int getBrowserWidth() override;
-		int getBrowserHeight() override;
+		Vkontakte();		
+		void				logOut() override;
+		void				update() override;
 
 	private:
-		std::string					 vkontakteAuthURL;
-		std::shared_ptr<std::thread> serverThread;
+		std::string			 vkontakteAuthURL;
 
-		void						 vkontaktePostThread();
-		void						 postTextVK();
-		void						 postPhotoVK();		
-		std::string					 vkontaktePostLoadPhotoPath(const std::string& upload_url, const std::string& path);
-		virtual std::string	 getDefaultStatus() override;
-
-		void  waitLoadingComplete();
-		void  posting();
+		void				 vkontaktePostThread();
+		void				 postText(const std::string& textStatus) override;
+		void				 postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath) override;		
+		void				 signInUpdate();	
+		std::string			 vkontaktePostLoadPhotoPath(const std::string& upload_url, const std::string& path);
+		std::string			 getPostingStatus() const override;
 	};
 }

@@ -414,10 +414,8 @@ bool twitCurl::statusUpdateWithMedia( std::string& newStatus, std::string inRepl
 *--*/
 bool twitCurl::statusUpdate( std::string& newStatus, std::string inReplyToStatusId )
 {
-    if( newStatus.empty() )
-    {
-        return false;
-    }
+    if( newStatus.empty() )    
+        return false;    
 
     /* Prepare new status message */
     std::string newStatusMsg = twitCurlDefaults::TWITCURL_STATUSSTRING + urlencode( newStatus );
@@ -429,13 +427,13 @@ bool twitCurl::statusUpdate( std::string& newStatus, std::string inReplyToStatus
                         twitCurlDefaults::TWITCURL_INREPLYTOSTATUSID +
                         urlencode( inReplyToStatusId );
     }
-
-    /* Perform POST */
+	
+	/* Perform POST */
 
     return  performPost( twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
                          twitterDefaults::TWITCURL_STATUSUPDATE_URL +
                          twitCurlDefaults::TWITCURL_EXTENSIONFORMATS[m_eApiFormatType],
-                         newStatusMsg );
+						 newStatusMsg, false, newStatusMsg);
 }
 
 /*++
@@ -2265,21 +2263,6 @@ bool twitCurl::performPostWithMedia( const std::string& postUrl, std::string dat
     return false;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static void dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
 {
 	size_t i;
@@ -2357,31 +2340,6 @@ static int my_trace(CURL *handle, curl_infotype type, char *data, size_t size, v
 	return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*++
 * @method: twitCurl::performPost
 *
@@ -2398,13 +2356,11 @@ static int my_trace(CURL *handle, curl_infotype type, char *data, size_t size, v
 *           ex: dataStr = "key=urlencode(value)"
 *
 *--*/
-bool twitCurl::performPost( const std::string& postUrl, std::string dataStr )
+bool twitCurl::performPost( const std::string& postUrl, std::string dataStr, bool headerInBody, const std::string& additional_post_params)
 {
     /* Return if cURL is not initialized */
-    if(!isCurlInit())
-    {
-        return false;
-    }
+    if(!isCurlInit())    
+        return false;    
 
     std::string oAuthHttpHeader;
     struct curl_slist* pOAuthHeaderList = NULL;
@@ -2419,8 +2375,7 @@ bool twitCurl::performPost( const std::string& postUrl, std::string dataStr )
         pOAuthHeaderList = curl_slist_append(pOAuthHeaderList, oAuthHttpHeader.c_str() );
 		pOAuthHeaderList = curl_slist_append(pOAuthHeaderList, "Content-Type:application/x-www-form-urlencoded");
 
-		ci::app::console() << "pOAuthHeaderList  " << pOAuthHeaderList->data << std::endl;
-        if( pOAuthHeaderList )
+	    if( pOAuthHeaderList )
         {
             curl_easy_setopt( m_curlHandle, CURLOPT_HTTPHEADER, pOAuthHeaderList );
         }
@@ -2430,48 +2385,36 @@ bool twitCurl::performPost( const std::string& postUrl, std::string dataStr )
 	curl_easy_setopt(m_curlHandle, CURLOPT_SSL_VERIFYHOST, 0L);
 
     /* Set http request, url and data */
-    curl_easy_setopt( m_curlHandle, CURLOPT_POST, 1 );
-    curl_easy_setopt( m_curlHandle, CURLOPT_URL, postUrl.c_str() );
+    curl_easy_setopt( m_curlHandle, CURLOPT_POST, 1);
+    curl_easy_setopt( m_curlHandle, CURLOPT_URL, postUrl.c_str());
+	
+	std::string param = "";
+	
+	if (headerInBody)
+		param = std::string(pOAuthHeaderList->data) + additional_post_params;
+	else
+		param = additional_post_params;
 
-	std::string param = "oauth_callback=http://familyagency.ru";
-	curl_easy_setopt(m_curlHandle, CURLOPT_COPYPOSTFIELDS, param.c_str());
+	ci::app::console() << "pOAuthHeaderList->data:::::::::::::  " << pOAuthHeaderList->data << std::endl;
+	ci::app::console() << "param:::::::::::::  " << param << std::endl;
 
-
-	FILE * pFile;
-	char buffer[100];
-
-	pFile = fopen("myfile.txt", "w");
-
-
-	curl_easy_setopt(m_curlHandle, CURLOPT_DEBUGFUNCTION, my_trace);
-	curl_easy_setopt(m_curlHandle, CURLOPT_DEBUGDATA, pFile);
-
-	if (param.length())
-	{
-		//curl_easy_setopt(m_curlHandle, CURLOPT_COPYPOSTFIELDS, param.c_str());
-	}
-
-   /* if( dataStr.length() )
-    {
-        curl_easy_setopt( m_curlHandle, CURLOPT_COPYPOSTFIELDS, dataStr.c_str() );
-    }*/
+	if (param != "")
+		curl_easy_setopt(m_curlHandle, CURLOPT_COPYPOSTFIELDS, param.c_str());
 
 	curl_easy_setopt(m_curlHandle, CURLOPT_VERBOSE, 1L);
-
 
     /* Send http request */
     if( CURLE_OK == curl_easy_perform( m_curlHandle ) )
     {
-        if( pOAuthHeaderList )
-        {
+        if( pOAuthHeaderList )        
             curl_slist_free_all( pOAuthHeaderList );
-        }
+        
         return true;
     }
-    if( pOAuthHeaderList )
-    {
+
+    if( pOAuthHeaderList )    
         curl_slist_free_all( pOAuthHeaderList );
-    }
+    
     return false;
 }
 
@@ -2559,14 +2502,12 @@ oAuth& twitCurl::getOAuth()
 * @output: true if everything went sucessfully, otherwise false
 *
 *--*/
-bool twitCurl::oAuthRequestToken( std::string& authorizeUrl /* out */ )
+bool twitCurl::oAuthRequestToken( std::string& authorizeUrl /* out */, const std::string& callback_url )
 {
     /* Return if cURL is not initialized */
-    if( !isCurlInit() )
-    {
-        return false;
-    }
-
+    if( !isCurlInit() )    
+        return false;    
+	
     /* Get OAuth header for request token */
     std::string oAuthHeader;
     authorizeUrl = "";
@@ -2583,24 +2524,15 @@ bool twitCurl::oAuthRequestToken( std::string& authorizeUrl /* out */ )
 			std::string(""),
 			oAuthHeader, false);
 
-		/*using namespace mndl::curl;
-		std::string request = Curl::post(twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] + oAuthTwitterApiUrls::OAUTHLIB_TWITTER_REQUEST_TOKEN_URL, pairs);
-		ci::app::console() << "request::    " << request << std::endl;
-		return true;
-*/
-
-		ci::app::console() << "header::  " << oAuthHeader << std::endl;
-		ci::app::console() << "url::  " << twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +	oAuthTwitterApiUrls::OAUTHLIB_TWITTER_REQUEST_TOKEN_URL << std::endl;
-		 
 		if (performPost(twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
                                 oAuthTwitterApiUrls::OAUTHLIB_TWITTER_REQUEST_TOKEN_URL,
-                                oAuthHeader ) )
+								oAuthHeader, true, callback_url))
         {
             /* Tell OAuth object to save access token and secret from web response */
             std::string twitterResp;
             getLastWebResponse( twitterResp );
             m_oAuth.extractOAuthTokenKeySecret( twitterResp );
-			ci::app::console() << "twitterResp::  " << twitterResp << std::endl;
+			ci::app::console() << "twitterResp  " << twitterResp << std::endl;
 
             /* Get access token and secret from OAuth object */
             std::string oAuthTokenKey;
@@ -2610,7 +2542,7 @@ bool twitCurl::oAuthRequestToken( std::string& authorizeUrl /* out */ )
             authorizeUrl.assign(twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
                                 oAuthTwitterApiUrls::OAUTHLIB_TWITTER_AUTHORIZE_URL );
             authorizeUrl.append( oAuthTokenKey.c_str() );
-
+		
             return true;
         }
     }
@@ -2627,7 +2559,7 @@ bool twitCurl::oAuthRequestToken( std::string& authorizeUrl /* out */ )
 * @output: true if everything went sucessfully, otherwise false
 *
 *--*/
-bool twitCurl::oAuthAccessToken()
+bool twitCurl::oAuthAccessToken(const std::string& oauth_verifier)
 {
     /* Return if cURL is not initialized */
     if( !isCurlInit() )
@@ -2636,19 +2568,23 @@ bool twitCurl::oAuthAccessToken()
     }
     /* Get OAuth header for access token */
     std::string oAuthHeader;
-    if( m_oAuth.getOAuthHeader( eOAuthHttpGet,
+    if( m_oAuth.getOAuthHeader( eOAuthHttpPost,
                                 twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
                                 oAuthTwitterApiUrls::OAUTHLIB_TWITTER_ACCESS_TOKEN_URL,
                                 std::string( "" ),
                                 oAuthHeader, true ) )
     {
-        if( performGetInternal( twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
-                                oAuthTwitterApiUrls::OAUTHLIB_TWITTER_ACCESS_TOKEN_URL,
-                                oAuthHeader ) )
+		ci::app::console() << "oAuthHeader :: " << oAuthHeader << std::endl;
+	
+		if (performPost(twitCurlDefaults::TWITCURL_PROTOCOLS[m_eProtocolType] +
+			oAuthTwitterApiUrls::OAUTHLIB_TWITTER_ACCESS_TOKEN_URL,
+			oAuthHeader, false, oauth_verifier))
         {
             /* Tell OAuth object to save access token and secret from web response */
             std::string twitterResp;
             getLastWebResponse( twitterResp );
+			ci::app::console() << "twitterResp ::  " << twitterResp << std::endl;
+
             m_oAuth.extractOAuthTokenKeySecret( twitterResp );
 
             return true;
@@ -2725,8 +2661,7 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
                 return false;
             }
             authenticityTokenVal = m_callbackData.substr( nPosStart, nPosEnd );
-			ci::app::console() << "authenticityTokenVal :::::::::::::::::: " << authenticityTokenVal << std::endl;
-
+			
             nPosStart = m_callbackData.find( oAuthLibDefaults::OAUTHLIB_TOKEN_TWITTER_RESP_KEY );
             if( std::string::npos == nPosStart )
             {
@@ -2746,9 +2681,7 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
     {
         curl_slist_free_all( pOAuthHeaderList );
         return false;
-    }
-
-	
+    }	
 
     // Second phase for the authorization
     pOAuthHeaderList = NULL;
@@ -2765,75 +2698,9 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
               oAuthLibDefaults::OAUTHLIB_AUTHENTICITY_TOKEN_KEY + "=" + authenticityTokenVal + "&" +  \
               oAuthLibDefaults::OAUTHLIB_SESSIONUSERNAME_KEY + "=" + getTwitterUsername() + "&" +     \
               oAuthLibDefaults::OAUTHLIB_SESSIONPASSWORD_KEY + "=" + getTwitterPassword();
-
 	
-	ci::app::console() << "dataStr:::::::::::::::::: " << dataStr << std::endl;
-    /* Set OAuth header */
+   /* Set OAuth header */
     m_oAuth.getOAuthHeader( eOAuthHttpPost, authorizeUrl, dataStr, oAuthHttpHeader );
-
-	ci::app::console() << "oAuthHttpHeader:::::::::::::::::: " << oAuthHttpHeader << std::endl;
-	//
-	//
-	//using namespace std;
-
-	//
-	//std::vector<std::string> strs;
-	//boost::split(strs, oAuthHttpHeader, boost::is_any_of(","));
-
-	//for (size_t i = 0; i < strs.size(); i++)
-	//{
-	//	//ci::app::console() << "i :::::::::::::::::: " << strs[i] << std::endl;
-	//}
-
-	//unsigned first = strs[1].find("\"");
-	//unsigned last = strs[1].substr(first).find("\"");
-	//string oauth_nonce = strs[1].substr(first + 1, first + last + 1);
-	//
-	//ci::app::console() << " :::::::::::::::::: " << oauth_nonce << std::endl;
-	////ci::app::console() << " :::::::::::::::::: " << strs[4] << std::endl;
-
-
-	//first = strs[4].find("\"");
-	//last = strs[4].substr(first).find("\"");
-	//string timestamp = strs[4].substr(first + 1, 10);
-
-
-	//
-	//unsigned first1 = strs[2].find("\"");
-	//unsigned last1 = strs[2].substr(first1+1).find("\"");
-	//string oauth_signature = strs[2].substr(first1 + 1, last1);
-	//ci::app::console() << " ::::::::::: first1 ::::::: " << first1 << std::endl;
-	//ci::app::console() << " ::::::::::: last1 ::::::: " << last1 << std::endl;
-	//ci::app::console() << " ::::::::::: oauth_signature ::::::: " << oauth_signature << std::endl;
-
-	//string key, secret;
-	//getOAuth().getConsumerKey(key);
-	//getOAuth().getConsumerSecret(secret);
-
-	//
-	//map<string, string> strings;
-	//strings.insert(pair<string, string>("oauth_consumer_key", key));
-	//strings.insert(pair<string, string>("oauth_consumer_secret", secret));
-	//strings.insert(pair<string, string>("oauth_nonce", oauth_nonce));
-	//strings.insert(pair<string, string>("oauth_signature_method", "HMAC-SHA1"));
-	//strings.insert(pair<string, string>("oauth_timestamp", timestamp));
-	//strings.insert(pair<string, string>("x_auth_mode", "client_auth"));
-	//strings.insert(pair<string, string>("x_auth_password", "Metalcorehero88"));
-	//strings.insert(pair<string, string>("x_auth_username", "yurikblech@ya.ru"));
-	//strings.insert(pair<string, string>("oauth_version", "1.0"));
-	//strings.insert(pair<string, string>("oauth_signature", oauth_signature));
-	//
-	//
-	//using namespace mndl::curl;
-	////strings.insert(pair<string, string>("name", Utils::cp1251_to_utf8(facebookAlbumNameToPost.c_str())));
-	//string request = Curl::post("https://api.twitter.com/oauth/authorize", strings);
-	//ci::app::console() << "req  " << request << endl;
-
-
-
-
-
-
 
 
 	//dataStr = "x_auth_mode=client_auth&x_auth_password=Metalcorehero88&x_auth_username=yurikblech@ya.ru";
@@ -2841,8 +2708,6 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
 		oAuthLibDefaults::OAUTHLIB_AUTHENTICITY_TOKEN_KEY + "=" + authenticityTokenVal + "&" + \
 		oAuthLibDefaults::OAUTHLIB_SESSIONUSERNAME_KEY + "=" + getTwitterUsername() + "&" + \
 		oAuthLibDefaults::OAUTHLIB_SESSIONPASSWORD_KEY + "=" + getTwitterPassword();
-
-	//std::string _authorizeUrl = "https://api.twitter.com/oauth/access_token";
 
 	 if( oAuthHttpHeader.length() )
     {
@@ -2857,9 +2722,7 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
     curl_easy_setopt( m_curlHandle, CURLOPT_POST, 1 );
 	curl_easy_setopt(m_curlHandle, CURLOPT_URL, authorizeUrl.c_str());
     curl_easy_setopt( m_curlHandle, CURLOPT_COPYPOSTFIELDS, dataStr.c_str() );
-
-	//ci::app::console() << "-----------m_callbackData:::::::::::::::::: " << m_callbackData << std::endl;
-
+	
     /* Send http request */
     if( CURLE_OK == curl_easy_perform( m_curlHandle ) )
     {
@@ -2870,8 +2733,7 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
 
             // Now, let's find the PIN CODE
 			nPosStart = m_callbackData.find(oAuthLibDefaults::OAUTHLIB_PIN_TWITTER_RESP_KEY);
-			ci::app::console() << "-----------get pin :::::::::::::::::: " << m_callbackData << std::endl;
-            if( std::string::npos == nPosStart )
+			if( std::string::npos == nPosStart )
             {
                 return false;
             }
@@ -2893,3 +2755,13 @@ bool twitCurl::oAuthHandlePIN( const std::string& authorizeUrl /* in */ )
     return false;
 }
 
+std::string twitCurl::findOauthVerifier(const std::string& searchString)
+{
+	size_t nPosStart = searchString.find("oauth_verifier");
+	std::string oauth_verifier;
+
+	if (nPosStart != std::string::npos)
+		oauth_verifier = searchString.substr(nPosStart);
+
+	return oauth_verifier;
+}

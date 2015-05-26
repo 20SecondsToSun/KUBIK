@@ -9,54 +9,56 @@ using namespace mndl::curl;
 
 Vkontakte::Vkontakte() :SocShare()
 {
-	availableArea = Rectf(228.f, 295.f, 862.f, 536.f);
-}
+	initWebBrowserSize = Vec2f(656, 377);
+	defaultStatus = SocialSettings::VK_STATUS_DEFAULT;
+	authURL = SocialSettings::VK_AUTH_URL;
 
-void Vkontakte::updatePopupPosition()
-{
-	if (mWebTexture)
-		popupPosition = Vec2f(0.5f * (getWindowWidth() - mWebTexture.getWidth()), 166.0f);
-	else
-		popupPosition = Vec2f::zero();
+	availableArea = Rectf(228.f, 295.f, 862.f, 536.f);
 }
 
 void Vkontakte::update()
 {
-	SocShare::update();
+	switch (status)
+	{
+	case WAITING_FOR_NETWORK:
+		signInUpdate();
+		break;
 
-	if (status != WAITING_FOR_NETWORK)
-		return;
+	case POST_READY:
+		postingComplete();
+		status = IDLE;
+		break;
 
-	char anchr[1024];
-	mWebViewPtr->url().anchor().ToUTF8(anchr, 1024);
-	string anchString(anchr);
-	size_t pos = anchString.find("access");
+	case POST_ERROR:
+		postingError();
+		status = IDLE;
+		break;
+	}
 
-	if (pos == 0 && status == WAITING_FOR_NETWORK)
+	SocShare::update();	
+}
+
+void  Vkontakte::signInUpdate()
+{	
+	std::string anchorString = chrome().convertToString(mWebViewPtr->url().anchor());
+	size_t pos = anchorString.find("access");
+
+	if (pos == 0)
 	{
 		string delimiter = "&";
-		string token = anchString.substr(0, anchString.find(delimiter));
+		string token = anchorString.substr(0, anchorString.find(delimiter));
 		access_token = token.substr(13);
 		vkontaktePostThread();
 	}
 	else
 	{
-		size_t pos_denied = anchString.find("User denied your request");
+		size_t pos_denied = anchorString.find("User denied your request");
 		if (pos_denied < 1000)
 		{
 			status = USER_REJECT;
 			hideSignal();
 		}
 	}
-
-	/*if (!isTryFocusInLoginTextField && mWebTexture && mWebViewPtr->IsLoading() == false)
-	{
-	MouseEvent mEvent = VirtualKeyboard::inititateMouseEvent(Vec2f(932.0f, 246.0f));
-	isTryFocusInLoginTextField = true;
-	ph::awesomium::handleMouseDown(mWebViewPtr, mEvent);
-	ph::awesomium::handleMouseUp(mWebViewPtr, mEvent);
-	}
-	*/
 }
 
 void  Vkontakte::vkontaktePostThread()
@@ -64,31 +66,11 @@ void  Vkontakte::vkontaktePostThread()
 	status = POSTING;
 	postingStart();
 
-	loadingSignal = App::get()->getSignalUpdate().connect(bind(&Vkontakte::waitLoadingComplete, this));
 	loadingThread = ThreadRef(new boost::thread(&Vkontakte::posting, this));
 }
 
-void  Vkontakte::waitLoadingComplete()
+void Vkontakte::postText(const std::string& textStatus)
 {
-	if (status != POSTING)
-	{
-		loadingThread->join();
-		loadingSignal.disconnect();
-		postingComplete();
-	}
-}
-
-void  Vkontakte::posting()
-{
-	postTextVK();
-	logOut();
-}
-
-void Vkontakte::postTextVK()
-{
-	if (textStatus.empty())
-		textStatus = SocialSettings::VK_STATUS_DEFAULT;
-
 	std::map<string, string> strings;
 	strings.insert(pair<string, string>("message", Utils::cp1251_to_utf8(textStatus.c_str())));
 	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
@@ -119,7 +101,7 @@ void Vkontakte::postTextVK()
 	status = POST_ERROR;
 }
 
-void Vkontakte::postPhotoVK()
+void Vkontakte::postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
 	std::map<string, string> strings;
 	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
@@ -147,11 +129,11 @@ void Vkontakte::postPhotoVK()
 
 	string attacments = "";
 
-	for (size_t i = 0, ilen = photosVector.size(); i < ilen; i++)
+	for (size_t i = 0, ilen = filesPath.size(); i < ilen; i++)
 	{
 		try
 		{
-			string photo_id = vkontaktePostLoadPhotoPath(upload_url, photosVector[i]);
+			string photo_id = vkontaktePostLoadPhotoPath(upload_url, filesPath[i]);
 			if (photo_id != "")
 			{
 				attacments += photo_id;
@@ -164,8 +146,6 @@ void Vkontakte::postPhotoVK()
 			return;
 		}	
 	}
-
-	console() << "ATTACHMENTS:::  " << attacments << std::endl;
 
 	strings.clear();
 	strings.insert(pair<string, string>("attachments", attacments));
@@ -183,14 +163,14 @@ void Vkontakte::postPhotoVK()
 			{
 				if (jTree.getChild("response").hasChild("post_id"))
 				{
-					status = POST_ERROR;
+					status = POST_READY;
 					return;
 				}					
 			}
 		}
 		catch (...)
 		{
-
+			status = POST_ERROR;
 		}
 	}
 
@@ -223,11 +203,6 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 	return photo_id;
 }
 
-std::string Vkontakte::getAuthUrl()
-{
-	return SocialSettings::VK_AUTH_URL;
-}
-
 void Vkontakte::logOut()
 {
 	string  logout = SocialSettings::VK_LOGOUT_URL + access_token;
@@ -235,17 +210,7 @@ void Vkontakte::logOut()
 	string vkRequest = Curl::get(url);
 }
 
-string Vkontakte::getDefaultStatus()
+std::string Vkontakte::getPostingStatus() const
 {
-	return SocialSettings::VK_STATUS_DEFAULT;
-}
-
-int Vkontakte::getBrowserWidth()
-{
-	return 656;
-}
-
-int Vkontakte::getBrowserHeight()
-{
-	return 377;
+	return getDefaultStatus();
 }

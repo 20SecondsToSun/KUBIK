@@ -36,6 +36,7 @@ public:
 
     void getOAuthTokenKey( std::string& oAuthTokenKey /* out */ );
     void setOAuthTokenKey( const std::string& oAuthTokenKey /* in */ );
+	void clearOAuth();
 
     void getOAuthTokenSecret( std::string& oAuthTokenSecret /* out */ );
     void setOAuthTokenSecret( const std::string& oAuthTokenSecret /* in */ );

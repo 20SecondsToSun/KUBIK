@@ -5,10 +5,9 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-SocialPopup::SocialPopup(PhotoboothSettingsRef settings)
-	:Popup(settings)
+SocialPopup::SocialPopup(PhotoboothSettingsRef settings) : Popup(settings)
 {
-	
+
 }
 
 void SocialPopup::show()
@@ -16,9 +15,10 @@ void SocialPopup::show()
 	social->clear_token();
 	social->initChromium();
 
-	hideSignalCon = social->hideSignal.connect(bind(&SocialPopup::close, this));
-	postingStartSignalCon = social->postingStart.connect(bind(&SocialPopup::postingStartHandler, this));
+	hideSignalCon			 = social->hideSignal.connect(bind(&SocialPopup::close, this));
+	postingStartSignalCon	 = social->postingStart.connect(bind(&SocialPopup::postingStartHandler, this));
 	postingCompleteSignalCon = social->postingComplete.connect(bind(&SocialPopup::postingCompleteHandler, this));
+	postingErrorSignalCon	 = social->postingError.connect(bind(&SocialPopup::postingCompleteHandler, this));
 
 	Popup::show();
 }
@@ -69,6 +69,7 @@ void SocialPopup::disconnectSignals()
 	hideSignalCon.disconnect();
 	postingStartSignalCon.disconnect();
 	postingCompleteSignalCon.disconnect();
+	postingErrorSignalCon.disconnect();
 }
 
 void SocialPopup::draw()
