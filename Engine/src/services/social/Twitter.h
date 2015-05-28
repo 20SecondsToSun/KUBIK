@@ -22,10 +22,7 @@ namespace kubik
 		std::string	getAuthUrl() override;
 		void		post();
 		void		logOut() override;
-		void		update() override;
-		
-		int			getBrowserWidth() const override;
-		int			getBrowserHeight() const override;
+		void		update() override;		
 		
 	private:
 		bool		isAuthFlowComplete;
@@ -40,7 +37,6 @@ namespace kubik
 		void		signInUpdate();
 		bool		userRejectedAppOauth();
 
-		std::string getPostingStatus() const;
-		std::vector<std::string> getUploadPhotoPathVec() const;
+		std::string getPostingStatus() const;		
 	};
 }

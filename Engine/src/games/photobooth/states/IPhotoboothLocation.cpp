@@ -31,9 +31,6 @@ void IPhotoboothLocation::reset(PhotoboothSettingsRef settings)
 
 void IPhotoboothLocation::fillBg()
 {
-	//gl::color(ci::Color::hex(0x060a0e));
-	//gl::drawSolidRect(getWindowBounds());
-	//gl::color(ci::Color::white());
 	gl::draw(bckgrnd);
 }
 
@@ -47,7 +44,6 @@ void IPhotoboothLocation::drawTitle()
 void IPhotoboothLocation::setLastScreenShot()
 {
 	screenshot = Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); });
-	//photoStorage->setLastScreenShot(photo);
 }
 
 void IPhotoboothLocation::stopAllTweens()

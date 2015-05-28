@@ -80,7 +80,7 @@ namespace kubik
 		WebView*		 mWebViewPtr;
 		ci::gl::Texture  mWebTexture;
 		ci::Vec2f		 popupPosition;
-		ci::Vec2f		 initWebBrowserSize;
+		ci::Vec2i		 initWebBrowserSize;
 
 		virtual std::string	 getDefaultStatus() const;
 		virtual void updatePopupPosition();
@@ -93,6 +93,8 @@ namespace kubik
 		virtual void postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath){};
 		virtual void posting();
 		virtual std::string getPostingStatus() const{ return ""; };		
+
+		void resizeWebBrowser(int width, int height);
 
 	private:
 		ci::signals::connection	keyDownCon, mouseDownCon, mouseUpCon;

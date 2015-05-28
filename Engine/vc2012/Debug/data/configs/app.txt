@@ -19,6 +19,8 @@
 			     "consts":"data\\configs\\mainconf\\consts.txt",	
 			     "labels":"data\\configs\\mainconf\\labels.txt"},
 
+ "preloadersConfigPath" : "data\\configs\\preloaders.txt",
+
    "screenSaverConfigPath" : "data\\configs\\screensaver.txt", 
    "userInfoPath" : "data\\configs\\user\\userInfo.txt",
    "labelsPath" : "data\\configs\\labels.txt",

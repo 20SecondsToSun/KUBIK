@@ -14,13 +14,13 @@ namespace kubik
 		void				update() override;
 
 	private:
-		std::string			 vkontakteAuthURL;
+		std::string			vkontakteAuthURL;
 
-		void				 vkontaktePostThread();
-		void				 postText(const std::string& textStatus) override;
-		void				 postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath) override;		
-		void				 signInUpdate();	
-		std::string			 vkontaktePostLoadPhotoPath(const std::string& upload_url, const std::string& path);
-		std::string			 getPostingStatus() const override;
+		void				vkontaktePostThread();
+		void				postText(const std::string& textStatus) override;
+		void				postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath) override;		
+		void				signInUpdate();	
+		std::string			vkontaktePostLoadPhotoPath(const std::string& upload_url, const std::string& path);
+		std::string			getPostingStatus() const override;
 	};
 }

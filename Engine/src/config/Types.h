@@ -89,7 +89,8 @@ namespace kubik
 			MAINCONFIG,
 			GAMES,
 			MENU,
-			SCREENSAVER
+			SCREENSAVER,
+			PRELOADERS
 		};
 	}
 

@@ -11,7 +11,6 @@
 #include "ImageSequencer/ImageSequencer.h"
 #include "videoplayer/VideoPlayer.h"
 
-
 namespace kubik
 {
 	namespace config
@@ -26,10 +25,7 @@ namespace kubik
 				SEARCH_TITLE_MAIN, SEARCH_TITLE_SUB,
 				HASHTAG_TITLE_MAIN,	HASHTAG_TITLE_SUB,
 				PHOTO_TITLE_MAIN, PHOTO_TITLE_SUB				
-			};
-
-			kubik::MovieLoader::MovieLoaderStruct mainPreloaderStruct, miniPreloaderStruct;
-			
+			};			
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			void load() override;
@@ -69,10 +65,7 @@ namespace kubik
 			changeSetting::id getChangeID() const;
 
 			bool hashtagEnabled();
-			bool searchEnabled();	
-			
-			IMovieRef getMainPreloader() const;
-			IMovieRef getMiniPreloader() const;
+			bool searchEnabled();			
 
 		private:			
 			bool memento;
@@ -80,8 +73,6 @@ namespace kubik
 			bool search, search_save;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
 			int userPhotoCardStyleDesignID;
-
-			IMovieRef mainPreloader, miniPreloader;
 
 			ConfigTexts<InstaTextID> configTexts;
 

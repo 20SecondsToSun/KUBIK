@@ -7,6 +7,8 @@
 #include "VirtualKeyboard.h"
 #include "states/sharing/social/Popup.h"
 #include "services/social/Social.h"
+#include "graphics/IMovie.h"
+#include "SettingsFactory.h"
 
 namespace kubik
 {
@@ -24,6 +26,7 @@ namespace kubik
 				virtual void initVirtualKeyboard() override;				
 				void postingStartHandler();
 				void postingCompleteHandler();
+				void postingErrorHandler();				
 				void disconnectSignals();
 
 				SocShareRef social;
@@ -37,7 +40,18 @@ namespace kubik
 
 				virtual void draw()  override;
 				virtual void kill()  override;
-				virtual void close() override;				
+				virtual void close() override;	
+
+			private:
+				ci::gl::Texture postingBg, errorBg;
+				ci::gl::Texture successMessage, errorMessage;
+				IMovieRef mainPreloader, miniPreloader;
+				void (SocialPopup::* popupDrawFunc)();
+				void signInDraw();
+				void successDraw();
+				void postingDraw();				
+				void errorDraw();
+				void drawTextMessage(const ci::gl::Texture& text);
 			};
 		}
 	}

@@ -6,7 +6,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
 
-void  SocShare::posting()
+void SocShare::posting()
 {
 	switch (activity)
 	{
@@ -80,12 +80,12 @@ void SocShare::update()
 
 void SocShare::updatePopupPosition()
 {
-	popupPosition = Vec2f(0.5f * (getWindowWidth() - getBrowserWidth()), 166.0f);	
+	popupPosition = Vec2f(0.5f * (getWindowWidth() - getBrowserWidth()), 0.5f * (715.0f - getBrowserHeight()));
 }
 
 void SocShare::draw()
 {
-	if (mWebTexture  && !mWebViewPtr->IsLoading() && status == WAITING_FOR_NETWORK)
+	if (mWebTexture && !mWebViewPtr->IsLoading() && status == WAITING_FOR_NETWORK)
 	{
 		gl::pushMatrices();
 		gl::translate(popupPosition);
@@ -163,7 +163,7 @@ SocShare::ServerStatus SocShare::getStatus()
 	return status;
 }
 
-std::string	 SocShare::getDefaultStatus() const
+std::string SocShare::getDefaultStatus() const
 {
 	return defaultStatus;
 }
@@ -194,4 +194,10 @@ std::vector<std::string> SocShare::getUploadPhotoPathVec() const
 	filesPath.push_back(path3);
 
 	return filesPath;
+}
+
+void SocShare::resizeWebBrowser(int width, int height)
+{
+	initWebBrowserSize = Vec2i(width, height);
+	mWebViewPtr->Resize(width, height);	
 }

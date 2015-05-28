@@ -6,6 +6,7 @@
 #include "main/DesignBlock/ScreenSaverChecker.h"
 #include "DecorLoadButton.h"
 #include "PhotoboothSettings.h"
+#include "PreloaderSettings.h"
 
 using namespace ci;
 
@@ -86,9 +87,25 @@ namespace kubik
 				phtSettings = configSettings;
 			}
 
+			void inject(PreloaderSettingsRef configSettings)
+			{
+				preloaderSettings = configSettings;
+			}	
+
+			IMovieRef getMainPreloader() const
+			{
+				return preloaderSettings->getMainPreloader();
+			}
+
+			IMovieRef getMiniPreloader() const
+			{
+				return preloaderSettings->getMiniPreloader();
+			}
+
 		private:
 			ConfigSettingsRef settings;
 			PhotoboothSettingsRef phtSettings;
+			PreloaderSettingsRef preloaderSettings;
 		};
 	
 		inline SettingsFactory&	settingsFactory() { return SettingsFactory::getInstance();};

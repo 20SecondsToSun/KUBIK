@@ -127,7 +127,7 @@ namespace kubik
 			std::string socSettingsFilePath;
 
 			std::map<settings::id, ConfigObject> configObjectMap;
-			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject;
+			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject, preloadersConfigObject;
 			fs::path getConfigPath();
 			void parseConfigPaths(ConfigObject& configObject, const JsonTree& json);
 		};

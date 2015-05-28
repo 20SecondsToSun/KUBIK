@@ -262,6 +262,12 @@
     <Filter Include="Source Files\config\menu">
       <UniqueIdentifier>{4f16bd56-51c3-47f0-bb22-51a4587ceac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\config\graphic">
+      <UniqueIdentifier>{263e33f4-37c8-44d3-961c-e743d6623383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\graphic\preloader">
+      <UniqueIdentifier>{0caf8f45-1c4d-44e4-b7c6-bf70fef5b800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -674,6 +680,9 @@
     </ClCompile>
     <ClCompile Include="..\src\gui\TextField.cpp">
       <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\graphic\preloader\PreloaderSettings.cpp">
+      <Filter>Source Files\config\graphic\preloader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1372,6 +1381,12 @@
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
+      <Filter>Source Files\config\graphic\preloader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

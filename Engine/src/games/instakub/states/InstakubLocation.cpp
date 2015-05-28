@@ -24,8 +24,8 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 	instClient = InstagramClientRef(new InstagramClient(settings->getClientID()));
 
 	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
-		settings->getMainPreloader(),
-		settings->getMiniPreloader(),
+		settingsFactory().getMainPreloader(),
+		settingsFactory().getMiniPreloader(),
 		settings->getTexture("noMaterials"),
 		settings->getTexture("allLoaded"),
 		settings->getTexture("privateUser"),

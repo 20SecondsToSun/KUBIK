@@ -30,6 +30,8 @@ namespace kubik
 
 				void connectCloseBtn();
 				void disconnectCloseBtn();
+				void connectAllFieldAsButton();
+				void disconnectAllFieldAsButton();
 
 			public:
 				static const int POPUP_CLOSED = 1;
@@ -40,10 +42,11 @@ namespace kubik
 				virtual void kill();
 				virtual void show();
 				virtual void hide(EventGUIRef& event);
+				virtual void hideQuick(EventGUIRef& event);				
 				virtual void draw();						
 				virtual void close();
 				virtual void drawBackgrounds();
-				void setBackground(ci::gl::Texture& texture);
+				void setBackground(const ci::gl::Texture& texture);
 			};
 		}
 	}

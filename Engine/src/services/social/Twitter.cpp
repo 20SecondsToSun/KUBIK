@@ -6,6 +6,7 @@ using namespace std;
 
 Twitter::Twitter() : isAuthFlowComplete(false)
 {
+	initWebBrowserSize = Vec2f(750, 600);
 	availableArea = Rectf(0.0f, 0.0f, 897.0f, 538.0f);
 };
 
@@ -68,12 +69,12 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 	else
 	{
 		twitterObj.getLastCurlError(replyMsg);
-		console() << "twitterClient:: " << replyMsg.c_str() << std::endl;
+		console() << "twitterClient error: " << replyMsg.c_str() << std::endl;
 		status = POST_ERROR;
 		return;
 	}
 
-	vector<string> filelinks;
+	std::vector<std::string> filelinks;
 
 	for (int i = 0; i < max_media_per_upload; i++)
 	{
@@ -84,7 +85,25 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 	if (twitterObj.uploadPictureFromFile(filelinks, Utils::cp1251_to_utf8(textStatus.c_str())))
 	{
 		twitterObj.getLastWebResponse(replyMsg);
-		console() << "twitterClient: " << replyMsg.c_str() << std::endl;
+		console() << "twitterClient ok: " << replyMsg.c_str() << std::endl;
+		try
+		{
+			JsonTree jTree = JsonTree(replyMsg);
+			string created_at = jTree.getChild("created_at").getValue<string>();
+
+			if (!created_at.empty())
+			{
+				status = POST_READY;
+				return;
+			}				
+		}
+		catch (...)
+		{
+			console() << "POST_ERROR error!!!!" << endl;
+			status = POST_ERROR;
+			return;
+		};
+
 		status = POST_READY;
 		return;
 	}
@@ -140,6 +159,8 @@ void Twitter::update()
 		break;
 
 	case POST_ERROR:
+	case USER_REJECT:
+		console() << "posting error!!!!" << endl;
 		postingError();
 		status = IDLE;
 		break;
@@ -184,8 +205,7 @@ bool Twitter::userRejectedAppOauth()
 {
 	string param = "document.documentElement.outerHTML";
 	WebString html = mWebViewPtr->ExecuteJavascriptWithResult(WSLit(param.c_str()), Awesomium::WSLit("")).ToString();
-	std::string htmlString = chrome().convertToString(html);
-
+	string htmlString = chrome().convertToString(html);
 	size_t nPosStart = htmlString.find("oauth cancelled");
 
 	return nPosStart != std::string::npos;
@@ -233,28 +253,7 @@ std::string  Twitter::getDefaultStatus() const
 	return SocialSettings::TWITTER_STATUS_DEFAULT;
 }
 
-int Twitter::getBrowserWidth() const
-{
-	return 675;
-}
-
-int Twitter::getBrowserHeight() const
-{
-	return 360;
-}
-
 std::string Twitter::getPostingStatus() const
 {
 	return getDefaultStatus();
-}
-
-std::vector<std::string> Twitter::getUploadPhotoPathVec() const
-{
-	string path1 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon2.png";
-	string path2 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon1.png";
-	std::vector<std::string> filesPath;
-	filesPath.push_back(path1);
-	filesPath.push_back(path2);
-
-	return filesPath;
 }

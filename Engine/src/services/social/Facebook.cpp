@@ -13,14 +13,12 @@ using namespace mndl::curl;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-Facebook::Facebook() 
-	: SocShare(),
-	facebookAlbumNameToPost("test кубика")	
+Facebook::Facebook() : SocShare(), facebookAlbumNameToPost("test кубика")	
 {
-	initWebBrowserSize = Vec2f(675, 440);
+	initWebBrowserSize = Vec2f(770, 510);
 	defaultStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;
 	authURL = SocialSettings::FACEBOOK_AUTH_URL;
-	availableArea = Rectf(256.f, 234.f, 897.f, 638.f);
+	availableArea = Rectf(0.f, 0.0f, 1080.f, 715.f);
 }
 
 void Facebook::update()

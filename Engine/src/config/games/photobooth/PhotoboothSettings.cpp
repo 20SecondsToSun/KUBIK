@@ -347,7 +347,12 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("sharetitle", createImageResource(getTemplateDesignPath("PhotoShare\\title.png")));
 	addToDictionary("sharefon", createImageResource(getTemplateDesignPath("PhotoShare\\fon.png")));
 	addToDictionary("qrtitle", createImageResource(getTemplateDesignPath("PhotoShare\\qrtitle.png")));
+	addToDictionary("successMessage", createImageResource(getTemplateDesignPath("PhotoShare\\successMessage.png")));
+	addToDictionary("errorMessage", createImageResource(getTemplateDesignPath("PhotoShare\\errorMessage.png")));
+
 	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.jpg")));
+	addToDictionary("popupNetralBg", createImageResource(getTemplateDesignPath("popupNetralBg.png")));
+	addToDictionary("popupErrorBg", createImageResource(getTemplateDesignPath("popupErrorBg.png")));
 
 	addToDictionary("popupBg", createImageResource(getTemplateDesignPath("PhotoShare\\popupBg.png")));
 	addToDictionary("addEmail", createImageResource(getTemplateDesignPath("PhotoShare\\addEmail.png")));
@@ -666,6 +671,11 @@ std::string PhotoboothSettings::getUserPhotoCardStylePath()
 	return getBasePath().string() + configPaths.userCardStylePath;
 }
 
+IMovieRef PhotoboothSettings::getPreloader()
+{
+	return IMovieRef();
+}
+
 void PhotoboothSettings::createMemento()
 {
 	memento = true;
@@ -771,6 +781,7 @@ DesignData PhotoboothSettings::getPhotoOverDesignData() const
 {
 	return photoOverDesignData;
 }
+
 DesignData PhotoboothSettings::getPhotoCardStyles() const
 {
 	return photoCardStyles;

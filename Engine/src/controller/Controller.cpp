@@ -46,8 +46,10 @@ void Controller::loadSettings()
 	screenSaverSettings  = ScreenSaverSettingsRef(new ScreenSaverSettings(model));
 	keyboardSettings	 = KeyboardSettingsRef(new KeyboardSettings(model));
 	socialSettings		 = SocialSettingsRef(new SocialSettings(model));
+	preloaderSettings	 = PreloaderSettingsRef(new PreloaderSettings(model, controlSettings));
 
 	settingsFactory().inject(controlSettings);
+	settingsFactory().inject(preloaderSettings);
 
 	list<ISettingsRef> configs;
 	configs.push_back(controlSettings);
@@ -56,6 +58,7 @@ void Controller::loadSettings()
 	configs.push_back(screenSaverSettings);
 	configs.push_back(keyboardSettings);
 	configs.push_back(socialSettings);
+	configs.push_back(preloaderSettings);
 	configLoader->loadConfigs(configs);
 
 	logger().log("CONFIGS LOADED");
@@ -83,6 +86,8 @@ void Controller::loadAllLocationsGraphics()
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());
 	graphicsLoader->setLoadingTextures(screenSaverSettings->getResources());
 	graphicsLoader->setLoadingTextures(controlSettings->getResources());
+	graphicsLoader->setLoadingTextures(preloaderSettings->getResources());
+
 	graphicsLoader->setLoadingTextures(gameSettings->getActiveGameTextures());
 	graphicsLoader->setLoadingTextures(gameSettings->getGameSettingsTextures());	
 	graphicsLoader->load();
@@ -92,7 +97,8 @@ void Controller::allGraphicsLoadingCompleteHandler()
 {
 	logger().log("BUILD SETTINGS DATA");
 
-	controlSettings->buildData();	
+	preloaderSettings->buildData();
+	controlSettings->buildData();
 	gameSettings->buildSettingData();
 
 	removeGraphicsLoadingConnections();

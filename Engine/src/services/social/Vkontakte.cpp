@@ -9,11 +9,11 @@ using namespace mndl::curl;
 
 Vkontakte::Vkontakte() :SocShare()
 {
-	initWebBrowserSize = Vec2f(656, 377);
+	initWebBrowserSize = Vec2f(1080, 715);////570);////377);
 	defaultStatus = SocialSettings::VK_STATUS_DEFAULT;
 	authURL = SocialSettings::VK_AUTH_URL;
 
-	availableArea = Rectf(228.f, 295.f, 862.f, 536.f);
+	availableArea = Rectf(228.f, 0.f, 862.f, 715.f);
 }
 
 void Vkontakte::update()
@@ -59,6 +59,38 @@ void  Vkontakte::signInUpdate()
 			hideSignal();
 		}
 	}
+	//
+	//string param = "document.getElementsByTagName('html')[0].innerHTML";
+	//WebString html = mWebViewPtr->ExecuteJavascriptWithResult(WSLit(param.c_str()), Awesomium::WSLit("")).ToString();
+	//	
+	//std::string htmlString = chrome().convertToString(html);			
+	////console() << "==============================================" << endl << endl;
+	////console() << htmlString << endl;
+
+	//size_t oauthPos	  = htmlString.find("oauth_error");
+	//size_t captchaPos = htmlString.find("captcha_key");
+	//size_t undefinedPos = htmlString.find("undefined");
+
+	//if (undefinedPos != std::string::npos)
+	//	return;
+
+	//if (oauthPos != std::string::npos && captchaPos != std::string::npos)
+	//{
+	//	resizeWebBrowser(656, 570);		
+	//}
+	//else if(oauthPos != std::string::npos)
+	//{			
+	//	resizeWebBrowser(656, 435);
+	//}
+	//else if (captchaPos != std::string::npos)
+	//{		
+	//	resizeWebBrowser(656, 520);
+	//}
+	//else
+	//{	
+	//	resizeWebBrowser(656, 420);
+	//}
+	
 }
 
 void  Vkontakte::vkontaktePostThread()

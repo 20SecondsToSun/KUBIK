@@ -128,11 +128,7 @@ void InstakubSettings::setTextures()
 	addToSettingsDictionary("closeKeyboardSettings", createImageResource(getInterfacePath("configDesign\\instakub\\closeKeyboard.png")));
 	addToSettingsDictionary("over6", createImageResource(getInterfacePath("configDesign\\instakub\\over6.png")));
 
-
-	///////////////////////////////////////
-	//
-	///////////////////////////////////////
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.png")));
 	addToDictionary("hashtagTitle", createImageResource(getTemplateDesignPath("hashtagTitle.png")));
@@ -158,35 +154,16 @@ void InstakubSettings::setTextures()
 	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
 	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
 	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));
-
-
-
+	
 	for (auto item : photoCardStyles)
 	{
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
 	}
-
-	auto addPreloaderFilesToDictionary = [&](MovieLoader::MovieLoaderStruct& movieStruct, const string& name)
-	{
-		movieStruct = movieLoader().getMovieStruct(getTemplateDesignPath(name + "\\"), name);
-
-		if (movieStruct.type == MovieLoader::VIDEO)		
-			addToDictionary(movieStruct.name, createVideoResource(movieStruct.paths[0]));		
-		else if (movieStruct.type == MovieLoader::IMAGE_SEQUENCE)		
-			for (size_t i = 0; i < movieStruct.paths.size(); i++)
-				addToDictionary(movieStruct.name + to_string(i), createImageResource(movieStruct.paths[i]));		
-	};
-
-	addPreloaderFilesToDictionary(mainPreloaderStruct, "mainpreloader");
-	addPreloaderFilesToDictionary(miniPreloaderStruct, "minipreloader");
 }
 
 void InstakubSettings::buildLocationData()
 {
-	mainPreloader = movieLoader().getMovie(mainPreloaderStruct, getTextures(), getVideos());
-	miniPreloader = movieLoader().getMovie(miniPreloaderStruct, getTextures(), getVideos());	
-
 	for (auto &it : photoCardStyles)
 	{
 		auto tex = getTexture(it.getDesignTexName());
@@ -216,16 +193,6 @@ ci::gl::Texture InstakubSettings::getCurrentTemplate()
 	std::advance(iter, activePhotoCardStyleDesignID - 1);
 
 	return iter->getMappedTextures()[0];
-}
-
-IMovieRef InstakubSettings::getMainPreloader() const
-{
-	return mainPreloader;
-}
-
-IMovieRef InstakubSettings::getMiniPreloader() const
-{
-	return miniPreloader;
 }
 
 TextItem InstakubSettings::getTextItem(const InstaTextID& id)

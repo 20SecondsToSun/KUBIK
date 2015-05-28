@@ -42,6 +42,7 @@ void Popup::showAnimComplete()
 void Popup::kill()
 {
 	disconnectCloseBtn();
+	disconnectAllFieldAsButton();
 }
 
 void Popup::connectCloseBtn()
@@ -54,6 +55,16 @@ void Popup::disconnectCloseBtn()
 	closeBtn->disconnectEventHandler();
 }
 
+void Popup::connectAllFieldAsButton()
+{
+	connectEventHandler(&Popup::hideQuick, this);
+}
+
+void Popup::disconnectAllFieldAsButton()
+{
+	disconnectEventHandler();
+}
+
 void Popup::hideAnimComplete()
 {
 	callback(POPUP_CLOSED);
@@ -64,9 +75,17 @@ void Popup::hide(EventGUIRef& event)
 	close();
 }
 
+void Popup::hideQuick(EventGUIRef& event)
+{
+	kill();
+	touchKeyboard().disconnectKeyboard();
+	touchKeyboard().hideQuick(Vec2f(30.0f, 1950.0f));
+	callback(POPUP_CLOSED);
+}
+
 void Popup::close()
 {
-	closeBtn->disconnectEventHandler();
+	kill();
 
 	touchKeyboard().clearInputFieldText();
 	touchKeyboard().disconnectKeyboard();
@@ -78,35 +97,23 @@ void Popup::close()
 
 void Popup::draw()
 {
-	drawBackgrounds();
-
 	closeBtn->setAlpha(alphaAnim);
 	closeBtn->draw();
 
 	touchKeyboard().draw();
-
 	gl::color(Color::white());
 }
 
 void Popup::drawBackgrounds()
 {
-	//float height = 716.0f;
-	//auto color = Utils::colorAlpha(headColor, alphaAnim);
 	auto color = Utils::colorAlpha(Color::white(), alphaAnim);
 	gl::color(color);
+
 	if (backgroundImage)	
 		gl::draw(backgroundImage);
-		
-	/*gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), height));
-	color = Utils::colorAlpha(bgColor, alphaAnim);
-	gl::color(color);
-	gl::pushMatrices();
-	gl::translate(0.0f, height);
-	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 1920.0f - height));	
-	gl::popMatrices();*/
 }
 
-void Popup::setBackground(ci::gl::Texture& texture)
+void Popup::setBackground(const ci::gl::Texture& texture)
 {
 	backgroundImage = texture;
 }

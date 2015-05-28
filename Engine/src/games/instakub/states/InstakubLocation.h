@@ -6,6 +6,7 @@
 #include "instagram/InstaPopup.h"
 #include "VirtualKeyboard.h"
 #include "VideoScreenSaver.h"
+#include "SettingsFactory.h"
 
 using namespace kubik::config;
 using namespace instagram;
@@ -79,6 +80,7 @@ namespace kubik
 				virtual void initViewerHandlers();
 
 				ci::Vec2f position;
+
 			private:	
 				static InstagramClientRef instClient;		
 

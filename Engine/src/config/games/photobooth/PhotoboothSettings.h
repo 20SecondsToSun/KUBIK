@@ -7,6 +7,7 @@
 #include "JsonTools.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
+#include "graphics/IMovie.h"
 
 namespace kubik
 {
@@ -92,6 +93,8 @@ namespace kubik
 			bool wasChanged(){ return false; };
 			bool settingsChanged();
 			changeSetting::id getChangeID() const { return changeSetting::id::PHOTOBOOTH; };
+
+			IMovieRef getPreloader();
 
 		public:
 			class Filter

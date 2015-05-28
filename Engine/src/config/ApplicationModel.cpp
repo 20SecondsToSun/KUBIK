@@ -24,16 +24,16 @@ void ApplicationModel::load()
 
 void ApplicationModel::parseConfigPaths()
 {
-	JsonTree configJSON = JsonTree(loadFile(getConfigPath()));
+	JsonTree configJSON   = JsonTree(loadFile(getConfigPath()));
 	screenSaverConfigPath = configJSON.getChild("screenSaverConfigPath").getValue<string>();
-	menuConfigPath = configJSON.getChild("menuConfigPath").getValue<string>();
-	funcesConfigPath = configJSON.getChild("funcesConfigPath").getValue<string>();
-	instagramConfigPath = configJSON.getChild("instagramConfigPath").getValue<string>();
-	kotopozaConfigPath = configJSON.getChild("kotopozaConfigPath").getValue<string>();
-	userDataPath = configJSON.getChild("userInfoPath").getValue<string>();
-	labelsPath = configJSON.getChild("labelsPath").getValue<string>();
-	designDataPath = configJSON.getChild("designDataPath").getValue<string>();
-	socSettingsFilePath = configJSON.getChild("socialConfigPath").getValue<string>();
+	menuConfigPath		  = configJSON.getChild("menuConfigPath").getValue<string>();
+	funcesConfigPath	  = configJSON.getChild("funcesConfigPath").getValue<string>();
+	instagramConfigPath   = configJSON.getChild("instagramConfigPath").getValue<string>();
+	kotopozaConfigPath    = configJSON.getChild("kotopozaConfigPath").getValue<string>();
+	userDataPath		  = configJSON.getChild("userInfoPath").getValue<string>();
+	labelsPath			  = configJSON.getChild("labelsPath").getValue<string>();
+	designDataPath		  = configJSON.getChild("designDataPath").getValue<string>();
+	socSettingsFilePath   = configJSON.getChild("socialConfigPath").getValue<string>();
 
 	JsonTree phtJSON = configJSON.getChild("photoboothConfig");
 	parseConfigPaths(photoboothConfigObject, phtJSON);
@@ -46,6 +46,9 @@ void ApplicationModel::parseConfigPaths()
 	JsonTree mainJSON = configJSON.getChild("mainConfig");
 	parseConfigPaths(mainConfigObject, mainJSON);
 	configObjectMap[settings::id::MAINCONFIG] = mainConfigObject;
+
+	preloadersConfigObject.setPathsConfigPath(getFullPath(configJSON.getChild("preloadersConfigPath").getValue<string>()));
+	configObjectMap[settings::id::PRELOADERS] = preloadersConfigObject;
 }
 
 void ApplicationModel::parseConfigPaths(ConfigObject& configObject, const JsonTree& json)
