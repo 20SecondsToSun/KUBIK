@@ -4,15 +4,16 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
 
-SearchBlock::SearchBlock(InstakubSettingsRef settings, const Vec2i& position):Sprite()
+SearchBlock::SearchBlock(InstakubSettingsRef settings, const Vec2i& position)
+	:Sprite(),
+	backgroundColor(Color::hex(0xdc831a)),
+	titleTextPos(Vec2f(0.0f, 70.0f)),
+	subTitleTextPos(Vec2f(0.0f, 145.0f))
 {
 	setPosition(position);
-	
-	titleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::SEARCH_TITLE_MAIN));
-	titleTextPos = Vec2f(0.5f * (914.0f - titleTextTex.getWidth()), 100.0f);			
 
-	subTitleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::SEARCH_TITLE_SUB));
-	subTitleTextPos = Vec2f(0.5f * (914.0f - subTitleTextTex.getWidth()), 166.0f);
+	titleItem = settings->getTextItem(InstakubSettings::InstaTextID::SEARCH_TITLE_MAIN);
+	subTitleItem = settings->getTextItem(InstakubSettings::InstaTextID::SEARCH_TITLE_SUB);	
 
 	IconPair icons(settings->getTexture("checkerw"), settings->getTexture("checkerw"));
 	checker = HashCheckerRef(new HashChecker(Rectf( Vec2f::zero(), Vec2f(131.0f, 78.0f)), icons));				
@@ -33,17 +34,17 @@ void SearchBlock::unActivateListeners()
 
 void SearchBlock::checkerClicked(EventGUIRef& event)
 {
-	//mouseUpSignal(event);
+
 }
 
 void SearchBlock::drawLayout()
 {
-	gl::color(Color::hex(0xdc831a));
+	gl::color(backgroundColor);
 	gl::drawSolidRect(Rectf(Vec2f::zero(), Vec2f(914.0f, 435.0f)));
 	gl::color(Color::white());
 
-	gl::draw(titleTextTex, titleTextPos);
-	gl::draw(subTitleTextTex, subTitleTextPos);				
+	textTools().drawTextBox(titleItem, backgroundColor, titleTextPos, Vec2i(914.0f, 100.0f));
+	textTools().drawTextBox(subTitleItem, backgroundColor, subTitleTextPos, Vec2i(914.0f, 50.0f));
 }
 
 bool SearchBlock::isChecked()

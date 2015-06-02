@@ -31,6 +31,7 @@ namespace kubik
 				static const int COMPLETE_ANIM = 102;	
 				static const int ENABLE_GAME_CLOSE = 103;
 				static const int DISABLE_GAME_CLOSE = 104;
+				static const int CLOSE_LOCATION = 105;
 
 				IPhotoboothLocation();
 

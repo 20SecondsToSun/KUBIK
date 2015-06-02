@@ -4,15 +4,16 @@ using namespace kubik::config;
 using namespace kubik;
 using namespace ci;
 
-InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position):Sprite()
+InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci::Vec2i& position)
+	:Sprite(),
+	backgroundColor(Color::hex(0x578d24)),
+	titleTextPos(Vec2f(0.0f, 100.0f)),
+	subTitleTextPos(Vec2f(0.0f, 145.0f))
 {
 	setPosition(position);	
 
-	titleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_MAIN));
-	titleTextPos = Vec2f(0.5f * (914.0f - titleTextTex.getWidth()), 100.0f);			
-
-	subTitleTextTex = textTools().getTextField(settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB));
-	subTitleTextPos = Vec2f(0.5f * (914.0f - subTitleTextTex.getWidth()), 166.0f);	
+	titleItem = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_MAIN);
+	subTitleItem = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB);
 
 	auto designdata   = settings->getPhotoCardStyles();
 	auto activeID	  = settings->getActivePhotoCardStyleDesignID();
@@ -22,7 +23,7 @@ InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci:
 
 	SixButtonsInitObject initObj(designdata, activeID, userDesignID, syspath, Color::hex(0x578d24), over6, 106.0f, 278.0f);
 	sixBtnLayer = SixButtonsLayerInstaRef(new SixButtonsLayer<ChangePhotoCardStyleDesignEvent>(initObj));
-	addChild(sixBtnLayer);
+	addChild(sixBtnLayer);	
 }
 
 void InstaPhotoCardStyle::drawLayout()
@@ -34,15 +35,15 @@ void InstaPhotoCardStyle::drawLayout()
 
 void InstaPhotoCardStyle::drawBackground()
 {
-	gl::color(Color::hex(0x578d24));
+	gl::color(backgroundColor);
 	gl::drawSolidRect(Rectf(Vec2f::zero(), Vec2f(914.0f, 1000.0f)));
 	gl::color(Color::white());
 }
 
 void InstaPhotoCardStyle::drawTitles()
 {
-	gl::draw(titleTextTex, titleTextPos);
-	gl::draw(subTitleTextTex, subTitleTextPos);	
+	textTools().drawTextBox(titleItem, backgroundColor, titleTextPos, Vec2i(914.0f, 50.0f));
+	textTools().drawTextBox(subTitleItem, backgroundColor, subTitleTextPos, Vec2i(914.0f, 50.0f));
 }
 
 void InstaPhotoCardStyle::activateListeners()

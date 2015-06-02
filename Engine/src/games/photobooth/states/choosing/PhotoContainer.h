@@ -20,10 +20,10 @@ namespace kubik
 			public:
 				PhotoContainer(int id, const ci::gl::Texture& tex1, const ci::gl::Texture& tex2, const ci::Vec2f& vec);
 				virtual void drawLayout();
-				void setSelected(bool value);
-				bool selected();				
+				void setSelected(bool value);								
 				void setPhoto(const ci::gl::Texture& tex);
-				void setShader(shaders::imagefilters::BaseShaderRef shader);				
+				void setShader(shaders::imagefilters::BaseShaderRef shader);	
+				bool selected();
 			};
 		}
 	}

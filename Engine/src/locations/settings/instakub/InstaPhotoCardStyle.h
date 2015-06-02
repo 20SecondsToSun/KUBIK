@@ -28,11 +28,15 @@ namespace kubik
 			void buttonClicked(EventGUIRef& event);				
 
 		private:
-			ci::gl::Texture titleTextTex, subTitleTextTex;	
 			ci::Vec2f titleTextPos, subTitleTextPos;
 
 			InstakubSettingsRef settings;				
 			SixButtonsLayerInstaRef sixBtnLayer;
-		};		
+
+			ci::Color backgroundColor;
+
+			kubik::TextItem titleItem;
+			kubik::TextItem subTitleItem;
+		};
 	}
 }

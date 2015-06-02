@@ -30,7 +30,6 @@ void PhotoChoosing::start()
 	if (photoStorage->empty())
 	for (int i = 1; i < 6; i++)	
 		photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
-	
 
 	//
 	state = CHOOSING;
@@ -178,7 +177,6 @@ void PhotoChoosing::setShaderForPreviews()
 	using namespace shaders::imagefilters;
 
 	auto filterID = photoStorage->getSelectedFilter();
-	console() << "selected filter::::::::::::::::   " << filterID << endl;
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
@@ -279,6 +277,8 @@ void PhotoChoosing::okBtnClicked(EventGUIRef& event)
 		.finishFn(bind(&PhotoChoosing::callback, this, NEXT_LOC));
 
 	state = ANIM_HIDE;
+
+	photoStorage->createPhotoTemplates(); // TODO OPTIMIZATION
 	callback(BEGIN_ANIM);
 }
 

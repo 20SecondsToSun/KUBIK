@@ -4,7 +4,8 @@ using namespace kubik::games::photobooth;
 FinalPhotoTemplate::FinalPhotoTemplate()
 	:templateWidth(424.0f),
 	animTime(0.6f),
-	index(0)
+	index(0),
+	animate(false)
 {
 }
 
@@ -16,7 +17,8 @@ void FinalPhotoTemplate::setData(PhotoStorageRef photoStorage)
 	auto filterID = photoStorage->getSelectedFilter();
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
 
-	templates = photoStorage->getPhotoTemplates();			
+	templates = photoStorage->getPhotoTemplates();	
+	console() << "templates size :: " << templates.size() << endl;
 	renderTexture();		
 }
 
@@ -34,19 +36,18 @@ void FinalPhotoTemplate::renderTexture()
 
 void FinalPhotoTemplate::startAnimate()
 {
-	delaycall(bind(&FinalPhotoTemplate::changePhoto, this), animTime);
+	animate = true;
 }
 
 void FinalPhotoTemplate::stopAnimate()
 {
-	clearDelaycall();
+	animate = false;
 }
 
 void FinalPhotoTemplate::changePhoto()
 {			
 	if (++index >= MAX_PHOTOS) index = 0;
 	renderTexture();	
-	startAnimate();
 }
 
 void FinalPhotoTemplate::setTemplate(const ci::gl::Texture& texture)
@@ -66,4 +67,7 @@ void FinalPhotoTemplate::draw()
 	gl::scale(photoScale, photoScale);			
 	gl::draw(photo);
 	gl::popMatrices();
+
+	if (getElapsedFrames() % 30 == 0 && animate)
+		changePhoto();
 }

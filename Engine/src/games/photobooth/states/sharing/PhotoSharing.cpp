@@ -6,7 +6,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-#define debug
+//#define debug
 
 PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
 	:IPhotoboothLocation(),
@@ -96,9 +96,14 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
-	startServiceButtonY = 588.0f;
 
-	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY  - againBtn->getHeight()  * 0.5f));
+#ifdef debug
+	startServiceButtonY = 588.0f;
+#else
+	startServiceButtonY = 1592.0f;
+#endif
+
+	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY - againBtn->getHeight()  * 0.5f));
 	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
 
 	popup = emailpopup;
@@ -146,8 +151,11 @@ void PhotoSharing::initShowAnim()
 	againBtn->showAnimate(0.0f, 1.0f, 0.8f, 0.3f);
 	againBtn->showPositionAnimate(Vec2f(0.0f, 100.0f), 0.7f, 0.3f);
 
-	allAppBtn->showAnimate(0.0f, 1.0f, 0.8f, 0.4f);
-	allAppBtn->showPositionAnimate(Vec2f(0.0f, 100.0f), 0.7f, 0.4f);
+	if (!settings->onlyOneGameOn())
+	{
+		allAppBtn->showAnimate(0.0f, 1.0f, 0.8f, 0.4f);
+		allAppBtn->showPositionAnimate(Vec2f(0.0f, 100.0f), 0.7f, 0.4f);
+	}
 
 	delaycall(bind(&PhotoSharing::connectHandlers, this), showingTime + delay);
 }
@@ -155,7 +163,9 @@ void PhotoSharing::initShowAnim()
 void PhotoSharing::connectHandlers()
 {
 	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
-	allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
+
+	if (!settings->onlyOneGameOn())		
+		allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
 
 	if (settings->getSocialState(PhtTextID::EMAIL))	
 		emailBtn->connectEventHandler(&PhotoSharing::emailBtnHandler, this);
@@ -189,7 +199,7 @@ void PhotoSharing::hideAnimComplete()
 
 void PhotoSharing::allAppBtnHandler(EventGUIRef& _event)
 {
-	console() << "allAppBtnHandler" << endl;
+	callback(CLOSE_LOCATION);
 }
 
 void PhotoSharing::emailBtnHandler(EventGUIRef& _event)
@@ -243,12 +253,14 @@ void PhotoSharing::popupClosed()
 	callback(ENABLE_GAME_CLOSE);
 	connectHandlers();
 	state = TEMPLATE_CHOOSE;
+	finalPhotoTemplate.startAnimate();
 }
 
 void PhotoSharing::disconnectEventHandlers()
 {
 	againBtn->disconnectEventHandler();
-	allAppBtn->disconnectEventHandler();
+	if (!settings->onlyOneGameOn())		
+		allAppBtn->disconnectEventHandler();
 	emailBtn->disconnectEventHandler();
 	fbBtn->disconnectEventHandler();
 	vkBtn->disconnectEventHandler();
@@ -301,7 +313,8 @@ void PhotoSharing::drawFinalPhoto()
 void PhotoSharing::drawServiceButtons()
 {
 	againBtn->draw();
-	allAppBtn->draw();
+	if (!settings->onlyOneGameOn())		
+		allAppBtn->draw();
 }
 
 void PhotoSharing::stopAllTweens()

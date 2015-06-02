@@ -62,11 +62,12 @@ void Photobooth::showAnimationComplete()
 
 	for (auto loc : locations)
 	{
-		loc->connectEventHandler(&Photobooth::nextLocationHandler, this, IPhotoboothLocation::NEXT_LOC);
-		loc->connectEventHandler(&Photobooth::beginAnimHandler, this, IPhotoboothLocation::BEGIN_ANIM);
-		loc->connectEventHandler(&Photobooth::completeAnimHandler, this, IPhotoboothLocation::COMPLETE_ANIM);
+		loc->connectEventHandler(&Photobooth::nextLocationHandler,     this, IPhotoboothLocation::NEXT_LOC);
+		loc->connectEventHandler(&Photobooth::beginAnimHandler,        this, IPhotoboothLocation::BEGIN_ANIM);
+		loc->connectEventHandler(&Photobooth::completeAnimHandler,     this, IPhotoboothLocation::COMPLETE_ANIM);
 		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IPhotoboothLocation::DISABLE_GAME_CLOSE);
 		loc->connectEventHandler(&Photobooth::enableGameCloseHandler, this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::closeLocationHandler, this, IPhotoboothLocation::CLOSE_LOCATION);
 	}		
 
 	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
@@ -89,9 +90,14 @@ void Photobooth::enableGameCloseHandler()
 	callback(ENABLE_GAME_CLOSE);
 }
 
+void Photobooth::closeLocationHandler()
+{
+	callback(CLOSE_LOCATION);	
+}
+
 void Photobooth::disableGameCloseHandler()
 {
-	callback(DISABLE_GAME_CLOSE);
+	callback(DISABLE_GAME_CLOSE); 
 }
 
 void Photobooth::stop()
@@ -118,14 +124,13 @@ void Photobooth::initLocations()
 	removeListeners();
 
 	locations.clear();
-	locations.push_back(photoInstruction);
-	
+	locations.push_back(photoInstruction);	
 
 	//locations.push_back(photoFilter);
-	//locations.push_back(photoTimer);
+	locations.push_back(photoTimer);
 	//locations.push_back(photoShooting);
-	//locations.push_back(photoChoosing);
-	//locations.push_back(photoTemplate);	
+	locations.push_back(photoChoosing);
+	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
 }
 
@@ -143,6 +148,9 @@ void Photobooth::nextLocationHandler()
 		gotoFirstlocation();
 	else
 	{
+		if (equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())		
+			++index;	
+		
 		currentLocation = locations[index];
 		currentLocation->start();
 	}	
@@ -191,7 +199,8 @@ void Photobooth::removeListeners()
 		loc->disconnectEventHandler(IPhotoboothLocation::BEGIN_ANIM);
 		loc->disconnectEventHandler(IPhotoboothLocation::COMPLETE_ANIM);
 		loc->disconnectEventHandler(IPhotoboothLocation::DISABLE_GAME_CLOSE);
-		loc->disconnectEventHandler(IPhotoboothLocation::ENABLE_GAME_CLOSE);		
+		loc->disconnectEventHandler(IPhotoboothLocation::ENABLE_GAME_CLOSE);
+		loc->disconnectEventHandler(IPhotoboothLocation::CLOSE_LOCATION);		
 	}		
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 }

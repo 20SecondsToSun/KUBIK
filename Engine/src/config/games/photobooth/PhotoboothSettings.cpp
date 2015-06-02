@@ -14,7 +14,9 @@ using namespace ci::app;
 ////////////////////////////////////////////////////////////////////////////
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model), memento(false), configSettings(configSettings)
+	:ISettings(model),
+	memento(false),
+	configSettings(configSettings)
 {
 
 }
@@ -415,8 +417,6 @@ void PhotoboothSettings::setTextures()
 
 void PhotoboothSettings::buildSettingData()
 {
-	logger().log("buildSettingsGameData photobooth");
-
 	auto dic = configTexts.getDic();
 
 	for (auto &it : dic)
@@ -447,7 +447,6 @@ void PhotoboothSettings::buildSettingData()
 
 void PhotoboothSettings::buildLocationData()
 {
-	logger().log("buildActiveGameData photobooth");
 	for (auto &it : photoCardStyles)
 		it.setDesignTexture(getTexture(it.getDesignTexName()), photoCardStylesCoordRects);
 
@@ -674,6 +673,16 @@ std::string PhotoboothSettings::getUserPhotoCardStylePath()
 IMovieRef PhotoboothSettings::getPreloader()
 {
 	return IMovieRef();
+}
+
+bool PhotoboothSettings::isPrinterOn()
+{
+	return sharing.getSocialState(PhtTextID::PRINTER);
+}
+
+bool PhotoboothSettings::onlyOneGameOn()
+{
+	return model->onlyOneGameOn();
 }
 
 void PhotoboothSettings::createMemento()

@@ -466,3 +466,9 @@ void Utils::printVideoMemoryInfo()
 	console()<< "Size: " << v[0] << " KB, Available: " << v[1] << " KB" << std::endl;
 }
 
+bool Utils::validate_email(const std::string& a)
+{
+	static const boost::regex e("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
+	return boost::regex_match(a, e);
+}
+

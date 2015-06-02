@@ -144,7 +144,7 @@ void PhotoShooting::draw()
 
 	case PhotoShooting::SHOOTING:
 	case PhotoShooting::PEPARE_FOR_SHOOTING:
-		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1670.0f));
+		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1920.0f));
 		gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
 		break;
 
@@ -152,27 +152,32 @@ void PhotoShooting::draw()
 		_scale = 748.0f / photoTemplate.getWidth();
 		_scale1 = 748.0f / photo.getWidth();
 
-		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1670.0f));
+		gl::drawSolidRect(getWindowBounds());
+
+		if (previewAnimateX <= -0.2f)
+			gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
+
+		//console() << "previewAnimateX :: " << previewAnimateX << endl;
 
 		gl::pushMatrices();
 		gl::translate(previewAnimateX, 0.0f);
-		gl::pushMatrices();
 			gl::pushMatrices();
-			gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY);
-				gl::draw(shadow);
-			gl::popMatrices();
-		gl::scale(_scale, _scale);
-		gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
-		gl::draw(photoTemplate);
-		gl::popMatrices();
+				gl::pushMatrices();
+				gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 150.0f);
+					gl::draw(shadow);
+				gl::popMatrices();
 
-		gl::pushMatrices();
-		gl::scale(_scale1, _scale1);
-		gl::translate(0.5 * (getWindowWidth()*(1 / _scale1) - photo.getWidth()), startY);
-		shader->render(photo);
-		gl::popMatrices();
-		gl::popMatrices();
-		gl::color(Color::white());
+				gl::scale(_scale, _scale);
+				gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
+				gl::draw(photoTemplate);
+			gl::popMatrices();
+
+			gl::pushMatrices();
+				gl::scale(_scale1, _scale1);
+				gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY);
+				shader->render(photo);
+			gl::popMatrices();
+		gl::popMatrices();		
 		break;
 	}
 

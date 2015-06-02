@@ -30,6 +30,11 @@ namespace kubik
 			gl::Texture titleTextTex, subTitleTextTex;	
 			ci::Vec2f titleTextPos, subTitleTextPos;
 			HashCheckerRef checker;
+
+			ci::Color backgroundColor;
+
+			kubik::TextItem titleItem;
+			kubik::TextItem subTitleItem;
 		};
 	}
 }

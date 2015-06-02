@@ -7,24 +7,20 @@ PhotoFilters::PhotoFilters(PhotoboothSettingsRef phbSettings, const ci::Color& c
 	:IPhotoboothItem(phbSettings, PhtTextID::FILTERS, color, index)
 {
 	DesignData designdata = settings->getPhotoFiltersPreview();				
-
-	ci::Vec2f pos = ci::Vec2f::zero();
-	int i = 0;
-	float shiftX = 53, shiftY = 130;
-	float startX = 106, startY= 354;
 	auto over6 = phbSettings->getTexture("over6");
+
+	int i = 0;
+	Vec2f shiftVec(53, 130);
+	Vec2f startVec(106, 354);		
 
 	for (auto it : designdata)
 	{
-		pos.x = startX + (it.getIcon().getWidth() + shiftX) * (i % 3);
-		pos.y = startY + (it.getIcon().getWidth() + shiftY) * (i / 3);	
-
 		SixButtonOneData data(it, color, over6);
+		data.calculateOffset(startVec, shiftVec, i++);
 		ImageQuadroButtonRef imageQuadroButton = settingsFactory().createPhotoFilterPreviewButton(data);
 
 		btns[it.getID()] = imageQuadroButton;
-		addChild(imageQuadroButton);	
-		i++;					
+		addChild(imageQuadroButton);					
 	}
 
 	auto filters = settings->getFilters();	
@@ -59,4 +55,4 @@ void PhotoFilters::buttonClicked(EventGUIRef& event)
 		int id = static_pointer_cast<ChangePhotoFilterPreviewActiveEvent>(event)->getItem().getID();
 		btns[id]->swapSelection();					
 	}
-}	
+}

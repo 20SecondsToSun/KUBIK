@@ -106,8 +106,8 @@ void PhotoTimer::calculateDigit()
 {
 	float timersec = cdTimer.getSeconds();
 	seconds = (MAX_SEC - (int)timersec);
-	changeAngle = rotor * timersec;
-
+	changeAngle = Utils::clamp(rotor * timersec, 0, -360);	
+	
 	int index = MAX_SEC - seconds;
 	if (index > DIGIT_COUNT - 1)
 		index = DIGIT_COUNT - 1;
@@ -151,7 +151,7 @@ void PhotoTimer::draw()
 void PhotoTimer::drawAnimationCircle()
 {
 	float y = timerTexPos2.y - 0.5f * timerTex2.getHeight();
-	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y, RADIUS, startAngle, endAngle + changeAngle, true);
+	gl::Texture texMask = drawtool().circleSliceTexture(getWindowCenter().x, y, RADIUS, startAngle, endAngle - changeAngle, true);
 
 	auto photo = Utils::drawGraphicsToFBO(timerTex2.getSize(), [&]()
 	{
@@ -172,32 +172,36 @@ void PhotoTimer::drawAnimationCircle()
 	gl::popMatrices();
 
 	//centerTex = photo.getSize()*0.5f;
-
-	gl::pushMatrices();
-	gl::translate(timerTexPos2);
-	gl::translate(centerTex);
-	gl::scale(circleScale, circleScale);
-	gl::translate(-centerTex);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	gl::draw(photo);
-	gl::popMatrices();
+	if (changeAngle > -360)
+	{
+		gl::pushMatrices();
+		gl::translate(timerTexPos2);
+		gl::translate(centerTex);
+		gl::scale(circleScale, circleScale);
+		gl::translate(-centerTex);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		gl::draw(photo);
+		gl::popMatrices();
+	}
 	
 	gl::enableAlphaBlending();
-
 	gl::color(Color::white());
 }
 
 void PhotoTimer::drawDigit()
 {
-	auto centerDigit = currentDigit.getSize() * 0.5f;
-	gl::pushMatrices();
-	gl::translate(Vec2f(0.5f * (getWindowWidth() - currentDigit.getWidth()), centerY - 0.5f * currentDigit.getHeight()));
-	gl::translate(centerDigit);
-	gl::scale(digitScale, digitScale);
-	gl::translate(-centerDigit);
-	gl::draw(currentDigit);
-	gl::popMatrices();
+	if (currentDigit)
+	{
+		auto centerDigit = currentDigit.getSize() * 0.5f;
+		gl::pushMatrices();
+		gl::translate(Vec2f(0.5f * (getWindowWidth() - currentDigit.getWidth()), centerY - 0.5f * currentDigit.getHeight()));
+		gl::translate(centerDigit);
+		gl::scale(digitScale, digitScale);
+		gl::translate(-centerDigit);
+		gl::draw(currentDigit);
+		gl::popMatrices();
+	}	
 }
 
 void PhotoTimer::stopAllTweens()

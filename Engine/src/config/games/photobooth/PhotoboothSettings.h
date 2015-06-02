@@ -96,6 +96,9 @@ namespace kubik
 
 			IMovieRef getPreloader();
 
+			bool isPrinterOn();
+			bool onlyOneGameOn();
+
 		public:
 			class Filter
 			{

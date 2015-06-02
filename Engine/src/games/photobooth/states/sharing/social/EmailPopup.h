@@ -43,14 +43,15 @@ namespace kubik
 				void showRedFocusStroke();
 				void addEmailToList();				
 				bool showAddEmail;	
-
-			public:				
-				ci::Font addEmailFont;
-				EmailPopup(kubik::config::PhotoboothSettingsRef settings);
-
-				virtual void show() override;
-				virtual void hide(EventGUIRef& event) override;
 				void addEmailHandler(EventGUIRef& event);
+				void sendEmailHandler();
+
+				ci::Font addEmailFont;
+
+			public:								
+				EmailPopup(kubik::config::PhotoboothSettingsRef settings);
+				virtual void show() override;
+				virtual void hide(EventGUIRef& event) override;				
 				virtual void draw() override;				
 			};
 		}

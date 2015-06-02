@@ -37,6 +37,7 @@ namespace shaders
 					uniform float scale;
 					uniform int texSizeX;				
 					uniform int texSizeY;		
+					uniform float alpha;
 
 					float pattern(int x, int y, float angle) 
 					{
@@ -57,6 +58,7 @@ namespace shaders
 						 cmy = (cmy - k) / (1.0 - k);
 						 cmy = clamp(cmy * 10.0 - 3.0 + vec3(pattern(texSizeX, texSizeY, angle + 0.26179), pattern(texSizeX, texSizeY, angle + 1.30899), pattern(texSizeX, texSizeY, angle)), 0.0, 1.0);
 						 k = clamp(k * 10.0 - 5.0 + pattern(texSizeX, texSizeY, angle + 0.78539), 0.0, 1.0);
+						 color.a = alpha;
 						 gl_FragColor = vec4(1.0 - cmy - k, color.a);
 					});
 
@@ -72,6 +74,7 @@ namespace shaders
 				shader.uniform("texture", 0);				
 				shader.uniform("center", center);
 				shader.uniform("angle", angle);
+				shader.uniform("alpha", alpha);
 				shader.uniform("scale", scale);	
 				shader.uniform("texSizeX", tex.getSize().x);			
 				shader.uniform("texSizeY", tex.getSize().y);			

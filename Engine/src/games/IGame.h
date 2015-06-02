@@ -28,7 +28,8 @@ namespace kubik
 		static const int ENABLE_GAME_CLOSE = 1;
 		static const int DISABLE_GAME_CLOSE = 2;
 		static const int SHOW_CONTROLS = 3;
-		static const int HIDE_CONTROLS = 4;		
+		static const int HIDE_CONTROLS = 4;
+		static const int CLOSE_LOCATION = 5;
 
 		virtual ~IGame(){};
 		virtual void draw(){};

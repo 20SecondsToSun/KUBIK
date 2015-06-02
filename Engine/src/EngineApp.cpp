@@ -26,38 +26,50 @@ private:
 void EngineApp::prepareSettings(AppBasic::Settings *settings)
 {
 	settings->setFrameRate(60);
-	settings->setWindowSize(1080, 1120);// 1080, 1120);//(1880, 1120);	
+	settings->setWindowSize(1080, 1920);
 	settings->setWindowPos(100, 100);
-	//settings->setFullScreen(true);
-	//settings->setBorderless(true);	
+	
+	////settings->setBorderless(true);	
+
+	//FullScreenOptions fullscreenOptions;
+	//DisplayRef display = fullscreenOptions.getDisplay();
+
+	////if (display->getDisplays().size() > 1)
+	//	fullscreenOptions.display(display->getDisplays()[1]);
+
+	//console() << "display->getDisplays().size()  " << display->getDisplays().size() << endl;
+
+	////fullscreenOptions.secondaryDisplayBlanking(true);	
+	//settings->setFullScreen(true, fullscreenOptions);
 }
 
 void EngineApp::setup()
-{		
-	//setWindowSize(1080, 1920);
-	//setFrameRate(60);
-	FullScreenOptions fo;
-	DisplayRef d = fo.getDisplay();
-	fo.secondaryDisplayBlanking(true);
-	
-	
-	fo.display(d->getDisplays()[0]);
-	//setFullScreen(true, fo);
-	// [864,1536]
-	console()<<"GET WINDOWS SIZE------------------------::  "<<getWindowSize()<<endl;
+{	
+	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001
 
 	model		= ApplicationModelRef(new ApplicationModel());
 	view		= AppViewRef(new ApplicationView());
 	controller  = ControllerRef(new Controller(model, view));
 
-	gl::enableAlphaBlending();
-	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);	
+	gl::enableAlphaBlending();	
+
+	FullScreenOptions fullscreenOptions;
+	DisplayRef display = fullscreenOptions.getDisplay();
+
+	//if (display->getDisplays().size() > 1)
+	fullscreenOptions.display(display->getDisplays()[1]);
+
+	console() << "display->getDisplays().size()  " << display->getDisplays().size() << endl;
+
+	//fullscreenOptions.secondaryDisplayBlanking(true);	
+	setFullScreen(true, fullscreenOptions);
+
+
 }
 
 void EngineApp::mouseDown( MouseEvent event )
 {
-	//setFullScreen(!isFullScreen());
-	//console()<<"GET WINDOWS SIZE------------------------::  "<<getWindowSize()<<endl;
+
 }
 
 void EngineApp::keyDown( KeyEvent event )
@@ -66,9 +78,6 @@ void EngineApp::keyDown( KeyEvent event )
 	{
 		case app::KeyEvent::KEY_ESCAPE:
 			quit();
-		break;
-
-		default:
 		break;
 	}
 }

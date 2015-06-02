@@ -41,7 +41,6 @@ namespace kubik
 			}
 			else if (loaderStruct.type == VIDEO)
 			{
-				console() << "CREATE VIDEO PRELOADER!!!!!!!!!!!!!!!" << endl;
 				auto video = videoDic[loaderStruct.name]->get();
 				preloader = VideoPlayerRef(new VideoPlayer(video));
 				preloader->setPosition(Vec2f(0.5f * (getWindowWidth() - video.getWidth()), 0.0f));

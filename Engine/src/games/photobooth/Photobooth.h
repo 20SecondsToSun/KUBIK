@@ -64,7 +64,15 @@ namespace kubik
 				void beginAnimHandler();
 				void completeAnimHandler();
 				void enableGameCloseHandler();
+				void closeLocationHandler();				
 				void disableGameCloseHandler();
+
+				template <class T>
+				bool equalLocations(IPhotoboothLocationRef location)
+				{
+					IPhotoboothLocation *ev = location.get();
+					return (typeid(*ev) == typeid(T));
+				}
 			};
 		}
 	}

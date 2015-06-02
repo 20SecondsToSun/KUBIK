@@ -13,12 +13,11 @@ InstagramViewerRef InstakubLocation::instaViewer;
 InstaPopupRef InstakubLocation::instaPopup;
 
 InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)
-	:settings(settings) , yPosition(0.0f)
+	:settings(settings), yPosition(0.0f)
 {
 	this->position = position;
 
-	if (init)
-		return;	
+	if (init) return;	
 
 	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
 	instClient = InstagramClientRef(new InstagramClient(settings->getClientID()));
@@ -253,6 +252,4 @@ void InstakubLocation::hashTagDefaultPhotosLoad()
 {
 	string hashtag = settings->getHashtag();
 	hashtagPhotosload(hashtag);
-
-	console() << "LOAD STRAGEDY:::::::::::::::: HASHTAG_DEFAULT_PHOTOS_LOAD :::: " << hashtag << endl;
 }

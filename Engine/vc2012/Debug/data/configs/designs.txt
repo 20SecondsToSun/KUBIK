@@ -3,7 +3,7 @@
    "designs" : 
       [{
          "id" : 1,
-	 "textObj": {"text": "MiniMal Epileptic",
+	 "textObj": {"text": "Minimal",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" : "ffffff"
@@ -12,7 +12,7 @@
       },
 {
          "id" : 2,
-	 "textObj": {"text": "Tanznia",
+	 "textObj": {"text": "Bubble Gum",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"

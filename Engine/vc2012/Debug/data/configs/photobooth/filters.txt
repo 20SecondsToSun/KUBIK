@@ -2,7 +2,7 @@
    "designs" : 
       [{
          "id" : 1,
-	 "textObj": {"text": "KALEIDOSCOPE",
+	 "textObj": {"text": "Normal",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" : "ffffff"
@@ -11,7 +11,7 @@
       },
 {
          "id" : 2,
-	 "textObj": {"text": "PIXELATE",
+	 "textObj": {"text": "Black/White",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -20,7 +20,7 @@
       },
 {
          "id" : 3,
-	 "textObj": {"text": "DOT_SCREEN",
+	 "textObj": {"text": "Sepia",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -29,7 +29,7 @@
       },
 {
          "id" : 4,
-	 "textObj": {"text": "SATURATION",
+	 "textObj": {"text": "Acid",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -38,7 +38,7 @@
       },
 {
          "id" : 5,
-	 "textObj": {"text": "SEPIA",
+	 "textObj": {"text": "Pop",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -47,7 +47,7 @@
       },
 {
          "id" : 6,
-	 "textObj": {"text": "NOISE",
+	 "textObj": {"text": "Contrast",
 		  "font" : "helveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"

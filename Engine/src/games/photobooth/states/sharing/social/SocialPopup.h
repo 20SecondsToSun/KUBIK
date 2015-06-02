@@ -36,8 +36,7 @@ namespace kubik
 				SocialPopup(kubik::config::PhotoboothSettingsRef settings);
 
 				virtual void hide(EventGUIRef& event) override;
-				virtual void show() override;
-
+				virtual void show()  override;
 				virtual void draw()  override;
 				virtual void kill()  override;
 				virtual void close() override;	

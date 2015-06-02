@@ -20,9 +20,14 @@ namespace kubik
 
 		private:
 			InstakubSettingsRef settings;	
-			ci::gl::Texture titleTextTex, subTitleTextTex, hashTex;	
+			ci::gl::Texture hashTex;	
 			ci::Vec2f titleTextPos, subTitleTextPos, searchfieldPos, hashPos;
 			ci::gl::Texture searchfield;
+
+			ci::Color backgroundColor;
+
+			kubik::TextItem titleItem;
+			kubik::TextItem subTitleItem;
 		};
 	}
 }

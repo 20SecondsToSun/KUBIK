@@ -30,7 +30,7 @@ void Popup::initVirtualKeyboard()
 	touchKeyboard().clearInputFieldText();
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().connectKeyboard();
-	auto endY = 500.0f;//800.0f;
+	auto endY = 800.0f;//500.0f;
 	touchKeyboard().show(Vec2f(30.0f, endY + 500.0f), Vec2f(30.0f, endY), 0.7f);
 }
 

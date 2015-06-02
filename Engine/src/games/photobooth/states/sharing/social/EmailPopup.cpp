@@ -49,11 +49,13 @@ void EmailPopup::showAnimComplete()
 {
 	Popup::showAnimComplete();
 	addEmailBtn->connectEventHandler(&EmailPopup::addEmailHandler, this);
+	touchKeyboard().connectEventHandler(&EmailPopup::sendEmailHandler, this, VirtualKeyboard::SEND_TOUCH);
 }
 
 void EmailPopup::hide(EventGUIRef& event)
 {
 	addEmailBtn->disconnectEventHandler();
+	touchKeyboard().disconnectEventHandler(VirtualKeyboard::SEARCH_TOUCH);
 	Popup::hide(event);
 }
 
@@ -65,7 +67,7 @@ void EmailPopup::addEmailHandler(EventGUIRef& event)
 
 bool EmailPopup::handleInputField()
 {
-	if (touchKeyboard().emptyInputField())
+	if (!Utils::validate_email(touchKeyboard().getInputFieldText()))
 	{
 		showRedFocusStroke();
 		return false;
@@ -100,6 +102,7 @@ void EmailPopup::showRedFocusStroke()
 
 void EmailPopup::draw()
 {
+	Popup::drawBackgrounds();
 	Popup::draw();
 
 	drawInputField();
@@ -128,4 +131,20 @@ void EmailPopup::drawAddedEmails()
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 	for (auto email : emailsTextures)
 		gl::draw(email.texture, email.position);
+}
+
+void EmailPopup::sendEmailHandler()
+{
+	if (!Utils::validate_email(touchKeyboard().getInputFieldText()))
+	{
+		showRedFocusStroke();
+		return;
+	}
+	
+
+	/*
+	
+			sending to server
+	
+	*/
 }

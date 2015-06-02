@@ -37,6 +37,7 @@ namespace shaders
 					uniform float scale;
 					uniform int texSizeX;				
 					uniform int texSizeY;
+					uniform float alpha;
 
 					float pattern(int x, int y) 
 					{
@@ -53,6 +54,7 @@ namespace shaders
 						vec4 color = texture2D(texture, gl_TexCoord[0].st);    						
 						float average = (color.r + color.g + color.b) / 3.0;
 						float f = average * 10.0 - 5.0 + pattern(texSizeX, texSizeY);
+						color.a = alpha;
 						gl_FragColor = vec4(vec3(f,f,f), color.a);
 					});
 
@@ -67,6 +69,7 @@ namespace shaders
 				shader.bind();
 				shader.uniform("texture", 0);				
 				shader.uniform("center", center);
+				shader.uniform("alpha", alpha);
 				shader.uniform("angle", angle);
 				shader.uniform("scale", scale);	
 				shader.uniform("texSizeX", tex.getSize().x);			

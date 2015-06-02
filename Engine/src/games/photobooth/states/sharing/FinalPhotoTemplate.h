@@ -20,6 +20,7 @@ namespace kubik
 				ci::Anim<float> _time;				
 				shaders::imagefilters::BaseShaderRef shader;
 				std::vector<PhotoTemplates> templates;
+				bool animate;
 
 				void renderTexture();
 				void changePhoto();				

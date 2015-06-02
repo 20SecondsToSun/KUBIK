@@ -40,9 +40,7 @@ KeyBackground::KeyBackground(const Vec2f& initPosition, const ci::gl::Texture& c
 void KeyBackground::hide(const EaseFn& eFunc, float time)
 {	
 	showing = false;
-	//timeline().apply(&alphaColorPlashka, 0.0f, time, eFunc);
 	timeline().apply(&alphaColorBtn, 0.0f, 0.2f, eFunc);
-	//timeline().apply(&alphaColorBg, 0.0f, time, eFunc);
 	timeline().apply(&animPositionY, 0.0f, 1920.0f - initPosition.y, time, eFunc);
 	btn->disconnectEventHandler();
 }

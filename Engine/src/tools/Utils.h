@@ -1,5 +1,5 @@
 #pragma once
-
+#include <boost/regex.hpp>
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
@@ -55,5 +55,7 @@ class Utils
 		static void printVideoMemoryInfo();
 
 		static ci::ColorA colorAlpha(ci::ColorA color, float alpha) {return ci::ColorA(color.r, color.g, color.b, alpha);};
+
+		static bool validate_email(const std::string& a);
 
 };

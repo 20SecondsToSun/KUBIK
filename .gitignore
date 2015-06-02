@@ -53,6 +53,9 @@ Icon
 
 ipch/
 photoDir/
+cache/
+Cookies
+soc/
 
 
 cookies.txt

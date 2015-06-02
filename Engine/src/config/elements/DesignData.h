@@ -98,6 +98,8 @@ namespace kubik
 		{
 			gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
 
+			console() << "fbo size::  " << fbo.getSize() << endl;
+
 			Utils::drawGraphicsToFBO(fbo, [&]()
 			{
 				gl::pushMatrices();			

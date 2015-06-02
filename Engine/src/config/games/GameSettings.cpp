@@ -142,7 +142,7 @@ vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
 IResourceDictionary GameSettings::getActiveGameTextures()
 {
 	auto id = model->getDefaultGameID();// getActiveGameID();
-	console() << "active resources:::::::::::::  " << id << endl;
+	//console() << "active resources:::::::::::::  " << id << endl;
 	return  gameSettingsMap[id]->getResources();
 }
 
