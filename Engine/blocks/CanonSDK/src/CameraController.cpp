@@ -4,7 +4,24 @@ using namespace canon;
 
 void CameraController::perform(canonEvent evt)
 {
-	//console()<<"PERFORM:::::::::::::::::::::::  "<<evt<<endl;
+	console()<<"PERFORM:::::::::::::::::::::::  "<<evt<<endl;
+
+	switch (evt)
+	{
+	case canon::PHOTO_TAKEN:
+		break;
+	case canon::PHOTO_DOWNLOADED:
+		break;
+	case canon::READY_LIVE_VIEW:
+		break;
+	case canon::CAMERA_SHUTDOWN:
+		cameraShutDownSignal();
+		break;
+	case canon::CAMERA_WILL_SOON_SHUTDOWN:
+		break;
+	default:
+		break;
+	}
 }
 
 void CameraController::downloadImage(EdsDirectoryItemRef dirItem)

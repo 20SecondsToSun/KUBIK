@@ -18,7 +18,8 @@ namespace kubik
 		enum locationStates
 		{
 			SHOW_ANIM,
-			DRAW
+			DRAW,
+			CAMERA_DISCONNECT
 		}
 		state;
 

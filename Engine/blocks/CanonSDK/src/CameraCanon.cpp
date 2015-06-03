@@ -2,10 +2,11 @@
 
 using namespace canon;
 
-CameraCanon::CameraCanon():recordingFPS(12), connectionState(UNDEFINED), liveViewState(UNDEFINED)
+CameraCanon::CameraCanon() :recordingFPS(12), connectionState(DISCONNECT), liveViewState(UNDEFINED)
 {
 	controller = new CameraController();
-	controller->photoDownloadedSignal.connect(bind(&CameraCanon::photoDownloaded, this, placeholders::_1));
+	controller->photoDownloadedSignal.connect(bind(&CameraCanon::photoDownloadHandler, this, placeholders::_1));
+	controller->cameraShutDownSignal.connect(bind(&CameraCanon::shutdownHandler, this));
 }
 
 void CameraCanon::setup() 
@@ -20,9 +21,10 @@ void CameraCanon::connect()
 
 	try 
 	{
+		BaseCanon::setConnection(false);
 		BaseCanon::setup(controller);
 
-		if (!isConnected()) 
+		if (BaseCanon::isCameraConnected())
 		{
 			connectionState = CONNECT;
 			deviceConnectEvent();
@@ -30,7 +32,7 @@ void CameraCanon::connect()
 	}
 	catch(...)
 	{
-		if (isConnected()) 
+		if (BaseCanon::isCameraConnected())
 		{
 			connectionState = DISCONNECT;
 			deviceDisconnectEvent();
@@ -38,8 +40,33 @@ void CameraCanon::connect()
 	}	
 }
 
-bool CameraCanon::isConnected()
+void CameraCanon::setAutoReconnect(bool autoReconnect)
 {
+	if (!autoReconnectSignal.connected() && autoReconnect)
+		autoReconnectSignal = App::get()->getSignalUpdate().connect(bind(&CameraCanon::autoReconnectCheckUpdate, this));
+	else if (autoReconnectSignal.connected() && !autoReconnect)
+		autoReconnectSignal.disconnect();
+}
+
+void CameraCanon::autoReconnectCheckUpdate()
+{
+	if(connectionState == DISCONNECT)
+	{
+		int seconds = (int)reconnectTimer.getSeconds();
+
+		if (!reconnectTimer.isStopped() && seconds > 0 && seconds % 2 == 0)
+		{
+			reconnectTimer.stop();
+			connect();
+			startLiveView();
+		}
+		else if (reconnectTimer.isStopped())		
+			reconnectTimer.start();		
+	}	
+}
+
+bool CameraCanon::isConnected()
+{	
 	return connectionState == CONNECT;
 }
 
@@ -87,7 +114,15 @@ void CameraCanon::shutdown()
 {
 	connectionState = DISCONNECT;
 	deviceDisconnectEvent();
-	BaseCanon::shutdown();
+
+	try
+	{
+		BaseCanon::shutdown();
+	}
+	catch (...)
+	{
+		
+	}	
 }
 
 bool CameraCanon::checkNewFrame()
@@ -186,38 +221,8 @@ int CameraCanon::getHeight() const
 
 void CameraCanon::update()
 {
-	if (connectionState == CONNECT)
-	{
-		/*if(_isRecording && ((getElapsedSeconds() - startTime) >= 1.0f / recordingFPS))
-		{
-			saveFrame();
-			startTime = getElapsedSeconds();
-		}*/
-
-		if(isLiveViewing())
-		{
-			downloadData();
-		}
-		else if (!restartLiveViewTimer.isStopped()  && (int)restartLiveViewTimer.getSeconds() == 2)
-		{
-			photoCameraReadyLiveView();
-		}
-	}
-	else
-	{
-		int seconds = (int)reconnectTimer.getSeconds();
-
-		if (!reconnectTimer.isStopped() && seconds > 0 && seconds % 2 == 0)
-		{
-			reconnectTimer.stop();
-			connect();
-			startLiveView();
-		}
-		else if (reconnectTimer.isStopped())
-		{		
-			reconnectTimer.start();
-		}
-	}
+	if (connectionState == CONNECT && isLiveViewing())	
+		  downloadData();
 }
 
 void CameraCanon::draw(Rectf drawingRect) 
@@ -232,6 +237,7 @@ void CameraCanon::draw(Rectf drawingRect)
 ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int offsety, float scale)
 {
 	auto tex = gl::Texture(getLiveSurface());
+	
 	if(!tex) return 0;
 
 	gl::Fbo fbo = gl::Fbo(sizex, sizey);
@@ -274,27 +280,19 @@ void CameraCanon::photoCameraError( EdsError err)
 
 void CameraCanon::photoTaken(EdsDirectoryItemRef directoryItem)//, EdsError error)
 {
-	//if (error == EDS_ERR_OK)
-	//{
-	//startLiveView();
 	photoTakenEvent();
-		//downloadImage(directoryItem);
-	//}
-	//else
-	//	photoErrorEvent();
 }
 
-void CameraCanon::photoDownloaded(const string& downloadPath)
+void CameraCanon::photoDownloadHandler(const string& downloadPath)
 {
-	//if (error == EDS_ERR_OK)
-	//{
-	//startLiveView();
 	photoDownloadedEvent(downloadPath);
-	//}
-	//else
-	//{
-	//	photoErrorEvent();
-	//}
+}
+
+void CameraCanon::shutdownHandler()
+{
+	connectionState = DISCONNECT;
+	deviceDisconnectEvent();
+	shutdown();
 }
 
 void CameraCanon::setDownloadDirectory(fs::path dir)
@@ -343,4 +341,6 @@ void CameraCanon::handleStateEvent(EdsUInt32 inEvent)
 		extendShutDownTimer();
 		break;
 	}
+
+	console() << "event--------------------------  " << inEvent<<endl;
 }

@@ -36,8 +36,9 @@ void BaseCanon::init(CameraController* controller)
 	if(!getNumConnectedCameras()) 
 		throw ExcCameraListEmpty();
 	
-	//getDeviceInfo( mCamera );
+	
 	err = EdsGetChildAtIndex(cameraList, 0, &camera);
+	getDeviceInfo(camera);
 
 	if(err != EDS_ERR_OK)
 		throw ExcCouldnotGetCamera();	
@@ -63,10 +64,10 @@ void BaseCanon::getDeviceInfo(EdsCameraRef cam)
 
 	if( err == EDS_ERR_OK )
 	{
-		//console() << "Cinder-Canon :: Device name :: " << info.szDeviceDescription << endl;
-		//console() << "Cinder-Canon :: deviceSubType :: " << info.deviceSubType << endl;
-		//console() << "Cinder-Canon :: reserved :: " << info.reserved << endl;
-		//console() << "Cinder-Canon :: szPortName :: " << info.szPortName << endl;		
+		console() << "Cinder-Canon :: Device name :: " << info.szDeviceDescription << endl;
+		console() << "Cinder-Canon :: deviceSubType :: " << info.deviceSubType << endl;
+		console() << "Cinder-Canon :: reserved :: " << info.reserved << endl;
+		console() << "Cinder-Canon :: szPortName :: " << info.szPortName << endl;		
 	}
 	else
 		throw ExcDeviceInfo(CanonErrorToString(err));	
@@ -169,12 +170,16 @@ EdsError BaseCanon::downloadEvfData( EdsCameraRef camera )
 	err = EdsCreateMemoryStream( 0, &stream);
 
 	// Create EvfImageRef.
-	if(err == EDS_ERR_OK)
-		err = EdsCreateEvfImageRef(stream, &evfImage);	
+	if (err == EDS_ERR_OK)
+	{
+		err = EdsCreateEvfImageRef(stream, &evfImage);		
+	}		
 
 	// Download live view image data.
 	if(err == EDS_ERR_OK)
-		err = EdsDownloadEvfImage(camera, evfImage);
+	{
+		err = EdsDownloadEvfImage(camera, evfImage);		
+	}
 
 	// Get the incidental data of the image.
 	if(err == EDS_ERR_OK)
@@ -186,6 +191,7 @@ EdsError BaseCanon::downloadEvfData( EdsCameraRef camera )
 		// Get the focus and zoom border position
 		EdsPoint point;
 		EdsGetPropertyData(evfImage, kEdsPropID_Evf_ZoomPosition, 0, sizeof(point), &point);
+		
 	}
 
 	// Display image
@@ -239,15 +245,15 @@ EdsError BaseCanon::sendCommand(EdsCameraRef inCameraRef, EdsUInt32 inCommand, E
 
 void BaseCanon::downloadData()
 {	
-	downloadEvfData(camera); 
+	auto err = downloadEvfData(camera); 
 }
 
 void BaseCanon::setImageQuality(EdsImageQuality quality)
 {
 	////////////////////////////////////////
 	//
-	// EdsImageQuality_LR  -4290x2856
-	// EdsImageQuality_LRLJF  - 4272x2848
+	//EdsImageQuality_LR  -4290x2856
+	//EdsImageQuality_LRLJF  - 4272x2848
 	//EdsImageQuality_LJF - 4272x2848
 	//EdsImageQuality_LJN
 	//EdsImageQuality_MJF
@@ -291,6 +297,11 @@ bool BaseCanon::isCameraConnected() const
 {
 	return _isCameraConnected;
 };
+
+void BaseCanon::setConnection(bool value)
+{
+	_isCameraConnected = value;
+}
 
 bool BaseCanon::isLiveViewing() const
 { 

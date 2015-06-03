@@ -355,6 +355,7 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("bg", createImageResource(getTemplateDesignPath("bg.jpg")));
 	addToDictionary("popupNetralBg", createImageResource(getTemplateDesignPath("popupNetralBg.png")));
 	addToDictionary("popupErrorBg", createImageResource(getTemplateDesignPath("popupErrorBg.png")));
+	addToDictionary("cameraErrorText", createImageResource(getTemplateDesignPath("cameraErrorText.png")));
 
 	addToDictionary("popupBg", createImageResource(getTemplateDesignPath("PhotoShare\\popupBg.png")));
 	addToDictionary("addEmail", createImageResource(getTemplateDesignPath("PhotoShare\\addEmail.png")));

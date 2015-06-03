@@ -40,7 +40,8 @@ namespace canon
 		void downloadData();
 
 		Surface8u getLiveSurface() const;
-		bool isCameraConnected()  const;		
+		bool isCameraConnected()  const;	
+		void setConnection(bool value);
 		bool isLiveViewing() const;
 		bool isBusy() const;
 		bool isFrameNew() const;

@@ -7,7 +7,7 @@ using namespace canon;
 EdsError EDSCALLBACK CameraEventListener::handleObjectEvent(EdsUInt32 inEvent, EdsBaseRef inRef, EdsVoid *inContext)
 {
 	CameraController *controller = (CameraController*)inContext;	
-
+	//console() << "Cinder-Canon: handleObjectEvent " << CanonEventToString(inEvent) << std::endl;
 	switch(inEvent)
 	{
 	case kEdsObjectEvent_DirItemRequestTransfer:

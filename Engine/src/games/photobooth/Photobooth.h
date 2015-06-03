@@ -66,6 +66,8 @@ namespace kubik
 				void enableGameCloseHandler();
 				void closeLocationHandler();				
 				void disableGameCloseHandler();
+				void handleCameraConnection();
+				void drawCameraErrorPopup();				
 
 				template <class T>
 				bool equalLocations(IPhotoboothLocationRef location)

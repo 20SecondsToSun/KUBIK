@@ -20,6 +20,7 @@ namespace canon
 	public:
 		signal<void(string)>		photoDownloadedSignal;
 		signal<void(string)>		photoDownloadedErrorSignal;
+		signal<void()>				cameraShutDownSignal;		
 
 		void perform(canonEvent evt);
 		void downloadImage(EdsDirectoryItemRef dirItem);

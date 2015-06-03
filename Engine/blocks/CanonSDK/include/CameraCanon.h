@@ -1,14 +1,10 @@
 #pragma once
 
-//#include "cinder/app/AppBasic.h"
-//#include "cinder/gl/gl.h"
-//#include "cinder/gl/Texture.h"
 #include "BaseCanon.h"
 #include "Utils.h"
 
 using namespace ci;
 using namespace ci::gl;
-using namespace std;
 using namespace boost::signals2;
 using namespace canon;
 
@@ -22,8 +18,9 @@ namespace canon
 		void setup();
 		void shutdown();
 		void connect();
+		void setAutoReconnect(bool autoReconnect = true);
 		void update();
-		void draw(Rectf drawingRect = Rectf(0.0f, 0.0f, 0.0f, 0.0f));
+		void draw(ci::Rectf drawingRect = ci::Rectf(ci::Vec2f::zero(), ci::Vec2f::zero()));
 
 		void reset();
 		void stop(); 
@@ -43,10 +40,12 @@ namespace canon
 		int getWidth() const;
 		int getHeight() const;
 		int getTotalCapturedFrames() const;
-		const vector<Surface>& getCapturedFrames() const;
+		const vector<ci::Surface>& getCapturedFrames() const;
 
 		void photoTaken(EdsDirectoryItemRef directoryItem);
-		void photoDownloaded(const string& downloadPath);
+		void photoDownloadHandler(const std::string& downloadPath);
+		void shutdownHandler();
+
 		void photoCameraError(EdsError err);
 		void handleStateEvent(EdsUInt32 inEvent);
 
@@ -71,12 +70,16 @@ namespace canon
 		int liveViewState;
 		double startTime;   
 
-		vector<Surface> mCapturedFrames;   
+		std::vector<ci::Surface> mCapturedFrames;   
 		Timer reconnectTimer, restartLiveViewTimer;
 		enum states {UNDEFINED, CONNECT, DISCONNECT, LIVE, NOLIVE};	
 
 		void saveFrame();
-		void pushFrame(const Surface& frame);
+		void pushFrame(const ci::Surface& frame);
 		void calculateAspects();	
+
+	private:
+		void autoReconnectCheckUpdate();
+		connection autoReconnectSignal;
 	};
 }

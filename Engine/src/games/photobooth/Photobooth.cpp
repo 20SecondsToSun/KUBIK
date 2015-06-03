@@ -54,6 +54,8 @@ void Photobooth::start()
 	index = 0;
 	currentLocation = locations[index];
 	initShowAnimation();	
+
+	gl::enableAlphaBlending();
 }
 
 void Photobooth::showAnimationComplete()
@@ -66,8 +68,8 @@ void Photobooth::showAnimationComplete()
 		loc->connectEventHandler(&Photobooth::beginAnimHandler,        this, IPhotoboothLocation::BEGIN_ANIM);
 		loc->connectEventHandler(&Photobooth::completeAnimHandler,     this, IPhotoboothLocation::COMPLETE_ANIM);
 		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IPhotoboothLocation::DISABLE_GAME_CLOSE);
-		loc->connectEventHandler(&Photobooth::enableGameCloseHandler, this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
-		loc->connectEventHandler(&Photobooth::closeLocationHandler, this, IPhotoboothLocation::CLOSE_LOCATION);
+		loc->connectEventHandler(&Photobooth::enableGameCloseHandler,  this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::closeLocationHandler,    this, IPhotoboothLocation::CLOSE_LOCATION);
 	}		
 
 	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);
@@ -126,9 +128,9 @@ void Photobooth::initLocations()
 	locations.clear();
 	locations.push_back(photoInstruction);	
 
-	//locations.push_back(photoFilter);
+	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
-	//locations.push_back(photoShooting);
+	locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
@@ -140,6 +142,9 @@ void Photobooth::cameraSetup()
 	cameraCanon().startLiveView();
 	cameraCanon().setDownloadDirectory(settings->getPhotoDownloadDirectory());
 	cameraCanon().setImageQuality();
+	cameraCanon().setAutoReconnect(true);
+	//connect_once(cameraCanon().deviceConnectEvent, bind(&Photobooth::cameraConnectHandler, this));
+	//connect_once(cameraCanon().deviceDisconnectEvent, bind(&Photobooth::cameraDisconnectHandler, this));
 }
 
 void Photobooth::nextLocationHandler()
@@ -170,7 +175,22 @@ void Photobooth::gotoFirstlocation()
 
 void Photobooth::update()
 {
-	currentLocation->update();
+	handleCameraConnection();
+	currentLocation->update();	
+}
+
+void Photobooth::handleCameraConnection()
+{
+	if (!cameraCanon().isConnected() && state != CAMERA_DISCONNECT)
+	{	
+		state = CAMERA_DISCONNECT;
+		currentLocation->stop();	
+	}
+	else if (cameraCanon().isConnected() && state == CAMERA_DISCONNECT)
+	{
+		state = DRAW;
+		gotoFirstlocation();	
+	}
 }
 
 void Photobooth::draw()
@@ -188,7 +208,18 @@ void Photobooth::draw()
 	case DRAW:
 		currentLocation->draw();
 		break;
+
+	case CAMERA_DISCONNECT:
+		drawCameraErrorPopup();
+		break;
 	}	
+}
+
+void Photobooth::drawCameraErrorPopup()
+{
+	gl::draw(settings->getTexture("popupErrorBg"));
+	gl::Texture tex = settings->getTexture("cameraErrorText");
+	gl::draw(tex, Vec2f(0.5f * (1080.0f - tex.getWidth()), 766.0f - 0.5f * tex.getHeight()));
 }
 
 void Photobooth::removeListeners()
@@ -203,4 +234,5 @@ void Photobooth::removeListeners()
 		loc->disconnectEventHandler(IPhotoboothLocation::CLOSE_LOCATION);		
 	}		
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
+	cameraCanon().setAutoReconnect(false);
 }

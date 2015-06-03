@@ -14,7 +14,7 @@
       },
       {
          "id" : 3,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 4,
@@ -22,7 +22,7 @@
       },
       {
          "id" : 5,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 6,
@@ -31,7 +31,7 @@
    ],
    "isEmail" : true,
    "isFacebook" : true,
-   "isPrint" : false,
+   "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : false,
    "isTwitter" : true,

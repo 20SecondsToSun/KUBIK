@@ -66,9 +66,11 @@ namespace kubik
 
 				void drawProgressBlock();
 				void drawDashedFrame();
+				void drawPhotoMaskIntro();				
 				void showAnimationComplete();
 				void drawCameraTexture();
-
+				void drawSmile();
+				void drawPhotoframe();
 				int getNextSmileIndex();
 
 				ci::signals::connection photoTakenCon, photoErrorCon, photoDownloadedCon;

@@ -28,43 +28,26 @@ void EngineApp::prepareSettings(AppBasic::Settings *settings)
 	settings->setFrameRate(60);
 	settings->setWindowSize(1080, 1920);
 	settings->setWindowPos(100, 100);
-	
-	////settings->setBorderless(true);	
-
-	//FullScreenOptions fullscreenOptions;
-	//DisplayRef display = fullscreenOptions.getDisplay();
-
-	////if (display->getDisplays().size() > 1)
-	//	fullscreenOptions.display(display->getDisplays()[1]);
-
-	//console() << "display->getDisplays().size()  " << display->getDisplays().size() << endl;
-
-	////fullscreenOptions.secondaryDisplayBlanking(true);	
-	//settings->setFullScreen(true, fullscreenOptions);
 }
 
 void EngineApp::setup()
 {	
+	gl::enableAlphaBlending();
+
 	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001
 
 	model		= ApplicationModelRef(new ApplicationModel());
 	view		= AppViewRef(new ApplicationView());
-	controller  = ControllerRef(new Controller(model, view));
-
-	gl::enableAlphaBlending();	
+	controller  = ControllerRef(new Controller(model, view));	
 
 	FullScreenOptions fullscreenOptions;
 	DisplayRef display = fullscreenOptions.getDisplay();
 
-	//if (display->getDisplays().size() > 1)
-	fullscreenOptions.display(display->getDisplays()[1]);
-
-	console() << "display->getDisplays().size()  " << display->getDisplays().size() << endl;
+	if (display->getDisplays().size() > 1)
+		fullscreenOptions.display(display->getDisplays()[1]);
 
 	//fullscreenOptions.secondaryDisplayBlanking(true);	
 	setFullScreen(true, fullscreenOptions);
-
-
 }
 
 void EngineApp::mouseDown( MouseEvent event )

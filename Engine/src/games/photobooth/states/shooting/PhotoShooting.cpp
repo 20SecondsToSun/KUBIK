@@ -87,8 +87,8 @@ void PhotoShooting::reset(PhotoboothSettingsRef settings)
 	backgroundProgresstexture = settings->getTexture("plash");	
 
 	framePosition = Vec2f((getWindowWidth() - frame.getWidth()) * 0.5f, 252.0f);
-	countsTexPos = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
-	seekTexPos0 = Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));
+	countsTexPos  = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
+	seekTexPos0   = Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));
 	photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
 }
 
@@ -118,23 +118,12 @@ void PhotoShooting::draw()
 {
 	fillBg();
 
-	float _scale, _scale1, startY = 294.0f;// 10.0f;
-	float smileY = 829.0f;
-
-	ci::gl::Texture _photo, _photoMask;
-
 	switch (state)
 	{
 	case PhotoShooting::START_ANIM:
 		drawCameraTexture();
 		drawDashedFrame();
-
-		_photo = photoStorage->getLastScreenShot();
-		_photoMask = Utils::drawGraphicsToFBO(_photo.getSize(), [&]()
-		{
-			gl::drawSolidCircle(Vec2f(_photo.getWidth() * 0.5f, PhotoTimer::centerY), maskSize);
-		});
-		maskShader->render(_photo, _photoMask, Vec2f::zero(), 1);
+		drawPhotoMaskIntro();	
 		break;
 
 	case PhotoShooting::LIVE_VIEW:
@@ -144,40 +133,17 @@ void PhotoShooting::draw()
 
 	case PhotoShooting::SHOOTING:
 	case PhotoShooting::PEPARE_FOR_SHOOTING:
-		gl::drawSolidRect(Rectf(0.0f, 0.0f, 1080.0f, 1920.0f));
-		gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
+		gl::drawSolidRect(getWindowBounds());
+		drawSmile();
 		break;
 
 	case PhotoShooting::PREVIEW:
-		_scale = 748.0f / photoTemplate.getWidth();
-		_scale1 = 748.0f / photo.getWidth();
-
 		gl::drawSolidRect(getWindowBounds());
 
 		if (previewAnimateX <= -0.2f)
-			gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
+			drawSmile();
 
-		//console() << "previewAnimateX :: " << previewAnimateX << endl;
-
-		gl::pushMatrices();
-		gl::translate(previewAnimateX, 0.0f);
-			gl::pushMatrices();
-				gl::pushMatrices();
-				gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 150.0f);
-					gl::draw(shadow);
-				gl::popMatrices();
-
-				gl::scale(_scale, _scale);
-				gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
-				gl::draw(photoTemplate);
-			gl::popMatrices();
-
-			gl::pushMatrices();
-				gl::scale(_scale1, _scale1);
-				gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY);
-				shader->render(photo);
-			gl::popMatrices();
-		gl::popMatrices();		
+		drawPhotoframe();
 		break;
 	}
 
@@ -194,11 +160,60 @@ void PhotoShooting::drawCameraTexture()
 	gl::popMatrices();
 }
 
+void PhotoShooting::drawDashedFrame()
+{
+	gl::draw(frame, framePosition);
+}
+
+void PhotoShooting::drawPhotoMaskIntro()
+{
+	ci::gl::Texture _photoMask;
+
+	auto _photo = photoStorage->getLastScreenShot();
+	_photoMask = Utils::drawGraphicsToFBO(_photo.getSize(), [&]()
+	{
+		gl::drawSolidCircle(Vec2f(_photo.getWidth() * 0.5f, PhotoTimer::centerY), maskSize);
+	});
+	maskShader->render(_photo, _photoMask, Vec2f::zero(), 1);
+}
+
+void PhotoShooting::drawSmile()
+{
+	float smileY = 829.0f;
+	gl::draw(smileTexs[smileIndex], Vec2f(0.5f * (getWindowWidth() - smileTexs[smileIndex].getWidth()), smileY - smileTexs[smileIndex].getHeight() * 0.5f));
+}
+
+void PhotoShooting::drawPhotoframe()
+{
+	auto startY = 294.0f;
+	auto _scale = 748.0f / photoTemplate.getWidth();
+	auto _scale1 = 748.0f / photo.getWidth();
+
+	gl::pushMatrices();
+	gl::translate(previewAnimateX, 0.0f);
+	gl::pushMatrices();
+	gl::pushMatrices();
+	gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 150.0f);
+	gl::draw(shadow);
+	gl::popMatrices();
+
+	gl::scale(_scale, _scale);
+	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
+	gl::draw(photoTemplate);
+	gl::popMatrices();
+
+	gl::pushMatrices();
+	gl::scale(_scale1, _scale1);
+	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY);
+	shader->render(photo);
+	gl::popMatrices();
+	gl::popMatrices();
+}
+
 void PhotoShooting::drawProgressBlock()
 {
 	gl::pushMatrices();
 	gl::translate(0.0f, progressBlockStartY + progressBlockAnimateY);
-
 	gl::draw(backgroundProgresstexture);	
 
 	// draw progress line
@@ -210,11 +225,6 @@ void PhotoShooting::drawProgressBlock()
 	gl::draw(seekTex, seekTexPos0 + seekPosition);
 	gl::draw(countsTex, countsTexPos);
 	gl::popMatrices();
-}
-
-void PhotoShooting::drawDashedFrame()
-{
-	gl::draw(frame, framePosition);
 }
 
 void PhotoShooting::photoTakenHandler()
