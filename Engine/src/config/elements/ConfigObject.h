@@ -7,45 +7,15 @@ namespace kubik
 		class ConfigObject
 		{
 		public:
-			void setPathsConfigPath(const string& path)
-			{
-				pathsPath = path;
-			}
+			void setPathsConfigPath(const std::string& path);
+			void setParamsConfigPath(const std::string& path);
+			void setLabelsConfigPath(const std::string& path);
+			void setConstsConfigPath(const std::string& path);
 
-			void setParamsConfigPath(const string& path)
-			{
-				paramsPath = path;
-			}
-
-			void setLabelsConfigPath(const string& path)
-			{
-				labelsPath = path;
-			}
-
-			void setConstsConfigPath(const string& path)
-			{
-				constsPath = path;
-			}
-
-			const string& getPathsConfigPath()
-			{
-				return pathsPath;
-			}
-
-			const string& getParamsConfigPath()
-			{
-				return paramsPath;
-			}
-
-			const string& getLabelsConfigPath()
-			{
-				return labelsPath;
-			}
-
-			const string& getConstsConfigPath()
-			{
-				return constsPath;
-			}
+			const std::string& getPathsConfigPath();
+			const std::string& getParamsConfigPath();
+			const std::string& getLabelsConfigPath();
+			const std::string& getConstsConfigPath();
 
 		private:
 			std::string pathsPath;

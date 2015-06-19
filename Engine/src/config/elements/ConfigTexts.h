@@ -1,5 +1,4 @@
 #pragma once
-
 #include "TextItem.h"
 
 using namespace std;
@@ -35,9 +34,8 @@ namespace kubik
 				return dic;
 			}
 
-			void setDic(DicType dic)
+			void setDic(const DicType& dic)
 			{
-				//console()<<"set dictionary::  "<<dic.size()<<endl;
 				this->dic = dic;
 			}
 

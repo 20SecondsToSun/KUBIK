@@ -1,5 +1,5 @@
 {
    "activePhotoCardStyleDesignID" : 1,
-   "hashtag" : "777",
+   "hashtag" : "",
    "search" : true
 }

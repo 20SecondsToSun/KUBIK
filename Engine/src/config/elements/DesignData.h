@@ -8,131 +8,28 @@ namespace kubik
 	class OneDesignItem
 	{
 	public:
-		OneDesignItem()
-		{
+		void setID(int id);
+		void setTextItem(const std::string& name, const std::string& fontName, float size, const std::string& color);
+		void setIconPath(const std::string& path);
+		void setDesignTexName(const std::string& name);
+		void setIcon(const ci::gl::Texture& icon);
+		void setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect);
+		void setDesignTexture(const ci::gl::Texture& designTexture);
+		void setFont(FontResourceDictionary fontDic);
+		void setDesignPath(const std::string& path);
+		void setIconTexName(const std::string& name);
+		int getID() const;		
 
-		}
+		TextItem getTextItem() const;			
 
-		void setID(int id)
-		{
-			this->id = id;
-		}
+		const std::string& getIconPath();
+		const std::string& getDesignPath();
+		std::string getIconTexName() const;		
+		std::string getDesignTexName();
 
-		int getID()
-		{
-			return id;
-		}
-		
-		TextItem getTextItem()
-		{
-			return text;
-		}
-
-		void setTextItem(std::string name, string fontName, float size, string color)
-		{
-			text.setText(name);
-			text.setFontName(fontName);
-			text.setSize(size);
-			text.setColor(color);
-		}		
-
-		void setIconPath(const std::string& path)
-		{
-			iconPath = path;
-		}
-
-		ci::gl::Texture getIcon() const
-		{
-			return icon;
-		}
-
-		const std::string& getIconPath()
-		{
-			return iconPath;
-		}
-
-		std::string getIconTexName() const
-		{
-			return iconTextName;//text.getText() + to_string(id);
-		}
-
-		void setIconTexName(const std::string& name)
-		{
-			iconTextName = name;
-		}
-
-		///
-
-		std::string getDesignTexName()
-		{
-			return designTexName;//text.getText() + to_string(id);
-		}
-
-		void setDesignTexName(const std::string& name)
-		{
-			designTexName = name;
-		}
-
-		///
-
-		void setIcon(const ci::gl::Texture& icon)
-		{
-			this->icon = icon;
-		}
-
-		void setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect)
-		{
-			//this->designTexture = designTexture;
-			for (size_t i = 0; i < coordRect.size(); i++)
-			{
-				designData.push_back(sliceMappedTexture(designTexture, coordRect[i]));
-			}		
-		}
-
-		void setDesignTexture(const ci::gl::Texture& designTexture)
-		{
-			designData.push_back(designTexture);
-		}
-
-		ci::gl::Texture sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
-		{
-			gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
-
-			console() << "fbo size::  " << fbo.getSize() << endl;
-
-			Utils::drawGraphicsToFBO(fbo, [&]()
-			{
-				gl::pushMatrices();			
-				gl::translate(-rect.x1, -rect.y1);				
-				gl::draw(tex);
-				gl::popMatrices();
-			});
-
-			gl::Texture retTex = fbo.getTexture();
-			Utils::clearFBO(fbo);
-
-			return retTex;
-		}
-
-		std::vector<ci::gl::Texture> getMappedTextures()
-		{
-			return this->designData;
-		}		
-
-		void setFont(FontResourceDictionary fontDic)
-		{
-			text.setFont(fontDic);
-		}
-
-		void setDesignPath(const std::string& path)
-		{
-			designPath = path;
-		}	
-
-		const std::string& getDesignPath()
-		{
-			return designPath;
-		}			
+		ci::gl::Texture getIcon() const;
+		ci::gl::Texture sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect);
+		std::vector<ci::gl::Texture> getMappedTextures();
 
 	private:
 		int id;

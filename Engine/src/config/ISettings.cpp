@@ -86,11 +86,13 @@ void ISettings::clearResources()
 
 void ISettings::buildLocationData()
 {
-};
+
+}
 
 void ISettings::buildSettingData()
 {
-};
+
+}
 
 ci::fs::path ISettings::getBasePath()
 {

@@ -684,6 +684,15 @@
     <ClCompile Include="..\src\config\graphic\preloader\PreloaderSettings.cpp">
       <Filter>Source Files\config\graphic\preloader</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\config\elements\DesignData.cpp">
+      <Filter>Source Files\config\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\elements\TextItem.cpp">
+      <Filter>Source Files\config\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\elements\ConfigObject.cpp">
+      <Filter>Source Files\config\elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1387,6 +1396,9 @@
     </ClInclude>
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
       <Filter>Source Files\config\graphic\preloader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

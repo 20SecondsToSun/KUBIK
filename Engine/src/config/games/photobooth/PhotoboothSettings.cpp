@@ -14,9 +14,7 @@ using namespace ci::app;
 ////////////////////////////////////////////////////////////////////////////
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model),
-	memento(false),
-	configSettings(configSettings)
+	:ISettings(model), memento(false), configSettings(configSettings)
 {
 
 }
@@ -24,8 +22,8 @@ PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettings
 void PhotoboothSettings::load()
 {
 	mainConfigObj = model->getConfigObject(settings::id::PHOTOBOOTH);
-
 	console() << "start photobooth loader" << endl;
+
 	try
 	{
 		loadPaths();
@@ -107,7 +105,7 @@ void PhotoboothSettings::setDesignPath()
 	templateDesignPath = configSettings->getTemplateDesign() + configPaths.finalPath;
 }
 
-void PhotoboothSettings::loadSocialParams(JsonTree config)
+void PhotoboothSettings::loadSocialParams(const JsonTree& config)
 {
 	setSocialState(PhtTextID::FACEBOOK, config.getChild("isFacebook").getValue<bool>());
 	setSocialState(PhtTextID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
@@ -117,7 +115,7 @@ void PhotoboothSettings::loadSocialParams(JsonTree config)
 	setSocialState(PhtTextID::PRINTER, config.getChild("isPrint").getValue<bool>());
 }
 
-void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
+void PhotoboothSettings::loadPhotoFilterParams(const JsonTree& config)
 {
 	JsonTree datas = JsonTree(config.getChild("filtersIds"));
 	for (auto it : datas)
@@ -129,7 +127,7 @@ void PhotoboothSettings::loadPhotoFilterParams(JsonTree config)
 	}
 }
 
-void PhotoboothSettings::loadGameDesignParams(JsonTree config)
+void PhotoboothSettings::loadGameDesignParams(const JsonTree& config)
 {
 	activeOverDesignID = config.getChild("activeOverDesignID").getValue<int>();
 	isSticker = config.getChild("isSticker").getValue<bool>();
@@ -138,7 +136,7 @@ void PhotoboothSettings::loadGameDesignParams(JsonTree config)
 	activeBgPrint.id = config.getChild("activeBgPrint").getValue<int>();
 }
 
-void PhotoboothSettings::loadConfigTexts(JsonTree config)
+void PhotoboothSettings::loadConfigTexts(const JsonTree& config)
 {
 	JsonTree jsonTexts = JsonTree(config.getChild("mainTitles"));
 
@@ -182,7 +180,7 @@ void PhotoboothSettings::loadConfigTexts(JsonTree config)
 	}
 }
 
-void PhotoboothSettings::loadSharingIcons(JsonTree config)
+void PhotoboothSettings::loadSharingIcons(const JsonTree& config)
 {
 	typedef Pair<PhtTextID, string> NamePair;
 
@@ -303,7 +301,6 @@ void PhotoboothSettings::setTextures()
 
 	addToSettingsDictionary("over6", createImageResource(getInterfacePath("configDesign\\photobooth\\over6.png")));
 
-
 	addToDictionary("instrFon", createImageResource(getTemplateDesignPath("PhotoInstruction\\screensaver\\1.jpg")));
 	addToDictionary("instrTitle", createImageResource(getTemplateDesignPath("PhotoInstruction\\title\\title.png")));
 
@@ -328,7 +325,6 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("printtitle", createImageResource(getTemplateDesignPath("PhotoTemplate\\title.png")));
 	addToDictionary("printline", createImageResource(getTemplateDesignPath("PhotoTemplate\\line.png")));
 	addToDictionary("printramka", createImageResource(getTemplateDesignPath("PhotoTemplate\\ramka.png")));
-
 
 	addToDictionary("galka", createImageResource(getTemplateDesignPath("PhotoChoosing\\galka.png")));
 	addToDictionary("ramka", createImageResource(getTemplateDesignPath("PhotoChoosing\\ramka.png")));
@@ -386,7 +382,6 @@ void PhotoboothSettings::setTextures()
 	for (auto item : photoFiltersPreview)
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 
-
 	addToSettingsDictionary("arial13", createFontResource(getFontsPath("arial.ttf"), 13));
 	addToSettingsDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
 	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
@@ -394,6 +389,9 @@ void PhotoboothSettings::setTextures()
 	addToSettingsDictionary("helvetica100", createFontResource(getFontsPath("Helvetica Neue.ttf"), 100));
 	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToSettingsDictionary("helveticaNeueLight26", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 26));
+
+	addToSettingsDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+	addToSettingsDictionary("helveticaNeue30", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 
 	addToSettingsDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
 	addToSettingsDictionary("introLight60", createFontResource(getFontsPath("IntroLight.ttf"), 60));
@@ -482,12 +480,12 @@ void PhotoboothSettings::swapFilter(int id)
 			filter.isOn = !filter.isOn;
 }
 
-TextItem PhotoboothSettings::getMainTitle(PhtTextID id)
+TextItem PhotoboothSettings::getMainTitle(const PhtTextID& id)
 {
 	return configTexts.get(model->getLang(), id);
 }
 
-TextItem PhotoboothSettings::getSubTitleClose(PhtTextID id)
+TextItem PhotoboothSettings::getSubTitleClose(const PhtTextID& id)
 {
 	PhtTextID subID = static_cast<PhtTextID>(int(id) + 1);
 	TextItem tItem = configTexts.get(model->getLang(), subID);
@@ -571,27 +569,27 @@ std::string PhotoboothSettings::getActivePublishingTexts()
 	return result;
 }
 
-TextItem PhotoboothSettings::getSubTitleOpen(PhtTextID id)
+TextItem PhotoboothSettings::getSubTitleOpen(const PhtTextID& id)
 {
 	return configTexts.get(model->getLang(), static_cast<PhtTextID>(int(id) + 1));
 }
 
-TextItem PhotoboothSettings::getTextItem(PhtTextID id)
+TextItem PhotoboothSettings::getTextItem(const PhtTextID& id)
 {
 	return configTexts.get(model->getLang(), id);
 }
 
-bool PhotoboothSettings::getSocialState(PhtTextID id)
+bool PhotoboothSettings::getSocialState(const PhtTextID& id)
 {
 	return sharing.getSocialState(id);
 }
 
-void PhotoboothSettings::setSocialState(PhtTextID id, bool value)
+void PhotoboothSettings::setSocialState(const PhtTextID& id, bool value)
 {
 	sharing.setSocialState(id, value);
 }
 
-ci::gl::Texture PhotoboothSettings::getIcon(PhtTextID id)
+ci::gl::Texture PhotoboothSettings::getIcon(const PhtTextID& id)
 {
 	return sharing.getIcon(id);
 }
@@ -601,27 +599,27 @@ ci::gl::Texture PhotoboothSettings::getEmptyIcon()
 	return sharing.getEmptyIcon();
 }
 
-void PhotoboothSettings::Sharing::setSocialState(PhtTextID id, bool state)
+void PhotoboothSettings::Sharing::setSocialState(const PhtTextID& id, bool state)
 {
 	states[id] = state;
 }
 
-bool PhotoboothSettings::Sharing::getSocialState(PhtTextID id)
+bool PhotoboothSettings::Sharing::getSocialState(const PhtTextID& id)
 {
 	return states[id];
 }
 
-void PhotoboothSettings::Sharing::setIcon(ci::gl::Texture icon, PhtTextID id)
+void PhotoboothSettings::Sharing::setIcon(const ci::gl::Texture& icon, const PhtTextID& id)
 {
 	icons[id] = icon;
 }
 
-ci::gl::Texture PhotoboothSettings::Sharing::getIcon(PhtTextID id)
+ci::gl::Texture PhotoboothSettings::Sharing::getIcon(const PhtTextID& id)
 {
 	return icons[id];
 }
 
-void PhotoboothSettings::Sharing::setEmptyIcon(ci::gl::Texture icon)
+void PhotoboothSettings::Sharing::setEmptyIcon(const ci::gl::Texture& icon)
 {
 	emptyIcon = icon;
 }
@@ -731,12 +729,11 @@ void PhotoboothSettings::writeConfig()
 		memento = false;
 	}
 }
+
 bool PhotoboothSettings::settingsChanged()
 {
-	return (activeOverDesignID != activeOverDesignIDMemento ||
-		activePhotoCardStyleDesignID != activePhotoCardStyleDesignIDMemento ||
-		sharingNotEqual(sharing, sharingMemento) ||
-		filtersNotEqual(filters, filtersMemento));
+	return (activeOverDesignID != activeOverDesignIDMemento || activePhotoCardStyleDesignID != activePhotoCardStyleDesignIDMemento ||
+		sharingNotEqual(sharing, sharingMemento) ||	filtersNotEqual(filters, filtersMemento));
 }
 
 bool PhotoboothSettings::sharingNotEqual(Sharing sharing1, Sharing sharing2)

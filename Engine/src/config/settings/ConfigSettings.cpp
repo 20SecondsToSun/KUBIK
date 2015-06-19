@@ -197,7 +197,6 @@ void ConfigSettings::loadConsts()
 		JsonTree constJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
 		data.maxPhotosToPrint = constJSON.getChild("maxPhotosToPrint").getValue<int>();
 		data.activeDesignColor = stringTools().stringToColor(constJSON.getChild("activeColor").getValue<string>());
-
 	}
 	catch (...)
 	{
@@ -317,7 +316,8 @@ void ConfigSettings::setTextures()
 	addToDictionary("helvetica20", createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
 	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToDictionary("helveticaLight36", createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
-	
+	addToDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
+
 	addToDictionary("introBold110", createFontResource(getFontsPath("introb.ttf"), 110));
 	addToDictionary("introBold90", createFontResource(getFontsPath("introb.ttf"), 90));
 	addToDictionary("introBold80", createFontResource(getFontsPath("introb.ttf"), 80));

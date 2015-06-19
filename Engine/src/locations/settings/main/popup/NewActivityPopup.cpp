@@ -20,9 +20,8 @@ NewActivityPopup::NewActivityPopup(ConfigSettingsRef configSett)
 	mainTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_ASK_TITLE), true, -10);
 	subTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_DESQR), true, -8);
 	title = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_TITLE));
-	begin = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_BEGIN));
+	//begin = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_BEGIN));
 	closeTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_CLOSE));
-
 	float allWidth = closeIcon.getWidth() + 20.0f + closeTitle.getWidth();
 	float startX = 0.5f * (getWindowWidth() - allWidth);
 
@@ -82,8 +81,10 @@ void NewActivityPopup::drawInputFieldBackground()
 
 	gl::color(inputFieldColor);
 	gl::draw(inputField, inputFieldPos);
-	gl::color(titlesColor);
-	gl::draw(begin, Vec2f(750.0f + 0.5f * (210.0f - begin.getWidth()), yPositionInputField + 0.5f * (142.0f - begin.getHeight())));
+	//gl::color(titlesColor);
+	textTools().drawTextBox(configSett->getTextItem(ConfigTextID::PARTY_BEGIN), Color::hex(0x6595f9), titlesColor, Vec2f(750.0f, yPositionInputField), Vec2i(200.0f, 134.0f));
+
+	//gl::draw(begin, Vec2f(750.0f + 0.5f * (210.0f - begin.getWidth()), yPositionInputField + 0.5f * (142.0f - begin.getHeight())));
 }
 
 void NewActivityPopup::drawCloseBlock()

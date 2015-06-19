@@ -124,6 +124,9 @@
     <ClCompile Include="..\blocks\Cinder-Curl\src\FtpManager.cpp" />
     <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\config\ApplicationModel.cpp" />
+    <ClCompile Include="..\src\config\elements\ConfigObject.cpp" />
+    <ClCompile Include="..\src\config\elements\DesignData.cpp" />
+    <ClCompile Include="..\src\config\elements\TextItem.cpp" />
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\config\games\GameSettings.cpp" />
     <ClCompile Include="..\src\config\games\instakub\InstakubSettings.cpp" />

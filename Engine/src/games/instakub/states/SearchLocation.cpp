@@ -10,10 +10,9 @@ const float SearchLocation::HIDING_KEYBORAD_TIME = 0.7f;
 const float SearchLocation::SHOWING_KEYBORAD_TIME = 0.7f;
 
 SearchLocation::SearchLocation(InstakubSettingsRef settings, const ci::Vec2f& vectr)
-	:InstakubLocation(settings, vectr),
-	alphaError(0.0f)
+	:InstakubLocation(settings, vectr),	alphaError(0.0f)
 {	
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f), settings->getTexture("closeKeyboard")));
+	
 }
 
 void SearchLocation::reset()
@@ -24,6 +23,8 @@ void SearchLocation::reset()
 		settings->getTexture("hashtagSearchOver"),
 		settings->getTexture("userSearch"),
 		settings->getTexture("userSearchOver")));
+
+	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f), settings->getTexture("closeKeyboard"), settings->getKeyboardColorInDesign()));
 }
 
 void SearchLocation::start()

@@ -175,7 +175,7 @@ void Photobooth::gotoFirstlocation()
 
 void Photobooth::update()
 {
-	handleCameraConnection();
+	//handleCameraConnection();
 	currentLocation->update();	
 }
 

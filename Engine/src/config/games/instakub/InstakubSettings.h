@@ -41,6 +41,7 @@ namespace kubik
 			void loadConsts();			
 			void setDesignPath();
 			void parsePhotoCardStyles();
+			ci::ColorA getKeyboardColorInDesign();
 			
 			TextItem getTextItem(const InstaTextID& id);
 
@@ -64,8 +65,8 @@ namespace kubik
 			bool settingsChanged();
 			changeSetting::id getChangeID() const;
 
-			bool hashtagEnabled();
-			bool searchEnabled();			
+			bool hashtagEnabled() const;
+			bool searchEnabled() const;
 
 		private:			
 			bool memento;
@@ -73,6 +74,8 @@ namespace kubik
 			bool search, search_save;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
 			int userPhotoCardStyleDesignID;
+
+			std::vector<ci::ColorA> keyboardColorsInDesign;
 
 			ConfigTexts<InstaTextID> configTexts;
 

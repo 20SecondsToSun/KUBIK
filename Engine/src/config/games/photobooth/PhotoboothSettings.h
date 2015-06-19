@@ -52,14 +52,14 @@ namespace kubik
 			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };
 			std::vector<ci::gl::Texture> getSmileTextures();
 
-			TextItem getMainTitle(PhtTextID id);
-			TextItem getSubTitleClose(PhtTextID id);
-			TextItem getSubTitleOpen(PhtTextID id);
-			TextItem getTextItem(PhtTextID id);
-			bool	 getSocialState(PhtTextID id);
-			void	 setSocialState(PhtTextID id, bool value);
+			TextItem getMainTitle(const PhtTextID& id);
+			TextItem getSubTitleClose(const PhtTextID& id);
+			TextItem getSubTitleOpen(const PhtTextID& id);
+			TextItem getTextItem(const PhtTextID& id);
+			bool	 getSocialState(const PhtTextID& id);
+			void	 setSocialState(const PhtTextID& id, bool value);
 
-			ci::gl::Texture getIcon(PhtTextID id);
+			ci::gl::Texture getIcon(const PhtTextID& id);
 			ci::gl::Texture getEmptyIcon();
 
 			std::vector<ci::gl::Texture> getPhotoCardStylesActiveTemplate();
@@ -147,13 +147,13 @@ namespace kubik
 			class Sharing
 			{
 			public:
-				void setSocialState(PhtTextID id, bool state);
-				void setIcon(ci::gl::Texture icon, PhtTextID id);
-				void setEmptyIcon(ci::gl::Texture icon);
+				void setSocialState(const PhtTextID& id, bool state);
+				void setIcon(const ci::gl::Texture& icon, const PhtTextID& id);
+				void setEmptyIcon(const ci::gl::Texture& icon);
 
-				bool getSocialState(PhtTextID id);
+				bool getSocialState(const PhtTextID& id);
 				ci::gl::Texture getEmptyIcon();
-				ci::gl::Texture getIcon(PhtTextID id);
+				ci::gl::Texture getIcon(const PhtTextID& id);
 
 				friend PhotoboothSettings;
 
@@ -195,13 +195,13 @@ namespace kubik
 			void parsePhotoCardStyles();
 			void parsePhotoFiltersPreview();
 
-			void loadPhotoParams(JsonTree config);
-			void loadSocialParams(JsonTree config);
-			void loadPhotoFilterParams(JsonTree config);
-			void loadGameDesignParams(JsonTree config);
-			void loadGameStickerParams(JsonTree config);
-			void loadConfigTexts(JsonTree config);
-			void loadSharingIcons(JsonTree config);
+			void loadPhotoParams(const JsonTree& config);
+			void loadSocialParams(const JsonTree& config);
+			void loadPhotoFilterParams(const JsonTree& config);
+			void loadGameDesignParams(const JsonTree& config);
+			void loadGameStickerParams(const JsonTree& config);
+			void loadConfigTexts(const JsonTree& config);
+			void loadSharingIcons(const JsonTree& config);
 			void saveConfig();
 			void findAllImagePrints(std::string path, std::vector<ImageElement> &prints, bool isCustom);
 

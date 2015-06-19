@@ -8,7 +8,8 @@ KeyBackground::KeyBackground(const Vec2f& initPosition)
 	showing(false),
 	initPosition(initPosition),
 	plashkaHeight(592.0f),
-	bgHeight(1920.0f - 592.0f - initPosition.x)
+	bgHeight(1920.0f - 592.0f - initPosition.x),
+	mainColor(Color::hex(0x313a43))
 {
 	btn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(0.0f,0.0f, 1080.0f, 80.f)));
 	btn->setPosition(initPosition);
@@ -21,7 +22,8 @@ KeyBackground::KeyBackground(const Vec2f& initPosition, const ci::gl::Texture& c
 	initPosition(initPosition),
 	plashkaHeight(592.0f),
 	bgHeight(1920.0f - 592.0f - initPosition.x),
-	closeKeyboard(closeKeyboard)
+	closeKeyboard(closeKeyboard),
+	mainColor(Color::hex(0x313a43))
 {	
 
 #ifdef PORTRAIT_RES
@@ -35,6 +37,28 @@ KeyBackground::KeyBackground(const Vec2f& initPosition, const ci::gl::Texture& c
 	btn = ImageButtonSpriteRef(new ImageButtonSprite(closeKeyboard));
 	btn->setPosition(initPosition + Vec2f(positionX, positionY));
 	addChild(btn);
+}
+
+KeyBackground::KeyBackground(const Vec2f& initPosition, const ci::gl::Texture& closeKeyboard, const ci::ColorA& color)	
+	:alphaColorPlashka(0.0f),
+	showing(false),
+	initPosition(initPosition),
+	plashkaHeight(592.0f),
+	bgHeight(1920.0f - 592.0f - initPosition.x),
+	closeKeyboard(closeKeyboard)
+{
+#ifdef PORTRAIT_RES
+	auto positionY = 885.0f - closeKeyboard.getHeight() * 0.5f;
+#else
+	auto positionY = 600.0f - closeKeyboard.getHeight() * 0.5f;
+#endif
+
+	auto positionX = (1080.0f - closeKeyboard.getWidth()) * 0.5f;
+
+	btn = ImageButtonSpriteRef(new ImageButtonSprite(closeKeyboard));
+	btn->setPosition(initPosition + Vec2f(positionX, positionY));
+	addChild(btn);
+	mainColor = color;
 }
 
 void KeyBackground::hide(const EaseFn& eFunc, float time)
@@ -76,7 +100,7 @@ void KeyBackground::drawLayout()
 {
 	gl::translate(0.0f, animPositionY);
 	btn->setAlpha(alphaColorBtn);
-	gl::color(Utils::colorAlpha(Color::hex(0x313a43), alphaColorPlashka));
+	gl::color(Utils::colorAlpha(mainColor, alphaColorPlashka));
 	gl::drawSolidRect(Rectf(initPosition, Vec2f(initPosition.x + 1080.0f, initPosition.y + plashkaHeight)));
 
 	gl::color(Utils::colorAlpha(Color::hex(0x131417), alphaColorBg));

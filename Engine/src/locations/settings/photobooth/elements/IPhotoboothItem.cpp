@@ -81,7 +81,8 @@ void IPhotoboothItem::draw()
 	// draw titles
 	gl::color(Color::white());
 	textTools().drawTextBox(settings->getMainTitle(id), color, Vec2f(0.0f, mainTitleY), Vec2i(914.0f, 50.0f));
-	textTools().drawTextBox(settings->getSubTitleClose(id), color, Vec2f(0.0f, subTitleY), Vec2i(914.0f, 50.0f));
+	if (state != OPEN)
+		textTools().drawTextBox(settings->getSubTitleClose(id), color, Vec2f(0.0f, subTitleY), Vec2i(914.0f, 50.0f));
 	gl::popMatrices();	
 
 	if (state == OPEN)	

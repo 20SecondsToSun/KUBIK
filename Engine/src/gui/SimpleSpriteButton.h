@@ -13,12 +13,10 @@ namespace kubik
 {
 	class SimpleSpriteButton : public Sprite
 	{
-	public:
-		string name;
-		SimpleSpriteButton(Rectf rect, EventGUIRef _event = EventGUIRef(new EventGUI()))
-			:Sprite(),
-			color(Color::white()),
-			bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
+	public:		
+		SimpleSpriteButton(const ci::Rectf& rect, EventGUIRef _event = EventGUIRef(new EventGUI()))
+			:Sprite(), color(ci::Color::white()), bgVisible(true),
+			alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 
 			setPosition(Vec2f(rect.x1, rect.y1));
@@ -26,7 +24,7 @@ namespace kubik
 			event = _event;
 		}
 
-		SimpleSpriteButton(float width, float height, Vec2f position, EventGUIRef _event = EventGUIRef(new EventGUI()))
+		SimpleSpriteButton(float width, float height, const ci::Vec2f& position, EventGUIRef _event = EventGUIRef(new EventGUI()))
 			:Sprite(), color(Color::white()), bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(0, 0, width, height); 
@@ -35,7 +33,7 @@ namespace kubik
 			event = _event;
 		}
 
-		SimpleSpriteButton(Vec2f position0, Vec2f position) :Sprite(), color(Color::white()), bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
+		SimpleSpriteButton(const ci::Vec2f& position0, const ci::Vec2f& position) :Sprite(), color(Color::white()), bgVisible(true), alpha(1.0f), animPosition(Vec2f::zero())
 		{
 			buttonArea = Rectf(Vec2f::zero(), position0); 
 			setPosition(position);
@@ -55,7 +53,7 @@ namespace kubik
 			}
 		}
 
-		bool inButtonField(Vec2i pos)
+		bool inButtonField(const ci::Vec2i& pos)
 		{			
 			return (buttonArea + getGlobalPosition()).contains(pos);			
 		}
@@ -88,27 +86,27 @@ namespace kubik
 			return ci::Vec2f( getWidth(), getHeight());
 		}
 
-		Rectf getButtonArea()
+		ci::Rectf getButtonArea()
 		{
 			return buttonArea;
 		}
 
-		virtual void mouseUpHandler(Vec2i vec)
+		virtual void mouseUpHandler(const ci::Vec2i& vec)
 		{
 		}
 
-		void setButtonArea(Rectf rectf)
+		void setButtonArea(const ci::Rectf& rectf)
 		{
 			buttonArea = rectf;
 		}
 
-		void setButtonArea1(Rectf rect)
+		void setButtonArea1(const ci::Rectf& rect)
 		{
 			buttonArea = Rectf(0, 0, rect.getWidth(),rect.getHeight()); 
 			setPosition(Vec2f(rect.x1, rect.y1));	
 		}
 
-		void setColor(Color color)
+		void setColor(const ci::Color& color)
 		{
 			this->color = color;
 		}
@@ -142,6 +140,8 @@ namespace kubik
 			animPosition.stop();
 			alpha.stop();
 		}
+
+		std::string name;
 
 	protected:
 		bool bgVisible;

@@ -22,15 +22,15 @@
       {
      "lang"  : "ru",
 	 "photoPublishing": { "text" : "Выберите необходимый функционал публикации",
-		   "font" : "introLight", "size" : 30, "color" :  "ffff00"},
+		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
 
 	 "photoCardDesign": { "text" : "Выберите одну из тем или создайте свою",
-		   "font" : "introLight", "size" : 30, "color" :  "ffff00"},
+		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
 
 	 "overElements": { "text" : "Выберите одну из тем или создайте свою",
-		   "font" : "helveticaLight", "size" : 28, "color" :  "ffff00"},
+		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
 
-	 "photoFilters": { "text" : "Выберите один или несколько фильтров", "font" : "introLight", "size" : 24, "color" :  "ffff00"}
+	 "photoFilters": { "text" : "Выберите один или несколько фильтров", "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"}
       }	],
 
 	 "social" : 

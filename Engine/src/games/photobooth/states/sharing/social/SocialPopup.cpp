@@ -15,7 +15,6 @@ SocialPopup::SocialPopup(PhotoboothSettingsRef settings)
 	miniPreloader(settingsFactory().getMiniPreloader())
 {
 
-
 }
 
 void SocialPopup::show()
@@ -121,7 +120,7 @@ void SocialPopup::postingDraw()
 	gl::draw(postingBg);
 
 	gl::pushMatrices();
-	gl::translate(0.0f, 0.5f*(1920.0f - mainPreloader->getHeight()));
+	gl::translate(0.0f, 0.5f * (1920.0f - mainPreloader->getHeight()));
 	mainPreloader->draw();
 	gl::popMatrices();
 }
@@ -134,5 +133,5 @@ void SocialPopup::errorDraw()
 
 void SocialPopup::drawTextMessage(const ci::gl::Texture& text)
 {
-	gl::draw(text, Vec2f((1080.0f - text.getWidth())*0.5f, 748.0f - 0.5f*(text.getHeight())));
+	gl::draw(text, Vec2f((1080.0f - text.getWidth()) * 0.5f, 748.0f - 0.5f * (text.getHeight())));
 }

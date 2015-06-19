@@ -74,8 +74,6 @@ void MenuSettings::setTextures()
 	addToDictionary("2gamesTitle1", createImageResource(getTemplateDesignPath("2games\\title1.png")));
 	addToDictionary("2gamesTitle2", createImageResource(getTemplateDesignPath("2games\\title2.png")));
 	addToDictionary("2gamesTitle3", createImageResource(getTemplateDesignPath("2games\\title3.png")));
-
-	//addToDictionary("helvetica30", createFontResource(getFontsPath("Helvetica Neue.ttf"), 30));
 }
 
 void MenuSettings::setData(MenuDataStruct value)
@@ -146,17 +144,20 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 	{
 	case 1:
 		return gameData;	
+
 	case 2:
 		size = Vec2i(518, 518);
 		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 140.0f));
 		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 1094.0f));		
 		break;
+
 	case 3:
 		size = Vec2i(305, 305);
 		position.push_back(Vec2f(165.0f, 239.0f));
 		position.push_back(Vec2f(165.0f, 731.0f));
 		position.push_back(Vec2f(165.0f, 1243.0f));
 		break;
+
 	case 4:
 		size = Vec2i(305, 305);
 		position.push_back(Vec2f(165.0f, 239.0f));

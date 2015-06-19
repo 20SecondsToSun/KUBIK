@@ -81,7 +81,6 @@ namespace kubik
 
 			const ConfigObject& getConfigObject(const settings::id& id);
 
-
 			std::string getLabelsPath();
 			std::string getMenuConfigPath();
 			std::string getScreenSaverConfigPath();
@@ -97,8 +96,7 @@ namespace kubik
 
 			std::string getTemplatePath();
 			std::string getInterfacePath();
-			std::string getSocialSettingsFilePath() const;
-			
+			std::string getSocialSettingsFilePath() const;		
 
 		private:
 			int			standID;

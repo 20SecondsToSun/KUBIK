@@ -11,7 +11,6 @@ namespace kubik
 	class ApplicationView
 	{
 	public:
-
 		ApplicationView();
 
 		void startLocation(IScreenRef screen);

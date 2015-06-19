@@ -47,12 +47,12 @@ const std::string SocialSettings::TWITTER_OAUTH_CALLBACK = ",oauth_callback=http
 std::string SocialSettings::VK_APP_ID;
 std::string SocialSettings::VK_AUTH_URL;
 std::string SocialSettings::VK_LOGOUT_URL;
-//
+
 const std::string SocialSettings::VK_BASE_URL = "https://api.vk.com/";
 const std::string SocialSettings::VK_WALL_POST_URL = VK_BASE_URL + "method/wall.post";
 const std::string SocialSettings::VK_WALL_UPLOAD_SERVER_URL = VK_BASE_URL + "method/photos.getWallUploadServer";
 const std::string SocialSettings::VK_SAVE_WALL_PHOTO_URL = VK_BASE_URL + "method/photos.saveWallPhoto";
-//
+
 const std::string SocialSettings::VK_ACCESS_TOKEN = "access_token";
 const std::string SocialSettings::VK_NULL_ALBUM_ID = "-1";
 const std::string SocialSettings::VK_STATUS_DEFAULT = "#тест rich bich";

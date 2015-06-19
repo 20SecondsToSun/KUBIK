@@ -4,9 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 
 InstakubSettings::InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model),
-	configSettings(configSettings),
-	memento(false)
+	:ISettings(model), configSettings(configSettings), memento(false)
 {
 
 }
@@ -19,7 +17,8 @@ void InstakubSettings::load()
 		loadPaths();
 		loadParams();
 		loadLabels();
-		loadConsts();	
+		loadConsts();
+
 		parsePhotoCardStyles();
 	}
 	catch (...)
@@ -80,6 +79,19 @@ void InstakubSettings::loadConsts()
 {
 	JsonTree constsJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
 	clientID = constsJSON.getChild("instagramClientID").getValue<string>();
+
+	JsonTree keyboardColorInDesign = constsJSON.getChild("keyboardColorInDesign");
+	for (int i = 0; i < 6; ++i)
+	{		
+		auto strColor = keyboardColorInDesign.getChild(to_string(i)).getValue<string>();
+		auto color = ci::ColorA::hex(std::stoi(strColor, 0, 16));
+		keyboardColorsInDesign.push_back(color);
+	}
+}
+
+ci::ColorA InstakubSettings::getKeyboardColorInDesign()
+{	
+	return keyboardColorsInDesign[configSettings->getActiveDesignID() - 1];
 }
 
 void InstakubSettings::setDesignPath()
@@ -115,12 +127,15 @@ void InstakubSettings::setTextures()
 	setDesignPath();
 	clearResources();
 
+	addToSettingsDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
 	addToSettingsDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
 	addToSettingsDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
 	addToSettingsDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
 	addToSettingsDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
 	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
+
+	addToSettingsDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
 
 	addToSettingsDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
@@ -288,12 +303,12 @@ changeSetting::id InstakubSettings::getChangeID() const
 	return changeSetting::id::INSTAKUB;
 };
 
-bool InstakubSettings::hashtagEnabled()
+bool InstakubSettings::hashtagEnabled() const
 {
 	return hashtag != "";
 }
 
-bool InstakubSettings::searchEnabled()
+bool InstakubSettings::searchEnabled() const
 {
 	return search;
 }
