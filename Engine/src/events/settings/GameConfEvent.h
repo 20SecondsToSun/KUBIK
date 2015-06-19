@@ -12,7 +12,7 @@ namespace kubik
 
 		}
 
-		GameId getGameId()
+		GameId getGameId() const
 		{
 			return gameId;
 		}

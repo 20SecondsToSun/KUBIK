@@ -10,7 +10,7 @@ namespace kubik
 	class Event
 	{
 	public:
-		Event(string event = ""):event(event)
+		Event(const std::string& event = ""):event(event)
 		{
 
 		}
@@ -20,8 +20,8 @@ namespace kubik
 		}
 
 	protected:
-		string event;
+		std::string event;
 	};
 
-	typedef shared_ptr<Event> EventRef;	
+	typedef std::shared_ptr<Event> EventRef;
 }

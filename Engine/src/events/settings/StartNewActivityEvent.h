@@ -6,7 +6,7 @@ namespace kubik
 	class StartNewActivityEvent: public EventGUI
 	{			
 	public:
-		StartNewActivityEvent( )
+		StartNewActivityEvent()
 		{
 
 		}

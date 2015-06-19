@@ -6,7 +6,7 @@ namespace kubik
 	class PrinterControlsHideEvent: public EventGUI
 	{			
 	public:
-		PrinterControlsHideEvent( )
+		PrinterControlsHideEvent()
 		{
 
 		}

@@ -6,8 +6,7 @@ namespace kubik
 	class SavePhotobootnConfigEvent: public EventGUI
 	{			
 	public:
-
-		SavePhotobootnConfigEvent( )
+		SavePhotobootnConfigEvent()
 		{
 
 		}

@@ -8,15 +8,15 @@ namespace kubik
 	public:
 		HashCheckerEvent(bool isActive):isActive(isActive)
 		{
-			//console()<<"new checker event----------------"<<endl;
+
 		}
 
 		~HashCheckerEvent()
 		{
-			//console()<<"delete checker event----------------"<<endl;
+
 		}
 
-		bool getValue()
+		bool getValue() const
 		{
 			return isActive;
 		}
@@ -29,7 +29,6 @@ namespace kubik
 	private:
 		bool isActive;
 		int socialID;
-
 	};
 
 	typedef std::shared_ptr<HashCheckerEvent> HashCheckerEventRef;

@@ -11,7 +11,7 @@ namespace kubik
 
 		}
 
-		int getTemplateID()
+		int getTemplateID() const
 		{
 			return templateID;
 		}

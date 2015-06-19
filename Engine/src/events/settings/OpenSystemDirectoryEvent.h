@@ -8,7 +8,7 @@ namespace kubik
 	class OpenSystemDirectoryEvent: public EventGUI
 	{
 	public:
-		OpenSystemDirectoryEvent(std::string path = ""):path(path)
+		OpenSystemDirectoryEvent(const std::string& path = ""):path(path)
 		{
 
 		}

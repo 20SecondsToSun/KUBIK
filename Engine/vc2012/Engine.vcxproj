@@ -184,6 +184,9 @@
     <ClCompile Include="..\src\locations\menu\GameButton.cpp" />
     <ClCompile Include="..\src\locations\menu\MenuScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\Preloader.cpp" />
+    <ClCompile Include="..\src\locations\screensaver\ImageScreenSaver.cpp" />
+    <ClCompile Include="..\src\locations\screensaver\VideoScreenSaver.cpp" />
+    <ClCompile Include="..\src\locations\service\ServicePopup.cpp" />
     <ClCompile Include="..\src\locations\settings\ConfigScreen.cpp" />
     <ClCompile Include="..\src\locations\screensaver\ScreenSaver.cpp" />
     <ClCompile Include="..\src\locations\settings\elements\Checker.cpp" />

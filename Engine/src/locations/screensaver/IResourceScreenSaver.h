@@ -10,5 +10,5 @@ namespace kubik
 		virtual void stop()  = 0;
 	};
 
-	typedef shared_ptr<IResourceScreenSaver> IResourceScreenSaverRef;	
+	typedef std::shared_ptr<IResourceScreenSaver> IResourceScreenSaverRef;	
 }

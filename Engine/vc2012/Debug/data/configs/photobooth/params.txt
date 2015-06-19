@@ -1,7 +1,7 @@
 {
    "activeBgPrint" : 0,
-   "activeOverDesignID" : 6,
-   "activePhotoCardStyleDesignID" : 2,
+   "activeOverDesignID" : 1,
+   "activePhotoCardStyleDesignID" : 1,
    "activeSticker" : 1,
    "filtersIds" : [
       {
@@ -14,7 +14,7 @@
       },
       {
          "id" : 3,
-         "isOn" : false
+         "isOn" : true
       },
       {
          "id" : 4,

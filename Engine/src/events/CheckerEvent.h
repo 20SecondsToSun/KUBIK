@@ -11,7 +11,7 @@ namespace kubik
 
 		}
 
-		bool getValue()
+		bool getValue() const
 		{
 			return isActive;
 		}

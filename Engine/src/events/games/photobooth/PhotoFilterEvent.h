@@ -12,7 +12,7 @@ namespace kubik
 
 		}
 
-		int getFilterId()
+		int getFilterId() const
 		{
 			return filterId;
 		}

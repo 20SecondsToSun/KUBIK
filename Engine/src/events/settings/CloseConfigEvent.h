@@ -6,7 +6,7 @@ namespace kubik
 	class CloseConfigEvent: public EventGUI
 	{			
 	public:
-		CloseConfigEvent( )
+		CloseConfigEvent()
 		{
 
 		}

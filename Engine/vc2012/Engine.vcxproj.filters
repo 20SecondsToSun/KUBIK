@@ -690,6 +690,15 @@
     <ClCompile Include="..\src\config\elements\ConfigObject.cpp">
       <Filter>Source Files\config\elements</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\locations\service\ServicePopup.cpp">
+      <Filter>Source Files\locations\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\screensaver\ImageScreenSaver.cpp">
+      <Filter>Source Files\locations\screensaver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\locations\screensaver\VideoScreenSaver.cpp">
+      <Filter>Source Files\locations\screensaver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

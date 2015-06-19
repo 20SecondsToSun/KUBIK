@@ -6,7 +6,7 @@ namespace kubik
 	class PrinterStatResetEvent: public EventGUI
 	{			
 	public:
-		PrinterStatResetEvent( )
+		PrinterStatResetEvent()
 		{
 
 		}

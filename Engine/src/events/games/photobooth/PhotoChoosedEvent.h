@@ -11,7 +11,7 @@ namespace kubik
 
 		}
 
-		int getID()
+		int getID() const
 		{
 			return ID;
 		}

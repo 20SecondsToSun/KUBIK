@@ -6,7 +6,7 @@ namespace kubik
 	class CloseDesignLayoutEvent: public EventGUI
 	{			
 	public:
-		CloseDesignLayoutEvent( )
+		CloseDesignLayoutEvent()
 		{
 
 		}
