@@ -183,8 +183,21 @@ changeSetting::id GameSettings::getChangeID() const
 
 void GameSettings::setTextures()
 {
-	//gameSettingsMap[currentGame]->lo
 	gameSettingsMap[currentGame]->setTextures();
+}
+
+void GameSettings::setTextures(const GameId& id)
+{
+	gameSettingsMap[id]->setTextures();
+}
+
+void GameSettings::setAllTextures()
+{
+	std::vector<GamesInfo> games = model->getGames();
+
+	for (auto game : games)	
+		if (game.isPurchased)		
+			gameSettingsMap[game.id]->setTextures();	
 }
 
 void GameSettings::load()

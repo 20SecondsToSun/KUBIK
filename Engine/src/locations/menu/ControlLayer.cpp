@@ -5,8 +5,7 @@ using namespace kubik;
 using namespace ci;
 using namespace std;
 
-ControlLayer::ControlLayer(ISettingsRef settings)
-	:tex(settings->getTexture("menuButton"))
+ControlLayer::ControlLayer(ISettingsRef settings):tex(settings->getTexture("menuButton"))
 {
 	btn = ImageButtonSpriteRef(new ImageButtonSprite(tex, Vec2f(44.0f, 44.0f)));
 	createControlsButtons();

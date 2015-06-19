@@ -305,6 +305,8 @@ void Controller::reloadGame(GameId id)
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::gameGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->LoadingErrorSignal,	bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
 
+	//gameSettings->setTextures(id);
+
 	graphicsLoader->setLoadingTextures(gameSettings->getGameTexturesById(id));
 	graphicsLoader->load();	
 }
@@ -423,7 +425,7 @@ void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadA
 		view->clearLayers();
 		controlLayer->clear();
 
-		gameSettings->setTextures();
+		gameSettings->setAllTextures();
 		loadAllLocationsGraphics();
 		return;
 	}

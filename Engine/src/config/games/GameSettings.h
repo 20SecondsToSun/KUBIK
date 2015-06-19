@@ -56,8 +56,10 @@ namespace kubik
 
 			bool settingsChanged();
 			changeSetting::id getChangeID() const;
-
+			
+			void setAllTextures();
 			void setTextures() override;
+			void setTextures(const GameId& id);
 			void load() override;
 			void buildSettingData() override;
 			void buildLocationData() override;

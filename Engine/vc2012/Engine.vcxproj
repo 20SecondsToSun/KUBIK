@@ -409,10 +409,8 @@
     <ClInclude Include="..\src\locations\settings\main\designBlock\ReturnButton.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\designBlock\ScreenSaverChecker.h" />
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GamesBlock.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\NotPurchasedGamesBlock.h" />
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\OneGameNotPurchased.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\OneGamePurchased.h" />
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\PurchasedGamesBlock.h" />

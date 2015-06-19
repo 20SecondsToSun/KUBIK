@@ -49,9 +49,6 @@
     <Filter Include="blocks">
       <UniqueIdentifier>{e07631a5-3693-4a82-a22b-3ee0d1323d2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\socialweb">
-      <UniqueIdentifier>{35ee7695-08a8-4846-b1d0-7c3a06bb5cb0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\devices\printer">
       <UniqueIdentifier>{176d0808-ec4d-438f-8457-f2e10893585b}</UniqueIdentifier>
     </Filter>
@@ -1396,9 +1393,6 @@
     </ClInclude>
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
       <Filter>Source Files\config\graphic\preloader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

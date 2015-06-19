@@ -12,7 +12,7 @@ namespace kubik
 		{	
 			string path = getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf";// TODO FONT in Resource
 			DataSourceRef ref = loadFile(path);
-			font =  Font(ref, 30);	
+			font = Font(ref, 30);	
 		}
 
 		void draw()
