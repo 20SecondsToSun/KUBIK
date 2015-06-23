@@ -6,18 +6,14 @@ using namespace ci;
 using namespace ci::app;
 using namespace kubik;
 
-InstagramViewer::InstagramViewer(InstagramClientRef client, 
-	IMovieRef preloaderMain,
-	IMovieRef preloaderMini,
+InstagramViewer::InstagramViewer(InstagramClientRef client,	
 	const gl::Texture& noMaterials,
 	const gl::Texture& allLoaded,
 	const gl::Texture& privateUser,
 	const gl::Texture& notExistUser,
 	const gl::Texture& notPhotosUser,
 	const gl::Texture& dragToReload)
-	:client(client),
-	preloaderMain(preloaderMain),
-	preloaderMini(preloaderMini),
+	:client(client),	
 	noMaterials(noMaterials),
 	allLoaded(allLoaded),
 	privateUser(privateUser),
@@ -151,12 +147,18 @@ void InstagramViewer::setState(const drawState& value)
 		timeline().apply(&noMorePopupAlpha, 1.0f, 0.0f, 0.8f, animFunc)
 			.finishFn(bind(&InstagramViewer::noMorePopupAnimFinished, this)).delay(0.5f);
 		break;
+
 	case MINI_PRELOADING:
 		mainHeight += preloaderMini->getHeight() + 50;
 		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.value().y);
 		currentPos.stop();
 		timeline().apply(&currentPos, futureCurrentPos, animTime, animFunc)
 				.finishFn(bind(&InstagramViewer::animComplete, this));
+		preloaderMini = settingsFactory().getMiniPreloader();
+		break;
+
+	case PRELOADING:
+		preloaderMain = settingsFactory().getMainPreloader();
 		break;
 	}
 }

@@ -74,6 +74,12 @@ void Preloader::reset()
 
 }
 
+void Preloader::set(IMovieRef value)
+{
+	preloader = value;
+	preloader->setPosition(0.5f * (getWindowSize() - Vec2f(preloader->getWidth(), preloader->getHeight())));
+}
+
 void Preloader::setBackground(const gl::Texture& texture)
 {
 	background = texture;

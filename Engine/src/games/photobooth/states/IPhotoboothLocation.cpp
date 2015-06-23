@@ -4,7 +4,6 @@ using namespace kubik;
 using namespace kubik::games::photobooth;
 
 PhotoboothSettingsRef IPhotoboothLocation::settings;
-ci::gl::Texture IPhotoboothLocation::bckgrnd;
 
 IPhotoboothLocation::IPhotoboothLocation():titlePositionY(238.0f), animShowTitleTime(1.1f)
 {
@@ -26,12 +25,13 @@ void IPhotoboothLocation::hideAnimationComplete()
 void IPhotoboothLocation::reset(PhotoboothSettingsRef settings)
 {
 	this->settings = settings;
-	bckgrnd  = settings->getTexture("bg");
+	bckgrnd  = TextureRef(new Texture(settings->getTexture("bg")));
 }
 
 void IPhotoboothLocation::fillBg()
 {
-	gl::draw(bckgrnd);
+	if (bckgrnd)
+		gl::draw(bckgrnd);
 }
 
 void IPhotoboothLocation::drawTitle()

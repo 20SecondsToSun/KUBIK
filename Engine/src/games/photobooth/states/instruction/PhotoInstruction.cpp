@@ -5,8 +5,7 @@ using namespace ci::signals;
 using namespace kubik::games::photobooth;
 using namespace kubik;
 
-PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings)
-	:animTime(0.8f), alphaAnim(1.0f)
+PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings):animTime(0.8f), alphaAnim(1.0f)
 {
 	titlePositionY = 492.0f;
 	voidBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(1080, 1920, Vec2f(0.0f, 80.0f)));
@@ -21,6 +20,7 @@ PhotoInstruction::~PhotoInstruction()
 
 void PhotoInstruction::reset(PhotoboothSettingsRef set)
 {
+	IPhotoboothLocation::reset(set);
 	settings = set;
 	fonTex = settings->getTexture("instrFon");
 	titleTex = settings->getTexture("instrTitle");

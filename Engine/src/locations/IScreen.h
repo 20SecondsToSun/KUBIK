@@ -13,6 +13,7 @@ namespace kubik
 	{
 	public:
 		IScreen(const ScreenId& id = ScreenId::UNDEFINED);
+		virtual ~IScreen() {};
 	
 		ScreenId getType() const;
 		void setType(const ScreenId& id);

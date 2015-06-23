@@ -22,9 +22,7 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
 	instClient = InstagramClientRef(new InstagramClient(settings->getClientID()));
 
-	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
-		settingsFactory().getMainPreloader(),
-		settingsFactory().getMiniPreloader(),
+	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,		
 		settings->getTexture("noMaterials"),
 		settings->getTexture("allLoaded"),
 		settings->getTexture("privateUser"),

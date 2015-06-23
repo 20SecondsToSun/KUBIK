@@ -4,8 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 
 PreloaderSettings::PreloaderSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model),
-	configSettings(configSettings)
+	:ISettings(model), configSettings(configSettings)
 {
 
 }
@@ -43,7 +42,8 @@ void PreloaderSettings::setTextures()
 	clearResources();
 
 	auto addPreloaderFilesToDictionary = [&](MovieLoader::MovieLoaderStruct& movieStruct, const string& name)
-	{		movieStruct = movieLoader().getMovieStruct(getTemplateDesignPath(name + "\\"), name);	
+	{	
+		movieStruct = movieLoader().getMovieStruct(getTemplateDesignPath(name + "\\"), name);	
 
 		if (movieStruct.type == MovieLoader::VIDEO)
 			addToDictionary(movieStruct.name, createVideoResource(movieStruct.paths[0]));
@@ -57,7 +57,7 @@ void PreloaderSettings::setTextures()
 }
 
 void PreloaderSettings::buildData()
-{
+{	
 	mainPreloader = movieLoader().getMovie(mainPreloaderStruct, getTextures(), getVideos());
 	miniPreloader = movieLoader().getMovie(miniPreloaderStruct, getTextures(), getVideos());
 }

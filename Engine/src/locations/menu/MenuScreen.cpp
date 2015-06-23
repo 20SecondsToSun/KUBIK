@@ -1,5 +1,6 @@
 #include "MenuScreen.h"
 #include "Resources.h"
+#include "SettingsFactory.h"
 
 using namespace kubik;
 using namespace kubik::menu;
@@ -8,6 +9,8 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace ci::signals;
+
+const float MenuScreen::goToScreenSaverTime = 6.0f;
 
 MenuScreen::MenuScreen(ISettingsRef config):IScreen(ScreenId::MENU)
 {
@@ -22,7 +25,7 @@ MenuScreen::~MenuScreen()
 void MenuScreen::init(ISettingsRef value)
 {	
 	settings = static_pointer_cast<MenuSettings>(value);
-	bckgnd   =  settings->getTexture("background");
+	bckgnd   = settings->getTexture("background");
 	createMenuBtns(settings->getEnabledGamesData());
 }
 
@@ -39,14 +42,13 @@ void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
 
 	AdditionalGameData additionalGD = settings->getMenuScreenAdditionalDesignElements();
 
-	for(auto it : games)
+	for (auto it : games)
 	{			
 		GameButtonRef button = GameButtonRef(new GameButton(it,
 			additionalGD.getBackground(),
 			additionalGD.getBackgroundPosition(),
 			additionalGD.getTitleByID(it.getID()),
-			additionalGD.getTitlePosition()
-			));
+			additionalGD.getTitlePosition()));
 		addChild(button);
 		gamesBtns.push_back(button);		
 	}
@@ -75,7 +77,10 @@ void MenuScreen::start()
 	{
 		state = INIT_ANIM;
 		timeline().apply(&alpha, 0.0f, 1.0f, 0.9f, EaseOutCubic()).finishFn(bind(&MenuScreen::showAnimationComplete, this));
-	}	
+	}
+
+	if (settingsFactory().getScreenSaver()->isShow())
+		delaycall(bind(&MenuScreen::gotoScreeenSaverTimeOut, this), goToScreenSaverTime);
 }
 
 void MenuScreen::showAnimationComplete()
@@ -88,10 +93,17 @@ void MenuScreen::showAnimationComplete()
 	//callback(ENABLE_GAME_CLOSE);
 }
 
+void MenuScreen::gotoScreeenSaverTimeOut()
+{
+	startVideoSignal();
+}
+
 void MenuScreen::stop()
 {
 	for(auto btn : gamesBtns)	
-		btn->disconnectEventHandler();		
+		btn->disconnectEventHandler();	
+
+	clearDelaycall();
 }
 
 void MenuScreen::startGameHandler(EventGUIRef& evt )
@@ -105,11 +117,6 @@ void MenuScreen::startGameHandler(EventGUIRef& evt )
 		auto id = event->getGameID();
 		startGameSignal(id);
 	}
-}
-
-void MenuScreen::videoMouseUpListener(EventGUIRef& evt )
-{	
-	startVideoSignal();
 }
 
 void MenuScreen::draw()

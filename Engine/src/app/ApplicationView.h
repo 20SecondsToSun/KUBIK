@@ -5,6 +5,7 @@
 #include "ServicePopup.h"
 #include "preloader/Preloader.h"
 #include "gui/Sprite.h"
+#include "SettingsFactory.h"
 
 namespace kubik
 {

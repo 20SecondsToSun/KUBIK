@@ -1,6 +1,7 @@
 #pragma once
 #include "instagram/InstagramClient.h"
 #include "ImageSequencer/ImageSequencer.h"
+#include "SettingsFactory.h"
 
 namespace instagram
 {
@@ -46,9 +47,7 @@ namespace instagram
 		void setState(const drawState& value);			
 
 	public:	
-		InstagramViewer(InstagramClientRef client,
-			kubik::IMovieRef prel,
-			kubik::IMovieRef preloaderMini,
+		InstagramViewer(InstagramClientRef client,			
 			const ci::gl::Texture& noMaterials,
 			const ci::gl::Texture& allLoaded,
 			const ci::gl::Texture& privateUser,	

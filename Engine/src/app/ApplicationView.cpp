@@ -45,9 +45,13 @@ void ApplicationView::removeLayer(SpriteRef layer)
 ////////////////////////////////////////////////////////////////////////////
 
 void ApplicationView::showPreloader()
-{
+{	
 	kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ if (location) draw(); }));
+
+	if (settingsFactory().getMainPreloader() != nullptr)
+		preloader->set(settingsFactory().getMainPreloader());
 	preloader->setBackground(getScreenShot());
+
 	location = preloader;
 }
 

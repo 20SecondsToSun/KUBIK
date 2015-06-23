@@ -1,5 +1,4 @@
 #pragma once
-
 #include "IScreen.h"
 #include "ISettings.h"
 #include "Types.h"

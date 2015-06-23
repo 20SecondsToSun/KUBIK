@@ -7,6 +7,7 @@
 #include "GameButton.h"
 #include "ScreenStorage.h"
 #include "GameChoosedEvent.h"
+#include "TimerTools.h"
 
 namespace kubik
 {
@@ -38,18 +39,19 @@ namespace kubik
 			void draw();	
 			void resetMenuBtnGames();
 
-		private:		
+		private:
+			static const float goToScreenSaverTime;
 			connection appUpdateSignal;
 			connection mouseListener;	
 
 			void startGameHandler(EventGUIRef& button);
-			void videoMouseUpListener(EventGUIRef& button);
-
+			
 			void createMenuBtns(const std::vector<GameData>& gameIDs);
 			void clearGamesButtonVector();
 			void update();
 
 			void showAnimationComplete();
+			void gotoScreeenSaverTimeOut();
 
 			//ci::Rectf getMenuBtuttonArea(int i);
 			void drawShowAnim();

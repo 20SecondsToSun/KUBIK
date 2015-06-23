@@ -1172,9 +1172,6 @@
     <ClInclude Include="..\src\locations\settings\main\closeBlock\CloseBlock.h">
       <Filter>Source Files\locations\settings\main\closeBlock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Source Files\locations\settings\main\gamesBlock</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>

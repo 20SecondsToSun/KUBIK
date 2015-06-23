@@ -19,8 +19,8 @@ void ControlLayer::showBackButton()
 void ControlLayer::activateListeners()
 {
 	btn->connectEventHandler(&ControlLayer::close, this);
-	settingsbtn->connectEventHandler(&ControlLayer::startSettings, this);
 	btn->setAlpha(1.0f);
+	settingsbtn->connectEventHandler(&ControlLayer::startSettings, this);	
 	settingsbtn->setAlpha(1.0f);
 }
 

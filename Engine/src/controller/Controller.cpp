@@ -50,6 +50,7 @@ void Controller::loadSettings()
 
 	settingsFactory().inject(controlSettings);
 	settingsFactory().inject(preloaderSettings);
+	settingsFactory().inject(screenSaverSettings);
 
 	list<ISettingsRef> configs;
 	configs.push_back(controlSettings);
@@ -416,15 +417,15 @@ void Controller::reloadScreens(const std::vector<Changes>& changes, bool reloadA
 	{
 		//removeScreenSaverHandlers();
 		removeGameHandlers();
-		removeMenuScreenHandlers();	
-	
-		//todo::  set textures
+		removeMenuScreenHandlers();		
 		removeConfigScreenHandlers();
+
 		currentLocation->stop();
 		view->showPreloader();
 		view->clearLayers();
 		controlLayer->clear();
 
+		preloaderSettings->setTextures();
 		gameSettings->setAllTextures();
 		loadAllLocationsGraphics();
 		return;

@@ -7,6 +7,7 @@
 #include "DecorLoadButton.h"
 #include "PhotoboothSettings.h"
 #include "PreloaderSettings.h"
+#include "ScreenSaverSettings.h"
 
 using namespace ci;
 
@@ -33,9 +34,7 @@ namespace kubik
 
 			LoadButtonRef createDecorLoadButton(const std::string &path, const ci::Vec2f& pos, const ci::gl::Texture& over)
 			{
-				return DecorLoadButtonRef(
-					new DecorLoadButton(path,
-					ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),					
+				return DecorLoadButtonRef(new DecorLoadButton(path,	ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),					
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon"), over));
 			}
@@ -90,22 +89,39 @@ namespace kubik
 			void inject(PreloaderSettingsRef configSettings)
 			{
 				preloaderSettings = configSettings;
+			}
+
+			void inject(ScreenSaverSettingsRef configSettings)
+			{
+				screenSaverSettings = configSettings;
 			}	
+
+			ScreenSaverSettingsRef getScreenSaver()
+			{
+				return screenSaverSettings;
+			}
 
 			IMovieRef getMainPreloader() const
 			{
-				return preloaderSettings->getMainPreloader();
+				if (preloaderSettings)
+					return preloaderSettings->getMainPreloader();
+
+				return nullptr;
 			}
 
 			IMovieRef getMiniPreloader() const
 			{
-				return preloaderSettings->getMiniPreloader();
+				if (preloaderSettings)
+					return preloaderSettings->getMiniPreloader();
+
+				return nullptr;
 			}
 
 		private:
 			ConfigSettingsRef settings;
 			PhotoboothSettingsRef phtSettings;
 			PreloaderSettingsRef preloaderSettings;
+			ScreenSaverSettingsRef screenSaverSettings;
 		};
 	
 		inline SettingsFactory&	settingsFactory() { return SettingsFactory::getInstance();};

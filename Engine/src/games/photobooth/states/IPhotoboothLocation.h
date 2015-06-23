@@ -17,7 +17,7 @@ namespace kubik
 			{
 			protected:
 				static PhotoboothSettingsRef settings;
-				static ci::gl::Texture bckgrnd;
+				ci::gl::TextureRef bckgrnd;
 				float titlePositionY, animShowTitleTime;
 
 				ci::Anim<float> titleAlpha, titleScale, titleFilterAlpha;

@@ -1,6 +1,6 @@
 #pragma once
 #include "services/social/SocShare.h"
-#include "Socialsettings.h"
+#include "SocialSettings.h"
 
 namespace kubik
 {

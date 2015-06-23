@@ -85,7 +85,7 @@ void Instakub::stop()
 	view->disconnectEventHandler(InstakubLocation::SHOW_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::HIDE_CONTROLS);
 	view->stop();
-
+	
 	disconnectEventHandler();
 	stopTimer();	
 }

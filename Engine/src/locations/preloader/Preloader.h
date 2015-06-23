@@ -15,14 +15,14 @@ namespace kubik
 	public:
 		Preloader(const ci::Vec2f& position);
 		Preloader();
-		void create(const ci::Vec2f& position);
 
-		virtual void draw() override;
-
-		void setPosition(const ci::Vec2f& position);
+		void draw() override;
 		void init(ISettingsRef config) override;
+		void create(const ci::Vec2f& position);		
 		void reset() override;
+		void set(IMovieRef value);
 		void setBackground(const gl::Texture& texture);
+		void setPosition(const ci::Vec2f& position);
 
 	protected:
 		void setTextures();

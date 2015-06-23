@@ -1,5 +1,4 @@
 #pragma once
-
 #include "IGame.h"
 #include "ISettings.h"
 
@@ -9,7 +8,6 @@ namespace kubik
 	class GamesFactory
 	{
 	public:
-
 		typedef std::shared_ptr<base> base_ptr;
 
 		template <class derived>
@@ -30,9 +28,7 @@ namespace kubik
 		class base_type
 		{
 		public:
-
 			virtual ~base_type() {}
-
 			virtual base_ptr create(std::shared_ptr<ISettings> set) = 0;
 		};
 
@@ -42,7 +38,6 @@ namespace kubik
 		class derived_type : public base_type
 		{
 		public:
-
 			virtual base_ptr create(std::shared_ptr<ISettings> set)
 			{
 				return base_ptr(new T(set));

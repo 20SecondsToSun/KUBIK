@@ -6,9 +6,11 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
+const float Photobooth::goToScreenSaverTime = 10.0f;
+
 Photobooth::Photobooth(ISettingsRef config)
 {
-	console()<<" :::Photobooth CREATED::: "<<endl;
+	console()<<":::Photobooth CREATED:::"<<endl;
 	init(config);
 	setType(ScreenId::PHOTOBOOTH);
 	create();
@@ -16,7 +18,7 @@ Photobooth::Photobooth(ISettingsRef config)
 
 Photobooth::~Photobooth()
 {	
-	console() << " :::Photobooth DESTRUCTION::: " << endl;
+	console() << ":::Photobooth DESTRUCTION:::" << endl;
 	updateSignal.disconnect();
 	removeListeners();
 	locations.clear();
@@ -32,30 +34,35 @@ void Photobooth::create()
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
-	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings, photoStorage));
-	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings, photoStorage));
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		photoStorage));
+	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings,		photoStorage));
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
 	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,   photoStorage));
 
 	initLocations();
-
 	cameraSetup();
-
 	chrome().init();
 }
 
 void Photobooth::start()
 {
-	console()<<" :::START PHOTOBOTH::: "<<endl;
+	console() << " :::START PHOTOBOTH::: " << endl;
+	gl::enableAlphaBlending();
+	
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
 
 	index = 0;
 	currentLocation = locations[index];
-	initShowAnimation();	
+	initShowAnimation();
+	delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), goToScreenSaverTime, "toPhotoBoothScreenSaver");
+}
 
-	gl::enableAlphaBlending();
+void Photobooth::goToPhotoInstructionTimeOut()
+{
+	currentLocation->stop();
+	gotoFirstlocation();
 }
 
 void Photobooth::showAnimationComplete()
@@ -112,12 +119,14 @@ void Photobooth::stop()
 	animX.stop();
 	animX1.stop();
 	alpha.stop();
+
+	clearDelaycall();
 }
 
 void Photobooth::reset()
 {
 	console()<<" :::RESET PHOTOBOOTH::: "<<endl;
-	for (auto it: locations)
+	for (auto it : locations)
 		it->reset(settings);
 }
 
@@ -143,8 +152,6 @@ void Photobooth::cameraSetup()
 	cameraCanon().setDownloadDirectory(settings->getPhotoDownloadDirectory());
 	cameraCanon().setImageQuality();
 	cameraCanon().setAutoReconnect(true);
-	//connect_once(cameraCanon().deviceConnectEvent, bind(&Photobooth::cameraConnectHandler, this));
-	//connect_once(cameraCanon().deviceDisconnectEvent, bind(&Photobooth::cameraDisconnectHandler, this));
 }
 
 void Photobooth::nextLocationHandler()
@@ -158,6 +165,9 @@ void Photobooth::nextLocationHandler()
 		
 		currentLocation = locations[index];
 		currentLocation->start();
+		
+		clearDelaycall("toPhotoBoothScreenSaver");
+		delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), goToScreenSaverTime, "toPhotoBoothScreenSaver");
 	}	
 }
 
@@ -185,6 +195,7 @@ void Photobooth::handleCameraConnection()
 	{	
 		state = CAMERA_DISCONNECT;
 		currentLocation->stop();	
+		clearDelaycall("toPhotoBoothScreenSaver");
 	}
 	else if (cameraCanon().isConnected() && state == CAMERA_DISCONNECT)
 	{

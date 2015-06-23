@@ -39,6 +39,8 @@ namespace kubik
 				size_t index;					
 
 			private:
+				static const float goToScreenSaverTime;
+
 				PhotoInstructionRef photoInstruction;
 				PhotoFilterRef		photoFilter;
 				PhotoTimerRef		photoTimer;
@@ -67,7 +69,8 @@ namespace kubik
 				void closeLocationHandler();				
 				void disableGameCloseHandler();
 				void handleCameraConnection();
-				void drawCameraErrorPopup();				
+				void drawCameraErrorPopup();
+				void goToPhotoInstructionTimeOut();				
 
 				template <class T>
 				bool equalLocations(IPhotoboothLocationRef location)
