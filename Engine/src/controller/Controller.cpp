@@ -95,15 +95,21 @@ void Controller::loadAllLocationsGraphics()
 }
 
 void Controller::allGraphicsLoadingCompleteHandler()
-{
+{	
 	logger().log("BUILD SETTINGS DATA");
-
+	
 	preloaderSettings->buildData();
 	controlSettings->buildData();
 	gameSettings->buildSettingData();
-
+	
 	removeGraphicsLoadingConnections();
+	
+	logger().log("___ timer1____");
+	logger().log(to_string(Utils::getCurrentMilliseconds()));
+
 	createLocations();
+	logger().log("___ time2____");
+	logger().log(to_string(Utils::getCurrentMilliseconds()));
 }
 
 void Controller::graphicsLoadingErrorHandler(KubikException exc)

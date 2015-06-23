@@ -4,7 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-const ci::Vec2f SearchLocation::HIDING_KEYBORAD_POSITION = Vec2f(30.0f, 1920.0f);
+const ci::Vec2f SearchLocation::HIDING_KEYBORAD_POSITION  = Vec2f(30.0f, 1920.0f);
 const ci::Vec2f SearchLocation::SHOWING_KEYBORAD_POSITION = Vec2f(30.0f, 595.0f);
 const float SearchLocation::HIDING_KEYBORAD_TIME = 0.7f;
 const float SearchLocation::SHOWING_KEYBORAD_TIME = 0.7f;
@@ -75,7 +75,6 @@ void SearchLocation::inputTouchHandler()
 
 	string hashtag = touchKeyboard().getInputFieldText();
 
-	//instaViewer->animatePositionTo(position.x, position.y + 35.f);
 	instaViewer->disconnect();
 	touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
 	keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);

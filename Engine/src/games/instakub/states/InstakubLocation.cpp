@@ -12,8 +12,7 @@ InstagramClientRef InstakubLocation::instClient;
 InstagramViewerRef InstakubLocation::instaViewer;
 InstaPopupRef InstakubLocation::instaPopup;
 
-InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)
-	:settings(settings), yPosition(0.0f)
+InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)	:settings(settings), yPosition(0.0f)
 {
 	this->position = position;
 
@@ -22,7 +21,7 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
 	instClient = InstagramClientRef(new InstagramClient(settings->getClientID()));
 
-	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,		
+	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
 		settings->getTexture("noMaterials"),
 		settings->getTexture("allLoaded"),
 		settings->getTexture("privateUser"),
@@ -31,8 +30,8 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 		settings->getTexture("pullupdate")));
 
 	instaPopup = InstaPopupRef(new InstaPopup(instClient,
-		settings->getTexture("closeInstaPopup"), 
-		settings->getTexture("printInstaPopup"), 
+		settings->getTexture("closeInstaPopup"),
+		settings->getTexture("printInstaPopup"),
 		settings->getCurrentTemplate()));
 
 	init = true;	
@@ -75,7 +74,17 @@ void InstakubLocation::disconnectViewer()
 
 void InstakubLocation::reset()
 {
-	bg = settings->getTexture("bg");	
+	bg = settings->getTexture("bg");
+	instaPopup->setDesignElements(settings->getTexture("closeInstaPopup"),
+								  settings->getTexture("printInstaPopup"),
+								  settings->getCurrentTemplate());
+
+	instaViewer->setDesignElements(settings->getTexture("noMaterials"),
+								   settings->getTexture("allLoaded"),
+								   settings->getTexture("privateUser"),
+								   settings->getTexture("notExistUser"),
+								   settings->getTexture("notPhotosUser"),
+								   settings->getTexture("pullupdate"));
 }
 
 void InstakubLocation::initOverMask()

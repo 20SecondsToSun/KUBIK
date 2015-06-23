@@ -135,8 +135,7 @@ void Photobooth::initLocations()
 	removeListeners();
 
 	locations.clear();
-	locations.push_back(photoInstruction);	
-
+	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
 	locations.push_back(photoTimer);
 	locations.push_back(photoShooting);
@@ -157,7 +156,9 @@ void Photobooth::cameraSetup()
 void Photobooth::nextLocationHandler()
 {
 	if (++index >= locations.size())
+	{
 		gotoFirstlocation();
+	}		
 	else
 	{
 		if (equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())		

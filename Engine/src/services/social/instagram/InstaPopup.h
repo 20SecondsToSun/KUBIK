@@ -35,6 +35,7 @@ namespace instagram
 		SignalVoid touchedEvent;
 
 		bool isOpen();
+		void setDesignElements(const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template);
 
 	private:
 		ci::Vec2f imageShift;

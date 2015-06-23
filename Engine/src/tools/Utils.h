@@ -1,5 +1,6 @@
 #pragma once
 //#include <boost/regex.hpp>
+#include <boost/timer.hpp>
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
@@ -10,6 +11,7 @@ class Utils
 	public:
 
 		static struct tm		getCurrentTime();	
+		static double getCurrentMilliseconds();
 		static std::string  Utils::duplicateSymbol(std::string str, std::string symb);
 		static gl::Texture		loadImageFromString(std::string value);
 

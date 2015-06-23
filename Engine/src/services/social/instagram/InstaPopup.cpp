@@ -5,20 +5,21 @@ using namespace ci;
 using namespace ci::app;
 
 InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template)
-	:client(client),
-	bgColor(Color::hex(0x060a0e)),
-	alpha(0),
-	showing(false),
-	templateImage(_template)
+	:client(client), bgColor(Color::hex(0x060a0e)), alpha(0), showing(false), templateImage(_template)
+{
+	setDesignElements(close, print, _template);
+}
+
+void InstaPopup::setDesignElements(const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template)
 {
 	closeBtn = ImageButtonSpriteRef(new ImageButtonSprite(close, Vec2f(getWindowWidth(), 0.0f) + Vec2f(-93.0f, 93.0f) - close.getSize() * 0.5f));
-	
+
 #ifdef PORTRAIT_RES
 	auto positionPrint = Vec2f(0.5f * (getWindowWidth() - print.getWidth()), 1456.0f - print.getHeight()*0.5f);
 #else
 	auto positionPrint = Vec2f(0.5f * (getWindowWidth() - print.getWidth()), 10.0f);
 #endif
-	
+
 	printBtn = ImageButtonSpriteRef(new ImageButtonSprite(print, positionPrint));
 
 	imageShift = Vec2f(0.5f * (getWindowWidth() - 640.0f), 224.0f);

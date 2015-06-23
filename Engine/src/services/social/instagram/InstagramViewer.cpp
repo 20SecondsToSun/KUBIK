@@ -40,6 +40,21 @@ InstagramViewer::InstagramViewer(InstagramClientRef client,
 	
 }
 
+void InstagramViewer::setDesignElements(const gl::Texture& noMaterials,
+	const gl::Texture& allLoaded,
+	const gl::Texture& privateUser,
+	const gl::Texture& notExistUser,
+	const gl::Texture& notPhotosUser,
+	const gl::Texture& dragToReload)
+{
+	this->noMaterials = noMaterials;
+	this->allLoaded = allLoaded;
+	this->privateUser = privateUser;
+	this->notExistUser = notExistUser;
+	this->notPhotosUser = notPhotosUser;
+	this->dragToReload = dragToReload;
+}
+
 void InstagramViewer::connect()
 {
 	if (connected) return;
@@ -149,16 +164,17 @@ void InstagramViewer::setState(const drawState& value)
 		break;
 
 	case MINI_PRELOADING:
+		preloaderMini = settingsFactory().getMiniPreloader();
 		mainHeight += preloaderMini->getHeight() + 50;
 		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.value().y);
 		currentPos.stop();
 		timeline().apply(&currentPos, futureCurrentPos, animTime, animFunc)
-				.finishFn(bind(&InstagramViewer::animComplete, this));
-		preloaderMini = settingsFactory().getMiniPreloader();
+				.finishFn(bind(&InstagramViewer::animComplete, this));		
 		break;
 
-	case PRELOADING:
+	case PRELOADING:		
 		preloaderMain = settingsFactory().getMainPreloader();
+		preloaderMain->setPosition(Vec2f((1080.0f - preloaderMain->getWidth()) * 0.5f, (1920.0f - preloaderMain->getHeight())*0.5f));
 		break;
 	}
 }
@@ -227,15 +243,7 @@ void InstagramViewer::drawImages()
 
 void InstagramViewer::drawMainPreloader()
 {
-	gl::pushMatrices();	
-	gl::translate(0.0f, (getWindowHeight() - preloaderMain->getHeight())*0.5f);
-#ifdef PORTRAIT_RES
-	//gl::translate(0.0f, 300.0f);
-#else
-	gl::translate(0.0f, 100.0f);
-#endif
 	preloaderMain->draw();
-	gl::popMatrices();
 }
 
 void InstagramViewer::drawMiniPreloader()

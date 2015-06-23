@@ -77,8 +77,9 @@ void OneDesignItem::setDesignTexture(const ci::gl::Texture& designTexture)
 
 ci::gl::Texture OneDesignItem::sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
 {
-	gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
-
+	console() << "REFACTOR BIG HERE!!!!!!!!!!!!" << endl;
+	static gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
+	return fbo.getTexture();
 	console() << "fbo size::  " << fbo.getSize() << endl;
 
 	Utils::drawGraphicsToFBO(fbo, [&]()

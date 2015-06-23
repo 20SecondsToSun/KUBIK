@@ -55,6 +55,13 @@ namespace instagram
 			const ci::gl::Texture& notPhotosUser,
 			const ci::gl::Texture& dragToReload);
 
+		void setDesignElements(const gl::Texture& noMaterials,
+			const gl::Texture& allLoaded,
+			const gl::Texture& privateUser,
+			const gl::Texture& notExistUser,
+			const gl::Texture& notPhotosUser,
+			const gl::Texture& dragToReload);
+
 		void showMiniPreloader();
 		void connect();
 		void disconnect();

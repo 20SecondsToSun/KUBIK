@@ -10,6 +10,12 @@ struct tm Utils::getCurrentTime()
 	return tstruct;
 }
 
+double Utils::getCurrentMilliseconds()
+{
+	boost::timer t;
+	return t.elapsed();
+}
+
 std::string  Utils::duplicateSymbol(std::string str, std::string symb)
 {
 	return "";
