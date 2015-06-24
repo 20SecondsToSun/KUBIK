@@ -64,7 +64,7 @@ void SearchLocation::initVirtualKeyboard()
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().setInputField(234.0f, 290.0f, 924.0f, 402.0f);
 	touchKeyboard().setInputColor(Color::white());
-	touchKeyboard().setInputFont(settings->getFont("introLight36"));
+	touchKeyboard().setInputFont(settings->getViewInputFieldFont());
 	touchKeyboard().activateSearchMode();
 }
 

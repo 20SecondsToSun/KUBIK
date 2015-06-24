@@ -319,7 +319,7 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	
 	curl_slist *headers=NULL; // init to NULL is important 
 	console() << "url  :" << url << endl;
-	console() << "postParamString  :" << postParamString << endl;
+	//console() << "postParamString  :" << postParamString << endl;
 	
 
 	curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8"); 

@@ -1,0 +1,5 @@
+{
+   "hashtag": {"font" : "HypatiaSansPro-Black", "size" : 100, "color" :  "ffffff"},
+    "preloaderTone":"ff6052",
+ "inputFieldFont": {"font" : "Idealist-SC", "size" : 40, "color" :  "ffffff"}
+}

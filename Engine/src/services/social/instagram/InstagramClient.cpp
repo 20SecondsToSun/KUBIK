@@ -33,12 +33,7 @@ void InstagramClient::loadPopular(int count)
 
 void InstagramClient::_loadPopular(int count)
 {
-	string request = API::POPULAR + "?" +
-		API::CLIENT_ID + "=" + clientID +
-		"&COUNT=" + to_string(count);	
-
-	console() << "-----------load popular!   ::   " << request<<endl;
-
+	string request = API::POPULAR + "?" + clientIDParam() + "&COUNT=" + to_string(count);
 	loadMediaRequest(request);
 }
 
@@ -59,11 +54,8 @@ void InstagramClient::loadTagMedia(const string& tagName, int count)
 
 void InstagramClient::_loadTagMedia(const string& tagName, int count)
 {
-	string request = API::TAGS + Utils::cp1251_to_utf8(tagName.c_str()) + "/" +
-		API::MEDIA_RECENT + "?" +
-		API::CLIENT_ID + "=" + clientID +
-		"&COUNT=" + to_string(count);
-
+	string tagUTF = Utils::cp1251_to_utf8(tagName.c_str());
+	string request = API::TAGS + tagUTF + "/" + API::MEDIA_RECENT + "?" + clientIDParam() + "&COUNT=" + to_string(count);
 	loadMediaRequest(request);
 }
 
@@ -84,12 +76,8 @@ void InstagramClient::loadUserMedia(const string& tagName, int count)
 
 void InstagramClient::_loadUserMedia(const string& userName, int count)
 {
-	string request = API::USERS
-		+ API::SEARCH
-		+ "?q="
-		+ Utils::cp1251_to_utf8(userName.c_str()) + "&" +
-		API::CLIENT_ID + "=" + clientID;
-
+	string tagUTF = Utils::cp1251_to_utf8(userName.c_str());
+	string request = API::USERS + API::SEARCH + "?q=" + tagUTF + "&" + clientIDParam();
 	loadUsersRequest(request);
 }
 
@@ -110,20 +98,19 @@ void InstagramClient::loadUsersRequest(const string& request)
 	{
 		lastCode = userResponse.getCode();
 		auto firstUser = data.front();
-		console() << "firstUser::::   " << firstUser.getID() << endl;	
 		loadUserPhotos(firstUser.getID());
 	}
 }
 
 void InstagramClient::loadUserPhotos(const string& userID, int count)
 {
-	string request = API::USERS
-		+ userID + "/" +
-		API::MEDIA_RECENT + "?" +
-		API::CLIENT_ID + "=" + clientID +
-		"&COUNT=" + to_string(count);
-
+	string request = API::USERS + userID + "/" + API::MEDIA_RECENT + "?" + clientIDParam() + "&COUNT=" + to_string(count);
 	loadMediaRequest(request);
+}
+
+string InstagramClient::clientIDParam() const
+{
+	return API::CLIENT_ID + "=" + clientID;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -191,6 +178,50 @@ void InstagramClient::update()
 
 ////////////////////////////////////////////////////////////////////////////
 //
+//					LOADING
+//
+////////////////////////////////////////////////////////////////////////////
+
+void InstagramClient::loadImages()
+{
+	list<InstagramMedia> mediaList = lastMediaResponse.getData();
+
+	synchImages.clear();
+
+	for (auto image : mediaList)
+	{
+		ImageGraphic imageGr;
+		imageGr.setLowResURL(image.getImagesList().getLowResolution().getURL());
+		imageGr.setStandartResURL(image.getImagesList().getStandardResolution().getURL());
+		imageGr.setSize(THUMB_SIZE);
+		synchImages.push_back(imageGr);
+	}
+}
+
+void InstagramClient::killLoad()
+{
+	ci::app::console() << "TRY TO KILL!!!!!!!!!!!!!!!" << endl;
+	if (_loading)
+	{
+		ci::app::console() << "join!!!!!!!!!!!!!!!" << endl;
+
+		if (mediaLoadThread && mediaLoadThread->joinable())
+		{
+			//mediaLoadThread->interrupt();
+			mediaLoadThread->join();
+		}
+
+		//if (mediaLoadThread && mediaLoadThread->joinable())
+		//	mediaLoadThread->join();
+	}
+
+	_loading = false;
+	_needSynch = false;
+	ci::app::console() << "KILLED!!!!!!!!!!!!!!!" << endl;
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
 //					GETTERS
 //
 ////////////////////////////////////////////////////////////////////////////
@@ -243,43 +274,4 @@ bool InstagramClient::userNotHavePhotos() const
 bool InstagramClient::noHashtagPhotos() const
 {
 	return synchImages.empty();
-}
-
-void InstagramClient::loadImages()
-{
-	list<InstagramMedia> mediaList = lastMediaResponse.getData();
-
-	synchImages.clear();
-
-	for (auto image : mediaList)
-	{
-		ImageGraphic imageGr;
-		imageGr.setLowResURL(image.getImagesList().getLowResolution().getURL());
-		imageGr.setStandartResURL(image.getImagesList().getStandardResolution().getURL());
-		imageGr.setSize(THUMB_SIZE);
-		synchImages.push_back(imageGr);
-	}
-}
-
-void InstagramClient::killLoad()
-{
-	ci::app::console() << "TRY TO KILL!!!!!!!!!!!!!!!" << endl;
-	if (_loading)
-	{
-		ci::app::console() << "join!!!!!!!!!!!!!!!" << endl;
-
-		if (mediaLoadThread && mediaLoadThread->joinable())
-		{
-			//mediaLoadThread->interrupt();
-			mediaLoadThread->join();
-		}
-		
-
-		//if (mediaLoadThread && mediaLoadThread->joinable())
-		//	mediaLoadThread->join();
-	}
-
-	_loading = false;
-	_needSynch = false;
-	ci::app::console() << "KILLED!!!!!!!!!!!!!!!" << endl;
 }

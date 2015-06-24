@@ -4,15 +4,15 @@
    "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
    "menuConfigPath" : "data\\configs\\menu.txt",
 
-   "photoboothConfig" : {"path":"data\\configs\\photobooth\\path.txt",
-			     "params":"data\\configs\\photobooth\\params.txt",
-			     "consts":"data\\configs\\photobooth\\consts.txt",
-			     "labels":"data\\configs\\photobooth\\labels.txt"},
+   "photoboothConfig" : {"path":"data\\configs\\games\\photobooth\\path.txt",
+			     "params":"data\\configs\\games\\photobooth\\params.txt",
+			     "consts":"data\\configs\\games\\photobooth\\consts.txt",
+			     "labels":"data\\configs\\games\\photobooth\\labels.txt"},
 
-   "instakubConfig" : {"path":"data\\configs\\instakub\\path.txt",
-			     "params":"data\\configs\\instakub\\params.txt",
- 			    "consts":"data\\configs\\instakub\\consts.txt",		
-			     "labels":"data\\configs\\instakub\\labels.txt"},
+   "instakubConfig" : {"path":"data\\configs\\games\\instakub\\path.txt",
+			     "params":"data\\configs\\games\\instakub\\params.txt",
+ 			    "consts":"data\\configs\\games\\instakub\\consts.txt",		
+			     "labels":"data\\configs\\games\\instakub\\labels.txt"},
 
  "mainConfig" : {"path":"data\\configs\\mainconf\\path.txt",
 			     "params":"data\\configs\\mainconf\\params.txt",	

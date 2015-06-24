@@ -1,0 +1,5 @@
+{
+   "hashtag": {"font" : "introLight", "size" : 90, "color" :  "aa9b74"},
+    "preloaderTone":"ffffff",
+    "inputFieldFont": {"font" : "introLight", "size" : 36, "color" :  "ffffff"}
+}

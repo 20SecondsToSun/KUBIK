@@ -32,15 +32,15 @@ namespace kubik
 			void setTextures() override;
 			void buildLocationData() override;
 			void buildSettingData() override;
-
-			ci::gl::Texture getCurrentTemplate();
-
+			
 			void loadPaths();
 			void loadParams();
 			void loadLabels();
 			void loadConsts();			
 			void setDesignPath();
 			void parsePhotoCardStyles();
+
+			ci::gl::Texture getCurrentTemplate();
 			ci::ColorA getKeyboardColorInDesign();
 			
 			TextItem getTextItem(const InstaTextID& id);
@@ -48,8 +48,8 @@ namespace kubik
 			bool getSearchFlag() const;
 			void setSearchFlag(bool value);
 
-			std::string getHashtag() const;
-			void setHashtag(const std::string& value);
+			TextItem getHashtag() const;
+			void setHashtagText(const std::string& value);
 
 			DesignData getPhotoCardStyles() const;
 
@@ -67,6 +67,9 @@ namespace kubik
 
 			bool hashtagEnabled() const;
 			bool searchEnabled() const;
+
+			ci::ColorA getPreloaderToneColor() const;
+			ci::Font getViewInputFieldFont();
 
 		private:			
 			bool memento;
@@ -94,6 +97,10 @@ namespace kubik
 				friend InstakubSettings;
 			}
 			configPaths;
+
+			TextItem hashTagTextItem;
+			ci::ColorA preloaderToneColor;
+			std::string viewInputFieldFontName;
 		};
 	}
 }

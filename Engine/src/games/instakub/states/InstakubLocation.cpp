@@ -1,6 +1,7 @@
 #include "InstakubLocation.h"
 
 using namespace kubik;
+using namespace std;
 using namespace ci;
 using namespace kubik::games::instakub;
 using namespace instagram;
@@ -12,7 +13,7 @@ InstagramClientRef InstakubLocation::instClient;
 InstagramViewerRef InstakubLocation::instaViewer;
 InstaPopupRef InstakubLocation::instaPopup;
 
-InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position)	:settings(settings), yPosition(0.0f)
+InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& position):settings(settings), yPosition(0.0f)
 {
 	this->position = position;
 
@@ -85,6 +86,8 @@ void InstakubLocation::reset()
 								   settings->getTexture("notExistUser"),
 								   settings->getTexture("notPhotosUser"),
 								   settings->getTexture("pullupdate"));
+
+	instaViewer->setPreloaderToneColor(settings->getPreloaderToneColor());
 }
 
 void InstakubLocation::initOverMask()
@@ -113,7 +116,7 @@ void InstakubLocation::hashtagPhotosload(const string& hashtag)
 	instClient->loadTagMedia(hashtag);	
 }
 
-void InstakubLocation::userPhotosload(const std::string& userName)
+void InstakubLocation::userPhotosload(const string& userName)
 {
 	initViewerHandlers();
 	instaViewer->connect();
@@ -257,6 +260,6 @@ void InstakubLocation::loadStrategity()
 
 void InstakubLocation::hashTagDefaultPhotosLoad()
 {
-	string hashtag = settings->getHashtag();
+	string hashtag = settings->getHashtag().getText();
 	hashtagPhotosload(hashtag);
 }

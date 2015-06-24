@@ -10,8 +10,9 @@ namespace instagram
 	class InstagramViewer
 	{
 		static const int MAX_PHOTO_CASHED = 60;
-		static const int CASH_PHOTO_CLEAR_COUNT = 20;
-
+		static const int CASH_PHOTO_CLEAR_COUNT = 18;
+		static const int PHOTO_BLOCK_COUNT = 18;
+		
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
 		kubik::IMovieRef preloaderMain, preloaderMini;
@@ -21,8 +22,11 @@ namespace instagram
 		ci::gl::Texture dragToReload;
 		ci::gl::Texture notExistUser;
 		ci::gl::Texture notPhotosUser;
+		ci::ColorA preloaderToneColor;
 
 		ci::Anim<float> noMorePopupAlpha, alphaDragToReload;
+
+		int showingCount;
 
 		enum drawState{ IMAGES_DRAWING,
 			PRELOADING, 
@@ -42,9 +46,10 @@ namespace instagram
 		void drawNoMaterialsPopup();
 		void drawNotExistUser();
 		void drawUserNotHavePhotos();		
-		void drawPrivateUser();		
+		void drawPrivateUser();	
+		void drawCenteredInfoImage(const ci::gl::Texture& image, float y);
 		void noMorePopupAnimFinished();
-		void setState(const drawState& value);			
+		void setState(const drawState& value);	
 
 	public:	
 		InstagramViewer(InstagramClientRef client,			
@@ -62,6 +67,7 @@ namespace instagram
 			const gl::Texture& notPhotosUser,
 			const gl::Texture& dragToReload);
 
+		void setPreloaderToneColor(const ci::ColorA& color);
 		void showMiniPreloader();
 		void connect();
 		void disconnect();
@@ -74,8 +80,7 @@ namespace instagram
 		void showNotExistUser();
 		void showUserNotHavePhotos();
 		void showNoHashtagPhotos();
-
-		void draw();
+		void draw();		
 		void mouseDown(ci::app::MouseEvent event);
 		void mouseUp(ci::app::MouseEvent event);
 		void mouseDrag(ci::app::MouseEvent event);
@@ -83,9 +88,9 @@ namespace instagram
 		void animComplete();
 		int getLastImageIndexTouched();
 		void clear();
-		ImageGraphic getImageGraphic();
 		void setTopDragVisible(bool value);
 
+		ImageGraphic getImageGraphic();
 		SignalVoid touchedEvent, reloadAllMedia, loadNextMedia, touchedDownEvent;
 
 	protected:

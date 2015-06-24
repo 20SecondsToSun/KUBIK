@@ -226,8 +226,7 @@ void GameSettings::load()
 
 		default:
 			continue;
-		}
-
+		}	
 		try
 		{
 			gameSettingsMap[game.id]->load();

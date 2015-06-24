@@ -6,8 +6,7 @@ using namespace kubik::games::instakub;
 
 const float HashtagOnly::TIME_TO_BACK_PLASHKA = 10.0f;
 
-HashtagOnly::HashtagOnly(InstakubSettingsRef settings)
-	:InstakubLocation(settings, Vec2f(18.0f, 332.0f))	
+HashtagOnly::HashtagOnly(InstakubSettingsRef settings):InstakubLocation(settings, Vec2f(18.0f, 332.0f))	
 {
 	reset();
 }
@@ -24,8 +23,9 @@ void HashtagOnly::reset()
 
 void HashtagOnly::start()
 {
-	string hashtag = settings->getHashtag();
-	hashTagTexture = textTools().getTextField(HASH_SYMBOL+ hashtag, &settings->getFont("introLight90"), Color::hex(0xaa9b74));
+	TextItem hashtag = settings->getHashtag();
+
+	hashTagTexture = textTools().getTextField(HASH_SYMBOL + hashtag.getText(), &hashtag.getFont(), hashtag.getColor());
 
 	float plashkaY = getWindowHeight() - hashtagPlashka.getHeight();
 	hashTagTexturePos = Vec2f(0.5f * (getWindowWidth() - hashTagTexture.getWidth()), plashkaY + 100.0f);
@@ -33,7 +33,7 @@ void HashtagOnly::start()
 
 	hashtagPlashkaTextPos = Vec2f(0.5f * (getWindowWidth() - hashtagPlashkaText.getWidth()), plashkaY + 90.0f - hashtagPlashkaText.getHeight()*0.5f);
 
-	InstakubLocation::initPosition();	
+	InstakubLocation::initPosition();
 	InstakubLocation::start();
 
 	instaViewer->setTopDragVisible(true);

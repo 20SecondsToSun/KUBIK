@@ -34,12 +34,13 @@ namespace instagram
 	class InstagramClient
 	{
 		static const int THUMB_SIZE = 342;
-		static const int LOAD_COUNT = 25;
+		static const int LOAD_COUNT = 18;
 
 		typedef ci::signals::signal<void(void)> SignalVoid;
 
 	public:
 		InstagramClient(const std::string& clientID);
+		std::string clientIDParam() const;
 
 		////////////////////////////////////////////////////////////////////////////
 		//

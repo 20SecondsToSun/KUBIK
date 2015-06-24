@@ -42,7 +42,7 @@ void InstakubSettings::loadParams()
 {
 	JsonTree paramsJSON = JsonTree(loadFile(mainConfigObj.getParamsConfigPath()));
 	search = paramsJSON.getChild("search").getValue<bool>();
-	hashtag = paramsJSON.getChild("hashtag").getValue<string>();
+	setHashtagText(paramsJSON.getChild("hashtag").getValue<string>());
 	activePhotoCardStyleDesignID = paramsJSON.getChild("activePhotoCardStyleDesignID").getValue<int>();
 }
 
@@ -134,9 +134,10 @@ void InstakubSettings::setTextures()
 	addToSettingsDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
 	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
 	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
-
 	addToSettingsDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
-
+	addToSettingsDictionary("HypatiaSansPro-Black100", createFontResource(getFontsPath("HypatiaSansPro-Black.ttf"), 100));
+	addToSettingsDictionary("Idealist-SC40", createFontResource(getFontsPath("Idealist-SC.ttf"), 40));
+	
 	addToSettingsDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
 	addToSettingsDictionary("errorText", createImageResource(getInterfacePath("configDesign\\instakub\\errorText.png")));
@@ -175,6 +176,22 @@ void InstakubSettings::setTextures()
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
 		addToDictionary(item.getDesignTexName(), createImageResource(getBasePath().string() + item.getDesignPath()));
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	// config params
+
+	JsonTree confJSON = JsonTree(loadFile(getTemplateDesignPath("params.txt")));
+	JsonTree hashtag = confJSON.getChild("hashtag");
+	
+	hashTagTextItem.setSize(hashtag.getChild("size").getValue<int>());
+	hashTagTextItem.setColor(hashtag.getChild("color").getValue<string>());
+	hashTagTextItem.setFontName(hashtag.getChild("font").getValue<string>());
+	
+	preloaderToneColor = ci::ColorA::hex(std::stoi(confJSON.getChild("preloaderTone").getValue<string>(), 0, 16));
+	
+	string fontName = confJSON.getChild("inputFieldFont").getChild("font").getValue<string>();
+	int fontSize = confJSON.getChild("inputFieldFont").getChild("size").getValue<int>();
+	viewInputFieldFontName = fontName + to_string(fontSize);
 }
 
 void InstakubSettings::buildLocationData()
@@ -200,6 +217,8 @@ void InstakubSettings::buildSettingData()
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fonts);
 	}
+
+	hashTagTextItem.setFont(fonts);
 };
 
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
@@ -225,14 +244,15 @@ void InstakubSettings::setSearchFlag(bool value)
 	search = value;
 }
 
-string InstakubSettings::getHashtag() const
-{
-	return hashtag;
+TextItem InstakubSettings::getHashtag() const
+{	
+	return hashTagTextItem;
 }
 
-void InstakubSettings::setHashtag(const string& value)
+void InstakubSettings::setHashtagText(const string& value)
 {
 	hashtag = value;
+	hashTagTextItem.setText(hashtag);
 }
 
 DesignData InstakubSettings::getPhotoCardStyles() const
@@ -311,4 +331,15 @@ bool InstakubSettings::hashtagEnabled() const
 bool InstakubSettings::searchEnabled() const
 {
 	return search;
+}
+
+ci::ColorA InstakubSettings::getPreloaderToneColor() const
+{
+	return preloaderToneColor;
+}
+
+ci::Font InstakubSettings::getViewInputFieldFont()
+{
+	console() << "font name::::::::::  " << viewInputFieldFontName << endl;
+	return getFont(viewInputFieldFontName);
 }

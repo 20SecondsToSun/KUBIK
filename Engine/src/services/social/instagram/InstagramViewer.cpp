@@ -40,7 +40,8 @@ InstagramViewer::InstagramViewer(InstagramClientRef client,
 	
 }
 
-void InstagramViewer::setDesignElements(const gl::Texture& noMaterials,
+void InstagramViewer::setDesignElements(
+	const gl::Texture& noMaterials,
 	const gl::Texture& allLoaded,
 	const gl::Texture& privateUser,
 	const gl::Texture& notExistUser,
@@ -53,6 +54,11 @@ void InstagramViewer::setDesignElements(const gl::Texture& noMaterials,
 	this->notExistUser = notExistUser;
 	this->notPhotosUser = notPhotosUser;
 	this->dragToReload = dragToReload;
+}
+
+void InstagramViewer::setPreloaderToneColor(const ci::ColorA& color)
+{
+	preloaderToneColor = color;
 }
 
 void InstagramViewer::connect()
@@ -105,18 +111,15 @@ void InstagramViewer::synchImages()
 	else if (images.size() > MAX_PHOTO_CASHED)
 	{
 		images.erase(images.begin(), images.begin() + CASH_PHOTO_CLEAR_COUNT);
-		//currentPos = currentPos.value() + Vec2f(0.0f, 1800.0f);
-		//TODO скачок!!!
-	}			
+		float correctionYPosition = (CASH_PHOTO_CLEAR_COUNT / countInRaw) * (oneImageWidth + sdvigX);
+		currentPos.value().y += correctionYPosition;
+		futureCurrentPos.y += correctionYPosition;
+	}	
 
-	int plus = 0;
-	if (images.size() % countInRaw != 0) 
-		plus = 1;
-
-	mainHeight = (images.size() / countInRaw + plus) * (oneImageWidth + sdvigX);
+	showingCount = (images.size() / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+	mainHeight = (showingCount / countInRaw) * (oneImageWidth + sdvigX);
 	setState(IMAGES_DRAWING);			
 }
-
 
 void InstagramViewer::showPrivateUserState()
 {
@@ -229,13 +232,10 @@ void InstagramViewer::drawImages()
 	gl::pushMatrices();
 	gl::translate(currentPos.value());
 	gl::translate(initPosition);
-
-	int x = 0, y = 0;
-
-	for (size_t i = 0; i < images.size(); i++)
+	for (size_t i = 0; i < showingCount; i++)
 	{
-		x = (oneImageWidth + sdvigX) * (i % countInRaw);
-		y = (oneImageWidth + sdvigY) * (i / countInRaw);
+		int x = (oneImageWidth + sdvigX) * (i % countInRaw);
+		int y = (oneImageWidth + sdvigY) * (i / countInRaw);
 		images[i].draw(Vec2f(x, y));
 	}
 	gl::popMatrices();
@@ -248,57 +248,50 @@ void InstagramViewer::drawMainPreloader()
 
 void InstagramViewer::drawMiniPreloader()
 {
+	gl::color(preloaderToneColor);
 	gl::pushMatrices();
 	gl::translate(currentPos.value());
 	gl::translate(initPosition);
 	gl::translate(0.0f, mainHeight - 150.0f);
 	preloaderMini->draw();
 	gl::popMatrices();
+	gl::color(Color::white());
 }
 
 void InstagramViewer::drawNoMorePopup()
 {
 	gl::pushMatrices();
-	//gl::translate(initPosition);
 	gl::translate((getWindowWidth() - allLoaded.getWidth()) * 0.5f, getWindowHeight() - 40.0f);
-	//gl::color(ColorA(1.0f, 1.0f, 1.0f, noMorePopupAlpha));
 	gl::draw(allLoaded);
 	gl::popMatrices();
 }
 
 void InstagramViewer::drawNoMaterialsPopup()
 {
-	gl::pushMatrices();
-	gl::translate(initPosition);
-	gl::translate((getWindowWidth() - noMaterials.getWidth()) * 0.5f, 522.0f - noMaterials.getHeight() * 0.5f);
-	gl::draw(noMaterials);
-	gl::popMatrices();
+	drawCenteredInfoImage(noMaterials, 522.0f);
 }
 
 void InstagramViewer::drawNotExistUser()
 {
-	gl::pushMatrices();
-	gl::translate(initPosition);
-	gl::translate((getWindowWidth() - notExistUser.getWidth()) * 0.5f, 522.0f - notExistUser.getHeight() * 0.5f);
-	gl::draw(notExistUser);
-	gl::popMatrices();
+	drawCenteredInfoImage(notExistUser, 522.0f);
 }
 
 void InstagramViewer::drawUserNotHavePhotos()
 {
-	gl::pushMatrices();
-	gl::translate(initPosition);
-	gl::translate((getWindowWidth() - notPhotosUser.getWidth()) * 0.5f, 522.0f - notPhotosUser.getHeight() * 0.5f);
-	gl::draw(notPhotosUser);
-	gl::popMatrices();
+	drawCenteredInfoImage(notPhotosUser, 522.0f);	
 }
 
 void InstagramViewer::drawPrivateUser()
 {
+	drawCenteredInfoImage(privateUser, 544.0f);	
+}
+
+void InstagramViewer::drawCenteredInfoImage(const ci::gl::Texture& image, float y)
+{
 	gl::pushMatrices();
 	gl::translate(initPosition);
-	gl::translate((getWindowWidth() - privateUser.getWidth()) * 0.5f, 544.0f - privateUser.getHeight() * 0.5f);
-	gl::draw(privateUser);
+	gl::translate((getWindowWidth() - image.getWidth()) * 0.5f, y - image.getHeight() * 0.5f);
+	gl::draw(noMaterials);
 	gl::popMatrices();
 }
 
@@ -345,7 +338,6 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	if (event.getPos().y < initPosition.value().y || images.empty()) return;
 
 	wasDrag = true;
-
 	delta = currentMousePos - event.getPos();
 
 	if (blockDrag)

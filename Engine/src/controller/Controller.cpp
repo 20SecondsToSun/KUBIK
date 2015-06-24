@@ -104,12 +104,12 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	
 	removeGraphicsLoadingConnections();
 	
-	logger().log("___ timer1____");
-	logger().log(to_string(Utils::getCurrentMilliseconds()));
+	//logger().log("___ timer1____");
+	//logger().log(to_string(Utils::getCurrentMilliseconds()));
 
 	createLocations();
-	logger().log("___ time2____");
-	logger().log(to_string(Utils::getCurrentMilliseconds()));
+	//logger().log("___ time2____");
+	//logger().log(to_string(Utils::getCurrentMilliseconds()));
 }
 
 void Controller::graphicsLoadingErrorHandler(KubikException exc)

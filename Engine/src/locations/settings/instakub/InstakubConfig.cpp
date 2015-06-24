@@ -91,7 +91,7 @@ void InstakubConfig::hideAnimate(const EaseFn& eFunc, float time)
 		.finishFn(bind( &InstakubConfig::hideAnimationFinish, this))
 		.updateFn(bind( &InstakubConfig::animationPosUpdate, this));
 	
-	instSettings->setHashtag(touchKeyboard().getInputFieldText());
+	instSettings->setHashtagText(touchKeyboard().getInputFieldText());
 
 	touchKeyboard().disconnectEventHandler(VirtualKeyboard::INPUT_TOUCH);	
 	touchKeyboard().disconnectKeyboard();
@@ -114,7 +114,7 @@ void InstakubConfig::initKeyBoard()
 	touchKeyboard().setInputField(162.0f, 695.0f, 808.0f, 797.0f);
 	touchKeyboard().setInputFont(instSettings->getFont("introLight44"));
 	touchKeyboard().setInputColor(Color::black());
-	touchKeyboard().setInputFieldText(instSettings->getHashtag());
+	touchKeyboard().setInputFieldText(instSettings->getHashtag().getText());
 	touchKeyboard().connectKeyboard();
 	touchKeyboard().connectEventHandler(&InstakubConfig::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);				
 }
