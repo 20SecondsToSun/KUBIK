@@ -175,6 +175,7 @@
     <ClCompile Include="..\src\games\photobooth\states\timer\PhotoTimer.cpp" />
     <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp" />
     <ClCompile Include="..\src\graphics\IMovie.cpp" />
+    <ClCompile Include="..\src\graphics\shaders\Normal.h" />
     <ClCompile Include="..\src\graphics\videoplayer\VideoPlayer.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\gui\TextField.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="..\src\graphics\IMovie.h" />
     <ClInclude Include="..\src\graphics\shaders\BaseShader.h" />
     <ClInclude Include="..\src\graphics\shaders\Bloom.h" />
+    <ClInclude Include="..\src\graphics\shaders\Brcosa.h" />
     <ClInclude Include="..\src\graphics\shaders\ColorHalftone.h" />
     <ClInclude Include="..\src\graphics\shaders\DotScreen.h" />
     <ClInclude Include="..\src\graphics\shaders\HueSaturation.h" />

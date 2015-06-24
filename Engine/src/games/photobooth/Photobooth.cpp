@@ -6,7 +6,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-const float Photobooth::goToScreenSaverTime = 10.0f;
+const float Photobooth::goToScreenSaverTime = 60.0f;
 
 Photobooth::Photobooth(ISettingsRef config)
 {

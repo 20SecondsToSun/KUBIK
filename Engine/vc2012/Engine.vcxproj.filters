@@ -699,6 +699,9 @@
     <ClCompile Include="..\src\locations\screensaver\VideoScreenSaver.cpp">
       <Filter>Source Files\locations\screensaver</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\graphics\shaders\Normal.h">
+      <Filter>Source Files\graphics\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1175,9 +1178,6 @@
     <ClInclude Include="..\src\events\settings\GameCheckerEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\locations\settings\instakub\KeyBackground.h">
       <Filter>Source Files\locations\settings\instakub</Filter>
     </ClInclude>
@@ -1399,6 +1399,9 @@
     </ClInclude>
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
       <Filter>Source Files\config\graphic\preloader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphics\shaders\Brcosa.h">
+      <Filter>Source Files\graphics\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

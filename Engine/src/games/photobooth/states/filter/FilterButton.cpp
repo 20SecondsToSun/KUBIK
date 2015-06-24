@@ -9,8 +9,7 @@ using namespace shaders::imagefilters;
 
 FilterButton::FilterButton(int filterId, const ci::Rectf& rectf, int sizeID)
 	:SimpleSpriteButton(rectf, PhotoFilterEventRef(new PhotoFilterEvent(filterId))),
-	sizeID(sizeID),
-	filterId(filterId)
+	sizeID(sizeID),	filterId(filterId)
 {		
 	shader = shadertool().get((ShaderTool::FilterType)filterId);
 }		

@@ -9,6 +9,8 @@
 #include "shaders/ColorHalftone.h"
 #include "shaders/DotScreen.h"
 #include "shaders/Kaleidoscope.h"
+#include "shaders/Normal.h"
+#include "shaders/Brcosa.h"
 //#include "Vibrance.h"
 //#include "DotScreen.h"
 //#include "ColorHalftone.h"
@@ -16,7 +18,7 @@
 //#include "Kaleidoscope.h"
 //#include "Bloom.h"
 //#include "Bleach.h"
-//#include "Brcosa.h"
+
 //#include "FishEye.h"
 //#include "BrightnessContrast.h"
 //#include "ColorMatrix.h"
@@ -32,24 +34,13 @@ namespace shaders
 			enum FilterType
 			{
 				_start,
-				//KALEIDOSCOPE,
-				PIXELATE,
+				NORMAL,
+				BRCOSA,
+				SEPIA,
 				DOT_SCREEN,
 				HUE_SATURATION,
-				SEPIA,
-				NOISE,				
-				COLOR_HALF_TONE,
-				VIBRANCE,					
-				//LUT,
-				
-				//BLOOM,
-				//BLEACH,
-				BRCOSA,
-				//FISH_EYE,
-				BRIGHTNESS_CONTRAST,
-				MASK,
-				//COLOR_MATRIX,
-				//GLITCH,
+				NOISE,		
+				MASK,	
 				_NULL
 			};
 
@@ -63,20 +54,18 @@ namespace shaders
 			{
 				using namespace ci;
 			
-				//shadermap[KALEIDOSCOPE]		= KaleidoscopeRef(new Kaleidoscope(4.0f));
-				shadermap[HUE_SATURATION]	= HueSaturationRef(new HueSaturation(0.5f, 0.5f));
-				shadermap[PIXELATE]			= PixelateRef(new Pixelate(Vec2f(100.0f, 100.0f)));
-				shadermap[SEPIA]			= SepiaRef(new Sepia(0.5f));
+				shadermap[NORMAL]			= NormalRef(new Normal());
+				shadermap[BRCOSA]			= BrcosaRef(new Brcosa(0.0f, 1.0f, 1.0f, 1.0f));
+				shadermap[SEPIA]			= SepiaRef(new Sepia(0.6f));
+				shadermap[DOT_SCREEN]		= DotScreenRef(new DotScreen(Vec2i(100, 100), 1.7f, 0.6f));
+				shadermap[HUE_SATURATION]	= HueSaturationRef(new HueSaturation(1.0f, 0.4f));
 				shadermap[NOISE]			= NoiseRef(new Noise(0.5f));
-				shadermap[DOT_SCREEN] = ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1.0f, 1.0f)); //= DotScreenRef(new DotScreen(Vec2i(100, 100), 1, 1));
-				shadermap[COLOR_HALF_TONE]	= ColorHalftoneRef(new ColorHalftone(Vec2i(100, 100), 1.0f, 0.3f));
 
 				maskShader					= MaskShaderRef(new MaskShader());
 				//case VIBRANCE:			shader = VibranceRef(new Vibrance(0.5f)); break;
 				//case LUT:					shader = LutRef(new Lut(0.3f)); break;
 				//case BLOOM:				shader = BloomRef(new Bloom(0.4f)); break;
 				//case BLEACH:				shader = BleachRef(new Bleach(0.5f)); break;
-				//case BRCOSA:				shader = BrcosaRef(new Brcosa(0.5f, 0.5f, 0.5f, 1.0f)); break;
 				//case FISH_EYE:			shader = FishEyeRef(new FishEye(0.0f, 0.0f)); break;						
 				//case SWIRL:				shader = ; break;						
 				//case BRIGHTNESS_CONTRAST:	shader = BrightnessContrastRef(new BrightnessContrast(0.6f, 0.6f)); break;						
@@ -91,13 +80,13 @@ namespace shaders
 
 			BaseShaderRef get(FilterType id)
 			{	
+				ci::app::console() << "get type id:   " << id << std::endl;
 				currentID = id;	
 				return shadermap[id];
 			}
 
 			BaseShaderRef get(FilterType id, ci::params::InterfaceGlRef params)
 			{
-
 				auto shader = get(id);
 				shader->createParams(params);
 				return shader;
@@ -126,7 +115,7 @@ namespace shaders
 			std::map<FilterType, BaseShaderRef> shadermap;
 			MaskShaderRef maskShader;
 		};
-		// helper function(s) for easier access 
+
 		inline ShaderTool&	shadertool() { return ShaderTool::getInstance(); };
 	}
 }

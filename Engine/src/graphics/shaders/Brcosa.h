@@ -57,9 +57,8 @@ namespace shaders
 				return shdr.c_str();
 			}
 
-			void render(ci::Surface surf) override
+			void render(const ci::gl::Texture& tex)
 			{
-				ci::gl::Texture tex = ci::gl::Texture(surf);
 				tex.bind(0);
 				shader.bind();
 				ci::gl::enableAlphaBlending();
@@ -68,8 +67,7 @@ namespace shaders
 				shader.uniform("contrast", contrast);
 				shader.uniform("brightness", brightness);
 				shader.uniform("alpha", alpha);
-
-				ci::gl::draw(surf);
+				ci::gl::drawSolidRect(tex.getBounds());
 				shader.unbind();
 				tex.unbind();
 			}		

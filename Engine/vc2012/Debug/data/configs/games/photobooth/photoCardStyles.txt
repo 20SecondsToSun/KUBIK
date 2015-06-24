@@ -35,7 +35,7 @@
 {
          "id" : 4,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaLight",
+		  "font" : "helveticaNeue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},

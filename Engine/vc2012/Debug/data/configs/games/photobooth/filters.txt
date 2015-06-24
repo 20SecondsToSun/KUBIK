@@ -29,8 +29,8 @@
       },
 {
          "id" : 4,
-	 "textObj": {"text": "Acid",
-		  "font" : "helveticaLight",
+	 "textObj": {"text": "Pop",
+		  "font" : "helveticaNeue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -38,7 +38,7 @@
       },
 {
          "id" : 5,
-	 "textObj": {"text": "Pop",
+	 "textObj": {"text": "Acid",
 		  "font" : "helveticaNeue",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -47,7 +47,7 @@
       },
 {
          "id" : 6,
-	 "textObj": {"text": "Contrast",
+	 "textObj": {"text": "....",
 		  "font" : "helveticaNeue",
 		  "size" : 24,
 		  "color" :  "ffffff"
