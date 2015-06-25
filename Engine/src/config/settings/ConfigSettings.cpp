@@ -323,8 +323,6 @@ void ConfigSettings::setTextures()
 	addToDictionary("introBold80", createFontResource(getFontsPath("introb.ttf"), 80));
 	addToDictionary("introBold70", createFontResource(getFontsPath("introb.ttf"), 70));
 	addToDictionary("introBold60", createFontResource(getFontsPath("introb.ttf"), 60));
-
-
 	addToDictionary("introBold72", createFontResource(getFontsPath("introb.ttf"), 72));
 	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
 	addToDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
@@ -348,7 +346,6 @@ void ConfigSettings::setTextures()
 
 	addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
 	addToDictionary("over6", createImageResource(getDesignPath() + "over6.png"));
-
 
 	addToDictionary("gameInWebIcon", createImageResource(getDesignPath() + "gameInWebIcon.png"));
 
@@ -399,12 +396,12 @@ void ConfigSettings::writeConfig()
 
 bool ConfigSettings::settingsChanged()
 {
-	return (data.actionName != mementoData.actionName ||
-		data.playedCount != mementoData.playedCount ||
-		data.printedCount != mementoData.printedCount ||
-		data.publishedCount != mementoData.publishedCount ||
-		data.currentPhotosPrinted != mementoData.currentPhotosPrinted ||
-		data.activeDesign != mementoData.activeDesign);
+	return (data.actionName			  != mementoData.actionName ||
+			data.playedCount		  != mementoData.playedCount ||
+			data.printedCount		  != mementoData.printedCount ||
+			data.publishedCount		  != mementoData.publishedCount ||
+			data.currentPhotosPrinted != mementoData.currentPhotosPrinted ||
+			data.activeDesign		  != mementoData.activeDesign);
 }
 
 bool ConfigSettings::designChanged()

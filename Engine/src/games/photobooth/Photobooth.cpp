@@ -30,12 +30,13 @@ void Photobooth::init(ISettingsRef config)
 }
 
 void Photobooth::create()
-{
+{	
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
-
+	
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
-	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		photoStorage));
-	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings,		photoStorage));
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings, photoStorage));
+	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings, photoStorage));
+	
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
@@ -137,7 +138,7 @@ void Photobooth::initLocations()
 	locations.clear();
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
-	locations.push_back(photoTimer);
+	//locations.push_back(photoTimer);
 	locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	

@@ -8,6 +8,7 @@
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
 #include "graphics/IMovie.h"
+#include "fontStorage/FontStorage.h"
 
 namespace kubik
 {
@@ -49,8 +50,7 @@ namespace kubik
 			void buildLocationData() override;	
 			void load()			override;
 			void setTextures()  override;
-			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };
-			std::vector<ci::gl::Texture> getSmileTextures();
+			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };			
 
 			TextItem getMainTitle(const PhtTextID& id);
 			TextItem getSubTitleClose(const PhtTextID& id);
@@ -60,42 +60,41 @@ namespace kubik
 			void	 setSocialState(const PhtTextID& id, bool value);
 
 			ci::gl::Texture getIcon(const PhtTextID& id);
-			ci::gl::Texture getEmptyIcon();
+			ci::gl::Texture getEmptyIcon() const;
 
-			std::vector<ci::gl::Texture> getPhotoCardStylesActiveTemplate();
-			std::vector<ci::gl::Texture> getPhotoOverActiveTemplate();
-
+			std::vector<ci::gl::Texture> getSmileTextures() const;
+			std::vector<ci::gl::Texture> getStickerTextures() const;
+			std::vector<ci::gl::Texture> getCardsTextures() const;
+			ci::gl::Texture getPhotoShootingCard() const;
+			ci::gl::Texture getPhotoSharingCard() const;			
 			ci::gl::Texture getActivePrintBgTex();
 			void swapFilter(int id);
 			
 			DesignData getPhotoOverDesignData() const;
 			DesignData getPhotoCardStyles() const;
 			DesignData getPhotoFiltersPreview() const;
+			
+			int getActiveOverDesignID() const;
+			int getUserOverDesignID() const;
+			int getActivePhotoCardStyleDesignID() const;
+			int getUserPhotoCardStyleDesignID() const;
 
 			void setActiveOverDesignID(int id);
-			int getActiveOverDesignID();
-
-			int getUserOverDesignID();
-
-			int getActivePhotoCardStyleDesignID();
-			void setActivePhotoCardStyleDesignID(int id);
-
-			int getUserPhotoCardStyleDesignID();
-		
-			std::string getUserPhotoOverDesignPath();
-			std::string getUserPhotoCardStylePath();
-
+			void setActivePhotoCardStyleDesignID(int id);			
 			void createMemento();
 			void writeConfig();
 
-			int getBeReadySeconds(){ return 5; };
+			std::string getUserPhotoOverDesignPath();
+			std::string getUserPhotoCardStylePath();			
 
-			bool wasChanged(){ return false; };
-			bool settingsChanged();
+			int getBeReadySeconds(){ return 5; };
+			
 			changeSetting::id getChangeID() const { return changeSetting::id::PHOTOBOOTH; };
 
 			IMovieRef getPreloader();
 
+			bool wasChanged(){ return false; };
+			bool settingsChanged();
 			bool isPrinterOn();
 			bool onlyOneGameOn();
 
@@ -118,6 +117,9 @@ namespace kubik
 			std::vector<Filter> getOnFilters();
 
 		private:
+			static const int CARDS_COUNT = 5;
+			static const int STICKERS_COUNT = 5;
+			
 			class ImageElement
 			{
 				std::string path;
@@ -152,7 +154,7 @@ namespace kubik
 				void setEmptyIcon(const ci::gl::Texture& icon);
 
 				bool getSocialState(const PhtTextID& id);
-				ci::gl::Texture getEmptyIcon();
+				ci::gl::Texture getEmptyIcon() const;
 				ci::gl::Texture getIcon(const PhtTextID& id);
 
 				friend PhotoboothSettings;
@@ -170,14 +172,13 @@ namespace kubik
 			int userOverDesignID;
 			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
-
-			vector<ci::RectT<int>> photoCardStylesCoordRects, photoOverCoordRects;
-
+			
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;
 
 			bool						 memento;
-
+			
+			std::vector<ci::gl::Texture> cardsImages, stickersImages;
 			std::vector<Filter>			 filters, filtersMemento;
 			std::vector<Sticker>		 stickers;
 			std::vector<BackgroundPrint> bgPrint;
@@ -204,7 +205,7 @@ namespace kubik
 			void loadSharingIcons(const JsonTree& config);
 			void saveConfig();
 			void findAllImagePrints(std::string path, std::vector<ImageElement> &prints, bool isCustom);
-
+			
 			/////////////////////////////////
 
 			DesignData photoOverDesignData;

@@ -4,61 +4,61 @@
       [{
          "id" : 1,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" : "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design1.png",
-	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\sticker1.png"
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\1"
       },
 {
          "id" : 2,
 	 "textObj": {"text": "Tanznia",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design2.png",
-	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\sticker2.png"
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\2"
       },
 {
          "id" : 3,
 	 "textObj": {"text": "Shanzalize",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design3.png",
-	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\sticker3.png"
+	 "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\3"
       },
 {
          "id" : 4,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design4.png",
-	  "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\sticker4.png"
+	  "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\4"
       },
 {
          "id" : 5,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design5.png",
-	  "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\sticker5.png"
+	  "designPath" :"kubik\\design_elements\\gameDesign\\photobooth\\photoStickers\\5"
       },
 {
          "id" : 6,
 	 "textObj": {"text": "Моя тема",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design6.png",
-	  "designPath" :"user_design\\design_elements\\gameDesign\\photobooth\\photoStickers\\template.png"
+	  "designPath" :"user_design\\design_elements\\gameDesign\\photobooth\\photoStickers\\"
       }]      
 }

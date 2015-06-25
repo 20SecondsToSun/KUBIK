@@ -7,6 +7,7 @@ FinalPhotoTemplate::FinalPhotoTemplate()
 	index(0),
 	animate(false)
 {
+
 }
 
 void FinalPhotoTemplate::setData(PhotoStorageRef photoStorage)
@@ -18,7 +19,6 @@ void FinalPhotoTemplate::setData(PhotoStorageRef photoStorage)
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
 
 	templates = photoStorage->getPhotoTemplates();	
-	console() << "templates size :: " << templates.size() << endl;
 	renderTexture();		
 }
 

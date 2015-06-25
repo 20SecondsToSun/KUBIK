@@ -4,7 +4,7 @@
       [{
          "id" : 1,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" : "ffffff"
 		},
@@ -15,7 +15,7 @@
 {
          "id" : 2,
 	 "textObj": {"text": "Tanznia",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -25,7 +25,7 @@
 {
          "id" : 3,
 	 "textObj": {"text": "Shanzalize",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -35,7 +35,7 @@
 {
          "id" : 4,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -45,7 +45,7 @@
 {
          "id" : 5,
 	 "textObj": {"text": "MiniMal Epileptic",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -55,7 +55,7 @@
 {
          "id" : 6,
 	 "textObj": {"text": "Моя тема",
-		  "font" : "helveticaLight",
+		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},

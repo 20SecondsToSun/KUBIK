@@ -17,16 +17,16 @@ PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  ph
 	framePosition(Vec2f(0.0f, 252.0f)),
 	seekPosition(Vec2f::zero())
 {
-	cameraScale = 1920.0f / 1056.0f;
-	cameraWidth = 1056 * cameraScale;
-	cameraHeight = 704 * cameraScale;
+	cameraScale    = 1920.0f / 1056.0f;
+	cameraWidth    = 1056 * cameraScale;
+	cameraHeight   = 704 * cameraScale;
 	cameraPosition = Vec2f((1080.0f - cameraHeight) * 0.5f, 0.0f);
 
 	if (!photoTakenCon.connected())
-		photoTakenCon = cameraCanon().photoTakenEvent.connect(std::bind(&PhotoShooting::photoTakenHandler, this));
+		photoTakenCon = cameraCanon().photoTakenEvent.connect(bind(&PhotoShooting::photoTakenHandler, this));
 
 	if (!photoDownloadedCon.connected())
-		photoDownloadedCon = cameraCanon().photoDownloadedEvent.connect(std::bind(&PhotoShooting::photoDownloadHandler, this, std::placeholders::_1));
+		photoDownloadedCon = cameraCanon().photoDownloadedEvent.connect(bind(&PhotoShooting::photoDownloadHandler, this, std::placeholders::_1));
 
 	if (!photoErrorCon.connected())
 		photoErrorCon = cameraCanon().photoErrorEvent.connect(bind(&PhotoShooting::photoErrorHandler, this));
@@ -78,18 +78,18 @@ void PhotoShooting::showAnimationComplete()
 void PhotoShooting::reset(PhotoboothSettingsRef settings)
 {
 	IPhotoboothLocation::reset(settings);
-	countsTex = settings->getTexture("counts");
-	seekTex = settings->getTexture("seek");
-	smileTexs = settings->getSmileTextures();
-	line = settings->getTexture("shootline");
-	frame = settings->getTexture("frame");
-	shadow = settings->getTexture("shadow");
+	countsTex				  = settings->getTexture("counts");
+	seekTex					  = settings->getTexture("seek");
+	smileTexs				  = settings->getSmileTextures();
+	line					  = settings->getTexture("shootline");
+	frame					  = settings->getTexture("frame");
+	shadow					  = settings->getTexture("shadow");
 	backgroundProgresstexture = settings->getTexture("plash");	
 
-	framePosition = Vec2f((getWindowWidth() - frame.getWidth()) * 0.5f, 252.0f);
+	framePosition = Vec2f(0.5f * (getWindowWidth() - frame.getWidth()), 252.0f);
 	countsTexPos  = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
 	seekTexPos0   = Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));
-	photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
+	photoTemplate = settings->getPhotoShootingCard();
 }
 
 void PhotoShooting::stop()
@@ -168,13 +168,16 @@ void PhotoShooting::drawDashedFrame()
 void PhotoShooting::drawPhotoMaskIntro()
 {
 	ci::gl::Texture _photoMask;
-
 	auto _photo = photoStorage->getLastScreenShot();
-	_photoMask = Utils::drawGraphicsToFBO(_photo.getSize(), [&]()
+
+	if (_photo)
 	{
-		gl::drawSolidCircle(Vec2f(_photo.getWidth() * 0.5f, PhotoTimer::centerY), maskSize);
-	});
-	maskShader->render(_photo, _photoMask, Vec2f::zero(), 1);
+		_photoMask = Utils::drawGraphicsToFBO(_photo.getSize(), [&]()
+		{
+			gl::drawSolidCircle(Vec2f(_photo.getWidth() * 0.5f, PhotoTimer::centerY), maskSize);
+		});
+		maskShader->render(_photo, _photoMask, Vec2f::zero(), 1);
+	}		
 }
 
 void PhotoShooting::drawSmile()
@@ -198,7 +201,7 @@ void PhotoShooting::drawPhotoframe()
 	gl::popMatrices();
 
 	gl::scale(_scale, _scale);
-	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY);
+	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale) - photoTemplate.getWidth()), startY + 252.0f);
 	gl::draw(photoTemplate);
 	gl::popMatrices();
 

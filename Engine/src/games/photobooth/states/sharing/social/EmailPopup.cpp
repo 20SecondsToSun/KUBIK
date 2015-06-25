@@ -5,13 +5,12 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
-	:Popup(settings),
+EmailPopup::EmailPopup(PhotoboothSettingsRef settings):Popup(settings),
 	addEmailFontColor(Color::white()),
 	addEmailIcon(settings->getTexture("addEmail")),
 	borderIcon(settings->getTexture("enterEmailBorder")),
 	borderIconRed(settings->getTexture("errorEmailBorder")),
-	addEmailFont(settings->getFont("helveticaNeueLight24")),
+	addEmailFont(fontStorage().getFont("Helvetica Neue Light24")),
 	initAddEmailPosition(Vec2f(165.0f, 480.0f)),
 	shiftEmailPosition(Vec2f(0.0f, 63.0f))
 {

@@ -3,7 +3,7 @@
       [{
          "id" : 1,
 	 "textObj": {"text": "Normal",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" : "ffffff"
 		},
@@ -12,7 +12,7 @@
 {
          "id" : 2,
 	 "textObj": {"text": "Black/White",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -21,7 +21,7 @@
 {
          "id" : 3,
 	 "textObj": {"text": "Sepia",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -30,7 +30,7 @@
 {
          "id" : 4,
 	 "textObj": {"text": "Pop",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -39,7 +39,7 @@
 {
          "id" : 5,
 	 "textObj": {"text": "Acid",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},
@@ -48,7 +48,7 @@
 {
          "id" : 6,
 	 "textObj": {"text": "....",
-		  "font" : "helveticaNeue",
+		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
 		},

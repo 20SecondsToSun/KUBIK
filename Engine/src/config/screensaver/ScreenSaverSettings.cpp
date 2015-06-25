@@ -32,9 +32,7 @@ void ScreenSaverSettings::load()
 };
 
 void ScreenSaverSettings::saveConfig()
-{
-	console() << "SAVE SCREENSAVER CONFIG" << endl;
-
+{	
 	fs::path basePath(mainConfigPath);
 
 	JsonTree doc;

@@ -176,7 +176,10 @@
     <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp" />
     <ClCompile Include="..\src\graphics\IMovie.cpp" />
     <ClCompile Include="..\src\graphics\shaders\Normal.h" />
+    <ClCompile Include="..\src\graphics\shaders\ShaderTool.cpp" />
     <ClCompile Include="..\src\graphics\videoplayer\VideoPlayer.cpp" />
+    <ClCompile Include="..\src\gui\ImageButtonSprite.cpp" />
+    <ClCompile Include="..\src\gui\SimpleSpriteButton.cpp" />
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\gui\TextField.cpp" />
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
+    <ClCompile Include="..\src\services\fontStorage\FontStorage.cpp" />
     <ClCompile Include="..\src\services\social\Facebook.cpp" />
     <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp" />
     <ClCompile Include="..\src\services\social\instagram\InstagramClient.cpp" />
@@ -439,6 +443,7 @@
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
+    <ClInclude Include="..\src\services\fontStorage\FontStorage.h" />
     <ClInclude Include="..\src\services\social\Facebook.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImagesList.h" />

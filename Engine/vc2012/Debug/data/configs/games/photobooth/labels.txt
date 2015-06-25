@@ -3,45 +3,45 @@
       {
      "lang" : "ru",	
 	 "photoCardDesign": { "text" : "Оформление фотокарточки",
-		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+		   "font" : "IntroLight", "size" : 44, "color" :  "ffffff"},
 
 	 "photoPrintCount": { "text" : "Количество фото на печать",
-		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+		   "font" : "IntroLight", "size" : 44, "color" :  "ffffff"},
 
 	 "overElements": { "text" : "Элементы поверх фото",
-		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+		   "font" : "IntroLight", "size" : 44, "color" :  "ffffff"},
 
 	 "photoFilters": { "text" : "Фотофильтры",
-		   "font" : "introLight", "size" : 44, "color" :  "ffffff"},
+		   "font" : "IntroLight", "size" : 44, "color" :  "ffffff"},
 
 	 "photoPublishing": { "text" : "Публикация фото",
-		   "font" : "introLight", "size" : 44, "color" :  "ffffff"}
+		   "font" : "IntroLight", "size" : 44, "color" :  "ffffff"}
       }	],
 	 
    "subTitles" : [
       {
      "lang"  : "ru",
 	 "photoPublishing": { "text" : "Выберите необходимый функционал публикации",
-		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
+		   "font" : "Helvetica Neue", "size" : 30, "color" :  "ffff00"},
 
 	 "photoCardDesign": { "text" : "Выберите одну из тем или создайте свою",
-		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
+		   "font" : "Helvetica Neue", "size" : 30, "color" :  "ffff00"},
 
 	 "overElements": { "text" : "Выберите одну из тем или создайте свою",
-		   "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"},
+		   "font" : "Helvetica Neue", "size" : 30, "color" :  "ffff00"},
 
-	 "photoFilters": { "text" : "Выберите один или несколько фильтров", "font" : "helveticaNeue", "size" : 30, "color" :  "ffff00"}
+	 "photoFilters": { "text" : "Выберите один или несколько фильтров", "font" : "Helvetica Neue", "size" : 30, "color" :  "ffff00"}
       }	],
 
 	 "social" : 
 	 [{
 			"lang" : "ru",
-			 "fb" : {"text" : "Facebook", "font" : "introLight", "size" : 30, "color" : "ffffff"},
-			 "vk" : {"text" : "Vkontakte", "font" : "introLight", "size" : 30, "color" : "ffffff"},
-			 "tw" : {"text" : "Twitter", "font" : "introLight", "size" : 30, "color" : "ffffff"},	
-			 "qr" : {"text" : "QR-Code", "font" : "introLight", "size" : 30, "color" : "ffffff"},	
-			 "printer" : {"text" : "Печать", "font" : "introLight", "size" : 30, "color" : "ffffff"},	
-			 "email" : {"text" : "Email", "font" : "introLight", "size" : 30, "color" : "ffffff"}	
+			 "fb" : {"text" : "Facebook", "font" : "IntroLight", "size" : 30, "color" : "ffffff"},
+			 "vk" : {"text" : "Vkontakte", "font" : "IntroLight", "size" : 30, "color" : "ffffff"},
+			 "tw" : {"text" : "Twitter", "font" : "IntroLight", "size" : 30, "color" : "ffffff"},	
+			 "qr" : {"text" : "QR-Code", "font" : "IntroLight", "size" : 30, "color" : "ffffff"},	
+			 "printer" : {"text" : "Печать", "font" : "IntroLight", "size" : 30, "color" : "ffffff"},	
+			 "email" : {"text" : "Email", "font" : "IntroLight", "size" : 30, "color" : "ffffff"}	
 		 }],
 	 "designs" : 
 	 [
@@ -63,51 +63,6 @@
 	 [
       {
 		 "lang" : "ru",	 
-		 "text" : {"text" : "Сохранить", "font" : "introLight", "size" : 30, "color" : "ffffff"}
-	 }],
-
- "filters_loc" : [ {
-     	"lang"  : "ru",
-	"title1" : {"text" : "В Ы Б Е Р И Т Е", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-	"title2" : {"text" : "стиль фотографии", "font" : "introLight", "size" : 36, "color" : "ffffff"}
-	}],
- "timer_loc" : [
-      {
-     "lang"  : "ru",
-"title1" : {"text" : "П Р И Г О Т О В Ь Т Е С Ь", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-"title2" : {"text" : "Сейчас я сделаю серию из 5 фотографий", "font" : "helveticaNeueLight", "size" : 26, "color" : "d2cfc5"}
-}],
- "template" : [
-      {
-     "lang"  : "ru",
-"title1" : {"text" : "Н А  П Е Ч А Т Ь !", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-"title2" : {"text" : "Выберите подходящий фото-шаблон!", "font" : "introLight", "size" : 36, "color" : "ffffff"},
-"print" : {"text" : "ПЕЧАТАТЬ", "font" : "introb", "size" : 18, "color" : "ffffff"}
-}],
- "preload" : [
-      {
-     "lang"  : "ru",
-"title1" : {"text" : "П А Р А   М Г Н О В Е Н И Й", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-"title2" : {"text" : "Обрабатываю и сохраняю фото", "font" : "helveticaNeueLight", "size" : 26, "color" : "d2cfc5"}
-}],
- "choose" : [
-      {
-     "lang"  : "ru",
-"title1" : {"text" : "В Ы Б Е Р И Т Е  3  Ф О Т О", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-"title2" : {"text" : "которые вам больше всего нравятся", "font" : "introLight", "size" : 36, "color" : "ffffff"},
-"reshot" : {"text" : "Переснять\nфото", "font" : "introLight", "size" : 18, "color" : "ffffff"},
-"filters" : {"text" : "Ф О Т О Ф И Л Ь Т Р Ы", "font" : "introLight", "size" : 18, "color" : "e4cf97"}
-}],
- "share" : [
-      {
-     "lang"  : "ru",
-	 "title" : {"text" : "ДЕЛИТЕСЬ\nФОТО", "font" : "introLight", "size" : 60, "color" : "ffffff"},
-	 "qr" : {"text" : "Скачайте на телефон", "font" : "introb", "size" : 21, "color" : "ffffff"},
-	 "email" : {"text" : "ОТПРАВИТЬ\nНА E-MAIL", "font" : "introb", "size" : 21, "color" : "ffffff"},
-	 "fb" : {"text" : "FACECBOOK", "font" : "introb", "size" : 21, "color" : "ffffff"},
-	 "tw" : {"text" : "TWITTER", "font" : "introb", "size" : 21, "color" : "ffffff"},
-	 "vk" : {"text" : "VKONTAKTE", "font" : "introLight", "size" : 18, "color" : "ffffff"},
-	 "again" : {"text" : "Начать сначала", "font" : "introLight", "size" : 36, "color" : "ffffff"},
-	 "anotherGames" : {"text" : "Другие игры", "font" : "introLight", "size" : 36, "color" : "ffffff"}
-}]
+		 "text" : {"text" : "Сохранить", "font" : "IntroLight", "size" : 30, "color" : "ffffff"}
+	 }]
 }

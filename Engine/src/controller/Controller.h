@@ -21,6 +21,7 @@
 #include "SocialSettings.h"
 #include "PreloaderSettings.h"
 #include "preloader/Preloader.h"
+#include "fontStorage/FontStorage.h"
 
 using namespace kubik::menu;
 using namespace kubik::config;

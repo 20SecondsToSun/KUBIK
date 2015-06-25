@@ -40,49 +40,40 @@ int GameSettings::GamesDataStruct::getCountSwitchOnGames()
 
 bool GameSettings::GamesDataStruct::isIdInSwitchOnGames(const GameId& id)
 {
-	for (auto game : games)
-	{
-		if (game.isOn)
-		{
-			if (game.id == id)
-				return true;
-		}
-	}
+	for (auto game : games)	
+		if (game.isOn && game.id == id)	
+				return true;		
+	
 	return false;
 }
 
 std::vector<GamesInfo> GameSettings::GamesDataStruct::getNotPurchasedGames()
 {
 	std::vector<GamesInfo> _gamesSelect;
-	for (auto game : games)
-	{
+	for (auto game : games)	
 		if (!game.isPurchased)
 			_gamesSelect.push_back(game);
-	}
+	
 	return _gamesSelect;
 }
 
 std::vector<GamesInfo> GameSettings::GamesDataStruct::getPurchasedGames()
 {
 	std::vector<GamesInfo> _gamesSelect;
-	for (auto game : games)
-	{
+	for (auto game : games)	
 		if (game.isPurchased)
 			_gamesSelect.push_back(game);
-	}
+	
 	return _gamesSelect;
 }
 
 GamesInfo GameSettings::GamesDataStruct::getPurchasedGameInfo(const GameId& id)
 {
-	for (auto game : games)
-	{
+	for (auto game : games)	
 		if (game.isPurchased && id == game.id)
-			return game;
-	}
+			return game;	
 
 	GamesInfo null;
-
 	return null;
 }
 
@@ -141,8 +132,7 @@ vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
 
 IResourceDictionary GameSettings::getActiveGameTextures()
 {
-	auto id = model->getDefaultGameID();// getActiveGameID();
-	//console() << "active resources:::::::::::::  " << id << endl;
+	auto id = model->getDefaultGameID();
 	return  gameSettingsMap[id]->getResources();
 }
 
@@ -227,6 +217,7 @@ void GameSettings::load()
 		default:
 			continue;
 		}	
+
 		try
 		{
 			gameSettingsMap[game.id]->load();
@@ -278,11 +269,9 @@ bool GameSettings::isGameID(int id)
 {
 	std::vector<GamesInfo> games = model->getGames();
 
-	for (auto game : games)
-	{
+	for (auto game : games)	
 		if (game.id == id)
-			return true;
-	}
+			return true;	
 
 	return false;
 }
@@ -344,11 +333,9 @@ bool GameSettings::isCurrentGameInSwitchOnGames()
 
 void GameSettings::setGameActive(const GameId& id, bool value)
 {
-	for (auto game = data.games.begin(); game != data.games.end(); ++game)
-	{
+	for (auto game = data.games.begin(); game != data.games.end(); ++game)	
 		if (game->isPurchased && game->id == id)
-			game->isOn = value;
-	}
+			game->isOn = value;	
 }
 
 int GameSettings::getGameActiveCount()
@@ -363,11 +350,9 @@ int GameSettings::getGameActiveCount()
 
 GameId GameSettings::getActiveGameID()
 {
-	for (auto game = data.games.begin(); game != data.games.end(); ++game)
-	{
+	for (auto game = data.games.begin(); game != data.games.end(); ++game)	
 		if (game->isOn)
-			return game->getGameId();
-	}
+			return game->getGameId();	
 
 	return GameId::UNDEFINED;
 }

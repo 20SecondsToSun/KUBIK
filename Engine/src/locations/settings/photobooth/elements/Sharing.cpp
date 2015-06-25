@@ -5,7 +5,7 @@ using namespace kubik::config;
 
 OneSharingItem::OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id)
 	:Sprite(), text(settings->getTextItem(id)),
-	font(settings->getFont("introLight30")),
+	font(fontStorage().getFont("IntroLight30")),
 	icon(settings->getIcon(id)),
 	settings(settings),
 	id(id)
@@ -42,8 +42,6 @@ void OneSharingItem::drawLayout()
 {
 	textTools().textFieldDraw(text, ci::Vec2f(159.0f, 18.0f));
 }
-
-
 
 Sharing::Sharing(PhotoboothSettingsRef phbSettings, ci::Color color, int index)
 	:IPhotoboothItem(phbSettings, PhtTextID::PUBLISHING, color, index)

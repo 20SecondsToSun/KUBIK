@@ -66,6 +66,8 @@ void Controller::loadSettings()
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
 	settingsFactory().inject(phbthSettings);	
+
+	fontStorage().init();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -82,6 +84,8 @@ void Controller::loadAllLocationsGraphics()
 
 	connect_once(graphicsLoader->LoadingCompleteSignal, bind(&Controller::allGraphicsLoadingCompleteHandler, this));
 	connect_once(graphicsLoader->LoadingErrorSignal, bind(&Controller::graphicsLoadingErrorHandler, this, std::placeholders::_1));
+
+	graphicsLoader->setLoadingTextures(fontStorage().getResources());
 
 	graphicsLoader->setLoadingTextures(keyboardSettings->getResources());
 	graphicsLoader->setLoadingTextures(menuSettings->getResources());

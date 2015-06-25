@@ -126,17 +126,6 @@ void InstakubSettings::setTextures()
 {
 	setDesignPath();
 	clearResources();
-
-	addToSettingsDictionary("introBook44", createFontResource(getFontsPath("Intro-Book.ttf"), 44));
-	addToSettingsDictionary("introBook36", createFontResource(getFontsPath("Intro-Book.ttf"), 36));
-	addToSettingsDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToSettingsDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
-	addToSettingsDictionary("introLight90", createFontResource(getFontsPath("IntroLight.ttf"), 90));
-	addToSettingsDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToSettingsDictionary("helveticaNeueLight24", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 24));
-	addToSettingsDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
-	addToSettingsDictionary("HypatiaSansPro-Black100", createFontResource(getFontsPath("HypatiaSansPro-Black.ttf"), 100));
-	addToSettingsDictionary("Idealist-SC40", createFontResource(getFontsPath("Idealist-SC.ttf"), 40));
 	
 	addToSettingsDictionary("checkerw", createImageResource(getInterfacePath("configDesign\\instakub\\checkerw.png")));
 	addToSettingsDictionary("searchfield", createImageResource(getInterfacePath("configDesign\\instakub\\searchfield.png")));
@@ -205,20 +194,16 @@ void InstakubSettings::buildLocationData()
 
 void InstakubSettings::buildSettingData()
 {
-	auto dic = configTexts.getDic();
-
-	for (auto &it : dic)	
-		it.second.setFont(fonts);	
-
-	configTexts.setDic(dic);
+	for (auto &it : configTexts.getDic())
+		it.second.setFont(fontStorage().getAll());
 
 	for (auto &it : photoCardStyles)
 	{
 		it.setIcon(getTexture(it.getIconTexName()));
-		it.setFont(fonts);
+		it.setFont(fontStorage().getAll());
 	}
 
-	hashTagTextItem.setFont(fonts);
+	hashTagTextItem.setFont(fontStorage().getAll());
 };
 
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
@@ -340,6 +325,5 @@ ci::ColorA InstakubSettings::getPreloaderToneColor() const
 
 ci::Font InstakubSettings::getViewInputFieldFont()
 {
-	console() << "font name::::::::::  " << viewInputFieldFontName << endl;
-	return getFont(viewInputFieldFontName);
+	return fontStorage().getFont(viewInputFieldFontName);
 }

@@ -31,8 +31,7 @@ void PhotoTemplate::start()
 	}
 
 	state = TEMPLATE_CHOOSE;
-	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);
-	
+	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);	
 
 	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.2f);
 }
@@ -67,10 +66,10 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 {
 	IPhotoboothLocation::reset(settings);
 
-	templates = settings->getPhotoCardStylesActiveTemplate();
-	stickers = settings->getPhotoOverActiveTemplate();
-	title = settings->getTexture("printtitle");
+	cards = settings->getCardsTextures();
+	stickers = settings->getStickerTextures();
 
+	title = settings->getTexture("printtitle");
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), titlePositionY - 0.5f * title.getHeight());
 
 	resetTemplateButtons();
@@ -170,24 +169,24 @@ void PhotoTemplate::resetTemplateButtons()
 
 	position = Vec2f(220.0f, 420.0f);
 	size = Vec2f(218.0f, 655.0f);
-	templatebtns.push_back(TemplateButton1Ref(new TemplateButton1(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton1Ref(new TemplateButton1(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(560.0f, 420.0f);
 	size = Vec2f(303.0f, 455.0f);
-	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), templates, stickers));
+	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), cards, stickers));
 	templatebtns.push_back(templ2);
 
 	position = Vec2f(220.0f, 1191.0f);
 	size = Vec2f(303.0f, 202.0f);
-	templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(611.0f, 1191.0f);
 	size = Vec2f(202.0f, 304.0f);
-	templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(220.0f, 1461.0f);
 	size = Vec2f(303.0f, 202.0f);
-	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), templates, stickers)));
+	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), cards, stickers)));
 
 	for (auto templ : templatebtns)
 		templ->setSelectDesign(settings->getTexture("print"));

@@ -41,5 +41,5 @@ namespace kubik
 		std::vector<ci::gl::Texture> designData;
 	};
 
-	typedef std::list<OneDesignItem> DesignData;
+	typedef std::vector<OneDesignItem> DesignData;
 }

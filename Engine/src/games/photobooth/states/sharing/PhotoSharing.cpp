@@ -110,8 +110,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 }
 
 void PhotoSharing::start()
-{
-	auto photoTemplate = settings->getPhotoCardStylesActiveTemplate()[1];
+{	
+	auto photoTemplate = settings->getPhotoSharingCard();
 
 	#ifndef debug
 	finalPhotoTemplate.setData(photoStorage);

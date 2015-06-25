@@ -8,8 +8,7 @@ using namespace ci;
 using namespace kubik::games::photobooth;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
-	:photoStorage(photoStorage),
-	photoFiltersStartY(1398.0f)
+	:photoStorage(photoStorage), photoFiltersStartY(1398.0f)
 {
 	photoPositions[0] = Vec2f(96.0f,  439.0f);
 	photoPositions[1] = Vec2f(404.0f, 439.0f);
@@ -28,10 +27,9 @@ void PhotoChoosing::start()
 #endif
 
 	if (photoStorage->empty())
-	for (int i = 1; i < 6; i++)	
-		photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
+		for (int i = 1; i < 6; i++)	
+			photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
 
-	//
 	state = CHOOSING;
 	selectedNum = 0;
 	okBtn->setAlpha(0.0f);
@@ -370,9 +368,8 @@ void PhotoChoosing::setFiltersData()
 			filters[i].getID(),
 			filters[i].getText(), 
 			settings->getTexture("plashFilter"),
-			settings->getFont("introBook12"),
-			settings->getFont("introBook14")
-			)));
+			fontStorage().getFont("Intro-Book12"),
+			fontStorage().getFont("Intro-Book14"))));
 	}
 }
 

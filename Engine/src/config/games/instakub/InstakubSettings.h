@@ -10,6 +10,7 @@
 #include "MovieLoader.h"
 #include "ImageSequencer/ImageSequencer.h"
 #include "videoplayer/VideoPlayer.h"
+#include "fontStorage/FontStorage.h"
 
 namespace kubik
 {

@@ -11,7 +11,7 @@ Popup::Popup(PhotoboothSettingsRef settings)
 	:headColor(Color::hex(0x4b515a)),
 	bgColor(Color::hex(0x34383f)), 
 	closeIcon(settings->getTexture("closePopup")),
-	inputFont(settings->getFont("introBook44"))	
+	inputFont(fontStorage().getFont("Intro-Book44"))
 {
 	closeBtn = ImageButtonSpriteRef(new ImageButtonSprite(closeIcon, Vec2f(getWindowWidth(), 0.0f) + Vec2f(-93.0f, 93.0f) - closeIcon.getSize() * 0.5f));
 }
