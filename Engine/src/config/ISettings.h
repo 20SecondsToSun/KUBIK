@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Types.h"
 #include "ApplicationModel.h"
 
@@ -14,7 +13,6 @@ namespace kubik
 		public:
 			ISettings(ApplicationModelRef model);
 
-			static std::string getFontsPath(const std::string& value = "");
 			static std::string getInterfacePath(const std::string& value = "");
 
 			std::string getDesignPath() const;
@@ -22,14 +20,12 @@ namespace kubik
 			std::string getTemplateDesignPath(const std::string& value = "") const;
 
 			ImageResourceDictionary getTextures() const;
-			FontResourceDictionary getFonts() const;
 			VideoResourceDictionary getVideos() const;
 			IResourceDictionary getResources() const;
 			IResourceDictionary getSettingsResources() const;
 
 			ci::gl::Texture getTexture(const std::string& name);
-			ci::Font getFont(const std::string& name);
-
+		
 			void clearResources();
 
 			virtual void buildLocationData();
@@ -54,7 +50,6 @@ namespace kubik
 			std::string fontsPath;
 
 			ImageResourceDictionary textures;
-			FontResourceDictionary fonts;
 			VideoResourceDictionary videos;
 			IResourceDictionary	resources, settingsResources;
 

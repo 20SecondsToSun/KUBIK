@@ -24,12 +24,6 @@ std::string ISettings::getTemplateDesignPath(const string& value) const
 	return getBasePath().string() + templateDesignPath + value;
 }
 
-std::string ISettings::getFontsPath(const string& value)
-{
-	ci::fs::path path = getBasePath() / "data\\fonts\\";
-	return path.string() + value;
-}
-
 std::string ISettings::getInterfacePath(const string& value)
 {
 	ci::fs::path path = getBasePath() / "data\\interface\\";
@@ -51,16 +45,6 @@ Texture ISettings::getTexture(const string& name)
 	return gl::Texture(textures[name]->get(), texformat);
 }
 
-FontResourceDictionary ISettings::getFonts() const
-{
-	return fonts;
-}
-
-Font ISettings::getFont(const string& name)
-{
-	return fonts[name]->get();
-}
-
 VideoResourceDictionary ISettings::getVideos() const
 {
 	return videos;
@@ -79,7 +63,6 @@ IResourceDictionary ISettings::getSettingsResources() const
 void ISettings::clearResources()
 {
 	textures.clear();
-	fonts.clear();
 	videos.clear();
 	resources.clear();
 }
@@ -106,12 +89,6 @@ void ISettings::addToDictionary(const std::string& key, shared_ptr<ImageResource
 	resources[key] = value;
 }
 
-void ISettings::addToDictionary(const std::string& key, shared_ptr<FontResource>  value)
-{
-	fonts[key] = value;
-	resources[key] = value;
-}
-
 void ISettings::addToDictionary(const std::string& key, shared_ptr<VideoResource>  value)
 {
 	videos[key] = value;
@@ -122,12 +99,6 @@ void ISettings::addToDictionary(const std::string& key, shared_ptr<VideoResource
 void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<ImageResource>  value)
 {
 	textures[key] = value;
-	settingsResources[key] = value;
-}
-
-void ISettings::addToSettingsDictionary(const std::string& key, shared_ptr<FontResource>  value)
-{
-	fonts[key] = value;
 	settingsResources[key] = value;
 }
 

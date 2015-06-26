@@ -368,8 +368,8 @@ void PhotoChoosing::setFiltersData()
 			filters[i].getID(),
 			filters[i].getText(), 
 			settings->getTexture("plashFilter"),
-			fontStorage().getFont("Intro-Book12"),
-			fontStorage().getFont("Intro-Book14"))));
+			getFont("Intro-Book", 12),
+			getFont("Intro-Book", 14))));
 	}
 }
 

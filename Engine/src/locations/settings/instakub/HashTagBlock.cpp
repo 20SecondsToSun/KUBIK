@@ -20,7 +20,7 @@ HashTagBlock::HashTagBlock(InstakubSettingsRef settings, const ci::Vec2i& positi
 	searchfield = settings->getTexture("searchfield");
 	searchfieldPos = Vec2f(0.5f * (910.0f - searchfield.getWidth()), 260.0f);
 
-	hashTex = textTools().getTextField("#", &fontStorage().getFont("Intro-Book36"), ci::Color::hex(0x979797));
+	hashTex = textTools().getTextField("#", &getFont("Intro-Book", 36), ci::Color::hex(0x979797));
 	hashPos = searchfieldPos + Vec2f(31.0f, 25.0f);
 }
 

@@ -12,7 +12,7 @@ PrinterBlock::PrinterBlock(ConfigSettingsRef configSettings, const ci::Vec2i& po
 	barColor1(ci::Color::hex(0x233442)),
 	barColor2(ci::Color::hex(0x00f067)),
 	maxBarWidth(312.0f),
-	numsFont(configSettings->getFont("introBold72")),
+	numsFont(getFont("IntroBold", 72)),
 	icon(configSettings->getTexture("catridgeIcon")),
 	maxPhotosToPrint(configSettings->getData().maxPhotosToPrint)
 {

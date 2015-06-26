@@ -65,8 +65,8 @@ void Controller::loadSettings()
 	logger().log("CONFIGS LOADED");
 
 	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	settingsFactory().inject(phbthSettings);	
-
+	settingsFactory().inject(phbthSettings);
+	
 	fontStorage().init();
 }
 
@@ -107,13 +107,7 @@ void Controller::allGraphicsLoadingCompleteHandler()
 	gameSettings->buildSettingData();
 	
 	removeGraphicsLoadingConnections();
-	
-	//logger().log("___ timer1____");
-	//logger().log(to_string(Utils::getCurrentMilliseconds()));
-
 	createLocations();
-	//logger().log("___ time2____");
-	//logger().log(to_string(Utils::getCurrentMilliseconds()));
 }
 
 void Controller::graphicsLoadingErrorHandler(KubikException exc)

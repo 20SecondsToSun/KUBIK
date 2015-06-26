@@ -6,7 +6,7 @@ using namespace kubik::config;
 OneGamePurchased::OneGamePurchased(ConfigSettingsRef config, const GamesInfo& info)
 	:nameColor(Color::hex(0xffffff)),
 	nameText(info.getNameText()),
-	nameFont(config->getFont("introLight44")),
+	nameFont(getFont("IntroLight", 44)),
 	checkerArea(Rectf(20.0f, 4.0f, 214.0f, 126.0f)),
 	namePosition(Vec2f(282.0f, -10.0f)),
 	info(info)

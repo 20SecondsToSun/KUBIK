@@ -7,6 +7,7 @@
 #include "JsonTools.h"
 #include "ConfigTexts.h"
 #include "StringTools.h"
+#include "services/fontStorage/FontStorage.h"
 
 namespace kubik
 {	

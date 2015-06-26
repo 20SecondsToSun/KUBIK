@@ -5,13 +5,13 @@
 #include "KeyBoardButtonSprite.h"
 #include "TextTools.h"
 #include "ISettings.h"
+#include "fontStorage/FontStorage.h"
 
 namespace kubik
 {
 	class VirtualKeyboard : public Sprite
 	{
 	public:
-
 		static const int INPUT_TOUCH = 1;
 		static const int KEY_TOUCH = 2;
 		static const int MAX_LETTER_LIMIT = 3;	

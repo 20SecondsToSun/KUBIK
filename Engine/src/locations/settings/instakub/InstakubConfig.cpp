@@ -112,7 +112,7 @@ void InstakubConfig::initKeyBoard()
 	touchKeyboard().hideQuick(Vec2f(-130.0f, 1920.0f));
 	touchKeyboard().setOriginPoint(Vec2f(166.0f, 0.0f));
 	touchKeyboard().setInputField(162.0f, 695.0f, 808.0f, 797.0f);
-	touchKeyboard().setInputFont(fontStorage().getFont("IntroLight44"));
+	touchKeyboard().setInputFont(getFont("IntroLight", 44));
 	touchKeyboard().setInputColor(Color::black());
 	touchKeyboard().setInputFieldText(instSettings->getHashtag().getText());
 	touchKeyboard().connectKeyboard();

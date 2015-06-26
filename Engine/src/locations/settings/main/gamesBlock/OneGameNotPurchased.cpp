@@ -8,7 +8,7 @@ OneGameNotPurchased::OneGameNotPurchased(ConfigSettingsRef config, const GamesIn
 	btnColor(ci::Color::white())
 {
 	nameText = info.getNameText();
-	nameFont = config->getFont("introLight36");
+	nameFont = getFont("IntroLight", 36);
 
 	miniIcon = info.getMiniIcon();
 	gameInWebIcon = config->getTexture("gameInWebIcon");
@@ -34,6 +34,6 @@ void OneGameNotPurchased::drawLayout()
 
 void OneGameNotPurchased::setAlpha(float alpha)
 {
-	btnColor = ColorA(btnColor.r, btnColor.g, btnColor.b, alpha);
+	btnColor  = ColorA(btnColor.r, btnColor.g, btnColor.b, alpha);
 	nameColor = ColorA(nameColor.r, nameColor.g, nameColor.b, alpha);
 }

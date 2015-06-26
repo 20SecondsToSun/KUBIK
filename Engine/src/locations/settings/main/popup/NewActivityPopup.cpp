@@ -152,7 +152,7 @@ void NewActivityPopup::initVirtualKeyboard()
 	touchKeyboard().setDefaultSettings();
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().connectKeyboard();
-	touchKeyboard().setInputFont(configSett->getFont("introLight44"));
+	touchKeyboard().setInputFont(getFont("IntroLight", 44));
 	touchKeyboard().setInputColor(Color::black());	
 }
 

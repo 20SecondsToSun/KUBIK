@@ -16,7 +16,6 @@ void KeyboardSettings::load()
 void KeyboardSettings::setTextures()
 {
 	clearResources();
-
 	addToDictionary("backspaceBtnTex", createImageResource(getKeyboardPath("backBtn.png")));
 	addToDictionary("_simple", createImageResource(getKeyboardPath("_simpleBtn.png")));
 	addToDictionary("_simple1", createImageResource(getKeyboardPath("_simpleBtn1.png")));
@@ -29,9 +28,6 @@ void KeyboardSettings::setTextures()
 	addToDictionary("k2", createImageResource(getKeyboardPath("k2.png")));
 	addToDictionary("lang", createImageResource(getKeyboardPath("lang.png")));
 	addToDictionary("erase", createImageResource(getKeyboardPath("erase.png")));
-	
-	addToDictionary("helveticaLight25", createFontResource(getFontsPath("Helvetica Neue Light.ttf"), 25));
-	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
 }
 
 changeSetting::id KeyboardSettings::getChangeID() const

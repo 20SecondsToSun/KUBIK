@@ -4,10 +4,9 @@ using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
-Title::Title(ConfigSettingsRef configSettings, const Vec2i& position)
-	:Sprite(),
+Title::Title(ConfigSettingsRef configSettings, const Vec2i& position):Sprite(),
 	name(configSettings->getActionName()),
-	font(configSettings->getFont("introLight44")),
+	font(getFont("IntroLight", 44)),
 	color(Color::white())
 {
 	setPosition(position);

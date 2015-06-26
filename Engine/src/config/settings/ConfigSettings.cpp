@@ -166,10 +166,10 @@ void ConfigSettings::loadPaths()
 {
 	try
 	{
-		JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
-		designPath = pathJSON.getChild("designPath").getValue<string>();
-		userDesignPath = pathJSON.getChild("userDesignPath").getValue<string>();
-		templateDesignPath = pathJSON.getChild("templateDesignPath").getValue<string>();
+		JsonTree pathJSON	= JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
+		designPath			= pathJSON.getChild("designPath").getValue<string>();
+		userDesignPath		= pathJSON.getChild("userDesignPath").getValue<string>();
+		templateDesignPath	= pathJSON.getChild("templateDesignPath").getValue<string>();
 	}
 	catch (...)
 	{
@@ -194,8 +194,8 @@ void ConfigSettings::loadConsts()
 {
 	try
 	{
-		JsonTree constJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
-		data.maxPhotosToPrint = constJSON.getChild("maxPhotosToPrint").getValue<int>();
+		JsonTree constJSON     = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
+		data.maxPhotosToPrint  = constJSON.getChild("maxPhotosToPrint").getValue<int>();
 		data.activeDesignColor = stringTools().stringToColor(constJSON.getChild("activeColor").getValue<string>());
 	}
 	catch (...)
@@ -210,12 +210,12 @@ void ConfigSettings::loadParams()
 	{
 		JsonTree configJSON = JsonTree(loadFile(mainConfigObj.getParamsConfigPath()));
 		
-		data.actionName = configJSON.getChild("actionName").getValue<string>();
-		data.playedCount = configJSON.getChild("playedCount").getValue<int>();
-		data.printedCount = configJSON.getChild("printedCount").getValue<int>();
-		data.publishedCount = configJSON.getChild("publishedCount").getValue<int>();
+		data.actionName			  = configJSON.getChild("actionName").getValue<string>();
+		data.playedCount		  = configJSON.getChild("playedCount").getValue<int>();
+		data.printedCount		  = configJSON.getChild("printedCount").getValue<int>();
+		data.publishedCount		  = configJSON.getChild("publishedCount").getValue<int>();
 		data.currentPhotosPrinted = configJSON.getChild("currentPhotosPrinted").getValue<int>();
-		data.activeDesign = configJSON.getChild("activeDesign").getValue<int>();
+		data.activeDesign		  = configJSON.getChild("activeDesign").getValue<int>();
 	}
 	catch (...)
 	{
@@ -310,24 +310,7 @@ void ConfigSettings::loadLabels()
 
 void ConfigSettings::setTextures()
 {
-	addToDictionary("helveticaLight22", createFontResource(getFontsPath("HelveticaLight.ttf"), 22));
-	addToDictionary("helveticaLight20", createFontResource(getFontsPath("HelveticaLight.ttf"), 20));
-	addToDictionary("helvetica90", createFontResource(getFontsPath("Helvetica Neue.ttf"), 90));
-	addToDictionary("helvetica20", createFontResource(getFontsPath("Helvetica Neue.ttf"), 20));
-	addToDictionary("helveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToDictionary("helveticaLight36", createFontResource(getFontsPath("HelveticaLight.ttf"), 36));
-	addToDictionary("helveticaNeue24", createFontResource(getFontsPath("Helvetica Neue.ttf"), 24));
-
-	addToDictionary("introBold110", createFontResource(getFontsPath("introb.ttf"), 110));
-	addToDictionary("introBold90", createFontResource(getFontsPath("introb.ttf"), 90));
-	addToDictionary("introBold80", createFontResource(getFontsPath("introb.ttf"), 80));
-	addToDictionary("introBold70", createFontResource(getFontsPath("introb.ttf"), 70));
-	addToDictionary("introBold60", createFontResource(getFontsPath("introb.ttf"), 60));
-	addToDictionary("introBold72", createFontResource(getFontsPath("introb.ttf"), 72));
-	addToDictionary("introLight44", createFontResource(getFontsPath("IntroLight.ttf"), 44));
-	addToDictionary("introLight36", createFontResource(getFontsPath("IntroLight.ttf"), 36));
-	addToDictionary("introLight72", createFontResource(getFontsPath("IntroLight.ttf"), 72));
-	addToDictionary("introLight30", createFontResource(getFontsPath("IntroLight.ttf"), 30));
+	clearResources();
 
 	addToDictionary("iconClose", createImageResource(getDesignPath() + "closeConfig.png"));
 	addToDictionary("iconBack", createImageResource(getDesignPath() + "backIcon.png"));
@@ -343,10 +326,7 @@ void ConfigSettings::setTextures()
 	addToDictionary("ssCheckerOn", createImageResource(getDesignPath() + "main/ssCheckerOn.png"));
 	addToDictionary("ssCheckerOff", createImageResource(getDesignPath() + "main/ssCheckerOff.png"));
 	addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
-
-	addToDictionary("redFocus", createImageResource(getDesignPath() + "main/redFocus.png"));
 	addToDictionary("over6", createImageResource(getDesignPath() + "over6.png"));
-
 	addToDictionary("gameInWebIcon", createImageResource(getDesignPath() + "gameInWebIcon.png"));
 
 	for (auto item : data.designData)
@@ -360,12 +340,12 @@ void ConfigSettings::buildData()
 	auto dic = texts.getDic();
 
 	for (auto &it : dic)	
-		it.second.setFont(fonts);
+		it.second.setFont(fontStorage().getAll());
 
 	for (auto &it : data.designData)
 	{
 		it.setIcon(getTexture(it.getIconTexName()));
-		it.setFont(fonts);
+		it.setFont(fontStorage().getAll());
 	}
 
 	texts.setDic(dic);

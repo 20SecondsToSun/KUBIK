@@ -5,7 +5,7 @@ using namespace kubik::config;
 
 OneSharingItem::OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id)
 	:Sprite(), text(settings->getTextItem(id)),
-	font(fontStorage().getFont("IntroLight30")),
+	font(getFont("IntroLight", 30)),
 	icon(settings->getIcon(id)),
 	settings(settings),
 	id(id)

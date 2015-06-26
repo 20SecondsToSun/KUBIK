@@ -42,7 +42,7 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 {
 	if (setuped) return;
 
-	Font mFont = config->getFont("helveticaLight25");
+	Font mFont = getFont("HelveticaLight", 25);
 	gl::Texture backspaceBtnTex = config->getTexture("backspaceBtnTex");
 	gl::Texture _simple = config->getTexture("_simple");
 	gl::Texture _simple1 = config->getTexture("_simple1");
@@ -202,7 +202,7 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 	isShowing = false;
 	showEraseButton = true;
 	setlocale(LC_ALL, "");
-	createInputField(config->getFont("introLight44"));
+	createInputField(getFont("IntroLight", 44));
 	setuped = true;
 	carridgeDrawing = false;
 	carridgePhase = false;
@@ -414,9 +414,6 @@ void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
 	case KEYBOARD_LANG::RUS:
 		activeKeyboard = &buttonsRusMainKeyboard;
 		shift->setPosition(lineOffset4 - Vec2f(91.0f + 14, 0.0f));
-		break;
-
-	default:
 		break;
 	}
 }

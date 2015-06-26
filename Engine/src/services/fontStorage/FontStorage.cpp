@@ -32,22 +32,48 @@ void FontStorage::init()
 
 	{
 		string fontName = "IntroLight";
-		vector<int> fontSizes{ 30, 24, 28, 44, 60, 36, 18, 90 };
+		vector<int> fontSizes{ 30, 24, 28, 44, 60, 36, 18, 90, 72 };
 		addFontToLoadingQuery(fontName, fontSizes);
 	}
 
-	addToSettingsDictionary("HelveticaLight24", createFontResource(getFontsPath("HelveticaLight.ttf"), 24));
-	addToSettingsDictionary("HypatiaSansPro-Black100", createFontResource(getFontsPath("HypatiaSansPro-Black.ttf"), 100));
-	addToSettingsDictionary("Idealist-SC40", createFontResource(getFontsPath("Idealist-SC.ttf"), 40));
+	{
+		string fontName = "HelveticaLight";
+		vector<int> fontSizes{ 24, 22, 20, 25, 36 };
+		addFontToLoadingQuery(fontName, fontSizes);
+	}
+
+	{
+		string fontName = "Helvetica Neue";
+		vector<int> fontSizes{ 90, 20 };
+		addFontToLoadingQuery(fontName, fontSizes);
+	}
+
+	{
+		string fontName = "IntroBold";
+		vector<int> fontSizes{ 60, 70, 72, 80, 90, 110 };
+		addFontToLoadingQuery(fontName, fontSizes);
+	}
+
+	{
+		string fontName = "HypatiaSansPro-Black";
+		vector<int> fontSizes{ 100 };
+		addFontToLoadingQuery(fontName, fontSizes);
+	}
+
+	{
+		string fontName = "Idealist-SC";
+		vector<int> fontSizes{ 40 };
+		addFontToLoadingQuery(fontName, fontSizes);
+	}
 }
 
-void  FontStorage::addFontToLoadingQuery(std::string fontName, std::vector<int> fontSizes)
+void FontStorage::addFontToLoadingQuery(const std::string& fontName, std::vector<int> fontSizes)
 {
 	for (size_t i = 0; i < fontSizes.size(); i++)
 		add(fontName, fontSizes[i]);
 }
 
-void  FontStorage::add(std::string name, int size)
+void FontStorage::add(const std::string& name, int size)
 {
 	addToSettingsDictionary(name + to_string(size), createFontResource(getFontsPath(name + ".ttf"), size));
 }
@@ -84,7 +110,12 @@ FontResourceDictionary FontStorage::getAll() const
 	return fonts;
 }
 
-Font  FontStorage::getFont(const std::string& name)
+Font FontStorage::getFont(const std::string& name)
 {
 	return fonts[name]->get();
+}
+
+Font FontStorage::getFont(const std::string& name, int size)
+{
+	return fonts[name + to_string(size)]->get();
 }

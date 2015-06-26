@@ -11,9 +11,9 @@ StatBlock::StatBlock(ConfigSettingsRef configSettings, const Vec2i& position)
 	title3(configSettings->getTextItem(ConfigTextID::SOCIAL_COUNT)),
 	numsColor(ci::Color::hex(0xffffff)),
 	linesColor(ci::Color::hex(0x233442)),
-	numsFont1(configSettings->getFont("introBold110")),
-	numsFont2(configSettings->getFont("introBold70")),
-	numsFont3(configSettings->getFont("introBold60")),
+	numsFont1(getFont("IntroBold", 110)),
+	numsFont2(getFont("IntroBold", 70)),
+	numsFont3(getFont("IntroBold", 60)),
 	playedTimes(0),
 	printedPhotos(0),
 	sharedAndEmail(0)

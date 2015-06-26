@@ -10,7 +10,7 @@ EmailPopup::EmailPopup(PhotoboothSettingsRef settings):Popup(settings),
 	addEmailIcon(settings->getTexture("addEmail")),
 	borderIcon(settings->getTexture("enterEmailBorder")),
 	borderIconRed(settings->getTexture("errorEmailBorder")),
-	addEmailFont(fontStorage().getFont("Helvetica Neue Light24")),
+	addEmailFont(getFont("Helvetica Neue Light", 24)),
 	initAddEmailPosition(Vec2f(165.0f, 480.0f)),
 	shiftEmailPosition(Vec2f(0.0f, 63.0f))
 {
