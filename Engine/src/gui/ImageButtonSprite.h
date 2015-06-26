@@ -10,7 +10,6 @@ namespace kubik
 	{
 	public:
 		ImageButtonSprite(const ci::gl::Texture& image, const ci::Vec2f& pos = Vec2f::zero());
-
 		void drawLayout() override;
 		void changeTexture(const ci::gl::Texture& image);
 

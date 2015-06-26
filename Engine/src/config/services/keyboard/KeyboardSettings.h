@@ -10,7 +10,7 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class KeyboardSettings> KeyboardSettingsRef;
 
-		class KeyboardSettings :public ISettings
+		class KeyboardSettings:public ISettings
 		{
 		public:
 			KeyboardSettings(ApplicationModelRef model);

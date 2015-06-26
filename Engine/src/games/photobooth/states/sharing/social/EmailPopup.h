@@ -17,6 +17,8 @@ namespace kubik
 
 			class EmailPopup : public Popup
 			{
+				static const int MAX_EMAIL_TO_SEND = 3;
+
 				ci::Anim<float>  alphaError;
 				ci::ColorA addEmailFontColor;
 				ci::gl::Texture  addEmailIcon, borderIcon, borderIconRed;

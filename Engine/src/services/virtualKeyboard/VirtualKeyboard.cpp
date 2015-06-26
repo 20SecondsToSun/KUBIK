@@ -513,6 +513,11 @@ void VirtualKeyboard::alwaysCapsLock(bool value)
 	alwaysCaps = value;
 }
 
+void VirtualKeyboard::setDrawingCarriage(bool value)
+{
+	carridgeDrawing = value;
+}
+
 string VirtualKeyboard::getLastCode()
 {
 	return  lastCode;

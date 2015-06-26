@@ -61,11 +61,6 @@ void Controller::loadSettings()
 	configs.push_back(socialSettings);
 	configs.push_back(preloaderSettings);
 	configLoader->loadConfigs(configs);
-
-	logger().log("CONFIGS LOADED");
-
-	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	settingsFactory().inject(phbthSettings);
 	
 	fontStorage().init();
 }

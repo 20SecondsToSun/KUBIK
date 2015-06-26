@@ -37,7 +37,6 @@ namespace kubik
 		ci::gl::Texture icon;	
 		std::string iconPath, designPath;	
 		std::string iconTextName, designTexName;
-
 		std::vector<ci::gl::Texture> designData;
 	};
 

@@ -34,5 +34,3 @@ StickerDoesNotExist::StickerDoesNotExist() throw()
 	sprintf( mMessage, "Стикера не существует" );
 	isCritical = true;
 }
-
-

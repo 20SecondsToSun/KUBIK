@@ -15,7 +15,6 @@ PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef pho
 	photoPositions[2] = Vec2f(711.0f, 439.0f);
 	photoPositions[3] = Vec2f(96.0f,  864.0f);
 	photoPositions[4] = Vec2f(404.0f, 864.0f);
-
 	reset(settings);
 }
 

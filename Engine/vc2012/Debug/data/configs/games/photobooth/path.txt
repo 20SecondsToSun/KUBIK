@@ -1,9 +1,9 @@
 {  
    "userCardStylePath" : "user_design\\design_elements\\gameDesign\\photobooth\\photoCardStyles\\",
    "userStickerPath"   : "user_design\\design_elements\\gameDesign\\photobooth\\photoStickers\\",
-   "photoOverDesignDataPath" : "data\\configs\\games\\photobooth\\photoOverDesigns.txt",
-   "photoCardsStylesPath" : "data\\configs\\games\\photobooth\\photoCardStyles.txt",
+   "photoOverDesignDataPath" : "data\\configs\\games\\photobooth\\stickersConfig.txt",
+   "photoCardsStylesPath" : "data\\configs\\games\\photobooth\\cardsConfig.txt",
    "photoFiltersPreviewDesignDataPath" : "data\\configs\\games\\photobooth\\filters.txt",
     "finalPath"         : "gamesDesign\\photobooth\\",
- "interfacePath" : "data\\interface\\configDesign\\photobooth\\"
+    "interfacePath" : "data\\interface\\configDesign\\photobooth\\"
 }

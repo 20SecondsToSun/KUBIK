@@ -5,8 +5,7 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-FacebookPopup::FacebookPopup(PhotoboothSettingsRef settings)
-	:SocialPopup(settings)
+FacebookPopup::FacebookPopup(PhotoboothSettingsRef settings):SocialPopup(settings)
 {
 	createSocialContext();
 }

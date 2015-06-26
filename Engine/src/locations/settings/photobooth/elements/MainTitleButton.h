@@ -11,7 +11,6 @@ namespace kubik
 
 		class MainTitleButton: public SimpleSpriteButton
 		{
-
 		public:	
 			MainTitleButton(const ci::Rectf& rect, int index);
 			virtual void draw();

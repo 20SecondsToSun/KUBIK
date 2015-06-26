@@ -68,13 +68,12 @@ namespace kubik
 
 			void load();
 			void saveConfig();
-
-			bool settingsChanged();
-			changeSetting::id getChangeID() const;
 			void setDesignPath();
 			void setTextures();
 			void setData(MenuDataStruct value);
 
+			bool settingsChanged();
+			changeSetting::id getChangeID() const;
 			MenuDataStruct getData();
 
 			std::vector<GamesInfo> getGames();

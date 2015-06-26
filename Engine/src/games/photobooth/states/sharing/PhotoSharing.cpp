@@ -259,8 +259,10 @@ void PhotoSharing::popupClosed()
 void PhotoSharing::disconnectEventHandlers()
 {
 	againBtn->disconnectEventHandler();
+
 	if (!settings->onlyOneGameOn())		
 		allAppBtn->disconnectEventHandler();
+
 	emailBtn->disconnectEventHandler();
 	fbBtn->disconnectEventHandler();
 	vkBtn->disconnectEventHandler();

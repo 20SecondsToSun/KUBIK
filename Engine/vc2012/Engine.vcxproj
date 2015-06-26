@@ -183,6 +183,9 @@
     <ClCompile Include="..\src\gui\Sprite.cpp" />
     <ClCompile Include="..\src\gui\TextField.cpp" />
     <ClCompile Include="..\src\loaders\asynchTextureLoader\TextureStore.cpp" />
+    <ClCompile Include="..\src\loaders\ConfigLoader.cpp" />
+    <ClCompile Include="..\src\loaders\GraphicsLoader.cpp" />
+    <ClCompile Include="..\src\loaders\MovieLoader.cpp" />
     <ClCompile Include="..\src\locations\IScreen.cpp" />
     <ClCompile Include="..\src\locations\menu\ControlLayer.cpp" />
     <ClCompile Include="..\src\locations\menu\GameButton.cpp" />

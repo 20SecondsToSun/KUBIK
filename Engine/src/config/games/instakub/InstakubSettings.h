@@ -73,19 +73,15 @@ namespace kubik
 			ci::Font getViewInputFieldFont();
 
 		private:			
-			bool memento;
 			std::string hashtag, hashtag_save, clientID;
-			bool search, search_save;
-			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignID_save;
-			int userPhotoCardStyleDesignID;
-
+			std::string viewInputFieldFontName;
+			bool memento, search, search_save;
+			int activeCardDesignID, activeCardDesignID_save;
+			int userCardDesignID;
 			std::vector<ci::ColorA> keyboardColorsInDesign;
-
 			ConfigTexts<InstaTextID> configTexts;
-
 			ConfigObject mainConfigObj;
 			DesignData photoCardStyles;
-
 			ConfigSettingsRef configSettings;
 
 			class ConfigPath
@@ -100,8 +96,7 @@ namespace kubik
 			configPaths;
 
 			TextItem hashTagTextItem;
-			ci::ColorA preloaderToneColor;
-			std::string viewInputFieldFontName;
+			ci::ColorA preloaderToneColor;			
 		};
 	}
 }

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "TextItem.h"
 #include "CinderAwesomium.h"
 
@@ -67,7 +66,7 @@ namespace kubik
 		{
 			if (mWebViewPtr)
 			{
-				string param = "window";
+				std::string param = "window";
 				JSValue js = mWebViewPtr->ExecuteJavascriptWithResult(WSLit(param.c_str()), Awesomium::WSLit(""));
 
 				if (!js.IsUndefined())

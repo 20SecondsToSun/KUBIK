@@ -88,13 +88,13 @@ shared_ptr<FontResource> FontStorage::createFontResource(const std::string& path
 	return value;
 }
 
-void  FontStorage::addToSettingsDictionary(const std::string& key, shared_ptr<FontResource>  value)
+void FontStorage::addToSettingsDictionary(const std::string& key, shared_ptr<FontResource>  value)
 {
 	fonts[key] = value;
 	resources[key] = value;
 }
 
-std::string  FontStorage::getFontsPath(const std::string& value)
+std::string FontStorage::getFontsPath(const std::string& value)
 {
 	ci::fs::path path = ci::app::getAppPath() / "data\\fonts\\";
 	return path.string() + value;
@@ -110,12 +110,12 @@ FontResourceDictionary FontStorage::getAll() const
 	return fonts;
 }
 
-Font FontStorage::getFont(const std::string& name)
+Font FontStorage::getFont1(const std::string& name)
 {
 	return fonts[name]->get();
 }
 
-Font FontStorage::getFont(const std::string& name, int size)
+Font FontStorage::getFont1(const std::string& name, int size)
 {
 	return fonts[name + to_string(size)]->get();
 }

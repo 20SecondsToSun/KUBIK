@@ -42,7 +42,7 @@ void TemplateButton::drawLayout()
 	shader->setAlpha(alpha);
 	drawTemplateBg();
 	drawPhotos();
-	//drawStickers();
+	drawStickers();
 
 	if (isSelected)
 	{

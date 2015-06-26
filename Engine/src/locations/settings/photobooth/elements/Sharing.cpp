@@ -3,8 +3,8 @@
 using namespace kubik;
 using namespace kubik::config;
 
-OneSharingItem::OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id)
-	:Sprite(), text(settings->getTextItem(id)),
+OneSharingItem::OneSharingItem(PhotoboothSettingsRef settings, PhtTextID id):Sprite(),
+	text(settings->getTextItem(id)),
 	font(getFont("IntroLight", 30)),
 	icon(settings->getIcon(id)),
 	settings(settings),
@@ -52,7 +52,6 @@ Sharing::Sharing(PhotoboothSettingsRef phbSettings, ci::Color color, int index)
 	pairs.push_back(PosPair(PhtTextID::PRINTER,     ci::Vec2f(134.0f, 400.0f)));
 	pairs.push_back(PosPair(PhtTextID::EMAIL,       ci::Vec2f(134.0f, 585.0f)));
 	pairs.push_back(PosPair(PhtTextID::QRCODE,      ci::Vec2f(134.0f, 775.0f)));
-
 	pairs.push_back(PosPair(PhtTextID::FACEBOOK,    ci::Vec2f(521.0f, 400.0f)));
 	pairs.push_back(PosPair(PhtTextID::VKONTAKTE,   ci::Vec2f(521.0f, 585.0f)));
 	pairs.push_back(PosPair(PhtTextID::TWITTER,     ci::Vec2f(521.0f, 775.0f)));

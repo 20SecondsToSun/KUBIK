@@ -1,29 +1,30 @@
 #pragma once
-
 #include "KubikException.h"
-
-using namespace std;
-using namespace ci;
-using namespace ci::gl;
-//using namespace kubik::config;
 
 namespace kubik
 {	
-
 	class ApplicationView;
-	//class ApplicationModel;
 	class Controller;
 	class IButton;
 
-	typedef shared_ptr<ApplicationView> AppViewRef;
-	//typedef shared_ptr<ApplicationModel> AppModelRef;
-	typedef shared_ptr<Controller> ControllerRef;
+	typedef std::shared_ptr<ApplicationView> AppViewRef;
+	typedef std::shared_ptr<Controller> ControllerRef;
+	typedef std::shared_ptr<boost::thread> ThreadRef;
 
-	typedef boost::shared_ptr<boost::thread> ThreadRef;
-
-	typedef ci::signals::signal<void(void)> SignalVoid;
-	typedef ci::signals::signal<void(KubikException)> SignalException;
+	typedef boost::signals2::signal<void(void)> SignalVoid;
+	typedef boost::signals2::signal<void(KubikException)> SignalException;
 	typedef boost::signals2::signal<void(IButton&)> ButtonSignal;
+
+	typedef std::shared_ptr<class ImageResource> ImageResourceRef;
+	typedef std::shared_ptr<class FontResource>  FontResourceRef;
+	typedef std::shared_ptr<class VideoResource> VideoResourceRef;
+	typedef std::shared_ptr<class IResourceBase> IResourceBaseRef;
+
+	typedef std::map<std::string, ImageResourceRef> ImageResourceDictionary;
+	typedef std::map<std::string, FontResourceRef>  FontResourceDictionary;
+	typedef std::map<std::string, VideoResourceRef> VideoResourceDictionary;
+	typedef std::map<std::string, IResourceBaseRef> IResourceDictionary;
+
 	enum DesignType
 	{
 		KUBIK,
@@ -96,19 +97,19 @@ namespace kubik
 
 	struct IconPair
 	{
-		IconPair(Texture activeIcon, Texture unActiveIcon):activeIcon(activeIcon),unActiveIcon(unActiveIcon){}
+		IconPair(const ci::gl::Texture& activeIcon, const ci::gl::Texture& unActiveIcon) :activeIcon(activeIcon), unActiveIcon(unActiveIcon){}
 		IconPair(){}
-		Texture activeIcon;
-		Texture unActiveIcon;
+		ci::gl::Texture activeIcon;
+		ci::gl::Texture unActiveIcon;
 	};
 
 	struct GamesInfo
 	{
-		game::id id;
 		bool isOn, isPurchased;
-		string name;
 		IconPair iconPair;
-		Texture miniIcon, texture;
+		game::id id;		
+		std::string name;		
+		ci::gl::Texture miniIcon, texture;
 
 		bool isGameOn() const
 		{
@@ -120,7 +121,7 @@ namespace kubik
 			return id;
 		}
 
-		string getNameText() const
+		std::string getNameText() const
 		{
 			return name;
 		}
@@ -130,22 +131,22 @@ namespace kubik
 			return iconPair;
 		}
 
-		void setActiveIcon(Texture tex)
+		void setActiveIcon(const ci::gl::Texture& tex)
 		{
 			iconPair.activeIcon = tex;		
 		}
 
-		void setUnActiveIcon(Texture tex)
+		void setUnActiveIcon(const ci::gl::Texture& tex)
 		{
 			iconPair.unActiveIcon = tex;
 		}
 
-		void setMiniIcon(Texture tex) 
+		void setMiniIcon(const ci::gl::Texture& tex)
 		{
 			miniIcon = tex;
 		}
 
-		Texture getMiniIcon() const
+		ci::gl::Texture getMiniIcon() const
 		{
 			return miniIcon;
 		}
@@ -155,7 +156,7 @@ namespace kubik
 			texture = tex;
 		}
 
-		Texture getTexture() const
+		ci::gl::Texture getTexture() const
 		{
 			return texture;
 		}
@@ -184,7 +185,7 @@ namespace kubik
 			isLoading = false;
 		}
 
-		string path;
+		std::string path;
 		bool isLoading;
 		resourceType resourceType;
 		loadingType  loadingType;
@@ -215,7 +216,7 @@ namespace kubik
 		}
 	};
 
-	class FontResource: public IResource<Font>
+	class FontResource: public IResource<ci::Font>
 	{
 	public:	
 		FontResource()
@@ -225,23 +226,14 @@ namespace kubik
 		float fontSize;
 	};
 
-	class VideoResource: public IResource<qtime::MovieGl>
+	class VideoResource: public IResource<ci::qtime::MovieGl>
 	{
 	public:	
 		VideoResource()
 		{
 			resourceType = resourceType::VIDEO;
 		}
-	};
-	typedef shared_ptr<ImageResource> ImageResourceRef;
-	typedef shared_ptr<FontResource>  FontResourceRef;
-	typedef shared_ptr<VideoResource> VideoResourceRef;
-	typedef shared_ptr<IResourceBase> IResourceBaseRef;
-
-	typedef map<string, ImageResourceRef> ImageResourceDictionary;
-	typedef map<string, FontResourceRef>  FontResourceDictionary;
-	typedef map<string, VideoResourceRef> VideoResourceDictionary;
-	typedef map<string, IResourceBaseRef> IResourceDictionary;
+	};	
 
 	typedef screen::id ScreenId;
 	typedef game::id GameId;

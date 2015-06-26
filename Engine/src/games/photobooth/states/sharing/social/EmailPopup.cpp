@@ -25,7 +25,6 @@ void EmailPopup::show()
 {
 	showAddEmail = true;
 	clearEmails();
-
 	Popup::show();
 }
 
@@ -40,6 +39,7 @@ void EmailPopup::initVirtualKeyboard()
 	touchKeyboard().setInputField(borderIconPos.x + 10, borderIconPos.y, borderIconPos.x + 810.0f, borderIconPos.y + 139.0f);
 	touchKeyboard().setInputFont(inputFont);
 	touchKeyboard().setInputColor(Color::white());
+	touchKeyboard().setDrawingCarriage(true);
 
 	Popup::initVirtualKeyboard();
 }
@@ -86,7 +86,7 @@ void EmailPopup::addEmailToList()
 	email.position = initAddEmailPosition + emailsTextures.size() * shiftEmailPosition;
 	emailsTextures.push_back(email);
 
-	if (emails.size() == 3)
+	if (emails.size() == MAX_EMAIL_TO_SEND)
 	{
 		addEmailBtn->setAlpha(0.0f);
 		addEmailBtn->disconnectEventHandler();

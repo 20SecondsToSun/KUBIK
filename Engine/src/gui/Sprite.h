@@ -7,7 +7,6 @@ namespace kubik
 
 	class Sprite 
 	{
-
 	public:
 		Sprite();
 		~Sprite(){};

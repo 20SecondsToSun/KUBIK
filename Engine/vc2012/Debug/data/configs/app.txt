@@ -20,10 +20,9 @@
 			     "labels":"data\\configs\\mainconf\\labels.txt"},
 
  "preloadersConfigPath" : "data\\configs\\preloaders.txt",
-
-   "screenSaverConfigPath" : "data\\configs\\screensaver.txt", 
-   "userInfoPath" : "data\\configs\\user\\userInfo.txt",
-   "labelsPath" : "data\\configs\\labels.txt",
-   "designDataPath" : "data\\configs\\designs.txt",
-   "socialConfigPath" : "data\\configs\\social.txt"
+ "screenSaverConfigPath" : "data\\configs\\screensaver.txt", 
+ "userInfoPath" : "data\\configs\\user\\userInfo.txt",
+ "labelsPath" : "data\\configs\\labels.txt",
+ "designDataPath" : "data\\configs\\designs.txt",
+ "socialConfigPath" : "data\\configs\\social.txt"
 }

@@ -17,11 +17,11 @@ NewActivityPopup::NewActivityPopup(ConfigSettingsRef configSett)
 	redFocusAlpha(0.0f)
 
 {
-	mainTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_ASK_TITLE), true, -10);
-	subTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_DESQR), true, -8);
-	title = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_TITLE));
-	//begin = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_BEGIN));
+	mainTitle  = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_ASK_TITLE), true, -10);
+	subTitle   = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_DESQR), true, -8);
+	title	   = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_TITLE));
 	closeTitle = textTools().getTextField(configSett->getTextItem(ConfigTextID::PARTY_CLOSE));
+
 	float allWidth = closeIcon.getWidth() + 20.0f + closeTitle.getWidth();
 	float startX = 0.5f * (getWindowWidth() - allWidth);
 
@@ -71,20 +71,12 @@ void NewActivityPopup::drawTitles()
 
 void NewActivityPopup::drawInputFieldBackground()
 {
-	/*
-	gl::drawSolidRoundedRect(ci::Rectf(130, 932, 130 + 828, 932 + 140), 7);
-	gl::color(btnStartColor);
-	gl::drawSolidRoundedRect(ci::Rectf(752.0, 932.0, 962.0, 1072.0), 7);
-	gl::drawSolidRect(ci::Rectf(750.0f, 932.0, 760.0, 1072.0), 7);	*/
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, redFocusAlpha));
 	gl::draw(redFocus, inputFieldPos - Vec2f(3.0f, 3.0f));
 
 	gl::color(inputFieldColor);
 	gl::draw(inputField, inputFieldPos);
-	//gl::color(titlesColor);
 	textTools().drawTextBox(configSett->getTextItem(ConfigTextID::PARTY_BEGIN), Color::hex(0x6595f9), titlesColor, Vec2f(750.0f, yPositionInputField), Vec2i(200.0f, 134.0f));
-
-	//gl::draw(begin, Vec2f(750.0f + 0.5f * (210.0f - begin.getWidth()), yPositionInputField + 0.5f * (142.0f - begin.getHeight())));
 }
 
 void NewActivityPopup::drawCloseBlock()
@@ -154,6 +146,7 @@ void NewActivityPopup::initVirtualKeyboard()
 	touchKeyboard().connectKeyboard();
 	touchKeyboard().setInputFont(getFont("IntroLight", 44));
 	touchKeyboard().setInputColor(Color::black());	
+	touchKeyboard().setDrawingCarriage(true);
 }
 
 void NewActivityPopup::closeHandler(EventGUIRef& event)

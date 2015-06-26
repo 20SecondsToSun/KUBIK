@@ -9,8 +9,8 @@ StatBlock::StatBlock(ConfigSettingsRef configSettings, const Vec2i& position)
 	title1(configSettings->getTextItem(ConfigTextID::PLAYED_COUNT)),
 	title2(configSettings->getTextItem(ConfigTextID::PRINTED_COUNT)),
 	title3(configSettings->getTextItem(ConfigTextID::SOCIAL_COUNT)),
-	numsColor(ci::Color::hex(0xffffff)),
-	linesColor(ci::Color::hex(0x233442)),
+	numsColor(Color::white()),
+	linesColor(Color::hex(0x233442)),
 	numsFont1(getFont("IntroBold", 110)),
 	numsFont2(getFont("IntroBold", 70)),
 	numsFont3(getFont("IntroBold", 60)),
@@ -58,7 +58,7 @@ void StatBlock::setAlpha(float alpha)
 	title3.setColor(Utils::colorAlpha(title3.getColor(), alpha));
 
 	linesColor = Utils::colorAlpha(linesColor, alpha);
-	numsColor = Utils::colorAlpha(numsColor, alpha);
+	numsColor  = Utils::colorAlpha(numsColor,  alpha);
 }
 
 void StatBlock::setPlayedTimes(int num)

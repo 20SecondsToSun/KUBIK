@@ -18,10 +18,9 @@ namespace kubik
 		std::string getText() const;		
 
 	private:
-		std::string text;
-		std::string fontName;
-
 		int size;
+		std::string text;
+		std::string fontName;		
 		ci::ColorA color;
 		ci::Font font;
 	};

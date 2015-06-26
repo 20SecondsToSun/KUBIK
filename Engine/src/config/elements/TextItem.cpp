@@ -1,17 +1,19 @@
 #include "TextItem.h"
-using namespace kubik;
 
-void TextItem::setText(const std::string& text)
+using namespace kubik;
+using namespace std;
+
+void TextItem::setText(const string& text)
 {
 	this->text = text;
 }
 
-std::string TextItem::getText() const
+string TextItem::getText() const
 {
 	return text;
 }
 
-void TextItem::setFontName(const std::string& fontName)
+void TextItem::setFontName(const string& fontName)
 {
 	this->fontName = fontName;
 }
@@ -26,9 +28,9 @@ void TextItem::setSize(float size)
 	this->size = size;
 }
 
-void TextItem::setColor(const std::string& color)
+void TextItem::setColor(const string& color)
 {
-	this->color = ci::ColorA::hex(std::stoi(color, 0, 16));
+	this->color = ci::ColorA::hex(stoi(color, 0, 16));
 }
 
 void TextItem::setColor(const ci::ColorA& color)

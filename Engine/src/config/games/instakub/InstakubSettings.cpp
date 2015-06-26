@@ -43,7 +43,7 @@ void InstakubSettings::loadParams()
 	JsonTree paramsJSON = JsonTree(loadFile(mainConfigObj.getParamsConfigPath()));
 	search = paramsJSON.getChild("search").getValue<bool>();
 	setHashtagText(paramsJSON.getChild("hashtag").getValue<string>());
-	activePhotoCardStyleDesignID = paramsJSON.getChild("activePhotoCardStyleDesignID").getValue<int>();
+	activeCardDesignID = paramsJSON.getChild("activePhotoCardStyleDesignID").getValue<int>();
 }
 
 void InstakubSettings::loadLabels()
@@ -119,7 +119,7 @@ void InstakubSettings::parsePhotoCardStyles()
 			text.getChild("color").getValue<string>());
 		photoCardStyles.push_back(item);
 	}
-	userPhotoCardStyleDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
+	userCardDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
 }
 
 void InstakubSettings::setTextures()
@@ -209,7 +209,7 @@ void InstakubSettings::buildSettingData()
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
 {
 	auto iter = photoCardStyles.begin();
-	std::advance(iter, activePhotoCardStyleDesignID - 1);
+	std::advance(iter, activeCardDesignID - 1);
 
 	return iter->getMappedTextures()[0];
 }
@@ -247,17 +247,17 @@ DesignData InstakubSettings::getPhotoCardStyles() const
 
 int InstakubSettings::getActivePhotoCardStyleDesignID() const
 {
-	return activePhotoCardStyleDesignID;
+	return activeCardDesignID;
 }
 
 void InstakubSettings::setActivePhotoCardStyleDesignID(int id)
 {
-	activePhotoCardStyleDesignID = id;
+	activeCardDesignID = id;
 }
 
 int InstakubSettings::getUserPhotoCardStyleDesignID() const
 {
-	return userPhotoCardStyleDesignID;
+	return userCardDesignID;
 }
 
 string InstakubSettings::getUserPhotoCardStylePath() const
@@ -278,19 +278,15 @@ void InstakubSettings::writeConfig()
 		JsonTree doc;
 		doc.addChild(JsonTree("search", search));
 		doc.addChild(JsonTree("hashtag", hashtag));
-		doc.addChild(JsonTree("activePhotoCardStyleDesignID", activePhotoCardStyleDesignID));
-		doc.write(writeFile(basePath), JsonTree::WriteOptions());
-
-		console() << "WRITE INSTAKUB" << basePath << endl;
-		console() << "activePhotoCardStyleDesignID" << activePhotoCardStyleDesignID << endl;
-	
+		doc.addChild(JsonTree("activePhotoCardStyleDesignID", activeCardDesignID));
+		doc.write(writeFile(basePath), JsonTree::WriteOptions());	
 		memento = false;
 	}
 }
 
 void InstakubSettings::createMemento()
 {
-	activePhotoCardStyleDesignID_save = activePhotoCardStyleDesignID;
+	activeCardDesignID_save = activeCardDesignID;
 	search_save = search;
 	hashtag_save = hashtag;
 	memento = true;
@@ -298,9 +294,7 @@ void InstakubSettings::createMemento()
 
 bool InstakubSettings::settingsChanged()
 {
-	return activePhotoCardStyleDesignID_save != activePhotoCardStyleDesignID ||
-		search_save != search ||
-		hashtag_save != hashtag;
+	return activeCardDesignID_save != activeCardDesignID ||	search_save != search || hashtag_save != hashtag;
 };
 
 changeSetting::id InstakubSettings::getChangeID() const
@@ -325,5 +319,5 @@ ci::ColorA InstakubSettings::getPreloaderToneColor() const
 
 ci::Font InstakubSettings::getViewInputFieldFont()
 {
-	return fontStorage().getFont(viewInputFieldFontName);
+	return getFont(viewInputFieldFontName);
 }

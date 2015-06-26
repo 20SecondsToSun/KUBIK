@@ -118,7 +118,7 @@ namespace kubik
 
 		private:
 			static const int CARDS_COUNT = 5;
-			static const int STICKERS_COUNT = 5;
+			static const int STICKERS_COUNT = 4;
 			
 			class ImageElement
 			{

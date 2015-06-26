@@ -53,7 +53,8 @@ namespace kubik
 
 		void MouseDown( ci::app::MouseEvent &event );
 		void MouseUp( ci::app::MouseEvent &event );
-		void alwaysCapsLock(bool value );
+		void alwaysCapsLock(bool value);
+		void setDrawingCarriage(bool value);
 		bool inputFieldEmpty();
 		void setEraseButtonVisible(bool value);
 

@@ -18,14 +18,14 @@ namespace kubik
 		public:
 			PreloaderSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			
-			virtual void load();
-			void loadPaths();
+			virtual void load();			
 			virtual void setTextures();
 			virtual void createMemento(){};
 			virtual void writeConfig(){};
 			virtual bool settingsChanged(){ return false; };
-			virtual changeSetting::id getChangeID() const ;	
+			virtual changeSetting::id getChangeID() const;	
 
+			void loadPaths();
 			void buildData();
 			
 			IMovieRef getMainPreloader() const;

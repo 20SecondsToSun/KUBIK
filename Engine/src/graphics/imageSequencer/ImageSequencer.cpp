@@ -18,7 +18,6 @@ void ImageSequencer::draw()
 	gl::popMatrices();
 }
 
-
 float ImageSequencer::getHeight()
 {
 	return images[0].getHeight();

@@ -45,16 +45,14 @@ void PhotoboothSettings::load()
 
 void PhotoboothSettings::loadPaths()
 {
-	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
-
-	configPaths.userStickerPath = pathJSON.getChild("userStickerPath").getValue<string>();
-	configPaths.userCardStylePath = pathJSON.getChild("userCardStylePath").getValue<string>();
-	configPaths.photoOverDesignDataPath = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
-	configPaths.photoCardsStylesDesignDataPath = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
+	JsonTree pathJSON							  = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
+	configPaths.userStickerPath					  = pathJSON.getChild("userStickerPath").getValue<string>();
+	configPaths.userCardStylePath				  = pathJSON.getChild("userCardStylePath").getValue<string>();
+	configPaths.photoOverDesignDataPath			  = pathJSON.getChild("photoOverDesignDataPath").getValue<string>();
+	configPaths.photoCardsStylesDesignDataPath    = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
 	configPaths.photoFiltersPreviewDesignDataPath = pathJSON.getChild("photoFiltersPreviewDesignDataPath").getValue<string>();
-	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();
-
-	staticDesignPath = pathJSON.getChild("interfacePath").getValue<string>();
+	configPaths.finalPath						  = pathJSON.getChild("finalPath").getValue<string>();
+	staticDesignPath							  = pathJSON.getChild("interfacePath").getValue<string>();
 }
 
 void PhotoboothSettings::loadParams()
@@ -73,7 +71,8 @@ void PhotoboothSettings::loadLabels()
 
 void PhotoboothSettings::loadConsts()
 {
-
+	JsonTree constsJSON = JsonTree(loadFile(mainConfigObj.getConstsConfigPath()));
+	loadSharingIcons(constsJSON);
 }
 
 void PhotoboothSettings::setDesignPath()
@@ -83,12 +82,12 @@ void PhotoboothSettings::setDesignPath()
 
 void PhotoboothSettings::loadSocialParams(const JsonTree& config)
 {
-	setSocialState(PhtTextID::FACEBOOK, config.getChild("isFacebook").getValue<bool>());
+	setSocialState(PhtTextID::FACEBOOK,  config.getChild("isFacebook").getValue<bool>());
 	setSocialState(PhtTextID::VKONTAKTE, config.getChild("isVkotakte").getValue<bool>());
-	setSocialState(PhtTextID::TWITTER, config.getChild("isTwitter").getValue<bool>());
-	setSocialState(PhtTextID::EMAIL, config.getChild("isEmail").getValue<bool>());
-	setSocialState(PhtTextID::QRCODE, config.getChild("isQrCode").getValue<bool>());
-	setSocialState(PhtTextID::PRINTER, config.getChild("isPrint").getValue<bool>());
+	setSocialState(PhtTextID::TWITTER,   config.getChild("isTwitter").getValue<bool>());
+	setSocialState(PhtTextID::EMAIL,     config.getChild("isEmail").getValue<bool>());
+	setSocialState(PhtTextID::QRCODE,    config.getChild("isQrCode").getValue<bool>());
+	setSocialState(PhtTextID::PRINTER,   config.getChild("isPrint").getValue<bool>());
 }
 
 void PhotoboothSettings::loadPhotoFilterParams(const JsonTree& config)
@@ -105,11 +104,11 @@ void PhotoboothSettings::loadPhotoFilterParams(const JsonTree& config)
 
 void PhotoboothSettings::loadGameDesignParams(const JsonTree& config)
 {
-	activeOverDesignID = config.getChild("activeOverDesignID").getValue<int>();
-	isSticker = config.getChild("isSticker").getValue<bool>();
-	activeSticker.id = config.getChild("activeSticker").getValue<int>();
+	activeOverDesignID			 = config.getChild("activeOverDesignID").getValue<int>();
+	isSticker					 = config.getChild("isSticker").getValue<bool>();
+	activeSticker.id			 = config.getChild("activeSticker").getValue<int>();
 	activePhotoCardStyleDesignID = config.getChild("activePhotoCardStyleDesignID").getValue<int>();
-	activeBgPrint.id = config.getChild("activeBgPrint").getValue<int>();
+	activeBgPrint.id			 = config.getChild("activeBgPrint").getValue<int>();
 }
 
 void PhotoboothSettings::loadConfigTexts(const JsonTree& config)

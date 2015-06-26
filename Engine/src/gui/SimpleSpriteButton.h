@@ -20,6 +20,7 @@ namespace kubik
 		float getAlpha() const;
 		float getWidth() const;
 		float getHeight() const;
+
 		ci::Vec2f getPosition() const;
 		ci::Vec2f getSize() const;
 		ci::Rectf getButtonArea() const;

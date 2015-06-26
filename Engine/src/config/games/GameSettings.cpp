@@ -7,6 +7,56 @@ using namespace kubik::games::photobooth;
 using namespace kubik::games::instakub;
 using namespace kubik::games::funces;
 
+void GameSettings::gamesfactoryReg()
+{
+	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettingsMap[GameId::INSTAKUB]);
+	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettingsMap[GameId::PHOTOBOOTH]);
+}
+
+void GameSettings::load()
+{
+	std::vector<GamesInfo> games = model->getGames();
+	bool error = false;
+
+	for (auto game : games)
+	{
+		if (!game.isPurchased)
+			continue;
+
+		switch (game.id)
+		{
+		case GameId::PHOTOBOOTH:
+			gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model, configSettings));
+			settingsFactory().inject(static_pointer_cast<PhotoboothSettings>(gameSettingsMap[game.id]));
+			break;
+
+		case GameId::FUNCES:
+			gameSettingsMap[game.id] = FuncesSettingsRef(new FuncesSettings(model, configSettings));
+			break;
+
+		case GameId::INSTAKUB:
+			gameSettingsMap[game.id] = InstakubSettingsRef(new InstakubSettings(model, configSettings));
+			break;
+
+		default:
+			continue;
+		}
+
+		try
+		{
+			gameSettingsMap[game.id]->load();
+		}
+		catch (...)
+		{
+			error = true;
+			//throw ExcConfigFileParsing();
+		}
+	}
+
+	if (error)
+		throw ExcConfigFileParsing();
+}
+
 int GameSettings::GamesDataStruct::getDefaultGameID()
 {
 	return defaultGameID;
@@ -190,49 +240,6 @@ void GameSettings::setAllTextures()
 			gameSettingsMap[game.id]->setTextures();	
 }
 
-void GameSettings::load()
-{
-	std::vector<GamesInfo> games = model->getGames();
-	bool error = false;
-
-	for (auto game : games)
-	{	
-		if (!game.isPurchased)
-			continue;
-
-		switch (game.id)
-		{
-		case  GameId::PHOTOBOOTH:
-			gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model, configSettings));
-			break;
-
-		case  GameId::FUNCES:
-			gameSettingsMap[game.id] = FuncesSettingsRef(new FuncesSettings(model, configSettings));
-			break;
-
-		case  GameId::INSTAKUB:
-			gameSettingsMap[game.id] = InstakubSettingsRef(new InstakubSettings(model, configSettings));
-			break;
-
-		default:
-			continue;
-		}	
-
-		try
-		{
-			gameSettingsMap[game.id]->load();
-		}
-		catch (...)
-		{
-			error = true;
-			//throw ExcConfigFileParsing();
-		}
-	}
-
-	if (error)
-		throw ExcConfigFileParsing();
-}
-
 void GameSettings::buildLocationData()
 {
 	auto id = model->getDefaultGameID();
@@ -284,12 +291,6 @@ bool GameSettings::isGameCurrent(int id)
 GamesFactory<IGame>::base_ptr GameSettings::createGame(const GameId& id)
 {
 	return gamesFactory.create(id);
-}
-
-void GameSettings::gamesfactoryReg()
-{
-	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettingsMap[GameId::INSTAKUB]);
-	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettingsMap[GameId::PHOTOBOOTH]);
 }
 
 GameId GameSettings::getCurrentGame()

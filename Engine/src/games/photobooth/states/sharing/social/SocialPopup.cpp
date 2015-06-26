@@ -5,8 +5,7 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-SocialPopup::SocialPopup(PhotoboothSettingsRef settings)
-	: Popup(settings),
+SocialPopup::SocialPopup(PhotoboothSettingsRef settings):Popup(settings),
 	postingBg(settings->getTexture("popupNetralBg")),
 	errorBg(settings->getTexture("popupErrorBg")),
 	successMessage(settings->getTexture("successMessage")),

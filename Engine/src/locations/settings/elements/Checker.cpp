@@ -120,4 +120,4 @@ void Checker::setBorderColorUnActive(const ci::ColorA& color)
 {
 	unActiveBordercolor = color;
 	setActive(isActive);
-}	
+}

@@ -18,8 +18,8 @@ void ScreenSaverSettings::load()
 	try
 	{
 		JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
-		path = configJSON.getChild("path").getValue<string>();
-		isActive = configJSON.getChild("isActive").getValue<bool>();
+		path				= configJSON.getChild("path").getValue<string>();
+		isActive			= configJSON.getChild("isActive").getValue<bool>();
 		
 		findScreenSaver();
 	}
@@ -78,14 +78,10 @@ bool ScreenSaverSettings::isShow() const
 
 void ScreenSaverSettings::setTextures()
 {
-	if (mode == IMAGE_SS)
-	{
-		addToDictionary("image", createImageResource(path_ss));
-	}
-	else if (mode == VIDEO_SS)
-	{
-		addToDictionary("video", createVideoResource(path_ss));
-	}
+	if (mode == IMAGE_SS)	
+		addToDictionary("image", createImageResource(path_ss));	
+	else if (mode == VIDEO_SS)	
+		addToDictionary("video", createVideoResource(path_ss));	
 }
 
 shared_ptr<IResourceScreenSaver> ScreenSaverSettings::getResource()
