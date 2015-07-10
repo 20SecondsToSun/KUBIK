@@ -15,6 +15,7 @@ public:
 	void keyDown( KeyEvent event );
 	void update();
 	void draw();
+	void shutdown();
 
 private:	
 	AppViewRef view;
@@ -74,6 +75,12 @@ void EngineApp::draw()
 {
 	gl::clear(Color::black()); 
 	view->draw();
+}
+
+void EngineApp::shutdown()
+{
+	// kill singletones
+	kinect().stop();
 }
 
 CINDER_APP_NATIVE( EngineApp, RendererGl )

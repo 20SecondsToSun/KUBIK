@@ -271,6 +271,15 @@
     <Filter Include="Source Files\games\poza">
       <UniqueIdentifier>{3e4afc4f-30c2-4cde-b05b-9549157e084e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blocks\Cinder-KCB2">
+      <UniqueIdentifier>{b281a5c3-aa50-4fd6-bdc5-af1db16b1670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blocks\Cinder-KCB2\lib">
+      <UniqueIdentifier>{be3105b1-8001-4607-9053-edeb884933cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\services\kinect2">
+      <UniqueIdentifier>{9ef380f2-eb75-4f5c-9a31-d54e1f7d667a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -737,6 +746,12 @@
     </ClCompile>
     <ClCompile Include="..\src\games\poza\Poza.cpp">
       <Filter>Source Files\games\poza</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\Cinder-KCB2\src\Kinect2.cpp">
+      <Filter>blocks\Cinder-KCB2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\kinect2\KinectAdapter.cpp">
+      <Filter>Source Files\services\kinect2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1426,6 +1441,15 @@
     </ClInclude>
     <ClInclude Include="..\src\games\poza\Poza.h">
       <Filter>Source Files\games\poza</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\Cinder-KCB2\src\Kinect2.h">
+      <Filter>blocks\Cinder-KCB2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\Cinder-KCB2\lib\KCBv2Lib.h">
+      <Filter>blocks\Cinder-KCB2\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\kinect2\KinectAdapter.h">
+      <Filter>Source Files\services\kinect2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

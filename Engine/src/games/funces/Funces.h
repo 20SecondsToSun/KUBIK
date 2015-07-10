@@ -5,6 +5,8 @@
 #include "ISettings.h"
 #include "FuncesSettings.h"
 #include "gui/Sprite.h"
+#include "Kinect2.h"
+#include "kinect2/KinectAdapter.h"
 
 namespace kubik
 {
@@ -19,6 +21,7 @@ namespace kubik
 				~Funces();
 
 				void start();
+				void initKinect();				
 				void draw();
 				void update(){};
 
@@ -31,6 +34,12 @@ namespace kubik
 				ci::gl::Texture closeImg;
 				connection mouseUpListener, closeBtnListener;
 				FuncesSettingsRef settings;
+				
+				Kinect2::BodyFrame			mBodyFrame;
+
+				ci::Channel8u				mChannelBodyIndex;
+				ci::Channel16u				mChannelDepth;
+				ci::Surface8u				mSurfaceColor;
 
 				void closeMouseUpHandler(IButton& button);
 			};

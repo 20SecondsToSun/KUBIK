@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\poza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\services\social\twitter;..\src\config\services\social;..\src\config\graphic\preloader;..\src\config\games\poza</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\poza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\services\social\twitter;..\src\config\services\social;..\src\config\graphic\preloader;..\src\config\games\poza;$(KINECTSDK20_DIR)\inc;..\blocks\Cinder-KCB2\lib;..\blocks\Cinder-KCB2\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -67,8 +67,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;KCBv2.lib;kinect20.lib;Kinect20.Face.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\;$(KINECTSDK20_DIR)\lib\$(PlatformTarget);..\blocks\Cinder-KCB2\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -122,6 +122,7 @@
     <ClCompile Include="..\blocks\Cinder-Curl\src\Curl.cpp" />
     <ClCompile Include="..\blocks\Cinder-Curl\src\Ftp.cpp" />
     <ClCompile Include="..\blocks\Cinder-Curl\src\FtpManager.cpp" />
+    <ClCompile Include="..\blocks\Cinder-KCB2\src\Kinect2.cpp" />
     <ClCompile Include="..\src\app\ApplicationView.cpp" />
     <ClCompile Include="..\src\config\ApplicationModel.cpp" />
     <ClCompile Include="..\src\config\elements\ConfigObject.cpp" />
@@ -246,6 +247,7 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
     <ClCompile Include="..\src\services\fontStorage\FontStorage.cpp" />
+    <ClCompile Include="..\src\services\kinect2\KinectAdapter.cpp" />
     <ClCompile Include="..\src\services\social\Facebook.cpp" />
     <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp" />
     <ClCompile Include="..\src\services\social\instagram\InstagramClient.cpp" />
@@ -281,6 +283,8 @@
     <ClInclude Include="..\blocks\Cinder-Curl\src\Curl.h" />
     <ClInclude Include="..\blocks\Cinder-Curl\src\Ftp.h" />
     <ClInclude Include="..\blocks\Cinder-Curl\src\FtpManager.h" />
+    <ClInclude Include="..\blocks\Cinder-KCB2\lib\KCBv2Lib.h" />
+    <ClInclude Include="..\blocks\Cinder-KCB2\src\Kinect2.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\app\ApplicationView.h" />
     <ClInclude Include="..\src\config\ApplicationModel.h" />
@@ -450,6 +454,7 @@
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
     <ClInclude Include="..\src\services\fontStorage\FontStorage.h" />
+    <ClInclude Include="..\src\services\kinect2\KinectAdapter.h" />
     <ClInclude Include="..\src\services\social\Facebook.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImagesList.h" />
