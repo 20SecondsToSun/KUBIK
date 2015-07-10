@@ -47,12 +47,12 @@ void MenuSettings::saveConfig()
 bool MenuSettings::settingsChanged()
 {
 	return false; 
-};
+}
 
 changeSetting::id MenuSettings::getChangeID() const
 { 
 	return changeSetting::id::MENU;
-};
+}
 
 void MenuSettings::setDesignPath()
 {
@@ -67,13 +67,28 @@ void MenuSettings::setDesignPath()
 void MenuSettings::setTextures()
 {
 	clearResources();
-	addToDictionary("background", createImageResource(getTemplateDesignPath("bg.png")));
-	addToDictionary("menuButton", createImageResource(getTemplateDesignPath("menulayer.png")));
+	addToDictionary("background",	createImageResource(getTemplateDesignPath("bg.png")));
+	addToDictionary("menuButton",	createImageResource(getTemplateDesignPath("menulayer.png")));
 
-	addToDictionary("2gamesBG", createImageResource(getTemplateDesignPath("2games\\buttonBg.png")));
+	addToDictionary("2gamesBG",		createImageResource(getTemplateDesignPath("2games\\buttonBg.png")));
 	addToDictionary("2gamesTitle1", createImageResource(getTemplateDesignPath("2games\\title1.png")));
 	addToDictionary("2gamesTitle2", createImageResource(getTemplateDesignPath("2games\\title2.png")));
 	addToDictionary("2gamesTitle3", createImageResource(getTemplateDesignPath("2games\\title3.png")));
+	addToDictionary("2gamesTitle4", createImageResource(getTemplateDesignPath("2games\\title4.png")));
+
+
+	addToDictionary("3gamesBG",		createImageResource(getTemplateDesignPath("3games\\buttonBg.png")));
+	addToDictionary("3gamesTitle1", createImageResource(getTemplateDesignPath("3games\\title1.png")));
+	addToDictionary("3gamesTitle2", createImageResource(getTemplateDesignPath("3games\\title2.png")));
+	addToDictionary("3gamesTitle3", createImageResource(getTemplateDesignPath("3games\\title3.png")));
+	addToDictionary("3gamesTitle4", createImageResource(getTemplateDesignPath("3games\\title4.png")));
+
+	addToDictionary("4gamesBG",		createImageResource(getTemplateDesignPath("4games\\buttonBg.png")));
+	addToDictionary("4gamesTitle1", createImageResource(getTemplateDesignPath("4games\\title1.png")));
+	addToDictionary("4gamesTitle2", createImageResource(getTemplateDesignPath("4games\\title2.png")));
+	addToDictionary("4gamesTitle3", createImageResource(getTemplateDesignPath("4games\\title3.png")));
+	addToDictionary("4gamesTitle4", createImageResource(getTemplateDesignPath("4games\\title4.png")));
+	
 }
 
 void MenuSettings::setData(MenuDataStruct value)
@@ -100,20 +115,29 @@ AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
 
 	if (!filtergames.empty())
 	{
-		string prefix = to_string(filtergames.size()) + "games";	
+		string prefix = to_string(filtergames.size()) + "games";
 		gamedata.setBackground(getTexture(prefix + "BG"));
 
-		Vec2f bgPosition, titlePosition;
+		Vec2f bgPosition, titlePosition, iconPosition;
 
 		switch (filtergames.size())
 		{
 		case 2:
-			bgPosition = Vec2f(-240.0f, -100.0f);
-			titlePosition = Vec2f(28.0f, 590.0f);
+			bgPosition = Vec2f(0.0f, 0.0f);
+			iconPosition = Vec2f(238.0f, 101.0f);
+			titlePosition = Vec2f(267.0f, 690.0f);
 			break;
 
 		case 3:
-			bgPosition = Vec2f(-240.0f, -100.0f);
+			bgPosition = Vec2f(0.0f, 0.0f);
+			iconPosition = Vec2f(342.0f, 51.0f);
+			titlePosition = Vec2f(266.0f, 425.0f);
+			break;
+
+		case 4:
+			bgPosition = Vec2f(0.0f, 0.0f);
+			iconPosition = Vec2f(82.0f, 155.0f);
+			titlePosition = Vec2f(138.0f, 622.0f);
 			break;
 		}
 
@@ -122,6 +146,7 @@ AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
 		
 		gamedata.setTitlePosition(titlePosition);
 		gamedata.setBackgroundPosition(bgPosition);
+		gamedata.setIconPosition(iconPosition);
 	}
 
 	return gamedata;
@@ -147,23 +172,24 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 
 	case 2:
 		size = Vec2i(518, 518);
-		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 140.0f));
-		position.push_back(Vec2f((getWindowWidth() - 518.0f) * 0.5f, 1094.0f));		
+		position.push_back(Vec2f(40.0f, 40.0f));
+		position.push_back(Vec2f(40.0f, 980.0f));
 		break;
 
 	case 3:
 		size = Vec2i(305, 305);
-		position.push_back(Vec2f(165.0f, 239.0f));
-		position.push_back(Vec2f(165.0f, 731.0f));
-		position.push_back(Vec2f(165.0f, 1243.0f));
+		position.push_back(Vec2f(40.0f, 91.0f));
+		position.push_back(Vec2f(40.0f, 726.0f));
+		position.push_back(Vec2f(40.0f, 1361.0f));
 		break;
 
 	case 4:
-		size = Vec2i(305, 305);
-		position.push_back(Vec2f(165.0f, 239.0f));
-		position.push_back(Vec2f(165.0f, 731.0f));
-		position.push_back(Vec2f(165.0f, 1243.0f));
-		position.push_back(Vec2f(165.0f, 1243.0f));
+		size = Vec2i(310, 310);
+		position.push_back(Vec2f(40.0f, 40.0f));
+		position.push_back(Vec2f(560.0f, 40.0f));
+
+		position.push_back(Vec2f(40.0f, 985.0f));
+		position.push_back(Vec2f(560.0f, 985.0f));
 		break;
 	}
 			
@@ -251,4 +277,14 @@ void AdditionalGameData::setTitlePosition(const ci::Vec2f& value)
 ci::gl::Texture AdditionalGameData::getTitleByID(const GameId& value)
 {
 	return titles[value];
+}
+
+ci::Vec2f AdditionalGameData::getIconPosition() const
+{
+	return iconPosition;
+}
+
+void AdditionalGameData::setIconPosition(const ci::Vec2f& value)
+{
+	iconPosition = value;
 }

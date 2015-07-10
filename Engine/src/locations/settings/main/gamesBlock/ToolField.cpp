@@ -4,8 +4,7 @@ using namespace kubik;
 using namespace kubik::config;
 
 ToolField::ToolField(ConfigSettingsRef config, const GamesInfo& info)
-	:Sprite(),
-	offText(config->getTextItem(ConfigTextID::SWITCH_OFF))
+	:Sprite(), offText(config->getTextItem(ConfigTextID::SWITCH_OFF))
 {
 	Rectf ba1 = Rectf(295.0f, 65.0f, 295.0f + 180.0f, 65.0f + 55.0f);
 	Rectf ba2 = Rectf(295.0f + 205.0f, 65.0f, 295.0f + 205.0f + 180.0f + 10.0f, 65.0f + 55.0f);

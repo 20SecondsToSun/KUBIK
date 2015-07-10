@@ -14,19 +14,16 @@ namespace kubik
 
 		class GameButton :public SimpleSpriteButton
 		{
-			ci::gl::Texture texture;
-			ci::gl::Texture background;
-			ci::gl::Texture title;
+			ci::gl::Texture iconTexture;
+			ci::gl::Texture backgroundTexture;
+			ci::gl::Texture titleTexture;
 
 			ci::Vec2f backgroundPosition;
 			ci::Vec2f titlePosition;
+			ci::Vec2f iconPosition;
 
 		public:
-			GameButton(const GameData& data,
-				const ci::gl::Texture& texture,
-				const ci::Vec2f& backgroundPosition,
-				const ci::gl::Texture& title,
-				const ci::Vec2f& titlePosition);
+			GameButton(const GameData& data, AdditionalGameData adata);
 			virtual void drawLayout() override;
 		};
 	}

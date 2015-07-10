@@ -692,7 +692,7 @@ bool twitCurl::uploadPictureRaw( char *data, int size, std::string& newStatus )
 bool  twitCurl::uploadPictureFromFile(std::vector<std::string> filelinks, std::string& newStatus)
 {
 	std::string buffer = "";
-	CURLcode result;
+	//CURLcode result;
 
 	struct curl_httppost *post=NULL;  
 	struct curl_httppost *last=NULL;  
@@ -2332,7 +2332,7 @@ static int my_trace(CURL *handle, curl_infotype type, char *data, size_t size, v
 
 
 	FILE * pFile;
-	char buffer[100];
+	//char buffer[100];
 
 	pFile = fopen("myfile.txt", "w");
 

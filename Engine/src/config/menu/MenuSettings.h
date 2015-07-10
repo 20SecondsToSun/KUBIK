@@ -27,7 +27,7 @@ namespace kubik
 		class AdditionalGameData
 		{
 			ci::gl::Texture background;
-			ci::Vec2f backgroundPosition, titlePosition;
+			ci::Vec2f backgroundPosition, titlePosition, iconPosition;
 
 			std::map<GameId, ci::gl::Texture> titles;
 
@@ -38,9 +38,12 @@ namespace kubik
 
 			ci::Vec2f getBackgroundPosition() const;
 			ci::Vec2f getTitlePosition() const;
+			ci::Vec2f getIconPosition() const;
 
 			void setBackgroundPosition(const ci::Vec2f& value);
 			void setTitlePosition(const ci::Vec2f& value);
+			void setIconPosition(const ci::Vec2f& value);
+
 			ci::gl::Texture getTitleByID(const GameId& value);
 
 			friend class MenuSettings;

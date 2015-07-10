@@ -39,7 +39,7 @@ namespace kubik
 			FUNCES = 1,
 			PHOTOBOOTH = 2,
 			INSTAKUB = 3,
-			KOTOPOZA = 4
+			POZA = 4
 		};
 	}
 
@@ -57,7 +57,7 @@ namespace kubik
 			SOCIAL = 70,
 			FUNCES = game::FUNCES,
 			PHOTOBOOTH = game::PHOTOBOOTH,
-			KOTOPOZA = game::KOTOPOZA,
+			POZA = game::POZA,
 			INSTAKUB = game::INSTAKUB
 		};	
 	}
@@ -75,7 +75,7 @@ namespace kubik
 			GAMES = 60,
 			FUNCES = game::FUNCES,
 			PHOTOBOOTH = game::PHOTOBOOTH,
-			KOTOPOZA = game::KOTOPOZA,
+			KOTOPOZA = game::POZA,
 			INSTAKUB = game::INSTAKUB
 		};	
 	}
@@ -87,6 +87,7 @@ namespace kubik
 			PHOTOBOOTH,
 			INSTAKUB,
 			FUNCES,
+			POZA,
 			MAINCONFIG,
 			GAMES,
 			MENU,
@@ -97,7 +98,7 @@ namespace kubik
 
 	struct IconPair
 	{
-		IconPair(const ci::gl::Texture& activeIcon, const ci::gl::Texture& unActiveIcon) :activeIcon(activeIcon), unActiveIcon(unActiveIcon){}
+		IconPair(const ci::gl::Texture& activeIcon, const ci::gl::Texture& unActiveIcon):activeIcon(activeIcon), unActiveIcon(unActiveIcon){}
 		IconPair(){}
 		ci::gl::Texture activeIcon;
 		ci::gl::Texture unActiveIcon;

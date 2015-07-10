@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\kotopoza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\services\social\twitter;..\src\config\services\social;..\src\config\graphic\preloader</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\boost;..\src\config;..\src\graphics;..\src\locations\engine;..\src\locations\appstates;..\src\graphics\texmanager;..\src\app;..\src\locations\menu;..\src\locations\game;..\src\controller;..\src\locations\settings;..\src\games\funces;..\src\games\poza;..\src\games\photobooth;..\src\buttons\;..\src\games;..\src\locations;..\src\locations\screensaver;..\src\locations\service;..\src\tools;..\src\config\exception;..\src\config\locations;..\include\vld;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header;..\src\devices\canon;..\src;..\src\loaders;..\src\events;..\src\events\settings;..\src\events\menu;..\src\locations\settings\main\designBlock\;..\src\locations\settings\elements;..\src\locations\settings\main\printerBlock;..\src\locations\settings\instakub;..\src\services\virtualKeyboard;..\src\games\photobooth\elements;..\src\events\games\photobooth;..\src\config\screensaver;..\src\config\elements;..\src\config\games;..\src\config\games\funces;..\src\config\games\instakub;..\src\config\games\photobooth;..\src\config\menu;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\..\..\..\\include;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\services\social\twitter;..\src\config\services\social;..\src\config\graphic\preloader;..\src\config\games\poza</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -130,6 +130,7 @@
     <ClCompile Include="..\src\config\exception\KubikException.cpp" />
     <ClCompile Include="..\src\config\games\GameSettings.cpp" />
     <ClCompile Include="..\src\config\games\instakub\InstakubSettings.cpp" />
+    <ClCompile Include="..\src\config\games\poza\PozaSettings.h" />
     <ClCompile Include="..\src\config\games\photobooth\PhotoboothSettings.cpp" />
     <ClCompile Include="..\src\config\graphic\preloader\PreloaderSettings.cpp" />
     <ClCompile Include="..\src\config\ISettings.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="..\src\EngineApp.cpp" />
     <ClCompile Include="..\src\events\games\photobooth\PhotoChoosedEvent.h" />
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
+    <ClCompile Include="..\src\games\funces\FuncesSettings.cpp" />
     <ClCompile Include="..\src\games\GamesFactory.cpp" />
     <ClCompile Include="..\src\games\instakub\Instakub.cpp" />
     <ClCompile Include="..\src\games\instakub\states\HashtagAndSearch.cpp" />
@@ -151,6 +153,8 @@
     <ClCompile Include="..\src\games\instakub\states\SearchButtons.cpp" />
     <ClCompile Include="..\src\games\instakub\states\SearchLocation.cpp" />
     <ClCompile Include="..\src\games\instakub\states\SearchOnly.cpp" />
+    <ClCompile Include="..\src\games\poza\Poza.cpp" />
+    <ClCompile Include="..\src\games\poza\PozaSettings.cpp" />
     <ClCompile Include="..\src\games\photobooth\model\PhotoStorage.cpp" />
     <ClCompile Include="..\src\games\photobooth\Photobooth.cpp" />
     <ClCompile Include="..\src\games\photobooth\states\choosing\FilterSmallButton.cpp" />
@@ -265,7 +269,6 @@
     </ClCompile>
     <ClCompile Include="..\src\tools\Chromium.h" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
-    <ClCompile Include="Kotopoza.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h" />
@@ -336,7 +339,7 @@
     <ClInclude Include="..\src\games\instakub\states\SearchButtons.h" />
     <ClInclude Include="..\src\games\instakub\states\SearchLocation.h" />
     <ClInclude Include="..\src\games\instakub\states\SearchOnly.h" />
-    <ClInclude Include="..\src\games\kotopoza\Kotopoza.h" />
+    <ClInclude Include="..\src\games\poza\Poza.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />
     <ClInclude Include="..\src\games\photobooth\states\choosing\FilterSmallButton.h" />

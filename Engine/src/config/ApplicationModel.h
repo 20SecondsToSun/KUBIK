@@ -84,9 +84,6 @@ namespace kubik
 			std::string getLabelsPath();
 			std::string getMenuConfigPath();
 			std::string getScreenSaverConfigPath();
-			std::string getFuncesConfigPath();
-			std::string getInstagramConfigPath();
-			std::string getKotopozaConfigPath();
 			std::string getUserDataPath();
 			std::string getDesignDataPath();			
 			std::string getFullPath(const std::string& path) const;
@@ -105,19 +102,15 @@ namespace kubik
 			std::string lang;
 			std::string menuConfigPath;
 			std::string labelsPath;
-			std::string designDataPath;
-			std::string screenSaverConfigPath;
-			std::string photoboothConfigPath;
-			std::string funcesConfigPath;
-			std::string instagramConfigPath;
-			std::string kotopozaConfigPath;
+			std::string designDataPath;				
 			std::string userDataPath, _userDataPath;
 			std::string gamesPurchasedPath;
 			std::string gamesTurnOnPath;
 			std::string userTemplateDesignPath;
 			std::string templatesDesignPath;
-			std::string intarfaceDesignPath;		
-
+			std::string intarfaceDesignPath;
+			std::string screenSaverConfigPath;
+			
 			std::vector<GamesInfo> games;
 			GameId defaultGameID;
 			DesignData designData;
@@ -125,7 +118,9 @@ namespace kubik
 			std::string socSettingsFilePath;
 
 			std::map<settings::id, ConfigObject> configObjectMap;
-			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject, preloadersConfigObject;
+			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject, preloadersConfigObject, pozaConfigObject;
+			ConfigObject funcesConfigObject;
+			
 			fs::path getConfigPath();
 			void parseConfigPaths(ConfigObject& configObject, const JsonTree& json);
 		};

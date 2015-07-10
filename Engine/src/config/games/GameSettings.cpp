@@ -1,16 +1,20 @@
 #include "GameSettings.h"
+
 using namespace ci;
 using namespace ci::app;
-using namespace kubik::config;
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 using namespace kubik::games::instakub;
 using namespace kubik::games::funces;
+using namespace kubik::games::poza;
 
 void GameSettings::gamesfactoryReg()
 {
 	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettingsMap[GameId::INSTAKUB]);
 	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettingsMap[GameId::PHOTOBOOTH]);
+	gamesFactory.reg<Poza>(GameId::POZA, gameSettingsMap[GameId::POZA]);
+	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettingsMap[GameId::FUNCES]);
 }
 
 void GameSettings::load()
@@ -36,6 +40,10 @@ void GameSettings::load()
 
 		case GameId::INSTAKUB:
 			gameSettingsMap[game.id] = InstakubSettingsRef(new InstakubSettings(model, configSettings));
+			break;
+
+		case GameId::POZA:
+			gameSettingsMap[game.id] = PozaSettingsRef(new PozaSettings(model, configSettings));
 			break;
 
 		default:
@@ -138,6 +146,11 @@ GameSettings::GameSettings(ApplicationModelRef model, ConfigSettingsRef configSe
 ISettingsRef GameSettings::get(const GameId& id)
 {
 	return gameSettingsMap[id];
+}
+
+bool GameSettings::has(const GameId& id)
+{
+	return  (gameSettingsMap.find(id) != gameSettingsMap.end());
 }
 
 IResourceDictionary GameSettings::getActiveGameResources()

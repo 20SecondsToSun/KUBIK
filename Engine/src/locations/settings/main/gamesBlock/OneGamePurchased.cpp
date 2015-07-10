@@ -57,7 +57,8 @@ void OneGamePurchased::freeze()
 
 void OneGamePurchased::unFreeze()
 {
-	checker->setActive(true);
+	if (checker->getValue())// unfreeze if was active only
+		checker->setActive(true);
 }
 
 GameId OneGamePurchased::getGameID()

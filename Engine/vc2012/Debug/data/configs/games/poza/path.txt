@@ -1,0 +1,4 @@
+{
+   "finalPath" : "gamesDesign\\poza\\",
+   "interfacePath" : "data\\interface\\configDesign\\poza\\"
+}

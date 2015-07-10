@@ -43,9 +43,6 @@
     <Filter Include="Source Files\games\funces">
       <UniqueIdentifier>{16c3a339-88c8-42ea-8b96-dc09a789f8cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\games\kotopoza">
-      <UniqueIdentifier>{3e4afc4f-30c2-4cde-b05b-9549157e084e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="blocks">
       <UniqueIdentifier>{e07631a5-3693-4a82-a22b-3ee0d1323d2d}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,12 @@
     </Filter>
     <Filter Include="Source Files\services\fontStorage">
       <UniqueIdentifier>{46567f0f-c6a9-4594-aae4-81c6007b99bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\config\games\poza">
+      <UniqueIdentifier>{43b5661d-3627-4e5b-be79-4d8ae92c3bdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\games\poza">
+      <UniqueIdentifier>{3e4afc4f-30c2-4cde-b05b-9549157e084e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -543,9 +546,6 @@
     <ClCompile Include="..\src\games\instakub\Instakub.cpp">
       <Filter>Source Files\games\instakub</Filter>
     </ClCompile>
-    <ClCompile Include="Kotopoza.cpp">
-      <Filter>Source Files\games\kotopoza</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\services\virtualKeyboard\KeyBoardButtonSprite.cpp">
       <Filter>Source Files\services\virtualKeyboard</Filter>
     </ClCompile>
@@ -726,6 +726,18 @@
     <ClCompile Include="..\src\loaders\MovieLoader.cpp">
       <Filter>Source Files\loaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\funces\FuncesSettings.cpp">
+      <Filter>Source Files\config\games\funces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config\games\poza\PozaSettings.h">
+      <Filter>Source Files\config\games\poza</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\poza\PozaSettings.cpp">
+      <Filter>Source Files\config\games\poza</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\games\poza\Poza.cpp">
+      <Filter>Source Files\games\poza</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -745,9 +757,6 @@
     </ClInclude>
     <ClInclude Include="..\src\games\funces\Funces.h">
       <Filter>Source Files\games\funces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\games\kotopoza\Kotopoza.h">
-      <Filter>Source Files\games\kotopoza</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\photobooth\Photobooth.h">
       <Filter>Source Files\games\photobooth</Filter>
@@ -1256,9 +1265,6 @@
     <ClInclude Include="..\src\services\social\Facebook.h">
       <Filter>Source Files\services\social</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\HashtagOnly.h">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
@@ -1270,9 +1276,6 @@
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\InstakubLocation.h">
       <Filter>Source Files\games\instakub\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h">
       <Filter>Source Files\services\social\instagram\api</Filter>
@@ -1420,6 +1423,9 @@
     </ClInclude>
     <ClInclude Include="..\src\services\fontStorage\FontStorage.h">
       <Filter>Source Files\services\fontStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\poza\Poza.h">
+      <Filter>Source Files\games\poza</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

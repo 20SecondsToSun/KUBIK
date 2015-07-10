@@ -24,16 +24,19 @@ void ApplicationModel::load()
 
 void ApplicationModel::parseConfigPaths()
 {
+	auto path = getConfigPath();
 	JsonTree configJSON   = JsonTree(loadFile(getConfigPath()));
 	screenSaverConfigPath = configJSON.getChild("screenSaverConfigPath").getValue<string>();
 	menuConfigPath		  = configJSON.getChild("menuConfigPath").getValue<string>();
-	funcesConfigPath	  = configJSON.getChild("funcesConfigPath").getValue<string>();
-	instagramConfigPath   = configJSON.getChild("instagramConfigPath").getValue<string>();
-	kotopozaConfigPath    = configJSON.getChild("kotopozaConfigPath").getValue<string>();
 	userDataPath		  = configJSON.getChild("userInfoPath").getValue<string>();
 	labelsPath			  = configJSON.getChild("labelsPath").getValue<string>();
 	designDataPath		  = configJSON.getChild("designDataPath").getValue<string>();
 	socSettingsFilePath   = configJSON.getChild("socialConfigPath").getValue<string>();
+
+
+	JsonTree pozaJSON = configJSON.getChild("pozaConfig");
+	parseConfigPaths(pozaConfigObject, pozaJSON);
+	configObjectMap[settings::id::POZA] = pozaConfigObject;
 
 	JsonTree phtJSON = configJSON.getChild("photoboothConfig");
 	parseConfigPaths(photoboothConfigObject, phtJSON);
@@ -42,6 +45,10 @@ void ApplicationModel::parseConfigPaths()
 	JsonTree instaJSON = configJSON.getChild("instakubConfig");
 	parseConfigPaths(instakubConfigObject, instaJSON);
 	configObjectMap[settings::id::INSTAKUB] = instakubConfigObject;
+
+	JsonTree funcesJSON = configJSON.getChild("funcesConfig");
+	parseConfigPaths(funcesConfigObject, funcesJSON);
+	configObjectMap[settings::id::FUNCES] = funcesConfigObject;
 
 	JsonTree mainJSON = configJSON.getChild("mainConfig");
 	parseConfigPaths(mainConfigObject, mainJSON);
@@ -272,21 +279,6 @@ string ApplicationModel::getMenuConfigPath()
 string ApplicationModel::getScreenSaverConfigPath()
 {
 	return getFullPath(screenSaverConfigPath);
-}
-
-string ApplicationModel::getFuncesConfigPath()
-{
-	return getFullPath(funcesConfigPath);
-}
-
-string ApplicationModel::getInstagramConfigPath()
-{
-	return getFullPath(instagramConfigPath);
-}
-
-string ApplicationModel::getKotopozaConfigPath()
-{
-	return getFullPath(kotopozaConfigPath);
 }
 
 string ApplicationModel::getUserDataPath()

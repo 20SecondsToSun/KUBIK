@@ -5,7 +5,9 @@ using namespace kubik::config;
 using namespace ci;
 
 PhotoboothConfig::PhotoboothConfig(PhotoboothSettingsRef phbSettings)
-	:GameSettingsSprite(), leftMargin(165), phbSettings(phbSettings)			
+	:GameSettingsSprite(), 
+	leftMargin(165),
+	phbSettings(phbSettings)			
 {					
 	photoOverElements = PhotoOverElementsRef(new PhotoOverElements(phbSettings,	Color::hex(0x01a7fb), 0));
 	photoCardStyles   = PhotoCardStyleRef(new PhotoCardStyle(phbSettings, Color::hex(0x1f93e9), 1));

@@ -3,8 +3,6 @@
 #include "ISettings.h"
 #include "ConfigSettings.h"
 
-using namespace kubik::config;
-
 namespace kubik
 {
 	namespace config
@@ -14,31 +12,24 @@ namespace kubik
 		class FuncesSettings : public ISettings
 		{
 			ConfigSettingsRef configSettings;
+			ConfigObject mainConfigObj;
+
+			void setDesignPath();
+			void loadPaths();
+
+			std::string finalPath;
 
 		public:
-			FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-				:ISettings(model), configSettings(configSettings)
-			{
-				mainConfigPath = model->getFuncesConfigPath();
-			}
+			FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 
-			void load() override
-			{
-				JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
-				designPath = configJSON.getChild("designPath").getValue<string>();
-				setTextures();
-			}
+			virtual void createMemento();
+			virtual void writeConfig();
 
-			void setTextures() override
-			{
-				clearResources();
-				addToDictionary("closeImg", createImageResource(getDesignPath() + "close.png"));
-			}
+			void load() override;
+			void setTextures() override;
+			bool settingsChanged();
 
-			virtual void createMemento(){};
-			virtual void writeConfig(){};
-			bool settingsChanged(){ return false; };
-			changeSetting::id getChangeID() const { return changeSetting::id::FUNCES; };
+			changeSetting::id getChangeID() const;
 		};
 	}
 }

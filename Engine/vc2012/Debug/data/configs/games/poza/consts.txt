@@ -1,0 +1,10 @@
+{
+   "instagramClientID" : "6ac8af15a5d341e9802c8d1a26899ae3",
+   "keyboardColorInDesign" :
+{"1" : "313a43",
+ "2" : "a504ab", 
+ "3" : "ffffff", 
+ "4" : "ffffff", 
+ "5" : "ffffff", 
+ "6" : "ffffff"}
+}

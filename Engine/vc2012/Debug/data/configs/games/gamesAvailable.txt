@@ -23,6 +23,14 @@
 		 "iconOff" : "iconoff1.png",
 		 "icon"    : "icon1.png",
 		 "miniIcon" : "miniIcon2.png"
+      },
+      {
+         "id" : 4,
+		 "name": "Poza",
+		 "iconOn" : "iconon1.png",
+		 "iconOff" : "iconoff1.png",
+		 "icon"    : "icon1.png",
+		 "miniIcon" : "miniIcon2.png"
       }
    ]
 }

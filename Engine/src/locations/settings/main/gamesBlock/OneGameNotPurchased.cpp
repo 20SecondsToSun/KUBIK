@@ -4,7 +4,8 @@ using namespace kubik;
 using namespace kubik::config;
 
 OneGameNotPurchased::OneGameNotPurchased(ConfigSettingsRef config, const GamesInfo& info)
-	:nameColor(ci::Color::hex(0x939eb0)), SimpleSpriteButton(ci::Rectf(0.0f, 0.0f, 0.0f, 0.0f)),
+	:nameColor(ci::Color::hex(0x939eb0)),
+	SimpleSpriteButton(ci::Rectf(0.0f, 0.0f, 0.0f, 0.0f)),
 	btnColor(ci::Color::white())
 {
 	nameText = info.getNameText();

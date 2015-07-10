@@ -75,8 +75,14 @@ void ConfigScreen::stop()
 	mainConfig->disconnectEventHandler();
 	mainConfig->unActivateListeners();
 	mainConfig->killAll();
-	photoboothConfig->unActivateListeners();
-	instakubConfig->unActivateListeners();
+
+	console() << "::::::::::: exit   " << gameSettings->has(GameId::PHOTOBOOTH) << endl;
+
+	if (photoboothConfig)//gameSettings->has(GameId::PHOTOBOOTH))
+		photoboothConfig->unActivateListeners();
+
+	if (gameSettings->has(GameId::INSTAKUB))
+		instakubConfig->unActivateListeners();
 }
 
 void ConfigScreen::init()
@@ -89,18 +95,25 @@ void ConfigScreen::init(ISettingsRef settings)
 	configSettings = static_pointer_cast<ConfigSettings>(settings);
 	mainConfig = MainConfigRef(new MainConfig(configSettings, gameSettings, screenSaverSettings));
 	addChild(mainConfig);
-
-	PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
-	photoboothConfig = PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));
-
-	InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
-	instakubConfig = InstakubConfigRef(new InstakubConfig(instaSettings));
+	
+	console() << ":::::::::::   " << gameSettings->has(GameId::PHOTOBOOTH) << endl;
+	if (gameSettings->has(GameId::PHOTOBOOTH))
+	{
+		PhotoboothSettingsRef phbthSettings = static_pointer_cast<PhotoboothSettings>(gameSettings->get(GameId::PHOTOBOOTH));
+		photoboothConfig = PhotoboothConfigRef(new PhotoboothConfig(phbthSettings));
+		settingsList.push_back(phbthSettings);
+	}
+	
+	if (gameSettings->has(GameId::INSTAKUB))
+	{
+		InstakubSettingsRef instaSettings = static_pointer_cast<InstakubSettings>(gameSettings->get(GameId::INSTAKUB));
+		instakubConfig = InstakubConfigRef(new InstakubConfig(instaSettings));
+		settingsList.push_back(instaSettings);
+	}	
 
 	settingsList.push_back(screenSaverSettings);
 	settingsList.push_back(gameSettings);
 	settingsList.push_back(configSettings);
-	settingsList.push_back(phbthSettings);
-	settingsList.push_back(instaSettings);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -147,23 +160,23 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 	else if (typeid(*ev) == typeid(GameConfEvent))
 	{
 		GameConfEventRef confEvent = static_pointer_cast<GameConfEvent>(event);
-		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);
 
-		if (confEvent->getGameId() == GameId::PHOTOBOOTH)
-			gameSettingsScreen = photoboothConfig;
-		if (confEvent->getGameId() == GameId::INSTAKUB)
+		if (confEvent->getGameId() == GameId::PHOTOBOOTH)		
+			gameSettingsScreen = photoboothConfig;		
+		else if (confEvent->getGameId() == GameId::INSTAKUB)
 			gameSettingsScreen = instakubConfig;
+		else
+			return;
+		
+		mainConfig->hideAnimate(confEvent->getGameId(), EaseOutCubic(), 0.7f);		
 
-		//gameSettingsScreen = gameSettings->get(confEvent->getGameId());
 		gameSettingsScreen->setPosition(ci::Vec2f(1080.0f, 0.0f));
 		gameSettingsScreen->showAnimate(ci::EaseOutCubic(), 0.7f);
 		addChild(gameSettingsScreen);
-
-		console() << "config game ID:::::: " << confEvent->getGameId() << endl;
 	}
 	else if (typeid(*ev) == typeid(BackToMainConfigEvent))
 	{
-		if(gameSettingsScreen->canClose())
+		if (gameSettingsScreen->canClose())
 		{
 			mainConfig->showAnimate(EaseOutCubic(), 0.7f);
 			gameSettingsScreen->hideAnimate(EaseOutCubic(), 0.7f);
@@ -171,7 +184,7 @@ void ConfigScreen::gamesBlockHandler(EventGUIRef& event)
 		else
 		{
 			gameSettingsScreen->showErrorPopup();
-		}		
+		}
 	}
 	if (typeid(*ev) == typeid(StatisticEvent))
 	{

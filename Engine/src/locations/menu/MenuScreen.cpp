@@ -44,11 +44,7 @@ void MenuScreen::createMenuBtns(const std::vector<GameData>& games)
 
 	for (auto it : games)
 	{			
-		GameButtonRef button = GameButtonRef(new GameButton(it,
-			additionalGD.getBackground(),
-			additionalGD.getBackgroundPosition(),
-			additionalGD.getTitleByID(it.getID()),
-			additionalGD.getTitlePosition()));
+		GameButtonRef button = GameButtonRef(new GameButton(it,	additionalGD));
 		addChild(button);
 		gamesBtns.push_back(button);		
 	}

@@ -55,9 +55,10 @@ void Funces::draw()
 
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
-		gl::color(Color(1, 0, 0));
+		gl::color(Color::black());
 		gl::drawSolidRect(getWindowBounds());
 		gl::color(Color::white());
+		gl::draw(settings->getTexture("title"), Vec2f(200.0f, 200.0f));
 		//currentLocation->draw();
 		gl::popMatrices();
 		break;

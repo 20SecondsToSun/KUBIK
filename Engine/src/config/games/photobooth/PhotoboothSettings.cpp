@@ -1,7 +1,7 @@
 #include "PhotoboothSettings.h"
 
-using namespace kubik::config;
 using namespace kubik;
+using namespace kubik::config;
 using namespace std;
 using namespace ci;
 using namespace ci::gl;
@@ -651,10 +651,10 @@ void PhotoboothSettings::writeConfig()
 
 		doc.addChild(JsonTree("isFacebook", sharing.getSocialState(PhtTextID::FACEBOOK)));
 		doc.addChild(JsonTree("isVkotakte", sharing.getSocialState(PhtTextID::VKONTAKTE)));
-		doc.addChild(JsonTree("isTwitter", sharing.getSocialState(PhtTextID::TWITTER)));
-		doc.addChild(JsonTree("isEmail", sharing.getSocialState(PhtTextID::EMAIL)));
-		doc.addChild(JsonTree("isQrCode", sharing.getSocialState(PhtTextID::QRCODE)));
-		doc.addChild(JsonTree("isPrint", sharing.getSocialState(PhtTextID::PRINTER)));
+		doc.addChild(JsonTree("isTwitter",  sharing.getSocialState(PhtTextID::TWITTER)));
+		doc.addChild(JsonTree("isEmail",    sharing.getSocialState(PhtTextID::EMAIL)));
+		doc.addChild(JsonTree("isQrCode",   sharing.getSocialState(PhtTextID::QRCODE)));
+		doc.addChild(JsonTree("isPrint",    sharing.getSocialState(PhtTextID::PRINTER)));
 
 		doc.addChild(JsonTree("isSticker", isSticker));
 		doc.addChild(JsonTree("activeOverDesignID", activeOverDesignID));

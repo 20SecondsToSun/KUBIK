@@ -1,8 +1,5 @@
 {
-   "funcesConfigPath" : "data\\configs\\funces.txt",  
-   "instagramConfigPath" : "data\\configs\\instagram.txt",
-   "kotopozaConfigPath" : "data\\configs\\kotopozaConfigPath.txt",
-   "menuConfigPath" : "data\\configs\\menu.txt",
+    "menuConfigPath" : "data\\configs\\menu.txt",
 
    "photoboothConfig" : {"path":"data\\configs\\games\\photobooth\\path.txt",
 			     "params":"data\\configs\\games\\photobooth\\params.txt",
@@ -13,6 +10,16 @@
 			     "params":"data\\configs\\games\\instakub\\params.txt",
  			    "consts":"data\\configs\\games\\instakub\\consts.txt",		
 			     "labels":"data\\configs\\games\\instakub\\labels.txt"},
+
+"pozaConfig" : {"path":"data\\configs\\games\\poza\\path.txt",
+			     "params":"data\\configs\\games\\poza\\params.txt",
+ 			    "consts":"data\\configs\\games\\poza\\consts.txt",		
+			     "labels":"data\\configs\\games\\poza\\labels.txt"},
+
+"funcesConfig" : {"path":"data\\configs\\games\\funces\\path.txt",
+			     "params":"data\\configs\\games\\funces\\params.txt",
+ 			    "consts":"data\\configs\\games\\funces\\consts.txt",		
+			     "labels":"data\\configs\\games\\funces\\labels.txt"},
 
  "mainConfig" : {"path":"data\\configs\\mainconf\\path.txt",
 			     "params":"data\\configs\\mainconf\\params.txt",	

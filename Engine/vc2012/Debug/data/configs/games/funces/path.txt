@@ -1,0 +1,4 @@
+{
+   "finalPath" : "gamesDesign\\funces\\",
+   "interfacePath" : "data\\interface\\configDesign\\funces\\"
+}

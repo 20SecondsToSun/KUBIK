@@ -11,6 +11,8 @@
 #include "Photobooth.h"
 #include "instakub/Instakub.h"
 #include "Funces.h"
+#include "Poza.h"
+#include "PozaSettings.h"
 
 namespace kubik
 {
@@ -48,6 +50,8 @@ namespace kubik
 			virtual void writeConfig();
 
 			ISettingsRef get(const GameId& id);
+			bool has(const GameId& id);
+
 			IResourceDictionary getActiveGameResources();
 			IResourceDictionary getGameTexturesById(const GameId& id);
 			IResourceDictionary getGameSettingsTexturesById(const GameId& id);	
