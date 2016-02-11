@@ -109,7 +109,9 @@ void ApplicationModel::parseUserData()
 		game.isOn = findGameId(game.id, turnOnGames);
 		game.isPurchased = findGameId(game.id, purchasedGames);
 		game.name = it.getChild("name").getValue<string>();
-		game.setTexture(loadImage(getFullPath(iconUrl + it.getChild("icon").getValue<string>())));
+		auto iconPath = getFullPath(iconUrl + it.getChild("icon").getValue<string>());		
+		game.setTexture(loadImage(iconPath));
+
 		game.setActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOn").getValue<string>())));
 		game.setUnActiveIcon(loadImage(getFullPath(iconUrl + it.getChild("iconOff").getValue<string>())));
 		game.setMiniIcon(loadImage(getFullPath(iconUrl + it.getChild("miniIcon").getValue<string>())));
@@ -132,7 +134,8 @@ void ApplicationModel::parseDesignData()
 	{
 		OneDesignItem item;
 		item.setID(it.getChild("id").getValue<int>());
-		item.setIconPath(it.getChild("iconPath").getValue<string>());
+		item.setIconPath(it.getChild("iconPath").getValue<string>());	
+
 		item.setIconTexName("design" + item.getID());
 		JsonTree text = it.getChild("textObj");
 

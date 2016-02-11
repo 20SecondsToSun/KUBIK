@@ -153,14 +153,23 @@ void InstakubLocation::loadingCompleteHandler()
 {	
 	if (mode == USER_PHOTOS_LOAD)
 	{
+		console() << "INSTAGRAM LOADING COMPLETE" << to_string(instClient->getLastCode()) << endl;
 		if (instClient->userPrivate())
+		{
 			instaViewer->showPrivateUserState();
+		}			
 		else if (instClient->userNotExist())
+		{
 			instaViewer->showNotExistUser();
+		}			
 		else if (instClient->userNotHavePhotos())
+		{
 			instaViewer->showUserNotHavePhotos();
+		}			
 		else
+		{
 			instaViewer->synchImages();
+		}			
 	}	
 	else
 	{

@@ -1,5 +1,5 @@
 {
-   "actionName" : "test",
+   "actionName" : "fggghhhhhhh",
    "activeDesign" : 1,
    "currentPhotosPrinted" : 0,
    "designPath" : "data\\interface\\configDesign\\",

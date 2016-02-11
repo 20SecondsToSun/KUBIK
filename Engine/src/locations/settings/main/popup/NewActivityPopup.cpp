@@ -76,7 +76,7 @@ void NewActivityPopup::drawInputFieldBackground()
 
 	gl::color(inputFieldColor);
 	gl::draw(inputField, inputFieldPos);
-	textTools().drawTextBox(configSett->getTextItem(ConfigTextID::PARTY_BEGIN), Color::hex(0x6595f9), titlesColor, Vec2f(750.0f, yPositionInputField), Vec2i(200.0f, 134.0f));
+	textTools().drawTextBox(configSett->getTextItem(ConfigTextID::PARTY_BEGIN), Color::hex(0x6595f9), titlesColor, Vec2f(750.0f, yPositionInputField + 10), Vec2i(200.0f, 124.0f));
 }
 
 void NewActivityPopup::drawCloseBlock()

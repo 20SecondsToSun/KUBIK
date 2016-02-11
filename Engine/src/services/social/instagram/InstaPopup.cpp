@@ -42,21 +42,21 @@ void InstaPopup::draw()
 	if (tex)
 	{
 		_image = tex;
-		templateScale = 640.0f / templateImage.getWidth();
 	}
 	else
 	{
 		auto lowResImage = image.getLowResImage();
 		if (lowResImage)
-		{
-			templateScale = 640.0f / templateImage.getWidth();
-			 imageScale = 640.0f / lowResImage.getWidth();
+		{			
 			_image = lowResImage;
 		}			
 	}
 
 	if (_image)
 	{
+		templateScale = 640.0f / templateImage.getWidth();
+		imageScale = 640.0f / _image.getWidth();
+
 		gl::pushMatrices();
 		gl::translate(imageShift);
 		gl::translate(imagePositionAnim);

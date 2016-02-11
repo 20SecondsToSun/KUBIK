@@ -253,6 +253,7 @@ void InstagramViewer::drawMiniPreloader()
 	gl::translate(currentPos.value());
 	gl::translate(initPosition);
 	gl::translate(0.0f, mainHeight - 150.0f);
+	//gl::color(Color::hex(0xffffff));
 	preloaderMini->draw();
 	gl::popMatrices();
 	gl::color(Color::white());
@@ -291,7 +292,7 @@ void InstagramViewer::drawCenteredInfoImage(const ci::gl::Texture& image, float 
 	gl::pushMatrices();
 	gl::translate(initPosition);
 	gl::translate((getWindowWidth() - image.getWidth()) * 0.5f, y - image.getHeight() * 0.5f);
-	gl::draw(noMaterials);
+	gl::draw(image);
 	gl::popMatrices();
 }
 

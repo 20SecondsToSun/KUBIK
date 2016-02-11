@@ -137,6 +137,8 @@ size_t getBodyIndex(Color8u color)
 		return 5;
 	if(color == Color8u( 0xFF, 0x00, 0xFF ))
 		return 6;	
+
+	return 0;
 }
 
 // FOR FUTURE USE

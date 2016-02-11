@@ -18,10 +18,10 @@ void LoadButton::drawLayout()
 	gl::color(Color::white());				
 
 	gl::pushMatrices();
-	gl::translate(texPosX, 20);				
+	gl::translate(texPosX, 23);				
 	gl::draw(tex);
 	gl::translate(tex.getWidth() + 15.0f, 0);
-	gl::translate(0, -3);	
+	gl::translate(0, -5);	
 	gl::draw(icon);	
 	gl::popMatrices();
 }

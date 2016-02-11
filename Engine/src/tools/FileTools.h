@@ -17,7 +17,8 @@ namespace kubik
 	{
 	public:
 
-		static FileTools& getInstance() { 
+		static FileTools& getInstance() 
+		{ 
 			static FileTools strt; 
 			return strt; 
 		};

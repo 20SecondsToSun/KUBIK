@@ -11,6 +11,9 @@ CameraCanon::CameraCanon() :recordingFPS(12), connectionState(DISCONNECT), liveV
 
 void CameraCanon::setup() 
 {	
+	if (BaseCanon::isCameraConnected())
+		return;
+
 	controller->setDownloadedDir(getAppPath());
 	connect();
 }

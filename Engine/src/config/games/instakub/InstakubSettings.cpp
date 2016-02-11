@@ -156,6 +156,7 @@ void InstakubSettings::setTextures()
 	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
 	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
 	addToDictionary("privateUser", createImageResource(getTemplateDesignPath("privateUser.png")));
+	console() << "private user path ----------------" << getTemplateDesignPath("privateUser.png")<<endl;
 	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
 	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
 	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));

@@ -4,6 +4,7 @@
 #include "FuncesSettings.h"
 #include "PhotoboothSettings.h"
 #include "InstakubSettings.h"
+#include "PozaSettings.h"
 #include "Types.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
@@ -12,7 +13,7 @@
 #include "instakub/Instakub.h"
 #include "Funces.h"
 #include "Poza.h"
-#include "PozaSettings.h"
+
 
 namespace kubik
 {

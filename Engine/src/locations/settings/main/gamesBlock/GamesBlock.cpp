@@ -113,7 +113,7 @@ void GamesBlock::hide(const EaseFn& eFunc, float time)
 	unActivateListeners();
 
 	animatePosition = _localPosition;
-	Vec2f finPos = Vec2f(_localPosition.x, _localPosition.y + 1126.0f);
+	Vec2f finPos = Vec2f(_localPosition.x, _localPosition.y + 1160.0f);
 	timeline().apply(&animatePosition, finPos, time, eFunc)
 		.updateFn(bind(&GamesBlock::posAnimationUpdate, this))
 		.finishFn(bind(&GamesBlock::hideAnimationFinish, this));

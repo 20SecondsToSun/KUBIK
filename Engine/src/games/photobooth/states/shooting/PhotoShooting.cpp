@@ -232,7 +232,7 @@ void PhotoShooting::drawProgressBlock()
 
 void PhotoShooting::photoTakenHandler()
 {
-	console() << "photoTakenHandler " << endl;
+	console() << "!!!!!!!!!!!!!!!!!!!!!!!!!!! photoTakenHandler !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 }
 
 void PhotoShooting::photoDownloadHandler(const string& path)

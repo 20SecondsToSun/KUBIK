@@ -20,17 +20,20 @@ void KinectAdapter::create()
 
 void KinectAdapter::enableHandTracking()
 {
-	mDevice->enableHandTracking();
+	if (mDevice)
+		mDevice->enableHandTracking();
 }
 
 void KinectAdapter::start()
 {
-	mDevice->start();
+	if (mDevice)
+		mDevice->start();
 }
 
 void KinectAdapter::stop()
 {
-	mDevice->stop();
+	if (mDevice)
+		mDevice->stop();
 }
 
 bool KinectAdapter::deviceExist()

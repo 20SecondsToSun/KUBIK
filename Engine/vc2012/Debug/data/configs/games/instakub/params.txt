@@ -1,5 +1,5 @@
 {
-   "activePhotoCardStyleDesignID" : 3,
-   "hashtag" : "beach",
+   "activePhotoCardStyleDesignID" : 2,
+   "hashtag" : "nature",
    "search" : true
 }
