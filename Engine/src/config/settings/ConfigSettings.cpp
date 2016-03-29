@@ -6,22 +6,22 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-void ConfigSettings::ConfighDataStruct::setLang(const std::string& lang)
+void ConfigSettings::ConfigDataStruct::setLang(const std::string& lang)
 {
 	this->lang = lang;
 }
 
-ConfigTexts<ConfigSettings::TextID> ConfigSettings::ConfighDataStruct::getTexts() const
+ConfigTexts<ConfigSettings::TextID> ConfigSettings::ConfigDataStruct::getTexts() const
 {
 	return configTexts;
 }
 
-void ConfigSettings::ConfighDataStruct::setTexts(const ConfigTexts<TextID>& val)
+void ConfigSettings::ConfigDataStruct::setTexts(const ConfigTexts<TextID>& val)
 {
 	configTexts = val;
 }
 
-DesignData ConfigSettings::ConfighDataStruct::getDesignData() const
+DesignData ConfigSettings::ConfigDataStruct::getDesignData() const
 {
 	return designData;
 }
@@ -127,7 +127,7 @@ std::string ConfigSettings::getUserDesignPath()
 	return getBasePath().string() + userDesignPath;
 }
 
-ConfigSettings::ConfighDataStruct ConfigSettings::getData()	const
+ConfigSettings::ConfigDataStruct ConfigSettings::getData()	const
 {
 	return data;
 }

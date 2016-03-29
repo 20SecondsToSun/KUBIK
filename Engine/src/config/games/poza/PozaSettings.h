@@ -1,7 +1,9 @@
 #pragma once
 
+#include "config/ApplicationModel.h"
 #include "ISettings.h"
 #include "ConfigSettings.h"
+
 
 namespace kubik
 {

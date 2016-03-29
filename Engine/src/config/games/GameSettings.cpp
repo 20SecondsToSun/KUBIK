@@ -1,4 +1,8 @@
 #include "GameSettings.h"
+#include "Photobooth.h"
+#include "instakub/Instakub.h"
+#include "Funces.h"
+#include "Poza.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -7,13 +11,13 @@ using namespace kubik::config;
 using namespace kubik::games::photobooth;
 using namespace kubik::games::instakub;
 using namespace kubik::games::funces;
-using namespace kubik::games::poza;
+//using namespace kubik::games::poza;
 
 void GameSettings::gamesfactoryReg()
 {
 	gamesFactory.reg<Instakub>(GameId::INSTAKUB, gameSettingsMap[GameId::INSTAKUB]);
 	gamesFactory.reg<Photobooth>(GameId::PHOTOBOOTH, gameSettingsMap[GameId::PHOTOBOOTH]);
-	gamesFactory.reg<Poza>(GameId::POZA, gameSettingsMap[GameId::POZA]);
+	gamesFactory.reg<kubik::games::poza::Poza>(GameId::POZA, gameSettingsMap[GameId::POZA]);
 	gamesFactory.reg<Funces>(GameId::FUNCES, gameSettingsMap[GameId::FUNCES]);
 }
 
@@ -43,7 +47,7 @@ void GameSettings::load()
 			break;
 
 		case GameId::POZA:
-			gameSettingsMap[game.id] = PozaSettingsRef(new PozaSettings(model, configSettings));
+			gameSettingsMap[game.id] = kubik::config::PozaSettingsRef(new kubik::config::PozaSettings(model, configSettings));
 			break;
 
 		default:

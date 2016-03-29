@@ -9,15 +9,10 @@ using namespace ci::app;
 class Utils
 {
 	public:
-
 		static struct tm		getCurrentTime();	
-		static double getCurrentMilliseconds();
-		static std::string  Utils::duplicateSymbol(std::string str, std::string symb);
-		static gl::Texture		loadImageFromString(std::string value);
-
-		static int  spc_email_isvalid(const char *address);
-		static bool isValidEmail(std::string _email);
-		static bool isValidTel(std::string tel);
+		static double			getCurrentMilliseconds();
+		static std::string		duplicateSymbol(std::string str, std::string symb);
+		static gl::Texture		loadImageFromString(std::string value);	
 
 		static string cp1251_to_utf8(const char *str);
 		static string Utf8_to_cp1251(const char *str);
@@ -59,5 +54,4 @@ class Utils
 		static ci::ColorA colorAlpha(ci::ColorA color, float alpha) {return ci::ColorA(color.r, color.g, color.b, alpha);};
 
 		static bool validate_email(const std::string& a);
-
 };

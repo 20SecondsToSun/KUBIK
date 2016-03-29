@@ -34,8 +34,8 @@ void Photobooth::create()
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
 	
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
-	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings, photoStorage));
-	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings, photoStorage));	
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		photoStorage));
+	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings,		photoStorage));	
 	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
 	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
@@ -194,7 +194,7 @@ void Photobooth::update()
 	handleCameraConnection();
 
 	if (state != CAMERA_DISCONNECT)
-		currentLocation->update();	
+		currentLocation->update();		
 }
 
 void Photobooth::handleCameraConnection()
@@ -210,6 +210,11 @@ void Photobooth::handleCameraConnection()
 		state = DRAW;
 		gotoFirstlocation();	
 	}
+	//if (state == SHOW_ANIM)
+	//{
+	//	state = DRAW;
+	//	gotoFirstlocation();
+	//}
 }
 
 void Photobooth::draw()
@@ -237,7 +242,7 @@ void Photobooth::draw()
 void Photobooth::drawCameraErrorPopup()
 {
 	gl::draw(settings->getTexture("popupErrorBg"));
-	gl::Texture tex = settings->getTexture("cameraErrorText");
+	auto tex = settings->getTexture("cameraErrorText");
 	gl::draw(tex, Vec2f(0.5f * (1080.0f - tex.getWidth()), 766.0f - 0.5f * tex.getHeight()));
 }
 
@@ -251,7 +256,8 @@ void Photobooth::removeListeners()
 		loc->disconnectEventHandler(IPhotoboothLocation::DISABLE_GAME_CLOSE);
 		loc->disconnectEventHandler(IPhotoboothLocation::ENABLE_GAME_CLOSE);
 		loc->disconnectEventHandler(IPhotoboothLocation::CLOSE_LOCATION);		
-	}		
+	}	
+
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 	cameraCanon().setAutoReconnect(false);
 }

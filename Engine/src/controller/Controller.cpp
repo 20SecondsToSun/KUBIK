@@ -2,7 +2,7 @@
 
 using namespace kubik;
 using namespace kubik::menu;
-using namespace kubik::games;
+//using namespace kubik::games;
 using namespace std;
 
 Controller::Controller(ApplicationModelRef model, AppViewRef view)

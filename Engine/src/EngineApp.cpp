@@ -1,6 +1,7 @@
 #include "ApplicationView.h"
 #include "Controller.h"
 #include "Types.h"
+#include "kinect2/KinectAdapter.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -48,7 +49,7 @@ void EngineApp::setup()
 		fullscreenOptions.display(display->getDisplays()[0]);
 
 	//fullscreenOptions.secondaryDisplayBlanking(true);	
-	setFullScreen(true, fullscreenOptions);
+	//setFullScreen(true, fullscreenOptions);
 }
 
 void EngineApp::mouseDown( MouseEvent event )

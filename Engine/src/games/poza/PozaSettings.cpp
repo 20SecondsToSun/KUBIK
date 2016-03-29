@@ -3,7 +3,8 @@
 using namespace kubik;
 using namespace kubik::config;
 
-PozaSettings::PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings) :ISettings(model), configSettings(configSettings)
+PozaSettings::PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
+	:ISettings(model), configSettings(configSettings)
 {
 	mainConfigObj = model->getConfigObject(settings::id::POZA);
 }

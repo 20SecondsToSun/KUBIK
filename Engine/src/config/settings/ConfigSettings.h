@@ -47,7 +47,7 @@ namespace kubik
 				PARTY_CLOSE
 			};
 
-			struct ConfighDataStruct
+			struct ConfigDataStruct
 			{
 				std::string actionName;
 				int playedCount;
@@ -120,7 +120,7 @@ namespace kubik
 			void setActionName(const std::string& value);
 			DesignData getDesignData() const;
 			std::string getUserDesignPath();
-			ConfighDataStruct getData()	const;
+			ConfigDataStruct getData()	const;
 			int getUserDesignID() const;
 			void createMemento();
 			bool gamesChanged() const;

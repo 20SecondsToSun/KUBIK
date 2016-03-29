@@ -39,6 +39,7 @@ Icon
 *.log
 *.obj
 *.sdf
+*.suo
 *.opensdf
 *.lastbuildstate
 *.map

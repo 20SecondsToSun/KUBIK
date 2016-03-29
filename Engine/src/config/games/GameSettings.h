@@ -1,19 +1,10 @@
 #pragma once
 
 #include "ISettings.h"
-#include "FuncesSettings.h"
-#include "PhotoboothSettings.h"
-#include "InstakubSettings.h"
-#include "PozaSettings.h"
 #include "Types.h"
 #include "ApplicationModel.h"
 #include "ConfigSettings.h"
 #include "GamesFactory.h"
-#include "Photobooth.h"
-#include "instakub/Instakub.h"
-#include "Funces.h"
-#include "Poza.h"
-
 
 namespace kubik
 {

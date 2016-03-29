@@ -6,7 +6,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-//#define debug
+#define debug
 
 PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
 	:IPhotoboothLocation(),
@@ -28,17 +28,17 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 	serviceBtns.clear();
 
-	emailBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("email")));
-	fbBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("facebook")));
-	vkBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("vkontakte")));
-	twBtn	  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("twitter")));
-	againBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
-	allAppBtn = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
+	emailBtn   = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("email")));
+	fbBtn	   = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("facebook")));
+	vkBtn	   = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("vkontakte")));
+	twBtn	   = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("twitter")));
+	againBtn   = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("again")));
+	allAppBtn  = ImageButtonSpriteRef(new ImageButtonSprite(settings->getTexture("allApp")));
 
 	emailpopup = EmailPopupRef(new EmailPopup(settings));
-	vkpopup = VkontaktePopupRef(new VkontaktePopup(settings));
-	fbpopup = FacebookPopupRef(new FacebookPopup(settings));
-	twpopup = TwitterPopupRef(new TwitterPopup(settings));
+	vkpopup    = VkontaktePopupRef(new VkontaktePopup(settings));
+	fbpopup    = FacebookPopupRef(new FacebookPopup(settings));
+	twpopup    = TwitterPopupRef(new TwitterPopup(settings));
 
 	emailpopup->setBackground(settings->getTexture("popupBg"));
 	
@@ -326,3 +326,7 @@ void PhotoSharing::stopAllTweens()
 	alphaAnim.stop();
 	IPhotoboothLocation::stopAllTweens();
 }
+
+#ifdef debug
+	#undef debug
+#endif
