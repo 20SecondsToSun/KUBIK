@@ -16,20 +16,27 @@ PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoSt
 
 void PhotoFilter::start()
 {
-	console() << "Start PhotoFilters. filters size: " << getCountFiltersOn() << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Start ~~~");
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Filers Size : " + to_string(getCountFiltersOn()) + " ~~~");
 
 	cameraCanon().startLiveView();
 
 	if (getCountFiltersOn() <= 1)
+	{
 		skipLocation();
+	}		
 	else
+	{
 		initStartAnimation();
+	}		
 
 	state = TITLE_ANIM;
 }
 
 void PhotoFilter::skipLocation()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Skip - One Filters Set ~~~");
+
 	nextLocationSignal();
 }
 
@@ -50,7 +57,7 @@ void PhotoFilter::initStartAnimation()
 			filter->showAnimate(0.0f, 1.0f, showingTime, delay);
 			delay += 0.1f;
 		}
-		delaycall(bind(&PhotoFilter::showAnimationComplete, this), showingTime + delay);// TODO some on complee problems
+		delaycall(bind(&PhotoFilter::showAnimationComplete, this), showingTime + delay);// TODO some on complete problems
 	}
 }
 
@@ -70,10 +77,14 @@ void PhotoFilter::showAnimationComplete()
 
 void PhotoFilter::stop()
 {
-	console() << "stop photofilter  " << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Stop ~~~");
+
 	stopAllTweens();
+
 	for (auto filter : filterBtns)
+	{
 		filter->disconnectEventHandler();
+	}		
 }
 
 void PhotoFilter::photoFilterSelect(EventGUIRef& event)
@@ -82,13 +93,16 @@ void PhotoFilter::photoFilterSelect(EventGUIRef& event)
 	auto filterID = eventref->getFilterId();
 	photoStorage->setSelectedFilter(filterID);
 
-	console() << "filter id" << filterID << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Filters ID Set " + to_string(filterID ) + " ~~~");
+
 	callback(BEGIN_ANIM);
 	nextLocationSignal();
 };
 
 void PhotoFilter::reset(PhotoboothSettingsRef settings)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Reset ~~~");
+
 	filterBtns.clear();
 	removeAllChildren();
 
@@ -119,7 +133,9 @@ void PhotoFilter::reset(PhotoboothSettingsRef settings)
 	}
 
 	for (auto filter : filterBtns)
+	{
 		addChild(filter);
+	}		
 }
 
 int PhotoFilter::getCountFiltersOn()
@@ -139,7 +155,9 @@ void PhotoFilter::createfilters2()
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[1].getID(), buttonArea)));
 
 	for (auto filter : filterBtns)
+	{
 		filter->setSizeID(filter_2);
+	}		
 
 	filterUpdate = &PhotoFilter::filterUpdate2;
 }
@@ -183,7 +201,9 @@ void PhotoFilter::createfilters4()
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[3].getID(), buttonArea)));
 
 	for (auto filter : filterBtns)
+	{
 		filter->setSizeID(filter_4);
+	}		
 
 	filterUpdate = &PhotoFilter::filterUpdate4;
 }
@@ -243,7 +263,9 @@ void PhotoFilter::createfilters6()
 	filterBtns.push_back(FilterButtonRef(new FilterButton(filters[4].getID(), buttonArea)));
 
 	for (auto filter : filterBtns)
+	{
 		filter->setSizeID(filter_6);
+	}		
 
 	filterUpdate = &PhotoFilter::filterUpdate6;
 }
@@ -293,7 +315,9 @@ void PhotoFilter::update()
 	(this->*filterUpdate)();
 
 	for (auto filter : filterBtns)
+	{
 		filter->setTexture(updateTextures[(sizeID)filter->getSizeID()].texture);
+	}		
 }
 
 void PhotoFilter::draw()
@@ -372,7 +396,9 @@ void PhotoFilter::setImageSizeParams()
 void PhotoFilter::stopAllTweens()
 {
 	for (auto filter : filterBtns)
+	{
 		filter->stopAllTweens();
+	}		
 
 	IPhotoboothLocation::stopAllTweens();
 }

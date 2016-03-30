@@ -40,6 +40,8 @@ namespace kubik
 
 				TemplateButtonRef selectedTemplate;
 
+				std::string templateName = "//template.png";
+
 			public:
 				PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 

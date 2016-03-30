@@ -10,6 +10,10 @@
 #include "graphics/IMovie.h"
 #include "fontStorage/FontStorage.h"
 
+#define Photobooth_DEBUG
+#define Photobooth_Loadfromfolder_DEBUG
+#define Photobooth_Sharing_DEBUG
+
 namespace kubik
 {
 	namespace config
@@ -19,6 +23,8 @@ namespace kubik
 		class PhotoboothSettings : public ISettings
 		{
 		public:
+			static const float GoToScreenSaverTime;
+
 			enum PhtTextID
 			{
 				PHOTO_OVER, PHOTO_OVER_SUB,
@@ -97,8 +103,7 @@ namespace kubik
 			bool settingsChanged();
 			bool isPrinterOn();
 			bool onlyOneGameOn();
-
-		public:
+		
 			class Filter
 			{
 				int id;
@@ -118,8 +123,8 @@ namespace kubik
 
 		private:
 			static const int CARDS_COUNT = 5;
-			static const int STICKERS_COUNT = 4;
-			
+			static const int STICKERS_COUNT = 4;			
+
 			class ImageElement
 			{
 				std::string path;
@@ -221,7 +226,7 @@ namespace kubik
 			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
 			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
 
-			ConfigSettingsRef configSettings;
+			ConfigSettingsRef configSettings;			
 		};
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;

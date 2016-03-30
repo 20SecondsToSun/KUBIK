@@ -753,6 +753,9 @@
     <ClCompile Include="..\src\services\kinect2\KinectAdapter.cpp">
       <Filter>Source Files\services\kinect2</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tools\Logger.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1330,9 +1333,6 @@
     </ClInclude>
     <ClInclude Include="..\src\services\social\instagram\ImageGraphic.h">
       <Filter>Source Files\services\social\instagram</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\loaders\asynchTextureLoader\ConcurrentDeque.h">
       <Filter>Source Files\loaders\asynchTextureLoader</Filter>

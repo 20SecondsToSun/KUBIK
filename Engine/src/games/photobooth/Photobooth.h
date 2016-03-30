@@ -39,8 +39,6 @@ namespace kubik
 				size_t index;					
 
 			private:
-				static const float goToScreenSaverTime;
-
 				PhotoInstructionRef photoInstruction;
 				PhotoFilterRef		photoFilter;
 				PhotoTimerRef		photoTimer;

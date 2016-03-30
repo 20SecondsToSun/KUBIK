@@ -15,21 +15,24 @@ PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings):animTime(0.8f
 
 PhotoInstruction::~PhotoInstruction()
 {
-	console() << "DISTRUCT PHOTO INSTRUCTION" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Destruct  ~~~");
 }
 
 void PhotoInstruction::reset(PhotoboothSettingsRef set)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Reset ~~~");
+
 	IPhotoboothLocation::reset(set);
-	settings = set;
-	fonTex = settings->getTexture("instrFon");
-	titleTex = settings->getTexture("instrTitle");
+	settings	= set;
+	fonTex		= settings->getTexture("instrFon");
+	titleTex	= settings->getTexture("instrTitle");
 	titleTexPos = Vec2f(0.5f * (getWindowWidth() - titleTex.getWidth()), titlePositionY - titleTex.getHeight() * 0.5f);
 }
 
 void PhotoInstruction::start()
 {
-	console() << "start Instruction" <<endl;	
+	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Start ~~~");
+
 	voidBtn->connectEventHandler(&PhotoInstruction::hideAnimation, this);
 	delaycall(bind(&PhotoInstruction::initAnimationcomplete, this), 0.4f);
 }
@@ -41,7 +44,8 @@ void PhotoInstruction::initAnimationcomplete()
 
 void PhotoInstruction::stop()
 {
-	console() << "stop Instruction" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Stop ~~~");
+
 	stopAllTweens();
 	voidBtn->disconnectEventHandler();
 }

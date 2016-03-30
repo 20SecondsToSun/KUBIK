@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "kinect2/KinectAdapter.h"
 
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;

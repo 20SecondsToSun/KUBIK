@@ -6,8 +6,6 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-#define debug
-
 PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage)
 	:IPhotoboothLocation(),
 	photoStorage(photoStorage),
@@ -19,6 +17,8 @@ PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  phot
 
 void PhotoSharing::reset(PhotoboothSettingsRef settings)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Reset ~~~");
+
 	removeAllChildren();
 	IPhotoboothLocation::reset(settings);
 
@@ -97,7 +97,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
 
-#ifdef debug
+#ifdef Photobooth_Sharing_DEBUG
 	startServiceButtonY = 588.0f;
 #else
 	startServiceButtonY = 1592.0f;
@@ -113,11 +113,11 @@ void PhotoSharing::start()
 {	
 	auto photoTemplate = settings->getPhotoSharingCard();
 
-	#ifndef debug
+#ifndef Photobooth_Sharing_DEBUG
 	finalPhotoTemplate.setData(photoStorage);
 	finalPhotoTemplate.setTemplate(photoTemplate);
 	finalPhotoTemplate.startAnimate();
-	#endif
+#endif
 
 	qrcode->initLink();
 	initShowAnim();
@@ -197,37 +197,47 @@ void PhotoSharing::hideAnimComplete()
 	callback(NEXT_LOC);
 }
 
-void PhotoSharing::allAppBtnHandler(EventGUIRef& _event)
+void PhotoSharing::allAppBtnHandler(EventGUIRef& event)
 {
 	callback(CLOSE_LOCATION);
 }
 
-void PhotoSharing::emailBtnHandler(EventGUIRef& _event)
+void PhotoSharing::emailBtnHandler(EventGUIRef& event)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Email ~~~");
+
 	popup = emailpopup;
 	showPopup();
 }
 
-void PhotoSharing::fbBtnHandler(EventGUIRef& _event)
+void PhotoSharing::fbBtnHandler(EventGUIRef& event)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Facebook ~~~");
+
 	popup = fbpopup;
 	showPopup();
 }
 
-void PhotoSharing::vkBtnHandler(EventGUIRef& _event)
+void PhotoSharing::vkBtnHandler(EventGUIRef& event)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Vkontakte ~~~");
+
 	popup = vkpopup;
 	showPopup();
 }
 
-void PhotoSharing::twBtnHandler(EventGUIRef& _event)
+void PhotoSharing::twBtnHandler(EventGUIRef& event)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Twitter ~~~");
+
 	popup = twpopup;
 	showPopup();
 }
 
 void PhotoSharing::stop()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Stop ~~~");
+
 	stopAllTweens();
 	disconnectEventHandlers();
 	finalPhotoTemplate.stopAnimate();
@@ -250,6 +260,8 @@ void PhotoSharing::showPopup()
 
 void PhotoSharing::popupClosed()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Popup Closed ~~~");
+
 	callback(ENABLE_GAME_CLOSE);
 	connectHandlers();
 	state = TEMPLATE_CHOOSE;
@@ -260,8 +272,10 @@ void PhotoSharing::disconnectEventHandlers()
 {
 	againBtn->disconnectEventHandler();
 
-	if (!settings->onlyOneGameOn())		
+	if (!settings->onlyOneGameOn())
+	{
 		allAppBtn->disconnectEventHandler();
+	}		
 
 	emailBtn->disconnectEventHandler();
 	fbBtn->disconnectEventHandler();
@@ -282,7 +296,7 @@ void PhotoSharing::draw()
 	{
 	case PhotoSharing::TEMPLATE_CHOOSE:
 		gl::draw(sharefon, sharefonPos + sharefonPosAnim);
-#ifndef debug
+#ifndef Photobooth_Sharing_DEBUG
 		drawFinalPhoto();
 #endif
 		qrcode->draw();
@@ -315,8 +329,11 @@ void PhotoSharing::drawFinalPhoto()
 void PhotoSharing::drawServiceButtons()
 {
 	againBtn->draw();
-	if (!settings->onlyOneGameOn())		
+
+	if (!settings->onlyOneGameOn())
+	{
 		allAppBtn->draw();
+	}		
 }
 
 void PhotoSharing::stopAllTweens()
@@ -326,7 +343,3 @@ void PhotoSharing::stopAllTweens()
 	alphaAnim.stop();
 	IPhotoboothLocation::stopAllTweens();
 }
-
-#ifdef debug
-	#undef debug
-#endif

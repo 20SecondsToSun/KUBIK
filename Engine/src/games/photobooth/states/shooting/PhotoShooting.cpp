@@ -38,6 +38,8 @@ PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  ph
 
 PhotoShooting::~PhotoShooting()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Destruct ~~~");
+
 	photoTakenCon.disconnect();
 	photoDownloadedCon.disconnect();
 	photoErrorCon.disconnect();
@@ -45,7 +47,7 @@ PhotoShooting::~PhotoShooting()
 
 void PhotoShooting::start()
 {
-	console() << "start PhotoShooting" << endl;	
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Start ~~~");
 
 	cameraCanon().startLiveView();
 
@@ -77,6 +79,8 @@ void PhotoShooting::showAnimationComplete()
 
 void PhotoShooting::reset(PhotoboothSettingsRef settings)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Reset ~~~");
+
 	IPhotoboothLocation::reset(settings);
 	countsTex				  = settings->getTexture("counts");
 	seekTex					  = settings->getTexture("seek");
@@ -94,6 +98,8 @@ void PhotoShooting::reset(PhotoboothSettingsRef settings)
 
 void PhotoShooting::stop()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Stop ~~~");
+
 	stopAllTweens();
 	clearDelaycall();
 }
@@ -232,19 +238,20 @@ void PhotoShooting::drawProgressBlock()
 
 void PhotoShooting::photoTakenHandler()
 {
-	console() << "!!!!!!!!!!!!!!!!!!!!!!!!!!! photoTakenHandler !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.PhotoTaken!!! ~~~");
 }
 
 void PhotoShooting::photoDownloadHandler(const string& path)
 {
-	console() << "photoDownloadHandler " << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Downloaded ~~~");
 	photo = photoStorage->loadDownloadedPhoto(path);
 	callPreviewShowingTimer();
 }
 
 void PhotoShooting::photoErrorHandler()
 {
-	console() << "photoErrorHandler " << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.PhotoDownloadError!!!! ~~~");
+
 	photo = cameraTexture;
 	photoStorage->setNextPhoto(cameraTexture);
 	delaycall(bind(&PhotoShooting::callPreviewShowingTimer, this), 1.0f);

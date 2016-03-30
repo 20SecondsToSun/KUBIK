@@ -13,6 +13,8 @@ using namespace ci::app;
 //
 ////////////////////////////////////////////////////////////////////////////
 
+const float PhotoboothSettings::GoToScreenSaverTime = 60.0f;
+
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
 	:ISettings(model), memento(false), configSettings(configSettings)
 {
@@ -21,8 +23,9 @@ PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettings
 
 void PhotoboothSettings::load()
 {
+	logger().log("~~~ PhotoboothSettings.StartLoad ~~~");
+
 	mainConfigObj = model->getConfigObject(settings::id::PHOTOBOOTH);
-	console() << "start photobooth loader" << endl;
 
 	try
 	{
@@ -93,10 +96,11 @@ void PhotoboothSettings::loadSocialParams(const JsonTree& config)
 void PhotoboothSettings::loadPhotoFilterParams(const JsonTree& config)
 {
 	JsonTree datas = JsonTree(config.getChild("filtersIds"));
+
 	for (auto it : datas)
 	{
 		Filter filter;
-		filter.id = it.getChild("id").getValue<int>();
+		filter.id	= it.getChild("id").getValue<int>();
 		filter.isOn = it.getChild("isOn").getValue<bool>();
 		filters.push_back(filter);
 	}
@@ -114,7 +118,6 @@ void PhotoboothSettings::loadGameDesignParams(const JsonTree& config)
 void PhotoboothSettings::loadConfigTexts(const JsonTree& config)
 {
 	JsonTree jsonTexts = JsonTree(config.getChild("mainTitles"));
-
 	for (auto it : jsonTexts)
 	{
 		string lang = it.getChild("lang").getValue<string>();
@@ -312,39 +315,52 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("error_bg", createImageResource(getTemplateDesignPath("PhotoShare\\error_bg.png")));
 	addToDictionary("okPopup", createImageResource(getTemplateDesignPath("PhotoShare\\okPopup.png")));
 
-	{
+	{// load smiles
 		smilePaths = fileTools().getAllImagePaths(getTemplateDesignPath("PhotoShooting\\smiles\\"));
 		for (size_t i = 0; i < smilePaths.size(); i++)
+		{
 			addToDictionary("smile" + to_string(i), createImageResource(smilePaths[i]));
+		}			
 	}	
 
-	{
+	{// load stickers photo designs
 		for (auto item : photoOverDesignData)
+		{
 			addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		}			
 
 		OneDesignItem sticker = photoOverDesignData[activeOverDesignID - 1];
 		for (size_t i = 1; i <= STICKERS_COUNT; i++)
+		{
 			addToDictionary("sticker" + to_string(i), createImageResource(getBasePath().string() + sticker.getDesignPath() + "\\" + to_string(i) + ".png"));
+		}
 	}
 
-	{
+	{// load backgrounds photo designs
 		for (auto item : photoCardStyles)
+		{
 			addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
+		}			
 
 		OneDesignItem card = photoCardStyles[activePhotoCardStyleDesignID - 1];
 		for (size_t i = 1; i <= CARDS_COUNT; i++)
+		{
 			addToDictionary("cardBckgnd" + to_string(i), createImageResource(getBasePath().string() + card.getDesignPath() + "\\" + to_string(i) + ".png"));
+		}
 	}	
 	
 	for (auto item : photoFiltersPreview)
+	{
 		addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
-	
+	}	
 }
 
 void PhotoboothSettings::buildSettingData()
 {	
 	for (auto &it : configTexts.getDic())
+	{
 		it.second.setFont(fontStorage().getAll());
+	}		
 
 	int i = 0;
 	for (auto &it : photoFiltersPreview)
@@ -371,15 +387,21 @@ void PhotoboothSettings::buildLocationData()
 {
 	cardsImages.clear();
 	for (size_t i = 0; i < CARDS_COUNT; i++)
+	{
 		cardsImages.push_back(getTexture("cardBckgnd" + to_string(i + 1)));
+	}		
 
 	stickersImages.clear();
 	for (size_t i = 0; i < STICKERS_COUNT; i++)
+	{
 		stickersImages.push_back(getTexture("sticker" + to_string(i + 1)));
+	}		
 
 	smileTextures.clear();
 	for (size_t i = 0; i < smilePaths.size(); i++)
+	{
 		smileTextures.push_back(getTexture("smile" + to_string(i)));
+	}
 };
 
 vector<Texture> PhotoboothSettings::getSmileTextures() const
@@ -412,8 +434,12 @@ vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 	vector<Filter> onFilters;
 
 	for (auto filter : filters)
+	{
 		if (filter.isOn)
+		{
 			onFilters.push_back(filter);
+		}			
+	}	
 
 	return onFilters;
 }
@@ -421,8 +447,12 @@ vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 void PhotoboothSettings::swapFilter(int id)
 {
 	for (auto &filter : filters)
+	{
 		if (filter.id == id)
+		{
 			filter.isOn = !filter.isOn;
+		}			
+	}		
 }
 
 TextItem PhotoboothSettings::getMainTitle(const PhtTextID& id)
@@ -460,8 +490,12 @@ TextItem PhotoboothSettings::getSubTitleClose(const PhtTextID& id)
 std::string PhotoboothSettings::getActiveOverDesignText()
 {
 	for (auto item : photoOverDesignData)
+	{
 		if (item.getID() == activeOverDesignID)
+		{
 			return item.getTextItem().getText();
+		}			
+	}	
 
 	return "";
 }
@@ -469,8 +503,12 @@ std::string PhotoboothSettings::getActiveOverDesignText()
 std::string PhotoboothSettings::getActiveCardStyleText()
 {
 	for (auto item : photoCardStyles)
+	{
 		if (item.getID() == activePhotoCardStyleDesignID)
+		{
 			return item.getTextItem().getText();
+		}			
+	}		
 
 	return "";
 }
@@ -498,6 +536,8 @@ std::string PhotoboothSettings::getActiveFiltersTexts()
 std::string PhotoboothSettings::getActivePublishingTexts()
 {
 	std::string result = "";
+	std::string delimeter = ",";
+
 	vector<PhtTextID> temp;
 	temp.push_back(PhtTextID::PRINTER);
 	temp.push_back(PhtTextID::EMAIL);
@@ -507,13 +547,17 @@ std::string PhotoboothSettings::getActivePublishingTexts()
 	temp.push_back(PhtTextID::TWITTER);
 
 	for (auto item : temp)
+	{
 		if (getSocialState(item))
 		{
 			if (result.size())
-				result += ", ";
+			{
+				result += delimeter;
+			}
 
 			result += getTextItem(item).getText();
 		}
+	}		
 
 	return result;
 }
@@ -681,8 +725,10 @@ void PhotoboothSettings::writeConfig()
 
 bool PhotoboothSettings::settingsChanged()
 {
-	return (activeOverDesignID != activeOverDesignIDMemento || activePhotoCardStyleDesignID != activePhotoCardStyleDesignIDMemento ||
-		sharingNotEqual(sharing, sharingMemento) ||	filtersNotEqual(filters, filtersMemento));
+	return (activeOverDesignID != activeOverDesignIDMemento ||
+			activePhotoCardStyleDesignID != activePhotoCardStyleDesignIDMemento ||
+			sharingNotEqual(sharing, sharingMemento) ||	
+			filtersNotEqual(filters, filtersMemento));
 }
 
 bool PhotoboothSettings::sharingNotEqual(Sharing sharing1, Sharing sharing2)
@@ -700,12 +746,20 @@ bool PhotoboothSettings::filtersNotEqual(const vector<Filter>& filter1, const ve
 	vector<int> f1, f2;
 
 	for (auto filter : filter1)
+	{
 		if (filter.isOn)
+		{
 			f1.push_back(filter.id);
+		}			
+	}		
 
 	for (auto filter : filter2)
+	{
 		if (filter.isOn)
+		{
 			f2.push_back(filter.id);
+		}			
+	}		
 
 	std::sort(f1.begin(), f1.end());
 	std::sort(f2.begin(), f2.end());

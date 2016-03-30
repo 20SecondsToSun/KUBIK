@@ -24,11 +24,13 @@ PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings, PhotoStorageRef photoStor
 
 PhotoTimer::~PhotoTimer()
 {
-	clear();
+	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Destruct ~~~");
+	clear();	
 };
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Reset ~~~");
 	IPhotoboothLocation::reset(settings);
 
 	MAX_SEC = settings->getBeReadySeconds();
@@ -49,7 +51,7 @@ void PhotoTimer::reset(PhotoboothSettingsRef sett)
 
 void PhotoTimer::start()
 {
-	console() << "start PhotoTimer" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Start ~~~");
 
 	seconds = MAX_SEC;
 	changeAngle = 0;
@@ -80,6 +82,7 @@ void PhotoTimer::showAnimationComplete()
 
 void PhotoTimer::stop()
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Stop ~~~");
 	cdTimer.stop();
 	stopAllTweens();	
 }
@@ -155,7 +158,6 @@ void PhotoTimer::drawAnimationCircle()
 
 	auto photo = Utils::drawGraphicsToFBO(timerTex2.getSize(), [&]()
 	{
-		//gl::draw(timerTex2);
 		maskShader->render(timerTex2, texMask, Vec2f::zero(), 1);
 	});
 
@@ -171,7 +173,6 @@ void PhotoTimer::drawAnimationCircle()
 	gl::draw(timerTex1);
 	gl::popMatrices();
 
-	//centerTex = photo.getSize()*0.5f;
 	if (changeAngle > -360)
 	{
 		gl::pushMatrices();

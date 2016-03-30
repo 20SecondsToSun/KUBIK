@@ -6,11 +6,12 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-const float Photobooth::goToScreenSaverTime = 60.0f;
+
 
 Photobooth::Photobooth(ISettingsRef config)
 {
-	console()<<":::Photobooth CREATED:::"<<endl;
+	logger().log("~~~ Photobooth.Created ~~~");
+
 	init(config);
 	setType(ScreenId::PHOTOBOOTH);
 	create();
@@ -18,7 +19,8 @@ Photobooth::Photobooth(ISettingsRef config)
 
 Photobooth::~Photobooth()
 {	
-	console() << ":::Photobooth DESTRUCTION:::" << endl;
+	logger().log("~~~ Photobooth.Destruct  ~~~");
+
 	updateSignal.disconnect();
 	removeListeners();
 	locations.clear();
@@ -48,7 +50,8 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
-	console() << " :::START PHOTOBOTH::: " << endl;
+	logger().log("~~~ Photobooth.Start  ~~~");
+
 	gl::enableAlphaBlending();
 	
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
@@ -56,12 +59,14 @@ void Photobooth::start()
 	index = 0;
 	currentLocation = locations[index];
 	initShowAnimation();
-	delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), goToScreenSaverTime, "toPhotoBoothScreenSaver");
+	delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), settings->GoToScreenSaverTime, "toPhotoBoothScreenSaver");
 	cameraCanon().setAutoReconnect(true);
 }
 
 void Photobooth::goToPhotoInstructionTimeOut()
 {
+	logger().log("~~~ Photobooth.Timeot GoTo First Screen ~~~");
+
 	currentLocation->stop();
 	gotoFirstlocation();
 }
@@ -115,10 +120,14 @@ void Photobooth::disableGameCloseHandler()
 
 void Photobooth::stop()
 {
-	console()<<" :::STOP PHOTOBOOTH::: "<<endl;
+	logger().log("~~~ Photobooth.Stop  ~~~");
+
 	updateSignal.disconnect();
-	for (auto it: locations)
+
+	for (auto it : locations)
+	{
 		it->stop();
+	}		
 
 	animX.stop();
 	animX1.stop();
@@ -130,9 +139,12 @@ void Photobooth::stop()
 
 void Photobooth::reset()
 {
-	console()<<" :::RESET PHOTOBOOTH::: "<<endl;
+	logger().log("~~~ Photobooth.Reset  ~~~");
+
 	for (auto it : locations)
+	{
 		it->reset(settings);
+	}		
 }
 
 void Photobooth::initLocations()
@@ -166,14 +178,16 @@ void Photobooth::nextLocationHandler()
 	}		
 	else
 	{
-		if (equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())		
-			++index;	
+		if (equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())
+		{
+			++index;
+		}		
 		
 		currentLocation = locations[index];
 		currentLocation->start();
 		
 		clearDelaycall("toPhotoBoothScreenSaver");
-		delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), goToScreenSaverTime, "toPhotoBoothScreenSaver");
+		delaycall(bind(&Photobooth::goToPhotoInstructionTimeOut, this), settings->GoToScreenSaverTime, "toPhotoBoothScreenSaver");
 	}	
 }
 
@@ -194,7 +208,9 @@ void Photobooth::update()
 	handleCameraConnection();
 
 	if (state != CAMERA_DISCONNECT)
-		currentLocation->update();		
+	{
+		currentLocation->update();
+	}		
 }
 
 void Photobooth::handleCameraConnection()
@@ -210,6 +226,7 @@ void Photobooth::handleCameraConnection()
 		state = DRAW;
 		gotoFirstlocation();	
 	}
+
 	//if (state == SHOW_ANIM)
 	//{
 	//	state = DRAW;

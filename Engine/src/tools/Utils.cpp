@@ -6,13 +6,13 @@ struct tm Utils::getCurrentTime()
 	struct tm  tstruct;
 	//char       buf[80];
 	tstruct = *localtime(&now);
-
+	
 	return tstruct;
 }
 
 double Utils::getCurrentMilliseconds()
 {
-	boost::timer t;
+	boost::timer t;	
 	return t.elapsed();
 }
 
@@ -410,5 +410,5 @@ void Utils::printVideoMemoryInfo()
 
 bool Utils::validate_email(const std::string& email)
 {
-	return email != "" && regex_match(email, std::regex("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"));
+	return email != "" && regex_match(email, std::regex("[a-z0-9Р-пр-џ._%+-]+@[a-z0-9.-]+\\.[a-zр-џ]{2,10}"));
 }

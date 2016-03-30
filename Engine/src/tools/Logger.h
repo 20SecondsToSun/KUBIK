@@ -1,26 +1,17 @@
 #pragma once
 
 namespace kubik
-{
-	
+{	
 	class Logger
 	{
+		static bool init;
+		static std::string logName;
+
 	public:
-
-		static Logger& getInstance() { 
-			static Logger logger; 
-			return logger; 
-		};	
-
-		void log(const std::string & message)
-		{
-			// Write to console and debug window
-			//ci::app::console() << message << std::endl;
-			#ifdef CINDER_MSW
-				OutputDebugStringA((message + '\n').c_str());
-			#endif
-		}
+		static Logger& getInstance();
+		void log(const std::string & message);
+		
 	};
-	// helper function(s) for easier access 
+	
 	inline Logger& logger() {return Logger::getInstance();};
 }

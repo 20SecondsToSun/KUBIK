@@ -45,7 +45,7 @@ namespace kubik
 
 				void calculateDigit();
 
-				enum timerStates
+				enum TimerStates
 				{
 					SHOW_ANIM,
 					COUNTING,

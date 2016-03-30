@@ -20,8 +20,8 @@ PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef pho
 
 void PhotoChoosing::start()
 {
-//#define debug
-#ifdef loadfromfolder
+
+#ifdef Photobooth_Loadfromfolder_DEBUG
 	photoStorage->clear();
 #endif
 
@@ -51,15 +51,15 @@ void PhotoChoosing::start()
 
 	setShaderForPreviews();
 	
-#ifdef debug
+#ifdef Photobooth_DEBUG
 	okBtn->setAlpha(0.0f);
 	reShotBtn->setAlpha(0.0f);
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
-	photoBtns[i]->setAlpha(0.0f);
+		photoBtns[i]->setAlpha(0.0f);
 
 	for (unsigned int i = 0; i < filterBtns.size(); i++)
-	filterBtns[i]->setAlpha(0.0f);
+		filterBtns[i]->setAlpha(0.0f);
 
 	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);
 	choosefonPosAnim = Vec2f(0.0f, choosefon.getHeight());
@@ -70,8 +70,6 @@ void PhotoChoosing::start()
 #else	
 	initShowAnimationParams();
 #endif
-
-#undef debug;
 }
 
 void PhotoChoosing::initShowAnimationParams()

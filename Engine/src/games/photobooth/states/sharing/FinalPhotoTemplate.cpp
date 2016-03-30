@@ -46,7 +46,11 @@ void FinalPhotoTemplate::stopAnimate()
 
 void FinalPhotoTemplate::changePhoto()
 {			
-	if (++index >= MAX_PHOTOS) index = 0;
+	if (++index >= MAX_PHOTOS)
+	{
+		index = 0;
+	}
+
 	renderTexture();	
 }
 
@@ -69,5 +73,7 @@ void FinalPhotoTemplate::draw()
 	gl::popMatrices();
 
 	if (getElapsedFrames() % 30 == 0 && animate)
+	{
 		changePhoto();
+	}		
 }

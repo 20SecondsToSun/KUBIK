@@ -14,10 +14,13 @@ PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef pho
 
 void PhotoTemplate::start()
 {
-	console() << "start PhotoTemplate--------------------------" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoTemplate.Start ~~~");
+
 	titleAlpha = 0.0f;
 	for (auto &templ : templatebtns)
+	{
 		templ->setAlpha(0.0f);
+	}		
 
 	using namespace shaders::imagefilters;
 	auto filterID = photoStorage->getSelectedFilter();
@@ -59,11 +62,14 @@ void PhotoTemplate::showAnimationComplete()
 		templ->connectEventHandler(&PhotoTemplate::photoTemplateChoose, this);
 		templ->activateListeners();
 	}
+
 	callback(COMPLETE_ANIM);
 }
 
 void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 {
+	logger().log("~~~ Photobooth.SubLocation PhotoTemplate.Reset ~~~");
+
 	IPhotoboothLocation::reset(settings);
 
 	cards = settings->getCardsTextures();
@@ -77,7 +83,7 @@ void PhotoTemplate::reset(PhotoboothSettingsRef settings)
 
 void PhotoTemplate::stop()
 {
-	console() << "PhotoTemplate stop!" << endl;
+	logger().log("~~~ Photobooth.SubLocation PhotoTemplate.Stop ~~~");
 	
 	stopAllTweens();
 	clearDelaycall();
@@ -108,15 +114,19 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 			return;
 		}
 		else
+		{
 			selectedTemplate->setSelected(false);
+		}			
 	}
 
-	for (unsigned int i = 0; i < templatebtns.size(); i++)
+	for (size_t i = 0; i < templatebtns.size(); i++)
+	{
 		if (templatebtns[i]->getID() == id)
 		{
 			selectedTemplate = templatebtns[i];
 			break;
 		}
+	}		
 
 	selectedTemplate->setSelected(true);
 }
@@ -134,7 +144,7 @@ void PhotoTemplate::startHideAnimation()
 
 void PhotoTemplate::setChoosingTemplate()
 {	
-	ci::writeImage(getAppPath() / "//template.png", selectedTemplate->getPrintTemplate());
+	ci::writeImage(getAppPath() / templateName, selectedTemplate->getPrintTemplate());
 }
 
 void PhotoTemplate::update()
@@ -189,7 +199,9 @@ void PhotoTemplate::resetTemplateButtons()
 	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), cards, stickers)));
 
 	for (auto templ : templatebtns)
+	{
 		templ->setSelectDesign(settings->getTexture("print"));
+	}		
 
 	templ2->setLineTexture(settings->getTexture("printline"));
 	templ2->setSelectRamkaTexture(settings->getTexture("printramka"));
@@ -198,7 +210,11 @@ void PhotoTemplate::resetTemplateButtons()
 void PhotoTemplate::stopAllTweens()
 {
 	alphaAnim.stop();
+
 	for (auto templ : templatebtns)
+	{
 		templ->stopAllTweens();
+	}		
+
 	IPhotoboothLocation::stopAllTweens();
 }
