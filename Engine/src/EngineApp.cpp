@@ -47,10 +47,10 @@ void EngineApp::setup()
 	DisplayRef display = fullscreenOptions.getDisplay();
 
 	if (display->getDisplays().size() > 1)
-		fullscreenOptions.display(display->getDisplays()[0]);
+		fullscreenOptions.display(display->getDisplays()[1]);
 
 	//fullscreenOptions.secondaryDisplayBlanking(true);	
-	//setFullScreen(true, fullscreenOptions);
+	setFullScreen(true, fullscreenOptions);
 }
 
 void EngineApp::mouseDown( MouseEvent event )

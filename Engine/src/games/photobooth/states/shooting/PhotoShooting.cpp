@@ -23,18 +23,23 @@ PhotoShooting::PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  ph
 	cameraPosition = Vec2f((1080.0f - cameraHeight) * 0.5f, 0.0f);
 
 	if (!photoTakenCon.connected())
+	{
 		photoTakenCon = cameraCanon().photoTakenEvent.connect(bind(&PhotoShooting::photoTakenHandler, this));
+	}		
 
 	if (!photoDownloadedCon.connected())
+	{
 		photoDownloadedCon = cameraCanon().photoDownloadedEvent.connect(bind(&PhotoShooting::photoDownloadHandler, this, std::placeholders::_1));
+	}		
 
 	if (!photoErrorCon.connected())
+	{
 		photoErrorCon = cameraCanon().photoErrorEvent.connect(bind(&PhotoShooting::photoErrorHandler, this));
+	}		
 	
 	maskShader = shadertool().getMaskShader();
-
 	reset(settings);
-};
+}
 
 PhotoShooting::~PhotoShooting()
 {
@@ -147,7 +152,9 @@ void PhotoShooting::draw()
 		gl::drawSolidRect(getWindowBounds());
 
 		if (previewAnimateX <= -0.2f)
+		{
 			drawSmile();
+		}			
 
 		drawPhotoframe();
 		break;
@@ -194,8 +201,8 @@ void PhotoShooting::drawSmile()
 
 void PhotoShooting::drawPhotoframe()
 {
-	auto startY = 294.0f;
-	auto _scale = 748.0f / photoTemplate.getWidth();
+	auto startY  = 294.0f;
+	auto _scale  = 748.0f / photoTemplate.getWidth();
 	auto _scale1 = 748.0f / photo.getWidth();
 
 	gl::pushMatrices();
@@ -244,6 +251,7 @@ void PhotoShooting::photoTakenHandler()
 void PhotoShooting::photoDownloadHandler(const string& path)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Downloaded ~~~");
+
 	photo = photoStorage->loadDownloadedPhoto(path);
 	callPreviewShowingTimer();
 }
@@ -251,6 +259,7 @@ void PhotoShooting::photoDownloadHandler(const string& path)
 void PhotoShooting::photoErrorHandler()
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.PhotoDownloadError!!!! ~~~");
+	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Set Camera texture as photo ~~~");
 
 	photo = cameraTexture;
 	photoStorage->setNextPhoto(cameraTexture);
@@ -271,7 +280,9 @@ void PhotoShooting::previewdelay()
 void PhotoShooting::liveviewdelay()
 {
 	if (++currentShot <= SHOT_NUM)
+	{
 		callDelayShotTimer();
+	}		
 	else
 	{
 		callback(BEGIN_ANIM);
@@ -293,7 +304,9 @@ void PhotoShooting::callLiveViewPrepareTimer()
 	timeline().apply(&previewAnimateX, 1500.0f, 1.0f, EaseInExpo()).delay(1.4f);
 
 	if (currentShot < SHOT_NUM)
-		timeline().apply(&seekPosition, Vec2f((currentShot) * 197.0f, 0.0f), 0.8f, EaseOutCubic()).delay(1.4f);
+	{
+		timeline().apply(&seekPosition, Vec2f((currentShot)* 197.0f, 0.0f), 0.8f, EaseOutCubic()).delay(1.4f);
+	}		
 }
 
 void PhotoShooting::callPreviewShowingTimer()
@@ -308,7 +321,9 @@ void PhotoShooting::callPreviewShowingTimer()
 int PhotoShooting::getNextSmileIndex()
 {
 	if (++smileIndex > smileTexs.size() - 1)
+	{
 		smileIndex = 0;
+	}		
 
 	return smileIndex;
 }

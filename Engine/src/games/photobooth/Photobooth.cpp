@@ -6,8 +6,6 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-
-
 Photobooth::Photobooth(ISettingsRef config)
 {
 	logger().log("~~~ Photobooth.Created ~~~");
@@ -19,7 +17,7 @@ Photobooth::Photobooth(ISettingsRef config)
 
 Photobooth::~Photobooth()
 {	
-	logger().log("~~~ Photobooth.Destruct  ~~~");
+	logger().log("~~~ Photobooth.Destruct ~~~");
 
 	updateSignal.disconnect();
 	removeListeners();
@@ -50,7 +48,7 @@ void Photobooth::create()
 
 void Photobooth::start()
 {
-	logger().log("~~~ Photobooth.Start  ~~~");
+	logger().log("~~~ Photobooth.Start ~~~");
 
 	gl::enableAlphaBlending();
 	
@@ -139,7 +137,7 @@ void Photobooth::stop()
 
 void Photobooth::reset()
 {
-	logger().log("~~~ Photobooth.Reset  ~~~");
+	logger().log("~~~ Photobooth.Reset ~~~");
 
 	for (auto it : locations)
 	{

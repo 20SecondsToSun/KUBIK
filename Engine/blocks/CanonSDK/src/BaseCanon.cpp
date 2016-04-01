@@ -16,10 +16,16 @@ BaseCanon::BaseCanon():_isCameraConnected(false), _isLiveView(false), _isFrameNe
 void BaseCanon::setup(CameraController* controller, int cameraIndex)
 {
 	mLivePixels = Surface8u(CAMERA_WIDTH, CAMERA_HEIGHT, false, SurfaceChannelOrder::RGB);	
+
 	if (!shutCon.connected())
+	{
 		shutCon = App::get()->getSignalShutdown().connect(bind(&BaseCanon::shutdown, this));
+	}
+		
 	if (!_isCameraConnected)
+	{
 		init(controller);
+	}		
 }
 
 void BaseCanon::init(CameraController* controller)
@@ -48,9 +54,9 @@ void BaseCanon::init(CameraController* controller)
 	if(err != EDS_ERR_OK)
 		throw ExcCouldnotOpenSession();	
 
-	EdsSetObjectEventHandler(camera, kEdsObjectEvent_All,	  CameraEventListener::handleObjectEvent , (EdsVoid*)controller);
+	EdsSetObjectEventHandler(camera,     kEdsObjectEvent_All, CameraEventListener::handleObjectEvent ,  (EdsVoid*)controller);
 	EdsSetPropertyEventHandler(camera, kEdsPropertyEvent_All, CameraEventListener::handlePropertyEvent, (EdsVoid*)controller);	
-	EdsSetCameraStateEventHandler(camera, kEdsStateEvent_All, CameraEventListener::handleStateEvent, (EdsVoid*)controller);
+	EdsSetCameraStateEventHandler(camera, kEdsStateEvent_All, CameraEventListener::handleStateEvent,    (EdsVoid*)controller);
 
 	_isCameraConnected = true;	
 	_isBusy = false;

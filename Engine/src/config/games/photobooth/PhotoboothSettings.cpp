@@ -7,18 +7,14 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-////////////////////////////////////////////////////////////////////////////
-//
-//				SET DATA
-//
-////////////////////////////////////////////////////////////////////////////
-
 const float PhotoboothSettings::GoToScreenSaverTime = 60.0f;
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model), memento(false), configSettings(configSettings)
+	:ISettings(model),
+	memento(false),
+	configSettings(configSettings)
 {
-
+	
 }
 
 void PhotoboothSettings::load()
@@ -192,7 +188,7 @@ void PhotoboothSettings::parsePhotoOverDesigns()
 			text.getChild("font").getValue<string>(),
 			text.getChild("size").getValue<int>(),
 			text.getChild("color").getValue<string>());
-		photoOverDesignData.push_back(item);
+		stickersDesignData.push_back(item);
 	}
 
 	userOverDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
@@ -217,7 +213,7 @@ void PhotoboothSettings::parsePhotoCardStyles()
 			text.getChild("font").getValue<string>(),
 			text.getChild("size").getValue<int>(),
 			text.getChild("color").getValue<string>());
-		photoCardStyles.push_back(item);
+		cardsBackgroundDesignData.push_back(item);
 	}
 
 	userPhotoCardStyleDesignID = designDataJSON.getChild("userDesignID").getValue<int>();
@@ -324,28 +320,31 @@ void PhotoboothSettings::setTextures()
 	}	
 
 	{// load stickers photo designs
-		for (auto item : photoOverDesignData)
+		for (size_t i = 0; i < stickersDesignData.size(); i++)
 		{
-			addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
-		}			
+			auto sticker = stickersDesignData[i];
+			addToSettingsDictionary(sticker.getIconTexName(), createImageResource(getInterfacePath(sticker.getIconPath())));
 
-		OneDesignItem sticker = photoOverDesignData[activeOverDesignID - 1];
-		for (size_t i = 1; i <= STICKERS_COUNT; i++)
-		{
-			addToDictionary("sticker" + to_string(i), createImageResource(getBasePath().string() + sticker.getDesignPath() + "\\" + to_string(i) + ".png"));
-		}
+			for (size_t j = 1; j <= STICKERS_COUNT; j++)
+			{
+				auto stickerSubName = "sticker" + to_string(i + 1) + "_" + to_string(j);
+				auto stickerSubPath = getBasePath().string() + sticker.getDesignPath() + "\\" + to_string(j) + ".png";		
+				addToDictionary(stickerSubName, createImageResource(stickerSubPath));
+			}			
+		}	
 	}
 
 	{// load backgrounds photo designs
-		for (auto item : photoCardStyles)
-		{
-			addToSettingsDictionary(item.getIconTexName(), createImageResource(getInterfacePath(item.getIconPath())));
-		}			
 
-		OneDesignItem card = photoCardStyles[activePhotoCardStyleDesignID - 1];
-		for (size_t i = 1; i <= CARDS_COUNT; i++)
+		for (size_t i = 0; i < cardsBackgroundDesignData.size(); i++)
 		{
-			addToDictionary("cardBckgnd" + to_string(i), createImageResource(getBasePath().string() + card.getDesignPath() + "\\" + to_string(i) + ".png"));
+			auto photoCard = cardsBackgroundDesignData[i];
+			addToSettingsDictionary(photoCard.getIconTexName(), createImageResource(getInterfacePath(photoCard.getIconPath())));
+
+			for (size_t j = 1; j <= CARDS_COUNT; j++)
+			{				
+				addToDictionary(getPhotoCardName(i + 1, j), createImageResource(getPhotoCardPath(photoCard, j)));
+			}
 		}
 	}	
 	
@@ -370,13 +369,13 @@ void PhotoboothSettings::buildSettingData()
 		filters[i++].text = it.getTextItem().getText();
 	}
 
-	for (auto &it : photoCardStyles)
+	for (auto &it : cardsBackgroundDesignData)
 	{
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fontStorage().getAll());
 	}
 
-	for (auto &it : photoOverDesignData)
+	for (auto &it : stickersDesignData)
 	{
 		it.setIcon(getTexture(it.getIconTexName()));
 		it.setFont(fontStorage().getAll());
@@ -385,48 +384,78 @@ void PhotoboothSettings::buildSettingData()
 
 void PhotoboothSettings::buildLocationData()
 {
-	cardsImages.clear();
-	for (size_t i = 0; i < CARDS_COUNT; i++)
+	photoCardsImagesMap.clear();
+	for (size_t i = 0; i < cardsBackgroundDesignData.size(); i++)
 	{
-		cardsImages.push_back(getTexture("cardBckgnd" + to_string(i + 1)));
-	}		
+		for (size_t j = 0; j < CARDS_COUNT; j++)
+		{
+			PhotoCardKey Key = std::make_pair(i, PhotoFormat(j));
+			auto photoCardSubName = "photoCard" + to_string(i + 1) + "_" + to_string(j + 1);
+			auto Pair = std::make_pair(Key, getTexture(photoCardSubName));
+			photoCardsImagesMap.insert(Pair);
+		}
+	}
 
-	stickersImages.clear();
-	for (size_t i = 0; i < STICKERS_COUNT; i++)
+	stickersImagesMap.clear();
+	for (size_t i = 0; i < stickersDesignData.size(); i++)
 	{
-		stickersImages.push_back(getTexture("sticker" + to_string(i + 1)));
-	}		
+		for (size_t j = 0; j < STICKERS_COUNT; j++)
+		{
+			StickerKey Key = std::make_pair(i, PhotoFormat(j));
+			auto stickerSubName = "sticker" + to_string(i + 1) + "_" + to_string(j+1);
+			auto Pair = std::make_pair(Key, getTexture(stickerSubName));
+			stickersImagesMap.insert(Pair);
+		}
+	}	
 
 	smileTextures.clear();
 	for (size_t i = 0; i < smilePaths.size(); i++)
 	{
 		smileTextures.push_back(getTexture("smile" + to_string(i)));
 	}
-};
+}
 
 vector<Texture> PhotoboothSettings::getSmileTextures() const
 {
 	return smileTextures;
 }
 
-vector<Texture> PhotoboothSettings::getStickerTextures() const
+std::vector<ci::gl::Texture> PhotoboothSettings::getStickerTextures() const
 {
-	return stickersImages;
+	std::vector<ci::gl::Texture> temp;
+
+	for (size_t i = 0; i < STICKERS_COUNT; i++)
+	{
+		auto Pair = std::make_pair(activeOverDesignID-1, PhotoFormat(i));
+		temp.push_back(stickersImagesMap.at(Pair));
+	}	
+
+	return temp;
 }
 
-vector<Texture> PhotoboothSettings::getCardsTextures() const
+std::vector<ci::gl::Texture> PhotoboothSettings::getPhotoCardsTextures() const
 {
-	return cardsImages;
+	std::vector<ci::gl::Texture> temp;
+
+	for (size_t i = 0; i < CARDS_COUNT; i++)
+	{
+		auto Pair = std::make_pair(activePhotoCardStyleDesignID - 1, PhotoFormat(i));
+		temp.push_back(photoCardsImagesMap.at(Pair));
+	}
+
+	return temp;
 }
 
 Texture PhotoboothSettings::getPhotoShootingCard() const
 {
-	return cardsImages[1];
+	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
+	return stickersImagesMap.at(Pair);
 }
 
 Texture PhotoboothSettings::getPhotoSharingCard() const
 {
-	return cardsImages[1];
+	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
+	return stickersImagesMap.at(Pair);
 }
 
 vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
@@ -489,7 +518,7 @@ TextItem PhotoboothSettings::getSubTitleClose(const PhtTextID& id)
 
 std::string PhotoboothSettings::getActiveOverDesignText()
 {
-	for (auto item : photoOverDesignData)
+	for (auto item : stickersDesignData)
 	{
 		if (item.getID() == activeOverDesignID)
 		{
@@ -502,7 +531,7 @@ std::string PhotoboothSettings::getActiveOverDesignText()
 
 std::string PhotoboothSettings::getActiveCardStyleText()
 {
-	for (auto item : photoCardStyles)
+	for (auto item : cardsBackgroundDesignData)
 	{
 		if (item.getID() == activePhotoCardStyleDesignID)
 		{
@@ -516,6 +545,7 @@ std::string PhotoboothSettings::getActiveCardStyleText()
 std::string PhotoboothSettings::getActiveFiltersTexts()
 {
 	std::string result = "";
+	std::string delimeter = ",";
 
 	for (auto item : photoFiltersPreview)
 	{
@@ -524,7 +554,10 @@ std::string PhotoboothSettings::getActiveFiltersTexts()
 			if (item.getID() == filter.id && filter.isOn)
 			{
 				if (result.size())
-					result += ", ";
+				{
+					result += delimeter;
+				}
+					
 				result += item.getTextItem().getText();
 			}
 		}
@@ -734,11 +767,11 @@ bool PhotoboothSettings::settingsChanged()
 bool PhotoboothSettings::sharingNotEqual(Sharing sharing1, Sharing sharing2)
 {
 	return (sharing2.getSocialState(PhtTextID::FACEBOOK) != sharing1.getSocialState(PhtTextID::FACEBOOK) ||
-		sharing2.getSocialState(PhtTextID::VKONTAKTE) != sharing1.getSocialState(PhtTextID::VKONTAKTE) ||
-		sharing2.getSocialState(PhtTextID::TWITTER) != sharing1.getSocialState(PhtTextID::TWITTER) ||
-		sharing2.getSocialState(PhtTextID::EMAIL) != sharing1.getSocialState(PhtTextID::EMAIL) ||
-		sharing2.getSocialState(PhtTextID::QRCODE) != sharing1.getSocialState(PhtTextID::QRCODE) ||
-		sharing2.getSocialState(PhtTextID::PRINTER) != sharing1.getSocialState(PhtTextID::PRINTER));
+		sharing2.getSocialState(PhtTextID::VKONTAKTE)	 != sharing1.getSocialState(PhtTextID::VKONTAKTE) ||
+		sharing2.getSocialState(PhtTextID::TWITTER)		 != sharing1.getSocialState(PhtTextID::TWITTER) ||
+		sharing2.getSocialState(PhtTextID::EMAIL)		 != sharing1.getSocialState(PhtTextID::EMAIL) ||
+		sharing2.getSocialState(PhtTextID::QRCODE)		 != sharing1.getSocialState(PhtTextID::QRCODE) ||
+		sharing2.getSocialState(PhtTextID::PRINTER)		 != sharing1.getSocialState(PhtTextID::PRINTER));
 }
 
 bool PhotoboothSettings::filtersNotEqual(const vector<Filter>& filter1, const vector<Filter>& filter2)
@@ -789,12 +822,12 @@ std::vector<PhotoboothSettings::Filter> PhotoboothSettings::getFilters() const
 
 DesignData PhotoboothSettings::getPhotoOverDesignData() const
 {
-	return photoOverDesignData;
+	return stickersDesignData;
 }
 
 DesignData PhotoboothSettings::getPhotoCardStyles() const
 {
-	return photoCardStyles;
+	return cardsBackgroundDesignData;
 }
 
 DesignData PhotoboothSettings::getPhotoFiltersPreview() const
@@ -806,3 +839,14 @@ bool PhotoboothSettings::PhotoCountItem::getActive() const
 {
 	return isActive;
 }
+
+std::string PhotoboothSettings::getPhotoCardName(int i, int j) const
+{
+	return "photoCard" + to_string(i) + "_" + to_string(j);
+}
+
+std::string PhotoboothSettings::getPhotoCardPath(const OneDesignItem& photoCard, int j) const
+{
+	return getBasePath().string() + photoCard.getDesignPath() + "\\" + to_string(j) + ".png";
+}
+

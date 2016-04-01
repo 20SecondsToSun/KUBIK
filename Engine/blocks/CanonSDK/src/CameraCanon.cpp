@@ -1,4 +1,5 @@
 #include "CameraCanon.h"
+#include "tools/logger.h"
 
 using namespace canon;
 
@@ -148,7 +149,7 @@ void CameraCanon::takePicture()
 	}
 	catch(canon::ExcTakenPhoto ex)
 	{
-		console()<<" error message :::::  "<<ex.what()<<endl;
+		kubik::logger().log("!!!!!!! camera error message !!!" + ci::toString(ex.what()));
 		photoErrorEvent();
 	}
 }
@@ -216,25 +217,30 @@ int CameraCanon::getHeight() const
 {
 	Surface8u surf = getLiveSurface();
 
-	if(surf)	
-		return surf.getHeight();    
+	if (surf)
+	{
+		return surf.getHeight();
+	}		
 
 	return 0;
 }
 
 void CameraCanon::update()
 {
-	if (connectionState == CONNECT && isLiveViewing())	
-		  downloadData();
+	if (connectionState == CONNECT && isLiveViewing())
+	{
+		downloadData();
+	}		 
 }
 
 void CameraCanon::draw(Rectf drawingRect) 
 { 
 	color(Color::white());
-
 	Surface liveSurface = getLiveSurface();
-	if(liveSurface) 
+	if (liveSurface)
+	{
 		gl::draw(liveSurface);
+	}		
 }
 
 ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int offsety, float scale)
@@ -345,5 +351,5 @@ void CameraCanon::handleStateEvent(EdsUInt32 inEvent)
 		break;
 	}
 
-	console() << "event--------------------------  " << inEvent<<endl;
+	kubik::logger().log(" camera state event : " + inEvent);
 }

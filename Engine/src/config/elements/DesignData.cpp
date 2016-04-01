@@ -111,7 +111,7 @@ void OneDesignItem::setDesignPath(const std::string& path)
 	designPath = path;
 }
 
-const std::string& OneDesignItem::getDesignPath()
+const std::string& OneDesignItem::getDesignPath() const
 {
 	return designPath;
 }

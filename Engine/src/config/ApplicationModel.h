@@ -49,7 +49,7 @@ namespace kubik
 
 			////////////////////////////////////////////////////////////////////////////
 			//
-			//				ACCESSORS
+			//					ACCESSORS
 			//
 			////////////////////////////////////////////////////////////////////////////
 
@@ -57,15 +57,15 @@ namespace kubik
 			std::vector<GamesInfo> getGames();
 			void setGames(const std::vector<GamesInfo>& games);
 
-			void setDefaultGameID(GameId value);
+			void   setDefaultGameID(GameId value);
 			GameId getDefaultGameID() const;
 
-			bool onlyOneGameOn();
+			bool   onlyOneGameOn();
 			GameId onlyOneGameOnID();
 
 			////////////////////////////////////////////////////////////////////////////
 			//
-			//				SET
+			//					SET
 			//
 			////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +75,7 @@ namespace kubik
 
 			////////////////////////////////////////////////////////////////////////////
 			//
-			//				GET
+			//					GET
 			//
 			////////////////////////////////////////////////////////////////////////////			
 
@@ -96,6 +96,8 @@ namespace kubik
 			std::string getSocialSettingsFilePath() const;		
 
 		private:
+			static const std::string ConfigFile;
+
 			int			standID;
 			bool		netConnection;
 			std::string userID;
@@ -112,13 +114,17 @@ namespace kubik
 			std::string screenSaverConfigPath;
 			
 			std::vector<GamesInfo> games;
-			GameId defaultGameID;
-			DesignData designData;
-			int userDesignID;
+			GameId		defaultGameID;
+			DesignData  designData;
+			int			userDesignID;
 			std::string socSettingsFilePath;
 
 			std::map<settings::id, ConfigObject> configObjectMap;
-			ConfigObject photoboothConfigObject, instakubConfigObject, mainConfigObject, preloadersConfigObject, pozaConfigObject;
+			ConfigObject photoboothConfigObject;
+			ConfigObject instakubConfigObject;
+			ConfigObject mainConfigObject;
+			ConfigObject preloadersConfigObject;
+			ConfigObject pozaConfigObject;
 			ConfigObject funcesConfigObject;
 			
 			fs::path getConfigPath();

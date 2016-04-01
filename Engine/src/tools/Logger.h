@@ -5,7 +5,7 @@ namespace kubik
 	class Logger
 	{
 		static bool init;
-		static std::string logName;
+		static boost::filesystem::path logPath;
 
 	public:
 		static Logger& getInstance();

@@ -6,6 +6,8 @@ using namespace ci::app;
 using namespace kubik::config;
 using namespace kubik;
 
+const std::string ApplicationModel::ConfigFile = "data/configs/app.txt";
+
 void ApplicationModel::load()
 {
 	logger().log("PARSE CONFIG DATA");
@@ -32,7 +34,6 @@ void ApplicationModel::parseConfigPaths()
 	labelsPath			  = configJSON.getChild("labelsPath").getValue<string>();
 	designDataPath		  = configJSON.getChild("designDataPath").getValue<string>();
 	socSettingsFilePath   = configJSON.getChild("socialConfigPath").getValue<string>();
-
 
 	JsonTree pozaJSON = configJSON.getChild("pozaConfig");
 	parseConfigPaths(pozaConfigObject, pozaJSON);
@@ -76,30 +77,34 @@ void ApplicationModel::parseUserData()
 {
 	JsonTree userInfoJSON = JsonTree(loadFile(getUserDataPath()));
 
-	_userDataPath = JsonTree(userInfoJSON.getChild("userData")).getValue<string>();
+	_userDataPath		  = JsonTree(userInfoJSON.getChild("userData")).getValue<string>();
 	JsonTree userDataJSON = JsonTree(loadFile(getFullPath(_userDataPath)));
 
-	lang = userDataJSON.getChild("lang").getValue<string>();
-	userID = userDataJSON.getChild("userID").getValue<string>();
-	standID = userDataJSON.getChild("standID").getValue<int>();
-	netConnection = userDataJSON.getChild("netConnection").getValue<bool>();
-	defaultGameID = (GameId)userDataJSON.getChild("defaultGameID").getValue<int>();
+	lang			= userDataJSON.getChild("lang").getValue<string>();
+	userID			= userDataJSON.getChild("userID").getValue<string>();
+	standID			= userDataJSON.getChild("standID").getValue<int>();
+	netConnection   = userDataJSON.getChild("netConnection").getValue<bool>();
+	defaultGameID	= (GameId)userDataJSON.getChild("defaultGameID").getValue<int>();
 
 	auto gamesAvailablePath = JsonTree(userInfoJSON.getChild("gamesAvailable")).getValue<string>();
-	gamesPurchasedPath = JsonTree(userInfoJSON.getChild("gamesPurchasedPath")).getValue<string>();
-	gamesTurnOnPath = JsonTree(userInfoJSON.getChild("gamesTurnOnPath")).getValue<string>();
+	gamesPurchasedPath		= JsonTree(userInfoJSON.getChild("gamesPurchasedPath")).getValue<string>();
+	gamesTurnOnPath			= JsonTree(userInfoJSON.getChild("gamesTurnOnPath")).getValue<string>();
 
 	JsonTree gamesPurchased = JsonTree(loadFile(getFullPath(gamesPurchasedPath))).getChild("data");
-	JsonTree gamesTurnOn = JsonTree(loadFile(getFullPath(gamesTurnOnPath))).getChild("data");
+	JsonTree gamesTurnOn	= JsonTree(loadFile(getFullPath(gamesTurnOnPath))).getChild("data");
 	JsonTree gamesAvailable = JsonTree(loadFile(getFullPath(gamesAvailablePath))).getChild("data");
 
 	vector<int> purchasedGames, turnOnGames;
 	for (auto it : gamesPurchased)
+	{
 		purchasedGames.push_back(it.getChild("id").getValue<int>());
+	}		
 
 	for (auto it : gamesTurnOn)
+	{
 		turnOnGames.push_back(it.getChild("id").getValue<int>());
-
+	}
+	
 	string iconUrl = userInfoJSON.getChild("iconPath").getValue<string>();
 
 	for (auto it : gamesAvailable)
@@ -162,13 +167,15 @@ void ApplicationModel::writeGamesData(const std::vector<GamesInfo>& games)
 
 	JsonTree doc;
 	JsonTree gamesTurnOn = JsonTree::makeArray("data");
-	for (auto it : games)	
+	for (auto it : games)
+	{
 		if (it.isOn)
 		{
 			JsonTree id;
 			id.addChild(JsonTree("id", it.id));
 			gamesTurnOn.pushBack(id);
-		}	
+		}
+	}
 
 	doc.addChild(gamesTurnOn);
 	doc.write(writeFile(basePath), JsonTree::WriteOptions());
@@ -196,8 +203,12 @@ void ApplicationModel::saveUserData()
 bool ApplicationModel::findGameId(int id, const vector<int>& gamesTurnOn)
 {
 	for (auto it : gamesTurnOn)
+	{
 		if (it == id)
+		{
 			return true;
+		}			
+	}	
 
 	return false;
 }
@@ -207,14 +218,14 @@ vector<GamesInfo> ApplicationModel::getGames()
 	return games;
 }
 
-void ApplicationModel::setGames(const vector<GamesInfo>& _value)
+void ApplicationModel::setGames(const vector<GamesInfo>& value)
 {
-	games = _value;
+	games = value;
 }
 
-void ApplicationModel::setDefaultGameID(GameId _value)
+void ApplicationModel::setDefaultGameID(GameId value)
 {
-	defaultGameID = _value;
+	defaultGameID = value;
 }
 
 GameId ApplicationModel::getDefaultGameID() const
@@ -226,8 +237,12 @@ bool ApplicationModel::onlyOneGameOn()
 {
 	int counter = 0;
 	for (auto it : games)
+	{
 		if (it.isOn && ++counter > 1)
+		{
 			return false;
+		}			
+	}	
 
 	return true;
 }
@@ -236,8 +251,12 @@ GameId ApplicationModel::onlyOneGameOnID()
 {
 	int counter = 0;
 	for (auto it : games)
+	{
 		if (it.isOn)
+		{
 			return it.id;
+		}			
+	}		
 
 	return GameId::INSTAKUB;//TODO
 }
@@ -321,5 +340,5 @@ string ApplicationModel::getSocialSettingsFilePath() const
 
 fs::path ApplicationModel::getConfigPath()
 {
-	return getAppPath() / "data/configs/app.txt";
+	return getAppPath() / ConfigFile;
 }

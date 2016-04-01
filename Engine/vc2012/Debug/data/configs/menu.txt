@@ -2,7 +2,7 @@
    "finalPath" : "menuDesign\\",
    "isCustomDesign" : false,
    "kubikTemplatePartDesignPath" : "kubik\\templates\\",
-   "staticPartDesignPath" : "data\\interface\\",
+   "staticPartDesignPath" : "kubik\\interface\\",
    "templateId" : 1,
    "userTemplatePartDesignPath" : "user_design\\templates\\"
 }

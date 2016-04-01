@@ -40,7 +40,10 @@ namespace kubik
 			{
 			protected:
 				float _scale, _scale1;
-				std::vector<ci::gl::Texture> templates, stickers;
+
+				std::vector<ci::gl::Texture> templates;
+				std::vector<ci::gl::Texture> stickers;
+
 				bool isSelected;
 				templateID id;
 				ci::gl::Texture btnOver, btnOverText;
@@ -70,7 +73,7 @@ namespace kubik
 				virtual void drawPhotos();
 				virtual void drawStickers();
 			public:
-				TemplateButton1(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);	
+				TemplateButton1(const ci::Rectf& rect, const std::vector<ci::gl::Texture>& templates, const std::vector<ci::gl::Texture>& stickers);
 				virtual ci::gl::Texture getPrintTemplate();
 			};
 
@@ -95,7 +98,7 @@ namespace kubik
 				void setLineTexture(const ci::gl::Texture& texture);
 				virtual ci::gl::Texture getPrintTemplate();				
 			};
-
+			
 			class TemplateButton3: public TemplateButton
 			{
 				float shiftY, shiftX;

@@ -23,7 +23,7 @@ namespace kubik
 		TextItem getTextItem() const;			
 
 		const std::string& getIconPath();
-		const std::string& getDesignPath();
+		const std::string& getDesignPath() const;
 		std::string getIconTexName() const;		
 		std::string getDesignTexName();
 

@@ -6,7 +6,7 @@ using namespace kubik;
 
 ApplicationView::ApplicationView()
 {
-	preloader = PreloaderRef(new Preloader());
+	preloader	 = PreloaderRef(new Preloader());
 	servicePopup = ServicePopupRef(new ServicePopup());// font memory leak
 }
 
@@ -20,7 +20,9 @@ void ApplicationView::draw()
 	location->draw();
 
 	for (auto layer : layers)
+	{
 		layer->draw();
+	}		
 }
 
 void ApplicationView::clearLayers()

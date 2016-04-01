@@ -3,5 +3,5 @@
    "gamesPurchasedPath" :"data\\configs\\games\\gamesPurchased.txt",
    "gamesTurnOnPath" : "data\\configs\\games\\gamesTurnOn.txt",
    "gamesAvailable" : "data\\configs\\games\\gamesAvailable.txt",
-   "iconPath": "data\\interface\\gamesDesign\\icons\\"
+   "iconPath": "kubik\\interface\\gamesDesign\\icons\\"
 }

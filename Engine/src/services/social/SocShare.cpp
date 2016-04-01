@@ -185,15 +185,20 @@ std::string SocShare::getAuthUrl()
 
 std::vector<std::string> SocShare::getUploadPhotoPathVec() const
 {
-	string path1 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon2.png";
-	string path2 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon1.png";
-	string path3 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\interface\\gamesDesign\\icons\\icon3.png";
-	std::vector<std::string> filesPath;
-	filesPath.push_back(path1);
-	filesPath.push_back(path2);
-	filesPath.push_back(path3);
+	///string path1 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon2.png";
+	//string path2 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon1.png";
+	///string path3 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon3.png";
+	//std::vector<std::string> filesPath;
+	//filesPath.push_back(path1);
+	//filesPath.push_back(path2);
+	//filesPath.push_back(path3);
 
-	return filesPath;
+	return uploadPhotoPathVec;
+}
+
+void SocShare::setUploadPhotoPathVec(const std::vector<std::string>& vec)
+{
+	uploadPhotoPathVec = vec;
 }
 
 void SocShare::resizeWebBrowser(int width, int height)

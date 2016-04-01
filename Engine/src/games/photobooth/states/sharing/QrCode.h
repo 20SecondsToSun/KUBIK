@@ -23,7 +23,7 @@ namespace kubik
 				QrCode() :SimpleSpriteButton(Rectf(0.0, 0.0f, 424.0f, 424.0f))
 				{
 
-				};
+				}
 
 				virtual void drawLayout()
 				{

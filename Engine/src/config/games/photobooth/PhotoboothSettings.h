@@ -12,7 +12,7 @@
 
 #define Photobooth_DEBUG
 #define Photobooth_Loadfromfolder_DEBUG
-#define Photobooth_Sharing_DEBUG
+//#define Photobooth_Sharing_DEBUG
 
 namespace kubik
 {
@@ -41,6 +41,20 @@ namespace kubik
 				SHARE_TITLE, QR_TEXT, EMAIL_TEXT, FB_TEXT, TW_TEXT, VK_TEXT, PLAY_AGAIN, ANOTHER_GAMES
 			};
 
+			enum class PhotoFormat
+			{
+				FORMAT1,
+				FORMAT2,
+				FORMAT3,
+				FORMAT4,
+				FORMAT5
+			};
+
+			typedef std::pair<int, PhotoFormat>  StickerKey;
+			typedef std::pair<int, PhotoFormat>  PhotoCardKey;
+			typedef std::map<StickerKey, ci::gl::Texture> StickerMap;
+			typedef std::map<PhotoCardKey, ci::gl::Texture> PhotoCardsMap;			
+			
 			class PhotoCountItem
 			{
 				gl::Texture texture;
@@ -56,7 +70,7 @@ namespace kubik
 			void buildLocationData() override;	
 			void load()			override;
 			void setTextures()  override;
-			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "photoDir"; };			
+			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "Kubik//photoDir"; };			
 
 			TextItem getMainTitle(const PhtTextID& id);
 			TextItem getSubTitleClose(const PhtTextID& id);
@@ -70,7 +84,8 @@ namespace kubik
 
 			std::vector<ci::gl::Texture> getSmileTextures() const;
 			std::vector<ci::gl::Texture> getStickerTextures() const;
-			std::vector<ci::gl::Texture> getCardsTextures() const;
+			std::vector<ci::gl::Texture> getPhotoCardsTextures() const;
+
 			ci::gl::Texture getPhotoShootingCard() const;
 			ci::gl::Texture getPhotoSharingCard() const;			
 			ci::gl::Texture getActivePrintBgTex();
@@ -123,7 +138,7 @@ namespace kubik
 
 		private:
 			static const int CARDS_COUNT = 5;
-			static const int STICKERS_COUNT = 4;			
+			static const int STICKERS_COUNT = 5;			
 
 			class ImageElement
 			{
@@ -180,10 +195,11 @@ namespace kubik
 			
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;
-
 			bool						 memento;
 			
-			std::vector<ci::gl::Texture> cardsImages, stickersImages;
+			StickerMap stickersImagesMap;
+			PhotoCardsMap photoCardsImagesMap;
+
 			std::vector<Filter>			 filters, filtersMemento;
 			std::vector<Sticker>		 stickers;
 			std::vector<BackgroundPrint> bgPrint;
@@ -213,9 +229,10 @@ namespace kubik
 			
 			/////////////////////////////////
 
-			DesignData photoOverDesignData;
-			DesignData photoCardStyles;
+			DesignData stickersDesignData;
+			DesignData cardsBackgroundDesignData;
 			DesignData photoFiltersPreview;
+
 			std::vector<std::string> smilePaths;
 			std::vector<ci::gl::Texture> smileTextures;			
 			std::string getActiveOverDesignText();
@@ -226,7 +243,10 @@ namespace kubik
 			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
 			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
 
-			ConfigSettingsRef configSettings;			
+			ConfigSettingsRef configSettings;	
+
+			std::string getPhotoCardName(int i, int j) const;
+			std::string getPhotoCardPath(const OneDesignItem& photoCard, int j) const;
 		};
 
 		typedef PhotoboothSettings::PhtTextID  PhtTextID;

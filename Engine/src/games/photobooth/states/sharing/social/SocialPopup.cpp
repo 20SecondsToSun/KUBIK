@@ -98,7 +98,7 @@ void SocialPopup::signInDraw()
 	Popup::drawBackgrounds();
 
 	gl::pushMatrices();
-	gl::translate(0.0f, 0.5f*(715.0f - miniPreloader->getHeight()));
+	gl::translate(0.0f, 0.5f * (715.0f - miniPreloader->getHeight()));
 	miniPreloader->draw();
 	gl::popMatrices();
 	
@@ -132,5 +132,5 @@ void SocialPopup::errorDraw()
 
 void SocialPopup::drawTextMessage(const ci::gl::Texture& text)
 {
-	gl::draw(text, Vec2f((1080.0f - text.getWidth()) * 0.5f, 748.0f - 0.5f * (text.getHeight())));
+	gl::draw(text, Vec2f((1080.0f - text.getWidth()) * 0.5f, 748.0f - 0.5f * text.getHeight()));
 }

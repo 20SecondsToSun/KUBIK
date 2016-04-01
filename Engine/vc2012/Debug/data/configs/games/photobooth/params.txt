@@ -10,11 +10,11 @@
       },
       {
          "id" : 2,
-         "isOn" : true
+         "isOn" : false
       },
       {
          "id" : 3,
-         "isOn" : true
+         "isOn" : false
       },
       {
          "id" : 4,
@@ -22,18 +22,18 @@
       },
       {
          "id" : 5,
-         "isOn" : true
+         "isOn" : false
       },
       {
          "id" : 6,
          "isOn" : true
       }
    ],
-   "isEmail" : true,
+   "isEmail" : false,
    "isFacebook" : true,
-   "isPrint" : true,
-   "isQrCode" : true,
+   "isPrint" : false,
+   "isQrCode" : false,
    "isSticker" : false,
    "isTwitter" : true,
-   "isVkotakte" : true
+   "isVkotakte" : false
 }

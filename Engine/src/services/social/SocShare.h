@@ -66,6 +66,8 @@ namespace kubik
 		void disconnectTouchDown();
 		ServerStatus getStatus();
 
+		void setUploadPhotoPathVec(const std::vector<std::string>& vec);
+
 	protected:		
 		std::string authURL;
 
@@ -89,6 +91,7 @@ namespace kubik
 		virtual int getBrowserHeight() const;
 		virtual std::string getAuthUrl();
 		virtual std::vector<std::string> getUploadPhotoPathVec() const;
+		
 		virtual void postText(const std::string& textStatus){};
 		virtual void postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath){};
 		virtual void posting();
@@ -97,6 +100,7 @@ namespace kubik
 		void resizeWebBrowser(int width, int height);
 
 	private:
+		std::vector<std::string> uploadPhotoPathVec;
 		ci::signals::connection	keyDownCon, mouseDownCon, mouseUpCon;
 		void mouseDown(MouseEvent &event);
 		void mouseUp(MouseEvent &event);

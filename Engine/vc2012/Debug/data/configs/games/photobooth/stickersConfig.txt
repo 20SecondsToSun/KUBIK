@@ -59,6 +59,6 @@
 		  "color" :  "ffffff"
 		},
 	 "iconPath" :"configDesign\\photobooth\\photoOverElements\\design6.png",
-	  "designPath" :"user_design\\design_elements\\gameDesign\\photobooth\\photoStickers\\"
+	  "designPath" :"user_design\\design_elements\\gameDesign\\photobooth\\photoStickers"
       }]      
 }

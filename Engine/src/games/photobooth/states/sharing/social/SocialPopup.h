@@ -41,6 +41,8 @@ namespace kubik
 				virtual void kill()  override;
 				virtual void close() override;	
 
+				SocShareRef getSocialService(){ return social; }
+
 			private:
 				ci::gl::Texture postingBg, errorBg;
 				ci::gl::Texture successMessage, errorMessage;

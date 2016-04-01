@@ -97,11 +97,11 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	sharefon = settings->getTexture("sharefon");
 	sharefonPos = Vec2f(0.0f, getWindowHeight() - sharefon.getHeight());
 
-#ifdef Photobooth_Sharing_DEBUG
+//#ifdef Photobooth_Sharing_DEBUG
 	startServiceButtonY = 588.0f;
-#else
+//#else
 	startServiceButtonY = 1592.0f;
-#endif
+//#endif
 
 	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY - againBtn->getHeight()  * 0.5f));
 	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
@@ -112,6 +112,20 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 void PhotoSharing::start()
 {	
 	auto photoTemplate = settings->getPhotoSharingCard();
+
+	auto path1 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(1) + ".JPG"));
+	auto path2 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(2) + ".JPG"));
+	auto path3 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(3) + ".JPG"));
+	std::vector<std::string> filesPath;
+	filesPath.push_back(path1);
+	filesPath.push_back(path2);
+	filesPath.push_back(path3);
+	vkpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
+	fbpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
+	twpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
+
+
+
 
 #ifndef Photobooth_Sharing_DEBUG
 	finalPhotoTemplate.setData(photoStorage);

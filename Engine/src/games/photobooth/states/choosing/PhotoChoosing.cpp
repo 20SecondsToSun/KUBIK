@@ -22,19 +22,26 @@ void PhotoChoosing::start()
 {
 
 #ifdef Photobooth_Loadfromfolder_DEBUG
-	photoStorage->clear();
+	//photoStorage->clear();
 #endif
 
 	if (photoStorage->empty())
-		for (int i = 1; i < 6; i++)	
-			photoStorage->loadDownloadedPhoto("c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\data\\photoDir\\IMG_000" + to_string(i) + ".JPG");
+	{
+		for (int i = 1; i < 6; i++)
+		{
+			auto path = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(i) + ".JPG"));
+			photoStorage->loadDownloadedPhoto(path);
+		}
+	}			
 
 	state = CHOOSING;
 	selectedNum = 0;
 	okBtn->setAlpha(0.0f);
 
 	for (auto btn : photoBtns)
+	{
 		btn->setSelected(false);
+	}		
 
 	filterSelected(photoStorage->getSelectedFilter());
 
@@ -44,10 +51,14 @@ void PhotoChoosing::start()
 	assert(texs.size() == photoBtns.size());
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
+	{
 		photoBtns[i]->setPhoto(texs[i]);
+	}		
 
 	for (unsigned int i = 0; i < filterBtns.size(); i++)
+	{
 		filterBtns[i]->setPhoto(texs[0]);
+	}
 
 	setShaderForPreviews();
 	
@@ -56,10 +67,14 @@ void PhotoChoosing::start()
 	reShotBtn->setAlpha(0.0f);
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
+	{
 		photoBtns[i]->setAlpha(0.0f);
+	}		
 
 	for (unsigned int i = 0; i < filterBtns.size(); i++)
+	{
 		filterBtns[i]->setAlpha(0.0f);
+	}		
 
 	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);
 	choosefonPosAnim = Vec2f(0.0f, choosefon.getHeight());
@@ -306,7 +321,10 @@ void PhotoChoosing::draw()
 void PhotoChoosing::drawPhotoPreview()
 {
 	for (auto btn : photoBtns)
+	{
 		btn->draw();
+	}
+	
 	okBtn->draw();
 	reShotBtn->draw();
 }
@@ -318,7 +336,9 @@ void PhotoChoosing::drawPhotoFilters()
 	gl::color(Color::white());
 
 	for (auto filter : filterBtns)
+	{
 		filter->draw();
+	}		
 }
 
 void PhotoChoosing::setTitle()
@@ -331,7 +351,9 @@ void kubik::games::photobooth::PhotoChoosing::setPhotoButtonsDesign()
 {
 	photoBtns.clear();
 	for (int i = 0; i < PHOTOS_NUM; i++)
+	{
 		photoBtns.push_back(PhotoContainerRef(new PhotoContainer(i, settings->getTexture("galka"), settings->getTexture("ramka"), photoPositions[i])));
+	}		
 }
 
 void PhotoChoosing::setOkButtonDesign()

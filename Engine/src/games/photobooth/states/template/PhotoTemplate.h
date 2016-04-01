@@ -27,7 +27,9 @@ namespace kubik
 
 				PhotoStorageRef photoStorage;
 
-				std::vector<ci::gl::Texture> cards, stickers;
+				std::vector<ci::gl::Texture> cards;
+				std::vector<ci::gl::Texture>	stickers;
+
 				std::vector<TemplateButtonRef> templatebtns;
 				ci::Anim<float> alphaAnim;
 				ci::Vec2f titlePos;

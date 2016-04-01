@@ -137,7 +137,7 @@ void Facebook::postPhoto(const std::string& textStatus, const std::vector<std::s
 		return;
 	}
 
-	if (facebookAlbumId == SocialSettings::FACEBOOK_NULL_ALBUM_ID)
+	//if (facebookAlbumId == SocialSettings::FACEBOOK_NULL_ALBUM_ID)
 	{
 		map<string, string> strings;
 		strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
@@ -169,11 +169,11 @@ void Facebook::postPhoto(const std::string& textStatus, const std::vector<std::s
 			return;
 		}
 	}
-	else
+	/*else
 	{
 		status = POST_ERROR;
 		return;
-	}
+	}*/
 }
 
 void Facebook::postPhotosToFbAlbum(const std::string& textStatus, const std::vector<std::string>& filesPath)

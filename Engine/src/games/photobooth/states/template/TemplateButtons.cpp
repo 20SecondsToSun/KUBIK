@@ -42,7 +42,7 @@ void TemplateButton::drawLayout()
 	shader->setAlpha(alpha);
 	drawTemplateBg();
 	drawPhotos();
-	drawStickers();
+	//drawStickers();
 
 	if (isSelected)
 	{
@@ -67,8 +67,8 @@ void TemplateButton::setSelectDesign(const Texture& btn)
 TemplateButton1::TemplateButton1(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
 	:TemplateButton(rect, FIRST, templates, stickers)
 {
-	_scale = 218.0f / templates[0].getWidth();
-	shiftY = 4.0f;
+	_scale  = 218.0f / templates[0].getWidth();
+	shiftY  = 4.0f;
 	_scale1 = ((float)templates[0].getWidth() / stickers[2].getWidth());
 }
 
@@ -94,13 +94,8 @@ void TemplateButton1::drawPhotos()
 void TemplateButton1::drawStickers()
 {
 	gl::pushMatrices();
-	gl::scale(_scale1, _scale1);
 	gl::scale(_scale, _scale);
-	gl::draw(stickers[2]);
-	gl::translate(0, stickers[2].getHeight() + shiftY);
-	gl::draw(stickers[2]);
-	gl::translate(0, stickers[2].getHeight() + shiftY);
-	gl::draw(stickers[2]);
+	gl::draw(stickers[0]);
 	gl::popMatrices();
 }
 
@@ -118,13 +113,11 @@ ci::gl::Texture TemplateButton1::getPrintTemplate()
 		gl::translate(0, _height + 5);
 		shader->render(photoTemplates[2][FormatID::FORMAT1_PRINT]);
 		gl::popMatrices();		
-		gl::scale(_scale1, _scale1);
-		gl::draw(stickers[2]);
-		gl::translate(0.0f, stickers[2].getHeight() + shiftY);
-		gl::draw(stickers[2]);
-		shiftY = 5.0f;
-		gl::translate(0.0f, stickers[2].getHeight() + shiftY);
-		gl::draw(stickers[2]);
+		gl::scale(_scale, _scale);
+		gl::draw(stickers[0]);
+		//shiftY = 5.0f;
+		//gl::translate(0.0f, stickers[2].getHeight() + shiftY);
+		//gl::draw(stickers[2]);
 	});
 }
 
@@ -161,7 +154,7 @@ void TemplateButton2::init()
 
 	for (unsigned int i = 0; i < subBtns.size(); i++)
 	{
-		subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);// DEBUG ASSERT TODO
+	//	subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);// DEBUG ASSERT TODO
 	}		
 }
 
@@ -172,18 +165,24 @@ void TemplateButton2::setSelected(bool value)
 	if (isSelected)
 	{
 		if (!selectedTemplate)
+		{
 			selectedTemplate = subBtns[0];
+		}			
 
 		selectedTemplate->setSelected(true);
 	}
 	else if (selectedTemplate)
+	{
 		selectedTemplate->setSelected(false);
+	}		
 }
 
 void TemplateButton2::activateListeners()
 {
 	for (auto btn : subBtns)
+	{
 		btn->connectEventHandler(&TemplateButton2::photoTemplateChoose, this);
+	}		
 
 	TemplateButton::activateListeners();
 }
@@ -191,7 +190,9 @@ void TemplateButton2::activateListeners()
 void TemplateButton2::unActivateListeners()
 {
 	for (auto btn : subBtns)
+	{
 		btn->disconnectEventHandler();
+	}		
 
 	TemplateButton::unActivateListeners();
 }
@@ -202,13 +203,17 @@ void TemplateButton2::photoTemplateChoose(EventGUIRef& _event)
 	activeIndex = eventref->getTemplateID();
 
 	if (selectedTemplate)
+	{
 		selectedTemplate->setSelected(false);
+	}		
 
 	selectedTemplate = subBtns[activeIndex];
 	selectedTemplate->setSelected(true);
 
 	if (!isSelected)
+	{
 		mouseUpSignal(event);
+	}		
 }
 
 void TemplateButton2::drawTemplateBg()
@@ -227,7 +232,7 @@ void TemplateButton2::drawPhotos()
 	{
 		gl::pushMatrices();
 		gl::translate(subBtns[i]->getLocalPosition());
-		subBtns[i]->drawLayout();
+	//	subBtns[i]->drawLayout();
 		gl::popMatrices();
 	}
 }
@@ -236,8 +241,7 @@ void TemplateButton2::drawStickers()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
-	gl::scale(_scale1, _scale1);
-	gl::draw(stickers[0]);
+	gl::draw(stickers[1]);
 	gl::popMatrices();
 
 	gl::draw(lineTexture, Vec2f(49.0f, getHeight() + 14.0f));
@@ -247,8 +251,10 @@ void TemplateButton2::drawStickers()
 
 void TemplateButton2::setSelectRamkaTexture(const Texture& texture)
 {
-	for (unsigned int i = 0; i < subBtns.size(); i++)
+	for (size_t i = 0; i < subBtns.size(); i++)
+	{
 		subBtns[i]->setSelectRamkaTexture(texture);
+	}		
 }
 
 void TemplateButton2::setLineTexture(const Texture& texture)
@@ -270,11 +276,11 @@ ci::gl::Texture TemplateButton2::getPrintTemplate()
 	});
 }
 
-////////////////////////////////////////////////////////////////////////////
-//
-//					TemplateButton3
-//
-////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+////
+////					TemplateButton3
+////
+//////////////////////////////////////////////////////////////////////////////
 
 TemplateButton3::TemplateButton3(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
 	:TemplateButton(rect, THIRD, templates, stickers)
@@ -307,12 +313,7 @@ void TemplateButton3::drawStickers()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
-	gl::scale(_scale1, _scale1);
-	gl::draw(stickers[1]);
-	gl::translate(stickers[1].getWidth() + shiftX, 0.0f);
-	gl::draw(stickers[1]);
-	gl::translate(stickers[1].getWidth() + shiftX, 0.0f);
-	gl::draw(stickers[1]);
+	gl::draw(stickers[3]);
 	gl::popMatrices();
 }
 
@@ -341,11 +342,11 @@ ci::gl::Texture TemplateButton3::getPrintTemplate()
 	});
 }
 
-////////////////////////////////////////////////////////////////////////////
-//
-//					TemplateButton4
-//
-////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+////
+////					TemplateButton4
+////
+//////////////////////////////////////////////////////////////////////////////
 
 TemplateButton4::TemplateButton4(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
 	:TemplateButton(rect, FOURTH, templates, stickers)
@@ -377,11 +378,7 @@ void TemplateButton4::drawStickers()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
-	gl::scale(_scale1, _scale1);
-	gl::draw(stickers[3]);
-	gl::translate(0.0f, stickers[3].getHeight() + shiftY);
-	gl::scale(_scale2, _scale2);
-	gl::draw(stickers[3]);
+	gl::draw(stickers[2]);
 	gl::popMatrices();
 }
 
@@ -409,11 +406,11 @@ ci::gl::Texture TemplateButton4::getPrintTemplate()
 	});
 }
 
-////////////////////////////////////////////////////////////////////////////
-//
-//					TemplateButton5
-//
-////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+////
+////					TemplateButton5
+////
+//////////////////////////////////////////////////////////////////////////////
 
 TemplateButton5::TemplateButton5(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
 	:TemplateButton(rect, FIFTH, templates, stickers)
@@ -447,16 +444,7 @@ void TemplateButton5::drawStickers()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
-	gl::scale(_scale1, _scale1);
-	gl::draw(stickers[0]);
-	gl::popMatrices();
-
-	gl::pushMatrices();
-	gl::translate(158.0f, 0.0f);
-	gl::scale(_scale2, _scale2);
-	gl::draw(stickers[3]);
-	gl::translate(0.0f, stickers[3].getHeight());
-	gl::draw(stickers[3]);
+	gl::draw(stickers[4]);
 	gl::popMatrices();
 }
 
@@ -512,10 +500,14 @@ SubButton::SubButton(const Rectf& rect, subID id)
 void SubButton::drawLayout()
 {
 	if (photo)
+	{
 		gl::draw(photo);
+	}		
 
 	if (selected)
+	{
 		gl::draw(ramka);
+	}		
 }
 
 void SubButton::setSelectRamkaTexture(const Texture& texture)

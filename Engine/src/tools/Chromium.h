@@ -10,7 +10,8 @@ namespace kubik
 	{
 	public:
 
-		static Chromium& getInstance() {
+		static Chromium& getInstance()
+		{
 			static Chromium chrome;
 			return chrome;
 		};
@@ -24,16 +25,18 @@ namespace kubik
 			if (!WebCore::instance())
 			{
 				WebPreferences prefs;
-				prefs.enable_plugins = false;
+				prefs.enable_plugins		  = false;
 				prefs.enable_smooth_scrolling = true;
-				prefs.user_stylesheet = WSLit("::-webkit-scrollbar { visibility: hidden; }");
+				prefs.user_stylesheet		  = WSLit("::-webkit-scrollbar { visibility: hidden; }");
 				
 				mWebCorePtr = WebCore::Initialize(WebConfig());
-				session = mWebCorePtr->CreateWebSession(Awesomium::WSLit("soc"), prefs);
+				session		= mWebCorePtr->CreateWebSession(Awesomium::WSLit("soc"), prefs);
 				mWebViewPtr = mWebCorePtr->CreateWebView(100, 100, session);
 			}
 			else
+			{
 				mWebCorePtr = WebCore::instance();
+			}				
 		}
 
 		WebCore* getWebCorePtr()
