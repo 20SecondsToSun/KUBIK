@@ -23,18 +23,22 @@ void InstaPopup::setDesignElements(const gl::Texture& close, const gl::Texture& 
 	printBtn = ImageButtonSpriteRef(new ImageButtonSprite(print, positionPrint));
 
 	imageShift = Vec2f(0.5f * (getWindowWidth() - 640.0f), 224.0f);
+
+	templateImage = _template;
 }
 
 void InstaPopup::draw()
 {
 	if (!showing)
+	{
 		return;
+	}		
 
 	gl::pushMatrices();
 	gl::translate(getGlobalPosition());
 	gl::color(ColorA(bgColor.r, bgColor.g, bgColor.b, alpha));
 	gl::drawSolidRect(getWindowBounds());
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
+	gl::color(ColorA(1.0f, 1.0f, 1.0f, 1));
 
 	ci::gl::Texture tex = image.getStandartResImage(), _image;
 	float templateScale = 1, imageScale = 1;

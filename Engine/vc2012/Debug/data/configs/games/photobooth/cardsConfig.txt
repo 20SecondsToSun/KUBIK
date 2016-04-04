@@ -3,7 +3,7 @@
    "designs" : 
       [{
          "id" : 1,
-	 "textObj": {"text": "MiniMal Epileptic",
+	 "textObj": {"text": "Crazy eyes",
 		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" : "ffffff"
@@ -14,7 +14,7 @@
       },
 {
          "id" : 2,
-	 "textObj": {"text": "Tanznia",
+	 "textObj": {"text": "Acid",
 		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -24,7 +24,7 @@
       },
 {
          "id" : 3,
-	 "textObj": {"text": "Shanzalize",
+	 "textObj": {"text": "Van Gogh",
 		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -34,7 +34,7 @@
       },
 {
          "id" : 4,
-	 "textObj": {"text": "MiniMal Epileptic",
+	 "textObj": {"text": "Mi mi cats",
 		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"
@@ -44,7 +44,7 @@
       },
 {
          "id" : 5,
-	 "textObj": {"text": "MiniMal Epileptic",
+	 "textObj": {"text": "Geometry",
 		  "font" : "Helvetica Neue",
 		  "size" : 24,
 		  "color" :  "ffffff"

@@ -63,6 +63,7 @@
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/Zm161 %(AdditionalOptions)</AdditionalOptions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
@@ -272,6 +273,15 @@
     </ClCompile>
     <ClCompile Include="..\src\tools\Chromium.h" />
     <ClCompile Include="..\src\tools\Logger.cpp" />
+    <ClCompile Include="..\src\tools\MemoryMonitor.cpp" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\bitstream.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\mask.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrencode.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrinput.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrspec.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\rscode.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\split.c" />
+    <ClCompile Include="..\src\tools\qrcode\QrCodeCreator.cpp" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +500,15 @@
     <ClInclude Include="..\src\tools\JsonTools.h" />
     <ClInclude Include="..\src\tools\Logger.h" />
     <ClInclude Include="..\src\tools\MathTools.h" />
+    <ClInclude Include="..\src\tools\MemoryMonitor.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\bitstream.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\mask.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrencode.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrinput.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrspec.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\rscode.h" />
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\split.h" />
+    <ClInclude Include="..\src\tools\qrcode\QrCodeCreator.h" />
     <ClInclude Include="..\src\tools\StringTools.h" />
     <ClInclude Include="..\src\tools\TextTools.h" />
     <ClInclude Include="..\src\tools\TimerTools.h" />

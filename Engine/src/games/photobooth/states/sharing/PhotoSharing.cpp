@@ -1,4 +1,5 @@
 #include "PhotoSharing.h"
+#include "Tools/qrCode/QrCodeCreator.h"
 
 using namespace kubik::games::photobooth;
 using namespace kubik;

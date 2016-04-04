@@ -4,7 +4,9 @@ using namespace kubik;
 using namespace kubik::config;
 
 InstakubSettings::InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model), configSettings(configSettings), memento(false)
+	:ISettings(model),
+	configSettings(configSettings),
+	memento(false)
 {
 
 }
@@ -110,7 +112,9 @@ void InstakubSettings::parsePhotoCardStyles()
 		item.setID(it.getChild("id").getValue<int>());
 		item.setIconPath(it.getChild("iconPath").getValue<string>());
 		item.setDesignPath(it.getChild("designPath").getValue<string>());
-		item.setIconTexName("instaElement" + item.getID());
+
+		item.setIconTexName("instaElement" + to_string(item.getID()));
+		item.setDesignTexName("cardElement" + to_string(item.getID()));
 		JsonTree text = it.getChild("textObj");
 
 		item.setTextItem(text.getChild("text").getValue<string>(),
@@ -156,7 +160,6 @@ void InstakubSettings::setTextures()
 	addToDictionary("noMaterials", createImageResource(getTemplateDesignPath("noMaterials.png")));
 	addToDictionary("allLoaded", createImageResource(getTemplateDesignPath("allLoaded.png")));
 	addToDictionary("privateUser", createImageResource(getTemplateDesignPath("privateUser.png")));
-	console() << "private user path ----------------" << getTemplateDesignPath("privateUser.png")<<endl;
 	addToDictionary("closeKeyboard", createImageResource(getTemplateDesignPath("closeKeyboard.png")));
 	addToDictionary("pullupdate", createImageResource(getTemplateDesignPath("pullltoupdate.png")));
 	addToDictionary("eraseInstagram", createImageResource(getTemplateDesignPath("eraseInstagram.png")));
@@ -189,6 +192,7 @@ void InstakubSettings::buildLocationData()
 	for (auto &it : photoCardStyles)
 	{
 		auto tex = getTexture(it.getDesignTexName());
+		
 		it.setDesignTexture(tex);
 	}
 }
@@ -196,7 +200,9 @@ void InstakubSettings::buildLocationData()
 void InstakubSettings::buildSettingData()
 {
 	for (auto &it : configTexts.getDic())
+	{
 		it.second.setFont(fontStorage().getAll());
+	}		
 
 	for (auto &it : photoCardStyles)
 	{

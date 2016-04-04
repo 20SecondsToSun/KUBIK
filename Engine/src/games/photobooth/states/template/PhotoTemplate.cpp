@@ -37,6 +37,8 @@ void PhotoTemplate::start()
 	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);	
 
 	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.2f);
+
+	//tempImage = loadImage(getAppPath() / "07.jpg");
 }
 
 void PhotoTemplate::initShowAnim()
@@ -138,8 +140,7 @@ void PhotoTemplate::startHideAnimation()
 	stop();	
 	setLastScreenShot();
 	state = ANIM_HIDE;
-	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.8f, EaseOutCubic())
-		.finishFn(bind(&PhotoTemplate::callback, this, NEXT_LOC));
+	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.8f, EaseOutCubic()).finishFn(bind(&PhotoTemplate::callback, this, NEXT_LOC));
 }
 
 void PhotoTemplate::setChoosingTemplate()
@@ -155,6 +156,8 @@ void PhotoTemplate::update()
 void PhotoTemplate::draw()
 {
 	fillBg();
+
+//	gl::draw(tempImage);
 
 	switch (state)
 	{

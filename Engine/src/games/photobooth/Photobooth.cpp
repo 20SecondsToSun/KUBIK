@@ -213,23 +213,23 @@ void Photobooth::update()
 
 void Photobooth::handleCameraConnection()
 {
-	if (!cameraCanon().isConnected() && state != CAMERA_DISCONNECT)
-	{	
-		state = CAMERA_DISCONNECT;
-		currentLocation->stop();	
-		clearDelaycall("toPhotoBoothScreenSaver");
-	}
-	else if (cameraCanon().isConnected() && state == CAMERA_DISCONNECT)
-	{
-		state = DRAW;
-		gotoFirstlocation();	
-	}
-
-	//if (state == SHOW_ANIM)
+	//if (!cameraCanon().isConnected() && state != CAMERA_DISCONNECT)
+	//{	
+	//	state = CAMERA_DISCONNECT;
+	//	currentLocation->stop();	
+	//	clearDelaycall("toPhotoBoothScreenSaver");
+	//}
+	//else if (cameraCanon().isConnected() && state == CAMERA_DISCONNECT)
 	//{
 	//	state = DRAW;
-	//	gotoFirstlocation();
+	//	gotoFirstlocation();	
 	//}
+
+	if (state == SHOW_ANIM)
+	{
+		state = DRAW;
+		gotoFirstlocation();
+	}
 }
 
 void Photobooth::draw()

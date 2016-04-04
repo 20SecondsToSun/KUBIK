@@ -448,14 +448,14 @@ std::vector<ci::gl::Texture> PhotoboothSettings::getPhotoCardsTextures() const
 
 Texture PhotoboothSettings::getPhotoShootingCard() const
 {
-	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
-	return stickersImagesMap.at(Pair);
+	auto Pair = std::make_pair(activePhotoCardStyleDesignID - 1, PhotoFormat(1));
+	return photoCardsImagesMap.at(Pair);
 }
 
 Texture PhotoboothSettings::getPhotoSharingCard() const
 {
-	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
-	return stickersImagesMap.at(Pair);
+	auto Pair = std::make_pair(activePhotoCardStyleDesignID - 1, PhotoFormat(1));
+	return photoCardsImagesMap.at(Pair);
 }
 
 vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()

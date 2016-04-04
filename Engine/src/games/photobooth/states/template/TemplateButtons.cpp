@@ -40,7 +40,10 @@ void TemplateButton::drawLayout()
 
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
 	shader->setAlpha(alpha);
+
+	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.8));
 	drawTemplateBg();
+	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 1));
 	drawPhotos();
 	//drawStickers();
 
@@ -232,7 +235,7 @@ void TemplateButton2::drawPhotos()
 	{
 		gl::pushMatrices();
 		gl::translate(subBtns[i]->getLocalPosition());
-	//	subBtns[i]->drawLayout();
+		subBtns[i]->drawLayout();
 		gl::popMatrices();
 	}
 }
@@ -294,6 +297,7 @@ void TemplateButton3::drawTemplateBg()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
+	//gl::translate(-25, 0);
 	gl::draw(templates[3]);
 	gl::popMatrices();
 }
@@ -424,6 +428,7 @@ void TemplateButton5::drawTemplateBg()
 {
 	gl::pushMatrices();
 	gl::scale(_scale, _scale);
+//	gl::translate(-25, 0);
 	gl::draw(templates[4]);
 	gl::popMatrices();
 }

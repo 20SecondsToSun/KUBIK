@@ -1,6 +1,6 @@
 {
    "actionName" : "fggghhhhhhh",
-   "activeDesign" : 2,
+   "activeDesign" : 1,
    "currentPhotosPrinted" : 0,
    "designPath" : "kubik\\interface\\configDesign\\",
    "maxPhotosToPrint" : 400,

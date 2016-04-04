@@ -77,6 +77,8 @@ namespace kubik
 				ci::gl::Texture loadDownloadedPhoto(const string& path);
 
 				void createPhotoTemplates();
+				ci::gl::Texture createFormat2Template(const gl::Texture& tex);
+
 				vector<PhotoTemplates> getPhotoTemplates();
 
 				void setSelectedID(int i);

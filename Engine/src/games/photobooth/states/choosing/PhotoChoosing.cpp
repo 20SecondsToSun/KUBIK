@@ -8,7 +8,8 @@ using namespace ci;
 using namespace kubik::games::photobooth;
 
 PhotoChoosing::PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
-	:photoStorage(photoStorage), photoFiltersStartY(1398.0f)
+	:photoStorage(photoStorage), 
+	photoFiltersStartY(1398.0f)
 {
 	photoPositions[0] = Vec2f(96.0f,  439.0f);
 	photoPositions[1] = Vec2f(404.0f, 439.0f);
@@ -144,10 +145,14 @@ void PhotoChoosing::initShowAnimationParams()
 void PhotoChoosing::showAnimationComplete()
 {
 	for (auto btn : photoBtns)
+	{
 		btn->connectEventHandler(&PhotoChoosing::photoChoosed, this);
+	}		
 
 	for (auto fbtn : filterBtns)
+	{
 		fbtn->connectEventHandler(&PhotoChoosing::filterChanged, this);
+	}		
 
 	reShotBtn->connectEventHandler(&PhotoChoosing::backToReshot, this);
 
@@ -173,10 +178,14 @@ void PhotoChoosing::stop()
 	clearDelaycall();
 
 	for (auto btn : photoBtns)
+	{
 		btn->disconnectEventHandler();
+	}		
 
 	for (auto fbtn : filterBtns)
+	{
 		fbtn->disconnectEventHandler();
+	}
 
 	okBtn->disconnectEventHandler();
 	reShotBtn->disconnectEventHandler();
@@ -190,7 +199,9 @@ void PhotoChoosing::setShaderForPreviews()
 	shader = shadertool().get((ShaderTool::FilterType)filterID);
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
+	{
 		photoBtns[i]->setShader(shader);
+	}		
 }
 
 void PhotoChoosing::photoChoosed(EventGUIRef& event)
@@ -280,8 +291,12 @@ void PhotoChoosing::okBtnClicked(EventGUIRef& event)
 	setLastScreenShot();
 
 	for (unsigned int i = 0; i < photoBtns.size(); i++)
+	{
 		if (photoBtns[i]->selected())
+		{
 			photoStorage->setSelectedID(i);
+		}			
+	}		
 
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.8f, EaseOutCubic())
 		.finishFn(bind(&PhotoChoosing::callback, this, NEXT_LOC));

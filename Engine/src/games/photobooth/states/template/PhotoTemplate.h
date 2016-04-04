@@ -44,6 +44,9 @@ namespace kubik
 
 				std::string templateName = "//template.png";
 
+
+				ci::gl::Texture tempImage;
+
 			public:
 				PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 

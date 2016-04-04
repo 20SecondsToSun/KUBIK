@@ -209,7 +209,7 @@ void PhotoShooting::drawPhotoframe()
 	gl::translate(previewAnimateX, 0.0f);
 	gl::pushMatrices();
 	gl::pushMatrices();
-	gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 150.0f);
+	gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 52.0f); //-150.0f);
 	gl::draw(shadow);
 	gl::popMatrices();
 
@@ -220,8 +220,13 @@ void PhotoShooting::drawPhotoframe()
 
 	gl::pushMatrices();
 	gl::scale(_scale1, _scale1);
-	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY);
-	shader->render(photo);
+	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY + 252);
+
+	//gl::color(ColorA(1,1,1,0.4));
+//	shader->setAlpha(.4f);
+	shader->render(photo);	
+	//gl::color(Color::white());
+
 	gl::popMatrices();
 	gl::popMatrices();
 }
@@ -253,6 +258,8 @@ void PhotoShooting::photoDownloadHandler(const string& path)
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Downloaded ~~~");
 
 	photo = photoStorage->loadDownloadedPhoto(path);
+	console() << photo.getWidth() << endl;
+	console() << photo.getHeight() << endl;
 	callPreviewShowingTimer();
 }
 
@@ -261,7 +268,8 @@ void PhotoShooting::photoErrorHandler()
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.PhotoDownloadError!!!! ~~~");
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Set Camera texture as photo ~~~");
 
-	photo = cameraTexture;
+	photo = photoStorage->createFormat2Template(cameraTexture);	
+
 	photoStorage->setNextPhoto(cameraTexture);
 	delaycall(bind(&PhotoShooting::callPreviewShowingTimer, this), 1.0f);
 }

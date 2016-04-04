@@ -82,6 +82,14 @@ ci::gl::Texture PhotoStorage::loadDownloadedPhoto(const string& path)
 	return createFormatTemplate(format2, item);
 }
 
+ci::gl::Texture PhotoStorage::createFormat2Template(const gl::Texture& tex)
+{
+	PhotoItem item;
+	item.mainPhoto = tex;
+
+	return createFormatTemplate(format2, item);
+}
+
 void PhotoStorage::setNextPhoto(const ci::gl::Texture& tex)
 {
 	PhotoItem item;

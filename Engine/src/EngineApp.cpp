@@ -2,6 +2,10 @@
 #include "Controller.h"
 #include "Types.h"
 #include "kinect2/KinectAdapter.h"
+#include "Tools/MemoryMonitor.h"
+
+
+#include "Tools/qrCode/QrCodeCreator.h"
 
 
 using namespace ci;
@@ -50,7 +54,12 @@ void EngineApp::setup()
 		fullscreenOptions.display(display->getDisplays()[1]);
 
 	//fullscreenOptions.secondaryDisplayBlanking(true);	
-	setFullScreen(true, fullscreenOptions);
+	//setFullScreen(true, fullscreenOptions);
+
+	memory_monitor().registerLoging();
+
+	QrCodeCreator qr;
+	qr.generateQRcodeByURL();
 }
 
 void EngineApp::mouseDown( MouseEvent event )

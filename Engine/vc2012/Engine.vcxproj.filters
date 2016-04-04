@@ -280,6 +280,12 @@
     <Filter Include="Source Files\services\kinect2">
       <UniqueIdentifier>{9ef380f2-eb75-4f5c-9a31-d54e1f7d667a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tools\qrCode">
+      <UniqueIdentifier>{99e87736-1866-4b9c-bccc-725e0a5d377e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tools\qrCode\libqrencode">
+      <UniqueIdentifier>{63faa68c-c854-499b-9fc4-3217bbff08d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -755,6 +761,33 @@
     </ClCompile>
     <ClCompile Include="..\src\tools\Logger.cpp">
       <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\MemoryMonitor.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\QrCodeCreator.cpp">
+      <Filter>Source Files\tools\qrCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\bitstream.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\mask.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrencode.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrinput.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrspec.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\rscode.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\split.c">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1346,14 +1379,8 @@
     <ClInclude Include="..\src\loaders\asynchTextureLoader\TextureStore.h">
       <Filter>Source Files\loaders\asynchTextureLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\SearchLocation.h">
       <Filter>Source Files\games\instakub\states</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\games\instakub\states\SearchButtons.h">
       <Filter>Source Files\games\instakub\states</Filter>
@@ -1450,6 +1477,33 @@
     </ClInclude>
     <ClInclude Include="..\src\services\kinect2\KinectAdapter.h">
       <Filter>Source Files\services\kinect2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\MemoryMonitor.h">
+      <Filter>Source Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\QrCodeCreator.h">
+      <Filter>Source Files\tools\qrCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\bitstream.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\mask.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrencode.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrinput.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\qrspec.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\rscode.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\qrcode\libqrencode\split.h">
+      <Filter>Source Files\tools\qrCode\libqrencode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

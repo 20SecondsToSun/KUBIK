@@ -75,6 +75,8 @@ void InstakubLocation::disconnectViewer()
 
 void InstakubLocation::reset()
 {
+	logger().log("~~~ Instakub.Reset ~~~");
+
 	bg = settings->getTexture("bg");
 	instaPopup->setDesignElements(settings->getTexture("closeInstaPopup"),
 								  settings->getTexture("printInstaPopup"),
