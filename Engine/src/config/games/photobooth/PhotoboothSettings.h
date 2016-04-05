@@ -9,6 +9,7 @@
 #include "ConfigSettings.h"
 #include "graphics/IMovie.h"
 #include "fontStorage/FontStorage.h"
+#include "Paths.h"
 
 #define Photobooth_DEBUG
 #define Photobooth_Loadfromfolder_DEBUG
@@ -70,7 +71,7 @@ namespace kubik
 			void buildLocationData() override;	
 			void load()			override;
 			void setTextures()  override;
-			fs::path getPhotoDownloadDirectory(){ return ci::app::getAppPath() / "Kubik//photoDir"; };			
+			fs::path getPhotoDownloadDirectory(){ return kubik::Paths::getPhotoDownloadedPath(); };
 
 			TextItem getMainTitle(const PhtTextID& id);
 			TextItem getSubTitleClose(const PhtTextID& id);

@@ -1,4 +1,5 @@
 #include "fontStorage/FontStorage.h"
+#include "Paths.h"
 
 using namespace kubik;
 using namespace std;
@@ -96,8 +97,7 @@ void FontStorage::addToSettingsDictionary(const std::string& key, shared_ptr<Fon
 
 std::string FontStorage::getFontsPath(const std::string& value)
 {
-	ci::fs::path path = ci::app::getAppPath() / "data\\fonts\\";
-	return path.string() + value;
+	return Paths::getFontsPath().string() + value;
 }
 
 IResourceDictionary FontStorage::getResources() const

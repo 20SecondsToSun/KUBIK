@@ -96,8 +96,6 @@ namespace kubik
 			std::string getSocialSettingsFilePath() const;		
 
 		private:
-			static const std::string ConfigFile;
-
 			int			standID;
 			bool		netConnection;
 			std::string userID;

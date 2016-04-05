@@ -4,8 +4,6 @@ using namespace kubik::config;
 using namespace kubik;
 using namespace std;
 
-const std::string ISettings::InterfacePath = "kubik\\interface\\";
-
 ISettings::ISettings(ApplicationModelRef model) : model(model)
 {
 
@@ -28,7 +26,7 @@ std::string ISettings::getTemplateDesignPath(const string& value) const
 
 std::string ISettings::getInterfacePath(const string& value)
 {
-	ci::fs::path path = getBasePath() / InterfacePath;
+	ci::fs::path path = getBasePath() / Paths::getInterfacePath();
 	return path.string() + value;
 }
 
@@ -42,7 +40,7 @@ Texture ISettings::getTexture(const string& name)
 	gl::Texture::Format texformat;
 	texformat.enableMipmapping(false);
 	texformat.setMagFilter(GL_NEAREST); // disable multi-sample if >= 100%
-	texformat.setMinFilter(GL_NEAREST);  // enable multi-sampling if < 100%   	
+	texformat.setMinFilter(GL_NEAREST); // enable multi-sampling if < 100%   	
 
 	return gl::Texture(textures[name]->get(), texformat);
 }
@@ -81,19 +79,18 @@ void ISettings::buildSettingData()
 
 ci::fs::path ISettings::getBasePath()
 {
-	ci::fs::path basePath = ci::app::getAppPath();
-	return basePath;
+	return Paths::getBasePath();
 }
 
 void ISettings::addToDictionary(const std::string& key, shared_ptr<ImageResource>  value)
 {
-	textures[key] = value;
+	textures[key]  = value;
 	resources[key] = value;
 }
 
 void ISettings::addToDictionary(const std::string& key, shared_ptr<VideoResource>  value)
 {
-	videos[key] = value;
+	videos[key]    = value;
 	resources[key] = value;
 }
 

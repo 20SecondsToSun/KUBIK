@@ -9,7 +9,6 @@
 #include "instakub/states/HashtagOnly.h"
 #include "instakub/states/SearchOnly.h"
 #include "instakub/states/HashtagAndSearch.h"
-
 #include "TimerTools.h"
 
 namespace kubik

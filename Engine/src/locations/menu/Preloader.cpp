@@ -18,10 +18,8 @@ Preloader::Preloader()
 
 void Preloader::create(const ci::Vec2f& position)
 {
-	this->position = position;
-	auto path = (getAppPath() / "kubik/design_elements/preloader/").string();
-
-	auto videoPath = fileTools().getVideoPath(path);
+	this->position = position;	
+	auto videoPath = fileTools().getVideoPath(Paths::getPreloaderPath());
 
 	if (!videoPath.empty())
 	{
@@ -31,7 +29,7 @@ void Preloader::create(const ci::Vec2f& position)
 	}
 	else	
 	{
-		auto files = fileTools().getAllImagePaths(path);
+		auto files = fileTools().getAllImagePaths(Paths::getPreloaderPath());
 
 		if (!files.empty())
 		{

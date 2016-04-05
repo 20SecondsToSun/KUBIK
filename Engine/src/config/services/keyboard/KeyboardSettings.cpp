@@ -37,6 +37,6 @@ changeSetting::id KeyboardSettings::getChangeID() const
 
 std::string KeyboardSettings::getKeyboardPath(const string& value)
 {
-	ci::fs::path path = getBasePath() / "kubik\\design_elements\\keyboard\\";
+	ci::fs::path path = getBasePath() / Paths::getKeyboardPath();
 	return path.string() + value;
 }

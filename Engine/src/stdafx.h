@@ -23,5 +23,6 @@
 #include <stdint.h>
 
 #include "Logger.h"
+#include "Paths.h"
 
 #define PORTRAIT_RES

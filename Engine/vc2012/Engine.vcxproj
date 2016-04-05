@@ -149,6 +149,7 @@
     <ClCompile Include="..\src\games\funces\Funces.cpp" />
     <ClCompile Include="..\src\games\funces\FuncesSettings.cpp" />
     <ClCompile Include="..\src\games\GamesFactory.cpp" />
+    <ClCompile Include="..\src\games\IGame.cpp" />
     <ClCompile Include="..\src\games\instakub\Instakub.cpp" />
     <ClCompile Include="..\src\games\instakub\states\HashtagAndSearch.cpp" />
     <ClCompile Include="..\src\games\instakub\states\HashtagOnly.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h" />
     <ClInclude Include="..\src\config\ISettings.h" />
     <ClInclude Include="..\src\config\menu\MenuSettings.h" />
+    <ClInclude Include="..\src\config\Paths.h" />
     <ClInclude Include="..\src\config\screensaver\ScreenSaverSettings.h" />
     <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h" />
     <ClInclude Include="..\src\config\services\social\SocialSettings.h" />

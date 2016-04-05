@@ -6,8 +6,6 @@ using namespace ci::app;
 using namespace kubik::config;
 using namespace kubik;
 
-const std::string ApplicationModel::ConfigFile = "data/configs/app.txt";
-
 void ApplicationModel::load()
 {
 	logger().log("PARSE CONFIG DATA");
@@ -236,6 +234,7 @@ GameId ApplicationModel::getDefaultGameID() const
 bool ApplicationModel::onlyOneGameOn()
 {
 	int counter = 0;
+
 	for (auto it : games)
 	{
 		if (it.isOn && ++counter > 1)
@@ -250,6 +249,7 @@ bool ApplicationModel::onlyOneGameOn()
 GameId ApplicationModel::onlyOneGameOnID()
 {
 	int counter = 0;
+
 	for (auto it : games)
 	{
 		if (it.isOn)
@@ -315,7 +315,7 @@ string ApplicationModel::getDesignDataPath()
 
 string ApplicationModel::getFullPath(const string& path) const
 {
-	return  getAppPath().string() + path;
+	return Paths::getBasePath().string() + path;
 }
 
 string ApplicationModel::getLang() const
@@ -340,5 +340,5 @@ string ApplicationModel::getSocialSettingsFilePath() const
 
 fs::path ApplicationModel::getConfigPath()
 {
-	return getAppPath() / ConfigFile;
+	return Paths::getAppConfigFile();
 }

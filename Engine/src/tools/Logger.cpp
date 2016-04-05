@@ -20,7 +20,7 @@ Logger& Logger::getInstance()
 				+ fix2(to_string(timeStruct.tm_min))		+ "_"
 				+ fix2(to_string(timeStruct.tm_sec))		+ ".log";
 
-		logPath = ci::app::getAppPath() / "logs" / logName;
+		logPath = Paths::getLogPath(logName);
 
 		std::ofstream logfile;		
 		logfile.open(logPath.c_str());

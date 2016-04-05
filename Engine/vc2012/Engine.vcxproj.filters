@@ -789,6 +789,9 @@
     <ClCompile Include="..\src\tools\qrcode\libqrencode\split.c">
       <Filter>Source Files\tools\qrCode\libqrencode</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\IGame.cpp">
+      <Filter>Source Files\games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1501,6 +1504,9 @@
     </ClInclude>
     <ClInclude Include="..\src\tools\qrcode\libqrencode\split.h">
       <Filter>Source Files\tools\qrCode\libqrencode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\Paths.h">
+      <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -78,18 +78,26 @@ bool ScreenSaverSettings::isShow() const
 
 void ScreenSaverSettings::setTextures()
 {
-	if (mode == IMAGE_SS)	
-		addToDictionary("image", createImageResource(path_ss));	
-	else if (mode == VIDEO_SS)	
-		addToDictionary("video", createVideoResource(path_ss));	
+	if (mode == IMAGE_SS)
+	{
+		addToDictionary("image", createImageResource(path_ss));
+	}
+	else if (mode == VIDEO_SS)
+	{
+		addToDictionary("video", createVideoResource(path_ss));
+	}
 }
 
 shared_ptr<IResourceScreenSaver> ScreenSaverSettings::getResource()
 {
-	if (mode == VIDEO_SS)	
+	if (mode == VIDEO_SS)
+	{
 		screenSaverResource = shared_ptr<VideoScreenSaver>(new VideoScreenSaver(videos["video"]->get()));
-	else if (mode == IMAGE_SS)	
+	}
+	else if (mode == IMAGE_SS)
+	{
 		screenSaverResource = shared_ptr<ImageScreenSaver>(new ImageScreenSaver(textures["image"]->get()));
+	}
 	
 	return screenSaverResource;
 }
@@ -149,7 +157,9 @@ void ScreenSaverSettings::findScreenSaver()
 			if (fileSizeNotTooBig(filePath, ext))
 			{
 				if (ssType == VIDEO_SS)
+				{
 					videoIndex = content.size();
+				}
 
 				content.push_back(filePath);
 			}
@@ -174,7 +184,9 @@ void ScreenSaverSettings::findScreenSaver()
 		}
 	}
 	else if (bigSizeError)
+	{
 		throw ExcBigFileSizeOfScreenSaver();
+	}
 }
 
 int ScreenSaverSettings::getContentType(const string& ext)
@@ -199,9 +211,13 @@ bool ScreenSaverSettings::fileSizeNotTooBig(const fs::path& filePath, const stri
 	int sizeLimit = 100;
 
 	if (fileTools().isVideoExtension(ext))
+	{
 		sizeLimit = MAX_VIDEO_FILE_SIZE;
+	}
 	else  if (fileTools().isImageExtension(ext))
+	{
 		sizeLimit = MAX_IMAGE_FILE_SIZE;
+	}
 
 	return  filesizeInbytes < sizeLimit;
 }

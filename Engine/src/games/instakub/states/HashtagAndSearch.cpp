@@ -4,7 +4,8 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings):SearchLocation(settings, Vec2f(18.0f, 515.0f))
+HashtagAndSearch::HashtagAndSearch(InstakubSettingsRef settings)
+	:SearchLocation(settings, Vec2f(18.0f, 515.0f))
 {
 	reset();
 }
@@ -57,7 +58,9 @@ void HashtagAndSearch::closeKeyboardHandler()
 		reload();
 	}
 	else
+	{
 		SearchLocation::closeKeyboardHandler();
+	}		
 }
 
 void HashtagAndSearch::openPopupHandler()
@@ -68,8 +71,10 @@ void HashtagAndSearch::openPopupHandler()
 
 void HashtagAndSearch::closePopupHandler()
 {
-	if(mode == HASHTAG_DEFAULT_PHOTOS_LOAD)	
+	if (mode == HASHTAG_DEFAULT_PHOTOS_LOAD)
+	{
 		hashTagAlpha = 1.0f;
+	}		
 
 	SearchLocation::closePopupHandler();
 }

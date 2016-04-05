@@ -21,7 +21,7 @@ void MemoryMonitor::registerLoging()
 
 void MemoryMonitor::log()
 {	
-	auto logPath = ci::app::getAppPath() / "logs" / "memory.log";
+	auto logPath = Paths::getMemoryLogPath("memory.log");
 
 	//MEMORYSTATUSEX status;
 	//status.dwLength = sizeof(status);
@@ -31,7 +31,7 @@ void MemoryMonitor::log()
 	pmcx.cb = sizeof(pmcx);
 	GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmcx), pmcx.cb);
 
-	auto MB = 1048576.0;
+	auto MB = 1048576;
 	ci::app::console() << " ~~~ Memory usage log :::::::::" + ci::toString(pmcx.PrivateUsage / MB) <<" MB ~~~"<< std::endl;
 
 	registerLoging();

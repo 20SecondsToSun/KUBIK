@@ -88,14 +88,20 @@ void SearchLocation::searchTouchHandler()
 		searchingText = touchKeyboard().getInputFieldText();
 
 		if (searchBtns->hashtagSearchMode())
+		{
 			mode = HASHTAG_PHOTOS_LOAD;
+		}
 		else
+		{
 			mode = USER_PHOTOS_LOAD;
+		}
 
 		reload();
 	}
-	else	
-		timeline().apply(&alphaError, 1.0f, 0.0f, 2.5f, EaseOutCubic());	
+	else
+	{
+		timeline().apply(&alphaError, 1.0f, 0.0f, 2.5f, EaseOutCubic());
+	}
 }
 
 void SearchLocation::disconnectKeyboard()

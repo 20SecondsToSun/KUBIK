@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include "Tools/MemoryMonitor.h"
 
 using namespace kubik;
 using namespace kubik::menu;
@@ -10,6 +11,8 @@ Controller::Controller(ApplicationModelRef model, AppViewRef view)
 	this->view    = view;
 	this->model   = model;
 	game		  = NULL;
+
+	memory_monitor().registerLoging();
 
 	view->showPreloader();
 

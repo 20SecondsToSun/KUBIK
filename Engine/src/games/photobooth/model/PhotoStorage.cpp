@@ -6,7 +6,8 @@ using namespace kubik::games::photobooth;
 
 PhotoStorage::PhotoStorage()
 {
-	logger().log("CREATE PHOTO STORAGE!!!!!!!!!!!!!");
+	logger().log("Create photo storage class");
+
 	format2.width	=	1181; 
 	format2.height	=	1521;
 	format2.top		=	281;
@@ -28,7 +29,7 @@ PhotoStorage::PhotoStorage()
 
 PhotoStorage::~PhotoStorage()
 {
-	logger().log("DESTRUCT PHOTO STORAGE!!!!!!!!!!!!!");
+	logger().log("Destruct photo storage class");
 }
 
 void PhotoStorage::clear()

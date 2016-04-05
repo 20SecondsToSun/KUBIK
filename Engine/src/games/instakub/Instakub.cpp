@@ -8,7 +8,8 @@ const float Instakub::RELOAD_TIME = 30.0f;
 
 Instakub::Instakub(ISettingsRef config)
 {	
-	console()<<":: Instakub CREATED::"<<endl;
+	logger().log("~~~ Instakub.Created ~~~");
+
 	init(config);
 	setType(ScreenId::INSTAKUB);
 	create();
@@ -30,27 +31,27 @@ void Instakub::create()
 
 Instakub::~Instakub()
 {
-	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Instakub destructor~~~~~~~~~~~~~~~~~~~~~~~"<<endl;	
+	logger().log("~~~ Instakub.Destruct ~~~");
 }
 
 void Instakub::start()
 {
-	console() << "START Instakub!!!" << endl;
+	logger().log("~~~ Instakub.Start ~~~");
 
 	if (!settings->hashtagEnabled())
 	{
 		view = searchOnly;
-		console() << "search only" << endl;
+		logger().log(": Search only");
 	}		
 	else if (!settings->searchEnabled())
 	{
-		view = hashtagOnly;
-		console() << "hashtagOnly" << endl;
+		view = hashtagOnly;		
+		logger().log(": Hashtag only");
 	}		
 	else
 	{
 		view = hashTagAndSearch;
-		console() << "hashTagAndSearch" << endl;
+		logger().log(": Hashtag and search");
 	}
 
 	view->connectEventHandler(&Instakub::enableControls, this, InstakubLocation::ENABLE_CONTROLS);
@@ -79,7 +80,8 @@ void Instakub::mouseTouched(EventGUIRef& event)
 
 void Instakub::stop()
 {
-	console() << "STOP Instakub!!!" << endl;
+	logger().log("~~~ Instakub.Stop ~~~");
+
 	view->disconnectEventHandler(InstakubLocation::ENABLE_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::DISABLE_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::SHOW_CONTROLS);

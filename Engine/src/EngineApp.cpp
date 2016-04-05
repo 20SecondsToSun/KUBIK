@@ -2,7 +2,6 @@
 #include "Controller.h"
 #include "Types.h"
 #include "kinect2/KinectAdapter.h"
-#include "Tools/MemoryMonitor.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -47,13 +46,12 @@ void EngineApp::setup()
 	DisplayRef display = fullscreenOptions.getDisplay();
 
 	if (display->getDisplays().size() > 1)
+	{
 		fullscreenOptions.display(display->getDisplays()[1]);
+	}
 
 	//fullscreenOptions.secondaryDisplayBlanking(true);	
 	//setFullScreen(true, fullscreenOptions);
-
-	memory_monitor().registerLoging();
-
 }
 
 void EngineApp::mouseDown( MouseEvent event )

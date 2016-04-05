@@ -145,7 +145,7 @@ void PhotoTemplate::startHideAnimation()
 
 void PhotoTemplate::setChoosingTemplate()
 {	
-	ci::writeImage(getAppPath() / templateName, selectedTemplate->getPrintTemplate());
+	ci::writeImage(Paths::getPhotoTemplatePath(), selectedTemplate->getPrintTemplate());
 }
 
 void PhotoTemplate::update()

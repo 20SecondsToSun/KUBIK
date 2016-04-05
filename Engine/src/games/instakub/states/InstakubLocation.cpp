@@ -19,7 +19,8 @@ InstakubLocation::InstakubLocation(InstakubSettingsRef settings, const Vec2f& po
 
 	if (init) return;	
 
-	console() << "================================= CREATE ISTAGRAM VIEW =====================================" << endl;
+	logger().log("~~~ Create Instagram View ~~~");
+
 	instClient = InstagramClientRef(new InstagramClient(settings->getClientID()));
 
 	instaViewer = InstagramViewerRef(new InstagramViewer(instClient,
@@ -156,6 +157,8 @@ void InstakubLocation::loadingCompleteHandler()
 	if (mode == USER_PHOTOS_LOAD)
 	{
 		console() << "INSTAGRAM LOADING COMPLETE" << to_string(instClient->getLastCode()) << endl;
+		logger().log("~~~ Instagram loading complete, code : " + to_string(instClient->getLastCode()) + " ~~~" );
+
 		if (instClient->userPrivate())
 		{
 			instaViewer->showPrivateUserState();
@@ -234,7 +237,7 @@ void InstakubLocation::disconnectPopup()
 
 void InstakubLocation::printPopupHandler()
 {
-	console() << "..............printing................" << endl;
+	logger().log("..............printing................");
 }
 
 void InstakubLocation::drawPopup()

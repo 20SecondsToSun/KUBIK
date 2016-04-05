@@ -1,6 +1,7 @@
 #pragma once
 #include "Types.h"
 #include "ApplicationModel.h"
+#include "Paths.h"
 
 namespace kubik
 {
@@ -66,9 +67,6 @@ namespace kubik
 			std::shared_ptr<ImageResource> createImageResource(const std::string& path,					 loadingType loadType = loadingType::FULL_PATH);
 			std::shared_ptr<FontResource>  createFontResource( const std::string& path, float size = 30, loadingType loadType = loadingType::FULL_PATH);
 			std::shared_ptr<VideoResource> createVideoResource(const std::string& path,					 loadingType loadType = loadingType::FULL_PATH);
-
-		private:
-			static const std::string InterfacePath;
 		};
 	}
 }

@@ -41,13 +41,17 @@ void SearchButtons::draw()
 void SearchButtons::show()
 {
 	if (alpha == 0.0f)
+	{
 		timeline().apply(&alpha, 0.0f, 1.0f, 0.5f, EaseOutCubic());
+	}		
 }
 
 void SearchButtons::hide()
 {
 	if (alpha == 1.0f)
+	{
 		timeline().apply(&alpha, 1.0f, 0.0f, 0.5f, EaseOutCubic());
+	}
 }
 
 void SearchButtons::connect()

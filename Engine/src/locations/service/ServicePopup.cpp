@@ -1,11 +1,11 @@
 #include "ServicePopup.h"
+#include "Paths.h"
 
 using namespace kubik;
 
 ServicePopup::ServicePopup()
 {
-	string path = getAppPath().string() + "data\\fonts\\Helvetica Neue.ttf";// TODO FONT in Resource
-	DataSourceRef ref = loadFile(path);
+	DataSourceRef ref = loadFile(Paths::getPopupFontPath());
 	font = Font(ref, 30);
 }
 
@@ -32,7 +32,7 @@ void ServicePopup::setMessage(const char* msg)
 
 	textTex = textTools().getTextField(msg, &font, ColorA(1.0f, 0.0f, 0.0f, 1.0f));
 
-	float shiftX = (getWindowWidth() - textTex.getWidth()) * 0.5f;
+	float shiftX = (getWindowWidth()  - textTex.getWidth())  * 0.5f;
 	float shiftY = (getWindowHeight() - textTex.getHeight()) * 0.5f;
 	textTexPos = Vec2f(shiftX, shiftY);
 }

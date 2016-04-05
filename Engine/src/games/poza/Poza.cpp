@@ -5,19 +5,21 @@ using namespace kubik::games::poza;
 
 Poza::Poza(ISettingsRef config)
 {
-	console() << ":: Poza CREATED::" << endl;
+	logger().log("~~~ Poza.Created ~~~");
+
 	init(config);
 	setType(ScreenId::FUNCES);
 }
 
 Poza::~Poza()
 {
-	console() << "~~~~~~~~~~~~~~~~~~~~~~~Poza destructor~~~~~~~~~~~~~~~~~~~" << endl;
+	logger().log("~~~ Poza.Destruct ~~~");
 }
 
 void Poza::start()
 {
-	console() << "START Poza!!!" << endl;
+	logger().log("~~~ Poza.Start ~~~");
+
 	initShowAnimation();
 }
 
@@ -28,7 +30,7 @@ void Poza::showAnimationComplete()
 
 void Poza::stop()
 {
-	console() << "STOP Poza!!!" << endl;
+	logger().log("~~~ Poza.Stop ~~~");
 }
 
 void Poza::init(ISettingsRef config)
