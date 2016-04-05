@@ -7,7 +7,7 @@ MovieLoader& MovieLoader::getInstance()
 {
 	static MovieLoader mLoader;
 	return mLoader;
-};
+}
 
 IMovieRef MovieLoader::getMovie(MovieLoaderStruct loaderStruct, ImageResourceDictionary imageDic, VideoResourceDictionary videoDic)
 {
@@ -29,21 +29,22 @@ IMovieRef MovieLoader::getMovie(MovieLoaderStruct loaderStruct, ImageResourceDic
 	{
 		//todo create null object
 	}
+
 	// clear paths
 	return  preloader;
-};
+}
 
 std::vector<ci::gl::Texture> MovieLoader::getPreloaderImages(int size, const string& name, ImageResourceDictionary imageDic)
 {
 	std::vector<ci::gl::Texture> preloaderSeq;
 
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		preloaderSeq.push_back(imageDic[name + to_string(i)]->get());
 	}
 
 	return preloaderSeq;
-};
+}
 
 MovieLoader::MovieLoaderStruct MovieLoader::getMovieStruct(const string& templatePath, const string& name)
 {
@@ -51,6 +52,7 @@ MovieLoader::MovieLoaderStruct MovieLoader::getMovieStruct(const string& templat
 	mlStruct.name = name;
 
 	auto videoPath = fileTools().getVideoPath(templatePath);
+
 	if (!videoPath.empty())
 	{
 		mlStruct.type = MovieLoader::VIDEO;
@@ -62,7 +64,7 @@ MovieLoader::MovieLoaderStruct MovieLoader::getMovieStruct(const string& templat
 
 		if (!files.empty())
 		{
-			mlStruct.type = MovieLoader::IMAGE_SEQUENCE;
+			mlStruct.type  = MovieLoader::IMAGE_SEQUENCE;
 			mlStruct.paths = files;
 		}
 	}

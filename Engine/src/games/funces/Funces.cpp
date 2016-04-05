@@ -5,19 +5,20 @@ using namespace kubik::games::funces;
 
 Funces::Funces(ISettingsRef config)
 {	
-	console()<<":: FUNCES CREATED::"<<endl;
+	logger().log("~~~ Funces.Created ~~~");
+
 	init(config);
 	setType(ScreenId::FUNCES);
 }
 
 Funces::~Funces()
 {
-	console()<<"~~~~~~~~~~~~~~~~~~~~~~~Funces destructor~~~~~~~~~~~~~~~~~~~"<<endl;	
+	logger().log("~~~ Funces.Destruct ~~~");
 }
 
 void Funces::start()
 {
-	console() << "START FUNCES!!!" << endl;
+	logger().log("~~~ Funces.Start ~~~");
 
 	initShowAnimation();
 	initKinect();
@@ -60,7 +61,7 @@ void Funces::showAnimationComplete()
 
 void Funces::stop()
 {
-	console() << "STOP FUNCES!!!" << endl;
+	logger().log("~~~ Funces.Stop ~~~");
 
 	kinect().stop();
 

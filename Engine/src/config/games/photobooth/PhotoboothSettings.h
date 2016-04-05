@@ -13,7 +13,7 @@
 
 #define Photobooth_DEBUG
 #define Photobooth_Loadfromfolder_DEBUG
-#define Photobooth_Sharing_DEBUG
+//#define Photobooth_Sharing_DEBUG
 
 namespace kubik
 {

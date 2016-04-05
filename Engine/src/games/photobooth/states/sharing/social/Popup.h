@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Utils.h"
 #include "PhotoboothSettings.h"
 #include "gui/Sprite.h"

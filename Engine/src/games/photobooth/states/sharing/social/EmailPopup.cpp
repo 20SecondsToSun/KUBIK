@@ -5,7 +5,8 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-EmailPopup::EmailPopup(PhotoboothSettingsRef settings):Popup(settings),
+EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
+	:Popup(settings),
 	addEmailFontColor(Color::white()),
 	addEmailIcon(settings->getTexture("addEmail")),
 	borderIcon(settings->getTexture("enterEmailBorder")),
@@ -132,7 +133,9 @@ void EmailPopup::drawAddedEmails()
 {
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
 	for (auto email : emailsTextures)
+	{
 		gl::draw(email.texture, email.position);
+	}
 }
 
 void EmailPopup::sendEmailHandler()
@@ -141,12 +144,9 @@ void EmailPopup::sendEmailHandler()
 	{
 		showRedFocusStroke();
 		return;
-	}
-	
+	}	
 
-	/*
-	
-			sending to server
-	
+	/*	
+		sending to server	
 	*/
 }

@@ -43,7 +43,7 @@ void Facebook::update()
 	SocShare::update();
 }
 
-void  Facebook::signInUpdate()
+void Facebook::signInUpdate()
 {
 	std::string anchorString = chrome().convertToString(mWebViewPtr->url().anchor());
 	size_t pos = anchorString.find("access_token");
@@ -64,6 +64,7 @@ void  Facebook::signInUpdate()
 		if (queryString.size() == 0 || pos_denied < 1000)
 		{
 			status = USER_REJECT;
+			mWebViewPtr->LoadURL(WebURL(WSLit("")));
 			hideSignal();
 		}
 	}
@@ -224,5 +225,5 @@ void Facebook::logOut()
 {
 	std::map<string, string> strings;
 	strings.insert(pair<string, string>(SocialSettings::FACEBOOK_ACCESS_TOKEN, access_token));
-	string fbRequest = Curl::deleteRequest(SocialSettings::FACEBOOK_APP_LOGOUT_URL, strings);
+	string fbRequest = Curl::deleteRequest(SocialSettings::FACEBOOK_APP_LOGOUT_URL, strings);	
 }

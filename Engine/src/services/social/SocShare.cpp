@@ -56,8 +56,10 @@ void SocShare::initChromium()
 
 void SocShare::update()
 {	
-	if(mWebCorePtr)
+	if (mWebCorePtr)
+	{
 		mWebCorePtr->Update();
+	}
 
 	if (mWebViewPtr && ph::awesomium::isDirty(mWebViewPtr))
 	{
@@ -67,7 +69,8 @@ void SocShare::update()
 			fmt.setMagFilter(GL_NEAREST);
 			mWebTexture = ph::awesomium::toTexture(mWebViewPtr, fmt);
 		}
-		catch (const std::exception &e) {
+		catch (const std::exception &e) 
+		{
 			console() << e.what() << std::endl;
 		}
 
@@ -117,8 +120,8 @@ void SocShare::connectTouchDown()
 	if (connected) return;
 
 	mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&SocShare::mouseDown, this, std::placeholders::_1));
-	mouseUpCon = getWindow()->getSignalMouseUp().connect(std::bind(&SocShare::mouseUp, this, std::placeholders::_1));
-	keyDownCon = getWindow()->getSignalKeyDown().connect(std::bind(&SocShare::keyDown, this, std::placeholders::_1));
+	mouseUpCon   = getWindow()->getSignalMouseUp().connect(std::bind(&SocShare::mouseUp,	 this, std::placeholders::_1));
+	keyDownCon   = getWindow()->getSignalKeyDown().connect(std::bind(&SocShare::keyDown,	 this, std::placeholders::_1));
 
 	touchKeyboard().connectEventHandler(&SocShare::handleKeyDown, this, VirtualKeyboard::KEY_TOUCH);
 	connected = true;

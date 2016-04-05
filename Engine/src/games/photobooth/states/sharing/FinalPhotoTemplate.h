@@ -29,7 +29,6 @@ namespace kubik
 			public:	
 				FinalPhotoTemplate();
 				void setData(PhotoStorageRef photoStorage);
-
 				void startAnimate();
 				void stopAnimate();
 				void setTemplate(const ci::gl::Texture& texture);

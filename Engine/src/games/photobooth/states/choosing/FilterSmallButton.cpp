@@ -23,11 +23,11 @@ FilterSmallButton::FilterSmallButton(const ci::Vec2f& vec,
 {
 	boost::to_upper(this->text);
 
-	titleSmall = textTools().getTextField(this->text, &fontC, Color::white()); 
+	titleSmall    = textTools().getTextField(this->text, &fontC, Color::white()); 
 	titleSmallPos = Vec2f((109 - titleSmall.getWidth()) * 0.5, 191);
 
-	titleBig = textTools().getTextField(this->text, &fontO, Color::white()); 
-	titleBigPos = Vec2f((137.0f - titleBig.getWidth()) * 0.5f, 211.0f);
+	titleBig      = textTools().getTextField(this->text, &fontO, Color::white()); 
+	titleBigPos   = Vec2f((137.0f - titleBig.getWidth()) * 0.5f, 211.0f);
 
 	shader = shadertool().get((ShaderTool::FilterType)id);
 }

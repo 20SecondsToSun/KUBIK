@@ -20,7 +20,8 @@ void Popup::show()
 {
 	initVirtualKeyboard();
 
-	timeline().apply(&alphaAnim, 0.0f, 0.97f, 0.6f, EaseOutCubic())
+	timeline()
+		.apply(&alphaAnim, 0.0f, 0.97f, 0.6f, EaseOutCubic())
 		.finishFn(bind(&Popup::showAnimComplete, this));
 }
 
@@ -30,8 +31,7 @@ void Popup::initVirtualKeyboard()
 	touchKeyboard().clearInputFieldText();
 	touchKeyboard().setOriginPoint(Vec2f::zero());
 	touchKeyboard().connectKeyboard();
-	auto endY = 800.0f;//500.0f;
-	touchKeyboard().show(Vec2f(30.0f, endY + 500.0f), Vec2f(30.0f, endY), 0.7f);
+	touchKeyboard().show(Vec2f(30.0f, 800.0f + 500.0f), Vec2f(30.0f, 800.0f), 0.7f);
 }
 
 void Popup::showAnimComplete()
@@ -78,6 +78,7 @@ void Popup::hide(EventGUIRef& event)
 void Popup::hideQuick(EventGUIRef& event)
 {
 	kill();
+
 	touchKeyboard().disconnectKeyboard();
 	touchKeyboard().hideQuick(Vec2f(30.0f, 1950.0f));
 	callback(POPUP_CLOSED);
@@ -91,7 +92,8 @@ void Popup::close()
 	touchKeyboard().disconnectKeyboard();
 	touchKeyboard().hide(Vec2f(30.0f, 1950.0f), 0.3f);
 
-	timeline().apply(&alphaAnim, 0.0f, 0.6f, EaseOutCubic())
+	timeline()
+		.apply(&alphaAnim, 0.0f, 0.6f, EaseOutCubic())
 		.finishFn(bind(&Popup::hideAnimComplete, this));
 }
 
@@ -109,8 +111,10 @@ void Popup::drawBackgrounds()
 	auto color = Utils::colorAlpha(Color::white(), alphaAnim);
 	gl::color(color);
 
-	if (backgroundImage)	
+	if (backgroundImage)
+	{
 		gl::draw(backgroundImage);
+	}
 }
 
 void Popup::setBackground(const ci::gl::Texture& texture)

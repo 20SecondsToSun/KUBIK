@@ -5,7 +5,8 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-SocialPopup::SocialPopup(PhotoboothSettingsRef settings):Popup(settings),
+SocialPopup::SocialPopup(PhotoboothSettingsRef settings)
+	:Popup(settings),
 	postingBg(settings->getTexture("popupNetralBg")),
 	errorBg(settings->getTexture("popupErrorBg")),
 	successMessage(settings->getTexture("successMessage")),
@@ -21,13 +22,12 @@ void SocialPopup::show()
 	social->clear_token();
 	social->initChromium();
 
-	hideSignalCon = social->hideSignal.connect(bind(&SocialPopup::close, this));
+	hideSignalCon			 = social->hideSignal.connect(bind(&SocialPopup::close, this));
 	postingStartSignalCon    = social->postingStart.connect(bind(&SocialPopup::postingStartHandler, this));
 	postingCompleteSignalCon = social->postingComplete.connect(bind(&SocialPopup::postingCompleteHandler, this));
 	postingErrorSignalCon	 = social->postingError.connect(bind(&SocialPopup::postingErrorHandler, this));
 
 	Popup::show();
-
 	popupDrawFunc = &SocialPopup::signInDraw;
 }
 
@@ -117,7 +117,6 @@ void SocialPopup::successDraw()
 void SocialPopup::postingDraw()
 {	
 	gl::draw(postingBg);
-
 	gl::pushMatrices();
 	gl::translate(0.0f, 0.5f * (1920.0f - mainPreloader->getHeight()));
 	mainPreloader->draw();

@@ -24,7 +24,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	IPhotoboothLocation::reset(settings);
 
 	float rightBlockX = 652.0f;
-	title = settings->getTexture("sharetitle");
+	title    = settings->getTexture("sharetitle");
 	titlePos = Vec2f(rightBlockX, 203.0f - title.getHeight() * 0.5f);
 
 	serviceBtns.clear();
@@ -56,8 +56,10 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 		serviceBtns.push_back(emailBtn);
 		currentY++;
 	}
-	else	
-		currentY = &posArrayWithoutEmail[0];	
+	else
+	{
+		currentY = &posArrayWithoutEmail[0];
+	}
 
 	if (settings->getSocialState(PhtTextID::FACEBOOK))
 	{

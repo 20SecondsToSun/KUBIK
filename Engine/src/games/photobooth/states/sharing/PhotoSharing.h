@@ -33,21 +33,21 @@ namespace kubik
 					POPUP
 				}state;
 
-				PopupRef popup;
-				EmailPopupRef emailpopup;
-				VkontaktePopupRef vkpopup;
-				FacebookPopupRef fbpopup;
-				TwitterPopupRef twpopup;
+				PopupRef			popup;
+				EmailPopupRef		emailpopup;
+				VkontaktePopupRef	vkpopup;
+				FacebookPopupRef	fbpopup;
+				TwitterPopupRef		twpopup;
 
-				PhotoStorageRef  photoStorage;
-				ci::gl::Texture sharefon;
-				ci::Vec2f sharefonPos, qrTitlePos, titlePos;
-				ci::Anim<float> alphaAnim, leftBlockAnimateX;
+				PhotoStorageRef		photoStorage;
+				ci::gl::Texture		sharefon;
+				ci::Vec2f			sharefonPos, qrTitlePos, titlePos;
+				ci::Anim<float>		alphaAnim, leftBlockAnimateX;
 				ci::Anim<ci::Vec2f> sharefonPosAnim;
 
 				std::vector<ImageButtonSpriteRef> serviceBtns;
 
-				FinalPhotoTemplate finalPhotoTemplate;
+				FinalPhotoTemplate   finalPhotoTemplate;
 				ImageButtonSpriteRef emailBtn, fbBtn, vkBtn, twBtn, againBtn, allAppBtn;
 
 				QrCodeRef qrcode, qrCodeObject;
@@ -56,7 +56,6 @@ namespace kubik
 				SimpleSpriteButtonRef simple;
 
 				void hideAnimComplete();
-
 				void drawServiceButtons();
 				void drawFinalPhoto();
 				void againBtnHandler(EventGUIRef& event);
@@ -72,11 +71,12 @@ namespace kubik
 
 			public:
 				PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
+
 				virtual void reset(PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;
-				virtual void draw() override;
+				virtual void draw()	override;
 				virtual void stopAllTweens() override;
 				void showPopup();
 			};

@@ -214,8 +214,12 @@ void PhotoChoosing::photoChoosed(EventGUIRef& event)
 	selectedNum = 0;
 
 	for (auto btn : photoBtns)
+	{
 		if (btn->selected())
+		{
 			selectedNum++;
+		}
+	}
 
 	if (selectedNum > MAX_SELECT)
 	{
@@ -346,14 +350,17 @@ void PhotoChoosing::drawPhotoPreview()
 
 void PhotoChoosing::drawPhotoFilters()
 {
-	gl::color(ColorA(1.0f, 1.0f, 1.0f, titleFilterAlpha));
-	gl::draw(titleFilter, titleFilterPos);
-	gl::color(Color::white());
+	if (filterBtns.size() > 1)
+	{	
+		gl::color(ColorA(1.0f, 1.0f, 1.0f, titleFilterAlpha));
+		gl::draw(titleFilter, titleFilterPos);
+		gl::color(Color::white());
 
-	for (auto filter : filterBtns)
-	{
-		filter->draw();
-	}		
+		for (auto filter : filterBtns)
+		{
+			filter->draw();
+		}
+	}
 }
 
 void PhotoChoosing::setTitle()
