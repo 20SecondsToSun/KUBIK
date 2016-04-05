@@ -1385,9 +1385,6 @@
     <ClInclude Include="..\src\games\instakub\states\SearchButtons.h">
       <Filter>Source Files\games\instakub\states</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h">
       <Filter>Source Files\graphics\imagesequencer</Filter>
     </ClInclude>

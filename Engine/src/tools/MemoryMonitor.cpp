@@ -23,12 +23,16 @@ void MemoryMonitor::log()
 {	
 	auto logPath = ci::app::getAppPath() / "logs" / "memory.log";
 
-	MEMORYSTATUSEX status;
-	status.dwLength = sizeof(status);
-	GlobalMemoryStatusEx(&status);	
+	//MEMORYSTATUSEX status;
+	//status.dwLength = sizeof(status);
+	//GlobalMemoryStatusEx(&status);	
 
-	ci::app::console() << "---------------memory_log---------------" + ci::toString(status.dwMemoryLoad) << std::endl;
+	PROCESS_MEMORY_COUNTERS_EX pmcx = {};
+	pmcx.cb = sizeof(pmcx);
+	GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmcx), pmcx.cb);
 
-	const float time = 10.0f;
-	ci::app::timeline().apply(&animTime, 0.0f, 10.0f, time).finishFn(std::bind(&MemoryMonitor::log, this));
+	auto MB = 1048576.0;
+	ci::app::console() << " ~~~ Memory usage log :::::::::" + ci::toString(pmcx.PrivateUsage / MB) <<" MB ~~~"<< std::endl;
+
+	registerLoging();
 }

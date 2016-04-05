@@ -1,4 +1,5 @@
- #pragma once
+#pragma once
+
 #include "PhotoboothSettings.h"
 #include "model/PhotoStorage.h"
 #include "gui/Sprite.h"

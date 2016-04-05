@@ -149,13 +149,14 @@ void SocShare::keyDown(KeyEvent event)
 
 void SocShare::disconnectTouchDown()
 {
-	if (!connected) return;
-
-	mouseDownCon.disconnect();
-	mouseUpCon.disconnect();
-	keyDownCon.disconnect();
-	touchKeyboard().disconnectEventHandler(VirtualKeyboard::KEY_TOUCH);
-	connected = false;
+	if (connected)
+	{
+		mouseDownCon.disconnect();
+		mouseUpCon.disconnect();
+		keyDownCon.disconnect();
+		touchKeyboard().disconnectEventHandler(VirtualKeyboard::KEY_TOUCH);
+		connected = false;
+	}	
 }
 
 SocShare::ServerStatus SocShare::getStatus()
@@ -166,6 +167,11 @@ SocShare::ServerStatus SocShare::getStatus()
 std::string SocShare::getDefaultStatus() const
 {
 	return defaultStatus;
+}
+
+void SocShare::setPostingStatus(const std::string& status)
+{
+	defaultStatus = status;
 }
 
 int SocShare::getBrowserWidth() const
@@ -185,14 +191,6 @@ std::string SocShare::getAuthUrl()
 
 std::vector<std::string> SocShare::getUploadPhotoPathVec() const
 {
-	///string path1 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon2.png";
-	//string path2 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon1.png";
-	///string path3 = "c:\\projects\\cinder_0.8.6_vc2012\\apps\\KUBIK\\Engine\\vc2012\\Debug\\kubik\\interface\\gamesDesign\\icons\\icon3.png";
-	//std::vector<std::string> filesPath;
-	//filesPath.push_back(path1);
-	//filesPath.push_back(path2);
-	//filesPath.push_back(path3);
-
 	return uploadPhotoPathVec;
 }
 

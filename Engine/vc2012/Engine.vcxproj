@@ -69,7 +69,7 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;KCBv2.lib;kinect20.lib;Kinect20.Face.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib\Psapi.lib;KCBv2.lib;kinect20.lib;Kinect20.Face.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\;$(KINECTSDK20_DIR)\lib\$(PlatformTarget);..\blocks\Cinder-KCB2\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>

@@ -4,10 +4,6 @@
 #include "kinect2/KinectAdapter.h"
 #include "Tools/MemoryMonitor.h"
 
-
-#include "Tools/qrCode/QrCodeCreator.h"
-
-
 using namespace ci;
 using namespace ci::app;
 using namespace std;
@@ -38,14 +34,14 @@ void EngineApp::prepareSettings(AppBasic::Settings *settings)
 }
 
 void EngineApp::setup()
-{	
+{
 	gl::enableAlphaBlending();
 
 	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001
 
-	model		= ApplicationModelRef(new ApplicationModel());
-	view		= AppViewRef(new ApplicationView());
-	controller  = ControllerRef(new Controller(model, view));	
+	model = ApplicationModelRef(new ApplicationModel());
+	view = AppViewRef(new ApplicationView());
+	controller = ControllerRef(new Controller(model, view));
 
 	FullScreenOptions fullscreenOptions;
 	DisplayRef display = fullscreenOptions.getDisplay();
@@ -58,8 +54,6 @@ void EngineApp::setup()
 
 	memory_monitor().registerLoging();
 
-	QrCodeCreator qr;
-	qr.generateQRcodeByURL();
 }
 
 void EngineApp::mouseDown( MouseEvent event )

@@ -11,7 +11,7 @@ namespace kubik
 		void log();
 
 	private:
-		ci::Anim<float> animTime;
+		ci::Anim<float> animTime;		
 	};
 
 	inline MemoryMonitor& memory_monitor() { return MemoryMonitor::getInstance(); };

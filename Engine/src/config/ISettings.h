@@ -16,7 +16,7 @@ namespace kubik
 			static std::string getInterfacePath(const std::string& value = "");
 
 			std::string getDesignPath() const;
-			std::string getStaticDesignPath(const std::string& value = "") const;
+			std::string getStaticDesignPath(const std::string& value = "")   const;
 			std::string getTemplateDesignPath(const std::string& value = "") const;
 
 			ImageResourceDictionary getTextures() const;
@@ -63,9 +63,9 @@ namespace kubik
 			void addToSettingsDictionary(const std::string& key, std::shared_ptr<FontResource>   value);
 			void addToSettingsDictionary(const std::string& key, std::shared_ptr<VideoResource>  value);
 
-			std::shared_ptr<ImageResource> createImageResource(const std::string& path, loadingType loadType = loadingType::FULL_PATH);
-			std::shared_ptr<FontResource> createFontResource(const std::string& path, float size = 30, loadingType loadType = loadingType::FULL_PATH);
-			std::shared_ptr<VideoResource> createVideoResource(const std::string& path, loadingType loadType = loadingType::FULL_PATH);
+			std::shared_ptr<ImageResource> createImageResource(const std::string& path,					 loadingType loadType = loadingType::FULL_PATH);
+			std::shared_ptr<FontResource>  createFontResource( const std::string& path, float size = 30, loadingType loadType = loadingType::FULL_PATH);
+			std::shared_ptr<VideoResource> createVideoResource(const std::string& path,					 loadingType loadType = loadingType::FULL_PATH);
 
 		private:
 			static const std::string InterfacePath;

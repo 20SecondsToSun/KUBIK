@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ApplicationModel.h"
 #include "gui/Sprite.h"
 #include "IGame.h"

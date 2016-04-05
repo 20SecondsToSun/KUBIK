@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IGame.h"
 #include "ISettings.h"
 

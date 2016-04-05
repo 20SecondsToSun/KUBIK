@@ -86,7 +86,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	{
 		qrcode = QrCodeRef(new QrCode());
 		auto qrTitle = settings->getTexture("qrtitle");
-		qrcode->setTtile(qrTitle);
+		qrcode->setTitle(qrTitle);
 		qrcode->setPosition(Vec2f(leftBlockX, 880.0f - qrTitle.getHeight() * 0.5f));
 	}
 	else
@@ -104,7 +104,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	startServiceButtonY = 1592.0f;
 //#endif
 
-	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY - againBtn->getHeight()  * 0.5f));
+	againBtn->setPosition(Vec2f(127.0f, startServiceButtonY  - againBtn->getHeight()  * 0.5f));
 	allAppBtn->setPosition(Vec2f(581.0f, startServiceButtonY - allAppBtn->getHeight() * 0.5f));
 
 	popup = emailpopup;
@@ -112,29 +112,39 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 
 void PhotoSharing::start()
 {	
-	auto photoTemplate = settings->getPhotoSharingCard();
-
+	// set photos to post
 	auto path1 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(1) + ".JPG"));
 	auto path2 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(2) + ".JPG"));
 	auto path3 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(3) + ".JPG"));
+
 	std::vector<std::string> filesPath;
 	filesPath.push_back(path1);
 	filesPath.push_back(path2);
 	filesPath.push_back(path3);
+
 	vkpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 	fbpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 	twpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 
+	// set text to post
+	vkpopup->getSocialService()->setPostingStatus("vk test");
+	fbpopup->getSocialService()->setPostingStatus("fb test");
+	twpopup->getSocialService()->setPostingStatus("tw test");
+
+	//set qrcode
+	auto link = "http://familyagency.ru";
+	qrcode->initLink(link, settings->getPhotoDownloadDirectory().string() + "\\" + ("qrcode.bmp"));
 
 
+
+	auto photoTemplate = settings->getPhotoSharingCard();
 
 #ifndef Photobooth_Sharing_DEBUG
 	finalPhotoTemplate.setData(photoStorage);
 	finalPhotoTemplate.setTemplate(photoTemplate);
 	finalPhotoTemplate.startAnimate();
 #endif
-
-	qrcode->initLink();
+	
 	initShowAnim();
 }
 
@@ -179,20 +189,30 @@ void PhotoSharing::connectHandlers()
 {
 	againBtn->connectEventHandler(&PhotoSharing::againBtnHandler, this);
 
-	if (!settings->onlyOneGameOn())		
+	if (!settings->onlyOneGameOn())
+	{
 		allAppBtn->connectEventHandler(&PhotoSharing::allAppBtnHandler, this);
+	}
 
-	if (settings->getSocialState(PhtTextID::EMAIL))	
+	if (settings->getSocialState(PhtTextID::EMAIL))
+	{
 		emailBtn->connectEventHandler(&PhotoSharing::emailBtnHandler, this);
+	}
 
 	if (settings->getSocialState(PhtTextID::FACEBOOK))
+	{
 		fbBtn->connectEventHandler(&PhotoSharing::fbBtnHandler, this);
+	}
 
 	if (settings->getSocialState(PhtTextID::VKONTAKTE))
+	{
 		vkBtn->connectEventHandler(&PhotoSharing::vkBtnHandler, this);
+	}
 
 	if (settings->getSocialState(PhtTextID::TWITTER))
+	{
 		twBtn->connectEventHandler(&PhotoSharing::twBtnHandler, this);
+	}
 
 	callback(COMPLETE_ANIM);
 }

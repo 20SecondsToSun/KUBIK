@@ -67,6 +67,7 @@ namespace kubik
 		ServerStatus getStatus();
 
 		void setUploadPhotoPathVec(const std::vector<std::string>& vec);
+		void setPostingStatus(const std::string& status);
 
 	protected:		
 		std::string authURL;
