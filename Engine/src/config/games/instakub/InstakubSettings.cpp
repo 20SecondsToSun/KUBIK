@@ -33,11 +33,11 @@ void InstakubSettings::load()
 
 void InstakubSettings::loadPaths()
 {
-	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
-	configPaths.photoCardsStylesDesignDataPath = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
-	configPaths.userPhotoCardStylePath = getBasePath().string() + pathJSON.getChild("userPhotoCardStylePath").getValue<string>();
-	configPaths.finalPath = pathJSON.getChild("finalPath").getValue<string>();
-	staticDesignPath  = pathJSON.getChild("interfacePath").getValue<string>();	
+	JsonTree pathJSON							= JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
+	configPaths.photoCardsStylesDesignDataPath  = pathJSON.getChild("photoCardsStylesPath").getValue<string>();
+	configPaths.userPhotoCardStylePath			= getBasePath().string() + pathJSON.getChild("userPhotoCardStylePath").getValue<string>();
+	configPaths.finalPath						= pathJSON.getChild("finalPath").getValue<string>();
+	staticDesignPath							= pathJSON.getChild("interfacePath").getValue<string>();	
 }
 
 void InstakubSettings::loadParams()
@@ -191,8 +191,7 @@ void InstakubSettings::buildLocationData()
 {
 	for (auto &it : photoCardStyles)
 	{
-		auto tex = getTexture(it.getDesignTexName());
-		
+		auto tex = getTexture(it.getDesignTexName());		
 		it.setDesignTexture(tex);
 	}
 }

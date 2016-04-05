@@ -10,13 +10,17 @@ using namespace ci::signals;
 void GraphicsLoader::setLoadingTextures(IResourceDictionary _textures)
 {
 	for (auto it = _textures.begin(); it != _textures.end(); it++)
+	{
 		loadingRes.push_back((*it).second);
+	}
 }
 
 void GraphicsLoader::setLoadingTextures(vector<IResourceBaseRef> _textures)
 {
 	for (auto it = _textures.begin(); it != _textures.end(); it++)
+	{
 		loadingRes.push_back(*it);
+	}
 }
 
 void GraphicsLoader::load()
@@ -84,9 +88,11 @@ void GraphicsLoader::loadTextures()
 	catch (...)
 	{
 		loadingStatus = LOADING_ERROR;
-		console() << "Unable to load the resource." << loadPath << endl;
+		logger().log( "Unable to load the resource." + loadPath);
 	}
 
 	if (loadingStatus == LOADING)
+	{
 		loadingStatus = LOADED;
+	}
 }

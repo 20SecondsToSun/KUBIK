@@ -13,7 +13,7 @@ namespace kubik
 		void setIconPath(const std::string& path);
 		void setDesignTexName(const std::string& name);
 		void setIcon(const ci::gl::Texture& icon);
-		void setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect);
+		//void setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect);
 		void setDesignTexture(const ci::gl::Texture& designTexture);
 		void setFont(FontResourceDictionary fontDic);
 		void setDesignPath(const std::string& path);

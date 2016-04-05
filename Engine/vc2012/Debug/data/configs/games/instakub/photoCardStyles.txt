@@ -3,7 +3,7 @@
    "designs" : 
       [{
          "id" : 1,
-	 "textObj": {"text": "Crazy Eyes",
+	 "textObj": {"text": "Big brother",
 		  "font" : "HelveticaLight",
 		  "size" : 24,
 		  "color" : "ffffff"

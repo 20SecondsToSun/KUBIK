@@ -46,10 +46,16 @@ void PreloaderSettings::setTextures()
 		movieStruct = movieLoader().getMovieStruct(getTemplateDesignPath(name + "\\"), name);	
 
 		if (movieStruct.type == MovieLoader::VIDEO)
+		{
 			addToDictionary(movieStruct.name, createVideoResource(movieStruct.paths[0]));
+		}
 		else if (movieStruct.type == MovieLoader::IMAGE_SEQUENCE)
+		{
 			for (size_t i = 0; i < movieStruct.paths.size(); i++)
+			{
 				addToDictionary(movieStruct.name + to_string(i), createImageResource(movieStruct.paths[i]));
+			}
+		}
 	};
 
 	addPreloaderFilesToDictionary(mainPreloaderStruct, "mainpreloader");

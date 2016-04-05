@@ -73,16 +73,16 @@ void ApplicationModel::parseConfigPaths(ConfigObject& configObject, const JsonTr
 
 void ApplicationModel::parseUserData()
 {
-	JsonTree userInfoJSON = JsonTree(loadFile(getUserDataPath()));
+	JsonTree userInfoJSON   = JsonTree(loadFile(getUserDataPath()));
 
-	_userDataPath		  = JsonTree(userInfoJSON.getChild("userData")).getValue<string>();
-	JsonTree userDataJSON = JsonTree(loadFile(getFullPath(_userDataPath)));
+	_userDataPath		    = JsonTree(userInfoJSON.getChild("userData")).getValue<string>();
+	JsonTree userDataJSON   = JsonTree(loadFile(getFullPath(_userDataPath)));
 
-	lang			= userDataJSON.getChild("lang").getValue<string>();
-	userID			= userDataJSON.getChild("userID").getValue<string>();
-	standID			= userDataJSON.getChild("standID").getValue<int>();
-	netConnection   = userDataJSON.getChild("netConnection").getValue<bool>();
-	defaultGameID	= (GameId)userDataJSON.getChild("defaultGameID").getValue<int>();
+	lang					= userDataJSON.getChild("lang").getValue<string>();
+	userID					= userDataJSON.getChild("userID").getValue<string>();
+	standID					= userDataJSON.getChild("standID").getValue<int>();
+	netConnection			= userDataJSON.getChild("netConnection").getValue<bool>();
+	defaultGameID			= (GameId)userDataJSON.getChild("defaultGameID").getValue<int>();
 
 	auto gamesAvailablePath = JsonTree(userInfoJSON.getChild("gamesAvailable")).getValue<string>();
 	gamesPurchasedPath		= JsonTree(userInfoJSON.getChild("gamesPurchasedPath")).getValue<string>();

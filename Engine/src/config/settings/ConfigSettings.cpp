@@ -330,7 +330,9 @@ void ConfigSettings::setTextures()
 	addToDictionary("gameInWebIcon", createImageResource(getDesignPath() + "gameInWebIcon.png"));
 
 	for (auto item : data.designData)
+	{
 		addToDictionary(item.getIconTexName(), createImageResource(getDesignPath() + item.getIconPath()));
+	}
 }
 
 void ConfigSettings::buildData()
@@ -339,8 +341,10 @@ void ConfigSettings::buildData()
 	auto texts = data.getTexts();
 	auto dic = texts.getDic();
 
-	for (auto &it : dic)	
+	for (auto &it : dic)
+	{
 		it.second.setFont(fontStorage().getAll());
+	}
 
 	for (auto &it : data.designData)
 	{

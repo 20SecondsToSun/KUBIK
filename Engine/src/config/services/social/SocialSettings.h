@@ -16,11 +16,11 @@ namespace kubik
 			SocialSettings(ApplicationModelRef model);
 
 			virtual void load();
-			virtual void setTextures(){};
-			virtual void createMemento(){};
-			virtual void writeConfig(){};
-			virtual bool settingsChanged(){ return false; };
-			virtual changeSetting::id getChangeID() const ;				
+			virtual void setTextures();
+			virtual void createMemento();
+			virtual void writeConfig();
+			virtual bool settingsChanged();
+			virtual changeSetting::id getChangeID() const;				
 
 			static const std::string FACEBOOK_BASE_URL;
 			static const std::string FACEBOOK_FEED_URL;

@@ -159,16 +159,22 @@ void Controller::createLocations()
 
 void Controller::startup()
 {
-	if(screenSaverSettings->isShow())	
-		startLocation(screenSaver);	
+	if (screenSaverSettings->isShow())
+	{
+		startLocation(screenSaver);
+	}
 	else
+	{
 		startMenuScreenLocation();
+	}
 }
 
 void Controller::startLocation(IScreenRef location)
 {
 	if (currentLocation)
+	{
 		currentLocation->setScrenshot();
+	}
 
 	closeCurrentLocation();
 
@@ -191,8 +197,10 @@ void Controller::closeCurrentLocation()
 
 void Controller::setLocationHandlers(ScreenId type)
 {
-	if(gameSettings->isGameID(type))
+	if (gameSettings->isGameID(type))
+	{
 		addGameHandlers();
+	}
 	else
 	{
 		switch(type)
@@ -214,8 +222,10 @@ void Controller::setLocationHandlers(ScreenId type)
 
 void Controller::removeLocationHandlers(ScreenId type)
 {
-	if(gameSettings->isGameID(type))
+	if (gameSettings->isGameID(type))
+	{
 		removeGameHandlers();
+	}
 	else
 	{
 		switch(type)
@@ -259,10 +269,14 @@ void Controller::removeScreenSaverHandlers()
 
 void Controller::startMenuScreenLocation()
 {
-	if (model->onlyOneGameOn())		
-		startGameHandler(model->onlyOneGameOnID());	
-	else	
-		startLocation(menuScreen);	
+	if (model->onlyOneGameOn())
+	{
+		startGameHandler(model->onlyOneGameOnID());
+	}
+	else
+	{
+		startLocation(menuScreen);
+	}
 }
 
 void Controller::setMenuScreenHandlers()
@@ -289,10 +303,14 @@ void Controller::removeMenuScreenHandlers()
 
 void Controller::startGameHandler(GameId id)
 {	
-	if(gameSettings->isGameCurrent(id))	
-		startLocation(game);	
-	else	
+	if (gameSettings->isGameCurrent(id))
+	{
+		startLocation(game);
+	}
+	else
+	{
 		reloadGame(id);
+	}
 }
 
 void Controller::reloadGame(GameId id)
@@ -332,7 +350,9 @@ void Controller::createGame(GameId id)
 void Controller::addGameHandlers()
 {
 	if (!model->onlyOneGameOn())
+	{
 		controlLayer->showBackButton();
+	}
 
 	game->connectEventHandler(&Controller::closeGameHandler, this, IGame::CLOSE_LOCATION);
 	game->connectEventHandler(&Controller::enableGameHandler, this, IGame::ENABLE_GAME_CLOSE);
@@ -386,7 +406,9 @@ void Controller::removeGameHandlers()
 	game->disconnectEventHandler(IGame::CLOSE_LOCATION);
 
 	if (!model->onlyOneGameOn())
+	{
 		controlLayer->hideBackButton();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////

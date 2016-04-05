@@ -17,8 +17,8 @@ void FuncesSettings::load()
 void FuncesSettings::loadPaths()
 {
 	JsonTree pathJSON = JsonTree(loadFile(mainConfigObj.getPathsConfigPath()));
-	finalPath = pathJSON.getChild("finalPath").getValue<string>();
-	staticDesignPath = pathJSON.getChild("interfacePath").getValue<string>();
+	finalPath         = pathJSON.getChild("finalPath").getValue<string>();
+	staticDesignPath  = pathJSON.getChild("interfacePath").getValue<string>();
 }
 
 void FuncesSettings::setTextures()

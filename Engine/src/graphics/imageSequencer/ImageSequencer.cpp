@@ -2,7 +2,9 @@
 
 using namespace kubik;
 
-ImageSequencer::ImageSequencer(const std::vector<ci::gl::Texture>& images) :index(0), images(images)
+ImageSequencer::ImageSequencer(const std::vector<ci::gl::Texture>& images)
+	:index(0), 
+	images(images)
 {
 
 }
@@ -14,7 +16,10 @@ void ImageSequencer::draw()
 	gl::draw(images[index++]);
 
 	if (index >= images.size())
+	{
 		index = 0;
+	}
+
 	gl::popMatrices();
 }
 

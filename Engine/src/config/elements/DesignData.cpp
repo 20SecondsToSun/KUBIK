@@ -64,37 +64,39 @@ void OneDesignItem::setIcon(const ci::gl::Texture& icon)
 	this->icon = icon;
 }
 
-void OneDesignItem::setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect)
-{
-	for (size_t i = 0; i < coordRect.size(); i++)
-		designData.push_back(sliceMappedTexture(designTexture, coordRect[i]));
-}
+//void OneDesignItem::setDesignTexture(const ci::gl::Texture& designTexture, const vector<ci::RectT<int>>& coordRect)
+//{
+//	for (size_t i = 0; i < coordRect.size(); i++)
+//	{
+//		designData.push_back(sliceMappedTexture(designTexture, coordRect[i]));
+//	}
+//}
 
 void OneDesignItem::setDesignTexture(const ci::gl::Texture& designTexture)
 {
 	designData.push_back(designTexture);
 }
 
-ci::gl::Texture OneDesignItem::sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
-{
-	console() << "REFACTOR BIG HERE!!!!!!!!!!!!" << endl;
-	static gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
-	return fbo.getTexture();
-	console() << "fbo size::  " << fbo.getSize() << endl;
-
-	Utils::drawGraphicsToFBO(fbo, [&]()
-	{
-		gl::pushMatrices();
-		gl::translate(-rect.x1, -rect.y1);
-		gl::draw(tex);
-		gl::popMatrices();
-	});
-
-	gl::Texture retTex = fbo.getTexture();
-	Utils::clearFBO(fbo);
-
-	return retTex;
-}
+//ci::gl::Texture OneDesignItem::sliceMappedTexture(const ci::gl::Texture& tex, const ci::RectT<int>& rect)
+//{
+//	console() << "REFACTOR BIG HERE!!!!!!!!!!!!" << endl;
+//	static gl::Fbo fbo = gl::Fbo(rect.getWidth(), rect.getHeight());
+//	return fbo.getTexture();
+//	console() << "fbo size::  " << fbo.getSize() << endl;
+//
+//	Utils::drawGraphicsToFBO(fbo, [&]()
+//	{
+//		gl::pushMatrices();
+//		gl::translate(-rect.x1, -rect.y1);
+//		gl::draw(tex);
+//		gl::popMatrices();
+//	});
+//
+//	gl::Texture retTex = fbo.getTexture();
+//	Utils::clearFBO(fbo);
+//
+//	return retTex;
+//}
 
 std::vector<ci::gl::Texture> OneDesignItem::getMappedTextures()
 {

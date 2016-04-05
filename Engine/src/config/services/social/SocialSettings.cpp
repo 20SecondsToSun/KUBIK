@@ -65,22 +65,42 @@ SocialSettings::SocialSettings(ApplicationModelRef model) :ISettings(model)
 
 void SocialSettings::load()
 {
-	auto basePath = getBasePath() / model->getSocialSettingsFilePath();
-	JsonTree socialJSON = JsonTree(loadFile(basePath));
-	FACEBOOK_APP_ID = socialJSON.getChild("facebookAppId").getValue<string>();
-	FACEBOOK_AUTH_URL = "https://www.facebook.com/dialog/oauth?client_id=" + FACEBOOK_APP_ID + "&redirect_uri=http://familyagency.ru/&response_type=token&display=popup&scope=publish_actions,email,public_profile,user_friends,user_photos";
+	auto basePath		 = getBasePath() / model->getSocialSettingsFilePath();
+	JsonTree socialJSON  = JsonTree(loadFile(basePath));
+	FACEBOOK_APP_ID		 = socialJSON.getChild("facebookAppId").getValue<string>();
+	FACEBOOK_AUTH_URL    = "https://www.facebook.com/dialog/oauth?client_id=" + FACEBOOK_APP_ID + "&redirect_uri=http://familyagency.ru/&response_type=token&display=popup&scope=publish_actions,email,public_profile,user_friends,user_photos";
 
-	TWITTER_TOKEN_KEY = socialJSON.getChild("twitterTokenKey").getValue<string>();
+	TWITTER_TOKEN_KEY    = socialJSON.getChild("twitterTokenKey").getValue<string>();
 	TWITTER_TOKEN_SECRET = socialJSON.getChild("twitterTokenSecret").getValue<string>();
-	TWITTER_API_KEY = socialJSON.getChild("twitterApiKey").getValue<string>();
-	TWITTER_API_SECRET = socialJSON.getChild("twitterApiSecret").getValue<string>();
+	TWITTER_API_KEY		 = socialJSON.getChild("twitterApiKey").getValue<string>();
+	TWITTER_API_SECRET   = socialJSON.getChild("twitterApiSecret").getValue<string>();
 
-	VK_APP_ID = socialJSON.getChild("vkontakteAppId").getValue<string>();
-	VK_AUTH_URL = "https://oauth.vk.com/authorize?client_id=" + VK_APP_ID + "&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,wall&display=page&response_type=token";
-	VK_LOGOUT_URL = "https://login.vk.com/?act=openapi&oauth=1&aid=" + VK_APP_ID + "&location=familyagency.ru&do_logout=1&token=";
+	VK_APP_ID			 = socialJSON.getChild("vkontakteAppId").getValue<string>();
+	VK_AUTH_URL			 = "https://oauth.vk.com/authorize?client_id=" + VK_APP_ID + "&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,wall&display=page&response_type=token";
+	VK_LOGOUT_URL		 = "https://login.vk.com/?act=openapi&oauth=1&aid=" + VK_APP_ID + "&location=familyagency.ru&do_logout=1&token=";
 }
 
 changeSetting::id SocialSettings::getChangeID() const
 {
 	return changeSetting::id::SOCIAL;
+}
+
+void SocialSettings::setTextures()
+{
+
+}
+
+void SocialSettings::createMemento()
+{
+
+}
+
+void SocialSettings::writeConfig()
+{
+
+}
+
+bool SocialSettings::settingsChanged()
+{
+	return false;
 }

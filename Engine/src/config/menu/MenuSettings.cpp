@@ -9,20 +9,19 @@ using namespace kubik::config;
 MenuSettings::MenuSettings(ApplicationModelRef model):ISettings(model)
 {
 	mainConfigPath = model->getMenuConfigPath();
-	//load();		
 }
 
 void MenuSettings::load()
 {
 	logger().log("menu settings load");
 
-	JsonTree configJSON = JsonTree(loadFile(mainConfigPath));
-	data.staticPartDesignPath = configJSON.getChild("staticPartDesignPath").getValue<string>();
+	JsonTree configJSON				 = JsonTree(loadFile(mainConfigPath));
+	data.staticPartDesignPath		 = configJSON.getChild("staticPartDesignPath").getValue<string>();
 	data.kubikTemplatePartDesignPath = configJSON.getChild("kubikTemplatePartDesignPath").getValue<string>();
-	data.userTemplatePartDesignPath = configJSON.getChild("userTemplatePartDesignPath").getValue<string>();
-	data.finalPath = configJSON.getChild("finalPath").getValue<string>();
-	data.templateId = configJSON.getChild("templateId").getValue<int>();
-	data.isCustomDesign = configJSON.getChild("isCustomDesign").getValue<bool>();
+	data.userTemplatePartDesignPath  = configJSON.getChild("userTemplatePartDesignPath").getValue<string>();
+	data.finalPath					 = configJSON.getChild("finalPath").getValue<string>();
+	data.templateId					 = configJSON.getChild("templateId").getValue<int>();
+	data.isCustomDesign				 = configJSON.getChild("isCustomDesign").getValue<bool>();
 
 	setDesignPath();
 	setTextures();
@@ -30,7 +29,7 @@ void MenuSettings::load()
 
 void MenuSettings::saveConfig()
 {
-	console() << "SAVE MENU CONFIG" << endl;
+	logger().log("Save menu configs");
 
 	fs::path basePath(mainConfigPath);
 
@@ -57,9 +56,13 @@ changeSetting::id MenuSettings::getChangeID() const
 void MenuSettings::setDesignPath()
 {
 	if (data.isCustomDesign)
+	{
 		templateDesignPath = data.userTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
+	}
 	else
+	{
 		templateDesignPath = data.kubikTemplatePartDesignPath + to_string(data.templateId) + "\\" + data.finalPath;
+	}
 
 	staticDesignPath = data.staticPartDesignPath + data.finalPath;
 }
@@ -108,8 +111,12 @@ AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
 	vector<GamesInfo> filtergames;
 
 	for (auto it : games)
+	{
 		if (it.isOn && it.isPurchased)
+		{
 			filtergames.push_back(it);
+		}
+	}
 
 	AdditionalGameData gamedata;
 
@@ -123,26 +130,28 @@ AdditionalGameData MenuSettings::getMenuScreenAdditionalDesignElements()
 		switch (filtergames.size())
 		{
 		case 2:
-			bgPosition = Vec2f(0.0f, 0.0f);
-			iconPosition = Vec2f(238.0f, 101.0f);
+			bgPosition    = Vec2f(0.0f, 0.0f);
+			iconPosition  = Vec2f(238.0f, 101.0f);
 			titlePosition = Vec2f(267.0f, 690.0f);
 			break;
 
 		case 3:
-			bgPosition = Vec2f(0.0f, 0.0f);
-			iconPosition = Vec2f(342.0f, 51.0f);
+			bgPosition    = Vec2f(0.0f, 0.0f);
+			iconPosition  = Vec2f(342.0f, 51.0f);
 			titlePosition = Vec2f(266.0f, 425.0f);
 			break;
 
 		case 4:
-			bgPosition = Vec2f(0.0f, 0.0f);
-			iconPosition = Vec2f(82.0f, 155.0f);
+			bgPosition    = Vec2f(0.0f, 0.0f);
+			iconPosition  = Vec2f(82.0f, 155.0f);
 			titlePosition = Vec2f(138.0f, 622.0f);
 			break;
 		}
 
-		for (size_t i = 0; i < filtergames.size(); i++)				
-			gamedata.addTitle(filtergames[i].getGameId(), getTexture(prefix + "Title" + to_string(filtergames[i].getGameId())));			
+		for (size_t i = 0; i < filtergames.size(); i++)
+		{
+			gamedata.addTitle(filtergames[i].getGameId(), getTexture(prefix + "Title" + to_string(filtergames[i].getGameId())));
+		}
 		
 		gamedata.setTitlePosition(titlePosition);
 		gamedata.setBackgroundPosition(bgPosition);
@@ -157,9 +166,13 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 	auto games =  model->getGames();
 	vector<GamesInfo> filtergames;
 
-	for(auto it : games)	
-		if (it.isOn && it.isPurchased)		
-			filtergames.push_back(it);			
+	for (auto it : games)
+	{
+		if (it.isOn && it.isPurchased)
+		{
+			filtergames.push_back(it);
+		}
+	}
 
 	vector<GameData> gameData;
 	vector<Vec2f> position;
@@ -220,8 +233,7 @@ vector<GamesInfo> MenuSettings::getGames()
 
 bool MenuSettings::MenuDataStruct::hasDesignChanges(const MenuDataStruct& menu)
 {
-	return (isCustomDesign != menu.isCustomDesign ||
-		templateId != menu.templateId);
+	return (isCustomDesign != menu.isCustomDesign || templateId != menu.templateId);
 }
 
 ci::gl::Texture GameData::getTexture() const

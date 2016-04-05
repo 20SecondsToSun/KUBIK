@@ -36,8 +36,11 @@ IMovieRef MovieLoader::getMovie(MovieLoaderStruct loaderStruct, ImageResourceDic
 std::vector<ci::gl::Texture> MovieLoader::getPreloaderImages(int size, const string& name, ImageResourceDictionary imageDic)
 {
 	std::vector<ci::gl::Texture> preloaderSeq;
+
 	for (int i = 0; i < size; i++)
+	{
 		preloaderSeq.push_back(imageDic[name + to_string(i)]->get());
+	}
 
 	return preloaderSeq;
 };
