@@ -12,7 +12,8 @@ namespace shaders
 		
 		public:
 			Noise(float amount)
-				:BaseShader("Noise filter"), amount(amount)
+				:BaseShader("Noise filter"),
+				amount(amount)
 			{
 				using namespace ci;
 				shader = ci::gl::GlslProg(GET_PASSTHROUGH_VERTEX(), GET_FRAG());		
@@ -22,6 +23,11 @@ namespace shaders
 			{
 				params->clear();
 				params->addParam("amount", &this->amount).min(0.0f).max(1.0f).step(.1f);
+			}
+
+			void setNoiseAmount(float value)
+			{
+				amount = value;
 			}
 
 			const char *GET_FRAG()
@@ -64,6 +70,7 @@ namespace shaders
 				tex.unbind();
 			}
 		};
+
 		typedef std::shared_ptr<Noise> NoiseRef;
 	}
 }

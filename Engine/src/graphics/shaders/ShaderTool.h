@@ -41,6 +41,8 @@ namespace shaders
 			BaseShaderRef getNext(ci::params::InterfaceGlRef params);
 			BaseShaderRef getPrev(ci::params::InterfaceGlRef params);
 
+			void setdefaultValues();
+
 		private:
 			FilterType currentID;
 			MaskShaderRef maskShader;

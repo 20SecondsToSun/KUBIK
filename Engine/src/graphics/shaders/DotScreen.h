@@ -14,7 +14,10 @@ namespace shaders
 
 		public:
 			DotScreen(ci::Vec2i center, float angle, float scale)
-				:BaseShader("DotScreen filter"), center(center), angle(angle), scale(scale)
+				:BaseShader("DotScreen filter"),
+				center(center), 
+				angle(angle),
+				scale(scale)
 			{
 				using namespace ci;
 				shader = gl::GlslProg(GET_PASSTHROUGH_VERTEX(), GET_FRAG());	
@@ -27,6 +30,11 @@ namespace shaders
 				params->addParam("center.y", &this->center.y).min(0).max(1000).step(1);
 				params->addParam("angle", &this->angle).min(0).max(3.14*2).step(0.1);
 				params->addParam("scale", &this->scale).min(0).max(10).step(0.1);*/
+			}
+
+			void setScale(float value)
+			{
+				scale = value;
 			}
 
 			const char *GET_FRAG() override

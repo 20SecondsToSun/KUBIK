@@ -56,3 +56,9 @@ BaseShaderRef ShaderTool::getPrev(ci::params::InterfaceGlRef params)
 	currentID = static_cast<FilterType>(cur);
 	return get(currentID, params);
 }
+
+void ShaderTool::setdefaultValues()
+{
+	std::static_pointer_cast<Noise>(shadermap[NOISE])->setNoiseAmount(0.5f);
+	std::static_pointer_cast<DotScreen>(shadermap[DOT_SCREEN])->setScale(0.6f);
+}

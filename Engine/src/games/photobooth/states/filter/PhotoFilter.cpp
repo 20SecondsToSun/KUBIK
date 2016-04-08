@@ -1,4 +1,5 @@
 #include "PhotoFilter.h"
+#include "shaders/ShaderTool.h"
 
 using namespace std;
 using namespace ci::app;
@@ -8,7 +9,8 @@ using namespace kubik;
 using namespace kubik::games::photobooth;
 
 PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
-	:IPhotoboothLocation(), photoStorage(photoStorage)
+	:IPhotoboothLocation(), 
+	photoStorage(photoStorage)
 {
 	setImageSizeParams();
 	reset(settings);
@@ -20,6 +22,7 @@ void PhotoFilter::start()
 	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Filers Size : " + to_string(getCountFiltersOn()) + " ~~~");
 
 	cameraCanon().startLiveView();
+	shaders::imagefilters::shadertool().setdefaultValues();
 
 	if (getCountFiltersOn() <= 1)
 	{
