@@ -35,5 +35,5 @@ void IScreen::stop()
 
 void IScreen::setScrenshot()
 {	
-	kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); }));
+	kubik::setScreenShot(Utils::drawGraphicsToFBO(ci::app::getWindowSize(), [&](){ draw(); }));
 }

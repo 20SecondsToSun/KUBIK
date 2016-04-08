@@ -14,12 +14,13 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef	shared_ptr<class PhotoTemplate> PhotoTemplateRef;
+			typedef	std::shared_ptr<class PhotoTemplate> PhotoTemplateRef;
 
 			class PhotoTemplate : public IPhotoboothLocation
 			{
 				enum locationState
 				{
+					INIT,
 					ANIM_HIDE,
 					TEMPLATE_CHOOSE
 				}

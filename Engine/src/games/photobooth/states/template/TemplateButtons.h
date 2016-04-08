@@ -47,7 +47,7 @@ namespace kubik
 				bool isSelected;
 				templateID id;
 				ci::gl::Texture btnOver, btnOverText;
-				vector<std::map<FormatID, ci::gl::Texture>> photoTemplates;
+				std::vector<std::map<FormatID, ci::gl::Texture>> photoTemplates;
 
 				static shaders::imagefilters::BaseShaderRef shader;
 
@@ -62,7 +62,7 @@ namespace kubik
 				virtual void init(){};
 				void setSelectDesign(const ci::gl::Texture& btn);
 				templateID getID();
-				void setPhotoTemplates(const vector<std::map<FormatID, ci::gl::Texture>>& photoTemplates, shaders::imagefilters::BaseShaderRef shader);
+				void setPhotoTemplates(const std::vector<std::map<FormatID, ci::gl::Texture>>& photoTemplates, shaders::imagefilters::BaseShaderRef shader);
 				virtual ci::gl::Texture getPrintTemplate(){ return ci::gl::Texture(); };
 			};
 

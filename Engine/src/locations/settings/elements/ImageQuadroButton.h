@@ -72,7 +72,7 @@ namespace kubik
 
 			ci::Vec2f getStartVec() const
 			{
-				return Vec2f(startX, startY);
+				return ci::Vec2f(startX, startY);
 			}
 		};
 
@@ -135,7 +135,7 @@ namespace kubik
 		private:
 			OneDesignItem item;
 			bool selection;
-			gl::Texture overtex;			
+			ci::gl::Texture overtex;			
 			ci::Color backgroundTextColor;
 			ci::Vec2f textPosition, textBoxSize;
 		};	

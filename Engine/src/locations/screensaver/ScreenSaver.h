@@ -7,19 +7,16 @@
 #include "ImageScreenSaver.h"
 #include "gui/Sprite.h"
 
-using namespace std;
-using namespace ci;
-
 namespace kubik
 {
 	class ScreenSaver: public IScreen, public Sprite
 	{
 	public:
-		ScreenSaver(ISettingsRef config);
+		ScreenSaver(config::ISettingsRef config);
 
 		void start();
 		void stop();
-		void init(ISettingsRef settings) override;
+		void init(config::ISettingsRef settings) override;
 		void reset() override{};
 		void draw();		
 
@@ -28,11 +25,11 @@ namespace kubik
 
 	private:
 		void mouseUp(EventGUIRef& event);
-		connection mouseUpListener;
+		ci::signals::connection mouseUpListener;
 
 		IResourceScreenSaverRef screenSaverResource;
-		ScreenSaverSettingsRef settings;
+		config::ScreenSaverSettingsRef settings;
 	};
 
-	typedef shared_ptr<ScreenSaver> ScreenSaverRef;	
+	typedef std::shared_ptr<ScreenSaver> ScreenSaverRef;	
 }

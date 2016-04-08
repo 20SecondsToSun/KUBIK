@@ -29,7 +29,7 @@ namespace kubik
 			TextItem title1, title2, title3;
 			ci::ColorA linesColor, numsColor;
 
-			gl::Texture playedTimesTexture, printedPhotosTexture, sharedAndEmailTexture;
+			ci::gl::Texture playedTimesTexture, printedPhotosTexture, sharedAndEmailTexture;
 			ci::Vec2f playedTimesPosition, printedPhotosPosition, sharedAndEmailPosition;
 
 			int playedTimes;

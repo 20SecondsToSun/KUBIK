@@ -1,5 +1,7 @@
 #include "main/gamesBlock/GamesBlock.h"
 
+using namespace std;
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -43,8 +45,10 @@ void GamesBlock::freezeCheckerIfOne()
 
 void GamesBlock::activateListeners()
 {
-	if (hasGamesInShop) 
+	if (hasGamesInShop)
+	{
 		npGameblock->activateListeners();
+	}
 
 	pGameblock->activateListeners();
 
@@ -53,8 +57,10 @@ void GamesBlock::activateListeners()
 
 void GamesBlock::unActivateListeners()
 {
-	if (hasGamesInShop) 
+	if (hasGamesInShop)
+	{
 		npGameblock->unActivateListeners();
+	}
 
 	pGameblock->unActivateListeners();
 }
@@ -66,7 +72,9 @@ void GamesBlock::draw()
 	Sprite::draw();
 
 	if (hasGamesInShop)
+	{
 		drawDecorationLine2();
+	}
 }
 
 void GamesBlock::drawbg()
@@ -114,7 +122,7 @@ void GamesBlock::hide(const EaseFn& eFunc, float time)
 
 	animatePosition = _localPosition;
 	Vec2f finPos = Vec2f(_localPosition.x, _localPosition.y + 1160.0f);
-	timeline().apply(&animatePosition, finPos, time, eFunc)
+	app::timeline().apply(&animatePosition, finPos, time, eFunc)
 		.updateFn(bind(&GamesBlock::posAnimationUpdate, this))
 		.finishFn(bind(&GamesBlock::hideAnimationFinish, this));
 }
@@ -126,7 +134,7 @@ void GamesBlock::hideAnimationFinish()
 
 void GamesBlock::show(const EaseFn& eFunc, float time)
 {
-	timeline().apply(&animatePosition, initPosition, time, eFunc)
+	app::timeline().apply(&animatePosition, initPosition, time, eFunc)
 		.updateFn(bind(&GamesBlock::posAnimationUpdate, this))
 		.finishFn(bind(&GamesBlock::showAnimationFinish, this));
 }

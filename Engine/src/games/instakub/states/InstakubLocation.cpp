@@ -108,7 +108,7 @@ void InstakubLocation::draw()
 void InstakubLocation::fillBg()
 {
 	gl::draw(bg);
-};
+}
 
 void InstakubLocation::hashtagPhotosload(const string& hashtag)
 {
@@ -156,7 +156,6 @@ void InstakubLocation::loadingCompleteHandler()
 {	
 	if (mode == USER_PHOTOS_LOAD)
 	{
-		console() << "INSTAGRAM LOADING COMPLETE" << to_string(instClient->getLastCode()) << endl;
 		logger().log("~~~ Instagram loading complete, code : " + to_string(instClient->getLastCode()) + " ~~~" );
 
 		if (instClient->userPrivate())
@@ -178,10 +177,14 @@ void InstakubLocation::loadingCompleteHandler()
 	}	
 	else
 	{
-		if(instClient->noHashtagPhotos())
+		if (instClient->noHashtagPhotos())
+		{
 			instaViewer->showNoHashtagPhotos();
+		}
 		else
+		{
 			instaViewer->synchImages();
+		}
 	}
 	
 	callback(ENABLE_CONTROLS);

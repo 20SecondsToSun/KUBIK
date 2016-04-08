@@ -14,26 +14,34 @@ KinectAdapter& KinectAdapter::getInstance()
 
 void KinectAdapter::create()
 {
-	if (!mDevice)	
-		mDevice = Kinect2::Device::create();		
+	if (!mDevice)
+	{
+		mDevice = Kinect2::Device::create();
+	}
 }
 
 void KinectAdapter::enableHandTracking()
 {
 	if (mDevice)
+	{
 		mDevice->enableHandTracking();
+	}
 }
 
 void KinectAdapter::start()
 {
 	if (mDevice)
+	{
 		mDevice->start();
+	}
 }
 
 void KinectAdapter::stop()
 {
 	if (mDevice)
+	{
 		mDevice->stop();
+	}
 }
 
 bool KinectAdapter::deviceExist()

@@ -1,5 +1,6 @@
 #include "Checker.h"
 
+using namespace std;
 using namespace ci;
 using namespace kubik;
 using namespace kubik::config;

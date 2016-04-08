@@ -5,6 +5,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace ci::gl;
 using namespace kubik;
+using namespace kubik::config;
 
 Preloader::Preloader(const ci::Vec2f& position)
 {

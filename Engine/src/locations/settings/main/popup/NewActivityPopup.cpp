@@ -1,5 +1,8 @@
 #include "NewActivityPopup.h"
+
+using namespace std;
 using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -26,12 +29,12 @@ NewActivityPopup::NewActivityPopup(ConfigSettingsRef configSett)
 	float startX = 0.5f * (getWindowWidth() - allWidth);
 
 	closeBtnPos = Vec2f(startX, 892.0f);// 100.0f);
-	CloseActivityEventRef  closeEvent = CloseActivityEventRef(new CloseActivityEvent());
+	auto closeEvent = CloseActivityEventRef(new CloseActivityEvent());
 	closeBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(closeBtnPos, closeBtnPos + Vec2f(allWidth, 40.0f)), closeEvent));
 
 	yPositionInputField = 703.0f; //200.0f;//
 	inputFieldPos = Vec2f(0.5f * (1080.0f - inputField.getWidth()), yPositionInputField);
-	StartNewActivityEventRef  startEvent = StartNewActivityEventRef(new StartNewActivityEvent());
+	auto startEvent = StartNewActivityEventRef(new StartNewActivityEvent());
 	startBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(Rectf(750.0f, yPositionInputField, 962.0f, yPositionInputField + 140.0f), startEvent));
 }
 
@@ -169,7 +172,9 @@ void NewActivityPopup::newCompainHandler(EventGUIRef& event)
 		}
 	}
 	else
+	{
 		showRedFocusStroke();
+	}
 }
 
 void NewActivityPopup::showRedFocusStroke()

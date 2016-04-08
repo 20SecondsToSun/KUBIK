@@ -1,24 +1,27 @@
 #include "KeyBoardButtonSprite.h"
+
 using namespace kubik;
+using namespace ci;
+using namespace ci::gl;
+using namespace ci::app;
 
-
-KeyBoardButtonSprite::KeyBoardButtonSprite(const ci::gl::Texture& image, ci::Font _font, const std::string& _label)
+KeyBoardButtonSprite::KeyBoardButtonSprite(const ci::gl::Texture& image, ci::Font font, const std::string& label)
 	:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), 
 	image(image),
 	overColor(Color::white()),
-	code(_label),
-	font(_font),
+	code(label),
+	font(font),
 	isTextField(true)
 {
 	createTextField();
 	alpha = 1;
 }
 
-KeyBoardButtonSprite::KeyBoardButtonSprite(ci::gl::Texture image, std::string _label)
+KeyBoardButtonSprite::KeyBoardButtonSprite(ci::gl::Texture image, std::string label)
 	:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), 
 	image(image),
 	overColor(Color::white()),
-	code(_label),
+	code(label),
 	isTextField(false)
 {
 	alpha = 1;
@@ -32,9 +35,11 @@ void KeyBoardButtonSprite::drawLayout()
 	gl::color(Color::white());
 
 	if (textTexture)
+	{
 		gl::draw(textTexture,
-		Vec2f(0.5f*(buttonArea.getWidth() - textTexture.getWidth()),
-		0.5f*(buttonArea.getHeight() - textTexture.getHeight())));
+			Vec2f(0.5f*(buttonArea.getWidth() - textTexture.getWidth()),
+			0.5f*(buttonArea.getHeight() - textTexture.getHeight())));
+	}
 	gl::color(Color::white());
 }
 

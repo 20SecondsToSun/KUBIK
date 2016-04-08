@@ -1,6 +1,7 @@
 #include "states/sharing/QrCode.h"
 
 using namespace kubik::games::photobooth;
+using namespace ci;
 
 QrCode::QrCode() : SimpleSpriteButton(Rectf(0.0, 0.0f, 424.0f, 424.0f))
 {

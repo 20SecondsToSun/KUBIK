@@ -1,15 +1,16 @@
 #pragma once
+
 #include "EventGUI.h"
 
 namespace kubik
 {	
-	typedef shared_ptr<class Sprite> SpriteRef;	
+	typedef std::shared_ptr<class Sprite> SpriteRef;	
 
 	class Sprite 
 	{
 	public:
 		Sprite();
-		~Sprite(){};
+		virtual ~Sprite(){};
 
 		virtual void setParent(Sprite* parent);
 		virtual void draw();
@@ -55,10 +56,10 @@ namespace kubik
 		virtual void eventListener(EventGUIRef event);
 	
 		Sprite* getParent();
-		Vec2f getLocalPosition();
+		ci::Vec2f getLocalPosition();
 
 		boost::signals2::signal<void(EventGUIRef &)> mouseUpSignal;		
-		connection mouseUpSignalListener;
+		boost::signals2::connection mouseUpSignalListener;
 
 		void lockListeners();
 		void unlockListeners();
@@ -72,7 +73,7 @@ namespace kubik
 		ci::Vec2f _localPosition, _parentPosition, _globalPosition;
 		EventGUIRef event;			
 		Sprite* parent;
-		list<shared_ptr<Sprite>> displayList;
+		std::list<std::shared_ptr<Sprite>> displayList;
 
 		std::function<void (EventGUIRef& )>	mEventHandler;	
 		std::map<int, std::function<void()>> eventHandlerDic;	

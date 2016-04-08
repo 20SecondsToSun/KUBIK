@@ -11,28 +11,11 @@ namespace kubik
 		{
 			static ScreenStorage storage;
 			return storage;
-		};
-
-		void setScreenShot(const ci::gl::Texture& texture)
-		{
-			this->texture = texture;
 		}
 
-		ci::gl::Texture getScreenShot()
-		{
-			return texture;
-		}
-
-		void drawScreenShot()
-		{
-			if (texture)
-			{
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-				gl::draw(texture);
-				gl::enableAlphaBlending();
-			}				
-		}
+		void setScreenShot(const ci::gl::Texture& texture);
+		ci::gl::Texture getScreenShot() const;
+		void drawScreenShot();
 	};
 
 	inline void setScreenShot(const ci::gl::Texture& texture) 

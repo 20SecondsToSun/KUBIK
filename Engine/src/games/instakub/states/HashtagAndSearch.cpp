@@ -1,5 +1,7 @@
 #include "instakub/states/HashtagAndSearch.h"
 
+using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;

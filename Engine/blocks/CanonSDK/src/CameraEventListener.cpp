@@ -10,15 +10,17 @@ EdsError EDSCALLBACK CameraEventListener::handleObjectEvent(EdsUInt32 inEvent, E
 	//console() << "Cinder-Canon: handleObjectEvent " << CanonEventToString(inEvent) << std::endl;
 	switch(inEvent)
 	{
-	case kEdsObjectEvent_DirItemRequestTransfer:
-	case kEdsObjectEvent_DirItemCreated:			
-		EdsDirectoryItemRef dirItem = (EdsDirectoryItemRef)inRef;
-		controller->downloadImage(dirItem);
-		break;	
+		case kEdsObjectEvent_DirItemRequestTransfer:
+		case kEdsObjectEvent_DirItemCreated:			
+			EdsDirectoryItemRef dirItem = (EdsDirectoryItemRef)inRef;
+			controller->downloadImage(dirItem);
+			break;	
 	}
 
-	if(inRef != NULL) 
-		EdsRelease(inRef);	
+	if (inRef != NULL)
+	{
+		EdsRelease(inRef);
+	}
 
 	return EDS_ERR_OK;
 }
@@ -28,8 +30,10 @@ EdsError EDSCALLBACK CameraEventListener::handlePropertyEvent( EdsUInt32 inEvent
 	//console()<<"Cinder-Canon: handlePropertyEvent "<< CanonEventToString(inEvent)<<std::endl;
 	CameraController *controller = (CameraController*)inContext;
 
-	if(inPropertyID == kEdsPropID_Evf_OutputDevice)
+	if (inPropertyID == kEdsPropID_Evf_OutputDevice)
+	{
 		handleEvent(controller, READY_LIVE_VIEW);
+	}
 
 	return EDS_ERR_OK;
 }
@@ -41,13 +45,13 @@ EdsError EDSCALLBACK CameraEventListener::handleStateEvent(EdsUInt32 inEvent, Ed
 
 	switch(inEvent)
 	{
-	case kEdsStateEvent_Shutdown:
-		handleEvent(controller, CAMERA_SHUTDOWN);
-		break;
+		case kEdsStateEvent_Shutdown:
+			handleEvent(controller, CAMERA_SHUTDOWN);
+			break;
 
-	case kEdsStateEvent_WillSoonShutDown:
-		handleEvent(controller, CAMERA_WILL_SOON_SHUTDOWN);
-		break;	
+		case kEdsStateEvent_WillSoonShutDown:
+			handleEvent(controller, CAMERA_WILL_SOON_SHUTDOWN);
+			break;	
 	};
 
 	return EDS_ERR_OK;

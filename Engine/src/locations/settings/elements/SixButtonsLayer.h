@@ -71,11 +71,13 @@ namespace kubik
 				if (typeid(*ev) == typeid(Type))
 				{
 					//ChangePhotoCardStyleDesignEventRef statEvent = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
-					int id = static_pointer_cast<Type>(event)->getItem().getID();
+					int id = std::static_pointer_cast<Type>(event)->getItem().getID();
 					btns[id]->setSelection(true);
 
 					if (activeID != id && id == userDesignID)
+					{
 						loadButton->connectEventHandler(&SixButtonsLayer::openSystemDirectory, this);
+					}
 
 					selectActiveDesign(id);
 				}

@@ -2,6 +2,7 @@
 
 using namespace kubik;
 using namespace ci;
+using namespace ci::app;
 using namespace kubik::games::instakub;
 using namespace instagram;
 

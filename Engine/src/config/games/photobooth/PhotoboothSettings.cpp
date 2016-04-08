@@ -458,6 +458,14 @@ Texture PhotoboothSettings::getPhotoSharingCard() const
 	return photoCardsImagesMap.at(Pair);
 }
 
+Texture PhotoboothSettings::getPhotoSharingSticker() const
+{
+	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
+	return stickersImagesMap.at(Pair);
+}
+
+
+
 vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 {
 	vector<Filter> onFilters;

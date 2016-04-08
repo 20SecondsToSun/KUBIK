@@ -1,4 +1,5 @@
 #pragma once
+
 #include "instagram/InstagramClient.h"
 #include "ImageSequencer/ImageSequencer.h"
 #include "SettingsFactory.h"
@@ -26,7 +27,7 @@ namespace instagram
 
 		ci::Anim<float> noMorePopupAlpha, alphaDragToReload;
 
-		int showingCount;
+		size_t showingCount;
 
 		enum drawState{ IMAGES_DRAWING,
 			PRELOADING, 

@@ -2,6 +2,8 @@
 #include "Utils.h"
 
 using namespace kubik;
+using namespace ci;
+using namespace std;
 
 bool Logger::init = false;
 boost::filesystem::path Logger::logPath = "";

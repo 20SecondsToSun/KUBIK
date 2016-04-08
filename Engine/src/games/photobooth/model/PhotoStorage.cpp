@@ -3,26 +3,28 @@
 using namespace std;
 using namespace kubik;
 using namespace kubik::games::photobooth;
+using namespace ci;
+using namespace ci::gl;
 
 PhotoStorage::PhotoStorage()
 {
 	logger().log("Create photo storage class");
 
-	format2.width	=	1181; 
-	format2.height	=	1521;
-	format2.top		=	281;
+	format2.width	= 1181; 
+	format2.height	= 1521;
+	format2.top		= 281;
 
-	format1.width	 = 1151;
-	format1.height	 = 1026;
-	format1.top		 = 360;
+	format1.width	= 1151;
+	format1.height	= 1026;
+	format1.top		= 360;
 
-	format3.width	=	1181; 
-	format3.height	=	1181;
-	format3.top		=	281;
+	format3.width	= 1181; 
+	format3.height	= 1181;
+	format3.top		= 281;
 
-	format4.width	=	1270; 
-	format4.height	=	2226;
-	format4.top		=	0;
+	format4.width	= 1270; 
+	format4.height	= 2226;
+	format4.top		= 0;
 
 	selectedFilterID = 1;
 }
@@ -38,14 +40,14 @@ void PhotoStorage::clear()
 	photoTemplates.clear();
 }
 
-bool PhotoStorage::empty()
+bool PhotoStorage::empty() const
 {
 	return loadedPhotoTexVec.empty();
 }
 
 ci::gl::Texture PhotoStorage::loadDownloadedPhoto(const string& path)
 {
-	gl::Texture loadedTex = gl::Texture(loadImage( ci::loadFile( path ) ));
+	auto loadedTex = gl::Texture(loadImage( ci::loadFile( path ) ));
 
 	//rotate
 	gl::Fbo fbo = gl::Fbo(loadedTex.getHeight(), loadedTex.getWidth());
@@ -147,15 +149,17 @@ std::vector<ci::gl::Texture> PhotoStorage::getChoosingPreview()
 {
 	std::vector<ci::gl::Texture> texs;
 
-	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
-		texs.push_back(loadedPhotoTexVec[i].format2Preview);	
+	for (size_t i = 0; i < loadedPhotoTexVec.size(); i++)
+	{
+		texs.push_back(loadedPhotoTexVec[i].format2Preview);
+	}
 
 	return texs;
 }
 
 void PhotoStorage::createPhotoTemplates()
 {
-	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
+	for (size_t i = 0; i < loadedPhotoTexVec.size(); i++)
 	{
 		auto tex = loadedPhotoTexVec[i];
 		tex.format1 = createFormatTemplate(format1, tex);
@@ -166,7 +170,7 @@ void PhotoStorage::createPhotoTemplates()
 
 	photoTemplatesVec.clear();
 
-	for (unsigned int i = 0; i < loadedPhotoTexVec.size(); i++)
+	for (size_t i = 0; i < loadedPhotoTexVec.size(); i++)
 	{
 		if(!loadedPhotoTexVec[i].selected) continue;
 
@@ -279,7 +283,7 @@ void PhotoStorage::setSelectedFilter(int id)
 	selectedFilterID = id;
 }
 
-int PhotoStorage::getSelectedFilter()
+int PhotoStorage::getSelectedFilter() const
 {
 	return selectedFilterID;
 }
@@ -289,7 +293,7 @@ void PhotoStorage::setLastScreenShot(const gl::Texture& tex)
 	lastScreenshot = tex;
 }
 
-gl::Texture PhotoStorage::getLastScreenShot()
+gl::Texture PhotoStorage::getLastScreenShot() const
 {
 	return lastScreenshot;
 }

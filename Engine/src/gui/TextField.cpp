@@ -2,6 +2,8 @@
 
 using namespace kubik;
 using namespace kubik::gui;
+using namespace ci;
+using namespace ci::app;
 
 TextField::TextField(const ci::Rectf& value) : SimpleSpriteButton(value), borderColor(Color::hex(0xe0e7ed))
 {
@@ -58,7 +60,7 @@ void TextField::setTextColor(const ci::Color& value)
 
 void TextField::showThatEmpty()
 {
-	Color col = Color::hex(0xe0e7ed);
+	auto col = Color::hex(0xe0e7ed);
 	timeline().apply(&borderColor, Color(1.0f, 0.0f, 0.0f), Color(col.r, col.g, col.b), 0.9f, EaseOutCubic());
 }
 
@@ -76,8 +78,10 @@ void TextField::draw()
 {
 	gl::pushMatrices();
 	gl::translate(- Vec2f(5.0f, 0.0f));
-	if (touched || !text.empty())	
-		SimpleSpriteButton::draw();	
+	if (touched || !text.empty())
+	{
+		SimpleSpriteButton::draw();
+	}
 	gl::popMatrices();
 	
 	gl::pushMatrices();
@@ -102,7 +106,7 @@ void TextField::drawCarriage()
 
 	if (touched)
 	{
-		if (getElapsedFrames() % 30 == 0)
+		if (ci::app::getElapsedFrames() % 30 == 0)
 			carridgePhase = !carridgePhase;
 
 		if (carridgePhase)

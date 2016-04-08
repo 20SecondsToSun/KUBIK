@@ -1,15 +1,17 @@
 #include "InstakubConfig.h"
+
 using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
+using namespace std;
 
 InstakubConfig::InstakubConfig(InstakubSettingsRef instSettings):GameSettingsSprite(), instSettings(instSettings)			
 {					
 	searchBlock	   = SearchBlockRef(new SearchBlock(instSettings, Vec2i::zero()));
 	hashTagBlock   = HashTagBlockRef(new HashTagBlock(instSettings, Vec2i(0, 435)));
 	photoCardStyle = InstaPhotoCardStyleRef(new InstaPhotoCardStyle(instSettings, Vec2i(0, 920)));//920
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(-166.0f, 918.0f), instSettings->getTexture("closeKeyboardSettings"), 795.0f));
-	popup = InstaErrorPopupRef(new InstaErrorPopup(instSettings->getTexture("errorText")));
+	keyBackground  = KeyBackgroundRef(new KeyBackground(Vec2f(-166.0f, 918.0f), instSettings->getTexture("closeKeyboardSettings"), 795.0f));
+	popup		   = InstaErrorPopupRef(new InstaErrorPopup(instSettings->getTexture("errorText")));
 	
 	addChild(searchBlock);
 	addChild(hashTagBlock);
@@ -24,22 +26,22 @@ void InstakubConfig::mouseUpHandler(EventGUIRef& event)
 
 	if(typeid(*ev) == typeid(ChangePhotoCardStyleDesignEvent))
 	{		
-		ChangePhotoCardStyleDesignEventRef _event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
+		auto _event = static_pointer_cast<ChangePhotoCardStyleDesignEvent>(event);	
 		int id = _event->getItem().getID();		
 		instSettings->setActivePhotoCardStyleDesignID(id);
-		console()<<"ChangePhotoCardStyleDesignEvent  "<<id<<endl;
+		app::console()<<"ChangePhotoCardStyleDesignEvent  "<<id<<endl;
 	}
 	else if(typeid(*ev) == typeid(OpenSystemDirectoryEvent))
 	{		
-		OpenSystemDirectoryEventRef _event = static_pointer_cast<OpenSystemDirectoryEvent>(event);
-		console() << "OpenSystemDirectoryEvent:::: "<< _event->getPath() << endl;
+		auto _event = static_pointer_cast<OpenSystemDirectoryEvent>(event);
+		app::console() << "OpenSystemDirectoryEvent:::: "<< _event->getPath() << endl;
 		fileTools().openSystemDirectory(_event->getPath());		
 	}
 	else if(typeid(*ev) == typeid(HashCheckerEvent))
 	{
-		HashCheckerEventRef _event = static_pointer_cast<HashCheckerEvent>(event);	
+		auto _event = static_pointer_cast<HashCheckerEvent>(event);
 		instSettings->setSearchFlag(_event->getValue());
-		console()<<"HashCheckerEvent---------->  "<<_event->getValue()<<endl;
+		app::console() << "HashCheckerEvent---------->  " << _event->getValue() << endl;
 	}	
 }
 
@@ -68,7 +70,7 @@ void InstakubConfig::showAnimate(const EaseFn& eFunc, float time)
 	initKeyBoard();
 
 	animatePosition = getGlobalPosition();				
-	timeline().apply( &animatePosition, Vec2f(166.0f, 0.0f), time, eFunc)
+	app::timeline().apply(&animatePosition, Vec2f(166.0f, 0.0f), time, eFunc)
 		.finishFn(bind( &InstakubConfig::showAnimationFinish, this))
 		.updateFn(bind( &InstakubConfig::animationPosUpdate, this));	
 }
@@ -87,7 +89,7 @@ void InstakubConfig::hideAnimate(const EaseFn& eFunc, float time)
 {
 	unActivateListeners();
 
-	timeline().apply( &animatePosition, Vec2f(1080.0f, 0.0f), time, eFunc)
+	app::timeline().apply(&animatePosition, Vec2f(1080.0f, 0.0f), time, eFunc)
 		.finishFn(bind( &InstakubConfig::hideAnimationFinish, this))
 		.updateFn(bind( &InstakubConfig::animationPosUpdate, this));
 	
@@ -172,7 +174,6 @@ void InstakubConfig::popupClosed()
 	activateListeners();
 	touchKeyboard().connectKeyboard();
 	touchKeyboard().connectEventHandler(&InstakubConfig::inputTouchHandler, this, VirtualKeyboard::INPUT_TOUCH);
-
 }
 
 bool InstakubConfig::canClose()

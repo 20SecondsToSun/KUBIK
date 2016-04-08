@@ -24,5 +24,6 @@
 
 #include "Logger.h"
 #include "Paths.h"
+#include "Types.h"
 
 #define PORTRAIT_RES

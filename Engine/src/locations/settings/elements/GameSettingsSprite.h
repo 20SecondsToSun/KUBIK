@@ -5,7 +5,7 @@ namespace kubik
 {
 	namespace config
 	{
-		typedef shared_ptr<class GameSettingsSprite> GameSettingsSpriteRef;
+		typedef std::shared_ptr<class GameSettingsSprite> GameSettingsSpriteRef;
 
 		class GameSettingsSprite: public Sprite
 		{

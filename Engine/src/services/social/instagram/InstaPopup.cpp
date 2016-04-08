@@ -1,11 +1,17 @@
 #include "instagram/InstaPopup.h"
 
+using namespace kubik;
 using namespace instagram;
+using namespace std;
 using namespace ci;
 using namespace ci::app;
 
 InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template)
-	:client(client), bgColor(Color::hex(0x060a0e)), alpha(0), showing(false), templateImage(_template)
+	:client(client),
+	bgColor(Color::hex(0x060a0e)),
+	alpha(0),
+	showing(false),
+	templateImage(_template)
 {
 	setDesignElements(close, print, _template);
 }

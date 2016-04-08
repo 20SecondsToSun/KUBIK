@@ -1,9 +1,8 @@
 #pragma once
+
 #include "Types.h"
 #include "ISettings.h"
 #include "ScreenStorage.h"
-
-using namespace kubik::config;
 
 namespace kubik
 {
@@ -21,7 +20,7 @@ namespace kubik
 		virtual void draw();
 		virtual void start();
 		virtual void stop();
-		virtual void init(ISettingsRef config) = 0;
+		virtual void init(config::ISettingsRef config) = 0;
 		virtual void reset() = 0;		
 		void setScrenshot();
 

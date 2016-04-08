@@ -21,7 +21,7 @@ void HashChecker::mouseUp(app::MouseEvent &mEvent)
 	{
 		swapActive();	
 
-		HashCheckerEventRef eventref = static_pointer_cast<HashCheckerEvent>(event);
+		HashCheckerEventRef eventref = std::static_pointer_cast<HashCheckerEvent>(event);
 		eventref->setActive(isActive);		
 		event = eventref;
 

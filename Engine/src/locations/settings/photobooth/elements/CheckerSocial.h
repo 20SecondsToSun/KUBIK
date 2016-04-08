@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Checker.h"
 #include "CheckerSocialEvent.h"
 #include "PhotoboothSettings.h"

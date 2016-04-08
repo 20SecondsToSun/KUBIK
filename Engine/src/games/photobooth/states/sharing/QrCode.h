@@ -12,8 +12,8 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef shared_ptr<class QrCode> QrCodeRef;
-			typedef shared_ptr<class QrCodeNull> QrCodeNullRef;
+			typedef std::shared_ptr<class QrCode> QrCodeRef;
+			typedef std::shared_ptr<class QrCodeNull> QrCodeNullRef;
 			
 			class QrCode :public SimpleSpriteButton
 			{

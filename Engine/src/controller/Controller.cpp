@@ -3,6 +3,7 @@
 
 using namespace kubik;
 using namespace kubik::menu;
+using namespace kubik::config;
 //using namespace kubik::games;
 using namespace std;
 

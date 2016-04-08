@@ -1,5 +1,6 @@
 #include "InstakubSettings.h"
 
+using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 

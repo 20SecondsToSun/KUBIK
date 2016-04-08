@@ -1,10 +1,14 @@
 #include "PozaSettings.h"
 
+using namespace std;
+using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
 PozaSettings::PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
-	:ISettings(model), configSettings(configSettings)
+	:ISettings(model),
+	configSettings(configSettings)
 {
 	mainConfigObj = model->getConfigObject(settings::id::POZA);
 }

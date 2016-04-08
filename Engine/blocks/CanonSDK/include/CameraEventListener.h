@@ -1,14 +1,8 @@
 #pragma once 
 
-//#include "cinder/app/AppBasic.h"
 #include "EDSDK.h"
 #include "CanonEventCodes.h"
 #include "CameraController.h"
-
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-using namespace ci::signals;
 
 namespace canon
 {

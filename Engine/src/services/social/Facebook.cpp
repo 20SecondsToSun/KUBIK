@@ -6,6 +6,7 @@ using namespace kubik::config;
 using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
+using namespace Awesomium;
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -13,7 +14,9 @@ using namespace mndl::curl;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-Facebook::Facebook() : SocShare(), facebookAlbumNameToPost("test кубика")	
+Facebook::Facebook() 
+	:SocShare(),
+	facebookAlbumNameToPost("test кубика")	
 {
 	initWebBrowserSize = Vec2f(770, 510);
 	defaultStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;
@@ -45,8 +48,8 @@ void Facebook::update()
 
 void Facebook::signInUpdate()
 {
-	std::string anchorString = chrome().convertToString(mWebViewPtr->url().anchor());
-	size_t pos = anchorString.find("access_token");
+	auto anchorString = chrome().convertToString(mWebViewPtr->url().anchor());
+	auto pos = anchorString.find("access_token");
 
 	if (pos == 0)
 	{
@@ -58,7 +61,7 @@ void Facebook::signInUpdate()
 	}
 	else
 	{
-		std::string queryString = chrome().convertToString(mWebViewPtr->url().query());
+		auto queryString = chrome().convertToString(mWebViewPtr->url().query());
 	
 		size_t pos_denied = queryString.find("error_reason=user_denied");
 		if (queryString.size() == 0 || pos_denied < 1000)
@@ -107,7 +110,7 @@ void Facebook::postText(const std::string& textStatus)
 
 void Facebook::postPhoto(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
-	string fbRequest = Curl::get(SocialSettings::FACEBOOK_ALBUMS_URL + "/?access_token=" + access_token);
+	auto fbRequest = Curl::get(SocialSettings::FACEBOOK_ALBUMS_URL + "/?access_token=" + access_token);
 	facebookAlbumId = SocialSettings::FACEBOOK_NULL_ALBUM_ID;
 	
 	try

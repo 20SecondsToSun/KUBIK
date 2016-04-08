@@ -1,4 +1,5 @@
 #pragma once
+
 #include "elements/IPhotoboothItem.h"
 #include "elements/PhotoFilters.h"
 #include "elements/PhotoOverElements.h"

@@ -1,5 +1,11 @@
 #include "Utils.h"
 #include <regex>
+
+using namespace std;
+using namespace ci;
+using namespace ci::gl;
+using namespace ci::app;
+
 struct tm Utils::getCurrentTime()
 {
 	time_t     now = time(0);
@@ -267,27 +273,28 @@ void Utils::textFieldDraw(std::string text,ci::Font *font, Vec2f coords, ColorA 
 gl::Texture  Utils::getTextField(std::string text,ci::Font* font, ColorA color)
 {		
 	ci::TextLayout simple;
-	simple.clear(ColorA(1,1,1,0));
-	simple.setFont( *font );
-	simple.setColor(color );
+	simple.clear(ColorA(1, 1, 1, 0));
+	simple.setFont(*font);
+	simple.setColor(color);
 	simple.addLine(cp1251_to_utf8(text.c_str()));			
-	return gl::Texture( simple.render( true, false ) );
+	return gl::Texture(simple.render(true, false));
 }
 
-float Utils::map(float value, 
-				 float istart, 
-				 float istop, 
-				 float ostart, 
-				 float ostop) {
-					 return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+float Utils::map(float value, float istart, float istop, float ostart, float ostop) 
+{
+	return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 }
 
 float Utils::clamp(float value, float max, float min)
 {
 	if (value > max)
-		value =  max;
+	{
+		value = max;
+	}
 	else if (value < min)
-		value =  min;
+	{
+		value = min;
+	}
 
 	return value;
 }
@@ -391,21 +398,30 @@ ci::gl::Texture Utils::drawGraphicsToFBO(int width, int height, const function<v
 
 void Utils::clearFBO(Fbo fbo)
 {		
-	if(!fbo || !fbo.getTexture())
+	if (!fbo || !fbo.getTexture())
+	{
 		return;
+	}
 
 	GLuint depthTextureId = fbo.getDepthTexture().getId();
 	fbo.reset();	
 	if (depthTextureId > 0)
-		glDeleteTextures(1, &depthTextureId);	
+	{
+		glDeleteTextures(1, &depthTextureId);
+	}
 }
 
 void Utils::printVideoMemoryInfo()
 {
-	GLint v[2] = { 0,0 };
+	GLint v[2] = { 0, 0 };
 	glGetIntegerv(0x9047, &v[0]);
 	glGetIntegerv(0x9049, &v[1]);
 	console()<< "Size: " << v[0] << " KB, Available: " << v[1] << " KB" << std::endl;
+}
+
+ci::ColorA Utils::colorAlpha(ci::ColorA color, float alpha) 
+{
+	return ci::ColorA(color.r, color.g, color.b, alpha); 
 }
 
 bool Utils::validate_email(const std::string& email)

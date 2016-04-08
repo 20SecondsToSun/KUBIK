@@ -4,7 +4,6 @@
 #include "ISettings.h"
 #include "ConfigSettings.h"
 
-
 namespace kubik
 {
 	namespace config

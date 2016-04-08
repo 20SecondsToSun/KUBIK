@@ -1,7 +1,8 @@
 #pragma once
+
 #include "CameraCanon.h"
 
-class CameraAdapter :public CameraCanon
+class CameraAdapter :public canon::CameraCanon
 {
 public:	
 	static CameraAdapter* Instance() 

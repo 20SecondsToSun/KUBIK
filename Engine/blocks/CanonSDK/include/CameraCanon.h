@@ -3,11 +3,6 @@
 #include "BaseCanon.h"
 #include "Utils.h"
 
-using namespace ci;
-using namespace ci::gl;
-using namespace boost::signals2;
-using namespace canon;
-
 namespace canon
 {
 	class CameraCanon :public BaseCanon
@@ -40,7 +35,7 @@ namespace canon
 		int getWidth() const;
 		int getHeight() const;
 		int getTotalCapturedFrames() const;
-		const vector<ci::Surface>& getCapturedFrames() const;
+		const std::vector<ci::Surface>& getCapturedFrames() const;
 
 		void photoTaken(EdsDirectoryItemRef directoryItem);
 		void photoDownloadHandler(const std::string& downloadPath);
@@ -49,14 +44,14 @@ namespace canon
 		void photoCameraError(EdsError err);
 		void handleStateEvent(EdsUInt32 inEvent);
 
-		fs::path photoDownloadDirectory();
+		ci::fs::path photoDownloadDirectory();
 		void photoCameraReadyLiveView();
 
-		signal<void(const string&)> photoDownloadedEvent;
-		signal<void(void)>	photoTakenEvent, photoErrorEvent;	
-		signal<void(void)> deviceConnectEvent, deviceDisconnectEvent;
+		ci::signals::signal<void(const std::string&)> photoDownloadedEvent;
+		ci::signals::signal<void(void)>	photoTakenEvent, photoErrorEvent;
+		ci::signals::signal<void(void)> deviceConnectEvent, deviceDisconnectEvent;
 
-		void setDownloadDirectory(fs::path dir);
+		void setDownloadDirectory(ci::fs::path dir);
 		bool isConnected();
 
 		ci::gl::Texture getTexture(int sizex, int sizey, int offsetx, int offsety, float scale);
@@ -71,7 +66,7 @@ namespace canon
 		double startTime;   
 
 		std::vector<ci::Surface> mCapturedFrames;   
-		Timer reconnectTimer, restartLiveViewTimer;
+		ci::Timer reconnectTimer, restartLiveViewTimer;
 		enum states {UNDEFINED, CONNECT, DISCONNECT, LIVE, NOLIVE};	
 
 		void saveFrame();
@@ -80,6 +75,6 @@ namespace canon
 
 	private:
 		void autoReconnectCheckUpdate();
-		connection autoReconnectSignal;
+		ci::signals::connection autoReconnectSignal;
 	};
 }

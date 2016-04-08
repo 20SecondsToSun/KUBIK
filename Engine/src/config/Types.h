@@ -1,4 +1,5 @@
 #pragma once
+
 #include "KubikException.h"
 
 namespace kubik

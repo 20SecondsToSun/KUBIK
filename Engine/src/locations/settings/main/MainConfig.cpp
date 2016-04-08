@@ -1,4 +1,8 @@
 #include "MainConfig.h"
+
+using namespace std;
+using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -11,19 +15,18 @@ MainConfig::MainConfig(ConfigSettingsRef configSettings, GameSettingsRef gameSet
 {
 	setAlpha(1);
 
-	printerBlock = PrinterBlockRef(new PrinterBlock(configSettings, ci::Vec2i(0, getWindowHeight() - 170.0f)));
-	logo = LogoRef(new Logo(configSettings, ci::Vec2i(835, getWindowHeight() - 170.0f)));
+	printerBlock	 = PrinterBlockRef(new PrinterBlock(configSettings, ci::Vec2i(0, getWindowHeight() - 170.0f)));
+	logo			 = LogoRef(new Logo(configSettings, ci::Vec2i(835, getWindowHeight() - 170.0f)));
 	startNewActivity = StartNewActivityRef(new StartNewActivity(configSettings, ci::Vec2i(96, 137)));
-	newActPopup = NewActivityPopupRef(new NewActivityPopup(configSettings));
-	statBlock = StatBlockRef(new StatBlock(configSettings, ci::Vec2i(100, 235)));
-	title = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));
-	closeBlock = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));
-	designBlock = DesignBlockRef(new DesignBlock(configSettings, ssSettings, ci::Vec2i(100, 600.0f - 178.0f)));
-	gamesBlock = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));
+	newActPopup		 = NewActivityPopupRef(new NewActivityPopup(configSettings));
+	statBlock		 = StatBlockRef(new StatBlock(configSettings, ci::Vec2i(100, 235)));
+	title			 = TitleRef(new Title(configSettings, ci::Vec2i(100, 60)));
+	closeBlock		 = CloseBlockRef(new CloseBlock(configSettings, ci::Vec2i(916, 66)));
+	designBlock		 = DesignBlockRef(new DesignBlock(configSettings, ssSettings, ci::Vec2i(100, 600.0f - 178.0f)));
+	gamesBlock		 = GamesBlockRef(new GamesBlock(configSettings, gameSettings, ci::Vec2f(100.0f, 600.0f)));
 
 	addChild(designBlock);
 	addChild(gamesBlock);
-
 	
 	addChild(title);
 	addChild(startNewActivity);
@@ -243,18 +246,20 @@ void MainConfig::callbacks(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
 	if (!ev)
+	{
 		return;
+	}
 
 	if (typeid(*event.get()) == typeid(OpenSystemDirectoryEvent))
 	{
-		OpenSystemDirectoryEventRef evt = static_pointer_cast<OpenSystemDirectoryEvent>(event);
+		auto evt = static_pointer_cast<OpenSystemDirectoryEvent>(event);
 		auto path = evt->getPath();
 		console() << "OpenSystemDirectoryEvent url-------------" << path<< endl;
 		fileTools().openSystemDirectory(path);	
 	}
 	else if (typeid(*event.get()) == typeid(ChangeDesignEvent))
 	{
-		ChangeDesignEventRef evt = static_pointer_cast<ChangeDesignEvent>(event);
+		auto evt = static_pointer_cast<ChangeDesignEvent>(event);
 		auto id = evt->getItem().getID();
 		configSettings->setActiveDesignID(id);
 		console() << "changed kubik design------------------  " << endl;
@@ -326,17 +331,19 @@ void MainConfig::gamesBlockEventsHandler(EventGUIRef& event)
 {
 	EventGUI *ev = event.get();
 	if (!ev)
+	{
 		return;
+	}
 
 	if (typeid(*event.get()) == typeid(GameConfEvent))
 	{
-		GameConfEventRef eventref = static_pointer_cast<GameConfEvent>(event);
+		auto eventref = static_pointer_cast<GameConfEvent>(event);
 		console() << "go to config page------------------ " << eventref->getGameId() << endl;
 		mouseUpSignal(event);
 	}
 	else if (typeid(*ev) == typeid(StatisticEvent))
 	{
-		StatisticEventRef eventref = static_pointer_cast<StatisticEvent>(event);
+		auto eventref = static_pointer_cast<StatisticEvent>(event);
 		auto url = gameSettings->getGameStatisticURL(eventref->getGameId());
 		fileTools().openURL(url);
 		console() << "show statistic game url------------------ " << url << endl;
@@ -344,12 +351,12 @@ void MainConfig::gamesBlockEventsHandler(EventGUIRef& event)
 	}
 	else if (typeid(*ev) == typeid(GameCheckerEvent))
 	{
-		GameCheckerEventRef eventref = static_pointer_cast<GameCheckerEvent>(event);
+		auto eventref = static_pointer_cast<GameCheckerEvent>(event);
 		changeActiveGameState(eventref);	
 	}
 	else if (typeid(*ev) == typeid(GameShowUrlEvent))
 	{
-		GameShowUrlEventRef eventref = static_pointer_cast<GameShowUrlEvent>(event);
+		auto eventref = static_pointer_cast<GameShowUrlEvent>(event);
 		auto url = gameSettings->getGameDescribeURL(eventref->getGameId());
 		fileTools().openURL(url);
 		console() << "show game describe url------------------- " << url <<endl;
@@ -360,16 +367,20 @@ void MainConfig::changeActiveGameState(GameCheckerEventRef eventref)
 {
 	if (gameSettings->getGameActiveCount() == 1)		
 	{	
-		if(eventref->getValue() == 0)
+		if (eventref->getValue() == 0)
+		{
 			gamesBlock->freezeChecker(eventref->getGameId());
+		}
 		else
 		{
 			gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
 			gamesBlock->unFreezeChecker();
 		}	
 	}
-	else	
-		gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());	
+	else
+	{
+		gameSettings->setGameActive(eventref->getGameId(), eventref->getValue());
+	}
 
 	if (gameSettings->getGameActiveCount() == 1)
 	{
@@ -429,7 +440,7 @@ void MainConfig::hideAnimate(GameId id, ci::EaseFn eFunc, float time)
 {
 	unActivateListeners();
 
-	ci::Vec2f finPos = ci::Vec2f(-1080.0f + logo->getWidth(), 0.0f);
+	auto finPos = ci::Vec2f(-1080.0f + logo->getWidth(), 0.0f);
 	timeline().apply(&animatePosition, finPos, time, eFunc)
 		.updateFn(bind(&MainConfig::posAnimationUpdate, this));
 
@@ -437,7 +448,7 @@ void MainConfig::hideAnimate(GameId id, ci::EaseFn eFunc, float time)
 		.updateFn(bind(&MainConfig::alphAnimationUpdate, this))
 		.finishFn(bind(&MainConfig::hideAnimationFinish, this));
 
-	Texture icon = gameSettings->getData().getPurchasedGameInfo(id).getIcons().activeIcon;
+	auto icon = gameSettings->getData().getPurchasedGameInfo(id).getIcons().activeIcon;
 	logo->animateToMiniState(icon, eFunc, time);
 	closeBlock->animateToMiniState(eFunc, time, finPos);
 }
@@ -451,7 +462,7 @@ void MainConfig::showAnimate(ci::EaseFn eFunc, float time)
 {
 	closeBlock->disconnectEventHandler();
 
-	ci::Vec2f finPos = ci::Vec2f::zero();
+	auto finPos = ci::Vec2f::zero();
 	timeline().apply(&animatePosition, finPos, time, eFunc)
 		.updateFn(bind(&MainConfig::posAnimationUpdate, this));
 

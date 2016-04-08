@@ -1,10 +1,9 @@
 #pragma once
+
 #include "gui/EventGUI.h"
 #include "gui/SimpleSpriteButton.h"
 #include "MenuSettings.h"
 #include "GameChoosedEvent.h"
-
-using namespace kubik::config;
 
 namespace kubik
 {
@@ -23,7 +22,7 @@ namespace kubik
 			ci::Vec2f iconPosition;
 
 		public:
-			GameButton(const GameData& data, AdditionalGameData adata);
+			GameButton(const config::GameData& data, config::AdditionalGameData adata);
 			virtual void drawLayout() override;
 		};
 	}

@@ -2,6 +2,8 @@
 
 using namespace kubik;
 using namespace std;
+using namespace ci;
+using namespace ci::app;
 
 MovieLoader& MovieLoader::getInstance()
 {

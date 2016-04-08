@@ -1,11 +1,14 @@
 #include "LoadButton.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
 LoadButton::LoadButton(const std::string &path, const ci::Rectf& rect, const TextItem& textItem, const ci::gl::Texture& icon)
 	:SimpleSpriteButton(rect, OpenSystemDirectoryEventRef(new OpenSystemDirectoryEvent(path))),
-	textItem(textItem), icon(icon), bckColor(Color::hex(0x242135))
+	textItem(textItem), 
+	icon(icon), 
+	bckColor(Color::hex(0x242135))
 {
 	tex = textTools().getTextField(textItem);
 	texPosX = 0.5 * (buttonArea.getWidth() - (tex.getWidth() + icon.getWidth() + 15.0f));

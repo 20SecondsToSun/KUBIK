@@ -3,6 +3,9 @@
 using namespace kubik::config;
 using namespace kubik;
 using namespace std;
+using namespace ci;
+using namespace ci::app;
+using namespace Awesomium;
 
 Twitter::Twitter() : isAuthFlowComplete(false)
 {
@@ -37,7 +40,9 @@ void Twitter::postTextTweet(const std::string& textStatus)
 		std::string replyMsg = "";
 
 		if (!twitterObj.statusUpdate(Utils::cp1251_to_utf8(textStatus.c_str())))
+		{
 			twitterObj.getLastCurlError(replyMsg);
+		}
 
 		twitterObj.getLastWebResponse(replyMsg);
 
@@ -50,7 +55,9 @@ void Twitter::postTextTweet(const std::string& textStatus)
 void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
 	if (!isAuthFlowComplete)
+	{
 		return;
+	}
 
 	int max_media_per_upload;
 	std::string replyMsg = "";
@@ -119,7 +126,9 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 void Twitter::postPhotoTweetBase64(const std::string& textStatus, const std::string& filesPath)
 {
 	if (!isAuthFlowComplete)
+	{
 		return;
+	}
 
 	std::string replyMsg = "";
 

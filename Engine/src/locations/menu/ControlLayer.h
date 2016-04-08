@@ -1,4 +1,5 @@
 #pragma once
+
 #include "MenuSettings.h"
 #include "IScreen.h"
 #include "gui/EventGUI.h"
@@ -21,7 +22,7 @@ namespace kubik
 			static const int CLOSE_GAME = 0;
 			static const int OPEN_SETTINGS = 1;
 
-			ControlLayer(ISettingsRef settings);
+			ControlLayer(config::ISettingsRef settings);
 
 			virtual void activateListeners();
 			virtual void unActivateListeners();

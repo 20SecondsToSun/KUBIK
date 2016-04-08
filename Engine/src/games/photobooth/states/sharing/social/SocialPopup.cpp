@@ -4,6 +4,7 @@ using namespace kubik::games::photobooth;
 using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
+using namespace std;
 
 SocialPopup::SocialPopup(PhotoboothSettingsRef settings)
 	:Popup(settings),

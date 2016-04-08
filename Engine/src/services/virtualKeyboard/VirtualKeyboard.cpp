@@ -7,15 +7,15 @@ using namespace std;
 using namespace kubik;
 
 string VirtualKeyboard::secondLineCharacters[10] = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" };
-string VirtualKeyboard::thirdLineCharacters[9] = { "a", "s", "d", "f", "g", "h", "j", "k", "l" };
-string VirtualKeyboard::fourthLineCharacters[9] = { "z", "x", "c", "v", "b", "n", "m", ".", "@" };
+string VirtualKeyboard::thirdLineCharacters[9]   = { "a", "s", "d", "f", "g", "h", "j", "k", "l" };
+string VirtualKeyboard::fourthLineCharacters[9]  = { "z", "x", "c", "v", "b", "n", "m", ".", "@" };
 
 string VirtualKeyboard::secondLineCharacters2[10] = { "(", ")", "{", "}", "#", "%", "^", "*", "+", "=" };
-string VirtualKeyboard::thirdLineCharacters2[9] = { "\\", "|", "~", "<", ">", "$", "&", "'", "\"" };
+string VirtualKeyboard::thirdLineCharacters2[9]   = { "\\", "|", "~", "<", ">", "$", "&", "'", "\"" };
 string VirtualKeyboard::fourthLineCharacters2[10] = { "_", "-", "/", ":", ";", "?", "!", ",", ".", "@" };
 
 string VirtualKeyboard::secondLineCharacters3[12] = { "é", "ö", "ó", "ê", "å", "í", "ã", "ø", "ù", "ç", "õ", "Ú" };
-string VirtualKeyboard::thirdLineCharacters3[11] = { "ô", "û", "â", "à", "ï", "ð", "î", "ë", "ä", "æ", "ý" };
+string VirtualKeyboard::thirdLineCharacters3[11] =  { "ô", "û", "â", "à", "ï", "ð", "î", "ë", "ä", "æ", "ý" };
 string VirtualKeyboard::fourthLineCharacters3[10] = { "ÿ", "÷", "ñ", "ì", "è", "ò", "ü", "á", "þ", "@" };
 
 int VirtualKeyboard::lineLength1 = 10;
@@ -155,9 +155,13 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 	{
 		KeyBoardButtonSpriteRef btn;
 		if (fourthLineCharacters3[i] != "@")
+		{
 			btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple1, mFont, fourthLineCharacters3[i]));
+		}
 		else
+		{
 			btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, fourthLineCharacters3[i]));
+		}
 
 		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset2 + _width1) - 12, 0.0f) + shift_Y);
 		buttonsRusMainKeyboard.push_back(btn);
@@ -218,7 +222,6 @@ void VirtualKeyboard::show(const ci::Vec2f& from, const ci::Vec2f& to, float tim
 		isKeyBoardChangeDown = false;
 		lastCode = "NONE";
 		setLanguage(KEYBOARD_LANG::ENG);
-
 		timeline().apply(&keyBoardPosition, from, to, time, ci::EaseOutCubic());
 	}
 }
@@ -271,7 +274,9 @@ void VirtualKeyboard::draw()
 		gl::translate(getGlobalPosition());
 		gl::translate(keyBoardPosition);
 		for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
+		{
 			(*item)->draw();
+		}
 		gl::popMatrices();
 	}
 
@@ -282,7 +287,9 @@ void VirtualKeyboard::draw()
 		gl::pushMatrices();
 		//touchInputZone->draw();	
 		if (!inputFieldEmpty() && isShowing && showEraseButton)
+		{
 			erase->draw();
+		}
 
 		gl::draw(inputFieldTexture,
 			touchInputZone->getLocalPosition() +
@@ -304,7 +311,9 @@ void VirtualKeyboard::drawCarriage()
 	if (carridgeDrawing)
 	{
 		if (getElapsedFrames() % 30 == 0)
+		{
 			carridgePhase = !carridgePhase;
+		}
 
 		if (carridgePhase)
 		{
@@ -320,7 +329,9 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 	if (touchInputZone->inButtonField(coords))
 	{
 		if (isShowing)
+		{
 			carridgeDrawing = true;
+		}
 	}
 
 	if (lastCode == "erase" && showEraseButton && isShowing)
@@ -371,7 +382,9 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	{
 		callback(INPUT_TOUCH);
 		if (erase->inButtonField(coords))
+		{
 			lastCode = "erase";
+		}
 		return;
 	}
 
@@ -389,11 +402,17 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 			(*item)->down();
 
 			if (lastCode == "shift")
+			{
 				changeShiftMode();
+			}
 			else if (lastCode == "#+=" || lastCode == "ABC")
+			{
 				changeKeyboardMode();
+			}
 			else if (lastCode == "lang")
+			{
 				changeLangMode();
+			}
 			break;
 		}
 	}
@@ -539,9 +558,13 @@ void VirtualKeyboard::changeShiftMode()
 {
 	isShiftDown = !isShiftDown;
 	if (isShiftDown)
+	{
 		shift->changeTexture(shiftTex1);
+	}
 	else
+	{
 		shift->changeTexture(shiftTex0);
+	}
 
 	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
 	{
@@ -619,9 +642,13 @@ void VirtualKeyboard::changeLangMode()
 			std::string oneChar = "";
 
 			if (isShiftDown)
+			{
 				oneChar.append(1, toupper(letter));
+			}
 			else
+			{
 				oneChar.append(1, tolower(letter));
+			}
 
 			(*item)->setBtnId(oneChar);
 		}

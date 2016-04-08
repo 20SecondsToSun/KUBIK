@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IResourceScreenSaver.h"
 
 namespace kubik

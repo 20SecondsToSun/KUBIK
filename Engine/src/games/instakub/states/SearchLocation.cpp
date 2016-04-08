@@ -1,11 +1,13 @@
 #include "instakub/states/SearchLocation.h"
 
+using namespace ci;
+using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
 
-const ci::Vec2f SearchLocation::HIDING_KEYBORAD_POSITION  = Vec2f(30.0f, 1920.0f);
-const ci::Vec2f SearchLocation::SHOWING_KEYBORAD_POSITION = Vec2f(30.0f, 595.0f);
+const ci::Vec2f SearchLocation::HIDING_KEYBORAD_POSITION = ci::Vec2f(30.0f, 1920.0f);
+const ci::Vec2f SearchLocation::SHOWING_KEYBORAD_POSITION = ci::Vec2f(30.0f, 595.0f);
 const float SearchLocation::HIDING_KEYBORAD_TIME = 0.7f;
 const float SearchLocation::SHOWING_KEYBORAD_TIME = 0.7f;
 
@@ -24,7 +26,7 @@ void SearchLocation::reset()
 		settings->getTexture("userSearch"),
 		settings->getTexture("userSearchOver")));
 
-	keyBackground = KeyBackgroundRef(new KeyBackground(Vec2f(0.0f, 515.0f), settings->getTexture("closeKeyboard"), settings->getKeyboardColorInDesign()));
+	keyBackground = KeyBackgroundRef(new KeyBackground(ci::Vec2f(0.0f, 515.0f), settings->getTexture("closeKeyboard"), settings->getKeyboardColorInDesign()));
 }
 
 void SearchLocation::start()
@@ -61,24 +63,24 @@ void SearchLocation::initVirtualKeyboard()
 	touchKeyboard().setDefaultSettings();
 	touchKeyboard().setEraseButtonTexture(settings->getTexture("eraseInstagram"));
 	touchKeyboard().clearInputFieldText();
-	touchKeyboard().setOriginPoint(Vec2f::zero());
+	touchKeyboard().setOriginPoint(ci::Vec2f::zero());
 	touchKeyboard().setInputField(234.0f, 290.0f, 924.0f, 402.0f);
-	touchKeyboard().setInputColor(Color::white());
+	touchKeyboard().setInputColor(ci::Color::white());
 	touchKeyboard().setInputFont(settings->getViewInputFieldFont());
 	touchKeyboard().activateSearchMode();
 }
 
 void SearchLocation::inputTouchHandler()
 {
-	if (touchKeyboard().showing())
-		return;
+	if (!touchKeyboard().showing())
+	{
+		std::string hashtag = touchKeyboard().getInputFieldText();
 
-	string hashtag = touchKeyboard().getInputFieldText();
-
-	instaViewer->disconnect();
-	touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
-	keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);
-	searchBtns->show();
+		instaViewer->disconnect();
+		touchKeyboard().show(HIDING_KEYBORAD_POSITION, SHOWING_KEYBORAD_POSITION, SHOWING_KEYBORAD_TIME);
+		keyBackground->show(EaseOutCubic(), SHOWING_KEYBORAD_TIME);
+		searchBtns->show();
+	}
 }
 
 void SearchLocation::searchTouchHandler()
@@ -100,7 +102,7 @@ void SearchLocation::searchTouchHandler()
 	}
 	else
 	{
-		timeline().apply(&alphaError, 1.0f, 0.0f, 2.5f, EaseOutCubic());
+		ci::app::timeline().apply(&alphaError, 1.0f, 0.0f, 2.5f, EaseOutCubic());
 	}
 }
 

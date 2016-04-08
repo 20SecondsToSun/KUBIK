@@ -26,7 +26,7 @@ void PhotoInstruction::reset(PhotoboothSettingsRef set)
 	settings	= set;
 	fonTex		= settings->getTexture("instrFon");
 	titleTex	= settings->getTexture("instrTitle");
-	titleTexPos = Vec2f(0.5f * (getWindowWidth() - titleTex.getWidth()), titlePositionY - titleTex.getHeight() * 0.5f);
+	titleTexPos = Vec2f(0.5f * (app::getWindowWidth() - titleTex.getWidth()), titlePositionY - titleTex.getHeight() * 0.5f);
 }
 
 void PhotoInstruction::start()
@@ -54,7 +54,7 @@ void PhotoInstruction::hideAnimation(EventGUIRef& event)
 {	
 	voidBtn->disconnectEventHandler();
 	callback(BEGIN_ANIM);
-	timeline().apply(&alphaAnim, 0.0f, animTime, EaseOutCubic()).finishFn(bind(&PhotoInstruction::hideAnimationComplete, this));
+	app::timeline().apply(&alphaAnim, 0.0f, animTime, EaseOutCubic()).finishFn(bind(&PhotoInstruction::hideAnimationComplete, this));
 }
 
 void PhotoInstruction::hideAnimationComplete()

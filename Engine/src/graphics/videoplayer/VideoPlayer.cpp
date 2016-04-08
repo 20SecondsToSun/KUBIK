@@ -3,7 +3,7 @@
 using namespace kubik;
 using namespace ci;
 
-VideoPlayer::VideoPlayer(const qtime::MovieGl& video) 
+VideoPlayer::VideoPlayer(const qtime::MovieGl& video)
 	:video(video)
 {
 	this->video.setLoop();

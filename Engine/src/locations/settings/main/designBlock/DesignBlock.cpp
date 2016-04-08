@@ -3,6 +3,7 @@
 using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
+using namespace ci::app;
 
 DesignBlock::DesignBlock(ConfigSettingsRef configSettings, ScreenSaverSettingsRef ssSettings, const Vec2i& position)
 	:Sprite(),
@@ -93,8 +94,8 @@ void DesignBlock::showDesigns(const EaseFn& eFunc, float time)
 	addChildFront(designsLayout);
 
 	timeline().apply(&animatePosition, designsLayoutPos - Vec2f(0.0f, 1126.0f), designsLayoutPos, time, eFunc)
-		.updateFn(bind(&DesignBlock::posAnimationUpdate, this))
-		.finishFn(bind(&DesignBlock::animationFinish, this));
+		.updateFn(std::bind(&DesignBlock::posAnimationUpdate, this))
+		.finishFn(std::bind(&DesignBlock::animationFinish, this));
 }
 
 void DesignBlock::posAnimationUpdate()
@@ -110,8 +111,8 @@ void DesignBlock::animationFinish()
 void DesignBlock::hideDesigns(const EaseFn& eFunc, float time)
 {
 	timeline().apply(&animatePosition, designsLayoutPos, designsLayoutPos - Vec2f(0.0f, 1126.0f), time, eFunc)
-		.updateFn(bind(&DesignBlock::posAnimationUpdate, this))
-		.finishFn(bind(&DesignBlock::animationHideFinish, this));	
+		.updateFn(std::bind(&DesignBlock::posAnimationUpdate, this))
+		.finishFn(std::bind(&DesignBlock::animationHideFinish, this));
 }
 
 void DesignBlock::animationHideFinish()
@@ -125,7 +126,9 @@ void DesignBlock::animationHideFinish()
 void DesignBlock::draw()
 {	
 	for (auto comp : displayList)
+	{
 		comp->draw();
+	}
 
 	gl::pushMatrices();				
 	gl::translate(getGlobalPosition());

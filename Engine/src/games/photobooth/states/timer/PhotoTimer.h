@@ -13,7 +13,7 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef shared_ptr<class PhotoTimer> PhotoTimerRef;
+			typedef std::shared_ptr<class PhotoTimer> PhotoTimerRef;
 
 			class PhotoTimer :public IPhotoboothLocation
 			{

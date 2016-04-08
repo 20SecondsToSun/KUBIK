@@ -15,7 +15,7 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef	shared_ptr<class PhotoChoosing> PhotoChoosingRef;
+			typedef	std::shared_ptr<class PhotoChoosing> PhotoChoosingRef;
 
 			class PhotoChoosing : public IPhotoboothLocation
 			{

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "MenuSettings.h"
 #include "IScreen.h"
 #include "gui/EventGUI.h"
@@ -18,7 +19,7 @@ namespace kubik
 		class MenuScreen:public IScreen, public Sprite
 		{
 		public:
-			MenuScreen(ISettingsRef config);
+			MenuScreen(config::ISettingsRef config);
 			~MenuScreen();
 
 			enum locationState
@@ -28,10 +29,10 @@ namespace kubik
 				DRAW
 			}state;
 
-			void init(ISettingsRef  config) override;
+			void init(config::ISettingsRef  config) override;
 			void reset() override{};
 
-			signal<void(GameId)>  startGameSignal;
+			ci::signals::signal<void(GameId)>  startGameSignal;
 			SignalVoid startVideoSignal;
 
 			void start();			
@@ -41,12 +42,12 @@ namespace kubik
 
 		private:
 			static const float goToScreenSaverTime;
-			connection appUpdateSignal;
-			connection mouseListener;	
+			ci::signals::connection appUpdateSignal;
+			ci::signals::connection mouseListener;
 
 			void startGameHandler(EventGUIRef& button);
 			
-			void createMenuBtns(const std::vector<GameData>& gameIDs);
+			void createMenuBtns(const std::vector<config::GameData>& gameIDs);
 			void clearGamesButtonVector();
 			void update();
 
@@ -56,7 +57,7 @@ namespace kubik
 			//ci::Rectf getMenuBtuttonArea(int i);
 			void drawShowAnim();
 			void drawInitAnim();
-			MenuSettingsRef settings;
+			config::MenuSettingsRef settings;
 			SimpleSpriteButtonRef settingsButton, videoButton;
 			ci::gl::Texture bckgnd;
 			

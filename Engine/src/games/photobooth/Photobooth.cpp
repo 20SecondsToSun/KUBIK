@@ -213,6 +213,8 @@ void Photobooth::update()
 
 void Photobooth::handleCameraConnection()
 {
+
+#ifndef Photobooth_DEBUG
 	if (!cameraCanon().isConnected() && state != CAMERA_DISCONNECT)
 	{	
 		state = CAMERA_DISCONNECT;
@@ -224,12 +226,13 @@ void Photobooth::handleCameraConnection()
 		state = DRAW;
 		gotoFirstlocation();	
 	}
-
-	//if (state == SHOW_ANIM)
-	//{
-	//	state = DRAW;
-	//	gotoFirstlocation();
-	//}
+#else
+	if (state == SHOW_ANIM)
+	{
+		state = DRAW;
+		gotoFirstlocation();
+	}
+#endif
 }
 
 void Photobooth::draw()

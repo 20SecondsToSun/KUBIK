@@ -31,7 +31,9 @@ namespace kubik
 			animTime.stop();	
 
 			for (auto& it : callbacks)
+			{
 				it.second.stop();
+			}
 		}
 
 		void clearDelaycall(std::string key)

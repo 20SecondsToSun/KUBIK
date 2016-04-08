@@ -1,5 +1,7 @@
 #include "instakub/states/HashtagOnly.h"
 
+using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
@@ -77,15 +79,15 @@ void HashtagOnly::timeOutReload()
 
 void HashtagOnly::initViewerHandlers()
 {
-	connect_once(instaViewer->touchedDownEvent, bind(&HashtagOnly::touchDownHandler, this));
+	connect_once(instaViewer->touchedDownEvent, std::bind(&HashtagOnly::touchDownHandler, this));
 	InstakubLocation::initViewerHandlers();
 }
 
 void HashtagOnly::touchDownHandler()
 {
-	timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), 0.8f, EaseOutCubic())
+	ci::app::timeline().apply(&hashtagAnimPosition, Vec2f(0.0f, hashtagPlashka.getHeight()), 0.8f, EaseOutCubic())
 		.finishFn([&]()
 	{
-		timeline().apply(&hashtagAnimPosition, Vec2f::zero(), 0.8f, EaseOutCubic()).delay(TIME_TO_BACK_PLASHKA);
+		ci::app::timeline().apply(&hashtagAnimPosition, Vec2f::zero(), 0.8f, EaseOutCubic()).delay(TIME_TO_BACK_PLASHKA);
 	});	
 }

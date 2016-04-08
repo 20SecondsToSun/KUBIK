@@ -1,5 +1,6 @@
 #include "Instakub.h"
 
+using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;
@@ -132,7 +133,7 @@ void Instakub::animDrawings()
 
 	gl::pushMatrices();
 	gl::translate(animX, 0.0f);
-	gl::drawSolidRect(getWindowBounds());
+	gl::drawSolidRect(app::getWindowBounds());
 	gl::color(Color::white());
 	view->draw();
 	gl::popMatrices();

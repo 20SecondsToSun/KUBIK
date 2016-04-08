@@ -1,5 +1,8 @@
 #include "gui/Sprite.h"
+
 using namespace kubik;
+using namespace ci;
+using namespace ci::app;
 
 Sprite::Sprite():_globalPosition(ci::Vec2f::zero()),
 	_localPosition(ci::Vec2f::zero()),
@@ -10,6 +13,7 @@ Sprite::Sprite():_globalPosition(ci::Vec2f::zero()),
 	mEventHandler(nullptr),
 	lock(false)
 {
+
 }
 
 void Sprite::addChild(SpriteRef child)

@@ -35,7 +35,7 @@ void GameSettings::load()
 		{
 		case GameId::PHOTOBOOTH:
 			gameSettingsMap[game.id] = PhotoboothSettingsRef(new PhotoboothSettings(model, configSettings));
-			settingsFactory().inject(static_pointer_cast<PhotoboothSettings>(gameSettingsMap[game.id]));
+			settingsFactory().inject(std::static_pointer_cast<PhotoboothSettings>(gameSettingsMap[game.id]));
 			break;
 
 		case GameId::FUNCES:
@@ -154,7 +154,7 @@ ISettingsRef GameSettings::get(const GameId& id)
 
 bool GameSettings::has(const GameId& id)
 {
-	return  (gameSettingsMap.find(id) != gameSettingsMap.end());
+	return (gameSettingsMap.find(id) != gameSettingsMap.end());
 }
 
 IResourceDictionary GameSettings::getActiveGameResources()
@@ -172,11 +172,11 @@ IResourceDictionary GameSettings::getGameSettingsTexturesById(const GameId& id)
 	return  gameSettingsMap[id]->getSettingsResources();
 }
 
-vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
+std::vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
 {
 	std::vector<GamesInfo> games = model->getGames();
 
-	vector<IResourceBaseRef> resources;
+	std::vector<IResourceBaseRef> resources;
 
 	for (auto game : games)
 	{
@@ -186,7 +186,9 @@ vector<IResourceBaseRef> GameSettings::getGameSettingsTextures()
 		{
 			auto oneGameResources = gameSettingsMap[game.id]->getSettingsResources();
 			for (auto it = oneGameResources.begin(); it != oneGameResources.end(); it++)
+			{
 				resources.push_back((*it).second);
+			}
 		}
 		catch (...)
 		{
@@ -375,12 +377,12 @@ GameId GameSettings::getActiveGameID()
 	return GameId::UNDEFINED;
 }
 
-string GameSettings::getGameDescribeURL(const GameId& id)
+std::string GameSettings::getGameDescribeURL(const GameId& id)
 {
 	return "http://google.ru";
 }
 
-string GameSettings::getGameStatisticURL(const GameId& id)
+std::string GameSettings::getGameStatisticURL(const GameId& id)
 {
 	return "http://yandex.ru";
 }

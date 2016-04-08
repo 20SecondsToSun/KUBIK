@@ -1,6 +1,9 @@
 #include "Funces.h"
 
+using namespace std;
+using namespace ci;
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::funces;
 
 Funces::Funces(ISettingsRef config)
@@ -132,7 +135,7 @@ void Funces::draw()
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
 		gl::color(Color::black());
-		gl::drawSolidRect(getWindowBounds());
+		gl::drawSolidRect(app::getWindowBounds());
 		gl::color(Color::white());
 		gl::draw(settings->getTexture("title"), Vec2f(200.0f, 200.0f));
 

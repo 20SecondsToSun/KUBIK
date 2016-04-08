@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Types.h"
 #include "Sprite.h"
 #include "gui/EventGUI.h"
@@ -42,5 +43,5 @@ namespace kubik
 		ci::Anim<ci::Vec2f> animPosition;
 	};
 
-	typedef shared_ptr<SimpleSpriteButton> SimpleSpriteButtonRef;
+	typedef std::shared_ptr<SimpleSpriteButton> SimpleSpriteButtonRef;
 }

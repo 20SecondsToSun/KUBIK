@@ -15,7 +15,7 @@ PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const Vec2i& 
 	setPosition(position);
 	okButtonArea = Rectf(632.0f, 230.0f, 917.0f, 300.0f);
 
-	Texture tex = textTools().getTextField(changedText);
+	gl::Texture tex = textTools().getTextField(changedText);
 	okTextPos = Vec2f(okButtonArea.x1 + 5.0f, okButtonArea.y1 + 5.0f);
 
 	PrinterStatResetEventRef  eventReset = PrinterStatResetEventRef(new PrinterStatResetEvent());
@@ -28,7 +28,7 @@ PrinterControls::PrinterControls(ConfigSettingsRef configSettings, const Vec2i& 
 	closeBtn->setAlpha(0.5f);
 	addChild(closeBtn);
 
-	closeBtnBig = SimpleSpriteButtonRef(new SimpleSpriteButton(getWindowWidth(), 1350.0f, Vec2f(0.0f, -1520.0f), eventHide));
+	closeBtnBig = SimpleSpriteButtonRef(new SimpleSpriteButton(app::getWindowWidth(), 1350.0f, Vec2f(0.0f, -1520.0f), eventHide));
 	closeBtnBig->setAlpha(0.5f);
 	addChild(closeBtnBig);
 }
@@ -50,7 +50,7 @@ void PrinterControls::unActivateListeners()
 void PrinterControls::drawLayout()
 {
 	gl::color(Color::hex(0x171521));
-	gl::drawSolidRect(Rectf(0.0f, 0.0f, getWindowWidth(), 400.0f));
+	gl::drawSolidRect(Rectf(0.0f, 0.0f, app::getWindowWidth(), 400.0f));
 	gl::color(Color::white());
 	textTools().textFieldDraw(titleText1, Vec2f(150.0f, 95.0f));
 	textTools().textFieldDraw(titleText2, Vec2f(157.0f, 158.0f));

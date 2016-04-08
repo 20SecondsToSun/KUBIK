@@ -5,7 +5,8 @@ using namespace kubik::config;
 using namespace ci;
 
 CheckerSocial::CheckerSocial(const Rectf& rect, const IconPair& icons, const PhotoboothSettings::PhtTextID& id)
-	:Checker(rect, icons, Color::hex(0xffff00), Color::hex(0x692a81))				
+	:Checker(rect, icons, Color::hex(0xffff00),
+	Color::hex(0x692a81))				
 {
 	setRadius(33);
 	setStartX(-6);
@@ -23,7 +24,7 @@ void CheckerSocial::mouseUp(ci::app::MouseEvent &mEvent)
 	{
 		swapActive();	
 
-		CheckerSocialEventRef eventref = static_pointer_cast<CheckerSocialEvent>(event);
+		CheckerSocialEventRef eventref = std::static_pointer_cast<CheckerSocialEvent>(event);
 		eventref->setActive(isActive);		
 		event = eventref;
 		Sprite::mouseUp(mEvent);

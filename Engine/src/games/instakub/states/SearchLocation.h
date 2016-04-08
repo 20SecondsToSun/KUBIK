@@ -36,7 +36,7 @@ namespace kubik
 				ci::gl::Texture searchField, searchFieldRed;
 				ci::Anim<float> alphaKeyBoardBg, alphaError;
 				KeyBackgroundRef keyBackground;
-				string searchingText;		
+				std::string searchingText;
 
 				virtual void closeKeyboardHandler();
 				virtual void inputTouchHandler();

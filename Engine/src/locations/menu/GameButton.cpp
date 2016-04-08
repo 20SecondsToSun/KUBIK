@@ -2,6 +2,7 @@
 
 using namespace kubik::menu;
 using namespace kubik::config;
+using namespace ci;
 
 GameButton::GameButton(const GameData& data, AdditionalGameData adata)
 	:SimpleSpriteButton(adata.getBackground().getWidth(), adata.getBackground().getHeight(), data.getPosition(), GameChoosedEventRef(new GameChoosedEvent(data.getID()))),
@@ -12,7 +13,7 @@ GameButton::GameButton(const GameData& data, AdditionalGameData adata)
 	titleTexture(adata.getTitleByID(data.getID())),
 	titlePosition(adata.getTitlePosition())
 {	
-	console() << "create button game id:::::::::::::::::::  " << data.getID() << endl;
+	app::console() << "create button game id:::::::::::::::::::  " << data.getID() << std::endl;
 }
 
 void GameButton::drawLayout()

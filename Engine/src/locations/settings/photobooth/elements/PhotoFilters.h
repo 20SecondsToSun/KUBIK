@@ -1,4 +1,5 @@
 #pragma once
+
 #include "photobooth/elements/IPhotoboothItem.h"
 #include "ChangePhotoFilterPreviewActiveEvent.h"
 #include "ConfigSettings.h"

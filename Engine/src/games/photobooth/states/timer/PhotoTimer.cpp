@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::games::photobooth;
 using namespace shaders::imagefilters;

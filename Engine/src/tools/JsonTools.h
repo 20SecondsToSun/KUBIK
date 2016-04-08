@@ -6,23 +6,18 @@ namespace kubik
 {	
 	class JsonTools
 	{
-	public:
+		public:
+			static JsonTools& getInstance()
+			{ 
+				static JsonTools jtools; 
+				return jtools; 
+			};	
 
-		static JsonTools& getInstance() { 
-			static JsonTools jtools; 
-			return jtools; 
-		};	
-
-		TextItem parseTextItem(ci::JsonTree json)
-		{
-			TextItem textItem;
-			textItem.setText(json.getChild("text").getValue<string>());
-			textItem.setFontName(json.getChild("font").getValue<string>());
-			textItem.setSize(json.getChild("size").getValue<int>());
-			textItem.setColor(json.getChild("color").getValue<string>());
-			return textItem;
-		}
+			TextItem parseTextItem(ci::JsonTree json);
 	};
-	// helper function(s) for easier access 
-	inline JsonTools& jtools() {return JsonTools::getInstance();};
+
+	inline JsonTools& jtools() 
+	{
+		return JsonTools::getInstance();
+	};
 }

@@ -5,13 +5,11 @@
 #include "instagram/InstagramClient.h"
 #include "gui/ImageButtonSprite.h"
 
-using namespace kubik;
-
 namespace instagram
 {
 	typedef std::shared_ptr<class InstaPopup> InstaPopupRef;
 
-	class InstaPopup : public Sprite
+	class InstaPopup : public kubik::Sprite
 	{
 		typedef ci::signals::signal<void(void)> SignalVoid;
 
@@ -19,7 +17,7 @@ namespace instagram
 		static const int CLOSE_POPUP = 0;
 		static const int PRINT = 1;
 
-		explicit InstaPopup(InstagramClientRef client, const gl::Texture& close, const gl::Texture& save, const gl::Texture& _template);
+		explicit InstaPopup(InstagramClientRef client, const ci::gl::Texture& close, const ci::gl::Texture& save, const ci::gl::Texture& _template);
 
 		void draw() override;
 		void setAlpha(float alpha) override;
@@ -35,7 +33,7 @@ namespace instagram
 		SignalVoid touchedEvent;
 
 		bool isOpen();
-		void setDesignElements(const gl::Texture& close, const gl::Texture& print, const gl::Texture& _template);
+		void setDesignElements(const ci::gl::Texture& close, const ci::gl::Texture& print, const ci::gl::Texture& _template);
 
 	private:
 		ci::Vec2f imageShift;
@@ -44,11 +42,11 @@ namespace instagram
 		ci::Anim<float> alpha;
 		ci::Anim<ci::Vec2f> imagePositionAnim;		
 		InstagramClientRef client;
-		ImageButtonSpriteRef closeBtn, printBtn;		
+		kubik::ImageButtonSpriteRef closeBtn, printBtn;
 		ImageGraphic image;
 		bool showing;
 
-		void hiding(EventGUIRef& event);
-		void printing(EventGUIRef& event);
+		void hiding(kubik::EventGUIRef& event);
+		void printing(kubik::EventGUIRef& event);
 	};
 }

@@ -3,11 +3,12 @@
 using namespace std;
 using namespace ci;
 using namespace kubik;
+using namespace kubik::config;
 
 ApplicationView::ApplicationView()
 {
 	preloader	 = PreloaderRef(new Preloader());
-	servicePopup = ServicePopupRef(new ServicePopup());// font memory leak
+	servicePopup = ServicePopupRef(new ServicePopup()); // font memory leak TODO
 }
 
 void ApplicationView::startLocation(IScreenRef screen)
@@ -48,7 +49,7 @@ void ApplicationView::removeLayer(SpriteRef layer)
 
 void ApplicationView::showPreloader()
 {	
-	kubik::setScreenShot(Utils::drawGraphicsToFBO(getWindowSize(), [&](){ if (location) draw(); }));
+	kubik::setScreenShot(Utils::drawGraphicsToFBO(app::getWindowSize(), [&](){ if (location) draw(); }));
 
 	if (settingsFactory().getMainPreloader() != nullptr)
 	{

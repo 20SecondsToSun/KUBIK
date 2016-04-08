@@ -36,7 +36,7 @@ namespace kubik
 				void init(ISettingsRef config) override;
 				void create();
 
-				connection updateSignal;
+				ci::signals::connection updateSignal;
 				size_t index;					
 
 			private:

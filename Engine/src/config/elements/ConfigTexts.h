@@ -1,10 +1,6 @@
 #pragma once
-#include "TextItem.h"
 
-using namespace std;
-using namespace ci;
-using namespace ci::app;
-using namespace ci::gl;
+#include "TextItem.h"
 
 namespace kubik
 {
@@ -15,7 +11,7 @@ namespace kubik
 		{
 		public:
 			
-			typedef std::map <std::pair<string, EnumID>, TextItem> DicType;
+			typedef std::map <std::pair<std::string, EnumID>, TextItem> DicType;
 
 			void insert(const std::string& lang, EnumID id, const TextItem& item)
 			{

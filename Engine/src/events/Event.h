@@ -1,10 +1,5 @@
 #pragma once
 
-using namespace ci::signals;
-using namespace ci::app;
-using namespace std;
-using namespace ci;
-
 namespace kubik
 {
 	class Event

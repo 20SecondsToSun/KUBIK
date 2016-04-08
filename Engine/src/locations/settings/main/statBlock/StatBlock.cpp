@@ -89,17 +89,25 @@ void StatBlock::nullValues()
 
 void StatBlock::calculateDigitTextures()
 {
-	auto chooseFont = [&](int count)->ci::Font
+	using namespace std;
+
+	auto chooseFont = [&](int count)//->ci::Font
 	{
 		auto str = to_string(count);
 		ci::Font font = numsFont1;
 	
 		if (str.length() <= 3)
-			font  = numsFont1;
+		{
+			font = numsFont1;
+		}
 		else if (str.length() <= 4)
-			font  = numsFont2;
-		else 
-			font  = numsFont3;
+		{
+			font = numsFont2;
+		}
+		else
+		{
+			font = numsFont3;
+		}
 
 		return font;
 	};
@@ -108,17 +116,23 @@ void StatBlock::calculateDigitTextures()
 	printedPhotosTexture  = textTools().getTextField(to_string(printedPhotos), &chooseFont(printedPhotos), numsColor);
 	sharedAndEmailTexture = textTools().getTextField(to_string(sharedAndEmail), &chooseFont(sharedAndEmail), numsColor);
 
-	auto getYPosition = [](int count)->Vec2f
+	auto getYPosition = [](int count)//->Vec2f
 	{
 		auto str = to_string(count);
 		auto position = Vec2f::zero();
 
 		if (str.length() <= 3)
+		{
 			position = Vec2f(0.0f, -4.0f);
+		}
 		else if (str.length() <= 4)
+		{
 			position = Vec2f(10.0f, 30.0f);
-		else 
+		}
+		else
+		{
 			position = Vec2f(15.0f, 40.0f);
+		}
 
 		return position;
 	};

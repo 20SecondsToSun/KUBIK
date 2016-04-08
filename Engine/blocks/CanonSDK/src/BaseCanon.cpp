@@ -2,6 +2,9 @@
 
 using namespace canon;
 using namespace resolution;
+using namespace ci;
+using namespace ci::app;
+using namespace std;
 
 EdsError EDSCALLBACK DownloadImageProgress(EdsUInt32 inPercent, EdsVoid *inContext, EdsBool *outCancel)
 {
@@ -36,23 +39,30 @@ void BaseCanon::init(CameraController* controller)
 	// Get Camera List and open a session owith one of them
 	err = EdsGetCameraList(&cameraList);
 
-	if(err != EDS_ERR_OK)
+	if (err != EDS_ERR_OK)
+	{
 		throw ExcCouldnotGetCameraList();
+	}		
 
-	if(!getNumConnectedCameras()) 
+	if (!getNumConnectedCameras())
+	{
 		throw ExcCameraListEmpty();
-	
+	}	
 	
 	err = EdsGetChildAtIndex(cameraList, 0, &camera);
 	getDeviceInfo(camera);
 
-	if(err != EDS_ERR_OK)
-		throw ExcCouldnotGetCamera();	
+	if (err != EDS_ERR_OK)
+	{
+		throw ExcCouldnotGetCamera();
+	}
 
 	err = EdsOpenSession(camera);
 
-	if(err != EDS_ERR_OK)
-		throw ExcCouldnotOpenSession();	
+	if (err != EDS_ERR_OK)
+	{
+		throw ExcCouldnotOpenSession();
+	}
 
 	EdsSetObjectEventHandler(camera,     kEdsObjectEvent_All, CameraEventListener::handleObjectEvent ,  (EdsVoid*)controller);
 	EdsSetPropertyEventHandler(camera, kEdsPropertyEvent_All, CameraEventListener::handlePropertyEvent, (EdsVoid*)controller);	
@@ -76,30 +86,38 @@ void BaseCanon::getDeviceInfo(EdsCameraRef cam)
 		console() << "Cinder-Canon :: szPortName :: " << info.szPortName << endl;		
 	}
 	else
-		throw ExcDeviceInfo(CanonErrorToString(err));	
+	{
+		throw ExcDeviceInfo(CanonErrorToString(err));
+	}
 }
 
 void BaseCanon::takePicture()
 {
-	if(!_isCameraConnected)
-		return;	
+	if (_isCameraConnected)
+	{
+		console() << "Cinder-Canon :: Attempting to take a picture " << endl;
 
-	console() << "Cinder-Canon :: Attempting to take picture "<< endl;
-	
-	EdsInt32 saveTarget = kEdsSaveTo_Host;
-	EdsError err = EdsSetPropertyData(camera, kEdsPropID_SaveTo, 0, 4, &saveTarget);
-	EdsCapacity newCapacity = {0x7FFFFFFF, 0x1000, 1};
-	err = EdsSetCapacity(camera, newCapacity);
+		EdsInt32 saveTarget = kEdsSaveTo_Host;
+		EdsError err = EdsSetPropertyData(camera, kEdsPropID_SaveTo, 0, 4, &saveTarget);
+		EdsCapacity newCapacity = { 0x7FFFFFFF, 0x1000, 1 };
+		err = EdsSetCapacity(camera, newCapacity);
 
-	err = EdsSendCommand(camera, kEdsCameraCommand_TakePicture, 0);
+		err = EdsSendCommand(camera, kEdsCameraCommand_TakePicture, 0);
 
-	if(err != EDS_ERR_OK) 	
-		throw ExcTakenPhoto(CanonErrorToString(err));
+		if (err != EDS_ERR_OK)
+		{
+			throw ExcTakenPhoto(CanonErrorToString(err));
+		}
+	}	
+	else
+	{
+		console() << "Cinder-Canon :: Camera off - cannot take a picture" << endl;
+	}
 }
 
 void BaseCanon::startLiveView()
 {
-	if(_isLiveView == false)
+	if(!_isLiveView)
 	{
 		EdsUInt32 device;
 		EdsError err = EdsGetPropertyData(camera, kEdsPropID_Evf_OutputDevice, 0, sizeof(device), &device);
@@ -138,14 +156,18 @@ void BaseCanon::endLiveView()
 		EdsError err = EdsGetPropertyData(camera, kEdsPropID_Evf_OutputDevice, 0, sizeof(device), &device);
 
 		// PC live view ends if the PC is disconnected from the live view image output device.
-		if(err != EDS_ERR_OK)
+		if (err != EDS_ERR_OK)
+		{
 			throw ExcStopLiveView(CanonErrorToString(err));
+		}
 		
 		device &= ~kEdsEvfOutputDevice_PC;
 		err = EdsSetPropertyData(camera, kEdsPropID_Evf_OutputDevice, 0, sizeof(device), &device);
 
-		if(err != EDS_ERR_OK)
-			throw ExcStopLiveView(CanonErrorToString(err));		
+		if (err != EDS_ERR_OK)
+		{
+			throw ExcStopLiveView(CanonErrorToString(err));
+		}
 	}
 }
 
@@ -155,8 +177,10 @@ void BaseCanon::extendShutDownTimer()
 	// but if it's not here, then the camera shuts down after 5 minutes.
 	EdsError err = sendCommand(camera, kEdsCameraCommand_ExtendShutDownTimer, 0);
 
-	if(err != EDS_ERR_OK)
+	if (err != EDS_ERR_OK)
+	{
 		throw ExcExtendShutDownTimer(CanonErrorToString(err));
+	}
 }
 
 EdsError BaseCanon::downloadEvfData( EdsCameraRef camera )
@@ -205,8 +229,10 @@ EdsError BaseCanon::downloadEvfData( EdsCameraRef camera )
 	unsigned char* image_data;
 	EdsGetLength(stream, &length);
 
-	if( length <= 0 )
+	if (length <= 0)
+	{
 		return EDS_ERR_OK;
+	}
 
 	EdsGetPointer( stream, (EdsVoid**)&image_data);
 
@@ -241,7 +267,8 @@ EdsError BaseCanon::sendCommand(EdsCameraRef inCameraRef, EdsUInt32 inCommand, E
 	if(err != EDS_ERR_OK)
 	{
 		console() << "Cinder-Canon :: error while sending command " <<  CanonErrorToString(err) << "." << endl;
-		if(err == EDS_ERR_DEVICE_BUSY) {
+		if(err == EDS_ERR_DEVICE_BUSY) 
+		{
 			//return false;
 		}
 	}
@@ -288,8 +315,10 @@ int BaseCanon::getNumConnectedCameras() const
 	EdsUInt32 numCameras = 0;
 	EdsError err = EdsGetChildCount( cameraList, &numCameras);
 
-	if( err != EDS_ERR_OK )
-		numCameras = 0;
+	if (err != EDS_ERR_OK)
+	{
+		return 0;
+	}
 
 	return numCameras;
 }
@@ -326,13 +355,16 @@ bool BaseCanon::isFrameNew() const
 
 void BaseCanon::shutdown()
 { 
-	console()<<"SHUTDOWN!!!!!!"<<endl;
+	kubik::logger().log( "camera shutdown !");
+
 	shutCon.disconnect();
 	_isRunning = false;
 	endLiveView();
 
 	EdsError err = EdsCloseSession(camera);
 
-	if(err == EDS_ERR_OK)	
+	if (err == EDS_ERR_OK)
+	{
 		EdsTerminateSDK();
+	}
 }

@@ -1,6 +1,8 @@
 #include "main/logo/Logo.h"
 
+using namespace std;
 using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -46,11 +48,10 @@ float Logo::getWidth() const
 
 void Logo::animateToMiniState(const gl::Texture& icon, const EaseFn& eFunc, float time)
 {
-	bckgrndColor = ci::Color::hex(0x0d0917);
-	iconPosition = saveIconPosition + ci::Vec2f(-37.0f, 0.0f);
+	bckgrndColor = Color::hex(0x0d0917);
+	iconPosition = saveIconPosition + Vec2f(-37.0f, 0.0f);
 	isMiniState = true;
 	gameIcon = icon;
-
 	iconScale = 100.0f / gameIcon.getWidth();
 }
 

@@ -212,7 +212,7 @@ vector<GameData> MenuSettings::getEnabledGamesData()
 		oneGame.id = filtergames[i].getGameId();
 		oneGame.position = position[i];
 
-		Texture tex = filtergames[i].getTexture();
+		ci::gl::Texture tex = filtergames[i].getTexture();
 		float scale = (float)size.x / tex.getWidth();
 	
 		oneGame.texture = Utils::drawGraphicsToFBO(size, [&]()

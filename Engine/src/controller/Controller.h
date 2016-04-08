@@ -23,35 +23,32 @@
 #include "preloader/Preloader.h"
 #include "fontStorage/FontStorage.h"
 
-using namespace kubik::menu;
-using namespace kubik::config;
-
 namespace kubik
 {
 	class Controller
 	{
 	public:
-		Controller(ApplicationModelRef model, AppViewRef view);
+		Controller(config::ApplicationModelRef model, AppViewRef view);
 	
 	private:
-		ApplicationModelRef		model;
-		AppViewRef				view;
+		config::ApplicationModelRef		model;
+		AppViewRef						view;
 
-		ConfigLoaderRef			configLoader;
-		GraphicsLoaderRef		graphicsLoader;
+		ConfigLoaderRef					configLoader;
+		GraphicsLoaderRef				graphicsLoader;
 
-		ScreenSaverSettingsRef	screenSaverSettings; 
-		ConfigSettingsRef		controlSettings; 
-		GameSettingsRef			gameSettings; 	
-		MenuSettingsRef			menuSettings;
-		KeyboardSettingsRef		keyboardSettings;
-		SocialSettingsRef		socialSettings;	
-		PreloaderSettingsRef    preloaderSettings;
+		config::ScreenSaverSettingsRef	screenSaverSettings;
+		config::ConfigSettingsRef		controlSettings;
+		config::GameSettingsRef			gameSettings;
+		config::MenuSettingsRef			menuSettings;
+		config::KeyboardSettingsRef		keyboardSettings;
+		config::SocialSettingsRef		socialSettings;
+		config::PreloaderSettingsRef    preloaderSettings;
 
-		MenuScreenRef			menuScreen;
-		ControlLayerRef			controlLayer;
-		ConfigScreenRef			controlScreen;
-		ScreenSaverRef			screenSaver;
+		menu::MenuScreenRef				menuScreen;
+		menu::ControlLayerRef			controlLayer;
+		config::ConfigScreenRef			controlScreen;
+		ScreenSaverRef					screenSaver;
 
 		GamesFactory<IGame>::base_ptr	game;
 

@@ -5,6 +5,7 @@ using namespace kubik;
 using namespace ci;
 using namespace ci::app;
 using namespace mndl::curl;
+using namespace Awesomium;
 
 void SocShare::posting()
 {
@@ -117,14 +118,15 @@ void SocShare::handleKeyDown()
 
 void SocShare::connectTouchDown()
 {
-	if (connected) return;
+	if (!connected)
+	{
+		mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&SocShare::mouseDown, this, std::placeholders::_1));
+		mouseUpCon   = getWindow()->getSignalMouseUp().connect(std::bind(&SocShare::mouseUp, this, std::placeholders::_1));
+		keyDownCon   = getWindow()->getSignalKeyDown().connect(std::bind(&SocShare::keyDown, this, std::placeholders::_1));
 
-	mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&SocShare::mouseDown, this, std::placeholders::_1));
-	mouseUpCon   = getWindow()->getSignalMouseUp().connect(std::bind(&SocShare::mouseUp,	 this, std::placeholders::_1));
-	keyDownCon   = getWindow()->getSignalKeyDown().connect(std::bind(&SocShare::keyDown,	 this, std::placeholders::_1));
-
-	touchKeyboard().connectEventHandler(&SocShare::handleKeyDown, this, VirtualKeyboard::KEY_TOUCH);
-	connected = true;
+		touchKeyboard().connectEventHandler(&SocShare::handleKeyDown, this, VirtualKeyboard::KEY_TOUCH);
+		connected = true;
+	}
 }
 
 void SocShare::mouseDown(MouseEvent &event)

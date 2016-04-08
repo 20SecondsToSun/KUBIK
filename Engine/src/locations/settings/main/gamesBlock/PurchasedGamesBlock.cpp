@@ -1,5 +1,7 @@
 #include "main/gamesBlock/PurchasedGamesBlock.h"
 
+using namespace std;
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -10,7 +12,7 @@ PurchasedGamesBlock::PurchasedGamesBlock(ConfigSettingsRef configSett, const vec
 	int i = 0;
 	for (auto gameInfo : games)
 	{
-		OneGamePurchasedRef game = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));
+		auto game = OneGamePurchasedRef(new OneGamePurchased(configSett, gameInfo));
 		game->setPosition(Vec2f(0.0f, oneGamePurchasedHeight * i++));
 		mainGamesVec.push_back(game);
 		addChild(game);
@@ -20,26 +22,36 @@ PurchasedGamesBlock::PurchasedGamesBlock(ConfigSettingsRef configSett, const vec
 void PurchasedGamesBlock::activateListeners()
 {
 	for (auto game : displayList)
-		game->activateListeners();						
+	{
+		game->activateListeners();
+	}
 }
 
 void PurchasedGamesBlock::unActivateListeners()
 {
 	for (auto game : displayList)
-		game->unActivateListeners();	
+	{
+		game->unActivateListeners();
+	}
 }
 
 void PurchasedGamesBlock::freezeChecker(const GameId& id)
 {
-	for (size_t i = 0; i < mainGamesVec.size(); i++)		
-		if (id == mainGamesVec[i]->getGameID())		
-			mainGamesVec[i]->freeze();		
+	for (size_t i = 0; i < mainGamesVec.size(); i++)
+	{
+		if (id == mainGamesVec[i]->getGameID())
+		{
+			mainGamesVec[i]->freeze();
+		}
+	}
 }
 
 void PurchasedGamesBlock::unFreezeChecker()
 {
 	for (size_t i = 0; i < mainGamesVec.size(); i++)
-			mainGamesVec[i]->unFreeze();
+	{
+		mainGamesVec[i]->unFreeze();
+	}
 }
 
 float PurchasedGamesBlock::getHeight() const

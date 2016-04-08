@@ -5,6 +5,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace kubik;
+using namespace kubik::config;
 
 InstagramViewer::InstagramViewer(InstagramClientRef client,	
 	const gl::Texture& noMaterials,

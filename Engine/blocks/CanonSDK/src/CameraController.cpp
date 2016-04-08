@@ -1,6 +1,9 @@
 #include "CameraController.h"
 
 using namespace canon;
+using namespace ci;
+using namespace ci::app;
+using namespace std;
 
 void CameraController::perform(canonEvent evt)
 {
@@ -33,17 +36,17 @@ void CameraController::downloadImage(EdsDirectoryItemRef dirItem)
 	}
 	catch(...)
 	{
-		photoDownloadedErrorSignal("erroe");
+		photoDownloadedErrorSignal("error");
 	}
 }
 
-path CameraController::getDownloadedDir()
+fs::path CameraController::getDownloadedDir()
 {
 	return downloadDir;
 
 }
 
-void CameraController::setDownloadedDir(path dir)
+void CameraController::setDownloadedDir(fs::path dir)
 {
 	downloadDir = dir;
 }
@@ -55,8 +58,10 @@ void CameraController::_downloadImage(EdsDirectoryItemRef dirItem)
 	EdsDirectoryItemInfo dir_item_info;
 
 	err = EdsGetDirectoryItemInfo(dirItem, &dir_item_info);
-	if(err != EDS_ERR_OK) 
-		throw ExcPhotoDownload(CanonErrorToString(err));		
+	if (err != EDS_ERR_OK)
+	{
+		throw ExcPhotoDownload(CanonErrorToString(err));
+	}
 
 	// Created file stream to download image.
 	downloadFile = downloadDir / string(dir_item_info.szFileName);
@@ -67,8 +72,10 @@ void CameraController::_downloadImage(EdsDirectoryItemRef dirItem)
 		kEdsAccess_ReadWrite,
 		&stream);	
 
-	if(err != EDS_ERR_OK) 
-		throw ExcPhotoDownload(CanonErrorToString(err));	
+	if (err != EDS_ERR_OK)
+	{
+		throw ExcPhotoDownload(CanonErrorToString(err));
+	}
 
 	//err = EdsSetProgressCallback(stream, DownloadImageProgress, kEdsProgressOption_Periodically, this);	
 	//if(err != EDS_ERR_OK)
@@ -85,15 +92,19 @@ void CameraController::_downloadImage(EdsDirectoryItemRef dirItem)
 	console() << "Downloaded image to --- " << downloadFile.generic_string() << "\n";
 	err = EdsDownloadComplete(dirItem);			
 
-	if(err != EDS_ERR_OK)
-		throw ExcPhotoDownload(CanonErrorToString(err));	
+	if (err != EDS_ERR_OK)
+	{
+		throw ExcPhotoDownload(CanonErrorToString(err));
+	}
 
 	// Release stream
 	if(stream != NULL)
 	{
 		err = EdsRelease(stream);
-		if(err != EDS_ERR_OK)
-			throw ExcPhotoDownload(CanonErrorToString(err));	
+		if (err != EDS_ERR_OK)
+		{
+			throw ExcPhotoDownload(CanonErrorToString(err));
+		}
 		stream = NULL;
 	}
 }	

@@ -11,8 +11,8 @@
 #include "fontStorage/FontStorage.h"
 #include "Paths.h"
 
-#define Photobooth_DEBUG
-#define Photobooth_Loadfromfolder_DEBUG
+//#define Photobooth_DEBUG
+//#define Photobooth_Loadfromfolder_DEBUG
 //#define Photobooth_Sharing_DEBUG
 
 namespace kubik
@@ -88,7 +88,8 @@ namespace kubik
 			std::vector<ci::gl::Texture> getPhotoCardsTextures() const;
 
 			ci::gl::Texture getPhotoShootingCard() const;
-			ci::gl::Texture getPhotoSharingCard() const;			
+			ci::gl::Texture getPhotoSharingCard() const;
+			ci::gl::Texture getPhotoSharingSticker() const;			
 			ci::gl::Texture getActivePrintBgTex();
 			void swapFilter(int id);
 			

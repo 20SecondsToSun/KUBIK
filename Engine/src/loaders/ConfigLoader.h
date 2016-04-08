@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IScreen.h"
 #include "IGame.h"
 #include "ServicePopup.h"
@@ -12,13 +13,13 @@ namespace kubik
 	class ConfigLoader : public ILoader
 	{
 	public:	
-		ConfigLoader(ApplicationModelRef model);
+		ConfigLoader(config::ApplicationModelRef model);
 
 		void load();
 		bool loadKubikConfig();
-		void loadConfigs(std::list<ISettingsRef> configs);
+		void loadConfigs(std::list<config::ISettingsRef> configs);
 
 	private:	
-		ApplicationModelRef model;		
+		config::ApplicationModelRef model;
 	};
 }

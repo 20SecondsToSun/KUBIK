@@ -1,4 +1,5 @@
 #pragma once
+
 #include "services/social/SocShare.h"
 #include "SocialSettings.h"
 
@@ -14,7 +15,7 @@ namespace kubik
 		void		logOut() override;
 		void		update() override;	
 		void		signInUpdate();
-		void		setPhotoAlbumName(const string &name);
+		void		setPhotoAlbumName(const std::string &name);
 
 	private:
 		void		postText(const std::string& textStatus) override;

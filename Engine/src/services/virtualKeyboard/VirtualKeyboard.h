@@ -36,7 +36,7 @@ namespace kubik
 		void update();
 		void connectKeyboard();
 		void disconnectKeyboard();
-		void setPosition(const Vec2f& vec);
+		void setPosition(const ci::Vec2f& vec);
 		std::string getLastCode();
 		std::string getDisplayCode();
 		void setInputFieldVisible(bool value);
@@ -124,9 +124,9 @@ namespace kubik
 		SimpleSpriteButtonRef touchInputZone;
 		std::string inputField;
 		ci::Font inputFont;
-		size_t maxInputChars;
+		std::size_t maxInputChars;
 		bool isShowing;
-		Vec2f touchInputZonePos;
+		ci::Vec2f touchInputZonePos;
 		ci::gl::Texture inputFieldTexture;
 
 		ci::Color inputColor;
@@ -140,11 +140,11 @@ namespace kubik
 		void clearInputFieldText();
 		void setDefaultSettings();		
 		void setInputFieldText(const std::string& text);
-		void setEraseButtonTexture(const gl::Texture& value);
+		void setEraseButtonTexture(const ci::gl::Texture& value);
 		std::string getInputFieldText() const;
 		bool emptyInputField();
 		bool showing() const;
 	};
 
-	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance();};
+	inline VirtualKeyboard&	touchKeyboard() { return VirtualKeyboard::getInstance(); };
 }

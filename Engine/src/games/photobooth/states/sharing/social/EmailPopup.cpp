@@ -4,6 +4,8 @@ using namespace kubik::games::photobooth;
 using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
+using namespace ci;
+using namespace ci::app;
 
 EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
 	:Popup(settings),

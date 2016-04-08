@@ -1,4 +1,5 @@
 #pragma once
+
 #include "cinder/app/AppNative.h"
 #include "instagram/api/ImagesList.h"
 #include "instagram/api/User.h"
@@ -22,7 +23,7 @@ namespace instagram
         bool user_has_liked;	
 
 	public:
-		const std::string& getLink()
+		const std::string& getLink() const
 		{
 			return link;
 		}
@@ -33,7 +34,7 @@ namespace instagram
 		}
 
 		///
-		const User& getUser()
+		const User& getUser() const 
 		{
 			return user;
 		}
@@ -44,7 +45,7 @@ namespace instagram
 		}
 		
 		///
-		const ImagesList& getImagesList()
+		const ImagesList& getImagesList() const
 		{
 			return images;
 		}
@@ -57,7 +58,6 @@ namespace instagram
 		void parse(ci::JsonTree tree)
 		{
 			images.parse(tree.getChild("images"));			
-		}
-	
+		}	
 	};
 }

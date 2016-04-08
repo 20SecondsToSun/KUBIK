@@ -1,5 +1,7 @@
 #include "main/gamesBlock/NotPurchasedGamesBlock.h"
 
+using namespace std;
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -8,7 +10,7 @@ NotPurchasedGamesBlock::NotPurchasedGamesBlock(ConfigSettingsRef configSett, con
 {
 	for (auto gameInfo : games)
 	{
-		OneGameNotPurchasedRef pGame = OneGameNotPurchasedRef(new OneGameNotPurchased(configSett, gameInfo));
+		auto pGame = OneGameNotPurchasedRef(new OneGameNotPurchased(configSett, gameInfo));
 		addChild(pGame);
 	}
 }
@@ -16,18 +18,22 @@ NotPurchasedGamesBlock::NotPurchasedGamesBlock(ConfigSettingsRef configSett, con
 void NotPurchasedGamesBlock::activateListeners()
 {
 	for (auto game : displayList)
+	{
 		game->connectEventHandler(&NotPurchasedGamesBlock::mouseUpFunction, this);
+	}
 }
 
 void NotPurchasedGamesBlock::unActivateListeners()
 {
 	for (auto game : displayList)
+	{
 		game->disconnectEventHandler();
+	}
 }
 
 void NotPurchasedGamesBlock::mouseUpFunction(EventGUIRef& event)
 {
-	console() << "mouseUpFunction" << endl;
+	//console() << "mouseUpFunction" << endl;
 	mouseUpSignal(event);
 }
 
@@ -41,7 +47,9 @@ void NotPurchasedGamesBlock::setAlpha(float alpha)
 {
 	titleText.setColor(Utils::colorAlpha(titleText.getColor(), alpha));
 	for (auto game : displayList)
+	{
 		game->setAlpha(alpha);
+	}
 }
 
 void NotPurchasedGamesBlock::setPosition(ci::Vec2i position)

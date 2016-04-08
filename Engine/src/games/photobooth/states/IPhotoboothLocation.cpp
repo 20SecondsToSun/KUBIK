@@ -25,13 +25,15 @@ void IPhotoboothLocation::hideAnimationComplete()
 void IPhotoboothLocation::reset(PhotoboothSettingsRef settings)
 {
 	this->settings = settings;
-	bckgrnd  = TextureRef(new Texture(settings->getTexture("bg")));
+	bckgrnd  = ci::gl::TextureRef(new ci::gl::Texture(settings->getTexture("bg")));
 }
 
 void IPhotoboothLocation::fillBg()
 {
 	if (bckgrnd)
+	{
 		gl::draw(bckgrnd);
+	}
 }
 
 void IPhotoboothLocation::drawTitle()
@@ -43,7 +45,7 @@ void IPhotoboothLocation::drawTitle()
 
 void IPhotoboothLocation::setLastScreenShot()
 {
-	screenshot = Utils::drawGraphicsToFBO(getWindowSize(), [&](){ draw(); });
+	screenshot = Utils::drawGraphicsToFBO(app::getWindowSize(), [&](){ draw(); });
 }
 
 void IPhotoboothLocation::stopAllTweens()

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "cinder/app/AppNative.h"
 #include "instagram/api/InstBaseObject.h"
 

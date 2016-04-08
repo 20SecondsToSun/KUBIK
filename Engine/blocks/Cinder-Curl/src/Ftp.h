@@ -1,40 +1,36 @@
-#ifndef _FTP_HEADER_INCLUDED_
-#define _FTP_HEADER_INCLUDED_
+#pragma once
 
 #include "cinder/Thread.h"
 #include <string>
 #include <memory>
 
-namespace mndl {
-
-class Ftp;
-typedef std::shared_ptr< Ftp > FtpPtr;
-
-class Ftp
+namespace mndl
 {
-public:
-	Ftp( const std::string &address, const std::string &user, const std::string &password, const ci::fs::path &fileName );
-	virtual ~Ftp();
+	class Ftp;
+	typedef std::shared_ptr< Ftp > FtpPtr;
 
-	void send();
+	class Ftp
+	{
+	public:
+		Ftp( const std::string &address, const std::string &user, const std::string &password, const ci::fs::path &fileName );
+		virtual ~Ftp();
 
-	bool getDone();
-	bool getResult();
+		void send();
 
-	const ci::fs::path &getFileName() { return mFileName; }
+		bool getDone();
+		bool getResult();
 
-private:
-	std::string  mAddress;
-	std::string  mUser;
-	std::string  mPassword;
-	ci::fs::path mFileName;
+		const ci::fs::path &getFileName() { return mFileName; }
 
-	bool         mDone;
-	bool         mResult;
+	private:
+		std::string  mAddress;
+		std::string  mUser;
+		std::string  mPassword;
+		ci::fs::path mFileName;
 
-	std::mutex   mMutex;
-};
+		bool         mDone;
+		bool         mResult;
 
-} // namespace mndl
-
-#endif // _FTP_HEADER_INCLUDED_
+		std::mutex   mMutex;
+	};
+} 

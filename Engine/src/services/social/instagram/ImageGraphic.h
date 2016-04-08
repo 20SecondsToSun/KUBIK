@@ -1,6 +1,6 @@
-#include "loaders/asynchTextureLoader/TextureStore.h"
-
 #pragma once
+
+#include "loaders/asynchTextureLoader/TextureStore.h"
 
 namespace instagram
 {

@@ -1,6 +1,8 @@
 #include "ScreenSaver.h"
 
+using namespace std;
 using namespace kubik;
+using namespace kubik::config;
 
 ScreenSaver::ScreenSaver(ISettingsRef config):IScreen(ScreenId::SCREENSAVER)
 {

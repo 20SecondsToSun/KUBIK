@@ -1,5 +1,6 @@
 #include "PhotoSharing.h"
 #include "Tools/qrCode/QrCodeCreator.h"
+//#include "Tools/gifMaker/GIF.h"
 
 using namespace kubik::games::photobooth;
 using namespace kubik;
@@ -24,8 +25,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	IPhotoboothLocation::reset(settings);
 
 	float rightBlockX = 652.0f;
-	title    = settings->getTexture("sharetitle");
-	titlePos = Vec2f(rightBlockX, 203.0f - title.getHeight() * 0.5f);
+	title      = settings->getTexture("sharetitle");
+	titlePos   = Vec2f(rightBlockX, 203.0f - title.getHeight() * 0.5f);
 
 	serviceBtns.clear();
 
@@ -138,12 +139,15 @@ void PhotoSharing::start()
 	qrcode->initLink(link, settings->getPhotoDownloadDirectory().string() + "\\" + ("qrcode.bmp"));
 
 
+	//gifs
 
 	auto photoTemplate = settings->getPhotoSharingCard();
+	auto photoSticker = settings->getPhotoSharingSticker();
 
 #ifndef Photobooth_Sharing_DEBUG
 	finalPhotoTemplate.setData(photoStorage);
 	finalPhotoTemplate.setTemplate(photoTemplate);
+	finalPhotoTemplate.setSticker(photoSticker);
 	finalPhotoTemplate.startAnimate();
 #endif
 	

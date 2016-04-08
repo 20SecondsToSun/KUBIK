@@ -23,7 +23,7 @@ namespace kubik
 			virtual changeSetting::id getChangeID() const;
 
 		private:
-			std::string getKeyboardPath(const string& value);
+			std::string getKeyboardPath(const std::string& value);
 		};
 	}
 }

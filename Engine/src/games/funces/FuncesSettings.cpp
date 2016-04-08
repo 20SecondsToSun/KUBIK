@@ -1,5 +1,7 @@
 #include "FuncesSettings.h"
 
+using namespace ci;
+using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 

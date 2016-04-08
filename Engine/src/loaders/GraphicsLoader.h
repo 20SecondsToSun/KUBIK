@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Types.h"
 #include "KubikException.h"
 #include "ILoader.h"

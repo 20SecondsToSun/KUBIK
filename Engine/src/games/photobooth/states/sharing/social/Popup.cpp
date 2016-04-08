@@ -4,6 +4,9 @@ using namespace kubik::games::photobooth;
 using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
+using namespace std;
+using namespace ci;
+using namespace ci::app;
 
 ci::gl::Texture Popup::backgroundImage;
 

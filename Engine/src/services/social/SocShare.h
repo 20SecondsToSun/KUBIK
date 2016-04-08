@@ -4,8 +4,6 @@
 #include "VirtualKeyboard.h"
 #include "Curl.h"
 
-using namespace Awesomium;
-
 namespace kubik
 {
 	typedef std::shared_ptr<class SocShare> SocShareRef;
@@ -44,7 +42,6 @@ namespace kubik
 		virtual void logOut() = 0;
 
 		void clear_token();
-
 		void postStatus(const std::string& textStatus = "");
 		void postPhoto(const std::string& path, const std::string& textStatus = "");
 		void postPhoto(const std::vector<std::string>& path, const std::string& textStatus);
@@ -76,11 +73,11 @@ namespace kubik
 		ci::Rectf availableArea;
 		bool connected;
 
-		connection loadingSignal;
+		ci::signals::connection loadingSignal;
 		ThreadRef loadingThread;
 
-		WebCore*		 mWebCorePtr;
-		WebView*		 mWebViewPtr;
+		Awesomium::WebCore*		 mWebCorePtr;
+		Awesomium::WebView*		 mWebViewPtr;
 		ci::gl::Texture  mWebTexture;
 		ci::Vec2f		 popupPosition;
 		ci::Vec2i		 initWebBrowserSize;
@@ -103,8 +100,8 @@ namespace kubik
 	private:
 		std::vector<std::string> uploadPhotoPathVec;
 		ci::signals::connection	keyDownCon, mouseDownCon, mouseUpCon;
-		void mouseDown(MouseEvent &event);
-		void mouseUp(MouseEvent &event);
-		void keyDown(KeyEvent event);		
+		void mouseDown(ci::app::MouseEvent &event);
+		void mouseUp(ci::app::MouseEvent &event);
+		void keyDown(ci::app::KeyEvent event);
 	};
 }

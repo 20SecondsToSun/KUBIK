@@ -2,6 +2,8 @@
 
 using namespace kubik;
 using namespace kubik::config;
+using namespace ci;
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////
 //

@@ -286,6 +286,9 @@
     <Filter Include="Source Files\tools\qrCode\libqrencode">
       <UniqueIdentifier>{63faa68c-c854-499b-9fc4-3217bbff08d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tools\gifMaker">
+      <UniqueIdentifier>{e6238186-3242-42a1-8c69-c85bc41694ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -792,6 +795,30 @@
     <ClCompile Include="..\src\games\IGame.cpp">
       <Filter>Source Files\games</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tools\gifMaker\GifEncoder.cpp">
+      <Filter>Source Files\tools\gifMaker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\FileTools.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTools.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\StringTools.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\ScreenStorage.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\JsonTools.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\DrawTools.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\Chromium.cpp">
+      <Filter>Source Files\tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -825,9 +852,6 @@
       <Filter>Source Files\tools</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tools\TextTools.h">
-      <Filter>Source Files\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tools\MathTools.h">
       <Filter>Source Files\tools</Filter>
     </ClInclude>
     <ClInclude Include="..\src\tools\FileTools.h">
@@ -1391,14 +1415,8 @@
     <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h">
       <Filter>Source Files\graphics\imagesequencer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h">
       <Filter>Source Files\config\services\keyboard</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\graphics\IMovie.h">
       <Filter>Source Files\graphics</Filter>
@@ -1408,9 +1426,6 @@
     </ClInclude>
     <ClInclude Include="..\src\loaders\MovieLoader.h">
       <Filter>Source Files\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\services\social\twitter\base64.h">
       <Filter>Source Files\services\social\twitter</Filter>
@@ -1507,6 +1522,18 @@
     </ClInclude>
     <ClInclude Include="..\src\config\Paths.h">
       <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\gifMaker\GifDitherTypes.h">
+      <Filter>Source Files\tools\gifMaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\gifMaker\GifEncoder.h">
+      <Filter>Source Files\tools\gifMaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\gifMaker\GifFrame.h">
+      <Filter>Source Files\tools\gifMaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools\gifMaker\GIF.h">
+      <Filter>Source Files\tools\gifMaker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

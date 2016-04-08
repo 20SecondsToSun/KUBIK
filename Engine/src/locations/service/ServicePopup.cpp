@@ -2,6 +2,10 @@
 #include "Paths.h"
 
 using namespace kubik;
+using namespace kubik::config;
+using namespace std;
+using namespace ci;
+using namespace ci::app;
 
 ServicePopup::ServicePopup()
 {
@@ -24,7 +28,7 @@ void ServicePopup::init(ISettingsRef config)
 void ServicePopup::reset()
 {
 
-};
+}
 
 void ServicePopup::setMessage(const char* msg)
 {

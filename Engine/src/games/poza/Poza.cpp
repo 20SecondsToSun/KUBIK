@@ -1,6 +1,8 @@
 #include "Poza.h"
 
+using namespace ci;
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::poza;
 
 Poza::Poza(ISettingsRef config)
@@ -35,7 +37,7 @@ void Poza::stop()
 
 void Poza::init(ISettingsRef config)
 {
-	settings = static_pointer_cast<PozaSettings>(config);
+	settings = std::static_pointer_cast<PozaSettings>(config);
 }
 
 void Poza::reset()
@@ -58,7 +60,7 @@ void Poza::draw()
 		gl::pushMatrices();
 		gl::translate(animX, 0.0f);
 		gl::color(Color::black());
-		gl::drawSolidRect(getWindowBounds());
+		gl::drawSolidRect(app::getWindowBounds());
 		gl::color(Color::white());
 		gl::draw(settings->getTexture("title"), Vec2f(200.0f, 200.0f));
 		//currentLocation->draw();

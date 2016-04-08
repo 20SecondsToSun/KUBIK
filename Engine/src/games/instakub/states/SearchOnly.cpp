@@ -1,5 +1,6 @@
 #include "instakub/states/SearchOnly.h"
 
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::instakub;

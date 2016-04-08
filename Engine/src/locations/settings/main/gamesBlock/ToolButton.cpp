@@ -1,5 +1,6 @@
 #include "main/gamesBlock/ToolButton.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 

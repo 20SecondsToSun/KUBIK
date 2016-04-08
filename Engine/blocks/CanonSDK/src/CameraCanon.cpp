@@ -2,21 +2,23 @@
 #include "tools/logger.h"
 
 using namespace canon;
+using namespace ci;
+using namespace ci::app;
 
 CameraCanon::CameraCanon() :recordingFPS(12), connectionState(DISCONNECT), liveViewState(UNDEFINED)
 {
 	controller = new CameraController();
-	controller->photoDownloadedSignal.connect(bind(&CameraCanon::photoDownloadHandler, this, placeholders::_1));
-	controller->cameraShutDownSignal.connect(bind(&CameraCanon::shutdownHandler, this));
+	controller->photoDownloadedSignal.connect(std::bind(&CameraCanon::photoDownloadHandler, this, std::placeholders::_1));
+	controller->cameraShutDownSignal.connect(std::bind(&CameraCanon::shutdownHandler, this));
 }
 
 void CameraCanon::setup() 
 {	
-	if (BaseCanon::isCameraConnected())
-		return;
-
-	controller->setDownloadedDir(getAppPath());
-	connect();
+	if (!BaseCanon::isCameraConnected())
+	{
+		controller->setDownloadedDir(getAppPath());
+		connect();
+	}
 }
 
 void CameraCanon::connect() 
@@ -47,9 +49,13 @@ void CameraCanon::connect()
 void CameraCanon::setAutoReconnect(bool autoReconnect)
 {
 	if (!autoReconnectSignal.connected() && autoReconnect)
-		autoReconnectSignal = App::get()->getSignalUpdate().connect(bind(&CameraCanon::autoReconnectCheckUpdate, this));
+	{
+		autoReconnectSignal = App::get()->getSignalUpdate().connect(std::bind(&CameraCanon::autoReconnectCheckUpdate, this));
+	}
 	else if (autoReconnectSignal.connected() && !autoReconnect)
+	{
 		autoReconnectSignal.disconnect();
+	}
 }
 
 void CameraCanon::autoReconnectCheckUpdate()
@@ -64,8 +70,10 @@ void CameraCanon::autoReconnectCheckUpdate()
 			connect();
 			startLiveView();
 		}
-		else if (reconnectTimer.isStopped())		
-			reconnectTimer.start();		
+		else if (reconnectTimer.isStopped())
+		{
+			reconnectTimer.start();
+		}
 	}	
 }
 
@@ -133,8 +141,10 @@ bool CameraCanon::checkNewFrame()
 {
 	bool isFrame = isFrameNew();
 
-	if(isFrame) 	
-		setFrameNew(false); 
+	if (isFrame)
+	{
+		setFrameNew(false);
+	}
 
 	return isFrame;
 }
@@ -149,7 +159,7 @@ void CameraCanon::takePicture()
 	}
 	catch(canon::ExcTakenPhoto ex)
 	{
-		kubik::logger().log("!!!!!!! camera error message !!!" + ci::toString(ex.what()));
+		kubik::logger().log("!!!!!!! camera error message !!!!!!! " + ci::toString(ex.what()));
 		photoErrorEvent();
 	}
 }
@@ -198,7 +208,7 @@ int CameraCanon::getTotalCapturedFrames() const
 	return mCapturedFrames.size();
 }
 
-const vector<Surface>& CameraCanon::getCapturedFrames() const
+const std::vector<Surface>& CameraCanon::getCapturedFrames() const
 { 
 	return mCapturedFrames;
 }
@@ -235,8 +245,9 @@ void CameraCanon::update()
 
 void CameraCanon::draw(Rectf drawingRect) 
 { 
-	color(Color::white());
+	ci::gl::color(Color::white());
 	Surface liveSurface = getLiveSurface();
+
 	if (liveSurface)
 	{
 		gl::draw(liveSurface);
@@ -292,7 +303,7 @@ void CameraCanon::photoTaken(EdsDirectoryItemRef directoryItem)//, EdsError erro
 	photoTakenEvent();
 }
 
-void CameraCanon::photoDownloadHandler(const string& downloadPath)
+void CameraCanon::photoDownloadHandler(const std::string& downloadPath)
 {
 	photoDownloadedEvent(downloadPath);
 }

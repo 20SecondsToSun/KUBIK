@@ -17,7 +17,7 @@ namespace kubik
 			class Funces :public IGame
 			{
 			public:
-				Funces(ISettingsRef setRef);
+				Funces(config::ISettingsRef setRef);
 				~Funces();
 
 				void start();
@@ -27,13 +27,13 @@ namespace kubik
 
 				virtual void stop() override;
 				virtual void reset() override;
-				virtual void init(ISettingsRef config) override;
+				virtual void init(config::ISettingsRef config) override;
 				virtual void showAnimationComplete() override;
 
 			private:
 				ci::gl::Texture closeImg;
-				connection mouseUpListener, closeBtnListener;
-				FuncesSettingsRef settings;
+				ci::signals::connection mouseUpListener, closeBtnListener;
+				config::FuncesSettingsRef settings;
 				
 				Kinect2::BodyFrame			mBodyFrame;
 

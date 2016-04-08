@@ -1,10 +1,12 @@
 #include "main/gamesBlock/GameChecker.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
 GameChecker::GameChecker(const Rectf& rect, const GamesInfo& info, const Color& activeColor, const Color& unActiveColor)
-	:Checker(rect, info.getIcons(), activeColor, unActiveColor), info(info)
+	:Checker(rect, info.getIcons(), activeColor, unActiveColor), 
+	info(info)
 {
 	setActive(info.isGameOn());
 	setBorderColorUnActive(ci::Color::hex(0x191425));
@@ -12,14 +14,14 @@ GameChecker::GameChecker(const Rectf& rect, const GamesInfo& info, const Color& 
 	event = GameCheckerEventRef(new GameCheckerEvent(isActive, info.getGameId()));
 }
 
-void GameChecker::mouseUp(ci::app::MouseEvent &_event)
+void GameChecker::mouseUp(ci::app::MouseEvent &evt)
 {
-	if (inButtonField(_event.getPos()))
+	if (inButtonField(evt.getPos()))
 	{
 		swapActive();
-		GameCheckerEventRef eventref = static_pointer_cast<GameCheckerEvent>(event);
+		auto eventref = std::static_pointer_cast<GameCheckerEvent>(event);
 		eventref->setActive(isActive);
 		event = eventref;
-		Sprite::mouseUp(_event);
+		Sprite::mouseUp(evt);
 	}
 }

@@ -47,7 +47,7 @@ namespace kubik
 			IResourceDictionary getActiveGameResources();
 			IResourceDictionary getGameTexturesById(const GameId& id);
 			IResourceDictionary getGameSettingsTexturesById(const GameId& id);	
-			vector<IResourceBaseRef> getGameSettingsTextures();
+			std::vector<IResourceBaseRef> getGameSettingsTextures();
 			IResourceDictionary getActiveGameTextures();			
 
 			bool settingsChanged();

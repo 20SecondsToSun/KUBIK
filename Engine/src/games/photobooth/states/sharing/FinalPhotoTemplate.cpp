@@ -1,5 +1,7 @@
 #include "FinalPhotoTemplate.h"
+
 using namespace kubik::games::photobooth;
+using namespace ci;
 
 FinalPhotoTemplate::FinalPhotoTemplate()
 	:templateWidth(424.0f),
@@ -60,6 +62,11 @@ void FinalPhotoTemplate::setTemplate(const ci::gl::Texture& texture)
 	photoTemplateScale = templateWidth / photoTemplate.getWidth();	
 }
 
+void FinalPhotoTemplate::setSticker(const ci::gl::Texture& texture)
+{
+	photoSticker = texture;
+}
+
 void FinalPhotoTemplate::draw()
 {
 	gl::pushMatrices();
@@ -72,7 +79,12 @@ void FinalPhotoTemplate::draw()
 	gl::draw(photo);
 	gl::popMatrices();
 
-	if (getElapsedFrames() % 30 == 0 && animate)
+	gl::pushMatrices();
+	gl::scale(photoTemplateScale, photoTemplateScale);
+	gl::draw(photoSticker);
+	gl::popMatrices();
+
+	if (ci::app::getElapsedFrames() % 30 == 0 && animate)
 	{
 		changePhoto();
 	}		

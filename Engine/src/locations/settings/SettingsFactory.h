@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ConfigSettings.h"
 #include "LoadButton.h"
 #include "ImageQuadroButton.h"
@@ -9,8 +10,6 @@
 #include "PreloaderSettings.h"
 #include "ScreenSaverSettings.h"
 
-using namespace ci;
-
 namespace kubik
 {
 	namespace config
@@ -18,23 +17,23 @@ namespace kubik
 		class SettingsFactory
 		{
 		public:
-
-			static SettingsFactory& getInstance() { 
+			static SettingsFactory& getInstance()
+			{ 
 				static SettingsFactory tt; 
 				return tt; 
-			};
+			}
 
 			LoadButtonRef createLoadButton(const std::string &path, const ci::Vec2f& pos)
 			{
 				return LoadButtonRef(
-					new LoadButton(path, ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),
+					new LoadButton(path, ci::Rectf(pos, pos + ci::Vec2f(200.0f, 70.0f)),
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon")));
 			}
 
 			LoadButtonRef createDecorLoadButton(const std::string &path, const ci::Vec2f& pos, const ci::gl::Texture& over)
 			{
-				return DecorLoadButtonRef(new DecorLoadButton(path,	ci::Rectf(pos, pos + Vec2f(200.0f, 70.0f)),					
+				return DecorLoadButtonRef(new DecorLoadButton(path,	ci::Rectf(pos, pos + ci::Vec2f(200.0f, 70.0f)),					
 					settings->getTextItem(ConfigTextID::LOAD),					
 					settings->getTexture("loadIcon"), over));
 			}
@@ -42,7 +41,7 @@ namespace kubik
 			ScreenSaverCheckerRef createScreenSaverChecker(const ci::Vec2f& pos)
 			{
 				IconPair icons(settings->getTexture("ssCheckerOn"), settings->getTexture("ssCheckerOff"));
-				ScreenSaverCheckerRef ch = ScreenSaverCheckerRef(new ScreenSaverChecker(Rectf(pos, pos + Vec2f(135.0f, 83.0f)), icons));
+				ScreenSaverCheckerRef ch = ScreenSaverCheckerRef(new ScreenSaverChecker(ci::Rectf(pos, pos + ci::Vec2f(135.0f, 83.0f)), icons));
 				ch->setActive(true);
 				return ch;
 			}

@@ -35,7 +35,7 @@ changeSetting::id KeyboardSettings::getChangeID() const
 	return changeSetting::id::KEYBOARD;
 }
 
-std::string KeyboardSettings::getKeyboardPath(const string& value)
+std::string KeyboardSettings::getKeyboardPath(const std::string& value)
 {
 	ci::fs::path path = getBasePath() / Paths::getKeyboardPath();
 	return path.string() + value;

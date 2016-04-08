@@ -18,11 +18,9 @@ namespace instagram
 			return code == 200;
 		}
 
-		int getCode()
+		int getCode() const
 		{
 			return code;
 		}
-
-
 	};
 }

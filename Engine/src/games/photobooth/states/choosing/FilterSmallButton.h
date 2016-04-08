@@ -19,8 +19,8 @@ namespace kubik
 				std::string text;
 				ci::Font fontC, fontO;
 
-				gl::Texture titleSmall, titleBig, photo, background;
-				Vec2f titleSmallPos, titleBigPos;
+				ci::gl::Texture titleSmall, titleBig, photo, background;
+				ci::Vec2f titleSmallPos, titleBigPos;
 
 				shaders::imagefilters::BaseShaderRef shader;
 

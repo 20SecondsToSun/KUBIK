@@ -27,8 +27,8 @@ namespace kubik
 			virtual void eventListener(EventGUIRef event);
 
 			void openButtonHandler(EventGUIRef& event);
-			void openControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f);
-			void closeControls(ci::EaseFn eFunc = EaseOutCubic(), float time = 0.9f);
+			void openControls(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.9f);
+			void closeControls(ci::EaseFn eFunc = ci::EaseOutCubic(), float time = 0.9f);
 			void posAnimationUpdate();
 			void hideControlsAnimationFinish();
 			void openControlsAnimationFinish();	

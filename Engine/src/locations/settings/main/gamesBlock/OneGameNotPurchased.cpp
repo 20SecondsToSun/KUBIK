@@ -1,5 +1,6 @@
 #include "main/gamesBlock/OneGameNotPurchased.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 

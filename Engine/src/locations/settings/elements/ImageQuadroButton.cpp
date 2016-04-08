@@ -1,10 +1,13 @@
 #include "ImageQuadroButton.h"
 
+using namespace ci;
 using namespace kubik;
 using namespace kubik::config;
 
-ImageQuadroButton::ImageQuadroButton(const SixButtonOneData& data) :SimpleSpriteButton(data.getDesignItem().getIcon().getSize(), data.getPosition()),
-item(data.getDesignItem()), selection(false), overtex(data.getOverTexture()), backgroundTextColor(data.getBgTextColor())
+ImageQuadroButton::ImageQuadroButton(const SixButtonOneData& data) 
+	:SimpleSpriteButton(data.getDesignItem().getIcon().getSize(), data.getPosition()),
+	item(data.getDesignItem()),
+	selection(false), overtex(data.getOverTexture()), backgroundTextColor(data.getBgTextColor())
 {
 	textPosition = Vec2f(0, item.getIcon().getHeight() + 10.0f);
 	textBoxSize = Vec2i(item.getIcon().getWidth(), 50.0f);
@@ -23,7 +26,9 @@ void ImageQuadroButton::drawLayout()
 		textTools().drawTextBox(item.getTextItem(), backgroundTextColor, Color::hex(0xffff00), textPosition, textBoxSize);
 	}
 	else
+	{
 		textTools().drawTextBox(item.getTextItem(), backgroundTextColor, textPosition, textBoxSize);
+	}
 }
 
 void ImageQuadroButton::setAlpha(float alpha)

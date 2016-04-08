@@ -2,42 +2,42 @@
 
 class KubikException : public cinder::Exception
 {
-public:
-	const char* what() const throw();
+	public:
+		const char* what() const throw();
 
-protected:
-	char							mMessage[2048];
-	bool							isCritical;				
+	protected:
+		char							mMessage[2048];
+		bool							isCritical;				
 };
 
 class ExcBigFileSizeOfScreenSaver : public KubikException 
 {
-public:
-	ExcBigFileSizeOfScreenSaver() throw();
+	public:
+		ExcBigFileSizeOfScreenSaver() throw();
 };
 
 class ExcConfigFileParsing : public KubikException 
 {
-public:
-	ExcConfigFileParsing() throw();
+	public:
+		ExcConfigFileParsing() throw();
 };
 
 class ExcFileDoesNotExist : public KubikException 
 {
-public:
-	ExcFileDoesNotExist() throw();
+	public:
+		ExcFileDoesNotExist() throw();
 };
 
 class ExcGameDoesNotExist : public KubikException 
 {
-public:
-	ExcGameDoesNotExist() throw();
+	public:
+		ExcGameDoesNotExist() throw();
 };
 
 class StickerDoesNotExist : public KubikException 
 {
-public:
-	StickerDoesNotExist() throw();
+	public:
+		StickerDoesNotExist() throw();
 };
 
 

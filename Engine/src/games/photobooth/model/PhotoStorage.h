@@ -61,34 +61,34 @@ namespace kubik
 				PhotoTemplates photoTemplates;
 				std::vector<PhotoTemplates> photoTemplatesVec;
 				int selectedFilterID;
-				gl::Texture getScaledTex(int width, int height, float scale, const gl::Texture& tex);
+				ci::gl::Texture getScaledTex(int width, int height, float scale, const ci::gl::Texture& tex);
 
-				gl::Texture lastScreenshot;
+				ci::gl::Texture lastScreenshot;
 
 			public:
 				PhotoStorage();
 				~PhotoStorage();
 				void clear();
-				bool empty();
+				bool empty() const;
 				void createChoosingPreview();
 				std::vector<ci::gl::Texture> getChoosingPreview();
 				void setNextPhoto(const ci::gl::Texture& tex);
 
-				ci::gl::Texture loadDownloadedPhoto(const string& path);
+				ci::gl::Texture loadDownloadedPhoto(const std::string& path);
 
 				void createPhotoTemplates();
-				ci::gl::Texture createFormat2Template(const gl::Texture& tex);
+				ci::gl::Texture createFormat2Template(const ci::gl::Texture& tex);
 
-				vector<PhotoTemplates> getPhotoTemplates();
+				std::vector<PhotoTemplates> getPhotoTemplates();
 
 				void setSelectedID(int i);
 				ci::gl::Texture createFormatTemplate(const Format& format, const PhotoItem& tex);
 
 				void setSelectedFilter(int id);
-				int getSelectedFilter();
+				int getSelectedFilter() const;
 
-				void setLastScreenShot(const gl::Texture& tex);
-				gl::Texture getLastScreenShot();
+				void setLastScreenShot(const ci::gl::Texture& tex);
+				ci::gl::Texture getLastScreenShot() const;
 			};
 
 			typedef std::shared_ptr<PhotoStorage> PhotoStorageRef;

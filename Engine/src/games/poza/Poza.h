@@ -15,7 +15,7 @@ namespace kubik
 			class Poza :public IGame
 			{
 			public:
-				Poza(ISettingsRef setRef);
+				Poza(config::ISettingsRef setRef);
 				~Poza();
 
 				void start();
@@ -24,13 +24,13 @@ namespace kubik
 
 				virtual void stop() override;
 				virtual void reset() override;
-				virtual void init(ISettingsRef config) override;
+				virtual void init(config::ISettingsRef config) override;
 				virtual void showAnimationComplete() override;
 
 			private:
 				ci::gl::Texture closeImg;
-				connection mouseUpListener, closeBtnListener;
-				PozaSettingsRef settings;
+				ci::signals::connection mouseUpListener, closeBtnListener;
+				config::PozaSettingsRef settings;
 
 				void closeMouseUpHandler(IButton& button);
 			};

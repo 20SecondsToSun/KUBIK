@@ -17,7 +17,7 @@ namespace kubik
 		Preloader();
 
 		void draw() override;
-		void init(ISettingsRef config) override;
+		void init(kubik::config::ISettingsRef config) override;
 		void create(const ci::Vec2f& position);		
 		void reset() override;
 		void set(IMovieRef value);

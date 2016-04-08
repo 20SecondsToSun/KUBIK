@@ -15,13 +15,7 @@ PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef pho
 void PhotoTemplate::start()
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoTemplate.Start ~~~");
-
-	titleAlpha = 0.0f;
-	for (auto &templ : templatebtns)
-	{
-		templ->setAlpha(0.0f);
-	}		
-
+		
 	using namespace shaders::imagefilters;
 	auto filterID = photoStorage->getSelectedFilter();
 	auto shader = shadertool().get((ShaderTool::FilterType)filterID);
@@ -33,16 +27,23 @@ void PhotoTemplate::start()
 		templ->init();
 	}
 
-	state = TEMPLATE_CHOOSE;
+	state = INIT;
 	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);	
+	 
+	titleAlpha = 0.0f;
+	for (auto &templ : templatebtns)
+	{
+		templ->setAlpha(0.0f);
+	}
 
-	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.2f);
-
-	//tempImage = loadImage(getAppPath() / "07.jpg");
+	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.4f);
+	//delaycall(bind(&PhotoTemplate::showAnimationComplete, this), 0.2f);
 }
 
 void PhotoTemplate::initShowAnim()
 {
+	state = TEMPLATE_CHOOSE;
+
 	timeline().apply(&titleAlpha, 0.0f, 1.0f, animShowTitleTime + 0.2f);
 	timeline().apply(&titleAnimPosition, titlePos, animShowTitleTime, EaseOutExpo());
 

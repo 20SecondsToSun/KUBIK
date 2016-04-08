@@ -17,7 +17,7 @@ namespace kubik
 				float animTime;
 				int index;
 
-				ci::gl::Texture photoTemplate, photo;
+				ci::gl::Texture photoTemplate, photo, photoSticker;
 				ci::Anim<float> _time;				
 				shaders::imagefilters::BaseShaderRef shader;
 				std::vector<PhotoTemplates> templates;
@@ -32,6 +32,7 @@ namespace kubik
 				void startAnimate();
 				void stopAnimate();
 				void setTemplate(const ci::gl::Texture& texture);
+				void setSticker(const ci::gl::Texture& texture);
 				void draw();
 			};
 		}

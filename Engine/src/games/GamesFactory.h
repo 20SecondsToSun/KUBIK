@@ -12,7 +12,7 @@ namespace kubik
 		typedef std::shared_ptr<base> base_ptr;
 
 		template <class derived>
-		void reg(game::id const& name, std::shared_ptr<ISettings> setting)
+		void reg(game::id const& name, std::shared_ptr<kubik::config::ISettings> setting)
 		{
 			logger().log("reg game id :::::::::  " + name);
 			games[name] = base_type_ptr(new derived_type<derived>);
@@ -30,7 +30,7 @@ namespace kubik
 		{
 		public:
 			virtual ~base_type() {}
-			virtual base_ptr create(std::shared_ptr<ISettings> set) = 0;
+			virtual base_ptr create(std::shared_ptr<kubik::config::ISettings> set) = 0;
 		};
 
 		typedef std::shared_ptr<base_type> base_type_ptr;
@@ -39,14 +39,14 @@ namespace kubik
 		class derived_type : public base_type
 		{
 		public:
-			virtual base_ptr create(std::shared_ptr<ISettings> set)
+			virtual base_ptr create(std::shared_ptr<kubik::config::ISettings> set)
 			{
 				return base_ptr(new T(set));
 			}
 		};
 
 		typedef std::map<game::id, base_type_ptr> games_container;
-		typedef std::map<game::id, std::shared_ptr<ISettings>> settings_container;
+		typedef std::map<game::id, std::shared_ptr<kubik::config::ISettings>> settings_container;
 
 		games_container		games;
 		settings_container  settings;

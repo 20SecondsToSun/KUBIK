@@ -3,6 +3,8 @@
 using namespace kubik::config;
 using namespace kubik;
 using namespace std;
+using namespace ci;
+using namespace ci::gl;
 
 ISettings::ISettings(ApplicationModelRef model) : model(model)
 {

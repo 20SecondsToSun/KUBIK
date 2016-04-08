@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ApplicationModel.h"
 #include "IScreen.h"
 #include "ConfigSettings.h"
@@ -36,7 +37,7 @@ namespace kubik
 			void savePhtbtn();
 
 			SignalVoid closeSettingsSignal;
-			signal<void(std::vector<Changes>, bool)> appSettingsChangedSignal;
+			ci::signals::signal<void(std::vector<Changes>, bool)> appSettingsChangedSignal;
 		
 			void setScreenSaverSettings(ScreenSaverSettingsRef screenSaverSettings);
 			void setMenuSettings(MenuSettingsRef menuSettings);

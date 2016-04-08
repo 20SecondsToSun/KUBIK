@@ -6,7 +6,11 @@ using namespace ci;
 using namespace ci::app;
 
 ToolRoundBtn::ToolRoundBtn(const ci::Rectf& rect, const std::string& text, ci::Font font, ci::Color color)
-	:SimpleSpriteButton(rect), text(text), font(font), color(color), bckColor(Color::white())
+	:SimpleSpriteButton(rect),
+	text(text), 
+	font(font), 
+	color(color),
+	bckColor(Color::white())
 {
 	tex = textTools().getTextField(text, &font, color);
 }

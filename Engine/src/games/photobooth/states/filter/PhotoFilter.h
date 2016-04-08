@@ -14,7 +14,7 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef shared_ptr<class PhotoFilter> PhotoFilterRef;
+			typedef std::shared_ptr<class PhotoFilter> PhotoFilterRef;
 
 			class PhotoFilter : public IPhotoboothLocation
 			{

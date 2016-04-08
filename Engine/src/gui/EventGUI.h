@@ -1,10 +1,5 @@
 #pragma once
 
-using namespace ci::signals;
-using namespace ci::app;
-using namespace std;
-using namespace ci;
-
 namespace kubik
 {
 	enum KubikEvent 
@@ -39,5 +34,5 @@ namespace kubik
 		KubikEvent type;
 	};
 
-	typedef shared_ptr<EventGUI> EventGUIRef;	
+	typedef std::shared_ptr<EventGUI> EventGUIRef;	
 }

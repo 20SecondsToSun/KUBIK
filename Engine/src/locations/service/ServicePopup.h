@@ -10,7 +10,7 @@ namespace kubik
 	public:	
 		ServicePopup();
 		void draw();
-		void init(ISettingsRef config) override;
+		void init(kubik::config::ISettingsRef config) override;
 		void reset() override;
 		void setMessage(const char* msg);
 

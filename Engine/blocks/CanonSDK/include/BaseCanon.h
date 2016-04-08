@@ -1,10 +1,5 @@
 #pragma once
 
-//#include "cinder/app/AppBasic.h"
-//#include "cinder/ImageIo.h"
-//#include "cinder/Filesystem.h"
-//#include <boost/thread.hpp>
-
 #include "EDSDK.h"
 #include "EDSDKErrors.h"
 #include "EDSDKTypes.h"
@@ -12,11 +7,6 @@
 #include "CanonException.h"
 #include "CameraEventListener.h"
 #include "CameraController.h"
-
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-using namespace ci::signals;
 
 namespace canon
 {
@@ -39,7 +29,7 @@ namespace canon
 		void endLiveView();			
 		void downloadData();
 
-		Surface8u getLiveSurface() const;
+		ci::Surface8u getLiveSurface() const;
 		bool isCameraConnected()  const;	
 		void setConnection(bool value);
 		bool isLiveViewing() const;
@@ -54,8 +44,7 @@ namespace canon
 		int getNumConnectedCameras() const;		
 
 	protected:	
-		void takePicture();
-		Surface8u mLivePixels;
+		void takePicture();		
 		bool _isCameraConnected, _isLiveView, _isBusy, _isFrameNew, _isRunning;
 		void init(CameraController* controller);
 	
@@ -66,7 +55,9 @@ namespace canon
 		EdsCameraRef	 camera;
 		EdsCameraListRef cameraList;
 
+		ci::Surface8u mLivePixels;
+
 	private:
-		connection shutCon;
+		ci::signals::connection shutCon;
 	};
 }

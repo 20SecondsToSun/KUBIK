@@ -9,12 +9,12 @@ namespace canon
 	{
 	public:
 		const char* what() const throw();
+
 	protected:
 		char			mMessage[2048];
 		friend class	CinderCanon;
 	};
 
-	//! Exception representing failure to initialize device.
 	class ExcInitializeSDK : public CanonException 
 	{
 	public:

@@ -20,7 +20,7 @@ namespace kubik
 			void animateToMaxState(const ci::EaseFn& eFunc, float time);
 
 			private:
-				Texture iconClose, iconBack;
+				ci::gl::Texture iconClose, iconBack;
 				EventGUIRef closeEvent, backEvent;
 		};	
 	}

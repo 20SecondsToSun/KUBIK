@@ -14,13 +14,13 @@ namespace kubik
 		class StatToolButton : public ToolRoundBtn
 		{
 		public:
-			StatToolButton(const Rectf& rect, const GameId& gameId, const TextItem& text);
+			StatToolButton(const ci::Rectf& rect, const GameId& gameId, const TextItem& text);
 		};
 
 		class ConfToolButton : public ToolRoundBtn
 		{
 		public:
-			ConfToolButton(const Rectf& rect, const GameId& gameId, const TextItem& text);
+			ConfToolButton(const ci::Rectf& rect, const GameId& gameId, const TextItem& text);
 		};		
 	}
 }

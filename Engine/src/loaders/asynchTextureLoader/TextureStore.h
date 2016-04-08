@@ -35,7 +35,8 @@
 #include <boost/thread.hpp>
 #include <boost/functional/hash.hpp>
 
-namespace ph {
+namespace ph 
+{
 	typedef std::vector< boost::shared_ptr<boost::thread> > TextureStoreThreadPool;
 
 	// add a getUseCount() function to the gl::Texture class by extending it

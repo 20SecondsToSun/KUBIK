@@ -8,7 +8,7 @@ using namespace shaders::imagefilters;
 
 BaseShaderRef TemplateButton::shader;
 
-TemplateButton::TemplateButton(const Rectf& rect, templateID id, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton::TemplateButton(const Rectf& rect, templateID id, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:SimpleSpriteButton(rect, PhotoTemplateChooseEventRef(new PhotoTemplateChooseEvent(id))),
 	templates(templates),
 	stickers(stickers),
@@ -18,7 +18,7 @@ TemplateButton::TemplateButton(const Rectf& rect, templateID id, const vector<Te
 
 }
 
-void TemplateButton::setPhotoTemplates(const vector<map<FormatID, Texture>>& photoTemplates, BaseShaderRef shader)
+void TemplateButton::setPhotoTemplates(const vector<map<FormatID, gl::Texture>>& photoTemplates, BaseShaderRef shader)
 {
 	this->photoTemplates = photoTemplates;
 	this->shader = shader;
@@ -45,7 +45,7 @@ void TemplateButton::drawLayout()
 	drawTemplateBg();
 	//gl::color(ColorA(1.0f, 1.0f, 1.0f, 1));
 	drawPhotos();
-	//drawStickers();
+	drawStickers();
 
 	if (isSelected)
 	{
@@ -56,7 +56,7 @@ void TemplateButton::drawLayout()
 	}
 }
 
-void TemplateButton::setSelectDesign(const Texture& btn)
+void TemplateButton::setSelectDesign(const gl::Texture& btn)
 {
 	btnOver = btn;
 }
@@ -67,7 +67,7 @@ void TemplateButton::setSelectDesign(const Texture& btn)
 //
 ////////////////////////////////////////////////////////////////////////////
 
-TemplateButton1::TemplateButton1(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton1::TemplateButton1(const Rectf& rect, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:TemplateButton(rect, FIRST, templates, stickers)
 {
 	_scale  = 218.0f / templates[0].getWidth();
@@ -130,7 +130,7 @@ ci::gl::Texture TemplateButton1::getPrintTemplate()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-TemplateButton2::TemplateButton2(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton2::TemplateButton2(const Rectf& rect, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:TemplateButton(rect, SECOND, templates, stickers)
 {
 	_scale = 303.0f / templates[1].getWidth();
@@ -157,7 +157,7 @@ void TemplateButton2::init()
 
 	for (unsigned int i = 0; i < subBtns.size(); i++)
 	{
-	//	subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);// DEBUG ASSERT TODO
+		subBtns[i]->setPhoto(photoTemplates[i][FormatID::FORMAT2_SMALL], shader);// DEBUG ASSERT TODO
 	}		
 }
 
@@ -252,7 +252,7 @@ void TemplateButton2::drawStickers()
 	gl::draw(lineTexture, Vec2f(246.0f, getHeight() + 14.0f));
 }
 
-void TemplateButton2::setSelectRamkaTexture(const Texture& texture)
+void TemplateButton2::setSelectRamkaTexture(const gl::Texture& texture)
 {
 	for (size_t i = 0; i < subBtns.size(); i++)
 	{
@@ -260,7 +260,7 @@ void TemplateButton2::setSelectRamkaTexture(const Texture& texture)
 	}		
 }
 
-void TemplateButton2::setLineTexture(const Texture& texture)
+void TemplateButton2::setLineTexture(const gl::Texture& texture)
 {
 	lineTexture = texture;
 }
@@ -285,7 +285,7 @@ ci::gl::Texture TemplateButton2::getPrintTemplate()
 ////
 //////////////////////////////////////////////////////////////////////////////
 
-TemplateButton3::TemplateButton3(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton3::TemplateButton3(const Rectf& rect, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:TemplateButton(rect, THIRD, templates, stickers)
 {
 	_scale = 303.0f / templates[3].getWidth();
@@ -352,7 +352,7 @@ ci::gl::Texture TemplateButton3::getPrintTemplate()
 ////
 //////////////////////////////////////////////////////////////////////////////
 
-TemplateButton4::TemplateButton4(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton4::TemplateButton4(const Rectf& rect, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:TemplateButton(rect, FOURTH, templates, stickers)
 {
 	_scale = 202.0f / templates[2].getWidth();
@@ -416,7 +416,7 @@ ci::gl::Texture TemplateButton4::getPrintTemplate()
 ////
 //////////////////////////////////////////////////////////////////////////////
 
-TemplateButton5::TemplateButton5(const Rectf& rect, const vector<Texture>& templates, const vector<Texture>& stickers)
+TemplateButton5::TemplateButton5(const Rectf& rect, const vector<gl::Texture>& templates, const vector<gl::Texture>& stickers)
 	:TemplateButton(rect, FIFTH, templates, stickers)
 {
 	_scale = 303.0f / templates[4].getWidth();
@@ -515,7 +515,7 @@ void SubButton::drawLayout()
 	}		
 }
 
-void SubButton::setSelectRamkaTexture(const Texture& texture)
+void SubButton::setSelectRamkaTexture(const gl::Texture& texture)
 {
 	ramka = texture;
 }
@@ -525,7 +525,7 @@ void SubButton::setSelected(bool value)
 	selected = value;
 }
 
-void SubButton::setPhoto(const Texture& tex, BaseShaderRef shader)
+void SubButton::setPhoto(const gl::Texture& tex, BaseShaderRef shader)
 {
 	gl::Fbo fbo = gl::Fbo(tex.getWidth(), tex.getHeight());
 

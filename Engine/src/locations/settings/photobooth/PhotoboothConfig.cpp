@@ -3,6 +3,8 @@
 using namespace kubik;
 using namespace kubik::config;
 using namespace ci;
+using namespace ci::app;
+using namespace std;
 
 PhotoboothConfig::PhotoboothConfig(PhotoboothSettingsRef phbSettings)
 	:GameSettingsSprite(), 
@@ -88,9 +90,13 @@ void PhotoboothConfig::setOpenItem(int index)
 		IPhotoboothItemRef ref = static_pointer_cast<IPhotoboothItem>(layout);
 
 		if (index == ref->getIndex())
-			ref->activateListeners();	
+		{
+			ref->activateListeners();
+		}
 		else
+		{
 			ref->unActivateListeners();
+		}
 
 		ref->setOpenLayoutIndex(index);	
 	}				

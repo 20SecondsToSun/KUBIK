@@ -57,7 +57,7 @@ namespace kubik
 				void callLiveViewPrepareTimer();
 
 				void photoTakenHandler();
-				void photoDownloadHandler(const string& path);
+				void photoDownloadHandler(const std::string& path);
 				void photoErrorHandler();
 
 				void delayshoot();

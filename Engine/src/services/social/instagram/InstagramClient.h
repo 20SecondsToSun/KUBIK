@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Curl.h"
 #include "instagram/api/ImagesList.h"
 #include "instagram/api/Pagination.h"
@@ -68,7 +69,7 @@ namespace instagram
 
 		void loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
 		void _loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
-		void loadUserPhotos(const string& userID, int count = LOAD_COUNT);
+		void loadUserPhotos(const std::string& userID, int count = LOAD_COUNT);
 		void loadUsersRequest(const std::string& request);		
 	
 		////////////////////////////////////////////////////////////////////////////

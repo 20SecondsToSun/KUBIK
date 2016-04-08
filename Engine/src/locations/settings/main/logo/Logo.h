@@ -14,14 +14,14 @@ namespace kubik
 			Logo(ConfigSettingsRef configSettings, const ci::Vec2i& position);
 
 			virtual void drawLayout();
-			void setIcon(const ci::gl::Texture& tex);
 
+			void setIcon(const ci::gl::Texture& tex);
 			float getWidth() const;
 
 			void animateToMiniState(const ci::gl::Texture& icon, const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.9f);
 			void animateToMaxState(const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.9f);
 			void animateToUpState(const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.9f);
-			void animateToDownState(const ci::EaseFn& eFunc = EaseOutCubic(), float time = 0.9f);
+			void animateToDownState(const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.9f);
 			void posAnimationUpdate();
 
 		private:

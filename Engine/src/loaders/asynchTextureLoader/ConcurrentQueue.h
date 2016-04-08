@@ -33,7 +33,8 @@
 
 #include <queue>
 
-namespace ph {
+namespace ph
+{
 	template<typename Data>
 	class ConcurrentQueue
 	{

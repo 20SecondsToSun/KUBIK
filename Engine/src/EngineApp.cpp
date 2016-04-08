@@ -7,6 +7,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace kubik;
+using namespace kubik::config;
 
 class EngineApp : public AppNative 
 {

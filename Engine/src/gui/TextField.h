@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EventGUI.h"
 #include "gui/SimpleSpriteButton.h"
 #include "TextTools.h"
@@ -7,19 +8,19 @@ namespace kubik
 {
 	namespace gui
 	{
-		typedef shared_ptr<class TextField> TextFieldRef;
+		typedef std::shared_ptr<class TextField> TextFieldRef;
 
 		class TextField : public kubik::SimpleSpriteButton
 		{
-			ci::Rectf field;
 			std::string text;
+			ci::Rectf field;			
 			ci::Color color;
 			ci::Font font;
 			bool touched;
 
-			gl::Texture inputFieldTexture;
+			ci::gl::Texture inputFieldTexture;
 
-			ci::Anim < ci::Color > borderColor;
+			ci::Anim<ci::Color> borderColor;
 
 			void drawCarriage();
 			bool carridgePhase;

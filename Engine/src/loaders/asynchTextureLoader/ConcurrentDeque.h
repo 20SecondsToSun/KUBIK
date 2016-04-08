@@ -33,7 +33,8 @@
 
 #include <deque>
 
-namespace ph {
+namespace ph 
+{
 	template<typename Data>
 	class ConcurrentDeque
 	{

@@ -1,16 +1,16 @@
 #pragma once
+
 #include "cinder/app/AppNative.h"
-using namespace std;
 
 namespace instagram
 {   
     class User
     {
 	private:
-		string id;
-		string full_name;
-		string profile_picture;
-		string username;
+		std::string id;
+		std::string full_name;
+		std::string profile_picture;
+		std::string username;
 	public:
 		User()
 		{
@@ -25,10 +25,9 @@ namespace instagram
 			username		= tree.getChild("username").getValue<std::string>();
 		}
 
-		string getID() const
+		std::string getID() const
 		{
 			return id;
 		}
-
 	};
 }

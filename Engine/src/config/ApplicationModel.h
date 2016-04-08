@@ -125,8 +125,8 @@ namespace kubik
 			ConfigObject pozaConfigObject;
 			ConfigObject funcesConfigObject;
 			
-			fs::path getConfigPath();
-			void parseConfigPaths(ConfigObject& configObject, const JsonTree& json);
+			ci::fs::path getConfigPath();
+			void parseConfigPaths(ConfigObject& configObject, const ci::JsonTree& json);
 		};
 
 		typedef std::shared_ptr<ApplicationModel> ApplicationModelRef;

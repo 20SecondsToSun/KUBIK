@@ -1,5 +1,7 @@
 #include "InstaErrorPopup.h"
 
+using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 

@@ -33,7 +33,8 @@
 
 #include <map>
 
-namespace ph {
+namespace ph 
+{
 	template<typename Key, typename Data>
 	class ConcurrentMap
 	{

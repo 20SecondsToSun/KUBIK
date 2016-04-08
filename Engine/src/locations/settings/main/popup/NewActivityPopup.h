@@ -23,14 +23,15 @@ namespace kubik
 
 			NewActivityPopup(ConfigSettingsRef configSett);
 			virtual void draw() override;
+			virtual void setAlpha(float alpha) override;
+
 			void drawBackgrounds();
 			void drawTitles();
 			void drawInputFieldBackground();
-			void drawCloseBlock();
-			virtual void setAlpha(float alpha) override;
+			void drawCloseBlock();		
 
-			void show(const ci::EaseFn& eFunc = EaseOutCubic(), float time = 0.4f);
-			void hide(const ci::EaseFn& eFunc = EaseOutCubic(), float time = 0.3f);
+			void show(const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.4f);
+			void hide(const ci::EaseFn& eFunc = ci::EaseOutCubic(), float time = 0.3f);
 
 			std::string getCompainName();
 

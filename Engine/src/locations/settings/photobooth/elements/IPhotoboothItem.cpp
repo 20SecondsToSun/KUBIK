@@ -1,6 +1,8 @@
 #include "IPhotoboothItem.h"
 
+using namespace std;
 using namespace ci;
+using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
@@ -119,10 +121,14 @@ void IPhotoboothItem::setOpenLayoutIndex(int openLayoutIndex)
 	else
 	{
 		closingLayoutMinState(eFunc, time);		
-		if (openLayoutIndex > index)					
-			animateTo = Vec2f(0.0f, index * closeHeightMin);					
+		if (openLayoutIndex > index)
+		{
+			animateTo = Vec2f(0.0f, index * closeHeightMin);
+		}
 		else
-			animateTo = Vec2f(0.0f, (index - 1) * (closeHeightMin) + openHeight);														
+		{
+			animateTo = Vec2f(0.0f, (index - 1) * (closeHeightMin)+openHeight);
+		}
 	}
 
 	timeline().apply( &animatePosition, animateTo, time, eFunc)

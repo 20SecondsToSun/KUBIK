@@ -10,7 +10,7 @@ namespace kubik
 	{
 		namespace photobooth
 		{
-			typedef shared_ptr<class PhotoInstruction> PhotoInstructionRef;
+			typedef std::shared_ptr<class PhotoInstruction> PhotoInstructionRef;
 
 			class PhotoInstruction :public IPhotoboothLocation
 			{
