@@ -8,18 +8,18 @@ namespace kubik
 	class ChangePhotoCardStyleDesignEvent: public EventGUI
 	{			
 	public:
-		ChangePhotoCardStyleDesignEvent(OneDesignItem item):item(item)
+		ChangePhotoCardStyleDesignEvent(config::OneDesignItem item) :item(item)
 		{
 
 		}
 
-		OneDesignItem getItem() const
+		config::OneDesignItem getItem() const
 		{
 			return item;
 		}
 
 	private:
-		OneDesignItem item;
+		config::OneDesignItem item;
 	};
 
 	typedef std::shared_ptr<ChangePhotoCardStyleDesignEvent> ChangePhotoCardStyleDesignEventRef;

@@ -8,18 +8,18 @@ namespace kubik
 	class ChangePhotoFilterPreviewActiveEvent: public EventGUI
 	{			
 	public:
-		ChangePhotoFilterPreviewActiveEvent(OneDesignItem item):item(item)
+		ChangePhotoFilterPreviewActiveEvent(config::OneDesignItem item) :item(item)
 		{
 
 		}
 
-		OneDesignItem getItem() const
+		config::OneDesignItem getItem() const
 		{
 			return item;
 		}
 
 	private:
-		OneDesignItem item;
+		config::OneDesignItem item;
 	};
 
 	typedef std::shared_ptr<ChangePhotoFilterPreviewActiveEvent> ChangePhotoFilterPreviewActiveEventRef;

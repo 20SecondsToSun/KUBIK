@@ -13,18 +13,21 @@ void CameraController::perform(canonEvent evt)
 	{
 	case canon::PHOTO_TAKEN:
 		break;
+
 	case canon::PHOTO_DOWNLOADED:
 		break;
+
 	case canon::READY_LIVE_VIEW:
 		break;
+
 	case canon::CAMERA_SHUTDOWN:
 		cameraShutDownSignal();
 		break;
+
 	case canon::CAMERA_WILL_SOON_SHUTDOWN:
 		break;
-	default:
-		break;
 	}
+
 }
 
 void CameraController::downloadImage(EdsDirectoryItemRef dirItem)
@@ -101,10 +104,12 @@ void CameraController::_downloadImage(EdsDirectoryItemRef dirItem)
 	if(stream != NULL)
 	{
 		err = EdsRelease(stream);
+
 		if (err != EDS_ERR_OK)
 		{
 			throw ExcPhotoDownload(CanonErrorToString(err));
 		}
+
 		stream = NULL;
 	}
 }	

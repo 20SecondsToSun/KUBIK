@@ -25,9 +25,9 @@ namespace kubik
 				void initAnimationcomplete();
 				
 			public:
-				PhotoInstruction(PhotoboothSettingsRef settings);
+				PhotoInstruction(config::PhotoboothSettingsRef settings);
 				~PhotoInstruction();
-				virtual void reset(PhotoboothSettingsRef set) override;
+				virtual void reset(config::PhotoboothSettingsRef set) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

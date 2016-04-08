@@ -1,6 +1,7 @@
 #include "IPhotoboothLocation.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 
 PhotoboothSettingsRef IPhotoboothLocation::settings;

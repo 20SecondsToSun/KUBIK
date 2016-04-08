@@ -389,7 +389,9 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	}
 
 	if (!isShowing)
+	{
 		return;
+	}
 
 	coords = event.getPos() - keyBoardPosition.value() - originPoint;
 
@@ -418,7 +420,9 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 	}
 
 	if (erase->inButtonField(coords))
+	{
 		lastCode = erase->getBtnId();
+	}
 }
 
 void VirtualKeyboard::setLanguage(KEYBOARD_LANG activeLanguage)
@@ -557,6 +561,7 @@ string VirtualKeyboard::getDisplayCode()
 void VirtualKeyboard::changeShiftMode()
 {
 	isShiftDown = !isShiftDown;
+
 	if (isShiftDown)
 	{
 		shift->changeTexture(shiftTex1);
@@ -634,7 +639,11 @@ void VirtualKeyboard::changeLangMode()
 
 	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
 	{
-		if ((*item)->getBtnId().size() != 1) continue;
+		if ((*item)->getBtnId().size() != 1)
+		{
+			continue;
+		}
+
 		char letter = (*item)->getBtnId()[0];
 
 		if (isalpha((unsigned char)letter))
@@ -658,7 +667,9 @@ void VirtualKeyboard::changeLangMode()
 void VirtualKeyboard::activateSearchMode()
 {
 	if (mode == SEARCH_MODE)
+	{
 		return;
+	}
 
 	clearCurrentMode();
 	spaceBtn->changeTexture(smallspaceBtnTex);
@@ -673,7 +684,9 @@ void VirtualKeyboard::activateSearchMode()
 void VirtualKeyboard::activateSendMode()
 {
 	if (mode == SEND_MODE)
+	{
 		return;
+	}
 
 	clearCurrentMode();
 	spaceBtn->changeTexture(smallspaceBtnTex);
@@ -688,7 +701,9 @@ void VirtualKeyboard::activateSendMode()
 void VirtualKeyboard::activateUsualMode()
 {
 	if (mode == USUAL_MODE)
+	{
 		return;
+	}
 
 	clearCurrentMode();
 	spaceBtn->changeTexture(spaceBtnTex);
@@ -703,6 +718,7 @@ void VirtualKeyboard::activateUsualMode()
 void VirtualKeyboard::clearCurrentMode()
 {
 	KeyBoardButtonSpriteRef deleteBtn;
+
 	switch (mode)
 	{
 	case USUAL_MODE:
@@ -758,6 +774,7 @@ MouseEvent VirtualKeyboard::inititateMouseEvent(const ci::Vec2f& vec)
 	unsigned int k = 1;
 	float r = 1.0f;
 	uint32_t t = 1;
+
 	return MouseEvent(getWindow(), 1, vec.x, vec.y, k, r, t);
 }
 

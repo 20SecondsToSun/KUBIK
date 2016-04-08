@@ -63,8 +63,8 @@ namespace kubik
 			public:
 				static const int RESHOT_LOC = 1;
 
-				PhotoChoosing(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
-				virtual void reset(PhotoboothSettingsRef settings) override;
+				PhotoChoosing(config::PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				virtual void reset(config::PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void draw() override;

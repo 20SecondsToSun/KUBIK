@@ -49,9 +49,9 @@ namespace kubik
 				ci::gl::Texture tempImage;
 
 			public:
-				PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				PhotoTemplate(config::PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 
-				virtual void reset(PhotoboothSettingsRef settings) override;
+				virtual void reset(config::PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

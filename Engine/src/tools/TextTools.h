@@ -16,13 +16,16 @@ namespace kubik
 
 		ci::gl::Texture getTextField(const std::string& text, ci::Font* font, const ci::ColorA& color);
 		ci::gl::Texture getTextField(const char* text, ci::Font* font, const ci::ColorA& color);
-		ci::Surface getTextField(const TextItem& item, bool isCentered = false, float offset = 0);
+		ci::Surface getTextField(const config::TextItem& item, bool isCentered = false, float offset = 0);
 
 		void textFieldDraw(const std::string& text, ci::Font *font, const ci::ColorA& color, const ci::Vec2f& coords = ci::Vec2f::zero());
-		void textFieldDraw(const TextItem& item, const ci::Vec2f& coords = ci::Vec2f::zero());
-		void drawTextBox(const TextItem& item, const ci::Color& color, const ci::Vec2f& position, const ci::Vec2f& size);
-		void drawTextBox(const TextItem& item, const ci::Color& color, const ci::Color& textColor, const ci::Vec2f& position, const ci::Vec2f& size);
+		void textFieldDraw(const config::TextItem& item, const ci::Vec2f& coords = ci::Vec2f::zero());
+		void drawTextBox(const config::TextItem& item, const ci::Color& color, const ci::Vec2f& position, const ci::Vec2f& size);
+		void drawTextBox(const config::TextItem& item, const ci::Color& color, const ci::Color& textColor, const ci::Vec2f& position, const ci::Vec2f& size);
 	};
 
-	inline TextTools&	textTools() { return TextTools::getInstance(); };
+	inline TextTools& textTools() 
+	{
+		return TextTools::getInstance(); 
+	};
 }

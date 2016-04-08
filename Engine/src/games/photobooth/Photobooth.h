@@ -25,15 +25,15 @@ namespace kubik
 			class Photobooth :public IGame 
 			{
 			public:				
-				Photobooth(ISettingsRef config);
+				Photobooth(config::ISettingsRef config);
 				~Photobooth();
 
-				void start() override;
-				void stop() override;
-				void update() override;
-				void draw() override;
-				void reset() override;
-				void init(ISettingsRef config) override;
+				void start()	override;
+				void stop()		override;
+				void update()	override;
+				void draw()		override;
+				void reset()	override;
+				void init(config::ISettingsRef config) override;
 				void create();
 
 				ci::signals::connection updateSignal;
@@ -51,7 +51,7 @@ namespace kubik
 				std::vector<IPhotoboothLocationRef>  locations;
 				IPhotoboothLocationRef	currentLocation;
 
-				PhotoboothSettingsRef settings;
+				config::PhotoboothSettingsRef settings;
 				PhotoStorageRef photoStorage;
 
 				virtual void showAnimationComplete() override;

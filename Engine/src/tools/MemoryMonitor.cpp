@@ -21,7 +21,7 @@ void MemoryMonitor::registerLoging()
 
 void MemoryMonitor::log()
 {	
-	auto logPath = Paths::getMemoryLogPath("memory.log").string();
+	auto logPath = config::Paths::getMemoryLogPath("memory.log").string();
 
 	//MEMORYSTATUSEX status;
 	//status.dwLength = sizeof(status);

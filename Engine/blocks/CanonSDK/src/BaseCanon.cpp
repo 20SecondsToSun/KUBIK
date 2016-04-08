@@ -11,7 +11,10 @@ EdsError EDSCALLBACK DownloadImageProgress(EdsUInt32 inPercent, EdsVoid *inConte
 	return EDS_ERR_OK;
 };
 
-BaseCanon::BaseCanon():_isCameraConnected(false), _isLiveView(false), _isFrameNew(false)
+BaseCanon::BaseCanon()
+	:_isCameraConnected(false),
+	_isLiveView(false),
+	_isFrameNew(false)
 {
 	
 }

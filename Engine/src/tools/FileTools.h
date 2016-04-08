@@ -1,6 +1,8 @@
 #pragma once
+
 #include <shellapi.h>
 #include "cinder/Url.h"
+
 #pragma comment(lib, "shell32")
 
 using namespace ci;
@@ -26,5 +28,8 @@ namespace kubik
 			std::string getVideoPath(const std::string& path);
 	};
 
-	inline FileTools& fileTools() {return FileTools::getInstance();};
+	inline FileTools& fileTools()
+	{
+		return FileTools::getInstance();
+	};
 }

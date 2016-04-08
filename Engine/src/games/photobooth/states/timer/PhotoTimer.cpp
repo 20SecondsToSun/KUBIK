@@ -4,6 +4,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 using namespace shaders::imagefilters;
 
@@ -16,8 +17,8 @@ PhotoTimer::PhotoTimer(PhotoboothSettingsRef settings, PhotoStorageRef photoStor
 	:photoStorage(photoStorage),
 	startAngle(90),
 	endAngle(-270),
-	changeAngle(0),
-	RADIUS(600)
+	changeAngle(0.0f),
+	RADIUS(600.0f)
 {
 	reset(settings);
 	maskShader = shadertool().getMaskShader();
@@ -27,7 +28,7 @@ PhotoTimer::~PhotoTimer()
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Destruct ~~~");
 	clear();	
-};
+}
 
 void PhotoTimer::reset(PhotoboothSettingsRef sett)
 {
@@ -44,7 +45,9 @@ void PhotoTimer::reset(PhotoboothSettingsRef sett)
 
 	digits.clear();
 	for (size_t i = DIGIT_COUNT; i > 0; i--)
-		digits.push_back(settings->getTexture("digit" + to_string(i)));	
+	{
+		digits.push_back(settings->getTexture("digit" + to_string(i)));
+	}
 
 	timerTexPos1 = Vec2f(0.5f * (getWindowWidth() - timerTex1.getWidth()), centerY - timerTex1.getHeight() * 0.5f);
 	timerTexPos2 = Vec2f(0.5f * (getWindowWidth() - timerTex2.getWidth()), centerY - timerTex2.getHeight() * 0.5f);
@@ -54,11 +57,12 @@ void PhotoTimer::start()
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Start ~~~");
 
-	seconds = MAX_SEC;
+	seconds		= MAX_SEC;
 	changeAngle = 0;
-	rotor = -(startAngle - endAngle) / MAX_SEC;
+	rotor		= -(startAngle - endAngle) / MAX_SEC;
 	initShowAnimationParams();
-	state = SHOW_ANIM;
+
+	state		= SHOW_ANIM;
 }
 
 void PhotoTimer::initShowAnimationParams()
@@ -69,7 +73,7 @@ void PhotoTimer::initShowAnimationParams()
 
 	timeline().apply(&titleAlpha, 1.0f, animShowTitleTime + 0.2f);	
 	timeline().apply(&circleScale, 0.3f, 1.0f, 0.8f, EaseOutBack(2.40158f));	
-	timeline().apply(&digitScale, 0.2f, 1.0f, 0.8f, EaseOutBack(2.40158f)).delay(0.25f);
+	timeline().apply(&digitScale, 0.2f, 1.0f, 0.8f,  EaseOutBack(2.40158f)).delay(0.25f);
 	timeline().apply(&titleAnimPosition, Vec2f(titlePos.x, titlePositionY), animShowTitleTime, EaseOutExpo())
 		.finishFn(bind(&PhotoTimer::showAnimationComplete, this));
 }
@@ -109,12 +113,15 @@ void PhotoTimer::update()
 void PhotoTimer::calculateDigit()
 {
 	float timersec = cdTimer.getSeconds();
-	seconds = (MAX_SEC - (int)timersec);
-	changeAngle = Utils::clamp(rotor * timersec, 0, -360);	
+	seconds		   = (MAX_SEC - (int)timersec);
+	changeAngle	   = Utils::clamp(rotor * timersec, 0, -360);	
 	
 	int index = MAX_SEC - seconds;
+
 	if (index > DIGIT_COUNT - 1)
+	{
 		index = DIGIT_COUNT - 1;
+	}
 
 	seconds = (MAX_SEC - (int)cdTimer.getSeconds());
 

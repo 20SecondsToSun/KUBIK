@@ -70,9 +70,9 @@ namespace kubik
 				void popupClosed();
 
 			public:
-				PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
+				PhotoSharing(config::PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
 
-				virtual void reset(PhotoboothSettingsRef settings) override;
+				virtual void reset(config::PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

@@ -18,5 +18,8 @@ namespace kubik
 		std::vector<std::string> split(const std::string &s, char delim);
 	};
 
-	inline StringTools&	stringTools() { return StringTools::getInstance(); };
+	inline StringTools&	stringTools() 
+	{
+		return StringTools::getInstance(); 
+	};
 }

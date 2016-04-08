@@ -1,6 +1,7 @@
 #include "PhotoShooting.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 using namespace std;
 using namespace ci::signals;

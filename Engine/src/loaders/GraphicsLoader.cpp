@@ -1,6 +1,7 @@
 #include "GraphicsLoader.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace std;
 using namespace ci;
 using namespace ci::app;

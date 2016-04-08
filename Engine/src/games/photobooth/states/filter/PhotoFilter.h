@@ -74,13 +74,13 @@ namespace kubik
 				void titleAnimComplete();
 
 			public:
-				PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
+				PhotoFilter(config::PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;
 				virtual void draw() override;
-				virtual void reset(PhotoboothSettingsRef set) override;
+				virtual void reset(config::PhotoboothSettingsRef set) override;
 				virtual void stopAllTweens() override;
 
 				void photoFilterSelect(EventGUIRef& event);

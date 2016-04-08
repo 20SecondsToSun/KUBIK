@@ -1,43 +1,49 @@
 #pragma once
 
-class KubikException : public cinder::Exception
+namespace kubik
 {
-	public:
-		const char* what() const throw();
+	namespace config
+	{
+		class KubikException : public cinder::Exception
+		{
+		public:
+			const char* what() const throw();
 
-	protected:
-		char							mMessage[2048];
-		bool							isCritical;				
-};
+		protected:
+			char							mMessage[2048];
+			bool							isCritical;
+		};
 
-class ExcBigFileSizeOfScreenSaver : public KubikException 
-{
-	public:
-		ExcBigFileSizeOfScreenSaver() throw();
-};
+		class ExcBigFileSizeOfScreenSaver : public KubikException
+		{
+		public:
+			ExcBigFileSizeOfScreenSaver() throw();
+		};
 
-class ExcConfigFileParsing : public KubikException 
-{
-	public:
-		ExcConfigFileParsing() throw();
-};
+		class ExcConfigFileParsing : public KubikException
+		{
+		public:
+			ExcConfigFileParsing() throw();
+		};
 
-class ExcFileDoesNotExist : public KubikException 
-{
-	public:
-		ExcFileDoesNotExist() throw();
-};
+		class ExcFileDoesNotExist : public KubikException
+		{
+		public:
+			ExcFileDoesNotExist() throw();
+		};
 
-class ExcGameDoesNotExist : public KubikException 
-{
-	public:
-		ExcGameDoesNotExist() throw();
-};
+		class ExcGameDoesNotExist : public KubikException
+		{
+		public:
+			ExcGameDoesNotExist() throw();
+		};
 
-class StickerDoesNotExist : public KubikException 
-{
-	public:
-		StickerDoesNotExist() throw();
-};
+		class StickerDoesNotExist : public KubikException
+		{
+		public:
+			StickerDoesNotExist() throw();
+		};
+	}
+}
 
 

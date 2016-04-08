@@ -47,7 +47,7 @@ std::string Chromium::convertToString(const Awesomium::WebString& webString)
 	webString.ToUTF8(buffer, size);
 	std::string queryString(buffer);
 
-	return  queryString;
+	return queryString;
 }
 
 void Chromium::callJS(const std::string& funcName)// example : "doResize();"

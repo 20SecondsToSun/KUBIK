@@ -3,6 +3,7 @@
 //#include "Tools/gifMaker/GIF.h"
 
 using namespace kubik::games::photobooth;
+using namespace kubik::config;
 using namespace kubik;
 using namespace std;
 using namespace ci;

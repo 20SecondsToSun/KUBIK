@@ -6,6 +6,7 @@ using namespace ci::app;
 using namespace ci::gl;
 using namespace ci;
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 
 PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)

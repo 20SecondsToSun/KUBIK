@@ -38,7 +38,7 @@ gl::Texture TextTools::getTextField(const char* text, ci::Font* font, const ci::
 	return gl::Texture(simple.render(true, false));
 }
 
-ci::Surface TextTools::getTextField(const TextItem& item, bool isCentered, float offset)
+ci::Surface TextTools::getTextField(const config::TextItem& item, bool isCentered, float offset)
 {
 	ci::TextLayout simple;
 	simple.clear(ColorA(1, 1, 1, 0));
@@ -62,7 +62,7 @@ ci::Surface TextTools::getTextField(const TextItem& item, bool isCentered, float
 	return simple.render(true, false);// gl::Texture();
 }
 
-void TextTools::textFieldDraw(const TextItem& item, const ci::Vec2f& coords)
+void TextTools::textFieldDraw(const config::TextItem& item, const ci::Vec2f& coords)
 {
 	gl::pushMatrices();
 	gl::translate(coords);
@@ -76,7 +76,7 @@ void TextTools::textFieldDraw(const TextItem& item, const ci::Vec2f& coords)
 	gl::color(Color::white());
 }
 
-void TextTools::drawTextBox(const TextItem& item, const Color& color, const Vec2f& position, const Vec2f& size)
+void TextTools::drawTextBox(const config::TextItem& item, const Color& color, const Vec2f& position, const Vec2f& size)
 {
 	TextBox mTextBox;
 	mTextBox.backgroundColor(color);
@@ -93,7 +93,7 @@ void TextTools::drawTextBox(const TextItem& item, const Color& color, const Vec2
 	gl::popMatrices();
 }
 
-void TextTools::drawTextBox(const TextItem& item, const Color& color, const Color& textColor, const Vec2f& position, const Vec2f& size)
+void TextTools::drawTextBox(const config::TextItem& item, const Color& color, const Color& textColor, const Vec2f& position, const Vec2f& size)
 {
 	TextBox mTextBox;
 	mTextBox.backgroundColor(color);

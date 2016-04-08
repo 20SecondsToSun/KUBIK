@@ -1,44 +1,43 @@
 #include "ConfigObject.h"
 
 using namespace kubik::config;
-using namespace std;
 
-void ConfigObject::setPathsConfigPath(const string& path)
+void ConfigObject::setPathsConfigPath(const std::string& path)
 {
 	pathsPath = path;
 }
 
-void ConfigObject::setParamsConfigPath(const string& path)
+void ConfigObject::setParamsConfigPath(const std::string& path)
 {
 	paramsPath = path;
 }
 
-void ConfigObject::setLabelsConfigPath(const string& path)
+void ConfigObject::setLabelsConfigPath(const std::string& path)
 {
 	labelsPath = path;
 }
 
-void ConfigObject::setConstsConfigPath(const string& path)
+void ConfigObject::setConstsConfigPath(const std::string& path)
 {
 	constsPath = path;
 }
 
-const string& ConfigObject::getPathsConfigPath()
+const std::string& ConfigObject::getPathsConfigPath()
 {
 	return pathsPath;
 }
 
-const string& ConfigObject::getParamsConfigPath()
+const std::string& ConfigObject::getParamsConfigPath()
 {
 	return paramsPath;
 }
 
-const string& ConfigObject::getLabelsConfigPath()
+const std::string& ConfigObject::getLabelsConfigPath()
 {
 	return labelsPath;
 }
 
-const string& ConfigObject::getConstsConfigPath()
+const std::string& ConfigObject::getConstsConfigPath()
 {
 	return constsPath;
 }

@@ -34,7 +34,7 @@ namespace kubik
 		//
 		////////////////////////////////////////////////////////////////////////////
 
-		void showServicePopup(KubikException exc);
+		void showServicePopup(config::KubikException exc);
 
 	private:	
 		IScreenRef location;

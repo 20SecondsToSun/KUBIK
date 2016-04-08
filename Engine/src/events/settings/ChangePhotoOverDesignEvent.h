@@ -8,18 +8,18 @@ namespace kubik
 	class ChangePhotoOverDesignEvent: public EventGUI
 	{			
 	public:
-		ChangePhotoOverDesignEvent(OneDesignItem item):item(item)
+		ChangePhotoOverDesignEvent(config::OneDesignItem item) :item(item)
 		{
 
 		}
 
-		OneDesignItem getItem() const
+		config::OneDesignItem getItem() const
 		{
 			return item;
 		}
 
 	private:
-		OneDesignItem item;
+		config::OneDesignItem item;
 	};
 
 	typedef std::shared_ptr<ChangePhotoOverDesignEvent> ChangePhotoOverDesignEventRef;

@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace kubik;
+using namespace kubik::config;
 using namespace ci::signals;
 using namespace ci::app;
 using namespace ci;

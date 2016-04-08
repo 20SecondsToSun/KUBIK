@@ -6,7 +6,9 @@ using namespace ci::gl;
 using namespace ci::app;
 
 KeyBoardButtonSprite::KeyBoardButtonSprite(const ci::gl::Texture& image, ci::Font font, const std::string& label)
-	:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), 
+	:SimpleSpriteButton(image.getWidth(), 
+	image.getHeight(),
+	Vec2f::zero()), 
 	image(image),
 	overColor(Color::white()),
 	code(label),
@@ -18,7 +20,9 @@ KeyBoardButtonSprite::KeyBoardButtonSprite(const ci::gl::Texture& image, ci::Fon
 }
 
 KeyBoardButtonSprite::KeyBoardButtonSprite(ci::gl::Texture image, std::string label)
-	:SimpleSpriteButton(image.getWidth(), image.getHeight(), Vec2f::zero()), 
+	:SimpleSpriteButton(image.getWidth(), 
+	image.getHeight(),
+	Vec2f::zero()), 
 	image(image),
 	overColor(Color::white()),
 	code(label),
@@ -37,8 +41,8 @@ void KeyBoardButtonSprite::drawLayout()
 	if (textTexture)
 	{
 		gl::draw(textTexture,
-			Vec2f(0.5f*(buttonArea.getWidth() - textTexture.getWidth()),
-			0.5f*(buttonArea.getHeight() - textTexture.getHeight())));
+			Vec2f(0.5f * (buttonArea.getWidth() - textTexture.getWidth()),
+			0.5f * (buttonArea.getHeight() - textTexture.getHeight())));
 	}
 	gl::color(Color::white());
 }

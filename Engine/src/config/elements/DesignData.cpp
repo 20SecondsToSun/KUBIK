@@ -1,5 +1,7 @@
 #include "DesignData.h"
+
 using namespace kubik;
+using namespace kubik::config;
 
 void OneDesignItem::setID(int id)
 {

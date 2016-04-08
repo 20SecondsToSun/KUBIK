@@ -10,8 +10,7 @@ namespace kubik
 	class Facebook : public SocShare
 	{
 	public:
-		Facebook();
-	
+		Facebook();	
 		void		logOut() override;
 		void		update() override;	
 		void		signInUpdate();

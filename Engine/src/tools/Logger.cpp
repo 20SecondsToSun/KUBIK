@@ -22,7 +22,7 @@ Logger& Logger::getInstance()
 				+ fix2(to_string(timeStruct.tm_min))		+ "_"
 				+ fix2(to_string(timeStruct.tm_sec))		+ ".log";
 
-		logPath = Paths::getLogPath(logName);
+		logPath = config::Paths::getLogPath(logName);
 
 		std::ofstream logfile;		
 		logfile.open(logPath.c_str());
@@ -44,7 +44,6 @@ void Logger::log(const std::string & message)
 #ifdef CINDER_MSW
 	OutputDebugStringA((message + '\n').c_str());
 #endif
-
 }
 
 void Logger::log(const std::string & message, const std::string& filename)
@@ -57,7 +56,6 @@ void Logger::log(const std::string & message, const std::string& filename)
 #ifdef CINDER_MSW
 	OutputDebugStringA((message + '\n').c_str());
 #endif
-
 }
 
 std::string Logger::fix2(const std::string & strtofix)

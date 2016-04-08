@@ -1,6 +1,7 @@
 #include "TextItem.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace std;
 
 void TextItem::setText(const string& text)

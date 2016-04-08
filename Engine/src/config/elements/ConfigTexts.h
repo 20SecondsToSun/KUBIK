@@ -9,8 +9,8 @@ namespace kubik
 		template <class EnumID>
 		class ConfigTexts
 		{
-		public:
-			
+
+		public:			
 			typedef std::map <std::pair<std::string, EnumID>, TextItem> DicType;
 
 			void insert(const std::string& lang, EnumID id, const TextItem& item)

@@ -13,7 +13,7 @@ namespace kubik
 				return jtools; 
 			};	
 
-			TextItem parseTextItem(ci::JsonTree json);
+			config::TextItem parseTextItem(ci::JsonTree json);
 	};
 
 	inline JsonTools& jtools() 

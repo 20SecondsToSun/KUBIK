@@ -5,7 +5,10 @@ using namespace canon;
 using namespace ci;
 using namespace ci::app;
 
-CameraCanon::CameraCanon() :recordingFPS(12), connectionState(DISCONNECT), liveViewState(UNDEFINED)
+CameraCanon::CameraCanon()
+	:recordingFPS(12),
+	connectionState(DISCONNECT),
+	liveViewState(UNDEFINED)
 {
 	controller = new CameraController();
 	controller->photoDownloadedSignal.connect(std::bind(&CameraCanon::photoDownloadHandler, this, std::placeholders::_1));
@@ -293,7 +296,7 @@ ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int o
 
 // ----------------------------------------------------------------------------
 
-void CameraCanon::photoCameraError( EdsError err)
+void CameraCanon::photoCameraError(EdsError err)
 {
 	photoErrorEvent();
 }

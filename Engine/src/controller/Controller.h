@@ -59,7 +59,7 @@ namespace kubik
 	
 		void loadAllLocationsGraphics();
 		void allGraphicsLoadingCompleteHandler();
-		void graphicsLoadingErrorHandler(KubikException exc);
+		void graphicsLoadingErrorHandler(config::KubikException exc);
 		void removeGraphicsLoadingConnections();
 
 		void createLocations();

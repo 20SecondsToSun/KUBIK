@@ -13,7 +13,7 @@ namespace kubik
 	typedef std::shared_ptr<boost::thread> ThreadRef;
 
 	typedef boost::signals2::signal<void(void)> SignalVoid;
-	typedef boost::signals2::signal<void(KubikException)> SignalException;
+	typedef boost::signals2::signal<void(config::KubikException)> SignalException;
 	typedef boost::signals2::signal<void(IButton&)> ButtonSignal;
 
 	typedef std::shared_ptr<class ImageResource> ImageResourceRef;

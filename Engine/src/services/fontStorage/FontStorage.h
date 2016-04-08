@@ -28,7 +28,18 @@ namespace kubik
 		IResourceDictionary resources;		
 	};
 
-	inline FontStorage&	fontStorage() { return FontStorage::getInstance(); };
-	inline ci::Font getFont(const std::string& name) { return FontStorage::getInstance().getFont1(name); };
-	inline ci::Font getFont(const std::string& name, int size) { return FontStorage::getInstance().getFont1(name, size); };
+	inline FontStorage&	fontStorage() 
+	{
+		return FontStorage::getInstance(); 
+	};
+
+	inline ci::Font getFont(const std::string& name)
+	{
+		return FontStorage::getInstance().getFont1(name);
+	};
+
+	inline ci::Font getFont(const std::string& name, int size)
+	{
+		return FontStorage::getInstance().getFont1(name, size); 
+	};
 }

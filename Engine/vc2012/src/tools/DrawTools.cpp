@@ -27,7 +27,6 @@ void DrawTools::circleSlice(float x, float y, float radius, float lowAngle, floa
 	float angleAdder = angleRange / (float)res;
 	int k = 0;
 
-
 	for (int i = 0; i < numCirclePts; i++)
 	{
 		circlePtsScaled[k] = x + cos(angle) * radius;

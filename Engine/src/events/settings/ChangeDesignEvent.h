@@ -8,18 +8,18 @@ namespace kubik
 	class ChangeDesignEvent: public EventGUI
 	{			
 	public:
-		ChangeDesignEvent(OneDesignItem item):item(item)
+		ChangeDesignEvent(config::OneDesignItem item) :item(item)
 		{
 
 		}
 
-		OneDesignItem getItem() const
+		config::OneDesignItem getItem() const
 		{
 			return item;
 		}
 
 	private:
-		OneDesignItem item;
+		config::OneDesignItem item;
 	};
 
 	typedef std::shared_ptr<ChangeDesignEvent> ChangeDesignEventRef;

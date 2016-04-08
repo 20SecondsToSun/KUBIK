@@ -14,5 +14,8 @@ namespace kubik
 		ci::Anim<float> animTime;		
 	};
 
-	inline MemoryMonitor& memory_monitor() { return MemoryMonitor::getInstance(); };
+	inline MemoryMonitor& memory_monitor()
+	{ 
+		return MemoryMonitor::getInstance(); 
+	};
 }

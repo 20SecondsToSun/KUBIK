@@ -17,5 +17,8 @@ namespace kubik
 		
 	};
 	
-	inline Logger& logger() {return Logger::getInstance();};
+	inline Logger& logger() 
+	{
+		return Logger::getInstance();
+	};
 }

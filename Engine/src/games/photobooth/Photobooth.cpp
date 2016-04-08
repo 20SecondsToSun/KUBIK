@@ -6,7 +6,7 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
-Photobooth::Photobooth(ISettingsRef config)
+Photobooth::Photobooth(config::ISettingsRef config)
 {
 	logger().log("~~~ Photobooth.Created ~~~");
 
@@ -24,9 +24,9 @@ Photobooth::~Photobooth()
 	locations.clear();
 }
 
-void Photobooth::init(ISettingsRef config)
+void Photobooth::init(config::ISettingsRef config)
 {
-	settings = static_pointer_cast<PhotoboothSettings>(config);	
+	settings = static_pointer_cast<config::PhotoboothSettings>(config);
 }
 
 void Photobooth::create()
@@ -239,21 +239,21 @@ void Photobooth::draw()
 {	
 	switch (state)
 	{
-	case SHOW_ANIM:
-		screenshotDraw();
-		gl::pushMatrices();
-		gl::translate(animX, 0.0f);
-		currentLocation->draw();
-		gl::popMatrices();
-		break;
+		case SHOW_ANIM:
+			screenshotDraw();
+			gl::pushMatrices();
+			gl::translate(animX, 0.0f);
+			currentLocation->draw();
+			gl::popMatrices();
+			break;
 
-	case DRAW:
-		currentLocation->draw();
-		break;
+		case DRAW:
+			currentLocation->draw();
+			break;
 
-	case CAMERA_DISCONNECT:
-		drawCameraErrorPopup();
-		break;
+		case CAMERA_DISCONNECT:
+			drawCameraErrorPopup();
+			break;
 	}	
 }
 

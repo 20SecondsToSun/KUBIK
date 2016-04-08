@@ -18,8 +18,11 @@ namespace kubik
 		Kinect2::DeviceRef getDevice();
 		
 	private:
-		static Kinect2::DeviceRef	mDevice;
+		static Kinect2::DeviceRef mDevice;
 	};
 
-	inline KinectAdapter&	kinect() { return KinectAdapter::getInstance();};
+	inline KinectAdapter& kinect() 
+	{
+		return KinectAdapter::getInstance();
+	};
 }

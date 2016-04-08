@@ -23,10 +23,10 @@ private:
 	AppViewRef view;
 	ControllerRef controller;
 	ApplicationModelRef model;
-	void prepareSettings(AppBasic::Settings *settings);
+	void prepareSettings(AppBasic::Settings* settings);
 };
 
-void EngineApp::prepareSettings(AppBasic::Settings *settings)
+void EngineApp::prepareSettings(AppBasic::Settings* settings)
 {
 	settings->setFrameRate(60);
 	settings->setWindowSize(1080, 1920);
@@ -55,12 +55,12 @@ void EngineApp::setup()
 	//setFullScreen(true, fullscreenOptions);
 }
 
-void EngineApp::mouseDown( MouseEvent event )
+void EngineApp::mouseDown(MouseEvent event)
 {
 
 }
 
-void EngineApp::keyDown( KeyEvent event )
+void EngineApp::keyDown(KeyEvent event)
 {
 	switch (event.getCode())
 	{

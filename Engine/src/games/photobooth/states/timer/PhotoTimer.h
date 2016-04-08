@@ -53,12 +53,12 @@ namespace kubik
 				}state;
 
 			public:
-				PhotoTimer(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
+				PhotoTimer(config::PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
 				virtual ~PhotoTimer();
 
 				static const int centerY = 1123.0f;
 
-				virtual void reset(PhotoboothSettingsRef sett) override;
+				virtual void reset(config::PhotoboothSettingsRef sett) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

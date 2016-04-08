@@ -8,7 +8,7 @@ FileTools& FileTools::getInstance()
 {
 	static FileTools strt;
 	return strt;
-};
+}
 
 std::ifstream::pos_type FileTools::filesize(const char* filename)
 {
@@ -57,6 +57,7 @@ void FileTools::openURL(const std::string& path)
 std::vector<std::string> FileTools::getAllImagePaths(const std::string& path)
 {
 	std::vector<std::string> content;
+
 	for (fs::directory_iterator it(path); it != fs::directory_iterator(); ++it)
 	{
 		if (fs::is_regular_file(*it))
@@ -72,6 +73,7 @@ std::vector<std::string> FileTools::getAllImagePaths(const std::string& path)
 			content.push_back(filePath);
 		}
 	}
+
 	return content;
 }
 

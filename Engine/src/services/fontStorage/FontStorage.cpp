@@ -2,6 +2,7 @@
 #include "Paths.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace std;
 using namespace ci;
 
@@ -71,7 +72,9 @@ void FontStorage::init()
 void FontStorage::addFontToLoadingQuery(const std::string& fontName, std::vector<int> fontSizes)
 {
 	for (size_t i = 0; i < fontSizes.size(); i++)
+	{
 		add(fontName, fontSizes[i]);
+	}
 }
 
 void FontStorage::add(const std::string& name, int size)
@@ -91,7 +94,7 @@ shared_ptr<FontResource> FontStorage::createFontResource(const std::string& path
 
 void FontStorage::addToSettingsDictionary(const std::string& key, shared_ptr<FontResource>  value)
 {
-	fonts[key] = value;
+	fonts[key]	   = value;
 	resources[key] = value;
 }
 

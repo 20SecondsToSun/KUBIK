@@ -76,10 +76,10 @@ namespace kubik
 				ci::signals::connection photoTakenCon, photoErrorCon, photoDownloadedCon;
 
 			public:
-				PhotoShooting(PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
+				PhotoShooting(config::PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
 				~PhotoShooting();
 
-				virtual void reset(PhotoboothSettingsRef settings) override;
+				virtual void reset(config::PhotoboothSettingsRef settings) override;
 				virtual void start() override;
 				virtual void update() override;
 				virtual void draw() override;

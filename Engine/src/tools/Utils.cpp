@@ -39,7 +39,6 @@ string Utils::cp1251_to_utf8(const char *str)
 	string res;	
 	int result_u, result_c;
 
-
 	result_u = MultiByteToWideChar(1251,	0,	str,-1,	0,	0);
 
 	if (!result_u)
@@ -52,7 +51,6 @@ string Utils::cp1251_to_utf8(const char *str)
 		delete[] ures;
 		return 0;
 	}
-
 
 	result_c = WideCharToMultiByte(	CP_UTF8, 0,	ures,	-1,	0,	0,	0, 0);
 
@@ -69,6 +67,7 @@ string Utils::cp1251_to_utf8(const char *str)
 		delete[] cres;
 		return 0;
 	}
+
 	delete[] ures;
 	res.append(cres);
 	delete[] cres;
@@ -119,9 +118,7 @@ string Utils::Utf8_to_cp1251(const char *str)
 int Utils::StringToWString(std::wstring &ws, const std::string &s)
 {
 	std::wstring wsTmp(s.begin(), s.end());
-
 	ws = wsTmp;
-
 	return 0;
 }
 
@@ -153,7 +150,6 @@ std::string Utils::twiceSymbol(std::string __string, char __symbol)
 		twiceString.push_back( __string[i]);
 		if (__string[i] == __symbol ) twiceString.push_back( __string[i]);
 	}
-
 	return twiceString;
 }
 
@@ -231,8 +227,6 @@ void Utils::writeCrashLog(std::string path)
 		myfile1 << value;		
 		myfile.close();
 	}
-
-
 }
 
 void Utils::textFieldDraw(std::string text,ci::Font *font, Vec2f coords, ColorA color)
@@ -311,6 +305,7 @@ std::string  Utils::getCorrectSecondsText(int seconds)
 {
 	string secText  = to_string(seconds);
 	string memo = "яейсмд";
+
 	if(secText == "1")
 	{
 		memo = "яейсмдю";

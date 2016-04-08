@@ -4,6 +4,7 @@ using namespace std;
 using namespace ci::signals;
 using namespace kubik::games::photobooth;
 using namespace kubik;
+using namespace kubik::config;
 
 PhotoInstruction::PhotoInstruction(PhotoboothSettingsRef settings):animTime(0.8f), alphaAnim(1.0f)
 {

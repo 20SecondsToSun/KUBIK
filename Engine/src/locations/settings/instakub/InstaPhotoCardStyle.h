@@ -35,8 +35,8 @@ namespace kubik
 
 			ci::Color backgroundColor;
 
-			kubik::TextItem titleItem;
-			kubik::TextItem subTitleItem;
+			kubik::config::TextItem titleItem;
+			kubik::config::TextItem subTitleItem;
 		};
 	}
 }

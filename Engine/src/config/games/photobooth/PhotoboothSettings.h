@@ -71,7 +71,7 @@ namespace kubik
 			void buildLocationData() override;	
 			void load()			override;
 			void setTextures()  override;
-			fs::path getPhotoDownloadDirectory(){ return kubik::Paths::getPhotoDownloadedPath(); };
+			fs::path getPhotoDownloadDirectory(){ return Paths::getPhotoDownloadedPath(); };
 
 			TextItem getMainTitle(const PhtTextID& id);
 			TextItem getSubTitleClose(const PhtTextID& id);

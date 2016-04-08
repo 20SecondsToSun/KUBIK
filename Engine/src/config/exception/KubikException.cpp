@@ -1,5 +1,7 @@
 #include "KubikException.h"
 
+using namespace kubik::config;
+
 const char* KubikException::what() const throw() 
 { 
 	return mMessage; 

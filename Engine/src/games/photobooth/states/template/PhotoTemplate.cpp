@@ -7,7 +7,8 @@ using namespace std;
 using namespace ci::app;
 using namespace ci;
 
-PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage) : photoStorage(photoStorage)
+PhotoTemplate::PhotoTemplate(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage) 
+	:photoStorage(photoStorage)
 {
 	reset(settings);
 }
