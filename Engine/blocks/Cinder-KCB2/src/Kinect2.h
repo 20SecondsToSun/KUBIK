@@ -408,6 +408,20 @@ protected:
 
 		void											start();
 		void											stop();
+
+		////Process(const Process&) = default;
+		//Process& operator=(const Process& process)
+		//{
+		//	//проверка на самоприсваивание
+		//	if (this == &process) 
+		//	{
+		//		return *this;
+		//	}
+		//	*this = process;
+
+		//	return *this;
+		//}
+
 	protected:
 		std::function<void ()>							mThreadCallback;
 

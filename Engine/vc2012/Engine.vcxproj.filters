@@ -289,6 +289,9 @@
     <Filter Include="Source Files\tools\gifMaker">
       <UniqueIdentifier>{e6238186-3242-42a1-8c69-c85bc41694ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\services\dataBase">
+      <UniqueIdentifier>{2bf1ea84-494b-432c-80d3-694381b7a83f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -821,6 +824,9 @@
     </ClCompile>
     <ClCompile Include="src\tools\TimerTools.cpp">
       <Filter>Source Files\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\dataBase\DataBase.cpp">
+      <Filter>Source Files\services\dataBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1457,14 +1463,8 @@
     <ClInclude Include="..\src\config\services\social\SocialSettings.h">
       <Filter>Source Files\config\services\social</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gui\TextField.h">
       <Filter>Source Files\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Header Files</Filter>
@@ -1537,6 +1537,9 @@
     </ClInclude>
     <ClInclude Include="..\src\tools\gifMaker\GIF.h">
       <Filter>Source Files\tools\gifMaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\dataBase\DataBase.h">
+      <Filter>Source Files\services\dataBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

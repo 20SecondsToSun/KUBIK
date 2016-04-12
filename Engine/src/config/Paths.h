@@ -62,6 +62,11 @@ namespace kubik
 			{
 				return ci::app::getAppPath() / "logs" / logName;
 			}
+
+			static ci::fs::path getDataBasePath(const std::string& file)
+			{
+				return ci::app::getAppPath() / "base" / file;
+			}
 		};
 	}
 }

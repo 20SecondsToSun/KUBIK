@@ -9,7 +9,6 @@ namespace kubik
 		template <class EnumID>
 		class ConfigTexts
 		{
-
 		public:			
 			typedef std::map <std::pair<std::string, EnumID>, TextItem> DicType;
 
