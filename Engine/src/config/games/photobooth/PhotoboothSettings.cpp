@@ -1,4 +1,5 @@
 #include "PhotoboothSettings.h"
+#include "dataBase/DataBase.h"
 
 using namespace kubik;
 using namespace kubik::config;
@@ -7,12 +8,14 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-const float PhotoboothSettings::GoToScreenSaverTime = 60.0f;
+const float PhotoboothSettings::GoToScreenSaverTime = 10.0f;
+const int PhotoboothSettings::PhotoSeconds = 5;
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
 	:ISettings(model),
-	memento(false),
-	configSettings(configSettings)
+	StatCollector(configSettings),
+	configSettings(configSettings),
+	memento(false)
 {
 	
 }
@@ -856,5 +859,34 @@ std::string PhotoboothSettings::getPhotoCardName(int i, int j) const
 std::string PhotoboothSettings::getPhotoCardPath(const OneDesignItem& photoCard, int j) const
 {
 	return getBasePath().string() + photoCard.getDesignPath() + "\\" + to_string(j) + ".png";
+}
+
+std::string PhotoboothSettings::getDataBasePath() const
+{
+	return configSettings->getActionName() + "\\photobooth\\";
+}
+
+std::string PhotoboothSettings::getDataBaseName() const
+{
+	auto timeStruct = Utils::getCurrentTime();
+
+	return Utils::fix2(to_string(timeStruct.tm_mday))	 + "_"
+		 + Utils::fix2(to_string(timeStruct.tm_mon + 1)) + "_"
+		 + to_string(1900 + timeStruct.tm_year)			 + ".csv";
+}
+
+void PhotoboothSettings::saveStatData(const std::shared_ptr<DataBaseRecord>& db)
+{
+	std::string basePath = getDataBasePath();
+	std::string baseName = getDataBaseName();
+	auto fullDirPath	 = Paths::getDataBasePath(basePath);
+
+	static const string delimeter = ";";
+	if (Paths::createIfDoesntExist(fullDirPath, baseName))
+	{
+		data_base().saveData(fullDirPath + baseName, db->getRecordTitle());
+	}	
+
+	data_base().saveData(fullDirPath + baseName, db->getRecord());
 }
 

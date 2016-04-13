@@ -32,6 +32,7 @@ void Photobooth::init(config::ISettingsRef config)
 void Photobooth::create()
 {	
 	photoStorage	 = PhotoStorageRef(new PhotoStorage());
+	dbRecord		 = shared_ptr<DataBaseRecord>(new DataBaseRecord());
 	
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
 	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		photoStorage));
@@ -65,8 +66,12 @@ void Photobooth::goToPhotoInstructionTimeOut()
 {
 	logger().log("~~~ Photobooth.Timeot GoTo First Screen ~~~");
 
-	currentLocation->stop();
-	gotoFirstlocation();
+	if (!equalLocations<PhotoInstruction>(currentLocation))
+	{
+		saveDbRecord();
+		currentLocation->stop();
+		gotoFirstlocation();
+	}	
 }
 
 void Photobooth::showAnimationComplete()
@@ -79,6 +84,7 @@ void Photobooth::showAnimationComplete()
 		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IPhotoboothLocation::DISABLE_GAME_CLOSE);
 		loc->connectEventHandler(&Photobooth::enableGameCloseHandler,  this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
 		loc->connectEventHandler(&Photobooth::closeLocationHandler,    this, IPhotoboothLocation::CLOSE_LOCATION);
+		loc->setDbRecord(dbRecord);
 	}		
 
 	photoChoosing->connectEventHandler(&Photobooth::reshotHandler, this, PhotoChoosing::RESHOT_LOC);	
@@ -119,6 +125,11 @@ void Photobooth::disableGameCloseHandler()
 void Photobooth::stop()
 {
 	logger().log("~~~ Photobooth.Stop  ~~~");
+
+	if (!equalLocations<PhotoInstruction>(currentLocation))
+	{
+		saveDbRecord();
+	}
 
 	updateSignal.disconnect();
 
@@ -172,6 +183,7 @@ void Photobooth::nextLocationHandler()
 {
 	if (++index >= locations.size())
 	{
+		saveDbRecord();		
 		gotoFirstlocation();
 	}		
 	else
@@ -261,6 +273,7 @@ void Photobooth::drawCameraErrorPopup()
 {
 	gl::draw(settings->getTexture("popupErrorBg"));
 	auto tex = settings->getTexture("cameraErrorText");
+
 	gl::draw(tex, Vec2f(0.5f * (1080.0f - tex.getWidth()), 766.0f - 0.5f * tex.getHeight()));
 }
 
@@ -279,3 +292,12 @@ void Photobooth::removeListeners()
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
 	cameraCanon().setAutoReconnect(false);
 }
+
+void Photobooth::saveDbRecord()
+{
+	//collect data
+	settings->saveStatData(dbRecord);
+	settings->addPlayedGame();
+	dbRecord->clear();
+}
+

@@ -12,13 +12,13 @@ namespace kubik
 
 		class PozaSettings : public ISettings
 		{
-			ConfigSettingsRef configSettings;
 			ConfigObject mainConfigObj;
-
-			void setDesignPath();
-			void loadPaths();
+			ConfigSettingsRef configSettings;
 
 			std::string finalPath;
+
+			void setDesignPath();
+			void loadPaths();		
 
 		public:
 			PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);

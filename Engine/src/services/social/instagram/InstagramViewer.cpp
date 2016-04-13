@@ -384,7 +384,9 @@ void InstagramViewer::getTouchedImage(const Vec2f& pos)
 	lastImageIndexTouched = yCoord * countInRaw + xCoord;
 
 	if (!images.empty() && lastImageIndexTouched < images.size())
+	{
 		touchedEvent();
+	}
 }
 
 void InstagramViewer::animComplete()

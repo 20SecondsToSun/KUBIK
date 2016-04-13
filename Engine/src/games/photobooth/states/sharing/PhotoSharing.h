@@ -31,7 +31,8 @@ namespace kubik
 					ANIM_HIDE,
 					TEMPLATE_CHOOSE,
 					POPUP
-				}state;
+				}
+				state;
 
 				PopupRef			popup;
 				EmailPopupRef		emailpopup;
@@ -78,7 +79,8 @@ namespace kubik
 				virtual void update() override;
 				virtual void draw()	override;
 				virtual void stopAllTweens() override;
-				void showPopup();
+				void showPopup();	
+				void shareCompleteHandler(SharingType i, const std::string& data);
 			};
 		}
 	}

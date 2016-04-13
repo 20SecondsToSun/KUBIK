@@ -56,3 +56,8 @@ void IPhotoboothLocation::stopAllTweens()
 	titleFilterAlpha.stop();
 	titleAnimPosition.stop();
 }
+
+void IPhotoboothLocation::setDbRecord(std::shared_ptr<DataBaseRecord> db)
+{
+	dbRecord = db;
+}

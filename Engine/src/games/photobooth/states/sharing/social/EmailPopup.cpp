@@ -9,6 +9,7 @@ using namespace ci::app;
 
 EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
 	:Popup(settings),
+	set(settings),
 	addEmailFontColor(Color::white()),
 	addEmailIcon(settings->getTexture("addEmail")),
 	borderIcon(settings->getTexture("enterEmailBorder")),
@@ -66,8 +67,7 @@ void EmailPopup::addEmailHandler(EventGUIRef& event)
 	if (handleInputField())
 	{
 		addEmailToList();
-	}
-		
+	}		
 }
 
 bool EmailPopup::handleInputField()
@@ -134,6 +134,7 @@ void EmailPopup::drawInputField()
 void EmailPopup::drawAddedEmails()
 {
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaAnim));
+
 	for (auto email : emailsTextures)
 	{
 		gl::draw(email.texture, email.position);
@@ -142,13 +143,41 @@ void EmailPopup::drawAddedEmails()
 
 void EmailPopup::sendEmailHandler()
 {
-	if (!Utils::validate_email(touchKeyboard().getInputFieldText()))
+	if (!Utils::validate_email(touchKeyboard().getInputFieldText()) && emails.size() == 0)
 	{
 		showRedFocusStroke();
 		return;
 	}	
 
+
+	
+
+
+	// if everything ok send mail
+
 	/*	
 		sending to server	
+
+		
+
 	*/
+
+	set->addEmailShare();
+	shareCompleteSignal(SharingType::EMAIL, getEmailInString());
+}
+
+std::string EmailPopup::getEmailInString()
+{
+	std::string out = "";
+	for (size_t i = 0; i < emails.size(); i++)
+	{
+		out += emails[i];
+
+		if (i != (emails.size() - 1))
+		{
+			out += ",";
+		}
+	}
+
+	return out;
 }

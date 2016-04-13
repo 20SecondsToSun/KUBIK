@@ -16,7 +16,7 @@ PhotoSharing::PhotoSharing(PhotoboothSettingsRef settings, PhotoStorageRef  phot
 	leftBlockX(126.0f)
 {
 	reset(settings);
-};
+}
 
 void PhotoSharing::reset(PhotoboothSettingsRef settings)
 {
@@ -26,8 +26,8 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	IPhotoboothLocation::reset(settings);
 
 	float rightBlockX = 652.0f;
-	title      = settings->getTexture("sharetitle");
-	titlePos   = Vec2f(rightBlockX, 203.0f - title.getHeight() * 0.5f);
+	title			  = settings->getTexture("sharetitle");
+	titlePos		  = Vec2f(rightBlockX, 203.0f - title.getHeight() * 0.5f);
 
 	serviceBtns.clear();
 
@@ -41,7 +41,7 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 	emailpopup = EmailPopupRef(new EmailPopup(settings));
 	vkpopup    = VkontaktePopupRef(new VkontaktePopup(settings));
 	fbpopup    = FacebookPopupRef(new FacebookPopup(settings));
-	twpopup    = TwitterPopupRef(new TwitterPopup(settings));
+	twpopup    = TwitterPopupRef(new TwitterPopup(settings));	
 
 	emailpopup->setBackground(settings->getTexture("popupBg"));
 	
@@ -248,7 +248,7 @@ void PhotoSharing::emailBtnHandler(EventGUIRef& event)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Email ~~~");
 
-	popup = emailpopup;
+	popup = emailpopup;	
 	showPopup();
 }
 
@@ -285,6 +285,7 @@ void PhotoSharing::stop()
 	finalPhotoTemplate.stopAnimate();
 	clearDelaycall();	
 	popup->disconnectEventHandler(Popup::POPUP_CLOSED);
+	popup->shareCompleteSignal.disconnect_all_slots();
 	popup->kill();
 }
 
@@ -296,6 +297,7 @@ void PhotoSharing::showPopup()
 	finalPhotoTemplate.stopAnimate();
 	setLastScreenShot();
 	popup->connectEventHandler(&PhotoSharing::popupClosed, this, Popup::POPUP_CLOSED);
+	connect_once(popup->shareCompleteSignal, bind(&PhotoSharing::shareCompleteHandler, this, std::placeholders::_1, std::placeholders::_2));
 	popup->show();	
 	state = POPUP;
 }
@@ -323,6 +325,8 @@ void PhotoSharing::disconnectEventHandlers()
 	fbBtn->disconnectEventHandler();
 	vkBtn->disconnectEventHandler();
 	twBtn->disconnectEventHandler();
+
+	popup->shareCompleteSignal.disconnect_all_slots();
 }
 
 void PhotoSharing::update()
@@ -384,4 +388,27 @@ void PhotoSharing::stopAllTweens()
 	sharefonPosAnim.stop();
 	alphaAnim.stop();
 	IPhotoboothLocation::stopAllTweens();
+}
+
+void PhotoSharing::shareCompleteHandler(SharingType type, const std::string& data)
+{
+	logger().log("complete sharing :::  " + to_string(type));
+	switch (type)
+	{
+	case kubik::EMAIL:
+		dbRecord->EmailShare++;
+		break;
+
+	case kubik::VK:
+		dbRecord->VKhare++;
+		break;
+
+	case kubik::FB:
+		dbRecord->FBShare++;
+		break;
+
+	case kubik::TW:
+		dbRecord->TWShare++;
+		break;
+	}
 }

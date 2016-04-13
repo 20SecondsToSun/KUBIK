@@ -98,6 +98,7 @@ void PhotoFilter::photoFilterSelect(EventGUIRef& event)
 	photoStorage->setSelectedFilter(filterID);
 
 	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Filters ID Set " + to_string(filterID ) + " ~~~");
+	dbRecord->FilterNum = filterID;
 
 	callback(BEGIN_ANIM);
 	nextLocationSignal();

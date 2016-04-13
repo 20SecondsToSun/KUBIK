@@ -5,12 +5,22 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-FacebookPopup::FacebookPopup(PhotoboothSettingsRef settings):SocialPopup(settings)
+FacebookPopup::FacebookPopup(PhotoboothSettingsRef settings)
+	:SocialPopup(settings),
+	set(settings)	
 {
+	sharingType = SharingType::FB;
 	createSocialContext();
 }
 
 void FacebookPopup::createSocialContext()
 {
 	social = Social::createFacebook();
+}
+
+void FacebookPopup::postingCompleteHandler()
+{
+	logger().log("fb shared");
+	set->addFBShare();
+	SocialPopup::postingCompleteHandler();	
 }

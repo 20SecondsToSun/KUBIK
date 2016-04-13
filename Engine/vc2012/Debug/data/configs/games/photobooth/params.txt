@@ -1,12 +1,12 @@
 {
    "activeBgPrint" : 0,
-   "activeOverDesignID" : 2,
-   "activePhotoCardStyleDesignID" : 6,
+   "activeOverDesignID" : 1,
+   "activePhotoCardStyleDesignID" : 2,
    "activeSticker" : 1,
    "filtersIds" : [
       {
          "id" : 1,
-         "isOn" : true
+         "isOn" : false
       },
       {
          "id" : 2,
@@ -14,7 +14,7 @@
       },
       {
          "id" : 3,
-         "isOn" : true
+         "isOn" : false
       },
       {
          "id" : 4,
@@ -26,14 +26,14 @@
       },
       {
          "id" : 6,
-         "isOn" : true
+         "isOn" : false
       }
    ],
-   "isEmail" : false,
-   "isFacebook" : false,
+   "isEmail" : true,
+   "isFacebook" : true,
    "isPrint" : true,
    "isQrCode" : true,
    "isSticker" : false,
    "isTwitter" : true,
-   "isVkotakte" : false
+   "isVkotakte" : true
 }

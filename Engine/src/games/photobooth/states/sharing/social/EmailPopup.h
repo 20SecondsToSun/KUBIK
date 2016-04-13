@@ -14,9 +14,10 @@ namespace kubik
 		namespace photobooth
 		{
 			typedef	std::shared_ptr<class EmailPopup>EmailPopupRef;
-
+			
 			class EmailPopup : public Popup
-			{
+			{		
+
 				static const int MAX_EMAIL_TO_SEND = 3;
 
 				ci::Anim<float>  alphaError;
@@ -25,6 +26,7 @@ namespace kubik
 				ci::Vec2f borderIconPos, initAddEmailPosition,	shiftEmailPosition;
 
 				kubik::ImageButtonSpriteRef addEmailBtn;
+				kubik::config::PhotoboothSettingsRef set;
 
 				struct EmailTex
 				{
@@ -48,13 +50,15 @@ namespace kubik
 				void addEmailHandler(EventGUIRef& event);
 				void sendEmailHandler();
 
+				std::string getEmailInString();
+
 				ci::Font addEmailFont;
 
 			public:								
 				EmailPopup(kubik::config::PhotoboothSettingsRef settings);
 				virtual void show() override;
 				virtual void hide(EventGUIRef& event) override;				
-				virtual void draw() override;				
+				virtual void draw() override;					
 			};
 		}
 	}

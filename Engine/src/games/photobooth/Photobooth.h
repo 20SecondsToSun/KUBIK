@@ -12,6 +12,7 @@
 #include "states/choosing/PhotoChoosing.h"
 #include "states/template/PhotoTemplate.h"
 #include "model/PhotoStorage.h"
+#include "model/DataBaseRecord.h"
 #include "CameraAdapter.h"
 #include "ScreenStorage.h"
 #include "Chromium.h"
@@ -48,6 +49,8 @@ namespace kubik
 				PhotoTemplateRef	photoTemplate;
 				PhotoSharingRef		photoSharing;
 
+				std::shared_ptr<DataBaseRecord> dbRecord;
+
 				std::vector<IPhotoboothLocationRef>  locations;
 				IPhotoboothLocationRef	currentLocation;
 
@@ -69,7 +72,9 @@ namespace kubik
 				void disableGameCloseHandler();
 				void handleCameraConnection();
 				void drawCameraErrorPopup();
-				void goToPhotoInstructionTimeOut();				
+				void goToPhotoInstructionTimeOut();		
+
+				void saveDbRecord();
 
 				template <class T>
 				bool equalLocations(IPhotoboothLocationRef location)

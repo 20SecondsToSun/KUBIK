@@ -142,6 +142,7 @@
     <ClCompile Include="..\src\config\services\keyboard\KeyboardSettings.cpp" />
     <ClCompile Include="..\src\config\services\social\SocialSettings.cpp" />
     <ClCompile Include="..\src\config\settings\ConfigSettings.cpp" />
+    <ClCompile Include="..\src\config\StatCollector.cpp" />
     <ClCompile Include="..\src\controller\Controller.cpp" />
     <ClCompile Include="..\src\devices\canon\CameraAdapter.cpp" />
     <ClCompile Include="..\src\EngineApp.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="..\src\config\services\keyboard\KeyboardSettings.h" />
     <ClInclude Include="..\src\config\services\social\SocialSettings.h" />
     <ClInclude Include="..\src\config\settings\ConfigSettings.h" />
+    <ClInclude Include="..\src\config\StatCollector.h" />
     <ClInclude Include="..\src\controller\Controller.h" />
     <ClInclude Include="..\src\devices\canon\CameraAdapter.h" />
     <ClInclude Include="..\src\events\CheckerEvent.h" />
@@ -367,6 +369,7 @@
     <ClInclude Include="..\src\games\instakub\states\SearchButtons.h" />
     <ClInclude Include="..\src\games\instakub\states\SearchLocation.h" />
     <ClInclude Include="..\src\games\instakub\states\SearchOnly.h" />
+    <ClInclude Include="..\src\games\photobooth\model\DataBaseRecord.h" />
     <ClInclude Include="..\src\games\poza\Poza.h" />
     <ClInclude Include="..\src\games\photobooth\model\PhotoStorage.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />

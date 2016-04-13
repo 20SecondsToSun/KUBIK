@@ -11,13 +11,12 @@ namespace kubik
 
 		class FuncesSettings : public ISettings
 		{
-			ConfigSettingsRef configSettings;
 			ConfigObject mainConfigObj;
+			ConfigSettingsRef configSettings;
+			std::string finalPath;
 
 			void setDesignPath();
-			void loadPaths();
-
-			std::string finalPath;
+			void loadPaths();			
 
 		public:
 			FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);

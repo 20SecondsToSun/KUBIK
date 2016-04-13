@@ -37,7 +37,7 @@ void FilterSmallButton::setSelected(bool value)
 	isSelected = value;
 }
 
-bool FilterSmallButton::selected()
+bool FilterSmallButton::selected() const
 {
 	return isSelected;
 }

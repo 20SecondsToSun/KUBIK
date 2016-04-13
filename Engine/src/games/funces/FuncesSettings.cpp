@@ -5,7 +5,9 @@ using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 
-FuncesSettings::FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings):ISettings(model), configSettings(configSettings)
+FuncesSettings::FuncesSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
+	:ISettings(model),
+	configSettings(configSettings)
 {
 	mainConfigObj = model->getConfigObject(settings::id::FUNCES);
 }

@@ -270,6 +270,14 @@ namespace kubik
 		F point1;
 		S point2;
 	};
+
+	enum SharingType
+	{
+		EMAIL,
+		VK,
+		FB,
+		TW
+	};
 }
 
 template <typename Sig, typename F> void connect_once(Sig& sig, F&& f) 

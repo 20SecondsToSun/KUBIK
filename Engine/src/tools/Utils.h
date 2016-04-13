@@ -42,4 +42,6 @@ class Utils
 		static ci::ColorA colorAlpha(ci::ColorA color, float alpha);
 
 		static bool validate_email(const std::string& a);
+
+		static std::string fix2(const std::string& strtofix);
 };

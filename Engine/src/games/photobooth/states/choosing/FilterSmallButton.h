@@ -41,10 +41,11 @@ namespace kubik
 					ci::Font fontC, 
 					ci::Font fontO);
 
-				void setSelected(bool value);
-				bool selected();
 				virtual void drawLayout();
-				int getID() const;
+
+				void setSelected(bool value);				
+				int getID()		const;
+				bool selected() const;
 
 				void setOpenState();
 				void setCloseState();

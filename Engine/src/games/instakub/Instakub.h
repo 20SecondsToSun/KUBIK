@@ -36,6 +36,8 @@ namespace kubik
 			private:
 				static const float RELOAD_TIME;
 
+				bool HumanPlayWithStand;
+
 				ci::gl::Texture closeImg;
 			
 				InstakubSettingsRef settings;
@@ -55,6 +57,7 @@ namespace kubik
 				void stopTimer();
 				void startTimer();
 				void resetTimer();
+				void resetTimerAuto();				
 				void timerComplete();
 
 				void viewDrawings();

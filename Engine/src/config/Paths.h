@@ -55,6 +55,12 @@ namespace kubik
 
 			static ci::fs::path getLogPath(const std::string& logName)
 			{
+				auto path_dir = (ci::app::getAppPath() / "logs").string();
+
+				if (!ci::fs::is_directory(path_dir))
+				{
+					ci::fs::create_directory(path_dir);
+				}
 				return ci::app::getAppPath() / "logs" / logName;
 			}
 
@@ -63,10 +69,32 @@ namespace kubik
 				return ci::app::getAppPath() / "logs" / logName;
 			}
 
-			static ci::fs::path getDataBasePath(const std::string& file)
-			{
-				return ci::app::getAppPath() / "base" / file;
+			static std::string getDataBasePath(const std::string& file)
+			{				
+				return (ci::app::getAppPath() / "base"/ file).string();
 			}
+
+			static bool createIfDoesntExist(const std::string& dirPath, const std::string& file)
+			{
+				using namespace ci;
+
+				if (!fs::is_directory(dirPath))
+				{
+					fs::create_directories(dirPath);		
+					return true;
+				}
+				else
+				{
+					std::ifstream infile(dirPath + file);
+					if (!infile.good())
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+			
 		};
 	}
 }

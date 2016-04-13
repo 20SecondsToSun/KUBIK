@@ -6,10 +6,12 @@
 #include "ConfigTexts.h"
 #include "JsonTools.h"
 #include "ApplicationModel.h"
-#include "ConfigSettings.h"
 #include "graphics/IMovie.h"
 #include "fontStorage/FontStorage.h"
+#include "games/photobooth/model/DataBaseRecord.h"
 #include "Paths.h"
+#include "ConfigSettings.h"
+#include "StatCollector.h"
 
 #define Photobooth_DEBUG
 #define Photobooth_Loadfromfolder_DEBUG
@@ -21,10 +23,11 @@ namespace kubik
 	{
 		typedef std::shared_ptr<class PhotoboothSettings> PhotoboothSettingsRef;
 
-		class PhotoboothSettings : public ISettings
+		class PhotoboothSettings : public ISettings, public StatCollector
 		{
 		public:
 			static const float GoToScreenSaverTime;
+			static const int PhotoSeconds;
 
 			enum PhtTextID
 			{
@@ -58,7 +61,7 @@ namespace kubik
 			
 			class PhotoCountItem
 			{
-				gl::Texture texture;
+				ci::gl::Texture texture;
 				bool isActive;
 
 			public:
@@ -68,9 +71,9 @@ namespace kubik
 			PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 
 			void buildSettingData() override;
-			void buildLocationData() override;	
-			void load()			override;
-			void setTextures()  override;
+			void buildLocationData()override;	
+			void load()				override;
+			void setTextures()		override;
 			fs::path getPhotoDownloadDirectory(){ return Paths::getPhotoDownloadedPath(); };
 
 			TextItem getMainTitle(const PhtTextID& id);
@@ -108,18 +111,34 @@ namespace kubik
 			void writeConfig();
 
 			std::string getUserPhotoOverDesignPath();
-			std::string getUserPhotoCardStylePath();			
+			std::string getUserPhotoCardStylePath();	
 
-			int getBeReadySeconds(){ return 5; };
-			
-			changeSetting::id getChangeID() const { return changeSetting::id::PHOTOBOOTH; };
+			changeSetting::id getChangeID() const
+			{ 
+				return changeSetting::id::PHOTOBOOTH; 
+			};			
+
+			bool wasChanged()
+			{
+				return false; 
+			};
 
 			IMovieRef getPreloader();
 
-			bool wasChanged(){ return false; };
 			bool settingsChanged();
 			bool isPrinterOn();
 			bool onlyOneGameOn();
+
+			std::string getDataBasePath() const;
+			std::string getDataBaseName() const;
+
+			////////////////////////////////////////////////////////////////////////////
+			//
+			//					STATISTICS
+			//
+			////////////////////////////////////////////////////////////////////////////
+
+			void saveStatData(const std::shared_ptr<DataBaseRecord>& db);		
 		
 			class Filter
 			{
@@ -188,19 +207,22 @@ namespace kubik
 			};
 
 			ConfigObject mainConfigObj;
+			ConfigSettingsRef configSettings;
 
 			bool isSticker;
-			int activeOverDesignID, activeOverDesignIDMemento;
+			int activeOverDesignID;
+			int activeOverDesignIDMemento;
 			int userOverDesignID;
-			int activePhotoCardStyleDesignID, activePhotoCardStyleDesignIDMemento;
+			int activePhotoCardStyleDesignID;
+			int activePhotoCardStyleDesignIDMemento;
 			int userPhotoCardStyleDesignID;
 			
 			ConfigPath					 configPaths;
 			Sharing						 sharing, sharingMemento;
 			bool						 memento;
 			
-			StickerMap stickersImagesMap;
-			PhotoCardsMap photoCardsImagesMap;
+			StickerMap					 stickersImagesMap;
+			PhotoCardsMap				 photoCardsImagesMap;
 
 			std::vector<Filter>			 filters, filtersMemento;
 			std::vector<Sticker>		 stickers;
@@ -243,9 +265,7 @@ namespace kubik
 			std::string getActivePublishingTexts();
 
 			bool sharingNotEqual(Sharing sharing1, Sharing sharing2);
-			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);
-
-			ConfigSettingsRef configSettings;	
+			bool filtersNotEqual(const std::vector<Filter>& filter1, const std::vector<Filter>& filter2);			
 
 			std::string getPhotoCardName(int i, int j) const;
 			std::string getPhotoCardPath(const OneDesignItem& photoCard, int j) const;

@@ -1,4 +1,5 @@
 #include "InstakubSettings.h"
+#include "dataBase/DataBase.h"
 
 using namespace std;
 using namespace kubik;
@@ -6,6 +7,7 @@ using namespace kubik::config;
 
 InstakubSettings::InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
 	:ISettings(model),
+	StatCollector(configSettings),
 	configSettings(configSettings),
 	memento(false)
 {
@@ -327,4 +329,49 @@ ci::ColorA InstakubSettings::getPreloaderToneColor() const
 ci::Font InstakubSettings::getViewInputFieldFont()
 {
 	return getFont(viewInputFieldFontName);
+}
+
+std::string InstakubSettings::getDataBasePath() const
+{
+	return configSettings->getActionName() + "\\instagram\\";
+}
+
+std::string InstakubSettings::getDataBaseName(const std::string add) const
+{
+	return	getDatePrefix() + add + getDBExt();
+}
+
+void InstakubSettings::savePrintInstaLink(const std::string& saveData)
+{
+	std::string basePath = getDataBasePath();
+	std::string baseName = getDataBaseName();
+	auto fullDirPath	 = Paths::getDataBasePath(basePath);	
+	
+	if (Paths::createIfDoesntExist(fullDirPath, baseName))
+	{
+		data_base().saveData(fullDirPath + baseName, "Date" + StatCollector::DELIMETER + "Printed Photolink");
+	}
+
+	auto timeStruct = Utils::getCurrentTime();
+	string out = getTimeFormat() + StatCollector::DELIMETER + saveData;
+
+	data_base().saveData(fullDirPath + baseName, out);
+}
+
+void InstakubSettings::saveSearchInstaLink(const std::string& saveData)
+{
+	std::string basePath = getDataBasePath();
+	std::string baseName = getDataBaseName("_tags");
+
+	auto fullDirPath = Paths::getDataBasePath(basePath);
+
+	if (Paths::createIfDoesntExist(fullDirPath, baseName))
+	{
+		data_base().saveData(fullDirPath + baseName, "Date" + StatCollector::DELIMETER + "Type" + StatCollector::DELIMETER + "Value");
+	}
+
+	auto timeStruct = Utils::getCurrentTime();
+	string out = getTimeFormat() + StatCollector::DELIMETER + saveData;
+
+	data_base().saveData(fullDirPath + baseName, out);
 }

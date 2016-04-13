@@ -52,6 +52,11 @@ void ConfigSettings::setPlayedCount(int value)
 	data.playedCount = value;
 }
 
+void ConfigSettings::addPlayedCount(int value)
+{
+	data.playedCount += value;
+}
+
 int ConfigSettings::getPlayedCount()
 {
 	return data.playedCount;
@@ -64,6 +69,12 @@ void ConfigSettings::setPrintedCount(int value)
 	data.printedCount = value;
 }
 
+void ConfigSettings::addPrintedCount(int value)
+{
+	data.printedCount += value;
+	data.currentPhotosPrinted += value;
+}
+
 int ConfigSettings::getPrintedCount()
 {
 	return data.printedCount;
@@ -74,6 +85,11 @@ int ConfigSettings::getPrintedCount()
 void ConfigSettings::setPuplishedCount(int value)
 {
 	data.publishedCount = value;
+}
+
+void ConfigSettings::addPuplishedCount(int value)
+{
+	data.publishedCount += value;
 }
 
 int ConfigSettings::getPublishedCount()
@@ -360,22 +376,27 @@ void ConfigSettings::writeConfig()
 {
 	if (memento)
 	{
-		fs::path basePath(mainConfigObj.getParamsConfigPath());
-		JsonTree doc;
-
-		doc.addChild(JsonTree("designPath", designPath));
-		doc.addChild(JsonTree("actionName", data.actionName));
-		doc.addChild(JsonTree("playedCount", data.playedCount));
-		doc.addChild(JsonTree("printedCount", data.printedCount));
-		doc.addChild(JsonTree("publishedCount", data.publishedCount));
-		doc.addChild(JsonTree("currentPhotosPrinted", data.currentPhotosPrinted));
-		doc.addChild(JsonTree("maxPhotosToPrint", data.maxPhotosToPrint));
-		doc.addChild(JsonTree("activeDesign", data.activeDesign));
-		doc.write(writeFile(basePath), JsonTree::WriteOptions());
+		writeConfigForce();
 
 		memento = false;
 		logger().log("MAIN CONFIG CHANGED!!!!");
 	}
+}
+
+void ConfigSettings::writeConfigForce()
+{
+	fs::path basePath(mainConfigObj.getParamsConfigPath());
+	JsonTree doc;
+
+	doc.addChild(JsonTree("designPath", designPath));
+	doc.addChild(JsonTree("actionName", data.actionName));
+	doc.addChild(JsonTree("playedCount", data.playedCount));
+	doc.addChild(JsonTree("printedCount", data.printedCount));
+	doc.addChild(JsonTree("publishedCount", data.publishedCount));
+	doc.addChild(JsonTree("currentPhotosPrinted", data.currentPhotosPrinted));
+	doc.addChild(JsonTree("maxPhotosToPrint", data.maxPhotosToPrint));
+	doc.addChild(JsonTree("activeDesign", data.activeDesign));
+	doc.write(writeFile(basePath), JsonTree::WriteOptions());
 }
 
 bool ConfigSettings::settingsChanged()

@@ -17,6 +17,8 @@ namespace kubik
 
 			class Popup: public Sprite
 			{
+				typedef boost::signals2::signal<void(SharingType, const std::string& data)> ShareCompleteSignal;
+
 			protected:
 				ci::Anim<float> alphaAnim;
 				ci::ColorA bgColor, headColor;
@@ -36,8 +38,8 @@ namespace kubik
 
 			public:
 				static const int POPUP_CLOSED = 1;
-				ci::Font inputFont;
-
+				ci::Font inputFont;				
+				ShareCompleteSignal shareCompleteSignal;
 				Popup(kubik::config::PhotoboothSettingsRef settings);
 
 				virtual void kill();

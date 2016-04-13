@@ -1,4 +1,5 @@
 #include "InstakubLocation.h"
+#include "dataBase/DataBase.h"
 
 using namespace kubik;
 using namespace std;
@@ -241,6 +242,22 @@ void InstakubLocation::disconnectPopup()
 void InstakubLocation::printPopupHandler()
 {
 	logger().log("..............printing................");
+
+	// if printing ok TODO
+
+	{
+		//auto lastResponse = instClient->getLastMediaResponse();
+		auto data = instaViewer->getImageGraphic();		
+
+		std::string saveString = data.getStandartResURL();
+		settings->savePrintInstaLink(saveString);
+		settings->addPrintedCount();
+		
+		//lastMediaResponse.getData();
+
+	}	
+	
+	closePopupHandler();
 }
 
 void InstakubLocation::drawPopup()
@@ -254,7 +271,9 @@ void InstakubLocation::reload()
 		return;
 
 	if (instaPopup->isOpen())
+	{
 		closePopupHandler();
+	}
 	
 	clear();
 	instaViewer->showPreloader();	

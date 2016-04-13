@@ -157,7 +157,12 @@ void PrinterBlock::setMaxPhotosToPrint(int value)
 
 void PrinterBlock::setÑurrentPhotosPrinted(int value)
 {
-	currentPhotosPrinted = value;
+	if (value > maxPhotosToPrint)
+	{
+		value = maxPhotosToPrint;
+	}
+
+	currentPhotosPrinted = maxPhotosToPrint - value;
 	curBarWidth = ((float)currentPhotosPrinted / maxPhotosToPrint) * maxBarWidth;
 
 	digitTexture = textTools().getTextField(to_string(currentPhotosPrinted), &numsFont, numsColor);

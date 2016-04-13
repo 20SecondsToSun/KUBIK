@@ -115,6 +115,8 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 		if (selectedTemplate->getID() == id)
 		{
 			startHideAnimation();
+			settings->addPrintedCount();
+			dbRecord->PrintCardTemplate = id;
 			return;
 		}
 		else

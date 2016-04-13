@@ -88,16 +88,20 @@ void SearchLocation::searchTouchHandler()
 	if (!touchKeyboard().emptyInputField())
 	{
 		searchingText = touchKeyboard().getInputFieldText();
+		std::string type;
 
 		if (searchBtns->hashtagSearchMode())
 		{
 			mode = HASHTAG_PHOTOS_LOAD;
+			type = "Hashtag";
 		}
 		else
 		{
 			mode = USER_PHOTOS_LOAD;
+			type = "Username";
 		}
 
+		settings->saveSearchInstaLink(type + StatCollector::DELIMETER + searchingText);
 		reload();
 	}
 	else

@@ -108,6 +108,8 @@ namespace instagram
 		SignalVoid synchEvent, startLoadEvent, noMoreEvent;
 		ci::signals::scoped_connection updateCon;
 
+		InstagramResponse<InstagramMedia> getLastMediaResponse() { return lastMediaResponse; };
+
 	protected:
 		std::string clientID;
 		bool _loading, _needSynch, _noMore;

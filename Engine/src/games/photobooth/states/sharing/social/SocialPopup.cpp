@@ -42,6 +42,7 @@ void SocialPopup::postingCompleteHandler()
 {
 	popupDrawFunc = &SocialPopup::successDraw;
 	Popup::connectAllFieldAsButton();
+	shareCompleteSignal(sharingType, "");
 }
 
 void SocialPopup::postingErrorHandler()

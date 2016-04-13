@@ -22,6 +22,8 @@ namespace kubik
 				ci::Anim<float> titleAlpha, titleScale, titleFilterAlpha;
 				ci::Anim<ci::Vec2f> titleAnimPosition;
 				ci::gl::Texture title, screenshot;
+				std::shared_ptr<DataBaseRecord> dbRecord;
+
 				void setLastScreenShot();				
 
 			public:	
@@ -39,6 +41,8 @@ namespace kubik
 				virtual void stop(){};
 				virtual void reset(config::PhotoboothSettingsRef config);
 				virtual void stopAllTweens();
+
+				void setDbRecord(std::shared_ptr<DataBaseRecord> db);
 
 				void nextLocationSignal(EventGUIRef& event = EventGUIRef(new EventGUI()));				
 				void hideAnimationComplete();				

@@ -20,18 +20,20 @@ namespace kubik
 			typedef	std::shared_ptr<class SocialPopup> SocialPopupRef;
 
 			class SocialPopup : public Popup
-			{
+			{			
 			protected:
 				virtual void createSocialContext() = 0;
 				virtual void showAnimComplete() override;
-				virtual void initVirtualKeyboard() override;				
-				void postingStartHandler();
-				void postingCompleteHandler();
+				virtual void initVirtualKeyboard() override;	
+				virtual void postingCompleteHandler();
+
+				void postingStartHandler();				
 				void postingErrorHandler();				
 				void disconnectSignals();
 
 				SocShareRef social;
 				ci::signals::connection hideSignalCon, postingStartSignalCon, postingCompleteSignalCon, postingErrorSignalCon;
+				SharingType sharingType;
 
 			public:
 				SocialPopup(kubik::config::PhotoboothSettingsRef settings);
@@ -42,7 +44,7 @@ namespace kubik
 				virtual void kill()  override;
 				virtual void close() override;	
 
-				SocShareRef getSocialService(){ return social; }
+				SocShareRef getSocialService(){ return social; }				
 
 			private:
 				ci::gl::Texture postingBg, errorBg;

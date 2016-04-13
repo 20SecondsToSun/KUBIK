@@ -1,4 +1,5 @@
 #pragma once
+
 #include "states/sharing/social/SocialPopup.h"
 
 namespace kubik
@@ -11,7 +12,10 @@ namespace kubik
 
 			class VkontaktePopup : public SocialPopup
 			{
+				kubik::config::PhotoboothSettingsRef set;
+
 				void createSocialContext() override;
+				virtual void postingCompleteHandler() override;
 
 			public:
 				VkontaktePopup(kubik::config::PhotoboothSettingsRef settings);				

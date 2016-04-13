@@ -5,7 +5,9 @@ using namespace kubik::games;
 using namespace kubik::config;
 using namespace kubik;
 
-VkontaktePopup::VkontaktePopup(PhotoboothSettingsRef settings):SocialPopup(settings)
+VkontaktePopup::VkontaktePopup(PhotoboothSettingsRef settings)
+	:SocialPopup(settings),
+	set(settings)
 {
 	createSocialContext();
 }
@@ -14,3 +16,11 @@ void VkontaktePopup::createSocialContext()
 {
 	social = Social::createVkontakte();	
 }
+
+void VkontaktePopup::postingCompleteHandler()
+{
+	logger().log("vk shared");
+	set->addVKShare();
+	SocialPopup::postingCompleteHandler();
+}
+

@@ -11,6 +11,7 @@
 #include "ImageSequencer/ImageSequencer.h"
 #include "videoplayer/VideoPlayer.h"
 #include "fontStorage/FontStorage.h"
+#include "StatCollector.h"
 
 namespace kubik
 {
@@ -18,7 +19,7 @@ namespace kubik
 	{		
 		typedef std::shared_ptr<class InstakubSettings> InstakubSettingsRef;
 	
-		class InstakubSettings: public ISettings
+		class InstakubSettings: public ISettings, public StatCollector
 		{
 		public:	
 			enum InstaTextID
@@ -26,7 +27,9 @@ namespace kubik
 				SEARCH_TITLE_MAIN, SEARCH_TITLE_SUB,
 				HASHTAG_TITLE_MAIN,	HASHTAG_TITLE_SUB,
 				PHOTO_TITLE_MAIN, PHOTO_TITLE_SUB				
-			};			
+			};	
+
+			static const int TimeForReload = 20; // seconds
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			void load() override;
@@ -72,6 +75,13 @@ namespace kubik
 			ci::ColorA getPreloaderToneColor() const;
 			ci::Font getViewInputFieldFont();
 
+			std::string getDataBasePath() const;
+			std::string getDataBaseName(const std::string add = "") const;
+
+			// statistics
+			void savePrintInstaLink(const std::string& saveData);
+			void saveSearchInstaLink(const std::string& saveData);
+
 		private:			
 			std::string hashtag, hashtag_save, clientID;
 			std::string viewInputFieldFontName;
@@ -81,8 +91,8 @@ namespace kubik
 			std::vector<ci::ColorA> keyboardColorsInDesign;
 			ConfigTexts<InstaTextID> configTexts;
 			ConfigObject mainConfigObj;
-			DesignData photoCardStyles;
 			ConfigSettingsRef configSettings;
+			DesignData photoCardStyles;
 
 			class ConfigPath
 			{			

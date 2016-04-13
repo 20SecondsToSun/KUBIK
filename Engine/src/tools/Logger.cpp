@@ -16,13 +16,13 @@ Logger& Logger::getInstance()
 	{
 		auto timeStruct = Utils::getCurrentTime();
 		auto logName = to_string(1900 + timeStruct.tm_year) + "_"
-				+ fix2(to_string(timeStruct.tm_mon + 1))	+ "_"
-				+ fix2(to_string(timeStruct.tm_mday))		+ "-"
-				+ fix2(to_string(timeStruct.tm_hour))		+ "_"
-				+ fix2(to_string(timeStruct.tm_min))		+ "_"
-				+ fix2(to_string(timeStruct.tm_sec))		+ ".log";
+			+ Utils::fix2(to_string(timeStruct.tm_mon + 1)) + "_"
+			+ Utils::fix2(to_string(timeStruct.tm_mday)) + "-"
+			+ Utils::fix2(to_string(timeStruct.tm_hour)) + "_"
+			+ Utils::fix2(to_string(timeStruct.tm_min)) + "_"
+			+ Utils::fix2(to_string(timeStruct.tm_sec)) + ".log";
 
-		logPath = config::Paths::getLogPath(logName);
+		logPath = config::Paths::getLogPath(logName);		
 
 		std::ofstream logfile;		
 		logfile.open(logPath.c_str());
@@ -56,14 +56,4 @@ void Logger::log(const std::string & message, const std::string& filename)
 #ifdef CINDER_MSW
 	OutputDebugStringA((message + '\n').c_str());
 #endif
-}
-
-std::string Logger::fix2(const std::string & strtofix)
-{
-	if (strtofix.size() <= 1)
-	{
-		return "0" + strtofix;
-	}		
-
-	return strtofix;
 }

@@ -252,11 +252,13 @@ void PhotoShooting::drawProgressBlock()
 void PhotoShooting::photoTakenHandler()
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.PhotoTaken!!! ~~~");
+	dbRecord->CameraShotsNum++;
 }
 
 void PhotoShooting::photoDownloadHandler(const string& path)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Downloaded ~~~");
+	dbRecord->CameraGoodShotsNum++;
 
 	photo = photoStorage->loadDownloadedPhoto(path);
 	console() << photo.getWidth() << endl;

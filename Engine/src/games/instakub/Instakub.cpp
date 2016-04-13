@@ -8,6 +8,7 @@ using namespace kubik::games::instakub;
 const float Instakub::RELOAD_TIME = 30.0f;
 
 Instakub::Instakub(ISettingsRef config)
+	:HumanPlayWithStand(false)
 {	
 	logger().log("~~~ Instakub.Created ~~~");
 
@@ -63,6 +64,8 @@ void Instakub::start()
 
 	initShowAnimation();
 	changeState(SHOW_ANIM);	
+
+	HumanPlayWithStand = true;
 }
 
 void Instakub::showAnimationComplete()
@@ -83,6 +86,11 @@ void Instakub::stop()
 {
 	logger().log("~~~ Instakub.Stop ~~~");
 
+	if (HumanPlayWithStand)
+	{
+		settings->addPlayedGame();
+	}
+
 	view->disconnectEventHandler(InstakubLocation::ENABLE_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::DISABLE_CONTROLS);
 	view->disconnectEventHandler(InstakubLocation::SHOW_CONTROLS);
@@ -90,18 +98,19 @@ void Instakub::stop()
 	view->stop();
 	
 	disconnectEventHandler();
-	stopTimer();	
+	stopTimer();
 }
 
 void Instakub::startTimer()
 {
-	delaycall(bind(&Instakub::timerComplete, this), 20.0);
+	delaycall(bind(&Instakub::timerComplete, this), settings->TimeForReload);
 }
 
 void Instakub::resetTimer()
-{
+{	
 	stopTimer();
 	startTimer();
+	HumanPlayWithStand = true;
 }
 
 void Instakub::stopTimer()
@@ -112,7 +121,24 @@ void Instakub::stopTimer()
 void Instakub::timerComplete()
 {
 	view->timeOutReload();
-	resetTimer();
+	resetTimerAuto();
+}
+
+void Instakub::resetTimerAuto()
+{
+	if (HumanPlayWithStand)
+	{
+		logger().log("Was human : game + 1");
+		settings->addPlayedGame();
+	}
+	else
+	{
+		logger().log("I'm lonely AI =(");
+	}
+
+	stopTimer();
+	startTimer();
+	HumanPlayWithStand = false;
 }
 
 void Instakub::reset()

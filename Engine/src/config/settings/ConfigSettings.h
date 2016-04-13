@@ -13,7 +13,7 @@ namespace kubik
 {	
 	namespace config
 	{
-		class ConfigSettings:public ISettings
+		class ConfigSettings : public ISettings
 		{
 		public:
 			static enum TextID
@@ -92,16 +92,20 @@ namespace kubik
 			//////////////////////////////////////////////////////////////////
 
 			void setPlayedCount(int value);
+			void addPlayedCount(int value = 1);			
 			int getPlayedCount();
 
 			//////////////////////////////////////////////////////////////////
 
 			void setPrintedCount(int value);
+			void addPrintedCount(int value = 1);
 			int getPrintedCount();
+
 
 			//////////////////////////////////////////////////////////////////
 
 			void setPuplishedCount(int value);
+			void addPuplishedCount(int value = 1);
 			int getPublishedCount();
 
 			//////////////////////////////////////////////////////////////////			
@@ -113,6 +117,7 @@ namespace kubik
 
 			ci::Color getActiveDesignColor() const;
 			TextItem getTextItem(const TextID& id);
+			
 
 			//////////////////////////////////////////////////////////////////
 
@@ -138,6 +143,7 @@ namespace kubik
 			void setTextures();
 			void buildData();
 			void writeConfig();
+			void writeConfigForce();			
 			bool settingsChanged();
 			bool designChanged();
 			changeSetting::id getChangeID() const;

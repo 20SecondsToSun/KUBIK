@@ -828,6 +828,9 @@
     <ClCompile Include="..\src\services\dataBase\DataBase.cpp">
       <Filter>Source Files\services\dataBase</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\config\StatCollector.cpp">
+      <Filter>Source Files\config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1472,9 +1475,6 @@
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
       <Filter>Source Files\config\graphic\preloader</Filter>
     </ClInclude>
@@ -1540,6 +1540,12 @@
     </ClInclude>
     <ClInclude Include="..\src\services\dataBase\DataBase.h">
       <Filter>Source Files\services\dataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\photobooth\model\DataBaseRecord.h">
+      <Filter>Source Files\games\photobooth\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config\StatCollector.h">
+      <Filter>Source Files\config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ void PhotoTimer::reset(PhotoboothSettingsRef sett)
 	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Reset ~~~");
 	IPhotoboothLocation::reset(settings);
 
-	MAX_SEC = settings->getBeReadySeconds();
+	MAX_SEC = settings->PhotoSeconds;
 
 	title = settings->getTexture("timertitle");
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 432.0f - title.getHeight() * 0.5f);

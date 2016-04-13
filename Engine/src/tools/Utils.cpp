@@ -22,6 +22,15 @@ double Utils::getCurrentMilliseconds()
 	return t.elapsed();
 }
 
+string Utils::fix2(const string& strtofix)
+{
+	if (strtofix.size() <= 1)
+	{
+		return "0" + strtofix;
+	}
+	return "" + strtofix;
+}
+
 std::string  Utils::duplicateSymbol(std::string str, std::string symb)
 {
 	return "";

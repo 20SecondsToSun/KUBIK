@@ -12,7 +12,10 @@ namespace kubik
 
 			class TwitterPopup : public SocialPopup
 			{
+				kubik::config::PhotoboothSettingsRef set;
+
 				void createSocialContext() override;
+				virtual void postingCompleteHandler() override;
 
 			public:
 				TwitterPopup(kubik::config::PhotoboothSettingsRef settings);
