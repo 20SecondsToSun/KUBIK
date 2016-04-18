@@ -80,7 +80,7 @@ namespace kubik
 				virtual void draw()	override;
 				virtual void stopAllTweens() override;
 				void showPopup();	
-				void shareCompleteHandler(SharingType i, const std::string& data);
+				void shareCompleteHandler(SharingType i, const std::string& linkToPost);
 			};
 		}
 	}

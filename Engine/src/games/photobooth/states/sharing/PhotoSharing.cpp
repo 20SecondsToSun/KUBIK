@@ -390,9 +390,10 @@ void PhotoSharing::stopAllTweens()
 	IPhotoboothLocation::stopAllTweens();
 }
 
-void PhotoSharing::shareCompleteHandler(SharingType type, const std::string& data)
+void PhotoSharing::shareCompleteHandler(SharingType type, const std::string& linkToPost)
 {
 	logger().log("complete sharing :::  " + to_string(type));
+	logger().log("linkToPost :::  " + linkToPost);
 	switch (type)
 	{
 	case kubik::EMAIL:
@@ -401,14 +402,38 @@ void PhotoSharing::shareCompleteHandler(SharingType type, const std::string& dat
 
 	case kubik::VK:
 		dbRecord->VKhare++;
+		if (dbRecord->VKLink.size())
+		{
+			dbRecord->VKLink +="," + linkToPost;
+		}
+		else
+		{
+			dbRecord->VKLink = linkToPost;
+		}		
 		break;
 
 	case kubik::FB:
 		dbRecord->FBShare++;
+		if (dbRecord->FBLink.size())
+		{
+			dbRecord->FBLink += "," + linkToPost;
+		}
+		else
+		{
+			dbRecord->FBLink = linkToPost;
+		}
 		break;
 
 	case kubik::TW:
 		dbRecord->TWShare++;
+		if (dbRecord->TWLink.size())
+		{
+			dbRecord->TWLink += "," + linkToPost;
+		}
+		else
+		{
+			dbRecord->TWLink = linkToPost;
+		}
 		break;
 	}
 }

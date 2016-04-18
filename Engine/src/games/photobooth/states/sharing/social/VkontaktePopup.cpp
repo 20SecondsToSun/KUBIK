@@ -9,6 +9,7 @@ VkontaktePopup::VkontaktePopup(PhotoboothSettingsRef settings)
 	:SocialPopup(settings),
 	set(settings)
 {
+	sharingType = SharingType::VK;
 	createSocialContext();
 }
 

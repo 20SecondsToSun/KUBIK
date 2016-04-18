@@ -21,6 +21,7 @@ void FacebookPopup::createSocialContext()
 void FacebookPopup::postingCompleteHandler()
 {
 	logger().log("fb shared");
+//	social->getLinkToPost();
 	set->addFBShare();
 	SocialPopup::postingCompleteHandler();	
 }

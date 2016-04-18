@@ -9,6 +9,7 @@ TwitterPopup::TwitterPopup(PhotoboothSettingsRef settings)
 	:SocialPopup(settings),
 	set(settings)
 {
+	sharingType = SharingType::TW;
 	createSocialContext();
 }
 

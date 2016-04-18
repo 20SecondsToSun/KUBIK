@@ -157,9 +157,6 @@ void EmailPopup::sendEmailHandler()
 
 	/*	
 		sending to server	
-
-		
-
 	*/
 
 	set->addEmailShare();

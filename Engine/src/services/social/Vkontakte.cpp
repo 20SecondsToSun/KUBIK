@@ -140,12 +140,21 @@ void Vkontakte::postPhoto(const std::string& textStatus, const std::vector<std::
 
 	string vkRequest = Curl::post(SocialSettings::VK_WALL_UPLOAD_SERVER_URL, strings);
 	string upload_url = "";
+	linkToPost = "vk.com/wall";
 	try
 	{
 		JsonTree jTree = JsonTree(vkRequest);
 		if (jTree.hasChild("response"))
 		{
 			upload_url = jTree.getChild("response").getChild("upload_url").getValue();
+
+			auto pos = upload_url.find("mid=");
+			auto trimString = upload_url.substr(pos + 4, upload_url.size());
+			auto pos2 = trimString.find("&");
+			auto result = trimString.substr(0, pos2);
+			linkToPost += result +"_";
+
+			trimString.substr(pos, upload_url.size());
 		}
 		else
 		{
@@ -159,7 +168,7 @@ void Vkontakte::postPhoto(const std::string& textStatus, const std::vector<std::
 		return;
 	}
 
-	string attacments = "";
+	string attacments{ "" };
 
 	for (size_t i = 0, ilen = filesPath.size(); i < ilen; i++)
 	{
@@ -169,7 +178,10 @@ void Vkontakte::postPhoto(const std::string& textStatus, const std::vector<std::
 			if (photo_id != "")
 			{
 				attacments += photo_id;
-				if (i != 3) attacments += ",";
+				if (i != 3)
+				{
+					attacments += ",";
+				}
 			}
 		}
 		catch (...)
@@ -195,6 +207,7 @@ void Vkontakte::postPhoto(const std::string& textStatus, const std::vector<std::
 			{
 				if (jTree.getChild("response").hasChild("post_id"))
 				{
+					linkToPost += jTree.getChild("response").getChild("post_id").getValue();
 					status = POST_READY;
 					return;
 				}					
@@ -220,8 +233,8 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 
 	strings.clear();
 	strings.insert(pair<string, string>("server", jTree.getChild("server").getValue()));
-	strings.insert(pair<string, string>("photo", jTree.getChild("photo").getValue()));
-	strings.insert(pair<string, string>("hash", jTree.getChild("hash").getValue()));
+	strings.insert(pair<string, string>("photo",  jTree.getChild("photo").getValue()));
+	strings.insert(pair<string, string>("hash",	  jTree.getChild("hash").getValue()));
 	strings.insert(pair<string, string>(SocialSettings::VK_ACCESS_TOKEN, access_token));
 
 	vkRequest = Curl::post(SocialSettings::VK_SAVE_WALL_PHOTO_URL, strings);
@@ -229,8 +242,10 @@ string Vkontakte::vkontaktePostLoadPhotoPath(const string& upload_url, const str
 
 	jTree = JsonTree(vkRequest);
 
-	if (jTree.hasChild("response[0]"))	
-		photo_id = jTree.getChild("response[0]").getChild("id").getValue();	
+	if (jTree.hasChild("response[0]"))
+	{
+		photo_id = jTree.getChild("response[0]").getChild("id").getValue();
+	}
 
 	return photo_id;
 }

@@ -28,18 +28,25 @@ void SocShare::clear_token()
 	access_token = "";
 }
 
-std::string SocShare::getResponse()
+std::string SocShare::getResponse() const
 {
 	return response;
 }
 
-std::string SocShare::getLastError()
+std::string SocShare::getLastError() const
 {
 	return lastError;
 }
 
+std::string	SocShare::getLinkToPost() const
+{
+	return linkToPost;
+}
+
 void SocShare::initChromium()
 {
+	linkToPost = "";
+
 	chrome().clearCookies();
 
 	mWebCorePtr = chrome().getWebCorePtr();

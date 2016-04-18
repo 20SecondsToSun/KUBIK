@@ -59,6 +59,8 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 		return;
 	}
 
+	linkToPost = "";
+
 	int max_media_per_upload;
 	std::string replyMsg = "";
 
@@ -96,11 +98,19 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 		try
 		{
 			JsonTree jTree = JsonTree(replyMsg);
-			string created_at = jTree.getChild("created_at").getValue<string>();
+			std::string created_at = jTree.getChild("created_at").getValue<string>();
 
 			if (!created_at.empty())
 			{
 				status = POST_READY;
+
+				auto entities = jTree.getChild("entities");
+				auto hashtags = entities.getChild("hashtags");
+				auto media = entities.getChild("media");
+
+				auto link = media.getChild(0);
+				linkToPost = link.getChild("expanded_url").getValue<string>();
+
 				return;
 			}				
 		}

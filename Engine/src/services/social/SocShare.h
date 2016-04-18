@@ -48,9 +48,10 @@ namespace kubik
 		void setLoginPassword(const std::string& login, const std::string& password);
 
 		std::string	access_token;
-		std::string	getResponse();
 		std::string	response;
-		std::string	getLastError();
+		std::string	getResponse() const;		
+		std::string	getLastError() const;
+		std::string	getLinkToPost() const;
 
 		boost::signals2::signal<void(void)>	serverHandler, hideSignal, postingComplete, postingStart, postingError;
 
@@ -70,6 +71,7 @@ namespace kubik
 		std::string authURL;
 
 		std::string	login, password, lastError, defaultStatus;
+		std::string linkToPost;
 		ci::Rectf availableArea;
 		bool connected;
 

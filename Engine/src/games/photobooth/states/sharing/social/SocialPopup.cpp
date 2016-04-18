@@ -42,7 +42,7 @@ void SocialPopup::postingCompleteHandler()
 {
 	popupDrawFunc = &SocialPopup::successDraw;
 	Popup::connectAllFieldAsButton();
-	shareCompleteSignal(sharingType, "");
+	shareCompleteSignal(sharingType, social->getLinkToPost());
 }
 
 void SocialPopup::postingErrorHandler()

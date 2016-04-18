@@ -183,6 +183,7 @@ void Facebook::postPhoto(const std::string& textStatus, const std::vector<std::s
 void Facebook::postPhotosToFbAlbum(const std::string& textStatus, const std::vector<std::string>& filesPath)
 {
 	int success_upload = 0;
+	string post_id{ "" };
 
 	for (size_t i = 0, ilen = filesPath.size(); i < ilen; i++)
 	{
@@ -191,11 +192,15 @@ void Facebook::postPhotosToFbAlbum(const std::string& textStatus, const std::vec
 			Utils::cp1251_to_utf8(textStatus.c_str()));
 		try
 		{
-			JsonTree jTree = JsonTree(fbRequest);
+			JsonTree jTree = JsonTree(fbRequest);			
+			
 			if (jTree.hasChild("post_id"))
 			{
-				string post_id = jTree.getChild("post_id").getValue();
-				if (post_id != "") success_upload++;
+				post_id = jTree.getChild("post_id").getValue();
+				if (post_id != "")
+				{
+					success_upload++;
+				}
 			}
 			else
 			{
@@ -211,7 +216,17 @@ void Facebook::postPhotosToFbAlbum(const std::string& textStatus, const std::vec
 	}
 
 	if (success_upload > 0)
-	{
+	{	
+		auto pos = post_id.find("_");
+		auto id1 = post_id.substr(0, pos);
+		auto id2 = post_id.substr(pos + 1, post_id.size());
+		auto postID = "http://www.facebook.com/" + id1 + "/posts/" + id2;
+		linkToPost = postID;
+
+		logger().log(postID);
+		logger().log("-------------------");
+		logger().log(post_id);
+
 		status = POST_READY;
 		return;
 	}	
