@@ -1,4 +1,5 @@
 #include "states/template/PhotoTemplate.h"
+#include "printer/Printer.h"
 
 using namespace kubik;
 using namespace kubik::config;
@@ -149,7 +150,11 @@ void PhotoTemplate::startHideAnimation()
 
 void PhotoTemplate::setChoosingTemplate()
 {	
-	ci::writeImage(Paths::getPhotoTemplatePath(), selectedTemplate->getPrintTemplate());
+	Surface surf(selectedTemplate->getPrintTemplate());
+	ci::writeImage(Paths::getPhotoTemplatePath(), surf);
+
+	printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+	printer().print();
 }
 
 void PhotoTemplate::update()

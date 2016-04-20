@@ -1,4 +1,6 @@
 #include "instagram/InstagramClient.h"
+#include "Tools/Logger.h"
+
 
 using namespace std;
 using namespace ci;
@@ -78,10 +80,10 @@ void InstagramClient::_loadUserMedia(const string& userName, int count)
 {
 	string tagUTF = Utils::cp1251_to_utf8(userName.c_str());
 	string request = API::USERS + API::SEARCH + "?q=" + tagUTF + "&" + clientIDParam();
-	loadUsersRequest(request);
+	loadUsersRequest(request, userName);
 }
 
-void InstagramClient::loadUsersRequest(const string& request)
+void InstagramClient::loadUsersRequest(const string& request, const string& _userName)
 {
 	string json = Curl::get(request);
 	userResponse.parse(json);
@@ -97,8 +99,27 @@ void InstagramClient::loadUsersRequest(const string& request)
 	else
 	{
 		lastCode = userResponse.getCode();
-		auto firstUser = data.front();
-		loadUserPhotos(firstUser.getID());
+
+		for (auto it : data)
+		{
+			kubik::logger().log(it.getUsername());
+		}
+
+		auto it = std::find_if(std::begin(data), std::end(data),
+			[&](const User& user){ return user.getUsername() == _userName; });
+
+		User firstUser;
+
+		if (data.end() == it)
+		{
+			firstUser = data.front();
+		}
+		else
+		{
+			firstUser = *it;
+		}
+
+		loadUserPhotos(firstUser.getID());		
 	}
 }
 
@@ -130,13 +151,16 @@ void InstagramClient::loadNextMedia()
 
 void InstagramClient::_loadNextMedia()
 {
-	if(lastMediaResponse.getPagination().hasNextURL())
-		loadMediaRequest(lastMediaResponse.getPagination().getNextURL());
+	if (lastMediaResponse.getPagination().hasNextURL())
+	{
+		auto url = lastMediaResponse.getPagination().getNextURL();		
+		loadMediaRequest(url);
+	}
 	else
 	{
 		_needSynch = false;		
-		_noMore = true;
-		_loading = false;
+		_noMore	   = true;
+		_loading   = false;
 	}
 }
 
@@ -148,13 +172,13 @@ void InstagramClient::loadMediaRequest(const string& request)
 
 	lastCode = lastMediaResponse.getCode();
 	_needSynch = true;
-	_loading = false;
+	_loading   = false;
 }
 
 void InstagramClient::setupLoadThread()
 {
 	synchImages.clear();
-	_loading = true;
+	_loading  = true;
 	updateCon = App::get()->getSignalUpdate().connect(std::bind(&InstagramClient::update, this));
 	startLoadEvent();
 }
@@ -191,7 +215,9 @@ void InstagramClient::loadImages()
 	for (auto image : mediaList)
 	{
 		ImageGraphic imageGr;
-		imageGr.setLowResURL(image.getImagesList().getLowResolution().getURL());
+		auto url = image.getImagesList().getLowResolution().getURL();
+		kubik::logger().log(url);
+		imageGr.setLowResURL(url);
 		imageGr.setStandartResURL(image.getImagesList().getStandardResolution().getURL());
 		imageGr.setSize(THUMB_SIZE);
 		synchImages.push_back(imageGr);
@@ -201,6 +227,7 @@ void InstagramClient::loadImages()
 void InstagramClient::killLoad()
 {
 	ci::app::console() << "TRY TO KILL!!!!!!!!!!!!!!!" << endl;
+
 	if (_loading)
 	{
 		ci::app::console() << "join!!!!!!!!!!!!!!!" << endl;

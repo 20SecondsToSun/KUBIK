@@ -253,6 +253,7 @@
     <ClCompile Include="..\src\services\dataBase\DataBase.cpp" />
     <ClCompile Include="..\src\services\fontStorage\FontStorage.cpp" />
     <ClCompile Include="..\src\services\kinect2\KinectAdapter.cpp" />
+    <ClCompile Include="..\src\services\printer\Printer.cpp" />
     <ClCompile Include="..\src\services\social\Facebook.cpp" />
     <ClCompile Include="..\src\services\social\instagram\ImageGraphic.cpp" />
     <ClCompile Include="..\src\services\social\instagram\InstagramClient.cpp" />
@@ -483,6 +484,7 @@
     <ClInclude Include="..\src\services\dataBase\DataBase.h" />
     <ClInclude Include="..\src\services\fontStorage\FontStorage.h" />
     <ClInclude Include="..\src\services\kinect2\KinectAdapter.h" />
+    <ClInclude Include="..\src\services\printer\Printer.h" />
     <ClInclude Include="..\src\services\social\Facebook.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImageLink.h" />
     <ClInclude Include="..\src\services\social\instagram\api\ImagesList.h" />

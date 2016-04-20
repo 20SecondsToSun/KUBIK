@@ -70,7 +70,7 @@ namespace instagram
 		void loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
 		void _loadUserMedia(const std::string& tagName, int count = LOAD_COUNT);
 		void loadUserPhotos(const std::string& userID, int count = LOAD_COUNT);
-		void loadUsersRequest(const std::string& request);		
+		void loadUsersRequest(const std::string& request, const std::string& userName);
 	
 		////////////////////////////////////////////////////////////////////////////
 		//

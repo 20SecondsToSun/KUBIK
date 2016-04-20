@@ -1,5 +1,5 @@
 {
-   "activePhotoCardStyleDesignID" : 2,
+   "activePhotoCardStyleDesignID" : 6,
    "hashtag" : "math",
    "search" : true
 }

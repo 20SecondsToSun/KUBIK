@@ -1,4 +1,5 @@
 #include "instagram/InstaPopup.h"
+#include "printer/Printer.h"
 
 using namespace kubik;
 using namespace instagram;
@@ -46,6 +47,15 @@ void InstaPopup::draw()
 	gl::drawSolidRect(getWindowBounds());
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 1));
 
+	drawImageInTemplate();
+
+	closeBtn->draw();
+	printBtn->draw();
+	gl::popMatrices();
+}
+
+void InstaPopup::drawImageInTemplate()
+{
 	ci::gl::Texture tex = image.getStandartResImage(), _image;
 	float templateScale = 1, imageScale = 1;
 
@@ -57,9 +67,9 @@ void InstaPopup::draw()
 	{
 		auto lowResImage = image.getLowResImage();
 		if (lowResImage)
-		{			
+		{
 			_image = lowResImage;
-		}			
+		}
 	}
 
 	if (_image)
@@ -80,12 +90,49 @@ void InstaPopup::draw()
 		gl::scale(imageScale, imageScale);
 		gl::draw(_image);
 		gl::popMatrices();
-	}	
-
-	closeBtn->draw();
-	printBtn->draw();
-	gl::popMatrices();
+	}
 }
+
+void InstaPopup::drawImageInTemplateForPrint()
+{
+	ci::gl::Texture tex = image.getStandartResImage(), _image;
+	float templateScale = 1, imageScale = 1;
+
+	if (tex)
+	{
+		_image = tex;
+	}
+	else
+	{
+		auto lowResImage = image.getLowResImage();
+		if (lowResImage)
+		{
+			_image = lowResImage;
+		}
+	}
+
+	if (_image)
+	{
+		templateScale = printer().getPixelsSize().x / templateImage.getWidth();
+		imageScale = printer().getPixelsSize().x / _image.getWidth();
+
+		gl::pushMatrices();
+		//gl::translate(imageShift);
+		//gl::translate(imagePositionAnim);
+		gl::scale(templateScale, templateScale);
+		gl::draw(templateImage);
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		//gl::translate(imageShift);
+		//gl::translate(imagePositionAnim);
+		gl::scale(imageScale, imageScale);
+		gl::draw(_image);
+		gl::popMatrices();
+	}
+}
+
+
 
 void InstaPopup::show(const ImageGraphic& image, const ci::EaseFn& eFunc, float time)
 {

@@ -1,5 +1,6 @@
 #include "InstakubLocation.h"
 #include "dataBase/DataBase.h"
+#include "printer/Printer.h"
 
 using namespace kubik;
 using namespace std;
@@ -242,6 +243,19 @@ void InstakubLocation::disconnectPopup()
 void InstakubLocation::printPopupHandler()
 {
 	logger().log("..............printing................");
+	
+	auto printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&](){ instaPopup->drawImageInTemplateForPrint(); });
+
+	if (printTemplate)
+	{
+		Surface surf(printTemplate);
+		auto path = Paths::getPrintPath();
+		ci::writeImage(path, surf);
+	}
+	
+	// ====================================		PRINTER INITIALIZATION   ====================================
+	printer().applyInstagramSettings();
+	printer().print();
 
 	// if printing ok TODO
 
@@ -254,7 +268,6 @@ void InstakubLocation::printPopupHandler()
 		settings->addPrintedCount();
 		
 		//lastMediaResponse.getData();
-
 	}	
 	
 	closePopupHandler();

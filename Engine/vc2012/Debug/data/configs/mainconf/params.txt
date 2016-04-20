@@ -1,10 +1,10 @@
 {
    "actionName" : "56789",
    "activeDesign" : 2,
-   "currentPhotosPrinted" : 38,
+   "currentPhotosPrinted" : 61,
    "designPath" : "kubik\\interface\\configDesign\\",
    "maxPhotosToPrint" : 400,
-   "playedCount" : 22,
-   "printedCount" : 38,
+   "playedCount" : 78,
+   "printedCount" : 61,
    "publishedCount" : 22
 }

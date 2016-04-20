@@ -292,6 +292,9 @@
     <Filter Include="Source Files\services\dataBase">
       <UniqueIdentifier>{2bf1ea84-494b-432c-80d3-694381b7a83f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\services\printer">
+      <UniqueIdentifier>{d5b65d33-87bd-494f-bba1-a94c263b3913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EngineApp.cpp">
@@ -830,6 +833,9 @@
     </ClCompile>
     <ClCompile Include="..\src\config\StatCollector.cpp">
       <Filter>Source Files\config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\services\printer\Printer.cpp">
+      <Filter>Source Files\services\printer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1472,9 +1478,6 @@
     <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\locations\settings\main\gamesBlock\GameChecker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\config\graphic\preloader\PreloaderSettings.h">
       <Filter>Source Files\config\graphic\preloader</Filter>
     </ClInclude>
@@ -1546,6 +1549,9 @@
     </ClInclude>
     <ClInclude Include="..\src\config\StatCollector.h">
       <Filter>Source Files\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\services\printer\Printer.h">
+      <Filter>Source Files\services\printer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

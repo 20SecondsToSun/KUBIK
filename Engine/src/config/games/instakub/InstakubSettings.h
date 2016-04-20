@@ -29,7 +29,7 @@ namespace kubik
 				PHOTO_TITLE_MAIN, PHOTO_TITLE_SUB				
 			};	
 
-			static const int TimeForReload = 20; // seconds
+			static const int TimeForReload = 60; // seconds
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			void load() override;

@@ -45,7 +45,7 @@ namespace kubik
 
 			static ci::fs::path getPhotoTemplatePath()
 			{
-				return ci::app::getAppPath() / "//template.png";
+				return ci::app::getAppPath() / "Kubik\\photoDir" / "//template.bmp";
 			}
 
 			static std::string getPreloaderPath()
@@ -72,6 +72,16 @@ namespace kubik
 			static std::string getDataBasePath(const std::string& file)
 			{				
 				return (ci::app::getAppPath() / "base"/ file).string();
+			}
+
+			static std::string getPrintPathString()
+			{
+				return (ci::app::getAppPath() / "Kubik\\photoDir" / "template.bmp").string();
+			}
+
+			static ci::fs::path getPrintPath()
+			{
+				return ci::app::getAppPath() / "Kubik\\photoDir" / "template.bmp";
 			}
 
 			static bool createIfDoesntExist(const std::string& dirPath, const std::string& file)

@@ -29,5 +29,10 @@ namespace instagram
 		{
 			return id;
 		}
+
+		std::string getUsername() const
+		{
+			return username;
+		}
 	};
 }

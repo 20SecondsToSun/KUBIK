@@ -117,7 +117,17 @@ void InstagramViewer::synchImages()
 		futureCurrentPos.y += correctionYPosition;
 	}	
 
-	showingCount = (images.size() / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+	if (images.size() < PHOTO_BLOCK_COUNT)
+	{
+		showingCount = images.size();
+	}
+	else
+	{
+		showingCount = (images.size() / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+	}
+
+	
+
 	mainHeight = (showingCount / countInRaw) * (oneImageWidth + sdvigX);
 	setState(IMAGES_DRAWING);			
 }
@@ -301,6 +311,12 @@ void InstagramViewer::mouseDown(MouseEvent event)
 {
 	if (event.getPos().y < initPosition.value().y || images.empty()) return;
 
+	if (images.size() < PHOTO_BLOCK_COUNT)
+	{
+		wasDrag = false;
+		return;
+	}
+
 	currentMousePos = event.getPos();
 	wasDrag = false;
 	downSecond = getElapsedSeconds();
@@ -312,7 +328,18 @@ void InstagramViewer::mouseUp(MouseEvent event)
 	alphaDragToReload = 0.0f;
 
 	if (images.empty())
+	{
 		return;
+	}
+
+	if (images.size() < PHOTO_BLOCK_COUNT)
+	{
+		if (!wasDrag && event.getPos().y > initPosition.value().y)
+		{
+			getTouchedImage(event.getPos());
+		}
+		return;
+	}
 
 	int bottomCorner = futureCurrentPos.y + mainHeight;
 
@@ -332,12 +359,14 @@ void InstagramViewer::mouseUp(MouseEvent event)
 	}
 
 	if (!wasDrag && event.getPos().y > initPosition.value().y)
+	{
 		getTouchedImage(event.getPos());
+	}
 }
 
 void InstagramViewer::mouseDrag(MouseEvent event)
 {
-	if (event.getPos().y < initPosition.value().y || images.empty()) return;
+	if (event.getPos().y < initPosition.value().y || images.empty() || images.size() < PHOTO_BLOCK_COUNT) return;
 
 	wasDrag = true;
 	delta = currentMousePos - event.getPos();

@@ -59,7 +59,7 @@ namespace instagram
 		void parse(const std::string& json)
 		{
 			clear();
-			//console() << json<<endl;
+			console() << json<<endl;
 			try
 			{				
 				meta.parse(JsonTree(json).getChild("meta"));
@@ -84,6 +84,7 @@ namespace instagram
 						object.parse(_data);
 						data.push_back(object);
 					}
+					bool b;
 				}
 				else
 				{
@@ -93,7 +94,7 @@ namespace instagram
 			}
 			catch (...)
 			{
-
+				bool b1;
 			}
 		}
 	};

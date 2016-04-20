@@ -20,6 +20,10 @@ namespace instagram
 		explicit InstaPopup(InstagramClientRef client, const ci::gl::Texture& close, const ci::gl::Texture& save, const ci::gl::Texture& _template);
 
 		void draw() override;
+		void drawImageInTemplate();
+		void drawImageInTemplateForPrint();
+		
+
 		void setAlpha(float alpha) override;
 
 		void show(const ImageGraphic& image, const ci::EaseFn& = ci::EaseOutCubic(), float time = 0.7f);
