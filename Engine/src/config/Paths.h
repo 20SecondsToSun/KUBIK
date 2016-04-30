@@ -53,6 +53,11 @@ namespace kubik
 				return ci::app::getAppPath() / "Kubik\\photoDir" / ("\\template" +ci::toString(i)+".jpg");
 			}
 
+			static ci::fs::path getPhotoTemplateRibbonToServerPath()
+			{
+				return ci::app::getAppPath() / "Kubik\\photoDir\\ribbon.jpg";
+			}
+
 			static std::string getPreloaderPath()
 			{
 				return (ci::app::getAppPath() / "kubik/design_elements/preloader/").string();

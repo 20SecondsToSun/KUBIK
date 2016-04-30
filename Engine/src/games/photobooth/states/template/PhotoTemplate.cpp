@@ -226,9 +226,43 @@ void PhotoTemplate::setChoosingTemplate()
 
 	auto templ = photoStorage->getPhotoTemplates();
 
-	for (size_t i = 0; i < 3; i++)
+	try
 	{
-		ci::writeImage(Paths::getPhotoTemplateToServerPath(i), templ[i][FORMAT2_PRINT]);
+		for (size_t i = 0; i < 3; i++)
+		{
+			ci::writeImage(Paths::getPhotoTemplateToServerPath(i), templ[i][FORMAT2_PRINT]);
+		}
+	}
+	catch (...)
+	{
+
+	}
+
+
+	try
+	{
+		auto _width = templ[0][FORMAT2_PRINT].getWidth();
+		auto _height = templ[0][FORMAT2_PRINT].getHeight();
+		auto _heightX3 = _height * 3;
+
+		auto tex1 = templ[0][FORMAT2_PRINT];
+		auto tex2 = templ[1][FORMAT2_PRINT];
+		auto tex3 = templ[2][FORMAT2_PRINT];
+
+		auto templ = Utils::drawGraphicsToFBO(Vec2f(_width, _heightX3), [&]()
+		{		
+			gl::draw(tex1);
+			gl::translate(0, _height);
+			gl::draw(tex2);
+			gl::translate(0, _height);
+			gl::draw(tex3);
+		});
+
+		ci::writeImage(Paths::getPhotoTemplateRibbonToServerPath(), templ);
+	}
+	catch (...)
+	{
+
 	}
 
 	//templ[2][FormatID::FORMAT1_PRINT]

@@ -28,6 +28,8 @@ private:
 	ControllerRef controller;
 	ApplicationModelRef model;
 	void prepareSettings(AppBasic::Settings* settings);
+
+	ci::Vec2f touchPoint;
 };
 
 void EngineApp::prepareSettings(AppBasic::Settings* settings)
@@ -61,7 +63,7 @@ void EngineApp::setup()
 
 #ifdef release
 	////fullscreenOptions.secondaryDisplayBlanking(true);	
-	//setFullScreen(true, fullscreenOptions);
+	setFullScreen(true, fullscreenOptions);
 #endif
 }
 
@@ -74,6 +76,8 @@ void EngineApp::mouseDown(MouseEvent event)
 void EngineApp::mouseUp(MouseEvent event)
 {
 	//event.mHandled = true;
+
+	touchPoint = Utils::transformCoords(event.getPos());
 }
 
 void EngineApp::keyDown(KeyEvent event)
@@ -95,6 +99,8 @@ void EngineApp::draw()
 {
 	gl::clear(Color::black()); 
 	view->draw();
+
+	//gl::drawSolidCircle(touchPoint, 20,20);
 }
 
 void EngineApp::shutdown()

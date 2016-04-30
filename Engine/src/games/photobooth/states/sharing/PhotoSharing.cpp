@@ -121,7 +121,7 @@ void PhotoSharing::start()
 //	auto path2 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(2) + ".JPG"));
 	//auto path3 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(3) + ".JPG"));
 
-	
+	qrcode->clear();
 
 	std::vector<std::string> filesPath;
 	filesPath.push_back(Paths::getPhotoTemplateToServerPath(0).string());
@@ -248,6 +248,8 @@ void PhotoSharing::connectHandlers()
 void PhotoSharing::againBtnHandler(EventGUIRef& event)
 {
 	disconnectEventHandlers();
+	server().photoUploadSuccess.disconnect_all_slots();
+	server().photoUploadError.disconnect_all_slots();
 	setLastScreenShot();
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.6f, EaseOutCubic())
 		.finishFn(bind(&PhotoSharing::hideAnimComplete, this));
@@ -354,10 +356,7 @@ void PhotoSharing::disconnectEventHandlers()
 	vkBtn->disconnectEventHandler();
 	twBtn->disconnectEventHandler();
 
-	popup->shareCompleteSignal.disconnect_all_slots();
-
-	server().photoUploadSuccess.disconnect_all_slots();
-	server().photoUploadError.disconnect_all_slots();
+	popup->shareCompleteSignal.disconnect_all_slots();	
 }
 
 void PhotoSharing::update()

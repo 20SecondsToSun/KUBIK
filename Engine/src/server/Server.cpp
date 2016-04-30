@@ -93,13 +93,13 @@ void Server::postPhoto(const string& path)
 		link = "";
 		photo_id = -1;
 
-		fs::path path1 = Paths::getPhotoTemplateToServerPath(0);
+		fs::path path1 = Paths::getPhotoTemplateRibbonToServerPath();
 		DataSourceRef urlRequest = loadFile(path1);
 		auto loadedTex = gl::Texture(loadImage(urlRequest));
 
 		Buffer bf = Buffer(urlRequest);
 		photoObj.base64Str = toBase64(bf);
-		photoObj.height = loadedTex.getHeight();
+		photoObj.height = loadedTex.getHeight()/3;
 
 		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadPostPhoto, this)));
 	}	
