@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -87,10 +87,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src;..\src\config;..\src\graphics;..\src\buttons;..\src\config\exception;..\src\config\locations;..\src\controller;..\src\devices\canon;..\src\events;..\src\events\menu;..\src\events\settings;..\src\games;..\src\games\funces;..\src\games\photobooth;..\src\games\kotopoza;..\src\gui;..\src\loaders;..\src\tools;..\src\app;..\src\locations;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header\;..\src\locations\settings\main\popup;..\src\locations\screensaver;..\src\locations\service;..\src\locations\menu;..\src\locations\settings;..\src\config\elements;..\src\events\games\photobooth;..\src\config\menu;..\src\config\games\photobooth;..\src\config\games\;..\src\config\games\funces;..\src\config\games\instakub;..\src\games\photobooth\elements;..\src\config\screensaver;..\src\locations\settings\elements;..\src\services\virtualKeyboard;..\src\locations\settings\instakub;..\src\locations\settings\main\designblock;..\src\locations\settings\main\gamesblock;..\src\locations\settings\main\printerblock;..\src\config\games;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\config\graphic\preloader;..\src\config\services\social;..\src\services\social\twitter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\\include;..\..\..\..\\boost;..\src;..\src\config;..\src\graphics;..\src\buttons;..\src\config\exception;..\src\config\locations;..\src\controller;..\src\devices\canon;..\src\events;..\src\events\menu;..\src\events\settings;..\src\games;..\src\games\funces;..\src\games\photobooth;..\src\games\kotopoza;..\src\gui;..\src\loaders;..\src\tools;..\src\app;..\src\locations;..\blocks\CanonSDK\include;..\blocks\CanonSDK\lib\EDSDK\Header\;..\src\locations\settings\main\popup;..\src\locations\screensaver;..\src\locations\service;..\src\locations\menu;..\src\locations\settings;..\src\config\elements;..\src\events\games\photobooth;..\src\config\menu;..\src\config\games\photobooth;..\src\config\games\;..\src\config\games\funces;..\src\config\games\instakub;..\src\games\photobooth\elements;..\src\config\screensaver;..\src\locations\settings\elements;..\src\services\virtualKeyboard;..\src\locations\settings\instakub;..\src\locations\settings\main\designblock;..\src\locations\settings\main\gamesblock;..\src\locations\settings\main\printerblock;..\src\config\games;..\src\config\settings;..\blocks\Cinder-Curl\src;..\blocks\Cinder-Awesomium\include;..\src\services;..\src\services\social;..\src\services\social\instagram;..\src\loaders\asynchTextureLoader;..\src\config\services\keyboard;..\src\config\graphic\preloader;..\src\config\services\social;..\src\services\social\twitter;..\blocks\Cinder-KCB2\src;..\blocks\Cinder-KCB2\lib;$(KINECTSDK20_DIR)\inc;..\src\config\games\poza;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/Zm156 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4996;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -99,8 +100,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-$(PlatformToolset).lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib;..\blocks\vld\lib\Win32\vld.lib;..\blocks\CanonSDK\lib\EDSDK\Library\EDSDK.lib;..\blocks\Cinder-Awesomium\build\lib\msw\awesomium.lib;..\blocks\Cinder-Curl\lib\msw\libcurl.lib;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib\Psapi.lib;KCBv2.lib;kinect20.lib;Kinect20.Face.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\\lib\msw\$(PlatformTarget);..\blocks\Cinder-Curl\lib\msw\;..\blocks\Cinder-KCB2\lib\$(PlatformTarget)\;$(KINECTSDK20_DIR)\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -250,6 +251,7 @@
     <ClCompile Include="..\src\locations\settings\photobooth\elements\PhotoOverElements.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\elements\Sharing.cpp" />
     <ClCompile Include="..\src\locations\settings\photobooth\PhotoboothConfig.cpp" />
+    <ClCompile Include="..\src\server\Server.cpp" />
     <ClCompile Include="..\src\services\dataBase\DataBase.cpp" />
     <ClCompile Include="..\src\services\fontStorage\FontStorage.cpp" />
     <ClCompile Include="..\src\services\kinect2\KinectAdapter.cpp" />
@@ -280,14 +282,29 @@
     <ClCompile Include="..\src\tools\gifMaker\GifEncoder.cpp" />
     <ClCompile Include="..\src\tools\Logger.cpp" />
     <ClCompile Include="..\src\tools\MemoryMonitor.cpp" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\bitstream.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\mask.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrencode.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrinput.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrspec.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\rscode.c" />
-    <ClCompile Include="..\src\tools\qrcode\libqrencode\split.c" />
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\bitstream.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\mask.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrencode.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrinput.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\qrspec.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\rscode.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\tools\qrcode\libqrencode\split.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\tools\qrcode\QrCodeCreator.cpp" />
+    <ClCompile Include="..\src\tools\TextTools.cpp" />
     <ClCompile Include="..\src\tools\Utils.cpp" />
     <ClCompile Include="src\tools\Chromium.cpp" />
     <ClCompile Include="src\tools\DrawTools.cpp" />
@@ -295,7 +312,6 @@
     <ClCompile Include="src\tools\ScreenStorage.cpp" />
     <ClCompile Include="src\tools\StringTools.cpp" />
     <ClCompile Include="src\tools\TimerTools.cpp" />
-    <ClCompile Include="TextTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\CanonSDK\include\BaseCanon.h" />
@@ -481,6 +497,7 @@
     <ClInclude Include="..\src\locations\settings\photobooth\PhotoboothConfig.h" />
     <ClInclude Include="..\src\locations\settings\SettingsFactory.h" />
     <ClInclude Include="..\src\locations\settings\ToolRoundBtn.h" />
+    <ClInclude Include="..\src\server\Server.h" />
     <ClInclude Include="..\src\services\dataBase\DataBase.h" />
     <ClInclude Include="..\src\services\fontStorage\FontStorage.h" />
     <ClInclude Include="..\src\services\kinect2\KinectAdapter.h" />

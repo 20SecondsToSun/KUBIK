@@ -16,7 +16,7 @@ using namespace Awesomium;
 
 Facebook::Facebook() 
 	:SocShare(),
-	facebookAlbumNameToPost("test кубика")	
+	facebookAlbumNameToPost("Sokolniki")	
 {
 	initWebBrowserSize = Vec2f(770, 510);
 	defaultStatus = SocialSettings::FACEBOOK_STATUS_DEFAULT;

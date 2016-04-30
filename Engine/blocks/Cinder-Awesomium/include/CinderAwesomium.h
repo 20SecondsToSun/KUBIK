@@ -8,6 +8,7 @@
 #include "cinder/Surface.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
+#include "tools/Utils.h"
 
 namespace ph 
 { 
@@ -111,9 +112,10 @@ namespace ph
 		//! sends a Cinder MouseDown event to the WebView
 		inline void handleMouseDown(Awesomium::WebView *view, ci::app::MouseEvent event)
 		{
+			auto transformCoords = Utils::transformCoords(event.getPos());
 			if(event.isLeft())
 			{
-				view->InjectMouseMove(event.getX(), event.getY());
+				view->InjectMouseMove(transformCoords.x, transformCoords.y);
 				view->InjectMouseDown(Awesomium::kMouseButton_Left);
 			}
 			else if (event.isMiddle())
@@ -135,9 +137,11 @@ namespace ph
 		//! sends a Cinder MouseUp event to the WebView
 		inline void handleMouseUp(Awesomium::WebView *view, ci::app::MouseEvent event)
 		{
+			auto transformCoords = Utils::transformCoords(event.getPos());
+
 			if(event.isLeft())
 			{
-				view->InjectMouseMove(event.getX(), event.getY());
+				view->InjectMouseMove(transformCoords.x, transformCoords.y);
 				view->InjectMouseUp(Awesomium::kMouseButton_Left);
 			}
 			else if (event.isMiddle())

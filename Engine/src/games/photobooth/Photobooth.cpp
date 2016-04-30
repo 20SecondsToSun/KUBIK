@@ -163,8 +163,8 @@ void Photobooth::initLocations()
 	locations.clear();
 	locations.push_back(photoInstruction);
 	locations.push_back(photoFilter);
-	//locations.push_back(photoTimer);
-	//locations.push_back(photoShooting);
+	locations.push_back(photoTimer);
+	locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);

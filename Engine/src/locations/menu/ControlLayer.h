@@ -18,6 +18,8 @@ namespace kubik
 			ImageButtonSpriteRef btn;
 			SimpleSpriteButtonRef settingsbtn;
 
+			int clicks;
+
 		public:
 			static const int CLOSE_GAME = 0;
 			static const int OPEN_SETTINGS = 1;

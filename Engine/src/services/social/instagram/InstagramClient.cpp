@@ -1,7 +1,6 @@
 #include "instagram/InstagramClient.h"
 #include "Tools/Logger.h"
 
-
 using namespace std;
 using namespace ci;
 using namespace ci::app;
@@ -106,7 +105,10 @@ void InstagramClient::loadUsersRequest(const string& request, const string& _use
 		}
 
 		auto it = std::find_if(std::begin(data), std::end(data),
-			[&](const User& user){ return user.getUsername() == _userName; });
+			[&](const User& user)
+			{
+				return user.getUsername() == _userName;
+			});
 
 		User firstUser;
 

@@ -49,6 +49,8 @@ Icon
 *.pak
 *.pch
 *.ilk
+*.bin
+*.BIN
 *.codeanalysis
 *.codeanalysisast
 

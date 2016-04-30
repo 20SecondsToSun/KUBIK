@@ -121,6 +121,8 @@ namespace kubik
 			PhotoboothSettingsRef phtSettings;
 			PreloaderSettingsRef preloaderSettings;
 			ScreenSaverSettingsRef screenSaverSettings;
+
+			IMovieRef mainPreloader;
 		};
 	
 		inline SettingsFactory&	settingsFactory() { return SettingsFactory::getInstance();};

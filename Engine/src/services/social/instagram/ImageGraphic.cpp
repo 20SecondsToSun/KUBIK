@@ -45,7 +45,9 @@ void ImageGraphic::draw(const ci::Vec2f& vec)
 	{
 		lowTex = ph::fetchTexture(lowResURL);
 		if (lowTex)
+		{
 			fadeIn(0.0f, 1.0f);
+		}
 
 		gl::pushMatrices();
 		gl::translate(vec);
@@ -78,7 +80,9 @@ std::string ImageGraphic::getStandartResURL() const
 ci::gl::Texture ImageGraphic::getStandartResImage()
 {
 	if (!bigtex)
+	{
 		bigtex = ph::fetchTexture(standartResURL);
+	}
 
 	return bigtex;
 }
@@ -87,7 +91,9 @@ ci::gl::Texture ImageGraphic::getStandartResImage()
 ci::gl::Texture ImageGraphic::getLowResImage()
 {
 	if (!lowTex)
+	{
 		lowTex = ph::fetchTexture(lowResURL);
+	}
 
 	return lowTex;
 }

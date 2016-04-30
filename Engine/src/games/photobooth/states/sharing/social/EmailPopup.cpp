@@ -1,4 +1,5 @@
 #include "states/sharing/social/EmailPopup.h"
+#include "server/Server.h"
 
 using namespace kubik::games::photobooth;
 using namespace kubik::games;
@@ -25,8 +26,14 @@ EmailPopup::EmailPopup(PhotoboothSettingsRef settings)
 		500.0f - addEmailIcon.getHeight() * 0.5f)));
 }
 
+void EmailPopup::setPhotoID(int _photo_id)
+{
+	photo_id = _photo_id;
+}
+
 void EmailPopup::show()
 {
+	
 	showAddEmail = true;
 	clearEmails();
 	Popup::show();
@@ -149,32 +156,44 @@ void EmailPopup::sendEmailHandler()
 		return;
 	}	
 
-
-	
-
-
 	// if everything ok send mail
 
 	/*	
 		sending to server	
 	*/
 
+	server().sendToEmails(2, photo_id, getEmailInString());
+
 	set->addEmailShare();
 	shareCompleteSignal(SharingType::EMAIL, getEmailInString());
+
+
+	addEmailBtn->disconnectEventHandler();
+	touchKeyboard().disconnectEventHandler(VirtualKeyboard::SEARCH_TOUCH);
+	Popup::hide(event);
 }
 
 std::string EmailPopup::getEmailInString()
 {
-	std::string out = "";
-	for (size_t i = 0; i < emails.size(); i++)
+	std::string out = touchKeyboard().getInputFieldText();
+	if (out != "" && emails.size())
 	{
-		out += emails[i];
+		out += ",";
 
-		if (i != (emails.size() - 1))
+		for (size_t i = 0; i < emails.size(); i++)
 		{
-			out += ",";
+			out += emails[i];
+
+			if (i != (emails.size() - 1))
+			{
+				out += ",";
+			}
 		}
 	}
+
+	
+
+	
 
 	return out;
 }

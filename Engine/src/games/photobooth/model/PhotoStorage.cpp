@@ -15,15 +15,15 @@ PhotoStorage::PhotoStorage()
 	format2.top		= 281;
 
 	format1.width	= 1151;
-	format1.height	= 1026;
+	format1.height	= 1030;//1026
 	format1.top		= 360;
 
 	format3.width	= 1181; 
-	format3.height	= 1181;
+	format3.height	= 1220;
 	format3.top		= 281;
 
 	format4.width	= 1270; 
-	format4.height	= 2226;
+	format4.height = 2000;//2226;
 	format4.top		= 0;
 
 	selectedFilterID = 1;
@@ -185,27 +185,27 @@ void PhotoStorage::createPhotoTemplates()
 		_scale = _width / tex.getWidth();			
 		photoTemplates[FORMAT2_SMALL] = getScaledTex(_width, _scale * format2.height, _scale, tex);	
 
-		_width = 157.0f;
+		_width = 154.0f;
 		_scale = _width / tex.getWidth();			
 		photoTemplates[FORMAT2_MIDDLE] = getScaledTex(_width, _scale * format2.height, _scale, tex);
 
-		_width = 1181.0f;
+		_width = 1218;// 1181.0f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT2_PRINT] = getScaledTex(_width, _scale * format2.height, _scale, tex);
 
-		_width = 917.0f;
+		_width = 960.0f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT5_PRINT_1] = getScaledTex(_width, _scale * format2.height, _scale, tex);	
 	
 
 		/////////////////////////////////////////////////////////////////////	
-		//format1
+		//format1  small photos 3 in one horizontal
 		tex	   = loadedPhotoTexVec[i].format1;
 		_width = 218.0f;
 		_scale = _width / tex.getWidth();			
 		photoTemplates[FORMAT1_SMALL] = getScaledTex(_width, _scale * format1.height, _scale, tex);
 
-		_width = 590.0f;
+		_width = 609;// 590.0f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT1_PRINT] = getScaledTex(_width, _scale * format1.height, _scale, tex);
 		
@@ -218,19 +218,19 @@ void PhotoStorage::createPhotoTemplates()
 
 		photoTemplates[FORMAT3_BIG]     = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
-		_width = 100.0f;
+		_width = 104.0f;
 		_scale = _width / tex.getWidth();	
 		photoTemplates[FORMAT3_SMALL]   = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
-		_width = 1181.0f;
+		_width = 1218; //1228;//
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT3_PRINT_1] = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
-		_width = 587.0f;
+		_width = 604.0f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT3_PRINT_2] = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
-		_width = 587.0f;
+		_width = 606.0f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT5_PRINT_2] = getScaledTex(_width, _scale * format3.height, _scale, tex);
 
@@ -242,7 +242,7 @@ void PhotoStorage::createPhotoTemplates()
 		_scale = _width / tex.getWidth();	
 		photoTemplates[FORMAT4_BIG] = getScaledTex(_width, _scale * format4.height, _scale, tex);
 
-		_width = 588.0f;
+		_width = 621.3f;
 		_scale = _width / tex.getWidth();
 		photoTemplates[FORMAT4_PRINT] = getScaledTex(_width, _scale * format4.height, _scale, tex);
 

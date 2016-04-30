@@ -24,6 +24,7 @@ namespace kubik
 		public:
 			GameButton(const config::GameData& data, config::AdditionalGameData adata);
 			virtual void drawLayout() override;
+			virtual bool inButtonField(const ci::Vec2i& pos) override;
 		};
 	}
 }

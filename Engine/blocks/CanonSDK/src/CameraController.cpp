@@ -25,6 +25,7 @@ void CameraController::perform(canonEvent evt)
 		break;
 
 	case canon::CAMERA_WILL_SOON_SHUTDOWN:
+		wiilSoonShutDownSignal();
 		break;
 	}
 

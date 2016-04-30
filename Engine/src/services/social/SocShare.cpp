@@ -138,18 +138,21 @@ void SocShare::connectTouchDown()
 
 void SocShare::mouseDown(MouseEvent &event)
 {
-	if (availableArea.contains(event.getPos()))
+	auto coordTransform = Utils::transformCoords(event.getPos());
+	if (availableArea.contains(coordTransform))
 	{
-		MouseEvent mEvent = touchKeyboard().inititateMouseEvent(event.getPos() - popupPosition);
+		MouseEvent mEvent = touchKeyboard().inititateMouseEvent(coordTransform - popupPosition);
 		ph::awesomium::handleMouseDown(mWebViewPtr, mEvent);
 	}
 }
 
 void SocShare::mouseUp(MouseEvent &event)
 {
-	if (availableArea.contains(event.getPos()))
-	{
-		MouseEvent mEvent = VirtualKeyboard::inititateMouseEvent(event.getPos() - popupPosition);
+	auto coordTransform = Utils::transformCoords(event.getPos());
+
+	if (availableArea.contains(coordTransform))
+	{		
+		MouseEvent mEvent = VirtualKeyboard::inititateMouseEvent(coordTransform - popupPosition);
 		ph::awesomium::handleMouseUp(mWebViewPtr, mEvent);		
 	}
 }

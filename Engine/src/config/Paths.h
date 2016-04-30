@@ -45,7 +45,12 @@ namespace kubik
 
 			static ci::fs::path getPhotoTemplatePath()
 			{
-				return ci::app::getAppPath() / "Kubik\\photoDir" / "//template.bmp";
+				return ci::app::getAppPath() / "Kubik\\photoDir" / "\\template.bmp";
+			}
+
+			static ci::fs::path getPhotoTemplateToServerPath(int i)
+			{
+				return ci::app::getAppPath() / "Kubik\\photoDir" / ("\\template" +ci::toString(i)+".jpg");
 			}
 
 			static std::string getPreloaderPath()

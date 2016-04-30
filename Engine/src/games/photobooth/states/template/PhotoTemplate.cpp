@@ -149,12 +149,97 @@ void PhotoTemplate::startHideAnimation()
 }
 
 void PhotoTemplate::setChoosingTemplate()
-{	
-	Surface surf(selectedTemplate->getPrintTemplate());
-	ci::writeImage(Paths::getPhotoTemplatePath(), surf);
+{		
+	gl::Texture printTemplate;
+	switch (selectedTemplate->getID())
+	{
+		case FIRST:
+		{			
+			printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&]()
+			{
+				auto templateScale = 0.5f * printer().getPixelsSize().x / selectedTemplate->getPrintTemplate().getWidth();
+				gl::scale(templateScale, templateScale);
+				gl::draw(selectedTemplate->getPrintTemplate());
+				gl::translate(selectedTemplate->getPrintTemplate().getWidth() - 5, 0);// FOR PRINTER PIXELS SHIFT, SHIT BUT THIS NESSESSERY
+				gl::draw(selectedTemplate->getPrintTemplate());
+			});
+			printer().applyPhotoBoothSettings(DMPAPER_BOOTH_TWO_PHOTOS);
+		}		
+		break;
 
-	printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+		case SECOND:
+		{
+			printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&]()
+			{ 
+				auto templateScale = printer().getPixelsSize().x / selectedTemplate->getPrintTemplate().getWidth();
+				gl::scale(templateScale, templateScale);
+				gl::draw(selectedTemplate->getPrintTemplate());
+			});
+			printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+		}
+		break;
+
+		case THIRD:
+		{
+			printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&]()
+			{
+				auto templateScale = printer().getPixelsSize().x / selectedTemplate->getPrintTemplate().getWidth();
+				
+				gl::translate(selectedTemplate->getPrintTemplate().getHeight(), 0);
+				gl::rotate(90);
+				gl::draw(selectedTemplate->getPrintTemplate());
+			});
+			printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+		}
+		break;
+
+		case FOURTH:
+		{
+			printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&]()
+			{
+				auto templateScale = printer().getPixelsSize().x / selectedTemplate->getPrintTemplate().getWidth();
+				gl::scale(templateScale, templateScale);
+				gl::draw(selectedTemplate->getPrintTemplate());
+			});
+			printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+		}
+		break;
+
+		case FIFTH:
+		{
+			printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&]()
+			{
+				auto templateScale = printer().getPixelsSize().x / selectedTemplate->getPrintTemplate().getWidth();
+				//gl::scale(templateScale, templateScale);
+				gl::translate(selectedTemplate->getPrintTemplate().getHeight(), 0);
+				gl::rotate(90);
+				gl::draw(selectedTemplate->getPrintTemplate());
+			});
+			printer().applyPhotoBoothSettings(DMPAPER_BOOTH_ONE_PHOTO);
+		}
+		break;		
+	}
+	Surface savePhotocard(printTemplate);
+	ci::writeImage(Paths::getPhotoTemplatePath(), savePhotocard);
+	
+
+
+	auto templ = photoStorage->getPhotoTemplates();
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		ci::writeImage(Paths::getPhotoTemplateToServerPath(i), templ[i][FORMAT2_PRINT]);
+	}
+
+	//templ[2][FormatID::FORMAT1_PRINT]
+
+
 	printer().print();
+
+	logger().log("width  :: " + toString(selectedTemplate->getPrintTemplate().getWidth()));
+	logger().log("height  :: " + toString(selectedTemplate->getPrintTemplate().getHeight()));
+	logger().log("selectedTemplate->getID()  :: " + toString(selectedTemplate->getID()));
+	
 }
 
 void PhotoTemplate::update()
@@ -194,24 +279,24 @@ void PhotoTemplate::resetTemplateButtons()
 	Vec2f YTemp(0, 0);
 
 	position = Vec2f(220.0f, 420.0f) - YTemp;
-	size = Vec2f(218.0f, 655.0f);
+	size = Vec2f(218.0f, 670.0f);
 	templatebtns.push_back(TemplateButton1Ref(new TemplateButton1(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(560.0f, 420.0f) - YTemp;
-	size = Vec2f(303.0f, 455.0f);
+	size = Vec2f(303.0f, 465.0f);
 	auto templ2 = TemplateButton2Ref(new TemplateButton2(Rectf(position, position + size), cards, stickers));
 	templatebtns.push_back(templ2);
 
 	position = Vec2f(220.0f, 1191.0f) - YTemp;
-	size = Vec2f(303.0f, 202.0f);
+	size = Vec2f(303.0f, 198.0f);
 	templatebtns.push_back(TemplateButton3Ref(new TemplateButton3(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(611.0f, 1191.0f) - YTemp;
-	size = Vec2f(202.0f, 304.0f);
+	size = Vec2f(202.0f, 315.0f);
 	templatebtns.push_back(TemplateButton4Ref(new TemplateButton4(Rectf(position, position + size), cards, stickers)));
 
 	position = Vec2f(220.0f, 1461.0f) - YTemp;
-	size = Vec2f(303.0f, 202.0f);
+	size = Vec2f(303.0f, 198.0f);
 	templatebtns.push_back(TemplateButton5Ref(new TemplateButton5(Rectf(position, position + size), cards, stickers)));
 
 	for (auto templ : templatebtns)

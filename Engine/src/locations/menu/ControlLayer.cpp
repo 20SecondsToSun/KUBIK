@@ -20,10 +20,11 @@ void ControlLayer::showBackButton()
 
 void ControlLayer::activateListeners()
 {
+	clicks = 0;
 	btn->connectEventHandler(&ControlLayer::close, this);
 	btn->setAlpha(1.0f);
 	settingsbtn->connectEventHandler(&ControlLayer::startSettings, this);	
-	settingsbtn->setAlpha(1.0f);
+	settingsbtn->setAlpha(0.0f);
 }
 
 void ControlLayer::hideBackButton()
@@ -39,7 +40,7 @@ void ControlLayer::close(EventGUIRef& event)
 void ControlLayer::unActivateListeners()
 {
 	btn->setAlpha(0.2f);
-	settingsbtn->setAlpha(0.2f);
+	settingsbtn->setAlpha(0.f);
 	btn->disconnectEventHandler();
 	settingsbtn->disconnectEventHandler();	
 }
@@ -57,15 +58,20 @@ void ControlLayer::draw()
 
 void ControlLayer::createControlsButtons()
 {
-	Rectf setButtonArea = Rectf(850.0f, 0.0f, 1050.0f, 15.0f);
+	Rectf setButtonArea = Rectf(850.0f, 0.0f, 1080.0f, 150.0f);
 	settingsbtn = SimpleSpriteButtonRef(new SimpleSpriteButton(setButtonArea));
 	settingsbtn->connectEventHandler(&ControlLayer::startSettings, this);
+	settingsbtn->setAlpha(0.f);
 	addChild(settingsbtn);
 }
 
 void ControlLayer::startSettings(EventGUIRef& event)
 {
-	callback(OPEN_SETTINGS);
+	clicks++;
+	if (clicks >= 7)
+	{
+		callback(OPEN_SETTINGS);
+	}
 }
 
 void ControlLayer::clear()

@@ -16,7 +16,9 @@ GameChecker::GameChecker(const Rectf& rect, const GamesInfo& info, const Color& 
 
 void GameChecker::mouseUp(ci::app::MouseEvent &evt)
 {
-	if (inButtonField(evt.getPos()))
+	auto coordTransform = Utils::transformCoords(evt.getPos());
+
+	if (inButtonField(coordTransform))
 	{
 		swapActive();
 		auto eventref = std::static_pointer_cast<GameCheckerEvent>(event);

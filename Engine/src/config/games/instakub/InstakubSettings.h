@@ -30,6 +30,7 @@ namespace kubik
 			};	
 
 			static const int TimeForReload = 60; // seconds
+			static const int TtimeForPrinting = 23; // seconds
 
 			InstakubSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 			void load() override;

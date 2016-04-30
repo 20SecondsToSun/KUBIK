@@ -13,6 +13,7 @@ CameraCanon::CameraCanon()
 	controller = new CameraController();
 	controller->photoDownloadedSignal.connect(std::bind(&CameraCanon::photoDownloadHandler, this, std::placeholders::_1));
 	controller->cameraShutDownSignal.connect(std::bind(&CameraCanon::shutdownHandler, this));
+	controller->wiilSoonShutDownSignal.connect(std::bind(&CameraCanon::wiilSoonShutDownHandler, this));
 }
 
 void CameraCanon::setup() 
@@ -264,6 +265,7 @@ ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int o
 	if(!tex) return 0;
 
 	gl::Fbo fbo = gl::Fbo(sizex, sizey);
+	//gl::Fbo fbo = gl::Fbo(sizey, sizex);
 
 	Utils::drawGraphicsToFBO(fbo, [&]()
 	{
@@ -279,6 +281,7 @@ ci::gl::Texture CameraCanon::getTexture(int sizex, int sizey, int offsetx, int o
 	Utils::clearFBO(fbo);
 
 	gl::Fbo fbo1 = gl::Fbo(sizex, sizey);
+	//gl::Fbo fbo1 = gl::Fbo(sizey, sizex);
 	Utils::drawGraphicsToFBO(fbo1, [&]()
 	{
 		gl::pushMatrices();
@@ -313,9 +316,16 @@ void CameraCanon::photoDownloadHandler(const std::string& downloadPath)
 
 void CameraCanon::shutdownHandler()
 {
+	kubik::logger().log("shutdown handler in canon claass");
 	connectionState = DISCONNECT;
 	deviceDisconnectEvent();
 	shutdown();
+}
+
+void CameraCanon::wiilSoonShutDownHandler()
+{
+	kubik::logger().log("wiilSoonShutDownHandler in canon claass");
+	extendShutDownTimer();
 }
 
 void CameraCanon::setDownloadDirectory(fs::path dir)
@@ -352,6 +362,7 @@ void CameraCanon::photoCameraReadyLiveView()
 
 void CameraCanon::handleStateEvent(EdsUInt32 inEvent)
 {
+	kubik::logger().log("handleStateEvent::: " + toString(inEvent));
 	switch (inEvent)
 	{
 	case kEdsStateEvent_Shutdown:

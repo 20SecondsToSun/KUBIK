@@ -70,6 +70,9 @@ namespace kubik
 				void connectHandlers();
 				void popupClosed();
 
+				void photoUploadCompleteHandler();
+				void photoUploadErrorHandler();
+
 			public:
 				PhotoSharing(config::PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
 

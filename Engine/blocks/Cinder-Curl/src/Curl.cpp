@@ -45,9 +45,28 @@ string Curl::post( const string &url, map<string, string> &m )
 	return easyCurl( url, usePost, postString );
 }
 
+string Curl::postStand(const string &url, map<string, string> &m, const string& access_token)
+{
+	bool   usePost = true;
+	string postString = "";
+
+	map<string, string>::iterator act, end;
+	for (act = m.begin(), end = m.end(); act != end; ++act)
+	{
+		postString += act->first + "=" + Curl::urlEncode(act->second) + "&";
+	}
+
+	return easyCurlStand(url, usePost, postString, access_token);
+}
+
 string Curl::postImage( const string &Serverurl, const string &Imageurl )
 {
-	 return easyCurl(Serverurl,true,Imageurl);
+	 return easyCurl(Serverurl, true, Imageurl);
+}
+
+string Curl::postImageStand(const string &Serverurl, const string &Imageurl, const string& access_token)
+{
+	return easyCurlStand(Serverurl, true, Imageurl, access_token);
 }
 
 string Curl::postUploadFB( const string &url, const string &  ACCESSTOKEN, const string &  path, const string &  message)
@@ -212,6 +231,14 @@ string Curl::get( const string &url )
 	return easyCurl( url, usePost, params );
 }
 
+string Curl::getStand(const string &url, const string& access_token)
+{
+	bool usePost = false;
+	string params = "";
+
+	return easyCurlStand(url, usePost, params, access_token);
+}
+
 bool Curl::ftpUpload( const std::string &ftpUrl, const std::string &userName, const std::string &password, const ci::fs::path &path )
 {
 	bool ret = true;
@@ -290,7 +317,7 @@ void Curl::clean( )
 	curl_easy_cleanup( curl );	
 }
 
-string Curl::easyCurl( const string &url, bool post, const string &postParamString)
+string Curl::easyCurl(const string &url, bool post, const string &postParamString)
 {
 	string buffer = "";
 	char errorBuffer[CURL_ERROR_SIZE];
@@ -300,7 +327,69 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	curl = curl_easy_init();
 	CURLcode result;
 
-	if( ! curl )
+	if (!curl)
+		return "";
+
+	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+	//curl_easy_setopt( curl, CURLOPT_HEADER        , 0           );
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+
+	if (post)
+	{
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postParamString.c_str());
+	}
+
+	curl_slist *headers = NULL; // init to NULL is important 
+	console() << "url  :" << url << endl;
+	//console() << "postParamString  :" << postParamString << endl;
+
+
+	headers = curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8");
+	headers = curl_slist_append(headers, "Accept-Language: ru,en-us;q=0.7,en;q=0.3");
+	headers = curl_slist_append(headers, "Accept-Encoding: identity");
+	headers = curl_slist_append(headers, "Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.7");
+	headers = curl_slist_append(headers, "Content - Type: application / x - www - form - urlencoded");
+
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "cookies.txt"); // read from
+	curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "cookies.txt"); // write to
+
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); // this line makes it work under https
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
+	result = curl_easy_perform(curl);
+
+	curl_easy_cleanup(curl);
+
+	console() << "result  : " << errorBuffer << endl;
+
+	if (result == CURLE_OK)
+	{
+		return buffer;
+	}
+	else
+	{
+		return "ERROR";
+	}
+}
+string Curl::easyCurlStand(const string &url, bool post, const string &postParamString, const string &access_token)
+{
+	string buffer = "";
+	char errorBuffer[CURL_ERROR_SIZE];
+
+	errorBuffer[0] = 0;
+
+	curl = curl_easy_init();
+	CURLcode result;
+
+	if( !curl )
 		return "";
 
 	curl_easy_setopt( curl, CURLOPT_ERRORBUFFER   , errorBuffer );
@@ -309,7 +398,7 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	curl_easy_setopt( curl, CURLOPT_FOLLOWLOCATION, 1           );
 	curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION , writer      );
 	curl_easy_setopt( curl, CURLOPT_WRITEDATA     , &buffer     );
-	curl_easy_setopt( curl, CURLOPT_TIMEOUT       , 10   );
+	curl_easy_setopt( curl, CURLOPT_TIMEOUT       , 60   );
 
 	if( post )
 	{
@@ -317,16 +406,23 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 		curl_easy_setopt( curl, CURLOPT_POSTFIELDS, postParamString.c_str());	
 	}	
 	
-	curl_slist *headers=NULL; // init to NULL is important 
+	curl_slist *headers = NULL; // init to NULL is important 
 	console() << "url  :" << url << endl;
 	//console() << "postParamString  :" << postParamString << endl;
 	
 
-	curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8"); 
-	curl_slist_append(headers, "Accept-Language: ru,en-us;q=0.7,en;q=0.3"); 
-	curl_slist_append(headers, "Accept-Encoding: identity"); 
-	curl_slist_append(headers, "Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.7");
-	curl_slist_append(headers, "Content - Type: application / x - www - form - urlencoded");
+//	curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8");
+	headers = curl_slist_append(headers, "Accept: application/json");
+
+
+	//curl_slist_append(headers, "Accept-Language: ru,en-us;q=0.7,en;q=0.3"); 
+	//curl_slist_append(headers, "Accept-Encoding: identity"); 
+	headers = curl_slist_append(headers, "Accept-Charset: utf-8;q=0.7,*;q=0.7");
+	
+	headers = curl_slist_append(headers, "qwerty: application / x-www-form-urlencoded");
+	string auth = "Authorization: Bearer " + access_token;
+
+	headers = curl_slist_append(headers, auth.c_str());
 
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); 
 
@@ -334,22 +430,21 @@ string Curl::easyCurl( const string &url, bool post, const string &postParamStri
 	curl_easy_setopt( curl, CURLOPT_COOKIEFILE    , "cookies.txt"                                         ); // read from
 	curl_easy_setopt( curl, CURLOPT_COOKIEJAR     , "cookies.txt"                                         ); // write to
 
-	curl_easy_setopt( curl, CURLOPT_SSL_VERIFYPEER, 0L                                                 ); // this line makes it work under https
+	//curl_easy_setopt( curl, CURLOPT_SSL_VERIFYPEER, 0L                                                 ); // this line makes it work under https
 	curl_easy_setopt( curl, CURLOPT_SSL_VERIFYHOST, 0L                                                 );
 
 	result = curl_easy_perform( curl );
 
 	curl_easy_cleanup( curl );	
 
-	console() << "result  :" << errorBuffer << endl;
+	console() << "::::::::::::::::::::::::::::::::::::::::::::::   result  : " << errorBuffer << endl;
 	
 	if( result == CURLE_OK )
 	{
 		return buffer;
 	}
 	else
-	{
-		
+	{		
 		return "ERROR";
 	}
 }

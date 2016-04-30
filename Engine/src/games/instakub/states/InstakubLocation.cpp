@@ -1,6 +1,7 @@
 #include "InstakubLocation.h"
 #include "dataBase/DataBase.h"
 #include "printer/Printer.h"
+#include "tools/TimerTools.h"
 
 using namespace kubik;
 using namespace std;
@@ -67,6 +68,7 @@ void InstakubLocation::stop()
 	instaViewer->disconnect();
 	instaViewer->clear();
 	disconnectPopup();
+	instaPopup->hide();
 }
 
 void InstakubLocation::disconnectViewer()
@@ -228,21 +230,25 @@ void InstakubLocation::reloadHandler()
 void InstakubLocation::closePopupHandler()
 {
 	disconnectPopup();
+	instaPopup->hide();
 	instaViewer->connect();
-	callback(SHOW_CONTROLS);
+	callback(SHOW_CONTROLS);	
 }
 
 void InstakubLocation::disconnectPopup()
 {
+	logger().log("disconnect popup");
 	instaPopup->disconnectEventHandler(InstaPopup::CLOSE_POPUP);
 	instaPopup->disconnectEventHandler(InstaPopup::PRINT);
-	instaPopup->unActivateListeners();
-	instaPopup->hide();
+	instaPopup->unActivateListeners();	
 }
 
 void InstakubLocation::printPopupHandler()
-{
-	logger().log("..............printing................");
+{	
+	logger().log("start print");
+	disconnectPopup();
+	instaPopup->setPrintingInProcessMode();
+	ci::app::timeline().apply(&printAnimTime, 0.0f, 10.0f, settings->TtimeForPrinting).finishFn(bind(&InstakubLocation::printingCompleteHandler, this));
 	
 	auto printTemplate = Utils::drawGraphicsToFBO(printer().getPixelsSize(), [&](){ instaPopup->drawImageInTemplateForPrint(); });
 
@@ -258,18 +264,19 @@ void InstakubLocation::printPopupHandler()
 	printer().print();
 
 	// if printing ok TODO
-
 	{
-		//auto lastResponse = instClient->getLastMediaResponse();
 		auto data = instaViewer->getImageGraphic();		
-
 		std::string saveString = data.getStandartResURL();
 		settings->savePrintInstaLink(saveString);
-		settings->addPrintedCount();
-		
-		//lastMediaResponse.getData();
+		settings->addPrintedCount();		
 	}	
-	
+
+	//instaViewer->showPreloader();	
+}
+
+void InstakubLocation::printingCompleteHandler()
+{
+	logger().log("--------------------------printing complete-----------------------------");
 	closePopupHandler();
 }
 

@@ -10,9 +10,9 @@ namespace instagram
 
 	class InstagramViewer
 	{
-		static const int MAX_PHOTO_CASHED = 60;
+		static const int MAX_PHOTO_CASHED		= 60;
 		static const int CASH_PHOTO_CLEAR_COUNT = 18;
-		static const int PHOTO_BLOCK_COUNT = 18;
+		static const int PHOTO_BLOCK_COUNT		= 18;
 		
 		typedef ci::signals::signal<void(void)> SignalVoid;	
 
@@ -29,7 +29,8 @@ namespace instagram
 
 		size_t showingCount;
 
-		enum drawState{ IMAGES_DRAWING,
+		enum drawState
+		{	IMAGES_DRAWING,
 			PRELOADING, 
 			MINI_PRELOADING,
 			SHOW_NO_MORE_POPUP,
@@ -38,7 +39,8 @@ namespace instagram
 			SHOW_USER_NOT_HAVE_PHOTOS,
 			SHOW_NO_HASHTAG_PHOTOS,
 			NO_MATERIALS 
-		} state;
+		} 
+		state;
 
 		void drawImages();
 		void drawMainPreloader();
@@ -62,11 +64,11 @@ namespace instagram
 			const ci::gl::Texture& dragToReload);
 
 		void setDesignElements(const gl::Texture& noMaterials,
-			const gl::Texture& allLoaded,
-			const gl::Texture& privateUser,
-			const gl::Texture& notExistUser,
-			const gl::Texture& notPhotosUser,
-			const gl::Texture& dragToReload);
+			const ci::gl::Texture& allLoaded,
+			const ci::gl::Texture& privateUser,
+			const ci::gl::Texture& notExistUser,
+			const ci::gl::Texture& notPhotosUser,
+			const ci::gl::Texture& dragToReload);
 
 		void setPreloaderToneColor(const ci::ColorA& color);
 		void showMiniPreloader();
@@ -104,6 +106,7 @@ namespace instagram
 		bool connected;	
 		bool wasDrag;
 		bool showAlphaDrag;
+		bool AllLoaded;
 
 		int mainHeight;
 		int oneImageWidth, oneImageHeight;

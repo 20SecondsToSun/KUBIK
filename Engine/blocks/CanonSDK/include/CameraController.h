@@ -12,6 +12,7 @@ namespace canon
 		ci::signals::signal<void(std::string)>		photoDownloadedSignal;
 		ci::signals::signal<void(std::string)>		photoDownloadedErrorSignal;
 		ci::signals::signal<void()>					cameraShutDownSignal;
+		ci::signals::signal<void()>					wiilSoonShutDownSignal;
 
 		void perform(canonEvent evt);
 		void downloadImage(EdsDirectoryItemRef dirItem);

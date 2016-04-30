@@ -8,7 +8,7 @@
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.                                       *
-*   Copyright Canon Inc. 2006-2013 All Rights Reserved                        *
+*   Copyright Canon Inc. 2006-2014 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -548,6 +548,7 @@ typedef enum
 } EdsEvfDriveLens ;
 
 
+
 /*-----------------------------------------------------------------------------
  Depth of Field Preview
 -----------------------------------------------------------------------------*/
@@ -839,6 +840,7 @@ typedef enum
     kEdsStorageType_CF  = 1,
     kEdsStorageType_SD  = 2,
     kEdsStorageType_HD  = 4,
+	kEdsStorageType_CFast = 5,
 
 } EdsStorageType;
 
@@ -865,7 +867,8 @@ typedef enum
 	kEdsWhiteBalance_WhitePaper5  = 19,
     kEdsWhiteBalance_PCSet4       = 20,
     kEdsWhiteBalance_PCSet5       = 21,
-    kEdsWhiteBalance_Click        = -1,
+	kEdsWhiteBalance_AwbWhite     = 23,
+	kEdsWhiteBalance_Click        = -1,
     kEdsWhiteBalance_Pasted       = -2,
         
 } EdsWhiteBalance;
@@ -945,7 +948,8 @@ typedef enum
     kEdsPictureStyle_Faithful     = 0x0085,
     kEdsPictureStyle_Monochrome   = 0x0086,
     kEdsPictureStyle_Auto		  = 0x0087,
-    kEdsPictureStyle_User1        = 0x0021,
+	kEdsPictureStyle_FineDetail   = 0x0088,
+	kEdsPictureStyle_User1        = 0x0021,
     kEdsPictureStyle_User2        = 0x0022,
     kEdsPictureStyle_User3        = 0x0023,
     kEdsPictureStyle_PC1          = 0x0041,
@@ -996,7 +1000,23 @@ typedef enum
 	kEdsAEMode_Children         = 26,
 	kEdsAEMode_Food             = 27,
 	kEdsAEMode_CandlelightPortraits = 28,
-	kEdsAEMode_Unknown          = 0xffffffff,
+	kEdsAEMode_CreativeFilter   = 29,
+	kEdsAEMode_RoughMonoChrome  = 30,
+	kEdsAEMode_SoftFocus        = 31,
+	kEdsAEMode_ToyCamera        = 32,
+	kEdsAEMode_Fisheye          = 33,
+	kEdsAEMode_WaterColor       = 34,
+	kEdsAEMode_Miniature        = 35,
+	kEdsAEMode_Hdr_Standard     = 36,
+	kEdsAEMode_Hdr_Vivid        = 37,
+	kEdsAEMode_Hdr_Bold         = 38,
+	kEdsAEMode_Hdr_Embossed     = 39,
+	kEdsAEMode_Movie_Fantasy    = 40,
+	kEdsAEMode_Movie_Old        = 41,
+	kEdsAEMode_Movie_Memory     = 42,
+	kEdsAEMode_Movie_DirectMono = 43,
+	kEdsAEMode_Movie_Mini       = 44,
+	kEdsAEMode_Unknown = 0xffffffff,
 
 } EdsAEMode;
 
@@ -1154,7 +1174,7 @@ typedef struct tagEdsVolumeInfo
 -----------------------------------------------------------------------------*/
 typedef struct tagEdsDirectoryItemInfo
 {
-    EdsUInt32   size;
+    EdsUInt64   size;
     EdsBool     isFolder;
     EdsUInt32   groupID;
     EdsUInt32   option;
@@ -1214,7 +1234,8 @@ typedef struct tagEdsPictureStyleDesc
     EdsInt32    colorTone;
     EdsUInt32   filterEffect;
     EdsUInt32   toningEffect;
-
+	EdsUInt32   sharpFineness;
+	EdsUInt32   sharpThreshold;
 } EdsPictureStyleDesc;
 
 /*-----------------------------------------------------------------------------

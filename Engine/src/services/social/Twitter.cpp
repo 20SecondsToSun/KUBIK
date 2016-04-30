@@ -85,7 +85,7 @@ void Twitter::postPhotoTweet(const std::string& textStatus, const std::vector<st
 
 	std::vector<std::string> filelinks;
 
-	for (int i = 0; i < max_media_per_upload; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		console() << "path ::  " << filesPath[i] << std::endl;
 		filelinks.push_back(filesPath[i]);

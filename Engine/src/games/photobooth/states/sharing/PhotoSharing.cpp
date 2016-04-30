@@ -1,6 +1,6 @@
 #include "PhotoSharing.h"
 #include "Tools/qrCode/QrCodeCreator.h"
-//#include "Tools/gifMaker/GIF.h"
+#include "Server/Server.h"
 
 using namespace kubik::games::photobooth;
 using namespace kubik::config;
@@ -117,27 +117,33 @@ void PhotoSharing::reset(PhotoboothSettingsRef settings)
 void PhotoSharing::start()
 {	
 	// set photos to post
-	auto path1 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(1) + ".JPG"));
-	auto path2 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(2) + ".JPG"));
-	auto path3 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(3) + ".JPG"));
+	auto path1 = Paths::getPhotoTemplatePath().string(); //((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(1) + ".JPG"));
+//	auto path2 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(2) + ".JPG"));
+	//auto path3 = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(3) + ".JPG"));
+
+	
 
 	std::vector<std::string> filesPath;
-	filesPath.push_back(path1);
-	filesPath.push_back(path2);
-	filesPath.push_back(path3);
+	filesPath.push_back(Paths::getPhotoTemplateToServerPath(0).string());
+	filesPath.push_back(Paths::getPhotoTemplateToServerPath(1).string());
+	filesPath.push_back(Paths::getPhotoTemplateToServerPath(2).string());
+	//filesPath.push_back(path2);
+	//filesPath.push_back(path3);
 
 	vkpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 	fbpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 	twpopup->getSocialService()->setUploadPhotoPathVec(filesPath);
 
 	// set text to post
-	vkpopup->getSocialService()->setPostingStatus("vk test");
-	fbpopup->getSocialService()->setPostingStatus("fb test");
-	twpopup->getSocialService()->setPostingStatus("tw test");
+	vkpopup->getSocialService()->setPostingStatus("ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #снићј… #снимайпервомай #фотоохота #parksokolniki #первомайsound #hypercubic");
+	fbpopup->getSocialService()->setPostingStatus("ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #снићј… #снимайпервомай #фотоохота #parksokolniki #первомайsound #hypercubic");
+	twpopup->getSocialService()->setPostingStatus("ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #parksokolniki #hypercubic");
 
-	//set qrcode
-	auto link = "http://familyagency.ru";
-	qrcode->initLink(link, settings->getPhotoDownloadDirectory().string() + "\\" + ("qrcode.bmp"));
+
+	connect_once(server().photoUploadSuccess, bind(&PhotoSharing::photoUploadCompleteHandler, this));
+	connect_once(server().photoUploadError, bind(&PhotoSharing::photoUploadErrorHandler, this));
+
+	server().postPhoto("");
 
 
 	//gifs
@@ -153,6 +159,21 @@ void PhotoSharing::start()
 #endif
 	
 	initShowAnim();
+}
+
+void PhotoSharing::photoUploadCompleteHandler()
+{
+	//set qrcode
+	auto link = server().getPhotoLink();// "http://familyagency.ru";
+	logger().log("------------------");
+	logger().log(link);
+	qrcode->initLink(link, settings->getPhotoDownloadDirectory().string() + "\\" + ("qrcode.bmp"));
+
+}
+
+void PhotoSharing::photoUploadErrorHandler()
+{
+
 }
 
 void PhotoSharing::initShowAnim()
@@ -247,9 +268,13 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& event)
 void PhotoSharing::emailBtnHandler(EventGUIRef& event)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Email ~~~");
-
-	popup = emailpopup;	
-	showPopup();
+	auto id = server().getPhotoID();
+	if (id != -1)
+	{
+		emailpopup->setPhotoID(id);
+		popup = emailpopup;
+		showPopup();
+	}
 }
 
 void PhotoSharing::fbBtnHandler(EventGUIRef& event)
@@ -287,6 +312,9 @@ void PhotoSharing::stop()
 	popup->disconnectEventHandler(Popup::POPUP_CLOSED);
 	popup->shareCompleteSignal.disconnect_all_slots();
 	popup->kill();
+
+	server().photoUploadSuccess.disconnect_all_slots();
+	server().photoUploadError.disconnect_all_slots();
 }
 
 void PhotoSharing::showPopup()
@@ -327,6 +355,9 @@ void PhotoSharing::disconnectEventHandlers()
 	twBtn->disconnectEventHandler();
 
 	popup->shareCompleteSignal.disconnect_all_slots();
+
+	server().photoUploadSuccess.disconnect_all_slots();
+	server().photoUploadError.disconnect_all_slots();
 }
 
 void PhotoSharing::update()

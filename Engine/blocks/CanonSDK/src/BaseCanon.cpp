@@ -1,4 +1,5 @@
 #include "BaseCanon.h"
+#include "tools/Logger.h"
 
 using namespace canon;
 using namespace resolution;
@@ -178,10 +179,12 @@ void BaseCanon::extendShutDownTimer()
 {
 	// always causes EDS_ERR_DEVICE_BUSY, even with live view disabled or a delay
 	// but if it's not here, then the camera shuts down after 5 minutes.
+	kubik::logger().log("extend shutdown camera");
 	EdsError err = sendCommand(camera, kEdsCameraCommand_ExtendShutDownTimer, 0);
 
 	if (err != EDS_ERR_OK)
 	{
+		kubik::logger().log(" error !!!!!!!!!");
 		throw ExcExtendShutDownTimer(CanonErrorToString(err));
 	}
 }
@@ -228,7 +231,7 @@ EdsError BaseCanon::downloadEvfData( EdsCameraRef camera )
 	}
 
 	// Display image
-	EdsUInt32 length;
+	EdsUInt64 length;
 	unsigned char* image_data;
 	EdsGetLength(stream, &length);
 

@@ -72,7 +72,7 @@ namespace instagram
 					}
 					catch (...)
 					{
-
+						bool shit;
 					}
 
 					JsonTree jdata = JsonTree(json).getChild("data");
@@ -84,7 +84,6 @@ namespace instagram
 						object.parse(_data);
 						data.push_back(object);
 					}
-					bool b;
 				}
 				else
 				{
@@ -94,7 +93,7 @@ namespace instagram
 			}
 			catch (...)
 			{
-				bool b1;
+				//bool b1;
 			}
 		}
 	};

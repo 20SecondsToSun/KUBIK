@@ -54,11 +54,15 @@ namespace kubik
 
 				ci::Font addEmailFont;
 
+				int photo_id;
+
 			public:								
 				EmailPopup(kubik::config::PhotoboothSettingsRef settings);
 				virtual void show() override;
 				virtual void hide(EventGUIRef& event) override;				
-				virtual void draw() override;					
+				virtual void draw() override;	
+
+				void setPhotoID(int _photo_id);
 			};
 		}
 	}

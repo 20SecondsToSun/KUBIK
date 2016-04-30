@@ -40,6 +40,7 @@ namespace canon
 		void photoTaken(EdsDirectoryItemRef directoryItem);
 		void photoDownloadHandler(const std::string& downloadPath);
 		void shutdownHandler();
+		void wiilSoonShutDownHandler();		
 
 		void photoCameraError(EdsError err);
 		void handleStateEvent(EdsUInt32 inEvent);

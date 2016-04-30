@@ -2,7 +2,9 @@
 #include "Controller.h"
 #include "Types.h"
 #include "kinect2/KinectAdapter.h"
+#include "server/Server.h"
 
+#define release
 
 using namespace ci;
 using namespace ci::app;
@@ -14,7 +16,8 @@ class EngineApp : public AppNative
 {
 public:
 	void setup();
-	void mouseDown( MouseEvent event );	
+	void mouseDown(MouseEvent event);
+	void mouseUp(MouseEvent event);
 	void keyDown( KeyEvent event );
 	void update();
 	void draw();
@@ -38,6 +41,10 @@ void EngineApp::setup()
 {
 	gl::enableAlphaBlending();
 
+
+	server().init();
+	server().login();
+
 	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001
 
 	model = ApplicationModelRef(new ApplicationModel());
@@ -49,16 +56,24 @@ void EngineApp::setup()
 
 	if (display->getDisplays().size() > 1)
 	{
-		fullscreenOptions.display(display->getDisplays()[1]);
+	//	fullscreenOptions.display(display->getDisplays()[1]);
 	}
 
-	//fullscreenOptions.secondaryDisplayBlanking(true);	
+#ifdef release
+	////fullscreenOptions.secondaryDisplayBlanking(true);	
 	//setFullScreen(true, fullscreenOptions);
+#endif
 }
 
 void EngineApp::mouseDown(MouseEvent event)
 {
+	//event.mHandled = true;
+}
 
+
+void EngineApp::mouseUp(MouseEvent event)
+{
+	//event.mHandled = true;
 }
 
 void EngineApp::keyDown(KeyEvent event)

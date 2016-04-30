@@ -44,4 +44,7 @@ class Utils
 		static bool validate_email(const std::string& a);
 
 		static std::string fix2(const std::string& strtofix);
+
+
+		static ci::Vec2f transformCoords(const ci::Vec2f& coords);
 };

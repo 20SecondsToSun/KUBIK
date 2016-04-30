@@ -83,11 +83,13 @@ namespace kubik
 			private:	
 				static InstagramClientRef instClient;		
 
-				float yPosition;				
+				float yPosition;			
+				ci::Anim<float> printAnimTime;
 				
 				void reloadHandler();
 				void nextLoadHandler();				
 				void printPopupHandler();
+				void printingCompleteHandler();			
 				void disconnectPopup();					
 				void initClientHandlers();
 				void disconnectViewer();

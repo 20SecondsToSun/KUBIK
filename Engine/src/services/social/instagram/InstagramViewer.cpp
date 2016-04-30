@@ -7,14 +7,14 @@ using namespace ci::app;
 using namespace kubik;
 using namespace kubik::config;
 
-InstagramViewer::InstagramViewer(InstagramClientRef client,	
+InstagramViewer::InstagramViewer(InstagramClientRef client,
 	const gl::Texture& noMaterials,
 	const gl::Texture& allLoaded,
 	const gl::Texture& privateUser,
 	const gl::Texture& notExistUser,
 	const gl::Texture& notPhotosUser,
 	const gl::Texture& dragToReload)
-	:client(client),	
+	:client(client),
 	noMaterials(noMaterials),
 	allLoaded(allLoaded),
 	privateUser(privateUser),
@@ -36,7 +36,8 @@ InstagramViewer::InstagramViewer(InstagramClientRef client,
 	animFunc(EaseOutQuad()),
 	sdvigX(8),
 	sdvigY(8),
-	showAlphaDrag(true)
+	showAlphaDrag(true),
+	AllLoaded(false)
 {
 	
 }
@@ -74,12 +75,13 @@ void InstagramViewer::connect()
 
 void InstagramViewer::disconnect()
 {
-	if (!connected) return;
-
-	mouseDownCon.disconnect();
-	mouseDragCon.disconnect();
-	mouseUpCon.disconnect();
-	connected = false;
+	if (connected)
+	{
+		mouseDownCon.disconnect();
+		mouseDragCon.disconnect();
+		mouseUpCon.disconnect();
+		connected = false;
+	}
 }
 
 void InstagramViewer::showPreloader()
@@ -94,7 +96,7 @@ void InstagramViewer::setPosition(float x, float y)
 
 void InstagramViewer::animatePositionTo(float x, float y)
 {
-	timeline().apply(&initPosition, Vec2f(x,y), 0.2f, animFunc);
+	timeline().apply(&initPosition, Vec2f(x, y), 0.2f, animFunc);
 }
 
 void InstagramViewer::synchImages()
@@ -122,13 +124,27 @@ void InstagramViewer::synchImages()
 		showingCount = images.size();
 	}
 	else
+	{		
+		if (_newImages.size()  < PHOTO_BLOCK_COUNT) // ok we are going to deep
+		{
+			showingCount = ((images.size() - _newImages.size()) / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+			showingCount += _newImages.size();
+			AllLoaded = true;
+		}	
+		else
+		{
+			showingCount = (images.size() / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+		}
+	}	
+
+	if (showingCount % PHOTO_BLOCK_COUNT == 0)
 	{
-		showingCount = (images.size() / PHOTO_BLOCK_COUNT) * PHOTO_BLOCK_COUNT;
+		mainHeight = (showingCount / countInRaw) * (oneImageWidth + sdvigX);
 	}
-
-	
-
-	mainHeight = (showingCount / countInRaw) * (oneImageWidth + sdvigX);
+	else
+	{
+		mainHeight = (showingCount / countInRaw + 1) * (oneImageWidth + sdvigX);
+	}
 	setState(IMAGES_DRAWING);			
 }
 
@@ -309,7 +325,9 @@ void InstagramViewer::drawCenteredInfoImage(const ci::gl::Texture& image, float 
 
 void InstagramViewer::mouseDown(MouseEvent event)
 {
-	if (event.getPos().y < initPosition.value().y || images.empty()) return;
+	auto coordTransform = Utils::transformCoords(event.getPos());
+
+	if (coordTransform.y < initPosition.value().y || images.empty()) return;
 
 	if (images.size() < PHOTO_BLOCK_COUNT)
 	{
@@ -317,7 +335,7 @@ void InstagramViewer::mouseDown(MouseEvent event)
 		return;
 	}
 
-	currentMousePos = event.getPos();
+	currentMousePos = coordTransform;
 	wasDrag = false;
 	downSecond = getElapsedSeconds();
 	touchedDownEvent();
@@ -325,6 +343,8 @@ void InstagramViewer::mouseDown(MouseEvent event)
 
 void InstagramViewer::mouseUp(MouseEvent event)
 {
+	auto coordTransform = Utils::transformCoords(event.getPos());
+
 	alphaDragToReload = 0.0f;
 
 	if (images.empty())
@@ -334,9 +354,9 @@ void InstagramViewer::mouseUp(MouseEvent event)
 
 	if (images.size() < PHOTO_BLOCK_COUNT)
 	{
-		if (!wasDrag && event.getPos().y > initPosition.value().y)
+		if (!wasDrag && coordTransform.y > initPosition.value().y)
 		{
-			getTouchedImage(event.getPos());
+			getTouchedImage(coordTransform);
 		}
 		return;
 	}
@@ -358,21 +378,27 @@ void InstagramViewer::mouseUp(MouseEvent event)
 			.finishFn(bind(&InstagramViewer::animComplete, this));
 	}
 
-	if (!wasDrag && event.getPos().y > initPosition.value().y)
+
+	bool touchDeltaOk = ((delta.y >= -5 && delta.y <= 5) && ((getElapsedSeconds() - downSecond) < 0.19));
+	if ((!wasDrag || touchDeltaOk) && coordTransform.y > initPosition.value().y)
 	{
-		getTouchedImage(event.getPos());
+		getTouchedImage(coordTransform);
 	}
 }
 
 void InstagramViewer::mouseDrag(MouseEvent event)
 {
-	if (event.getPos().y < initPosition.value().y || images.empty() || images.size() < PHOTO_BLOCK_COUNT) return;
+	auto coordTransform = Utils::transformCoords(event.getPos());
+	
+	if (coordTransform.y < initPosition.value().y || images.empty() || images.size() < PHOTO_BLOCK_COUNT) return;
+
 
 	wasDrag = true;
-	delta = currentMousePos - event.getPos();
+	delta = currentMousePos - coordTransform;
 
 	if (blockDrag)
 		return;
+
 
 	futureCurrentPos -= Vec2i(0, delta.y);
 
@@ -382,13 +408,14 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	{
 		futureCurrentPos = Vec2i::zero();
 		blockDrag = true;
+		AllLoaded = false;
 		reloadAllMedia();
 	}
 	else if(currentPos.value().y > marginToShowUpdate && showAlphaDrag)
 	{
 		alphaDragToReload = ci::lmap((float)currentPos.value().y, marginToShowUpdate, marginToShowUpdate + 100, 0.0f, 1.0f);
 	}	
-	else if (getWindowHeight() - mainHeight - marginBottom > currentPos.value().y + initPosition.value().y)
+	else if (getWindowHeight() - mainHeight - marginBottom > currentPos.value().y + initPosition.value().y && !AllLoaded)
 	{
 		futureCurrentPos = Vec2i(0, getWindowHeight() - mainHeight - initPosition.value().y);
 		blockDrag = true;
@@ -398,7 +425,7 @@ void InstagramViewer::mouseDrag(MouseEvent event)
 	timeline().apply(&currentPos, futureCurrentPos, animTime, animFunc)
 		.finishFn(bind(&InstagramViewer::animComplete, this));
 
-	currentMousePos = event.getPos();
+	currentMousePos = coordTransform;
 }
 
 void InstagramViewer::showMiniPreloader()

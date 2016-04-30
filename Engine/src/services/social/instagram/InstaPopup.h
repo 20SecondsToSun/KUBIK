@@ -4,6 +4,7 @@
 #include "cinder/Timeline.h"
 #include "instagram/InstagramClient.h"
 #include "gui/ImageButtonSprite.h"
+#include "graphics/IMovie.h"
 
 namespace instagram
 {
@@ -12,6 +13,12 @@ namespace instagram
 	class InstaPopup : public kubik::Sprite
 	{
 		typedef ci::signals::signal<void(void)> SignalVoid;
+
+		enum class MODE
+		{
+			PHOTO,
+			PRINTING
+		} mode;
 
 	public:
 		static const int CLOSE_POPUP = 0;
@@ -22,6 +29,7 @@ namespace instagram
 		void draw() override;
 		void drawImageInTemplate();
 		void drawImageInTemplateForPrint();
+		void setPrintingInProcessMode();
 		
 
 		void setAlpha(float alpha) override;
@@ -47,6 +55,7 @@ namespace instagram
 		ci::Anim<ci::Vec2f> imagePositionAnim;		
 		InstagramClientRef client;
 		kubik::ImageButtonSpriteRef closeBtn, printBtn;
+		kubik::IMovieRef preloaderMain;
 		ImageGraphic image;
 		bool showing;
 

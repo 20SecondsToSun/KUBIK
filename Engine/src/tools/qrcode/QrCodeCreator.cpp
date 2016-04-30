@@ -89,8 +89,8 @@ ci::gl::Texture QrCodeCreator::generateQRcodeByURL(const std::string& url, const
 
 		free(pRGBData);
 		QRcode_free(pQRC);
-
-		return ci::loadImage(outFilePath);
+		auto tex = 	gl::Texture(ci::loadImage(outFilePath));
+		return tex;
 	}
 	else
 	{

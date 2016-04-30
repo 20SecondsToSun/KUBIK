@@ -33,8 +33,13 @@ SimpleSpriteButton::SimpleSpriteButton(const ci::Vec2f& position0, const ci::Vec
 
 void SimpleSpriteButton::mouseUp(ci::app::MouseEvent &e)
 {
-	if (inButtonField(e.getPos()))
+	auto coordTransform = Utils::transformCoords(e.getPos());
+
+	if (inButtonField(coordTransform))
+	{
+		logger().log("click::::::::::::::::::::  " + toString(coordTransform));
 		Sprite::mouseUp(e);
+	}
 }
 
 bool SimpleSpriteButton::inButtonField(const ci::Vec2i& pos)

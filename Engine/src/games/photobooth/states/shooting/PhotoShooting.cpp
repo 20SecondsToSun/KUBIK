@@ -221,7 +221,7 @@ void PhotoShooting::drawPhotoframe()
 
 	gl::pushMatrices();
 	gl::scale(_scale1, _scale1);
-	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY + 252);
+	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY + 235);
 
 	//gl::color(ColorA(1,1,1,0.4));
 //	shader->setAlpha(.4f);

@@ -17,7 +17,7 @@ namespace kubik
 		virtual void mouseUp(ci::app::MouseEvent &e);
 		virtual void mouseUpHandler(const ci::Vec2i& vec);	
 
-		bool inButtonField(const ci::Vec2i& pos);		
+		virtual bool inButtonField(const ci::Vec2i& pos);		
 		float getAlpha() const;
 		float getWidth() const;
 		float getHeight() const;

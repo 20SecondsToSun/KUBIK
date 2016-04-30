@@ -432,3 +432,27 @@ bool Utils::validate_email(const std::string& email)
 {
 	return email != "" && regex_match(email, std::regex("[a-z0-9Р-пр-џ._%+-]+@[a-z0-9.-]+\\.[a-zр-џ]{2,10}"));
 }
+
+
+ci::Vec2f Utils::transformCoords(const ci::Vec2f& coords)
+{
+
+	auto _size = Vec2f(1080, 1920);
+	auto coord = coords;
+
+#ifdef release
+
+	////coord.x = coords.y;
+	////coord.y = _size.x - coords.x;
+
+	////coord.x = ((double)coord.x / _size.y) * _size.x;
+	////coord.y = ((double)coord.y / _size.x) * _size.y;
+
+	
+	coord.x = _size.x - coord.x;
+	coord.y = _size.y - coord.y;
+
+#endif
+
+	return coord;
+}

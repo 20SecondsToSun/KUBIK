@@ -20,7 +20,9 @@ CheckerSocial::CheckerSocial(const Rectf& rect, const IconPair& icons, const Pho
 
 void CheckerSocial::mouseUp(ci::app::MouseEvent &mEvent)
 {
-	if(inButtonField(mEvent.getPos()))
+	auto coordTransform = Utils::transformCoords(mEvent.getPos());
+
+	if (inButtonField(coordTransform))
 	{
 		swapActive();	
 

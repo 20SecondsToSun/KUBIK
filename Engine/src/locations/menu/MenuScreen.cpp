@@ -84,7 +84,9 @@ void MenuScreen::showAnimationComplete()
 	state = DRAW;
 
 	for (auto btn : gamesBtns)
+	{
 		btn->connectEventHandler(&MenuScreen::startGameHandler, this);
+	}
 
 	//callback(ENABLE_GAME_CLOSE);
 }
@@ -96,8 +98,10 @@ void MenuScreen::gotoScreeenSaverTimeOut()
 
 void MenuScreen::stop()
 {
-	for(auto btn : gamesBtns)	
-		btn->disconnectEventHandler();	
+	for (auto btn : gamesBtns)
+	{
+		btn->disconnectEventHandler();
+	}
 
 	clearDelaycall();
 }

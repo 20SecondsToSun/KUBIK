@@ -19,8 +19,8 @@ const std::string SocialSettings::FACEBOOK_ALBUMS_URL = FACEBOOK_BASE_URL + "me/
 
 const std::string SocialSettings::FACEBOOK_ACCESS_TOKEN = "access_token";
 const std::string SocialSettings::FACEBOOK_NULL_ALBUM_ID = "-1";
-const std::string SocialSettings::FACEBOOK_ALBUM_NAME_DEFAULT = "Dreamies";
-const std::string SocialSettings::FACEBOOK_STATUS_DEFAULT = "#тест рич бич";
+const std::string SocialSettings::FACEBOOK_ALBUM_NAME_DEFAULT = "Sokolniki";
+const std::string SocialSettings::FACEBOOK_STATUS_DEFAULT = "ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #снићј… #снимайпервомай #фотоохота #parksokolniki #первомайsound #hypercubic";
 const std::string SocialSettings::FACEBOOK_POSTING_WAITING_TEXT = "Facebook..";
 
 std::string SocialSettings::FACEBOOK_APP_ID;
@@ -37,7 +37,7 @@ std::string SocialSettings::TWITTER_TOKEN_SECRET;
 std::string SocialSettings::TWITTER_API_KEY;
 std::string SocialSettings::TWITTER_API_SECRET;
 const std::string SocialSettings::TWITTER_AUTH_URL = "https://twitter.com";
-const std::string SocialSettings::TWITTER_STATUS_DEFAULT = "#тест rich bich";
+const std::string SocialSettings::TWITTER_STATUS_DEFAULT = "ѕервомай: скорей снићј…!‘отоохота в Ђ—окольникахї #parksokolniki #hypercubic";
 const std::string SocialSettings::TWITTER_OAUTH_CALLBACK = ",oauth_callback=http://familyagency.ru";
 
 ////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ const std::string SocialSettings::VK_SAVE_WALL_PHOTO_URL = VK_BASE_URL + "method
 
 const std::string SocialSettings::VK_ACCESS_TOKEN = "access_token";
 const std::string SocialSettings::VK_NULL_ALBUM_ID = "-1";
-const std::string SocialSettings::VK_STATUS_DEFAULT = "#тест rich bich";
+const std::string SocialSettings::VK_STATUS_DEFAULT = "ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #снићј… #снимайпервомай #фотоохота #parksokolniki #первомайsound #hypercubic";
 const std::string SocialSettings::VK_POSTING_WAITING_TEXT = "...";
 
 SocialSettings::SocialSettings(ApplicationModelRef model) :ISettings(model)

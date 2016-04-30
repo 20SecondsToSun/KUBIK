@@ -76,7 +76,9 @@ void PhotoFilter::showAnimationComplete()
 	callback(COMPLETE_ANIM);
 
 	for (auto filter : filterBtns)
+	{
 		filter->connectEventHandler(&PhotoFilter::photoFilterSelect, this);
+	}
 }
 
 void PhotoFilter::stop()

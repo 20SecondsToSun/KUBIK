@@ -27,7 +27,9 @@ Checker::Checker(const Rectf& rect, const IconPair& icons, Color activeColor, Co
 
 void Checker::mouseUp(ci::app::MouseEvent &_event)
 {
-	if(inButtonField(_event.getPos()))
+	auto coordTransform = Utils::transformCoords(_event.getPos());
+
+	if (inButtonField(coordTransform))
 	{
 		swapActive();
 		CheckerEventRef eventref = static_pointer_cast<CheckerEvent>(event);

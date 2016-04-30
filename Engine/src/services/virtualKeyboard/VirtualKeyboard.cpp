@@ -325,7 +325,11 @@ void VirtualKeyboard::drawCarriage()
 
 void VirtualKeyboard::MouseUp(MouseEvent &event)
 {
-	ci::Vec2f coords = event.getPos() - originPoint;
+	auto coordTransform = Utils::transformCoords(event.getPos());
+
+	ci::Vec2f coords = coordTransform - originPoint;
+
+
 	if (touchInputZone->inButtonField(coords))
 	{
 		if (isShowing)
@@ -374,9 +378,10 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 
 void VirtualKeyboard::MouseDown(MouseEvent &event)
 {
-	lastCode = "-1";
+	lastCode = "-1";	
+	auto coordTransform = Utils::transformCoords(event.getPos());
 
-	ci::Vec2f coords = event.getPos() - originPoint;
+	ci::Vec2f coords = coordTransform - originPoint;
 
 	if (touchInputZone->inButtonField(coords))
 	{
@@ -393,7 +398,7 @@ void VirtualKeyboard::MouseDown(MouseEvent &event)
 		return;
 	}
 
-	coords = event.getPos() - keyBoardPosition.value() - originPoint;
+	coords = coordTransform - keyBoardPosition.value() - originPoint;
 
 	for (auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item)
 	{

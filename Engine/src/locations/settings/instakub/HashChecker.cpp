@@ -17,7 +17,9 @@ HashChecker::HashChecker(const Rectf& rect, const IconPair& icons):Checker(rect,
 
 void HashChecker::mouseUp(app::MouseEvent &mEvent)
 {
-	if(inButtonField(mEvent.getPos()))
+	auto coordTransform = Utils::transformCoords(mEvent.getPos());
+
+	if (inButtonField(coordTransform))
 	{
 		swapActive();	
 

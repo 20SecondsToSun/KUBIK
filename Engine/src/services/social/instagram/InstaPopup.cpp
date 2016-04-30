@@ -1,7 +1,9 @@
 #include "instagram/InstaPopup.h"
 #include "printer/Printer.h"
+#include "SettingsFactory.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace instagram;
 using namespace std;
 using namespace ci;
@@ -12,7 +14,8 @@ InstaPopup::InstaPopup(InstagramClientRef client, const gl::Texture& close, cons
 	bgColor(Color::hex(0x060a0e)),
 	alpha(0),
 	showing(false),
-	templateImage(_template)
+	templateImage(_template),
+	mode(MODE::PHOTO)
 {
 	setDesignElements(close, print, _template);
 }
@@ -32,6 +35,10 @@ void InstaPopup::setDesignElements(const gl::Texture& close, const gl::Texture& 
 	imageShift = Vec2f(0.5f * (getWindowWidth() - 640.0f), 224.0f);
 
 	templateImage = _template;
+
+	preloaderMain = settingsFactory().getMainPreloader();
+	preloaderMain->setPosition(Vec2f((1080.0f - preloaderMain->getWidth()) * 0.5f, (1920.0f - preloaderMain->getHeight())*0.5f));
+
 }
 
 void InstaPopup::draw()
@@ -39,7 +46,7 @@ void InstaPopup::draw()
 	if (!showing)
 	{
 		return;
-	}		
+	}
 
 	gl::pushMatrices();
 	gl::translate(getGlobalPosition());
@@ -47,10 +54,17 @@ void InstaPopup::draw()
 	gl::drawSolidRect(getWindowBounds());
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 1));
 
-	drawImageInTemplate();
-
-	closeBtn->draw();
-	printBtn->draw();
+	if (mode == MODE::PHOTO)
+	{
+		drawImageInTemplate();
+		closeBtn->draw();
+		printBtn->draw();
+	}
+	else if (mode == MODE::PRINTING)
+	{
+		preloaderMain->draw();
+	}
+	
 	gl::popMatrices();
 }
 
@@ -91,6 +105,11 @@ void InstaPopup::drawImageInTemplate()
 		gl::draw(_image);
 		gl::popMatrices();
 	}
+}
+
+void InstaPopup::setPrintingInProcessMode()
+{
+	mode = MODE::PRINTING;
 }
 
 void InstaPopup::drawImageInTemplateForPrint()
@@ -134,8 +153,11 @@ void InstaPopup::drawImageInTemplateForPrint()
 
 
 
+
 void InstaPopup::show(const ImageGraphic& image, const ci::EaseFn& eFunc, float time)
 {
+	mode = MODE::PHOTO;
+
 	this->image = image;
 	showing = true;
 
@@ -147,6 +169,7 @@ void InstaPopup::show(const ImageGraphic& image, const ci::EaseFn& eFunc, float 
 
 void InstaPopup::hide(const ci::EaseFn& eFunc, float time)
 {
+	mode = MODE::PHOTO;
 	showing = false;
 	timeline().apply(&alpha, 0.0f, time, eFunc)		
 		.finishFn(bind(&InstaPopup::hideAnimationFinish, this));

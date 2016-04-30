@@ -21,7 +21,7 @@
 		 "name": "Instakub",
 		 "iconOn" : "iconon1.png",
 		 "iconOff" : "iconoff1.png",
-		 "icon"    : "icon1.png",
+		 "icon"    : "icon3.png",
 		 "miniIcon" : "miniIcon2.png"
       },
       {

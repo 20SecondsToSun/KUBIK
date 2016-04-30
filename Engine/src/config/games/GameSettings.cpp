@@ -2,7 +2,7 @@
 #include "Photobooth.h"
 #include "instakub/Instakub.h"
 #include "Funces.h"
-#include "Poza.h"
+#include "games/poza/Poza.h"
 
 using namespace ci;
 using namespace ci::app;
