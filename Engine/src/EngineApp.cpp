@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "kinect2/KinectAdapter.h"
 #include "server/Server.h"
+#include "printer/Printer.h"
 
 #define release
 
@@ -46,6 +47,7 @@ void EngineApp::setup()
 
 	server().init();
 	server().login();
+	printer().GetPrinterList();
 
 	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001
 
@@ -63,7 +65,7 @@ void EngineApp::setup()
 
 #ifdef release
 	////fullscreenOptions.secondaryDisplayBlanking(true);	
-	setFullScreen(true, fullscreenOptions);
+	//setFullScreen(true, fullscreenOptions);
 #endif
 }
 

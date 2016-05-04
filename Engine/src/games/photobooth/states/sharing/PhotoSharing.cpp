@@ -270,7 +270,7 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& event)
 void PhotoSharing::emailBtnHandler(EventGUIRef& event)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Email ~~~");
-	auto id = server().getPhotoID();
+	auto id = server().getLastPhotoID();
 	if (id != -1)
 	{
 		emailpopup->setPhotoID(id);

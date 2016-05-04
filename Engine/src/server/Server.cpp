@@ -16,37 +16,32 @@ void Server::init()
 
 }
 
-void Server::login()
-{
-	if (!threadLoad)
-	{
-		threadLoad = true;
-		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadLogin, this)));
-	}
-}
-
 void Server::update()
 {
-	if (photoIsPosted)
+	/*if (photoIsPosted)
 	{
 		photoIsPosted = false;
 		photoUploadSuccess();
+	}*/
+}
+
+void Server::login()
+{
+	AuthRequestRef request = AuthRequestRef(new AuthRequest());
+	request->url = SERVER + "/oauth/access_token";
+
+	if (!threadLoad)
+	{
+		threadLoad = true;	
+		currentRequest = request;
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadLogin, this, request)));
 	}
 }
 
-void Server::threadLogin()
+void Server::threadLogin(const AuthRequestRef& request)
 {
-	string REQUEST = "/oauth/access_token";
-
-	map<string, string> data;
-	data.insert(pair<string, string>("username", user_name));
-	data.insert(pair<string, string>("password", password));
-	data.insert(pair<string, string>("grant_type", grant_type));
-	data.insert(pair<string, string>("client_id", client_id));
-	data.insert(pair<string, string>("client_secret", client_secret));
-
-	auto answer = Curl::post(SERVER + REQUEST, data);
-	logger().log("answer::  " + toString(answer));
+	auto answer = Curl::post(request->url, request->getMapData());
+	logger().log("login response ::  " + toString(answer));
 	isLogin = false;
 
 	if (toString(answer) != "")
@@ -56,15 +51,16 @@ void Server::threadLogin()
 			JsonTree jTree = JsonTree(answer);
 			if (jTree.hasChild("access_token"))
 			{
-				access_token = jTree.getChild("access_token").getValue<string>();
+				access_token	  = jTree.getChild("access_token").getValue<string>();
 				string token_type = jTree.getChild("token_type").getValue<string>();
-				int expires_in = jTree.getChild("expires_in").getValue<int>();
+				int expires_in	  = jTree.getChild("expires_in").getValue<int>();
 
 				logger().log("access_token:::  " + access_token);
 				logger().log("token_type:::  " + token_type);
 				logger().log("expires_in:::  " + expires_in);
 
 				isLogin = true;
+				request->success = RequestStatus::SUCCESS;
 			}
 		}
 		catch (...)
@@ -73,6 +69,7 @@ void Server::threadLogin()
 		}
 	}
 
+	request->success = RequestStatus::FAIL;
 	threadLoad = false;
 }
 
@@ -85,95 +82,52 @@ void Server::standInfo()
 
 void Server::postPhoto(const string& path)
 {
-	if (!threadLoad)
+	auto request = PostPhotoPhotoBoothRequestRef(new PostPhotoPhotoBoothRequest());
+	request->setPath(path);
+	request->init();
+	request->setURL(SERVER + "/api/photo_upload/2/" + toString(request->getHeight()));	
+
+	if (checkLogin() && !threadLoad)
 	{
-		errorCount = 0;
-		threadLoad = true;
-		photoIsPosted = false;
-		link = "";
-		photo_id = -1;
-
-		fs::path path1 = Paths::getPhotoTemplateRibbonToServerPath();
-		DataSourceRef urlRequest = loadFile(path1);
-		auto loadedTex = gl::Texture(loadImage(urlRequest));
-
-		Buffer bf = Buffer(urlRequest);
-		photoObj.base64Str = toBase64(bf);
-		photoObj.height = loadedTex.getHeight()/3;
-
-		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadPostPhoto, this)));
+		threadLoad = true;	
+		currentRequest = request;
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadPostPhoto, this, request)));
 	}	
-}
-
-void Server::threadPostPhoto()
-{
-	if (isLogin)
-	{
-		string REQUEST = "/api/photo_upload/2/" + toString(photoObj.height);
-		string jSonstr = Curl::postImageStand(SERVER + REQUEST, photoObj.base64Str, access_token);
-
-		logger().log(jSonstr);
-
-		if (jSonstr.length() >= 1)
-		{
-			try
-			{
-				JsonTree jTree = JsonTree(jSonstr);
-				if (jTree.hasChild("data"))
-				{
-					auto data = jTree.getChild("data");
-					if (data.hasChild("link"))
-					{
-						link = data.getChild("link").getValue<string>();
-						photo_id = data.getChild("photo_id").getValue<int>();					
-						photoIsPosted = true;
-						
-					}			
-				}
-				else
-				{
-					if (errorCount++ > 2)
-					{
-						threadLoad = false;
-						photoUploadError();
-						return;
-					}
-
-					threadLogin();
-					threadPostPhoto();
-				}
-			}
-			catch (...)
-			{
-				if (errorCount++ > 2)
-				{
-					threadLoad = false;
-					photoUploadError();
-					return;
-				}
-
-				threadLogin();
-				threadPostPhoto();
-			}
-		}
-
-		threadLoad = false;
-	}
 	else
 	{
-		if (errorCount++ > 2)
-		{
-			threadLoad = false;
-			//photoUploadError();
-			return;
-		}
-
-		threadLogin();
-		threadPostPhoto();
+		//addToQue(request);
 	}
 }
 
+void Server::threadPostPhoto(const PostPhotoPhotoBoothRequestRef& request)
+{
+	string jSonstr = Curl::postImageStand(request->url, request->base64Str, access_token);
+	logger().log(jSonstr);
 
+	if (jSonstr.length() >= 1)
+	{
+		try
+		{
+			JsonTree jTree = JsonTree(jSonstr);
+			if (jTree.hasChild("data"))
+			{
+				auto data = jTree.getChild("data");
+				if (data.hasChild("link"))
+				{
+					link = data.getChild("link").getValue<string>();
+					photo_id = data.getChild("photo_id").getValue<int>();	
+					request->success = RequestStatus::SUCCESS;
+				}			
+			}			
+		}
+		catch (...)
+		{
+			
+		}
+	}
+
+	request->success = RequestStatus::FAIL;
+}
 
 void Server::sendToEmails(int appID, int photoID, const string& emails)
 {
@@ -181,30 +135,44 @@ void Server::sendToEmails(int appID, int photoID, const string& emails)
 	logger().log("photo_id  " + toString(photoID));
 	logger().log("to  " + toString(emails));
 
-	if (!threadLoad)
+	auto request = SendToEmailsRequestRef(new SendToEmailsRequest());
+	request->photo_id = photoID;
+	request->emails = emails;
+	request->app_id = appID;
+	request->url = SERVER + "/api/event/email";
+
+	if (checkLogin() && !threadLoad)
 	{
 		threadLoad = true;
-		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::sendToEmailsThread, this, appID, photoID, emails)));
+		currentRequest = request;
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::sendToEmailsThread, this, request)));
 	}
+	else
+	{
+		//addToQue(request);
+	}	
 }
 
-void Server::sendToEmailsThread(int appID, int photoID, const string& emails)
-{
-	string REQUEST = "/api/event/email";
-	map<string, string> data;
-	data.insert(pair<string, string>("id", toString(appID)));
-	data.insert(pair<string, string>("photo_id", toString(photoID)));
-	data.insert(pair<string, string>("to", emails));	
-
-	auto answer = Curl::postStand(SERVER + REQUEST, data, access_token);
+void Server::sendToEmailsThread(const SendToEmailsRequestRef& request)
+{	
+	auto response = Curl::postStand(request->url, request->getMapData(), access_token);
+	request->success = RequestStatus::SUCCESS;
+	threadLoad = false;
 }
 
-std::string Server::getPhotoLink() const
+bool Server::checkLogin()
 {
-	return link;
+	bool temp = isLogin;
+
+	if (!isLogin)
+	{
+		login();
+	}
+
+	return temp;
 }
 
-int Server::getPhotoID() const
+void Server::addToQue(const RequestRef& request)
 {
-	return photo_id;
+
 }

@@ -72,7 +72,7 @@ namespace instagram
 					}
 					catch (...)
 					{
-						bool shit;
+						//bool shit;
 					}
 
 					JsonTree jdata = JsonTree(json).getChild("data");

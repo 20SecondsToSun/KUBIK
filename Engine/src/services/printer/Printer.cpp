@@ -1,6 +1,7 @@
 #include "services/printer/Printer.h"
 #include "Utils.h"
 #include "Paths.h"
+#include "atlstr.h"
 
 using namespace kubik;
 using namespace kubik::config;
@@ -169,9 +170,7 @@ int Printer::applySettings()
 
 
 	// Make sure the driver-dependent part of devmode is updated...
-	lFlag = DocumentProperties(NULL, print_handle, printerName,
-		pi2->pDevMode, pi2->pDevMode,
-		DM_IN_BUFFER | DM_OUT_BUFFER);
+	lFlag = DocumentProperties(NULL, print_handle, printerName,	pi2->pDevMode, pi2->pDevMode, DM_IN_BUFFER | DM_OUT_BUFFER);
 
 	if (lFlag != IDOK)
 	{
@@ -198,9 +197,7 @@ int Printer::applySettings()
 	}
 
 	// Tell other apps that there was a change...
-	SendMessageTimeout(HWND_BROADCAST, WM_DEVMODECHANGE, 0L,
-		(LPARAM)(LPCSTR)printerName,
-		SMTO_NORMAL, 1000, NULL);
+	SendMessageTimeout(HWND_BROADCAST, WM_DEVMODECHANGE, 0L, (LPARAM)(LPCSTR)printerName, SMTO_NORMAL, 1000, NULL);
 
 	return 1;
 }
@@ -287,4 +284,94 @@ int Printer::print()
 	DeleteDC(hDC);
 
 	return 1;
+}
+
+void Printer::GetPrinterList()
+{
+//#if defined(__WXMSW__) 
+
+	// When Name is NULL, setting Flags to PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS 
+	// enumerates printers that are installed on the local machine. These printers include 
+	// those that are physically attached to the local machine as well as remote printers to 
+	// which it has a network connection. 
+
+	DWORD dwFlags = PRINTER_ENUM_CONNECTIONS | PRINTER_ENUM_LOCAL;
+	LPTSTR Name = NULL;
+	DWORD dwNeeded = 0;
+	DWORD dwReturned = 0;
+
+	// First, find out how much space we need for the return buffers 
+	if (::EnumPrinters(dwFlags, Name, 4, 0, 0, &dwNeeded, &dwReturned))
+	{
+		return;
+		//throw CLogicError(ERR_POS);
+	}
+
+	DWORD LastError = ::GetLastError();
+	if (LastError != ERROR_INSUFFICIENT_BUFFER)
+	{
+		return;
+		//throw CLogicError(ERR_POS);
+	}
+
+	// Allocate the buffer 
+	PRINTER_INFO_4 * PrinterInfo = (PRINTER_INFO_4 *)malloc(dwNeeded);
+
+	if (!PrinterInfo)
+	{
+		return;
+		//throw CLogicError(ERR_POS);
+	}
+
+	if (!::EnumPrinters(dwFlags, Name, 4, (unsigned char *)PrinterInfo, dwNeeded, &dwNeeded, &dwReturned)) 
+	{
+		return; 
+		//throw CLogicError(ERR_POS);
+	}
+
+	logger().log("!!!!!!!!!!!!!!!!!!!!!!!!!!" + toString(dwReturned));
+	wchar_t printer_name[MAX_PATH];
+	DWORD size = 260;// arraysize(printer_name);
+	BOOL result = ::GetDefaultPrinter(printer_name, &size);
+	printf("wchar_t string: %ls \n", printer_name);
+	//logger().log("!!!!!!!!!!!!szPrinterName!!!!!!!!!!!!!!" + toString(printer_name));
+
+
+	PRINTER_DEFAULTS pd;
+	HANDLE print_handle;
+
+	for (int i = 0; i < (int)dwReturned; i++) 
+	{
+		ZeroMemory(&pd, sizeof(pd));
+		pd.DesiredAccess = PRINTER_ALL_ACCESS;
+
+		bool bFlag = OpenPrinter(printerName, &print_handle, &pd);
+
+		string printerNameString = CW2A(PrinterInfo[i].pPrinterName);
+		logger().log("printer name " + printerNameString);
+
+		if (!bFlag || (print_handle == NULL))
+		{
+			ci::app::console()<< "::::::::::::::::  OpenPrinter ERROR ::::::::::::::  "<<std::endl;			
+		}
+		else
+		{
+			bFlag = GetPrinter(print_handle, 2, 0, 0, &dwNeeded);
+
+			if ((!bFlag) && (GetLastError() != ERROR_INSUFFICIENT_BUFFER) ||	(dwNeeded == 0))
+			{
+				ClosePrinter(print_handle);
+				ci::app::console() << ":::::::::::::::  SOMETHING GONE WRONG ::::::::::::::  " << std::endl;
+				
+			}
+			else
+			{
+				ci::app::console() << "::::::::::::::::  printer OK ::::::::::::::  " << std::endl;
+				break;
+			}
+		}
+	}
+
+	free(PrinterInfo);
+//#endif 
 }

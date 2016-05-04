@@ -38,6 +38,8 @@ namespace kubik
 			return ci::Vec2f(1218, 1864);
 		}
 
+		void GetPrinterList();
+
 		//private:
 
 	};
