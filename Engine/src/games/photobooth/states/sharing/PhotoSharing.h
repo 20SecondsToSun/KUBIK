@@ -56,6 +56,8 @@ namespace kubik
 
 				SimpleSpriteButtonRef simple;
 
+				int uploadPhotoID;
+
 				void hideAnimComplete();
 				void drawServiceButtons();
 				void drawFinalPhoto();
@@ -70,7 +72,7 @@ namespace kubik
 				void connectHandlers();
 				void popupClosed();
 
-				void photoUploadCompleteHandler();
+				void photoUploadCompleteHandler(const std::string& photo_id, const std::string& link);
 				void photoUploadErrorHandler();
 
 			public:

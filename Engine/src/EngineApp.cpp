@@ -47,6 +47,7 @@ void EngineApp::setup()
 
 	server().init();
 	server().login();
+	
 	printer().GetPrinterList();
 
 	// [864,1536]  problem with resolution https://forum.libcinder.org/#Topic/23286000002138001

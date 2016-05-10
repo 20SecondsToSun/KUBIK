@@ -11,6 +11,7 @@ Twitter::Twitter() : isAuthFlowComplete(false)
 {
 	initWebBrowserSize = Vec2f(750, 600);
 	availableArea = Rectf(0.0f, 0.0f, 897.0f, 538.0f);
+	defaultStatus = SocialSettings::TWITTER_STATUS_DEFAULT;
 };
 
 void Twitter::post()

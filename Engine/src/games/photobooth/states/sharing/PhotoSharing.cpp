@@ -124,9 +124,11 @@ void PhotoSharing::start()
 	qrcode->clear();
 
 	std::vector<std::string> filesPath;
+	//logger().log(Paths::getPhotoTemplateToServerPath(0).string());
 	filesPath.push_back(Paths::getPhotoTemplateToServerPath(0).string());
 	filesPath.push_back(Paths::getPhotoTemplateToServerPath(1).string());
 	filesPath.push_back(Paths::getPhotoTemplateToServerPath(2).string());
+	//logger().log(Paths::getPhotoTemplateToServerPath(2).string());
 	//filesPath.push_back(path2);
 	//filesPath.push_back(path3);
 
@@ -140,10 +142,11 @@ void PhotoSharing::start()
 	twpopup->getSocialService()->setPostingStatus("ѕервомай: скорей снићј…! ‘отоохота в Ђ—окольникахї #parksokolniki #hypercubic");
 
 
-	connect_once(server().photoUploadSuccess, bind(&PhotoSharing::photoUploadCompleteHandler, this));
+	connect_once(server().photoUploadSuccess, bind(&PhotoSharing::photoUploadCompleteHandler, this, std::placeholders::_1, std::placeholders::_2));
 	connect_once(server().photoUploadError, bind(&PhotoSharing::photoUploadErrorHandler, this));
 
-	server().postPhoto("");
+	uploadPhotoID = -1;
+	server().postPhoto(Paths::getPhotoTemplateRibbonToServerPath().string(), "2");
 
 
 	//gifs
@@ -161,14 +164,14 @@ void PhotoSharing::start()
 	initShowAnim();
 }
 
-void PhotoSharing::photoUploadCompleteHandler()
+void PhotoSharing::photoUploadCompleteHandler(const std::string& photo_id, const std::string& link)
 {
 	//set qrcode
-	auto link = server().getPhotoLink();// "http://familyagency.ru";
+//	auto link = server().getPhotoLink();// "http://familyagency.ru";
+	uploadPhotoID = std::atoi(photo_id.c_str());
 	logger().log("------------------");
 	logger().log(link);
 	qrcode->initLink(link, settings->getPhotoDownloadDirectory().string() + "\\" + ("qrcode.bmp"));
-
 }
 
 void PhotoSharing::photoUploadErrorHandler()
@@ -270,10 +273,9 @@ void PhotoSharing::allAppBtnHandler(EventGUIRef& event)
 void PhotoSharing::emailBtnHandler(EventGUIRef& event)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoSharing.Show Popup Email ~~~");
-	auto id = server().getLastPhotoID();
-	if (id != -1)
+	if (uploadPhotoID != -1)
 	{
-		emailpopup->setPhotoID(id);
+		emailpopup->setPhotoID(uploadPhotoID);
 		popup = emailpopup;
 		showPopup();
 	}

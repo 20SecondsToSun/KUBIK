@@ -1,4 +1,5 @@
 #include "ConfigScreen.h"
+#include "Server/Server.h"
 
 using namespace std;
 using namespace params;
@@ -47,6 +48,8 @@ void ConfigScreen::startUpParams()
 
 void ConfigScreen::start()
 {
+	server().standInfo();
+
 	startUpParams();
 
 	mainConfig->connectEventHandler(&ConfigScreen::gamesBlockHandler, this);

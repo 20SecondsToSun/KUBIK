@@ -6,7 +6,15 @@ namespace kubik
 	{
 		PROGRESS,
 		SUCCESS,
-		FAIL
+		FAIL,
+		HANDLED
+	};
+
+	enum class RequestType
+	{
+		LOGIN,
+		PHOTO_UPLOAD,
+		SEND_TO_EMAIL
 	};
 
 	class Request
@@ -17,7 +25,7 @@ namespace kubik
 		virtual  std::map<std::string, std::string> getMapData()
 		{
 			using namespace std;
-			map<string, string> data;
+			std::map<std::string, std::string> data;
 			return data;
 		}
 
@@ -25,6 +33,24 @@ namespace kubik
 		{
 			success = RequestStatus::PROGRESS;
 		}
+
+		RequestType getType() const
+		{
+			return type;
+		}
+
+		void setHandled()
+		{
+			success = RequestStatus::HANDLED;
+		}
+
+		virtual void setURL(const std::string& url)
+		{
+			this->url = url;
+		}
+
+	protected:
+		RequestType type;
 
 	};
 
@@ -36,7 +62,13 @@ namespace kubik
 		std::string grant_type = "password";
 		std::string client_id = "f3d259ddd3ed8ff3843839b";
 		std::string client_secret = "4c7f6f8fa93d59c45502c0ae8c4a95b";
+
 	public:
+		AuthRequest() 
+		{
+			type = RequestType::LOGIN;
+		}
+
 		virtual std::map<std::string, std::string> getMapData() override
 		{
 			using namespace std;
@@ -46,7 +78,6 @@ namespace kubik
 			data.insert(pair<string, string>("grant_type", grant_type));
 			data.insert(pair<string, string>("client_id", client_id));
 			data.insert(pair<string, string>("client_secret", client_secret));
-
 			return data;
 		}		
 	};
@@ -59,6 +90,11 @@ namespace kubik
 		std::string link = "";
 		std::string base64Str;
 		int photoHeight;
+
+		PostPhotoPhotoBoothRequest()
+		{
+			type = RequestType::PHOTO_UPLOAD;
+		}
 
 		void setPath(const std::string& path)
 		{
@@ -77,10 +113,7 @@ namespace kubik
 			photoHeight = loadedTex.getHeight() / 3;		
 		}	
 
-		void setURL(const std::string& url)
-		{
-			this->url = url;
-		}
+		
 
 		int getHeight() const
 		{
@@ -106,11 +139,46 @@ namespace kubik
 		}
 	};
 
+	class StandInfoRequest : public Request
+	{
+	//public:
+
+	};
+
+	class PhotoPrintRequest : public Request
+	{
+	public:
+		int appID;
+		int photo_id;
+		std::string photo_url;
+		std::string hashtag;
+
+		virtual std::map<std::string, std::string> getMapData() override
+		{
+			using namespace std;
+			map<string, string> data;
+			data.insert(pair<string, string>("appID", ci::toString(appID)));
+
+			if (photo_id != -1)
+				data.insert(pair<string, string>("photo_id", ci::toString(photo_id)));
+
+			if (photo_url != "")
+				data.insert(pair<string, string>("photo_url", photo_url));
+
+			if (hashtag != "")
+				data.insert(pair<string, string>("hashtag", hashtag));
+
+			return data;
+		}
+	};
+
 	
 
+	typedef std::shared_ptr<class PhotoPrintRequest> PhotoPrintRequestRef;
 	typedef std::shared_ptr<class SendToEmailsRequest> SendToEmailsRequestRef;
 	typedef std::shared_ptr<class PostPhotoPhotoBoothRequest> PostPhotoPhotoBoothRequestRef;
 	typedef std::shared_ptr<class AuthRequest> AuthRequestRef;
+	typedef std::shared_ptr<class StandInfoRequest> StandInfoRequestRef;
 	typedef std::shared_ptr<class Request> RequestRef;
 
 	class Server
@@ -126,16 +194,13 @@ namespace kubik
 		void init();
 
 		void standInfo();
-		void postPhoto(const std::string& path);
-		//void sendToEmails(const std::string& path);
+		void postPhoto(const std::string& path, const std::string& appID);
 		void sendToEmails(int appID, int photoID, const std::string& emails);
-		//void sendToEmailsThread(int appID, int photoID, const std::string& emails);
-
-		boost::signals2::signal<void()> photoUploadSuccess;
+		void photoPrint(int appID, int photo_id = -1, const std::string& photo_url = "", const std::string& hashtag = "");
+	
+		boost::signals2::signal<void()> loginSuccess;
+		boost::signals2::signal<void(const std::string& photo_id, const std::string& link)> photoUploadSuccess;
 		boost::signals2::signal<void()> photoUploadError;
-
-		int getLastPhotoID() const { return photo_id; };
-		std::string getPhotoLink() const { return link; };
 
 	private:
 		std::string access_token;
@@ -144,18 +209,17 @@ namespace kubik
 		ThreadRef mediaLoadThread;
 
 		bool isLogin, threadLoad;
-		int photo_id;
-		std::string link;
-
+	
 		void threadLogin(const AuthRequestRef& request);
-		//void threadLogin();
 		void threadPostPhoto(const PostPhotoPhotoBoothRequestRef& request);
-		void update();
-		void sendToEmailsThread(const SendToEmailsRequestRef& request);
+		void threadStandInfo(const StandInfoRequestRef& request);
+		void threadSendToEmails(const SendToEmailsRequestRef& request);
+		void threadPhotoPrint(const PhotoPrintRequestRef& request);
 
-		int errorCount;		
-
+		void update();	
 		bool checkLogin();
+
+		int errorCount;			
 		void addToQue(const RequestRef& request);		
 
 		RequestRef currentRequest;

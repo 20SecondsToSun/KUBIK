@@ -23,12 +23,31 @@ void Server::update()
 		photoIsPosted = false;
 		photoUploadSuccess();
 	}*/
+
+	if (currentRequest->success == RequestStatus::SUCCESS)
+	{
+		switch (currentRequest->getType())
+		{
+		case RequestType::LOGIN:
+			loginSuccess();	
+			logger().log("login!!!!!!!!!");
+			break;
+
+		case RequestType::PHOTO_UPLOAD:
+			PostPhotoPhotoBoothRequestRef currentRequest = static_cast<PostPhotoPhotoBoothRequestRef>(currentRequest);			
+			photoUploadSuccess(toString(currentRequest->photo_id), currentRequest->link);
+			break;
+		}
+
+		currentRequest->setHandled();
+
+	}
 }
 
 void Server::login()
 {
 	AuthRequestRef request = AuthRequestRef(new AuthRequest());
-	request->url = SERVER + "/oauth/access_token";
+	request->setURL(SERVER + "/oauth/access_token");
 
 	if (!threadLoad)
 	{
@@ -65,27 +84,114 @@ void Server::threadLogin(const AuthRequestRef& request)
 		}
 		catch (...)
 		{
-			
+			request->success = RequestStatus::FAIL;
 		}
 	}
+	else
+	{
+		request->success = RequestStatus::FAIL;
+	}
 
-	request->success = RequestStatus::FAIL;
+	
 	threadLoad = false;
+}
+
+void Server::photoPrint(int appID, int photo_id, const string& photo_url, const string& hashtag)
+{
+	auto request = PhotoPrintRequestRef(new PhotoPrintRequest());	
+	request->setURL(SERVER + "/api/event/print");
+	request->appID = appID;
+	request->photo_id = photo_id;
+	request->photo_url = photo_url;
+	request->hashtag = hashtag;
+
+	if (checkLogin() && !threadLoad)
+	{
+		threadLoad = true;
+		currentRequest = request;
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadPhotoPrint, this, request)));
+	}
+	else
+	{
+		//addToQue(request);
+	}
+}
+
+void Server::threadPhotoPrint(const PhotoPrintRequestRef& request)
+{
+	auto response = Curl::postStand(request->url, request->getMapData(), access_token);
 }
 
 void Server::standInfo()
 {
-	string REQUEST = "/api/stand";
-	auto answer = Curl::getStand(SERVER + REQUEST, access_token);
-	logger().log("answer::  " + toString(answer));
+	StandInfoRequestRef request = StandInfoRequestRef(new StandInfoRequest());
+	request->setURL(SERVER + "/api/stand");
+
+	if (checkLogin() && !threadLoad)
+	{
+		threadLoad = true;
+		currentRequest = request;
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadStandInfo, this, request)));
+	}
+	else
+	{
+		//addToQue(request);
+	}
 }
 
-void Server::postPhoto(const string& path)
+void Server::threadStandInfo(const StandInfoRequestRef& request)
+{
+	string answer = Curl::getStand(request->url, access_token);
+
+	if (toString(answer) != "")
+	{
+		try
+		{
+			JsonTree jTree = JsonTree(answer);
+			if (jTree.hasChild("meta"))
+			{
+				auto code = jTree.getChild("meta").getChild("code").getValue<int>();
+				if (code == 200)
+				{
+					JsonTree data = jTree.getChild("data");
+					auto event_title = data.getChild("event_title").getValue<string>();
+					auto game_enter = data.getChild("game_enter").getValue<int>();
+					auto photo_total = data.getChild("photo_total").getValue<int>();
+					auto print_total = data.getChild("print_total").getValue<int>();
+					auto social_total = data.getChild("social_total").getValue<int>();
+					auto email_total = data.getChild("email_total").getValue<int>();
+					auto cartridge_size = data.getChild("cartridge_size").getValue<int>();
+					auto cartridge_current = data.getChild("cartridge_current").getValue<int>();
+
+					logger().log(answer);
+					logger().log("cartridge_size" + toString(cartridge_size));
+					request->success = RequestStatus::SUCCESS;
+				}
+				else
+				{
+					request->success = RequestStatus::FAIL;
+				}				
+			}
+		}
+		catch (...)
+		{
+			request->success = RequestStatus::FAIL;
+		}
+	}
+	else
+	{
+		request->success = RequestStatus::FAIL;
+	}
+
+	threadLoad = false;	
+}
+
+void Server::postPhoto(const string& path, const string& appID)
 {
 	auto request = PostPhotoPhotoBoothRequestRef(new PostPhotoPhotoBoothRequest());
 	request->setPath(path);
 	request->init();
-	request->setURL(SERVER + "/api/photo_upload/2/" + toString(request->getHeight()));	
+	request->setURL(SERVER + "/api/photo_upload/" + toString(appID) + "/" + toString(request->getHeight()));
 
 	if (checkLogin() && !threadLoad)
 	{
@@ -114,19 +220,23 @@ void Server::threadPostPhoto(const PostPhotoPhotoBoothRequestRef& request)
 				auto data = jTree.getChild("data");
 				if (data.hasChild("link"))
 				{
-					link = data.getChild("link").getValue<string>();
-					photo_id = data.getChild("photo_id").getValue<int>();	
+					request->link = data.getChild("link").getValue<string>();
+					request->photo_id = data.getChild("photo_id").getValue<int>();
 					request->success = RequestStatus::SUCCESS;
 				}			
 			}			
 		}
 		catch (...)
 		{
-			
+			request->success = RequestStatus::FAIL;
 		}
 	}
+	else
+	{
+		request->success = RequestStatus::FAIL;
+	}
 
-	request->success = RequestStatus::FAIL;
+	threadLoad = false;	
 }
 
 void Server::sendToEmails(int appID, int photoID, const string& emails)
@@ -145,7 +255,7 @@ void Server::sendToEmails(int appID, int photoID, const string& emails)
 	{
 		threadLoad = true;
 		currentRequest = request;
-		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::sendToEmailsThread, this, request)));
+		mediaLoadThread = ThreadRef(new boost::thread(bind(&Server::threadSendToEmails, this, request)));
 	}
 	else
 	{
@@ -153,9 +263,10 @@ void Server::sendToEmails(int appID, int photoID, const string& emails)
 	}	
 }
 
-void Server::sendToEmailsThread(const SendToEmailsRequestRef& request)
+void Server::threadSendToEmails(const SendToEmailsRequestRef& request)
 {	
 	auto response = Curl::postStand(request->url, request->getMapData(), access_token);
+	logger().log(response);
 	request->success = RequestStatus::SUCCESS;
 	threadLoad = false;
 }
