@@ -14,7 +14,27 @@ namespace kubik
 	{
 		LOGIN,
 		PHOTO_UPLOAD,
-		SEND_TO_EMAIL
+		SEND_TO_EMAIL,
+		CREATE_EVENT,
+		SOCIAL_TOKENS,
+		SOCIAL_SHARE_TEXTS,
+	};
+
+	class SocailTexts
+	{
+	public:
+		std::string twText;
+		std::string	vkText;
+		std::string	fbText;
+	};
+
+	class SocailTokens
+	{
+	public:
+		std::string twApiKey;
+		std::string	twSecret;
+		std::string	vkApiKey;
+		std::string	fbApiKey;
 	};
 
 	class Request
@@ -157,7 +177,7 @@ namespace kubik
 		{
 			using namespace std;
 			map<string, string> data;
-			data.insert(pair<string, string>("appID", ci::toString(appID)));
+			data.insert(pair<string, string>("id", ci::toString(appID)));
 
 			if (photo_id != -1)
 				data.insert(pair<string, string>("photo_id", ci::toString(photo_id)));
@@ -172,8 +192,99 @@ namespace kubik
 		}
 	};
 
-	
+	class PhotoShareRequest : public Request
+	{
+	public:
+		int id = id;
+		std::string type;
+		int photo_id;
 
+		virtual std::map<std::string, std::string> getMapData() override
+		{
+			using namespace std;
+			map<string, string> data;
+			data.insert(pair<string, string>("id", ci::toString(id)));
+
+			if (photo_id != -1)
+				data.insert(pair<string, string>("photo_id", ci::toString(photo_id)));
+			
+			data.insert(pair<string, string>("type", type));		
+
+			return data;
+		}
+	};
+
+	class CreateEventRequest : public Request
+	{
+	public:
+		std::string name;
+
+		CreateEventRequest()
+		{
+			type = RequestType::CREATE_EVENT;
+		}
+
+		virtual std::map<std::string, std::string> getMapData() override
+		{
+			using namespace std;
+			map<string, string> data;
+			data.insert(pair<string, string>("name", name));
+			return data;
+		}
+	};
+
+	class GameEvent : public Request
+	{
+	public:
+		int id = -1;
+		int photo_id = -1;
+
+		GameEvent()
+		{
+			photo_id = -1;
+		}
+
+		virtual std::map<std::string, std::string> getMapData() override
+		{
+			using namespace std;
+			map<string, string> data;
+			data.insert(pair<string, string>("id", ci::toString(id)));
+			if (photo_id != -1)
+			{
+				data.insert(pair<string, string>("photo_id", ci::toString(photo_id)));
+			}
+			return data;
+		}
+	};
+
+	class SocialTokenEvent : public Request
+	{
+	public:
+		
+		SocialTokenEvent()
+		{			
+			type = RequestType::SOCIAL_TOKENS;
+		}
+
+		SocailTokens tokens;		
+	};	
+
+	class SocialShareTextsEvent : public Request
+	{
+	public:
+		SocialShareTextsEvent()
+		{
+			type = RequestType::SOCIAL_SHARE_TEXTS;
+		}
+
+		SocailTexts texts;		
+	};
+
+	typedef std::shared_ptr<class SocialShareTextsEvent> SocialShareTextsEventRef;
+	typedef std::shared_ptr<class SocialTokenEvent> SocialTokenEventRef;
+	typedef std::shared_ptr<class GameEvent> GameEventRef;
+	typedef std::shared_ptr<class CreateEventRequest> CreateEventRequestRef;
+	typedef std::shared_ptr<class PhotoShareRequest> PhotoShareRequestRef;
 	typedef std::shared_ptr<class PhotoPrintRequest> PhotoPrintRequestRef;
 	typedef std::shared_ptr<class SendToEmailsRequest> SendToEmailsRequestRef;
 	typedef std::shared_ptr<class PostPhotoPhotoBoothRequest> PostPhotoPhotoBoothRequestRef;
@@ -197,10 +308,20 @@ namespace kubik
 		void postPhoto(const std::string& path, const std::string& appID);
 		void sendToEmails(int appID, int photoID, const std::string& emails);
 		void photoPrint(int appID, int photo_id = -1, const std::string& photo_url = "", const std::string& hashtag = "");
-	
+		void photoShare(int appID, const std::string& sharetype, int photo_id);
+		void createEvent(const std::string& name);
+		void gameEnter(int appID);
+		void gamePass(int appID, int photo_id);
+		void gameFail(int appID, int photo_id);
+		void getSocialTokens();
+		void getSocialShareTexts();
+
 		boost::signals2::signal<void()> loginSuccess;
 		boost::signals2::signal<void(const std::string& photo_id, const std::string& link)> photoUploadSuccess;
 		boost::signals2::signal<void()> photoUploadError;
+		boost::signals2::signal<void(const std::string& eventName)> createEventSuccess;
+		boost::signals2::signal<void(const SocailTexts& texts)> socialTextSuccess;
+		boost::signals2::signal<void(const SocailTokens& texts)> socialTokensSuccess;
 
 	private:
 		std::string access_token;
@@ -209,12 +330,21 @@ namespace kubik
 		ThreadRef mediaLoadThread;
 
 		bool isLogin, threadLoad;
+
+		bool RESPONSE_OK(const std::string& response);
 	
 		void threadLogin(const AuthRequestRef& request);
 		void threadPostPhoto(const PostPhotoPhotoBoothRequestRef& request);
 		void threadStandInfo(const StandInfoRequestRef& request);
 		void threadSendToEmails(const SendToEmailsRequestRef& request);
 		void threadPhotoPrint(const PhotoPrintRequestRef& request);
+		void threadPhotoShare(const PhotoShareRequestRef& request);
+		void threadCreateEvent(const CreateEventRequestRef& request);
+		void threadGameEnter(const GameEventRef& request);
+		void threadGamePass(const GameEventRef& request);
+		void threadGameFail(const GameEventRef& request);
+		void threadGetSocialTokens(const SocialTokenEventRef& request);
+		void threadGetSocialShareTexts(const SocialShareTextsEventRef& request);
 
 		void update();	
 		bool checkLogin();

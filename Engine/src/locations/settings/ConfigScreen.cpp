@@ -48,7 +48,8 @@ void ConfigScreen::startUpParams()
 
 void ConfigScreen::start()
 {
-	server().standInfo();
+	//server().standInfo();
+	server().getSocialShareTexts();
 
 	startUpParams();
 
