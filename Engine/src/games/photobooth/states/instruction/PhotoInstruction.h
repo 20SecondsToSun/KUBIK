@@ -1,5 +1,6 @@
 #pragma once
-#include "states/IPhotoboothLocation.h"
+
+#include "main/IGameLocation.h"
 #include "gui/SimpleSpriteButton.h"
 #include "PhotoboothSettings.h"
 #include "TimerTools.h"
@@ -12,7 +13,7 @@ namespace kubik
 		{
 			typedef std::shared_ptr<class PhotoInstruction> PhotoInstructionRef;
 
-			class PhotoInstruction :public IPhotoboothLocation
+			class PhotoInstruction :public IGameLocation
 			{
 				ci::gl::Texture fonTex, titleTex;
 				ci::Vec2f titleTexPos;
@@ -27,7 +28,7 @@ namespace kubik
 			public:
 				PhotoInstruction(config::PhotoboothSettingsRef settings);
 				~PhotoInstruction();
-				virtual void reset(config::PhotoboothSettingsRef set) override;
+				virtual void reset(config::ISettingsRef set) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

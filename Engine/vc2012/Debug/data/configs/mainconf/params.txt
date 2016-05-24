@@ -1,10 +1,10 @@
 {
    "actionName" : "sokolniki",
-   "activeDesign" : 2,
+   "activeDesign" : 1,
    "currentPhotosPrinted" : 295,
    "designPath" : "kubik\\interface\\configDesign\\",
    "maxPhotosToPrint" : 400,
-   "playedCount" : 59,
+   "playedCount" : 96,
    "printedCount" : 91,
    "publishedCount" : 20
 }

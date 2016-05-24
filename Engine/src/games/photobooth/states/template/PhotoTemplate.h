@@ -1,10 +1,10 @@
 #pragma once
-#include "states/IPhotoboothLocation.h"
+#include "main/IGameLocation.h"
 #include "PhotoboothSettings.h"
 #include "TextTools.h"
 #include "TimerTools.h"
 #include "cinder/gl/Texture.h"
-#include "model/PhotoStorage.h"
+#include "main/PhotoStorage.h"
 #include "states/template/TemplateButtons.h"
 #include "shaders/ShaderTool.h"
 
@@ -16,7 +16,7 @@ namespace kubik
 		{
 			typedef	std::shared_ptr<class PhotoTemplate> PhotoTemplateRef;
 
-			class PhotoTemplate : public IPhotoboothLocation
+			class PhotoTemplate : public IGameLocation
 			{
 				enum locationState
 				{
@@ -51,7 +51,7 @@ namespace kubik
 			public:
 				PhotoTemplate(config::PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
 
-				virtual void reset(config::PhotoboothSettingsRef settings) override;
+				virtual void reset(config::ISettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void update() override;

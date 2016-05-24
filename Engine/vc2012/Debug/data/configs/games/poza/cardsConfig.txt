@@ -1,0 +1,65 @@
+{ 
+   "userDesignID" : 6,
+   "designs" : 
+      [{
+         "id" : 1,
+	 "textObj": {"text": "Big brother",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" : "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\1.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\1.png"
+
+      },
+{
+         "id" : 2,
+	 "textObj": {"text": "Acid",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\2.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\2.png"
+      },
+{
+         "id" : 3,
+	 "textObj": {"text": "Mi mi cats",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\3.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\3.png"
+      },
+{
+         "id" : 4,
+	 "textObj": {"text": "Van Gogh",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\4.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\4.png"
+      },
+{
+         "id" : 5,
+	 "textObj": {"text": "Geometry",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\5.png",
+ "designPath" :"kubik\\design_elements\\gameDesign\\instakub\\photoCardStyles\\5.png"
+      },
+{
+         "id" : 6,
+	 "textObj": {"text": "Моя тема",
+		  "font" : "HelveticaLight",
+		  "size" : 24,
+		  "color" :  "ffffff"
+		},
+	 "iconPath" :"configDesign\\instakub\\photoCardStyles\\6.png",
+ "designPath" :"user_design\\design_elements\\gameDesign\\instakub\\photoCardStyles\\1.png"
+      }]      
+}

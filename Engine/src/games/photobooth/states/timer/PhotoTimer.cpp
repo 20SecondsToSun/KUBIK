@@ -30,12 +30,13 @@ PhotoTimer::~PhotoTimer()
 	clear();	
 }
 
-void PhotoTimer::reset(PhotoboothSettingsRef sett)
+void PhotoTimer::reset(ISettingsRef sett)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoTimer.Reset ~~~");
-	IPhotoboothLocation::reset(settings);
+	IGameLocation::reset(settings);
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
 
-	MAX_SEC = settings->PhotoSeconds;
+	MAX_SEC = setphoto->PhotoSeconds;
 
 	title = settings->getTexture("timertitle");
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), 432.0f - title.getHeight() * 0.5f);
@@ -73,7 +74,7 @@ void PhotoTimer::initShowAnimationParams()
 
 	timeline().apply(&titleAlpha, 1.0f, animShowTitleTime + 0.2f);	
 	timeline().apply(&circleScale, 0.3f, 1.0f, 0.8f, EaseOutBack(2.40158f));	
-	timeline().apply(&digitScale, 0.2f, 1.0f, 0.8f,  EaseOutBack(2.40158f)).delay(0.25f);
+	timeline().apply(&digitScale,  0.2f, 1.0f, 0.8f, EaseOutBack(2.40158f)).delay(0.25f);
 	timeline().apply(&titleAnimPosition, Vec2f(titlePos.x, titlePositionY), animShowTitleTime, EaseOutExpo())
 		.finishFn(bind(&PhotoTimer::showAnimationComplete, this));
 }
@@ -217,5 +218,5 @@ void PhotoTimer::stopAllTweens()
 {
 	circleScale.stop();
 	digitScale.stop();
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }

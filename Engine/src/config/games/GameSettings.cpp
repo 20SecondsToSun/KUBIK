@@ -282,6 +282,7 @@ void GameSettings::buildSettingData()
 
 		try
 		{
+			//if (isGameCurrent(game.id))
 			gameSettingsMap[game.id]->buildSettingData();
 		}
 		catch (...)

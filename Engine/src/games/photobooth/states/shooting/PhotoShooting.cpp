@@ -83,23 +83,25 @@ void PhotoShooting::showAnimationComplete()
 	callDelayShotTimer();
 }
 
-void PhotoShooting::reset(PhotoboothSettingsRef settings)
+void PhotoShooting::reset(ISettingsRef settings)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoShooting.Reset ~~~");
 
-	IPhotoboothLocation::reset(settings);
-	countsTex				  = settings->getTexture("counts");
-	seekTex					  = settings->getTexture("seek");
-	smileTexs				  = settings->getSmileTextures();
-	line					  = settings->getTexture("shootline");
-	frame					  = settings->getTexture("frame");
-	shadow					  = settings->getTexture("shadow");
-	backgroundProgresstexture = settings->getTexture("plash");	
+	IGameLocation::reset(settings);
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
+
+	countsTex = setphoto->getTexture("counts");
+	seekTex = setphoto->getTexture("seek");
+	smileTexs = setphoto->getSmileTextures();
+	line = setphoto->getTexture("shootline");
+	frame = setphoto->getTexture("frame");
+	shadow = setphoto->getTexture("shadow");
+	backgroundProgresstexture = setphoto->getTexture("plash");
 
 	framePosition = Vec2f(0.5f * (getWindowWidth() - frame.getWidth()), 252.0f);
 	countsTexPos  = Vec2f(0.5f * (getWindowWidth() - countsTex.getWidth()), 0.0f);
 	seekTexPos0   = Vec2f(146.0f - seekTex.getWidth() * 0.5f, 0.5f * (countsTex.getHeight() - seekTex.getHeight()));
-	photoTemplate = settings->getPhotoShootingCard();
+	photoTemplate = setphoto->getPhotoShootingCard();
 }
 
 void PhotoShooting::stop()
@@ -208,7 +210,7 @@ void PhotoShooting::drawPhotoframe()
 
 	gl::pushMatrices();
 	gl::translate(previewAnimateX, 0.0f);
-	gl::pushMatrices();
+	//gl::pushMatrices();
 	gl::pushMatrices();
 	gl::translate(0.5f * (getWindowWidth() - shadow.getWidth()), startY - 52.0f); //-150.0f);
 	gl::draw(shadow);
@@ -224,12 +226,12 @@ void PhotoShooting::drawPhotoframe()
 	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY + 235);
 
 	//gl::color(ColorA(1,1,1,0.4));
-//	shader->setAlpha(.4f);
+	//shader->setAlpha(.4f);
 	shader->render(photo);	
 	//gl::color(Color::white());
 
 	gl::popMatrices();
-	gl::popMatrices();
+	//gl::popMatrices();
 }
 
 void PhotoShooting::drawProgressBlock()
@@ -298,7 +300,7 @@ void PhotoShooting::liveviewdelay()
 	{
 		callback(BEGIN_ANIM);
 		timeline().apply(&progressBlockAnimateY, 300.0f, 0.4f, EaseOutCubic())
-			.finishFn(bind(&IPhotoboothLocation::hideAnimationComplete, this));
+			.finishFn(bind(&IGameLocation::hideAnimationComplete, this));
 	}
 }
 
@@ -345,5 +347,5 @@ void PhotoShooting::stopAllTweens()
 	progressBlockAnimateY.stop();
 	seekPosition.stop();
 	maskSize.stop();
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }

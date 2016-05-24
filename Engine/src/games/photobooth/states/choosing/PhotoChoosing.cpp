@@ -26,12 +26,13 @@ void PhotoChoosing::start()
 #ifdef Photobooth_Loadfromfolder_DEBUG
 	//photoStorage->clear();
 #endif
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
 
 	if (photoStorage->empty())
 	{
 		for (int i = 1; i < 6; i++)
 		{
-			auto path = ((settings->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(i) + ".JPG"));
+			auto path = ((setphoto->getPhotoDownloadDirectory().string()) + "\\" + ("IMG_000" + to_string(i) + ".JPG"));
 			photoStorage->loadDownloadedPhoto(path);
 		}
 	}			
@@ -160,9 +161,9 @@ void PhotoChoosing::showAnimationComplete()
 	callback(COMPLETE_ANIM);
 }
 
-void PhotoChoosing::reset(PhotoboothSettingsRef settings)
+void PhotoChoosing::reset(ISettingsRef settings)
 {
-	IPhotoboothLocation::reset(settings);
+	IGameLocation::reset(settings);
 
 	setTitle();
 	setPhotoButtonsDesign();
@@ -393,14 +394,16 @@ void PhotoChoosing::setReshotButtonDesign()
 
 void PhotoChoosing::setFiltersData()
 {
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
+
 	filterBtns.clear();
-	auto filters = settings->getOnFilters();
+	auto filters = setphoto->getOnFilters();
 	float fwidth = 109.0f, shiftX = 15.0f;
 	float fullSize = filters.size() * fwidth + (filters.size() - 1.0f) * shiftX;
 
 	Vec2f startVec = Vec2f(0.5f * (getWindowWidth() - fullSize), photoFiltersStartY + 167.0f);
 
-	DesignData designdata = settings->getPhotoFiltersPreview();
+	DesignData designdata = setphoto->getPhotoFiltersPreview();
 
 	for (unsigned int i = 0; i < filters.size(); i++)
 	{
@@ -432,5 +435,5 @@ void PhotoChoosing::stopAllTweens()
 	titleFilterPos.stop();
 	choosefonPosAnim.stop();
 	alphaAnim.stop();
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }

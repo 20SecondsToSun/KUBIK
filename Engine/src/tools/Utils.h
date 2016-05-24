@@ -1,6 +1,9 @@
 #pragma once
 
 #include <boost/timer.hpp>
+#include <algorithm>    // std::random_shuffle
+#include <cstdlib>      // std::rand, std::srand
+#include <random>       // std::default_random_engine
 
 class Utils
 {
@@ -45,6 +48,13 @@ class Utils
 
 		static std::string fix2(const std::string& strtofix);
 
-
 		static ci::Vec2f transformCoords(const ci::Vec2f& coords);
+
+		template<typename T>
+		static T shuffleVector(T data)
+		{
+			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+			shuffle(data.begin(), data.end(), std::default_random_engine(seed));
+			return data;
+		}
 };

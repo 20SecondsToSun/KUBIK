@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PhotoboothSettings.h"
-#include "model/PhotoStorage.h"
+#include "main/PhotoStorage.h"
 #include "gui/Sprite.h"
 
 namespace kubik

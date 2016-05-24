@@ -38,8 +38,15 @@ namespace kubik
 			virtual void createMemento() = 0;
 			virtual void writeConfig() = 0;
 			virtual bool settingsChanged() = 0;
-			virtual changeSetting::id getChangeID() const = 0;			
+			virtual changeSetting::id getChangeID() const = 0;	
 
+			int getAppID() { return -1; };
+			static std::string getVKPostText(){ return ""; };
+			static std::string getFBPostText(){ return ""; };
+			static std::string getTWPostText(){ return ""; };
+
+			static std::string getQRCodeFile(){ return Paths::getPhotoDownloadedPath().string() + "\\" + ("qrcode.bmp"); };
+		
 		protected:
 			ApplicationModelRef model;			
 

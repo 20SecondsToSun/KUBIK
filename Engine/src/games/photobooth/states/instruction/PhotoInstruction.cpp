@@ -19,11 +19,11 @@ PhotoInstruction::~PhotoInstruction()
 	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Destruct  ~~~");
 }
 
-void PhotoInstruction::reset(PhotoboothSettingsRef set)
+void PhotoInstruction::reset(ISettingsRef set)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoInstruction.Reset ~~~");
 
-	IPhotoboothLocation::reset(set);
+	IGameLocation::reset(set);
 	settings	= set;
 	fonTex		= settings->getTexture("instrFon");
 	titleTex	= settings->getTexture("instrTitle");
@@ -61,7 +61,7 @@ void PhotoInstruction::hideAnimation(EventGUIRef& event)
 void PhotoInstruction::hideAnimationComplete()
 {
 	alphaAnim = 1.0f;
-	IPhotoboothLocation::hideAnimationComplete();	
+	IGameLocation::hideAnimationComplete();
 }
 
 void PhotoInstruction::update()
@@ -81,5 +81,5 @@ void PhotoInstruction::draw()
 void PhotoInstruction::stopAllTweens()
 {
 	alphaAnim.stop();
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }

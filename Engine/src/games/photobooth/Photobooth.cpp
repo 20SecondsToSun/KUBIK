@@ -1,6 +1,8 @@
 #include "Photobooth.h"
+#include "StatCollector.h"
 
 using namespace kubik;
+using namespace kubik::config;
 using namespace kubik::games::photobooth;
 using namespace std;
 using namespace ci;
@@ -26,7 +28,8 @@ Photobooth::~Photobooth()
 
 void Photobooth::init(config::ISettingsRef config)
 {
-	settings = static_pointer_cast<config::PhotoboothSettings>(config);
+	settings		 = static_pointer_cast<config::PhotoboothSettings>(config);
+	statSettings     = static_pointer_cast<StatCollector>(settings);
 }
 
 void Photobooth::create()
@@ -35,12 +38,13 @@ void Photobooth::create()
 	dbRecord		 = shared_ptr<DataBaseRecord>(new DataBaseRecord());
 	
 	photoInstruction = PhotoInstructionRef(new PhotoInstruction(settings));
-	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		photoStorage));
-	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings,		photoStorage));	
-	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings, photoStorage));
-	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings, photoStorage));	
-	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings, photoStorage));
-	photoSharing     = PhotoSharingRef(new PhotoSharing(settings,   photoStorage));
+	photoFilter		 = PhotoFilterRef(new PhotoFilter(settings,		  photoStorage));
+	photoTimer		 = PhotoTimerRef(new PhotoTimer(settings,		  photoStorage));	
+	photoShooting	 = PhotoShootingRef(new PhotoShooting(settings,   photoStorage));
+	photoChoosing	 = PhotoChoosingRef(new PhotoChoosing(settings,   photoStorage));	
+	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings,   photoStorage));
+	photoSharing	 = SocialLocationRef(new SocialLocation(settings, statSettings, photoStorage));
+
 
 	initLocations();
 	cameraSetup();
@@ -66,7 +70,7 @@ void Photobooth::goToPhotoInstructionTimeOut()
 {
 	logger().log("~~~ Photobooth.Timeot GoTo First Screen ~~~");
 
-	if (!equalLocations<PhotoInstruction>(currentLocation))
+	if (!currentLocation->equalLocations<PhotoInstruction>(currentLocation))
 	{
 		saveDbRecord();
 		currentLocation->stop();
@@ -78,12 +82,12 @@ void Photobooth::showAnimationComplete()
 {
 	for (auto loc : locations)
 	{
-		loc->connectEventHandler(&Photobooth::nextLocationHandler,     this, IPhotoboothLocation::NEXT_LOC);
-		loc->connectEventHandler(&Photobooth::beginAnimHandler,        this, IPhotoboothLocation::BEGIN_ANIM);
-		loc->connectEventHandler(&Photobooth::completeAnimHandler,     this, IPhotoboothLocation::COMPLETE_ANIM);
-		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IPhotoboothLocation::DISABLE_GAME_CLOSE);
-		loc->connectEventHandler(&Photobooth::enableGameCloseHandler,  this, IPhotoboothLocation::ENABLE_GAME_CLOSE);
-		loc->connectEventHandler(&Photobooth::closeLocationHandler,    this, IPhotoboothLocation::CLOSE_LOCATION);
+		loc->connectEventHandler(&Photobooth::nextLocationHandler,     this, IGameLocation::NEXT_LOC);
+		loc->connectEventHandler(&Photobooth::beginAnimHandler, this, IGameLocation::BEGIN_ANIM);
+		loc->connectEventHandler(&Photobooth::completeAnimHandler, this, IGameLocation::COMPLETE_ANIM);
+		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IGameLocation::DISABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::enableGameCloseHandler, this, IGameLocation::ENABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::closeLocationHandler, this, IGameLocation::CLOSE_LOCATION);
 		loc->setDbRecord(dbRecord);
 	}		
 
@@ -124,9 +128,9 @@ void Photobooth::disableGameCloseHandler()
 
 void Photobooth::stop()
 {
-	logger().log("~~~ Photobooth.Stop  ~~~");
+	logger().log("~~~ Photobooth.Stop ~~~");
 
-	if (!equalLocations<PhotoInstruction>(currentLocation))
+	if (!currentLocation->equalLocations<PhotoInstruction>(currentLocation))
 	{
 		saveDbRecord();
 	}
@@ -161,10 +165,10 @@ void Photobooth::initLocations()
 	removeListeners();
 
 	locations.clear();
-	//locations.push_back(photoInstruction);
-	//locations.push_back(photoFilter);
-	////locations.push_back(photoTimer);
-	//locations.push_back(photoShooting);
+	locations.push_back(photoInstruction);
+	locations.push_back(photoFilter);
+	locations.push_back(photoTimer);
+	locations.push_back(photoShooting);
 	locations.push_back(photoChoosing);
 	locations.push_back(photoTemplate);	
 	locations.push_back(photoSharing);
@@ -188,7 +192,7 @@ void Photobooth::nextLocationHandler()
 	}		
 	else
 	{
-		if (equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())
+		if (currentLocation->equalLocations<PhotoTemplate>(locations[index]) && !settings->isPrinterOn())
 		{
 			++index;
 		}		
@@ -273,7 +277,6 @@ void Photobooth::drawCameraErrorPopup()
 {
 	gl::draw(settings->getTexture("popupErrorBg"));
 	auto tex = settings->getTexture("cameraErrorText");
-
 	gl::draw(tex, Vec2f(0.5f * (1080.0f - tex.getWidth()), 766.0f - 0.5f * tex.getHeight()));
 }
 
@@ -281,12 +284,12 @@ void Photobooth::removeListeners()
 {
 	for (auto loc : locations)
 	{
-		loc->disconnectEventHandler(IPhotoboothLocation::NEXT_LOC);
-		loc->disconnectEventHandler(IPhotoboothLocation::BEGIN_ANIM);
-		loc->disconnectEventHandler(IPhotoboothLocation::COMPLETE_ANIM);
-		loc->disconnectEventHandler(IPhotoboothLocation::DISABLE_GAME_CLOSE);
-		loc->disconnectEventHandler(IPhotoboothLocation::ENABLE_GAME_CLOSE);
-		loc->disconnectEventHandler(IPhotoboothLocation::CLOSE_LOCATION);		
+		loc->disconnectEventHandler(IGameLocation::NEXT_LOC);
+		loc->disconnectEventHandler(IGameLocation::BEGIN_ANIM);
+		loc->disconnectEventHandler(IGameLocation::COMPLETE_ANIM);
+		loc->disconnectEventHandler(IGameLocation::DISABLE_GAME_CLOSE);
+		loc->disconnectEventHandler(IGameLocation::ENABLE_GAME_CLOSE);
+		loc->disconnectEventHandler(IGameLocation::CLOSE_LOCATION);		
 	}	
 
 	photoChoosing->disconnectEventHandler(PhotoChoosing::RESHOT_LOC);
@@ -295,9 +298,13 @@ void Photobooth::removeListeners()
 
 void Photobooth::saveDbRecord()
 {
+	std::string basePath = settings->getDataBasePath();
+	std::string baseName = settings->getDataBaseName();
+
 	//collect data
-	settings->saveStatData(dbRecord);
-	settings->addPlayedGame();
-	dbRecord->clear();
+	auto statCollector = static_pointer_cast<StatCollector>(settings);
+	statCollector->saveStatData(dbRecord, basePath, baseName);
+	statCollector->addPlayedGame();
+	dbRecord->clear();	
 }
 

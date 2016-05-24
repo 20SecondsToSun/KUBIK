@@ -1,11 +1,11 @@
 #pragma once
 
-#include "states/IPhotoboothLocation.h"
+#include "main/IGameLocation.h"
 #include "PhotoboothSettings.h"
 #include "CameraAdapter.h"
 #include "DrawTools.h"
 #include "TimerTools.h"
-#include "model/PhotoStorage.h"
+#include "main/PhotoStorage.h"
 #include "shaders/ShaderTool.h"
 #include "states/timer/PhotoTimer.h"
 
@@ -17,7 +17,7 @@ namespace kubik
 		{
 			typedef std::shared_ptr<class PhotoShooting> PhotoShootingRef;
 
-			class PhotoShooting : public IPhotoboothLocation
+			class PhotoShooting : public IGameLocation
 			{
 				static const int SHOT_NUM = 5;
 
@@ -79,7 +79,7 @@ namespace kubik
 				PhotoShooting(config::PhotoboothSettingsRef settings, PhotoStorageRef  photoStorage);
 				~PhotoShooting();
 
-				virtual void reset(config::PhotoboothSettingsRef settings) override;
+				virtual void reset(config::ISettingsRef settings) override;
 				virtual void start() override;
 				virtual void update() override;
 				virtual void draw() override;

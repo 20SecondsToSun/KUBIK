@@ -1,5 +1,5 @@
 {
-   "defaultGameID" : 2,
+   "defaultGameID" : 4,
    "lang" : "ru",
    "netConnection" : true,
    "standID" : 1,

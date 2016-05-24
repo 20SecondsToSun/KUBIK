@@ -8,7 +8,7 @@
 #include "ApplicationModel.h"
 #include "graphics/IMovie.h"
 #include "fontStorage/FontStorage.h"
-#include "games/photobooth/model/DataBaseRecord.h"
+#include "main/DataBaseRecord.h"
 #include "Paths.h"
 #include "ConfigSettings.h"
 #include "StatCollector.h"
@@ -79,6 +79,8 @@ namespace kubik
 			void setTextures()		override;
 			fs::path getPhotoDownloadDirectory(){ return Paths::getPhotoDownloadedPath(); };
 
+			
+
 			TextItem getMainTitle(const PhtTextID& id);
 			TextItem getSubTitleClose(const PhtTextID& id);
 			TextItem getSubTitleOpen(const PhtTextID& id);
@@ -132,9 +134,8 @@ namespace kubik
 			bool isPrinterOn();
 			bool onlyOneGameOn();
 
-			std::string getDataBasePath() const;
-			std::string getDataBaseName() const;
-
+			virtual std::string getDataBasePath() const override;
+		
 			////////////////////////////////////////////////////////////////////////////
 			//
 			//					STATISTICS

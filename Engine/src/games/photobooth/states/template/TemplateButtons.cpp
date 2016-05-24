@@ -305,11 +305,11 @@ void TemplateButton3::drawTemplateBg()
 void TemplateButton3::drawPhotos()
 {
 	gl::pushMatrices();
-	gl::scale(1.01, 1.01);
+	gl::scale(1.01f, 1.01f);
 	shader->render(photoTemplates[0][FormatID::FORMAT4_BIG]);
-	gl::translate(100, 0);
+	gl::translate(100.f, 0.f);
 	shader->render(photoTemplates[1][FormatID::FORMAT4_BIG]);
-	gl::translate(100, 0);
+	gl::translate(100.f, 0.f);
 	shader->render(photoTemplates[2][FormatID::FORMAT4_BIG]);
 	gl::popMatrices();
 }
@@ -369,7 +369,7 @@ void TemplateButton4::drawPhotos()
 	shader->render(tex);
 	gl::pushMatrices();
 	gl::translate(Vec2f(0.0f, tex.getHeight()));
-	gl::scale(0.96, 0.96);
+	gl::scale(0.96f, 0.96f);
 	shader->render(photoTemplates[1][FormatID::FORMAT3_SMALL]);
 	gl::popMatrices();
 }
@@ -428,13 +428,13 @@ void TemplateButton5::drawPhotos()
 
 	gl::pushMatrices();	
 	gl::translate(Vec2f(154.0f, 0.0f));
-	gl::scale(0.92, 0.92);
+	gl::scale(0.92f, 0.92f);
 	shader->render(photoTemplates[0][FormatID::FORMAT3_SMALL]);	
 	gl::popMatrices();
 
 	gl::pushMatrices();
 	gl::translate(Vec2f(154.0f, 99.0f));
-	gl::scale(0.92, 0.92);
+	gl::scale(0.92f, 0.92f);
 	shader->render(photoTemplates[1][FormatID::FORMAT3_SMALL]);
 	gl::popMatrices();
 }

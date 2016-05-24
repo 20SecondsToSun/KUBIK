@@ -1,12 +1,12 @@
 #pragma once
-#include "states/IPhotoboothLocation.h"
+#include "main/IGameLocation.h"
 #include "PhotoboothSettings.h"
 #include "FilterButton.h"
 #include "CameraAdapter.h"
 #include "TextTools.h"
 #include "TimerTools.h"
 #include "Filter.h"
-#include "model/PhotoStorage.h"
+#include "main/PhotoStorage.h"
 
 namespace kubik
 {
@@ -16,7 +16,7 @@ namespace kubik
 		{
 			typedef std::shared_ptr<class PhotoFilter> PhotoFilterRef;
 
-			class PhotoFilter : public IPhotoboothLocation
+			class PhotoFilter : public IGameLocation
 			{
 				enum sizeID
 				{
@@ -80,7 +80,7 @@ namespace kubik
 				virtual void stop() override;
 				virtual void update() override;
 				virtual void draw() override;
-				virtual void reset(config::PhotoboothSettingsRef set) override;
+				virtual void reset(config::ISettingsRef set) override;
 				virtual void stopAllTweens() override;
 
 				void photoFilterSelect(EventGUIRef& event);

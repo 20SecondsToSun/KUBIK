@@ -343,8 +343,8 @@ void Controller::gameGraphicsLoadingCompleteHandler()
 void Controller::createGame(GameId id)
 {
 	logger().log("CREATE GAME" + id);
-	gameSettings->buildLocationData();
 	gameSettings->setCurrentGame(id);
+	gameSettings->buildLocationData();	
 	game = gameSettings->createGame(id);	
 }
 

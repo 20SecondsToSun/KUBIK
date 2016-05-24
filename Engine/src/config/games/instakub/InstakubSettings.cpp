@@ -213,7 +213,7 @@ void InstakubSettings::buildSettingData()
 	}
 
 	hashTagTextItem.setFont(fontStorage().getAll());
-};
+}
 
 ci::gl::Texture InstakubSettings::getCurrentTemplate()
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "states/IPhotoboothLocation.h"
+#include "main/IGameLocation.h"
 #include "PhotoboothSettings.h"
 #include "states/choosing/PhotoContainer.h"
 #include "states/choosing/FilterSmallButton.h"
@@ -17,7 +17,7 @@ namespace kubik
 		{
 			typedef	std::shared_ptr<class PhotoChoosing> PhotoChoosingRef;
 
-			class PhotoChoosing : public IPhotoboothLocation
+			class PhotoChoosing : public IGameLocation
 			{
 				static const int PHOTOS_NUM = 5;
 				static const int MAX_SELECT = 3;
@@ -64,7 +64,7 @@ namespace kubik
 				static const int RESHOT_LOC = 1;
 
 				PhotoChoosing(config::PhotoboothSettingsRef settings, PhotoStorageRef photoStorage);
-				virtual void reset(config::PhotoboothSettingsRef settings) override;
+				virtual void reset(config::ISettingsRef settings) override;
 				virtual void start() override;
 				virtual void stop() override;
 				virtual void draw() override;

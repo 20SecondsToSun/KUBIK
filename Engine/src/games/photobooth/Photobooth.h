@@ -8,14 +8,14 @@
 #include "states/filter/PhotoFilter.h"
 #include "states/timer/PhotoTimer.h"
 #include "states/shooting/PhotoShooting.h"
-#include "states/sharing/PhotoSharing.h"
 #include "states/choosing/PhotoChoosing.h"
 #include "states/template/PhotoTemplate.h"
-#include "model/PhotoStorage.h"
-#include "model/DataBaseRecord.h"
+#include "main/PhotoStorage.h"
+#include "main/DataBaseRecord.h"
 #include "CameraAdapter.h"
 #include "ScreenStorage.h"
 #include "Chromium.h"
+#include "main/SocialLocation.h"
 
 namespace kubik
 {
@@ -47,14 +47,16 @@ namespace kubik
 				PhotoShootingRef	photoShooting;
 				PhotoChoosingRef	photoChoosing;
 				PhotoTemplateRef	photoTemplate;
-				PhotoSharingRef		photoSharing;
+				SocialLocationRef		photoSharing;
 
 				std::shared_ptr<DataBaseRecord> dbRecord;
 
-				std::vector<IPhotoboothLocationRef>  locations;
-				IPhotoboothLocationRef	currentLocation;
+				std::vector<IGameLocationRef>  locations;
+				IGameLocationRef	currentLocation;
 
 				config::PhotoboothSettingsRef settings;
+				config::StatCollectorRef  statSettings;
+				
 				PhotoStorageRef photoStorage;
 
 				virtual void showAnimationComplete() override;
@@ -73,15 +75,14 @@ namespace kubik
 				void handleCameraConnection();
 				void drawCameraErrorPopup();
 				void goToPhotoInstructionTimeOut();		
-
 				void saveDbRecord();
 
-				template <class T>
+				/*template <class T>
 				bool equalLocations(IPhotoboothLocationRef location)
 				{
-					IPhotoboothLocation *ev = location.get();
+					auto *ev = location.get();
 					return (typeid(*ev) == typeid(T));
-				}
+				}*/
 			};
 		}
 	}

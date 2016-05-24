@@ -34,7 +34,7 @@ void FontStorage::init()
 
 	{
 		string fontName = "IntroLight";
-		vector<int> fontSizes{ 30, 24, 28, 44, 60, 36, 18, 90, 72 };
+		vector<int> fontSizes{ 30, 24, 28, 44, 60, 36, 18, 90, 72, 120 };
 		addFontToLoadingQuery(fontName, fontSizes);
 	}
 

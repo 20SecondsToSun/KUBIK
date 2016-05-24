@@ -1,4 +1,7 @@
 {
    "finalPath" : "gamesDesign\\poza\\",
-   "interfacePath" : "data\\interface\\configDesign\\poza\\"
+   "interfacePath" : "data\\interface\\configDesign\\poza\\",
+   "pozaDataPath"   : "kubik\\design_elements\\gameDesign\\poza\\",
+   "pozaBaseFile"   : "base.json",
+   "pozaCardsConfigPath"   : "data\\configs\\games\\poza\\cardsConfig.txt"
 }

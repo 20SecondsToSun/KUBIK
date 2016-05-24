@@ -71,14 +71,15 @@ void PhotoTemplate::showAnimationComplete()
 	callback(COMPLETE_ANIM);
 }
 
-void PhotoTemplate::reset(PhotoboothSettingsRef settings)
+void PhotoTemplate::reset(ISettingsRef settings)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoTemplate.Reset ~~~");
 
-	IPhotoboothLocation::reset(settings);
+	IGameLocation::reset(settings);
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
 
-	cards	 = settings->getPhotoCardsTextures();
-	stickers = settings->getStickerTextures();
+	cards = setphoto->getPhotoCardsTextures();
+	stickers = setphoto->getStickerTextures();
 
 	title	 = settings->getTexture("printtitle");
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), titlePositionY - 0.5f * title.getHeight());
@@ -110,13 +111,14 @@ void PhotoTemplate::photoTemplateChoose(EventGUIRef& event)
 
 	auto eventref = static_pointer_cast<PhotoTemplateChooseEvent>(event);
 	auto id = eventref->getTemplateID();
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
 
 	if (selectedTemplate)
 	{
 		if (selectedTemplate->getID() == id)
 		{
 			startHideAnimation();
-			settings->addPrintedCount();
+			setphoto->addPrintedCount();
 			dbRecord->PrintCardTemplate = id;
 			return;
 		}
@@ -351,5 +353,5 @@ void PhotoTemplate::stopAllTweens()
 		templ->stopAllTweens();
 	}		
 
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }

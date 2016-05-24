@@ -288,8 +288,8 @@ void PhotoboothSettings::setTextures()
 	addToDictionary("chooseTitleFilter", createImageResource(getTemplateDesignPath("PhotoChoosing\\titleFilter.png")));
 	addToDictionary("choosefon", createImageResource(getTemplateDesignPath("PhotoChoosing\\fon.png")));
 
-	addToDictionary("again", createImageResource(getTemplateDesignPath("PhotoShare\\again.png")));
-	addToDictionary("allApp", createImageResource(getTemplateDesignPath("PhotoShare\\allApp.png")));
+	addToDictionary("againbtn", createImageResource(getTemplateDesignPath("PhotoShare\\again.png")));
+	addToDictionary("othergamesbtn", createImageResource(getTemplateDesignPath("PhotoShare\\allApp.png")));
 	addToDictionary("email", createImageResource(getTemplateDesignPath("PhotoShare\\email.png")));
 	addToDictionary("facebook", createImageResource(getTemplateDesignPath("PhotoShare\\facebook.png")));
 	addToDictionary("twitter", createImageResource(getTemplateDesignPath("PhotoShare\\twitter.png")));
@@ -466,8 +466,6 @@ Texture PhotoboothSettings::getPhotoSharingSticker() const
 	auto Pair = std::make_pair(activeOverDesignID - 1, PhotoFormat(1));
 	return stickersImagesMap.at(Pair);
 }
-
-
 
 vector<PhotoboothSettings::Filter> PhotoboothSettings::getOnFilters()
 {
@@ -864,29 +862,5 @@ std::string PhotoboothSettings::getPhotoCardPath(const OneDesignItem& photoCard,
 std::string PhotoboothSettings::getDataBasePath() const
 {
 	return configSettings->getActionName() + "\\photobooth\\";
-}
-
-std::string PhotoboothSettings::getDataBaseName() const
-{
-	auto timeStruct = Utils::getCurrentTime();
-
-	return Utils::fix2(to_string(timeStruct.tm_mday))	 + "_"
-		 + Utils::fix2(to_string(timeStruct.tm_mon + 1)) + "_"
-		 + to_string(1900 + timeStruct.tm_year)			 + ".csv";
-}
-
-void PhotoboothSettings::saveStatData(const std::shared_ptr<DataBaseRecord>& db)
-{
-	std::string basePath = getDataBasePath();
-	std::string baseName = getDataBaseName();
-	auto fullDirPath	 = Paths::getDataBasePath(basePath);
-
-	static const string delimeter = ";";
-	if (Paths::createIfDoesntExist(fullDirPath, baseName))
-	{
-		data_base().saveData(fullDirPath + baseName, db->getRecordTitle());
-	}	
-
-	data_base().saveData(fullDirPath + baseName, db->getRecord());
 }
 

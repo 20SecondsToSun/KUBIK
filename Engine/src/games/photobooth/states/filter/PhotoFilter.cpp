@@ -10,7 +10,7 @@ using namespace kubik::config;
 using namespace kubik::games::photobooth;
 
 PhotoFilter::PhotoFilter(PhotoboothSettingsRef settings, PhotoStorageRef photoStorage)
-	:IPhotoboothLocation(), 
+	:IGameLocation(), 
 	photoStorage(photoStorage)
 {
 	setImageSizeParams();
@@ -106,17 +106,18 @@ void PhotoFilter::photoFilterSelect(EventGUIRef& event)
 	nextLocationSignal();
 };
 
-void PhotoFilter::reset(PhotoboothSettingsRef settings)
+void PhotoFilter::reset(ISettingsRef settings)
 {
 	logger().log("~~~ Photobooth.SubLocation PhotoFilters.Reset ~~~");
 
 	filterBtns.clear();
 	removeAllChildren();
 
-	IPhotoboothLocation::reset(settings);
+	IGameLocation::reset(settings);
 	title = settings->getTexture("filterTitle");
 	titlePos = Vec2f(0.5f * (getWindowWidth() - title.getWidth()), titlePositionY - title.getHeight() * 0.5f);
-	filters = settings->getOnFilters();
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
+	filters = setphoto->getOnFilters();
 
 	switch (filters.size())
 	{
@@ -147,7 +148,8 @@ void PhotoFilter::reset(PhotoboothSettingsRef settings)
 
 int PhotoFilter::getCountFiltersOn()
 {
-	return settings->getOnFilters().size();
+	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
+	return setphoto->getOnFilters().size();
 }
 
 void PhotoFilter::createfilters2()
@@ -407,5 +409,5 @@ void PhotoFilter::stopAllTweens()
 		filter->stopAllTweens();
 	}		
 
-	IPhotoboothLocation::stopAllTweens();
+	IGameLocation::stopAllTweens();
 }
