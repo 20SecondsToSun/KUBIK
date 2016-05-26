@@ -12,8 +12,8 @@ InstaPhotoCardStyle::InstaPhotoCardStyle(InstakubSettingsRef settings, const ci:
 {
 	setPosition(position);	
 
-	titleItem = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_MAIN);
-	subTitleItem = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB);
+	titleItem		  = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_MAIN);
+	subTitleItem	  = settings->getTextItem(InstakubSettings::InstaTextID::PHOTO_TITLE_SUB);
 
 	auto designdata   = settings->getPhotoCardStyles();
 	auto activeID	  = settings->getActivePhotoCardStyleDesignID();

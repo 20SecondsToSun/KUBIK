@@ -36,16 +36,15 @@ namespace kubik
 			{
 				std::string contur;
 				std::string comics;
+				std::string path;
+				std::string data;
 				ci::gl::Texture comicsTex;
 				ci::gl::Texture conturTex;
-				ci::JsonTree data;
-				PozaDataObj(){};
-				PozaDataObj(const ci::JsonTree& data, const std::string& contur, const std::string& comics)
-				{
-					this->data = data;
-					this->contur = contur;
-					this->comics = comics;
-				}
+				std::vector<ci::Vec2f> points;
+
+				PozaDataObj();
+				PozaDataObj(const std::string& path, const std::string& data, const std::string& contur, const std::string& comics);
+				
 			};
 			std::vector<PozaSettings::PozaDataObj> pozaDataVec;// TODO private!!!
 

@@ -19,6 +19,8 @@ namespace kubik
 
 			class PozaGame :public IGameLocation
 			{
+				const float kinectShiftY = -660;
+
 				ci::gl::Texture controls, fail, good, bad, returnTitle, circles, currentDigit;
 				ci::gl::Texture currentCardTemplate;
 
@@ -31,6 +33,8 @@ namespace kubik
 				void hideAnimation(EventGUIRef& event);
 				void hideAnimationComplete();
 				void initAnimationcomplete();
+				void matchPozaTemplate();
+				void updateJointsPosition();
 
 				int MAX_SEC, DIGIT_COUNT;
 				int pozaNum;
@@ -39,13 +43,19 @@ namespace kubik
 
 				float cameraScale, cameraWidth, cameraHeight;
 
+
+				
+
 				std::vector<int>& gameScore;
 				ci::Font numsFont;
 				ci::Timer cdTimer, pregameTimer;				
 				ci::Vec2f cameraPosition;
 				ci::gl::Texture cameraTexture;
 				ci::gl::Texture photo;
+
 				PozaBase pozaData;
+				float mathPercent;
+				std::vector<ci::Vec2f> currentPosePoints;
 
 				enum GameStates
 				{

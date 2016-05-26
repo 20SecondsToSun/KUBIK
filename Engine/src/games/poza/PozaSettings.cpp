@@ -123,11 +123,11 @@ void PozaSettings::setTextures()
 
 	for (auto &it : data)
 	{
-		auto data	= it.getChild("data");
+		auto data = it.getChild("data").getValue<string>();
 		auto contur = it.getChild("contur").getValue<string>();
 		auto comics = it.getChild("comics").getValue<string>();
 
-		PozaDataObj obj(data, contur, comics);
+		PozaDataObj obj(getBasePath().string() + pozaDataPath, data, contur, comics);
 		pozaDataVec.push_back(obj);
 
 		addToDictionary(contur, createImageResource(getBasePath().string() + pozaDataPath + contur));
@@ -196,4 +196,36 @@ changeSetting::id PozaSettings::getChangeID() const
 std::string PozaSettings::getDataBasePath() const
 {
 	return configSettings->getActionName() + "\\poza\\";
+}
+
+PozaSettings::PozaDataObj::PozaDataObj()
+{
+
+}
+
+PozaSettings::PozaDataObj::PozaDataObj(const std::string& path, const std::string& data, const std::string& contur, const std::string& comics)
+{
+	this->path   = path;
+	this->data   = data;
+	this->contur = contur;
+	this->comics = comics;
+	auto _path = fs::path(const_cast<string&>(path)+"\\" + const_cast<string&>(data));
+	logger().log("_path :: " + _path.string());
+	JsonTree doc = JsonTree(loadFile(_path));
+	JsonTree poses(doc.getChild("poses"));
+
+
+	for (auto pose = poses.begin(); pose != poses.end(); ++pose)
+	{
+		//vector<Vec2f> points;
+
+		JsonTree datas = JsonTree(pose->getChild("data"));
+		for (JsonTree::ConstIter data = datas.begin(); data != datas.end(); ++data)
+		{
+			float x = data->getChild("x").getValue<float>();
+			float y = data->getChild("y").getValue<float>();
+			logger().log("x :: " + toString(x) + "  y :: " + toString(y));
+			points.push_back(Vec2f(x, y));
+		}
+	}
 }

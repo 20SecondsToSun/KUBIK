@@ -222,6 +222,8 @@ void PozaGame::update()
 		case PozaGame::GAME:
 		{
 			cameraCanon().update();
+			updateJointsPosition();
+			matchPozaTemplate();
 			float timersec = cdTimer.getSeconds();
 			seconds = (onePozaTime - (int)timersec);
 
@@ -255,6 +257,91 @@ void PozaGame::update()
 	}
 }
 
+void PozaGame::updateJointsPosition()
+{
+	currentPosePoints.clear();
+
+	if (mChannelBodyIndex)
+	{
+		gl::pushMatrices();
+		auto scale = getWindowSize() / mChannelBodyIndex.getSize();
+		gl::disable(GL_TEXTURE_2D);
+		for (const Kinect2::Body& body : mBodyFrame.getBodies())
+		{
+			if (body.isTracked())
+			{
+				gl::color(Color(1, 0, 0));
+				for (const auto& joint : body.getJointMap())
+				{
+					if (joint.first == JointType::JointType_ThumbLeft ||
+						joint.first == JointType::JointType_ThumbRight ||
+						joint.first == JointType::JointType_HandTipLeft ||
+						joint.first == JointType::JointType_HandTipRight ||
+						joint.first == JointType::JointType_HandLeft ||
+						joint.first == JointType::JointType_HandRight)
+					{
+						continue;
+					}
+
+					if (joint.second.getTrackingState() == TrackingState::TrackingState_Tracked)
+					{
+						auto scale = 1920.0f / mChannelDepth.getHeight();
+						auto shift = Vec2f(0.5f * (1080.0f - scale * mChannelDepth.getWidth()), kinectShiftY);
+						auto pos = Vec2f(kinect().getDevice()->mapCameraToDepth(joint.second.getPosition()));
+						currentPosePoints.push_back(pos * scale + shift);
+					}
+				}
+				gl::color(Color(1, 1, 1));
+			}
+		}
+		gl::popMatrices();
+	}
+}
+
+void PozaGame::matchPozaTemplate()
+{
+	mathPercent = 0.0f;
+	auto pozaTemplatePoints = poza.points;
+	auto maxErrorBetweenJoints = 40.0f;
+	auto minErrorBetweenJoints = 10.0f;
+
+	auto calculateDistanceBetweenPoints = [&](const Vec2f& vec1, const Vec2f& vec2)
+	{
+		return abs((vec1- vec2).length());
+	};
+
+
+	if (pozaTemplatePoints.size() != currentPosePoints.size())
+	{
+		return;
+	}
+
+	for (size_t j = 0, len = pozaTemplatePoints.size(); j < len; ++j)
+	{
+		double mistake = calculateDistanceBetweenPoints(pozaTemplatePoints[j], currentPosePoints[j]);
+		double onePartPercent = 0;
+		double onePart = 1 / len;// Params::weightJoints[j];
+
+		if (mistake >= maxErrorBetweenJoints)
+		{
+			onePartPercent = 0;
+		}
+		else if (mistake < minErrorBetweenJoints)
+		{
+			//currentPose.setPointColor(j, ColorA(1.0f, 1.0f, 1.0f, 0.0f));
+			onePartPercent = onePart;
+		}
+		else
+		{
+			float norma = (maxErrorBetweenJoints - mistake) / (maxErrorBetweenJoints - minErrorBetweenJoints);
+			onePartPercent = onePart * (1 - norma);
+			//currentPose.setPointColor(j, ColorA(0.0f, 0.0f, 1.0f, abs(onePartPercent * 10)));
+		}
+
+		mathPercent += onePartPercent;
+	}
+}
+
 void PozaGame::draw()
 {
 	fillBg();
@@ -273,6 +360,19 @@ void PozaGame::draw()
 			drawCameraLayer();
 			drawKinectStream();
 			drawCounturLayer();
+			{
+				for (size_t i = 0; i < poza.points.size(); i++)
+				{
+					gl::drawSolidCircle(poza.points[i], 15.0f, 32);
+				}
+			}
+			gl::color(Color(1, 0, 0));
+			for (auto joint : currentPosePoints)
+			{
+				gl::drawSolidCircle(joint, 15.0f, 32);
+			}
+			gl::color(Color(1, 1, 1));
+
 			gl::draw(controls, Vec2i(controlsPos));
 			drawCircles();
 			drawTimer();	
