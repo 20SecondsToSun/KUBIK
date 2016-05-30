@@ -34,6 +34,18 @@ namespace kubik
 
 				void shuffleDataBase();
 				kubik::config::PozaSettings::PozaDataObj getPose();
+				kubik::config::PozaSettings::PozaDataObj getScaledPose(float scaleFactor)
+				{
+					auto poza = getPose();
+					auto shift = poza.points[11];
+					for (size_t i = 0; i < poza.points.size(); i++)
+					{
+						auto scaledCoords = (poza.points[i] - shift) * scaleFactor + shift;
+						poza.points[i] = scaledCoords;
+					}
+
+					return poza;
+				}
 
 				friend class Poza;
 				friend class PozaGame;

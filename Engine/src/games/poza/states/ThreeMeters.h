@@ -3,6 +3,7 @@
 #include "PozaSettings.h"
 #include "TimerTools.h"
 #include "main/IGameLocation.h"
+#include "kinect2/KinectAdapter.h"
 
 namespace kubik
 {
@@ -23,6 +24,17 @@ namespace kubik
 				void hideAnimation(EventGUIRef& event);
 				void hideAnimationComplete();
 				void initAnimationcomplete();
+				void drawPersonPoiint(KinectAdapter::BodyFilter& body, const ci::Color& color);
+
+				Kinect2::BodyFrame			mBodyFrame;
+				ci::Channel8u				mChannelBodyIndex;
+				ci::Channel16u				mChannelDepth;
+
+				std::vector<KinectAdapter::BodyFilter> bodies;
+
+				KinectAdapter::BodyFilter centerBody;
+
+				float DISTANCE_OK;
 
 			public:
 				ThreeMeters(config::PozaSettingsRef settings);

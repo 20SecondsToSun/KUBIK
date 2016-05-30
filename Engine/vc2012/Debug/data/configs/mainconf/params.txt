@@ -4,7 +4,7 @@
    "currentPhotosPrinted" : 295,
    "designPath" : "kubik\\interface\\configDesign\\",
    "maxPhotosToPrint" : 400,
-   "playedCount" : 99,
+   "playedCount" : 117,
    "printedCount" : 91,
    "publishedCount" : 20
 }

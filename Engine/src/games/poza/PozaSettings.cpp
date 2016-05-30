@@ -8,6 +8,7 @@ using namespace kubik;
 using namespace kubik::config;
 
 const float PozaSettings::GoToScreenSaverTime = 80.0f;
+const float PozaSettings::DISTANCE_OK = 3.0f;
 
 PozaSettings::PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)
 	:ISettings(model),

@@ -15,6 +15,7 @@
 #include "model/PozaBase.h"
 #include "kinect2/KinectAdapter.h"
 #include "StatCollector.h"
+#include "model/HumanModel.h"
 
 namespace kubik
 {
@@ -27,7 +28,11 @@ namespace kubik
 			public:
 				Poza(config::ISettingsRef setRef);
 				~Poza();
+
+				static const int kinectShiftY = -660;
+				static float humanHeight;
 				
+
 				virtual void draw() override;
 				virtual void update() override;
 				void create();
@@ -60,6 +65,7 @@ namespace kubik
 
 				photobooth::PhotoStorageRef photoStorage;
 				std::shared_ptr<DataBaseRecord> dbRecord;
+				std::shared_ptr<HumanModel> humanModel;
 
 				std::vector<int> gamesScore;
 				int index;

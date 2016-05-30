@@ -6,6 +6,7 @@
 #include "CameraAdapter.h"
 #include "main/PhotoStorage.h"
 #include "model/PozaBase.h"
+#include "model/HumanModel.h"
 #include "main/IGameLocation.h"
 #include "kinect2/KinectAdapter.h"
 
@@ -41,10 +42,7 @@ namespace kubik
 				int onePozaTime;
 				int seconds;
 
-				float cameraScale, cameraWidth, cameraHeight;
-
-
-				
+				float cameraScale, cameraWidth, cameraHeight;				
 
 				std::vector<int>& gameScore;
 				ci::Font numsFont;
@@ -54,8 +52,9 @@ namespace kubik
 				ci::gl::Texture photo;
 
 				PozaBase pozaData;
+				std::shared_ptr<HumanModel> humanModel;
 				float mathPercent;
-				std::vector<ci::Vec2f> currentPosePoints;
+				std::vector<ci::Vec2f> humanPoints;
 
 				enum GameStates
 				{
@@ -76,15 +75,20 @@ namespace kubik
 				kubik::config::PozaSettings::PozaDataObj poza;
 
 				Kinect2::BodyFrame			mBodyFrame;
-
 				ci::Channel8u				mChannelBodyIndex;
 				ci::Channel16u				mChannelDepth;
 				ci::Surface8u				mSurfaceColor;
 
+				int colorPoint = 0;
+				int levelCompletion = 0;
+				static const int LEVEL_COMPLETION = 10;
+				const float MATCHING_THRESHOLD = 0.8;
+				
 				void drawCircles();
 				void drawCameraLayer();
 				void drawKinectStream();				
 				void drawCounturLayer();
+				void drawCurrentPosePoints();				
 				void drawProgressBar();
 				void drawTimer();
 				void drawFailImage();
@@ -93,7 +97,8 @@ namespace kubik
 				void newRoundInit();
 				void calculateDigit();	
 				void previewDelayHandler();
-				void cardAnimationOutHandler();				
+				void cardAnimationOutHandler();
+				void checkForPoseGuess();
 
 				void photoTakenHandler();
 				void photoDownloadHandler(const std::string& path);
@@ -101,7 +106,7 @@ namespace kubik
 				void pozaSuccessHandler(EventGUIRef& event);
 
 			public:
-				PozaGame(config::PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef  photoStorage, std::vector<int>& gameScore, PozaBase& pozaData);
+				PozaGame(config::PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef  photoStorage, std::vector<int>& gameScore, PozaBase& pozaData, std::shared_ptr<HumanModel> humanModel);
 				~PozaGame();
 				virtual void reset(config::ISettingsRef set) override;
 				virtual void start() override;

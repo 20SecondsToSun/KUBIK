@@ -8,6 +8,9 @@ using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::poza;
 
+
+float Poza::humanHeight = 0;
+
 Poza::Poza(ISettingsRef config)
 {
 	logger().log("~~~ Poza.Created ~~~");
@@ -50,12 +53,13 @@ void Poza::create()
 
 	photoStorage	= PhotoStorageRef(new PhotoStorage());	
 	dbRecord		= shared_ptr<DataBaseRecord>(new DataBaseRecord());
+	humanModel		= shared_ptr<HumanModel>(new HumanModel());
 
 	pozaInstruction = PozaInstructionRef(new PozaInstruction(settings));
 	triMeters		= ThreeMetersRef(new ThreeMeters(settings));
-	handsUp			= HandsUpRef(new HandsUp(settings));
+	handsUp			= HandsUpRef(new HandsUp(settings, humanModel));
 	timer			= PozaTimer1Ref(new PozaTimer1(settings));
-	game			= PozaGameRef(new PozaGame(settings, photoStorage, gamesScore, pozaData));
+	game			= PozaGameRef(new PozaGame(settings, photoStorage, gamesScore, pozaData, humanModel));
 	printer			= PrinterRef(new Printer(settings, photoStorage, gamesScore));
 	social			= SocialLocationRef(new SocialLocation(settings, statSettings, photoStorage));
 
@@ -165,6 +169,8 @@ void Poza::stop()
 	{
 		saveDbRecord();
 	}
+
+	kinect().stop();
 }
 
 void Poza::reset()
@@ -191,8 +197,8 @@ void Poza::initLocations()
 	removeListeners();
 	locations.clear();
 	locations.push_back(pozaInstruction);
-	//locations.push_back(triMeters);
-	//locations.push_back(handsUp);
+	locations.push_back(triMeters);
+	locations.push_back(handsUp);
 	//locations.push_back(timer);
 	locations.push_back(game);
 	locations.push_back(printer);

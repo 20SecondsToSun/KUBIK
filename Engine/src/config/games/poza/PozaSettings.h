@@ -31,6 +31,7 @@ namespace kubik
 			void loadPaths();
 			void loadParams();
 		
+			
 		public:
 			struct PozaDataObj
 			{
@@ -49,6 +50,7 @@ namespace kubik
 			std::vector<PozaSettings::PozaDataObj> pozaDataVec;// TODO private!!!
 
 			static const float GoToScreenSaverTime;
+			static const float DISTANCE_OK;
 
 			PozaSettings(ApplicationModelRef model, ConfigSettingsRef configSettings);
 

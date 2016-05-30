@@ -870,6 +870,9 @@
     <ClCompile Include="..\src\games\main\social\VkontaktePopup.cpp">
       <Filter>Source Files\games\main\social</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\games\poza\model\HumanModel.cpp">
+      <Filter>Source Files\games\poza\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -1609,6 +1612,9 @@
     </ClInclude>
     <ClInclude Include="..\src\games\main\social\VkontaktePopup.h">
       <Filter>Source Files\games\main\social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\games\poza\model\HumanModel.h">
+      <Filter>Source Files\games\poza\model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -170,6 +170,7 @@
     <ClCompile Include="..\src\games\main\social\SocialPopup.cpp" />
     <ClCompile Include="..\src\games\main\social\TwitterPopup.cpp" />
     <ClCompile Include="..\src\games\main\social\VkontaktePopup.cpp" />
+    <ClCompile Include="..\src\games\poza\model\HumanModel.cpp" />
     <ClCompile Include="..\src\games\poza\model\PozaBase.cpp" />
     <ClCompile Include="..\src\games\poza\Poza.cpp" />
     <ClCompile Include="..\src\games\poza\PozaSettings.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="..\src\games\main\social\SocialPopup.h" />
     <ClInclude Include="..\src\games\main\social\TwitterPopup.h" />
     <ClInclude Include="..\src\games\main\social\VkontaktePopup.h" />
+    <ClInclude Include="..\src\games\poza\model\HumanModel.h" />
     <ClInclude Include="..\src\games\poza\model\PozaBase.h" />
     <ClInclude Include="..\src\games\poza\Poza.h" />
     <ClInclude Include="..\src\games\photobooth\Photobooth.h" />

@@ -9,13 +9,14 @@ using namespace kubik::games::poza;
 using namespace kubik;
 using namespace kubik::config;
 
-PozaGame::PozaGame(PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef  photoStorage, std::vector<int>& gameScore, PozaBase& pozaData)
+PozaGame::PozaGame(PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef  photoStorage, std::vector<int>& gameScore, PozaBase& pozaData, shared_ptr<HumanModel> humanModel)
 	:photoStorage(photoStorage),
 	animTime(0.8f),
 	alphaAnim(1.0f),
 	numsFont(getFont("IntroLight", 120)),
 	gameScore(gameScore),
-	pozaData(pozaData)
+	pozaData(pozaData),
+	humanModel(humanModel)
 {
 	titlePositionY = 425.f;
 	cameraScale = 1920.0f / 1056.0f;
@@ -92,9 +93,13 @@ void PozaGame::start()
 {
 	logger().log("~~~ Poza.SubLocation PozaGame.Start ~~~");
 
-	poza = pozaData.getPose();
+	//humanModel->scaleAccordingUserHeight;
+	auto scaleFactor = 1;
+	poza = pozaData.getScaledPose(scaleFactor);
+
+	levelCompletion = 0;
 	pozaNum = 1;	
-	photoStorage->clear();
+	photoStorage->clear();	
 	
 	delaycall(bind(&PozaGame::initAnimationcomplete, this), 0.4f);
 	state = STARTING;
@@ -137,22 +142,22 @@ void PozaGame::initAnimationcomplete()
 
 void PozaGame::pozaSuccessHandler(EventGUIRef& event)
 {
-	state = SHOOTING;
-	cdTimer.stop();
-	cameraCanon().takePicture();	
+	//state = SHOOTING;
+	//cdTimer.stop();
+	//cameraCanon().takePicture();	
+	colorPoint++;
 }
 
 void PozaGame::photoTakenHandler()
 {
 	logger().log("~~~ Poza.SubLocation Game.PhotoTaken!!! ~~~");
-
-	//dbRecord->CameraShotsNum++;
+	dbRecord->CameraShotsNum++;
 }
 
 void PozaGame::photoDownloadHandler(const string& path)
 {
 	logger().log("~~~ Poza.SubLocation Game.Downloaded ~~~");
-	//dbRecord->CameraGoodShotsNum++;
+	dbRecord->CameraGoodShotsNum++;
 	photoStorage->loadDownloadedPhoto(path);
 	photo = photoStorage->mergeLastPhotoWith(poza.comicsTex);
 
@@ -190,7 +195,6 @@ void PozaGame::stop()
 	voidBtn->disconnectEventHandler();
 	if (kinect().deviceExist())
 	{
-		kinect().stop();
 		kinect().getDevice()->disconnectBodyEventHandler();
 		kinect().getDevice()->disconnectBodyIndexEventHandler();
 		kinect().getDevice()->disconnectDepthEventHandler();
@@ -232,7 +236,7 @@ void PozaGame::update()
 				state = FAIL;
 				roundFinished(false);
 			}
-
+			checkForPoseGuess();			
 			break;
 		}
 
@@ -247,8 +251,10 @@ void PozaGame::update()
 		}
 
 		case PozaGame::PREGAME:
+		{
 			calculateDigit();
 			break;
+		}
 
 		case PozaGame::HIDE_ANIM:
 		{
@@ -259,7 +265,7 @@ void PozaGame::update()
 
 void PozaGame::updateJointsPosition()
 {
-	currentPosePoints.clear();
+	humanPoints.clear();
 
 	if (mChannelBodyIndex)
 	{
@@ -273,22 +279,22 @@ void PozaGame::updateJointsPosition()
 				gl::color(Color(1, 0, 0));
 				for (const auto& joint : body.getJointMap())
 				{
-					if (joint.first == JointType::JointType_ThumbLeft ||
-						joint.first == JointType::JointType_ThumbRight ||
-						joint.first == JointType::JointType_HandTipLeft ||
+					if (joint.first == JointType::JointType_ThumbLeft    ||
+						joint.first == JointType::JointType_ThumbRight   ||
+						joint.first == JointType::JointType_HandTipLeft  ||
 						joint.first == JointType::JointType_HandTipRight ||
-						joint.first == JointType::JointType_HandLeft ||
+						joint.first == JointType::JointType_HandLeft     ||
 						joint.first == JointType::JointType_HandRight)
 					{
 						continue;
 					}
 
-					if (joint.second.getTrackingState() == TrackingState::TrackingState_Tracked)
+					if (joint.second .getTrackingState() == TrackingState::TrackingState_Tracked)
 					{
 						auto scale = 1920.0f / mChannelDepth.getHeight();
 						auto shift = Vec2f(0.5f * (1080.0f - scale * mChannelDepth.getWidth()), kinectShiftY);
 						auto pos = Vec2f(kinect().getDevice()->mapCameraToDepth(joint.second.getPosition()));
-						currentPosePoints.push_back(pos * scale + shift);
+						humanPoints.push_back(pos * scale + shift);
 					}
 				}
 				gl::color(Color(1, 1, 1));
@@ -310,15 +316,14 @@ void PozaGame::matchPozaTemplate()
 		return abs((vec1- vec2).length());
 	};
 
-
-	if (pozaTemplatePoints.size() != currentPosePoints.size())
+	if (pozaTemplatePoints.size() != humanPoints.size())
 	{
 		return;
 	}
 
 	for (size_t j = 0, len = pozaTemplatePoints.size(); j < len; ++j)
 	{
-		double mistake = calculateDistanceBetweenPoints(pozaTemplatePoints[j], currentPosePoints[j]);
+		double mistake = calculateDistanceBetweenPoints(pozaTemplatePoints[j], humanPoints[j]);
 		double onePartPercent = 0;
 		double onePart = 1 / len;// Params::weightJoints[j];
 
@@ -359,24 +364,13 @@ void PozaGame::draw()
 		{
 			drawCameraLayer();
 			drawKinectStream();
-			drawCounturLayer();
-			{
-				for (size_t i = 0; i < poza.points.size(); i++)
-				{
-					gl::drawSolidCircle(poza.points[i], 15.0f, 32);
-				}
-			}
-			gl::color(Color(1, 0, 0));
-			for (auto joint : currentPosePoints)
-			{
-				gl::drawSolidCircle(joint, 15.0f, 32);
-			}
-			gl::color(Color(1, 1, 1));
+			drawCounturLayer();			
+			drawCurrentPosePoints();			
 
 			gl::draw(controls, Vec2i(controlsPos));
 			drawCircles();
 			drawTimer();	
-			//drawProgressBar();	
+			drawProgressBar();	
 			break;
 		}
 
@@ -495,7 +489,6 @@ void PozaGame::drawPhotoframe()
 	gl::draw(photo);
 	gl::popMatrices();
 	gl::popMatrices();
-
 }
 
 void PozaGame::roundFinished(bool isGood)
@@ -516,6 +509,7 @@ void PozaGame::cardAnimationOutHandler()
 	{
 		poza = pozaData.getPose();
 		pozaNum++;
+		levelCompletion = 0;
 		cdTimer.stop();
 		pregameTimer.start();
 		state = PREGAME;
@@ -574,9 +568,43 @@ void PozaGame::drawCounturLayer()
 	gl::draw(poza.conturTex);
 }
 
+void PozaGame::drawCurrentPosePoints()
+{
+	gl::color(Color(1, 0, 0));
+
+	for (size_t i = 0; i < humanPoints.size(); i++)
+	{			
+		gl::drawSolidCircle(humanPoints[i], 15.0f, 32);
+	}
+	gl::color(Color(1, 1, 1));
+
+	gl::color(Color(0, 1, 1));
+	for (size_t i = 0; i < poza.points.size(); i++)
+	{
+		gl::drawSolidCircle(poza.points[i], 25.0f, 32);
+	}
+	gl::color(Color(1, 1, 1));
+
+	for (size_t i = 0; i < poza.points.size(); i++)
+	{
+		if (11 == i)
+		{
+			gl::color(Color(0, 1, 0));
+		}
+		gl::drawSolidCircle(poza.points[i], 15.0f, 32);
+		gl::color(Color(1, 1, 1));
+	}
+}
+
 void PozaGame::drawProgressBar()
 {
-
+	mathPercent = 0.4;
+	gl::color(ColorA(1, 0, 0, 0.5f));
+	gl::pushMatrices();
+	gl::translate(controlsPos);
+	gl::drawSolidRect(Rectf(0, 0, 1080 * mathPercent, 50));
+	gl::popMatrices();
+	gl::color(Color(1, 1, 1));	
 }
 
 void PozaGame::drawTimer()
@@ -607,4 +635,23 @@ void PozaGame::stopAllTweens()
 	previewAnimateX.stop();
 	alphaAnim.stop();
 	IGameLocation::stopAllTweens();
+}
+
+void PozaGame::checkForPoseGuess()
+{
+	if (mathPercent > MATCHING_THRESHOLD)
+	{
+		levelCompletion++;
+	}
+	else if (--levelCompletion < 0)
+	{
+			levelCompletion = 0;
+	}
+
+	if (levelCompletion > LEVEL_COMPLETION)
+	{
+		state = SHOOTING;
+		cdTimer.stop();
+		cameraCanon().takePicture();	
+	}
 }

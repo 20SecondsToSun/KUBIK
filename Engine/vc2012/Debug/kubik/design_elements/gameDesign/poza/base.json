@@ -5,21 +5,6 @@
 		"data":"poza1.json",
 		"contur":"poza1.png",	
 		"comics":"comics1.png"
-      },
-	  {
-		"data":"poza2.json",
-		"contur":"poza2.png",	
-		"comics":"comics2.png"
-      },
-	  {
-		"data":"poza3.json",
-		"contur":"poza3.png",	
-		"comics":"comics3.png"
-      },
-	  {
-		"data":"poza4.json",
-		"contur":"poza4.png",	
-		"comics":"comics4.png"
       }
 	]    
 }
