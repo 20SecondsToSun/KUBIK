@@ -83,6 +83,8 @@ namespace kubik
 			void savePrintInstaLink(const std::string& saveData);
 			void saveSearchInstaLink(const std::string& saveData);
 
+			virtual int getAppID() override{ return game::id::INSTAKUB; };
+
 		private:			
 			std::string hashtag, hashtag_save, clientID;
 			std::string viewInputFieldFontName;

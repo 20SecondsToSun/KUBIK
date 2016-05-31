@@ -163,20 +163,20 @@ void VirtualKeyboard::create(config::ISettingsRef config)
 			btn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(_simple, mFont, fourthLineCharacters3[i]));
 		}
 
-		btn->setPosition(lineOffset4 + Vec2f(i*(_xOffset2 + _width1) - 12, 0.0f) + shift_Y);
+		btn->setPosition(lineOffset4 + Vec2f(i * (_xOffset2 + _width1) - 12, 0.0f) + shift_Y);
 		buttonsRusMainKeyboard.push_back(btn);
 	}
 
 	KeyBoardButtonSpriteRef langBtn;
 
 	changeKeyboardBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(changeKeyboardTex1, mFont, "#+="));
-	changeKeyboardBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 170.0f, 0.0f) + shift_Y);
+	changeKeyboardBtn->setPosition(lineOffset5 + Vec2f(0.0f * (_xOffset5 + _width) - 170.0f, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(changeKeyboardBtn);
 	buttonsSecondKeyboard.push_back(changeKeyboardBtn);
 	buttonsRusMainKeyboard.push_back(changeKeyboardBtn);
 
 	langBtn = KeyBoardButtonSpriteRef(new KeyBoardButtonSprite(langChangeTex, "lang"));
-	langBtn->setPosition(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width) - 31.0f, 0.0f) + shift_Y);
+	langBtn->setPosition(lineOffset5 + Vec2f(0.0f * (_xOffset5 + _width) - 31.0f, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(langBtn);
 	buttonsSecondKeyboard.push_back(langBtn);
 	buttonsRusMainKeyboard.push_back(langBtn);
@@ -284,27 +284,34 @@ void VirtualKeyboard::draw()
 	{
 		gl::pushMatrices();
 		gl::translate(getGlobalPosition());
-		gl::pushMatrices();
-		//touchInputZone->draw();	
-		if (!inputFieldEmpty() && isShowing && showEraseButton)
-		{
-			erase->draw();
-		}
-
-		gl::draw(inputFieldTexture,
-			touchInputZone->getLocalPosition() +
-			Vec2f(19, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight())));
-		drawCarriage();
+			gl::pushMatrices();
+			//touchInputZone->draw();	
+			if (!inputFieldEmpty() && isShowing && showEraseButton)
+			{
+				erase->draw();
+			}
+			gl::popMatrices();
 		gl::popMatrices();
+
+		gl::pushMatrices();			
+			gl::translate(getGlobalPosition());
+			gl::translate(touchInputZone->getLocalPosition() + Vec2f(19.0f, 0.5f * (touchInputZone->getHeight() - (inputFieldTextureScale)*inputFieldTexture.getHeight())));
+			gl::scale(inputFieldTextureScale, inputFieldTextureScale);
+			gl::draw(inputFieldTexture);			
+		gl::popMatrices();
+
+		gl::pushMatrices();
+		gl::translate(getGlobalPosition());
+		drawCarriage();
 		gl::popMatrices();
 	}
 }
 
 void VirtualKeyboard::drawCarriage()
 {
-	auto position = touchInputZone->getLocalPosition() + Vec2f(19.0f, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()));
-	auto x1 = position.x + inputFieldTexture.getWidth();
-	auto x2 = position.x + inputFieldTexture.getWidth() + 2.0f;
+	auto position = touchInputZone->getLocalPosition()  + Vec2f(19.0f, 0.5f * (touchInputZone->getHeight() - inputFieldTexture.getHeight()));
+	auto x1 = position.x + inputFieldTexture.getWidth() * inputFieldTextureScale;
+	auto x2 = position.x + inputFieldTexture.getWidth() * inputFieldTextureScale + 2.0f;
 	auto y1 = position.y;
 	auto y2 = position.y + inputFieldTexture.getHeight();
 
@@ -364,7 +371,18 @@ void VirtualKeyboard::MouseUp(MouseEvent &event)
 	{
 		callback(KEY_TOUCH);
 
-		if (inputFieldTexture.getWidth() < touchInputZone->getWidth() - 110)
+		if (inputFieldTexture.getWidth() < touchInputZone->getWidth() - 150)
+		{
+			inputFieldTextureScale = 1;
+		}
+		else
+		{
+			inputFieldTextureScale = (touchInputZone->getWidth() - 150.0f) / inputFieldTexture.getWidth();			
+		}
+
+		logger().log(toString(inputFieldTextureScale));
+
+		if (inputFieldTextureScale > 0.5f)
 		{
 			inputField += lastCode;
 			setInputFieldText(inputField);

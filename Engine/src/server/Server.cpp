@@ -79,30 +79,38 @@ void Server::threadLogin(const AuthRequestRef& request)
 	logger().log("login response ::  " + toString(response));
 	isLogin = false;
 
-	JsonTree data = JsonTree(response);	
-
-	if (data.hasChild("access_token"))
+	try
 	{
-		logger().log("LOGIN SUCCESS");		
-		
-		access_token = data.getChild("access_token").getValue<string>();
-		string token_type = data.getChild("token_type").getValue<string>();
-		int expires_in = data.getChild("expires_in").getValue<int>();
+		JsonTree data = JsonTree(response);
 
-		logger().log("access_token:::  " + access_token);
-		logger().log("token_type:::  " + token_type);
-		logger().log("expires_in:::  " + expires_in);
+		if (data.hasChild("access_token"))
+		{
+			logger().log("LOGIN SUCCESS");
 
-		isLogin = true;
+			access_token = data.getChild("access_token").getValue<string>();
+			string token_type = data.getChild("token_type").getValue<string>();
+			int expires_in = data.getChild("expires_in").getValue<int>();
 
-		request->success = RequestStatus::SUCCESS;
+			logger().log("access_token:::  " + access_token);
+			logger().log("token_type:::  " + token_type);
+			logger().log("expires_in:::  " + expires_in);
+
+			isLogin = true;
+
+			request->success = RequestStatus::SUCCESS;
+		}
+		else
+		{
+			request->success = RequestStatus::FAIL;
+		}
+
+		threadLoad = false;
 	}
-	else
+	catch (...)
 	{
-		request->success = RequestStatus::FAIL;
-	}
 
-	threadLoad = false;
+	}
+	
 }
 
 void Server::photoPrint(int appID, int photo_id, const string& photo_url, const string& hashtag)
@@ -361,12 +369,12 @@ void Server::threadGetSocialShareTexts(const SocialShareTextsEventRef& request)
 	threadLoad = false;
 }
 
-void Server::gameFail(int appID, int photo_id)
+void Server::gameFail(int appID)
 {
 	GameEventRef request = GameEventRef(new GameEvent());
 	request->setURL(SERVER + "/api/event/game_fail");
 	request->id = appID;
-	request->photo_id = photo_id;
+	//request->photo_id = photo_id;
 
 	if (checkLogin() && !threadLoad)
 	{

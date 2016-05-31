@@ -25,4 +25,3 @@ void VkontaktePopup::postingCompleteHandler()
 	statSettings->addVKShare();	
 	SocialPopup::postingCompleteHandler();
 }
-

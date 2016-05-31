@@ -7,6 +7,7 @@
 
 #ifndef release
 #define Poza_DEBUG
+#define Poza_Sharing_DEBUG
 #endif
 
 namespace kubik
@@ -29,8 +30,7 @@ namespace kubik
 
 			void setDesignPath();
 			void loadPaths();
-			void loadParams();
-		
+			void loadParams();		
 			
 		public:
 			struct PozaDataObj
@@ -42,10 +42,8 @@ namespace kubik
 				ci::gl::Texture comicsTex;
 				ci::gl::Texture conturTex;
 				std::vector<ci::Vec2f> points;
-
 				PozaDataObj();
-				PozaDataObj(const std::string& path, const std::string& data, const std::string& contur, const std::string& comics);
-				
+				PozaDataObj(const std::string& path, const std::string& data, const std::string& contur, const std::string& comics);				
 			};
 			std::vector<PozaSettings::PozaDataObj> pozaDataVec;// TODO private!!!
 
@@ -76,6 +74,7 @@ namespace kubik
 			}
 
 			virtual std::string getDataBasePath() const override;
+			virtual int getAppID() override{ return game::id::POZA; };
 		};
 	}
 }

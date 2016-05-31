@@ -132,6 +132,8 @@ namespace kubik
 		ci::Color inputColor;
 		ci::Vec2f originPoint;		
 
+		float inputFieldTextureScale = 1;
+
 	public:
 		void setOriginPoint(const ci::Vec2f& point);
 		void setInputField(float x, float y, float width, float height);

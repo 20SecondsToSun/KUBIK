@@ -312,7 +312,7 @@ namespace kubik
 		void createEvent(const std::string& name);
 		void gameEnter(int appID);
 		void gamePass(int appID, int photo_id);
-		void gameFail(int appID, int photo_id);
+		void gameFail(int appID);
 		void getSocialTokens();
 		void getSocialShareTexts();
 

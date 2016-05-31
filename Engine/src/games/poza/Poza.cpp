@@ -1,5 +1,6 @@
 #include "Poza.h"
 #include "CameraAdapter.h"
+#include "Server/Server.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -7,7 +8,6 @@ using namespace std;
 using namespace kubik;
 using namespace kubik::config;
 using namespace kubik::games::poza;
-
 
 float Poza::humanHeight = 0;
 
@@ -30,13 +30,13 @@ Poza::~Poza()
 void Poza::start()
 {
 	logger().log("~~~ Poza.Start ~~~");
+
 	index = 0;
 	currentLocation = locations[index];
-
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Poza::update, this));
-
 	kinectSetup();
 	cameraCanon().setAutoReconnect(true);
+	server().gameEnter(settings->getAppID());
 	initShowAnimation();
 }
 
@@ -111,7 +111,7 @@ void Poza::showAnimationComplete()
 
 void Poza::gotoFirstlocation()
 {
-	index = 0;
+	index = 0;	
 	currentLocation = locations[index];
 	currentLocation->start();
 }
@@ -147,6 +147,7 @@ void Poza::goToPhotoInstructionTimeOut()
 		saveDbRecord();
 		currentLocation->stop();
 		gotoFirstlocation();
+		server().gameFail(settings->getAppID());
 	}
 }
 
@@ -197,11 +198,11 @@ void Poza::initLocations()
 	removeListeners();
 	locations.clear();
 	locations.push_back(pozaInstruction);
-	locations.push_back(triMeters);
-	locations.push_back(handsUp);
+	//locations.push_back(triMeters);
+	////locations.push_back(handsUp);
 	//locations.push_back(timer);
-	locations.push_back(game);
-	locations.push_back(printer);
+	//locations.push_back(game);
+	//locations.push_back(printer);
 	locations.push_back(social);
 }
 

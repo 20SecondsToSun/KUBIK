@@ -1,4 +1,5 @@
 #include "Instakub.h"
+#include "Server/Server.h"
 
 using namespace std;
 using namespace kubik;
@@ -39,6 +40,8 @@ Instakub::~Instakub()
 void Instakub::start()
 {
 	logger().log("~~~ Instakub.Start ~~~");
+
+	server().gameEnter(settings->getAppID());
 
 	if (!settings->hashtagEnabled())
 	{

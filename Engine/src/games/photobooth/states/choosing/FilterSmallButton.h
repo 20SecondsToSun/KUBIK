@@ -1,4 +1,5 @@
 #pragma once
+
 #include "gui/SimpleSpriteButton.h"
 #include "FilterChangedEvent.h"
 #include "TextTools.h"

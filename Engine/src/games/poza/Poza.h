@@ -30,8 +30,7 @@ namespace kubik
 				~Poza();
 
 				static const int kinectShiftY = -660;
-				static float humanHeight;
-				
+				static float humanHeight;			
 
 				virtual void draw() override;
 				virtual void update() override;

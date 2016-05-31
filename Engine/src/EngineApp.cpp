@@ -75,7 +75,6 @@ void EngineApp::mouseDown(MouseEvent event)
 	//event.mHandled = true;
 }
 
-
 void EngineApp::mouseUp(MouseEvent event)
 {
 	//event.mHandled = true;

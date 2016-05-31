@@ -18,11 +18,11 @@ PozaGame::PozaGame(PozaSettingsRef settings, kubik::games::photobooth::PhotoStor
 	pozaData(pozaData),
 	humanModel(humanModel)
 {
-	titlePositionY = 425.f;
-	cameraScale = 1920.0f / 1056.0f;
-	cameraWidth = 1056 * cameraScale;
-	cameraHeight = 704 * cameraScale;
-	cameraPosition = Vec2f((1080.0f - cameraHeight) * 0.5f, 0.0f);
+	titlePositionY  = 425.f;
+	cameraScale		= 1920.0f / 1056.0f;
+	cameraWidth		= 1056 * cameraScale;
+	cameraHeight	= 704 * cameraScale;
+	cameraPosition	= Vec2f((1080.0f - cameraHeight) * 0.5f, 0.0f);
 
 	if (!photoTakenCon.connected())
 	{
@@ -40,7 +40,6 @@ PozaGame::PozaGame(PozaSettingsRef settings, kubik::games::photobooth::PhotoStor
 	}
 
 	reset(settings);	
-
 	voidBtn = SimpleSpriteButtonRef(new SimpleSpriteButton(1080, 1920, Vec2f(0.0f, 80.0f)));
 }
 
@@ -450,7 +449,6 @@ void PozaGame::drawKinectStream()
 			gl::color(ColorAf(Colorf::white(), 1.f));
 		}
 	};
-
 	
 	if (mChannelDepth)
 	{
@@ -464,8 +462,6 @@ void PozaGame::drawKinectStream()
 		drawBodyIndexStream();
 		gl::popMatrices();
 	}
-	
-
 }
 
 void PozaGame::drawPhotoframe()
@@ -609,7 +605,7 @@ void PozaGame::drawProgressBar()
 
 void PozaGame::drawTimer()
 {
-	string sSeconds = seconds > 9 ? toString(seconds) : "0" + toString(seconds);
+	std::string sSeconds = seconds > 9 ? toString(seconds) : "0" + toString(seconds);
 
 	auto digitTexture = textTools().getTextField("0:" + sSeconds, &numsFont, ci::Color::white());
 

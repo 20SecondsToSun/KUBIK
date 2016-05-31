@@ -30,16 +30,15 @@ void PhotoTemplate::start()
 	}
 
 	state = INIT;
-	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);	
-	 
+	titleAnimPosition = titlePos - Vec2f(0.0f, 170.0f);		 
 	titleAlpha = 0.0f;
+
 	for (auto &templ : templatebtns)
 	{
 		templ->setAlpha(0.0f);
 	}
 
 	delaycall(bind(&PhotoTemplate::initShowAnim, this), 0.4f);
-	//delaycall(bind(&PhotoTemplate::showAnimationComplete, this), 0.2f);
 }
 
 void PhotoTemplate::initShowAnim()
@@ -223,8 +222,6 @@ void PhotoTemplate::setChoosingTemplate()
 	}
 	Surface savePhotocard(printTemplate);
 	ci::writeImage(Paths::getPhotoTemplatePath(), savePhotocard);
-	
-
 
 	auto templ = photoStorage->getPhotoTemplates();
 
@@ -240,11 +237,10 @@ void PhotoTemplate::setChoosingTemplate()
 
 	}
 
-
 	try
 	{
-		auto _width = templ[0][FORMAT2_PRINT].getWidth();
-		auto _height = templ[0][FORMAT2_PRINT].getHeight();
+		auto _width    = templ[0][FORMAT2_PRINT].getWidth();
+		auto _height   = templ[0][FORMAT2_PRINT].getHeight();
 		auto _heightX3 = _height * 3;
 
 		auto tex1 = templ[0][FORMAT2_PRINT];
@@ -269,13 +265,11 @@ void PhotoTemplate::setChoosingTemplate()
 
 	//templ[2][FormatID::FORMAT1_PRINT]
 
-
 	printer().print();
 
 	logger().log("width  :: " + toString(selectedTemplate->getPrintTemplate().getWidth()));
 	logger().log("height  :: " + toString(selectedTemplate->getPrintTemplate().getHeight()));
-	logger().log("selectedTemplate->getID()  :: " + toString(selectedTemplate->getID()));
-	
+	logger().log("selectedTemplate->getID()  :: " + toString(selectedTemplate->getID()));	
 }
 
 void PhotoTemplate::update()

@@ -21,7 +21,7 @@ HandsUp::HandsUp(PozaSettingsRef settings, shared_ptr<HumanModel> humanModel)
 
 HandsUp::~HandsUp()
 {
-	logger().log("~~~ Poza.SubLocation HandsUp.Destruct  ~~~");
+	logger().log("~~~ Poza.SubLocation HandsUp.Destruct ~~~");
 }
 
 void HandsUp::reset(ISettingsRef set)
@@ -115,13 +115,12 @@ void HandsUp::update()
 			auto posLeftHand = Vec2f(kinect().getDevice()->mapCameraToDepth(lHand.getPosition()));
 			auto posRightHand = Vec2f(kinect().getDevice()->mapCameraToDepth(rHand.getPosition()));
 
-			if ((head.getTrackingState() != TrackingState::TrackingState_NotTracked) &&
+			if ((head.getTrackingState()  != TrackingState::TrackingState_NotTracked) &&
 				(lHand.getTrackingState() != TrackingState::TrackingState_NotTracked) &&
 				(rHand.getTrackingState() != TrackingState::TrackingState_NotTracked))
 			{
 				if (posHead.y > posLeftHand.y && posHead.y > posRightHand.y)
-				{
-					
+				{					
 					auto leftFoot = centerBody.body.getJointMap().at(JointType::JointType_AnkleLeft);
 					auto rightFoot = centerBody.body.getJointMap().at(JointType::JointType_AnkleRight);
 
@@ -137,7 +136,6 @@ void HandsUp::update()
 							humanModel->height   = abs(posLeftFoot.y - posHead.y);
 							humanModel->distance = spine.getPosition().z;
 							humanModel->calculateHeightScale();
-
 							handsUpDetectionHandler();
 						}
 				}

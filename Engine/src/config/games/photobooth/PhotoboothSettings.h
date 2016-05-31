@@ -161,6 +161,8 @@ namespace kubik
 			std::vector<Filter> getFilters() const;
 			std::vector<Filter> getOnFilters();
 
+			virtual int getAppID() override{ return game::id::PHOTOBOOTH; };
+
 		private:
 			static const int CARDS_COUNT = 5;
 			static const int STICKERS_COUNT = 5;			

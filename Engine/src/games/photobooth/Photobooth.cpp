@@ -1,5 +1,6 @@
 #include "Photobooth.h"
 #include "StatCollector.h"
+#include "server/Server.h"
 
 using namespace kubik;
 using namespace kubik::config;
@@ -55,6 +56,7 @@ void Photobooth::start()
 {
 	logger().log("~~~ Photobooth.Start ~~~");
 
+	server().gameEnter(settings->getAppID());
 	gl::enableAlphaBlending();
 	
 	updateSignal = App::get()->getSignalUpdate().connect(bind(&Photobooth::update, this));
@@ -72,6 +74,7 @@ void Photobooth::goToPhotoInstructionTimeOut()
 
 	if (!currentLocation->equalLocations<PhotoInstruction>(currentLocation))
 	{
+		server().gameFail(settings->getAppID());
 		saveDbRecord();
 		currentLocation->stop();
 		gotoFirstlocation();
