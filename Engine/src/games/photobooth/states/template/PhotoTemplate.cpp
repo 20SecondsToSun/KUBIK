@@ -77,7 +77,7 @@ void PhotoTemplate::reset(ISettingsRef settings)
 	IGameLocation::reset(settings);
 	auto setphoto = static_pointer_cast<PhotoboothSettings>(settings);
 
-	cards = setphoto->getPhotoCardsTextures();
+	cards    = setphoto->getPhotoCardsTextures();
 	stickers = setphoto->getStickerTextures();
 
 	title	 = settings->getTexture("printtitle");

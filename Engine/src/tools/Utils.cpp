@@ -453,6 +453,8 @@ ci::Vec2f Utils::transformCoords(const ci::Vec2f& coords)
 	coord.y = _size.y - coord.y;
 
 #endif
+	coord.x = _size.x - coord.x;
+	coord.y = _size.y - coord.y;
 
 	return coord;
 }

@@ -1,4 +1,4 @@
-#include "model/PozaBase.h"
+#include "games/poza/model/PozaBase.h"
 
 using namespace ci;
 using namespace kubik;

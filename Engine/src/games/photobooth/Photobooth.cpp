@@ -46,7 +46,6 @@ void Photobooth::create()
 	photoTemplate	 = PhotoTemplateRef(new PhotoTemplate(settings,   photoStorage));
 	photoSharing	 = SocialLocationRef(new SocialLocation(settings, statSettings, photoStorage));
 
-
 	initLocations();
 	cameraSetup();
 	chrome().init();
@@ -85,12 +84,12 @@ void Photobooth::showAnimationComplete()
 {
 	for (auto loc : locations)
 	{
-		loc->connectEventHandler(&Photobooth::nextLocationHandler,     this, IGameLocation::NEXT_LOC);
-		loc->connectEventHandler(&Photobooth::beginAnimHandler, this, IGameLocation::BEGIN_ANIM);
-		loc->connectEventHandler(&Photobooth::completeAnimHandler, this, IGameLocation::COMPLETE_ANIM);
-		loc->connectEventHandler(&Photobooth::disableGameCloseHandler, this, IGameLocation::DISABLE_GAME_CLOSE);
+		loc->connectEventHandler(&Photobooth::nextLocationHandler,    this, IGameLocation::NEXT_LOC);
+		loc->connectEventHandler(&Photobooth::beginAnimHandler,       this, IGameLocation::BEGIN_ANIM);
+		loc->connectEventHandler(&Photobooth::completeAnimHandler,    this, IGameLocation::COMPLETE_ANIM);
+		loc->connectEventHandler(&Photobooth::disableGameCloseHandler,this, IGameLocation::DISABLE_GAME_CLOSE);
 		loc->connectEventHandler(&Photobooth::enableGameCloseHandler, this, IGameLocation::ENABLE_GAME_CLOSE);
-		loc->connectEventHandler(&Photobooth::closeLocationHandler, this, IGameLocation::CLOSE_LOCATION);
+		loc->connectEventHandler(&Photobooth::closeLocationHandler,	  this, IGameLocation::CLOSE_LOCATION);
 		loc->setDbRecord(dbRecord);
 	}		
 
@@ -188,6 +187,8 @@ void Photobooth::cameraSetup()
 
 void Photobooth::nextLocationHandler()
 {
+	console() << "index location " << index << endl;
+
 	if (++index >= locations.size())
 	{
 		saveDbRecord();		
@@ -210,11 +211,14 @@ void Photobooth::nextLocationHandler()
 
 void Photobooth::reshotHandler()
 {
+	console() << "reshotHandler "<< endl;
 	gotoFirstlocation();
 }
 
 void Photobooth::gotoFirstlocation()
 {
+	console() << "gotoFirstlocation " << endl;
+
 	index = 0;
 	currentLocation = locations[index];
 	currentLocation->start();

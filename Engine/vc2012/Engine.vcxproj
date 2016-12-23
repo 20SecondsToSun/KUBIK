@@ -189,7 +189,7 @@
     <ClCompile Include="..\src\games\poza\states\HandsUp.cpp" />
     <ClCompile Include="..\src\games\poza\states\PozaGame.cpp" />
     <ClCompile Include="..\src\games\poza\states\PozaInstruction.cpp" />
-    <ClCompile Include="..\src\games\poza\states\Printer.cpp" />
+    <ClCompile Include="..\src\games\poza\states\PrinterPoza.cpp" />
     <ClCompile Include="..\src\games\poza\states\ThreeMeters.cpp" />
     <ClCompile Include="..\src\games\poza\states\Timer.cpp" />
     <ClCompile Include="..\src\graphics\imageSequencer\ImageSequencer.cpp" />
@@ -425,7 +425,7 @@
     <ClInclude Include="..\src\games\poza\states\HandsUp.h" />
     <ClInclude Include="..\src\games\poza\states\PozaGame.h" />
     <ClInclude Include="..\src\games\poza\states\PozaInstruction.h" />
-    <ClInclude Include="..\src\games\poza\states\Printer.h" />
+    <ClInclude Include="..\src\games\poza\states\PrinterPoza.h" />
     <ClInclude Include="..\src\games\poza\states\ThreeMeters.h" />
     <ClInclude Include="..\src\games\poza\states\Timer.h" />
     <ClInclude Include="..\src\graphics\imageSequencer\ImageSequencer.h" />

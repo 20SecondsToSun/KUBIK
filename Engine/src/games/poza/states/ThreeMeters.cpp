@@ -1,5 +1,5 @@
 #include "ThreeMeters.h"
-#include "Poza.h"
+#include "games/poza/Poza.h"
 
 
 using namespace std;

@@ -66,7 +66,7 @@ void EngineApp::setup()
 
 #ifdef release
 	////fullscreenOptions.secondaryDisplayBlanking(true);	
-	//setFullScreen(true, fullscreenOptions);
+	setFullScreen(true, fullscreenOptions);
 #endif
 }
 
@@ -80,6 +80,7 @@ void EngineApp::mouseUp(MouseEvent event)
 	//event.mHandled = true;
 
 	touchPoint = Utils::transformCoords(event.getPos());
+	touchPoint = event.getPos(); //Utils::transformCoords(event.getPos());
 }
 
 void EngineApp::keyDown(KeyEvent event)
@@ -102,7 +103,7 @@ void EngineApp::draw()
 	gl::clear(Color::black()); 
 	view->draw();
 
-	//gl::drawSolidCircle(touchPoint, 20,20);
+	//gl::drawSolidCircle(touchPoint, 20, 20);
 }
 
 void EngineApp::shutdown()

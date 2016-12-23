@@ -4,6 +4,7 @@
 #include "TimerTools.h"
 #include "gui/ImageButtonSprite.h"
 #include "main/IGameLocation.h"
+#include "games/poza/PozaSettings.h"
 
 namespace kubik
 {
@@ -11,20 +12,18 @@ namespace kubik
 	{
 		namespace poza
 		{
-			typedef std::shared_ptr<class Printer> PrinterRef;
+			typedef std::shared_ptr<class PrinterPoza> PrinterPozaRef;
 
-			class Printer :public IGameLocation
+			class PrinterPoza : public IGameLocation
 			{
 				ci::gl::Texture totalfail;
 				ci::gl::Texture printerbg;
-				ci::gl::Texture currentCardTemplate;
-				
+				ci::gl::Texture currentCardTemplate;				
 
 				ci::Vec2f titleTexPos;
 				ci::Anim<float> alphaAnim;
 				ImageButtonSpriteRef printBtn, againBtn, othergamesBtn;
 				photobooth::PhotoStorageRef photoStorage;
-
 				
 				float animTime, buttonY;
 
@@ -47,9 +46,11 @@ namespace kubik
 
 				std::vector<photobooth::PhotoItem> photoItems;
 				std::vector<int>& gameScore;
+
 			public:
-				Printer(config::PozaSettingsRef settings, photobooth::PhotoStorageRef photoStorage, std::vector<int>& gameScore);
-				~Printer();
+
+				PrinterPoza(config::PozaSettingsRef settings, photobooth::PhotoStorageRef photoStorage, std::vector<int>& gameScore);
+				~PrinterPoza();
 				virtual void reset(config::ISettingsRef set) override;
 				virtual void start() override;
 				virtual void stop() override;

@@ -10,7 +10,7 @@
 #include "states/HandsUp.h"
 #include "states/Timer.h"
 #include "states/PozaGame.h"
-#include "states/Printer.h"
+#include "states/PrinterPoza.h"
 #include "main/SocialLocation.h"
 #include "model/PozaBase.h"
 #include "kinect2/KinectAdapter.h"
@@ -60,7 +60,7 @@ namespace kubik
 				PozaTimer1Ref timer;
 				PozaGameRef game;
 				SocialLocationRef social;
-				PrinterRef printer;
+				PrinterPozaRef printer;
 
 				photobooth::PhotoStorageRef photoStorage;
 				std::shared_ptr<DataBaseRecord> dbRecord;

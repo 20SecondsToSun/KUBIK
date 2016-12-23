@@ -1,5 +1,5 @@
 #include "HandsUp.h"
-#include "Poza.h"
+#include "games/poza/Poza.h"
 
 using namespace std;
 using namespace ci;

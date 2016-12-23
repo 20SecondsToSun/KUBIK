@@ -8,7 +8,7 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
-const float PhotoboothSettings::GoToScreenSaverTime = 80.0f;
+const float PhotoboothSettings::GoToScreenSaverTime = 800.0f;
 const int PhotoboothSettings::PhotoSeconds = 5;
 
 PhotoboothSettings::PhotoboothSettings(ApplicationModelRef model, ConfigSettingsRef configSettings)

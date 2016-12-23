@@ -60,7 +60,7 @@ void Poza::create()
 	handsUp			= HandsUpRef(new HandsUp(settings, humanModel));
 	timer			= PozaTimer1Ref(new PozaTimer1(settings));
 	game			= PozaGameRef(new PozaGame(settings, photoStorage, gamesScore, pozaData, humanModel));
-	printer			= PrinterRef(new Printer(settings, photoStorage, gamesScore));
+	printer			= PrinterPozaRef(new PrinterPoza(settings, photoStorage, gamesScore));
 	social			= SocialLocationRef(new SocialLocation(settings, statSettings, photoStorage));
 
 	initLocations();

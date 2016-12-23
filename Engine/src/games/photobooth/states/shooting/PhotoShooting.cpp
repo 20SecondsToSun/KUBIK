@@ -222,6 +222,7 @@ void PhotoShooting::drawPhotoframe()
 	gl::popMatrices();
 
 	gl::pushMatrices();
+	gl::translate(previewAnimateX, 0.0f);
 	gl::scale(_scale1, _scale1);
 	gl::translate(0.5f * (getWindowWidth() * (1.0f / _scale1) - photo.getWidth()), startY + 235);
 

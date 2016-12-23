@@ -1,4 +1,4 @@
-#include "Printer.h"
+#include "PrinterPoza.h"
 
 using namespace std;
 using namespace ci;
@@ -8,7 +8,7 @@ using namespace kubik;
 using namespace kubik::games::poza;
 using namespace kubik::config;
 
-Printer::Printer(PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef  photoStorage, std::vector<int>& gameScore)
+PrinterPoza::PrinterPoza(config::PozaSettingsRef settings, kubik::games::photobooth::PhotoStorageRef photoStorage, std::vector<int>& gameScore)
 	:photoStorage(photoStorage),
 	animTime(0.8f),
 	alphaAnim(1.0f),
@@ -18,12 +18,12 @@ Printer::Printer(PozaSettingsRef settings, kubik::games::photobooth::PhotoStorag
 	reset(settings);
 }
 
-Printer::~Printer()
+PrinterPoza::~PrinterPoza()
 {
 	logger().log("~~~ Poza.SubLocation Printer.Destruct ~~~");
 }
 
-void Printer::reset(ISettingsRef set)
+void PrinterPoza::reset(ISettingsRef set)
 {
 	logger().log("~~~ Poza.SubLocation Printer.Reset ~~~");
 
@@ -43,7 +43,7 @@ void Printer::reset(ISettingsRef set)
 	currentCardTemplate = pozasettings->getCurrentTemplate();
 }
 
-void Printer::start()
+void PrinterPoza::start()
 {
 	logger().log("~~~ Poza.SubLocation Printer.Start ~~~");
 
@@ -73,44 +73,44 @@ void Printer::start()
 
 	photoItems = photoStorage->getPhotoItems();
 
-	delaycall(bind(&Printer::initAnimationcomplete, this), 0.4f);
+	delaycall(bind(&PrinterPoza::initAnimationcomplete, this), 0.4f);
 }
 
-void Printer::initAnimationcomplete()
+void PrinterPoza::initAnimationcomplete()
 {
 	callback(COMPLETE_ANIM);
 
-	againBtn->connectEventHandler(&Printer::againBtnHandler, this);
+	againBtn->connectEventHandler(&PrinterPoza::againBtnHandler, this);
 
 	if (state == PrinterState::PASS)
 	{		
-		printBtn->connectEventHandler(&Printer::printBtnHandler, this);
+		printBtn->connectEventHandler(&PrinterPoza::printBtnHandler, this);
 	}
 	else
 	{
-		othergamesBtn->connectEventHandler(&Printer::othergamesBtnHandler, this);
+		othergamesBtn->connectEventHandler(&PrinterPoza::othergamesBtnHandler, this);
 	}
 }
 
-void Printer::againBtnHandler(EventGUIRef& event)
+void PrinterPoza::againBtnHandler(EventGUIRef& event)
 {
 	timeline().apply(&alphaAnim, 1.0f, 0.0f, 0.6f, EaseOutCubic())
-		.finishFn(bind(&Printer::hideAnimationComplete, this));
+		.finishFn(bind(&PrinterPoza::hideAnimationComplete, this));
 
 	callback(BEGIN_ANIM);	
 }
 
-void Printer::printBtnHandler(EventGUIRef& event)
+void PrinterPoza::printBtnHandler(EventGUIRef& event)
 {
 	nextLocationSignal();
 }
 
-void Printer::othergamesBtnHandler(EventGUIRef& event)
+void PrinterPoza::othergamesBtnHandler(EventGUIRef& event)
 {
 	callback(CLOSE_LOCATION);
 }
 
-void Printer::stop()
+void PrinterPoza::stop()
 {
 	logger().log("~~~ Poza.SubLocation Social.Stop ~~~");
 
@@ -118,26 +118,26 @@ void Printer::stop()
 	disconnectEventHandlers();
 }
 
-void Printer::hideAnimation(EventGUIRef& event)
+void PrinterPoza::hideAnimation(EventGUIRef& event)
 {
 	//voidBtn->disconnectEventHandler();
 	//callback(BEGIN_ANIM);
 	//app::timeline().apply(&alphaAnim, 0.0f, animTime, EaseOutCubic()).finishFn(bind(&Printer::hideAnimationComplete, this));
 }
 
-void Printer::hideAnimationComplete()
+void PrinterPoza::hideAnimationComplete()
 {
 	stop();
 	alphaAnim = 1.0f;	
 	callback(FIRST_LOC);
 }
 
-void Printer::update()
+void PrinterPoza::update()
 {
 
 }
 
-void Printer::draw()
+void PrinterPoza::draw()
 {
 	fillBg();
 
@@ -193,13 +193,13 @@ void Printer::draw()
 	}
 }
 
-void Printer::stopAllTweens()
+void PrinterPoza::stopAllTweens()
 {
 	alphaAnim.stop();
 	IGameLocation::stopAllTweens();
 }
 
-void Printer::disconnectEventHandlers()
+void PrinterPoza::disconnectEventHandlers()
 {
 	againBtn->disconnectEventHandler();
 

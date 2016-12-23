@@ -5,8 +5,10 @@
 #include "TimerTools.h"
 #include "CameraAdapter.h"
 #include "main/PhotoStorage.h"
-#include "model/PozaBase.h"
-#include "model/HumanModel.h"
+
+#include "games/poza/model/PozaBase.h"
+#include "games/poza/model/HumanModel.h"
+
 #include "main/IGameLocation.h"
 #include "kinect2/KinectAdapter.h"
 

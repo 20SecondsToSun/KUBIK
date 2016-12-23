@@ -5,7 +5,7 @@
 #include "TimerTools.h"
 #include "main/IGameLocation.h"
 #include "kinect2/KinectAdapter.h"
-#include "model/HumanModel.h"
+#include "games/poza/model/HumanModel.h"
 
 namespace kubik
 {

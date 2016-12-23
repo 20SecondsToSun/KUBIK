@@ -269,7 +269,7 @@ void PhotoChoosing::filterSelected(int id)
 	float fwidth = 109.0f;
 	float shiftX = 15.0f;
 	float bigfwidth = 137.0f;
-	float fulSize = (filterBtns.size() - 1.0f) * fwidth + (filterBtns.size() - 1.0f) * shiftX + bigfwidth;
+	float fulSize = (filterBtns.size() - 1.0f) * fwidth + (filterBtns.size() - 1.0f) * shiftX + bigfwidth; 
 
 	Vec2f startVec = Vec2f(0.5f * (getWindowWidth() - fulSize), photoFiltersStartY + 88.0f);
 	Vec2f offset = startVec;
@@ -310,7 +310,7 @@ void PhotoChoosing::okBtnClicked(EventGUIRef& event)
 	state = ANIM_HIDE;
 
 	photoStorage->createPhotoTemplates(); // TODO OPTIMIZATION
-	callback(BEGIN_ANIM);
+	//callback(BEGIN_ANIM);
 }
 
 void PhotoChoosing::update()
